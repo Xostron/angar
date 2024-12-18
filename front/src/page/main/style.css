@@ -1,0 +1,16 @@
+.main {
+	height: calc(100% - 100px);
+	display: flex;
+	flex-direction: column;
+}
+
+.header-cmp {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	width: auto;
+	font-size: 23px;
+	padding: 15px;
+	border: solid 1px black;
+	border-radius: 25px;
+}

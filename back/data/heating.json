@@ -1,0 +1,35 @@
+[
+ {
+  "_id": "67602d42d9da5c2bcc25f6dc",
+  "module": {
+   "channel": 6,
+   "id": "67602160d9da5c2bcc25f6c2"
+  },
+  "owner": {
+   "id": "67602254d9da5c2bcc25f6c9",
+   "type": "section"
+  }
+ },
+ {
+  "_id": "67628c8cd05b8d229808ec12",
+  "module": {
+   "channel": 3,
+   "id": "676285c3d05b8d229808ebfd"
+  },
+  "owner": {
+   "id": "67628b82d05b8d229808ec0b",
+   "type": "section"
+  }
+ },
+ {
+  "_id": "67628ce4d05b8d229808ec18",
+  "module": {
+   "channel": 5,
+   "id": "676285c3d05b8d229808ebfd"
+  },
+  "owner": {
+   "id": "67628ca2d05b8d229808ec14",
+   "type": "cooler"
+  }
+ }
+]

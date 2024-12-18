@@ -1,0 +1,85 @@
+.cold {
+	height: calc(100% - 30px);
+	align-items: center;
+	padding: 20px;
+	box-sizing: border-box;
+	display: flex;
+}
+
+.cold .row1 {
+	display: flex;
+	align-items: stretch;
+	gap: 1.25rem;
+	width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.cold .row2 {
+	padding: 0.625rem;
+	border-radius: 20px;
+	border: solid 1px var(--primary);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.cold .row2 .top {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.cold .row1 div {
+	width: 100%;
+}
+
+.cold .row2 .brd img {
+	height: 45px;
+	width: 45px;
+}
+
+.cold .row1 .brd {
+	width: 186px;
+}
+
+.cold .row2 .top .brd,
+.cold .row2 .bottom .brd {
+	width: 134px;
+	max-width: 134px;
+}
+.cold .row2 .bottom {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.cold .row1 .brd,
+.cold .row2 .brd,
+.page-section-cold-condens .brd {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	border-radius: 20px;
+	border: solid 1px var(--primary);
+	box-sizing: border-box;
+}
+
+.cold .row1 .brd {
+	height: 75px;
+	font-size: 1.8125rem; /* 29px */
+}
+
+.cold .row2 .brd {
+	height: 60px;
+	font-size: 1.5625rem; /* 25px */
+}

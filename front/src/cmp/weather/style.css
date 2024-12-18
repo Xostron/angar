@@ -1,0 +1,22 @@
+.weather {
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.weather-owner {
+	background-color: rgba(25, 38, 70, 0.5);
+	width: 30%;
+}
+/* ************************** */
+.weather-sens {
+	width: 24%;
+	box-sizing: border-box;
+	padding: 1% 2%;
+}
+
+/* ************************* */
+.weather-fore {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}

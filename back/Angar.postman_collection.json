@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "2e1c0746-d8c4-4839-8fda-5e1672397fb4",
+		"name": "Angar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22867751"
+	},
+	"item": [
+		{
+			"name": "live",
+			"item": [
+				{
+					"name": "ping",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:4000/api/live/ping",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"live",
+								"ping"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "on",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/live/on",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"live",
+								"on"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "off",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/live/off",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"live",
+								"off"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "battery",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/live/battery",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"live",
+								"battery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "stop",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/live/stop",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"live",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tenta",
+			"item": [
+				{
+					"name": "retain",
+					"item": [
+						{
+							"name": "mode",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"sectionId\":\"65fbc84a45a71f17c430b8ad\", \"value\":false}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/mode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"mode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "automode",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"buildingId\": \"65d4aed4b47bb93c40100fd5\", \"value\": \"drying\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/automode",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"automode"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fan",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"sectionId\":\"65d4aee3b47bb93c40100fd6\", \"fanId\":\"65d73cda52921647f4994d59\", \"value\":false}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/fan",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"fan"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"productId\":\"65fa9dbb73cd8d23f0d07faa\", \"value\":\"Картофель\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/product",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sens",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"65d4aed4b47bb93c40100fd5\": {\r\n    \"65d4af00b47bb93c40100fd7\": {  \"corr\": 0 },\r\n    \"65d4af0cb47bb93c40100fd8\": { \"on\": false, \"corr\": 1 },\r\n    \"65d4af64b47bb93c40100fd9\": {  },\r\n    \"65d4af7db47bb93c40100fda\": { \"on\": false, \"corr\": 0 },\r\n    \"65d4af9cb47bb93c40100fdb\": { \"on\": true, \"corr\": 1 }\r\n  }}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/sens",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"sens"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "start",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"value\":true}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/start",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"start"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "setting cure",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"65d4aed4b47bb93c40100fd5\": {\r\n  \"cure\": {\r\n   \"difference\": {\r\n    \"min\": 2,\r\n    \"max\": 3,\r\n    \"value\": 4\r\n   },\r\n   \"min\": 5,\r\n   \"hysteresis\": {\r\n    \"in\": 6,\r\n    \"out\": 7\r\n   }\r\n  }\r\n }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/retain/setting",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"retain",
+										"setting"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "cmd",
+					"item": [
+						{
+							"name": "reset",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\": \"65d4aed4b47bb93c40100fd5\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/cmd/reset",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"cmd",
+										"reset"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "output valve",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"moduleId\":\"65d4b0efb47bb93c40100fe9\", \"value\":{\"0\":1, \"1\":0},\r\n \"vlvId\":\"65d6f88d6109ee21ac4ce8ed\", \"code\":\"valve\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/cmd/output",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"cmd",
+										"output"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "output fan",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"moduleId\":\"65d4b0e5b47bb93c40100fe8\", \"value\":{\"0\":0},\r\n \"sectionId\":\"65d4aee3b47bb93c40100fd6\",\"fanId\":\"65d73c5fa9730d2218d419ed\", \"code\":\"fan\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/cmd/output",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"cmd",
+										"output"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "tune",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n\t\"valve\":{\r\n\t\t\"sectionId\": [\"65d4aee3b47bb93c40100fd6\"],\r\n\t\t\"_id\": \"65d6f8756109ee21ac4ce8ea\",\r\n\t\t\"type\": \"in\",\r\n\t\t\"module\": {\r\n\t\t\t\"off\": {\r\n\t\t\t\t\"channel\": 1,\r\n\t\t\t\t\"id\": \"65d4b0efb47bb93c40100fe9\"\r\n\t\t\t},\r\n\t\t\t\"on\": {\r\n\t\t\t\t\"channel\": 2,\r\n\t\t\t\t\"id\": \"65d4b0efb47bb93c40100fe9\"\r\n\t\t\t}\r\n\t\t},\r\n\t\t\"kp\": 0.7\r\n  \t},\r\n\t\"stage\":\"begin\",\r\n\t\"buildingId\":\"65d4aed4b47bb93c40100fd5\"\r\n\t}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/cmd/tune",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"cmd",
+										"tune"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "warming",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\",\"sectionId\":\"65d4aee3b47bb93c40100fd6\",\"cmd\":false}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/cmd/warming",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"cmd",
+										"warming"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "outpos",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"buildingId\":\"65d4aed4b47bb93c40100fd5\", \"valveId\":\"65d4b0efb47bb93c40100fe9\", \"out\":{\"0\": 0}, \r\n\t\"pos\":{\"1\":{\"value\": 1,\"time\": 5000,\"_id\": \"65d6f8756109ee21ac4ce8ea\",\"type\": \"on\"}}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/tenta/cmd/outpos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"tenta",
+										"cmd",
+										"outpos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "value",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.1.174:4000/api/tenta/value",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"174"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"tenta",
+								"value"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

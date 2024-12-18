@@ -1,0 +1,52 @@
+.sen {
+	height: calc(100% - 100px);
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: auto;
+	grid-column-gap: var(--fsz20);
+	grid-row-gap: var(--fsz20);
+	overflow: hidden;
+}
+
+/* Список датчиков */
+.list-sen {
+	display: grid;
+	grid-area: 2/2/2/7;
+	grid-template-columns: 30% repeat(5, 1fr);
+	grid-template-rows: repeat(12, var(--fsz65));
+	grid-row-gap: var(--fsz10);
+	grid-column-gap: var(--fsz10);
+	height: calc(100vh - clamp(11.25rem, 5.0857rem + 7.2202vw, 13.75rem));
+}
+
+/* Заголовок */
+.sen-header-turn {
+	grid-area: 1 / 1 / 1 / 1;
+}
+.sen-header-person {
+	grid-area: 1 / 7 / 1 / 7;
+}
+
+/* Шапка таблицы */
+.sen-header-sub {
+	grid-area: 1/2/1/7;
+	display: grid;
+	grid-template-columns: 30% repeat(5, 1fr);
+	grid-template-rows: auto;
+	grid-row-gap: var(--fsz10);
+	grid-column-gap: var(--fsz10);
+}
+.sen-header-sub > p {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+/* Боковая панель */
+.nav-h-sen {
+	grid-area: 2/7/2/7;
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	height: calc(100vh - 130px);
+	overflow-y: scroll;
+}

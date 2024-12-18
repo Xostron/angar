@@ -1,0 +1,36 @@
+[
+ {
+  "sectionId": [
+   "67602254d9da5c2bcc25f6c9"
+  ],
+  "_id": "67602cb4d9da5c2bcc25f6d4",
+  "type": "in",
+  "module": {
+   "off": {
+    "channel": 2,
+    "id": "67602160d9da5c2bcc25f6c2"
+   },
+   "on": {
+    "channel": 1,
+    "id": "67602160d9da5c2bcc25f6c2"
+   }
+  }
+ },
+ {
+  "sectionId": [
+   "67602254d9da5c2bcc25f6c9"
+  ],
+  "_id": "67602cfcd9da5c2bcc25f6d8",
+  "type": "out",
+  "module": {
+   "off": {
+    "channel": 4,
+    "id": "67602160d9da5c2bcc25f6c2"
+   },
+   "on": {
+    "channel": 3,
+    "id": "67602160d9da5c2bcc25f6c2"
+   }
+  }
+ }
+]

@@ -1,0 +1,44 @@
+const { data: store, delExtra, wrExtra } = require('@store')
+const { ctrlB } = require('@tool/command/fan')
+const { cWarm } = require('@socket/emit')
+const { msg } = require('@tool/message')
+
+// Прогрев секции
+function warming(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan) {
+	const cur = +new Date().getTime()
+	const cmd = store?.warming?.[building._id]?.[section._id]
+	const reset = m.reset.filter((el) => el.owner.id == section._id)?.[0]
+
+	if (!reset) return
+	// Нажали на кнопку, Вкл выход сброс аварии и напорные вентиляторы секции на 1 мин.
+	if (cmd && !acc.end) {
+		acc.end = cur + store.tWarming * 1000
+		wrExtra(building._id, section._id, 'warming', {
+			date: new Date(),
+			...msg(building, section, 59),
+		})
+	}
+	// Включить выход
+	if (!!acc.end && cur < acc.end) {
+		ctrlB(reset, building._id, 'on')
+		resultFan.warming[section._id] = { fan: m.fanS, sectionId: section._id }
+	}
+	// Выключить выход
+	if ((!!acc.end && cur >= acc.end) || cmd === false) {
+		ctrlB(reset, building._id, 'off')
+		delete acc.end
+		// очистить задание на прогрев
+		store.warming ??= {}
+		store.warming[building._id] ??= {}
+		store.warming[building._id][section._id] = false
+		// Удалить событие
+		delExtra(building._id, section._id, 'warming')
+		// событие на front: убрать окно прогрева клапанов
+		cWarm({ buildingId: building._id, sectionId: section._id })
+		// Удалить задание на вентиляторы
+		delete resultFan?.warming?.[section._id]
+		// очистить задание*
+		// delete store?.warming?.[building._id]?.[section._id]
+	}
+}
+module.exports = warming

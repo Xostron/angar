@@ -1,0 +1,47 @@
+/* Боковая панель справа*/
+.nav-h-section {
+	grid-area: 2 / 3 / 5 / 4;
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	height: calc(100vh - 130px);
+	overflow-y: scroll;
+}
+/* Боковая панель слева */
+.panel {
+	position: relative;
+	grid-area: 2 / 1 / 5 / 1;
+	display: flex;
+	gap: 10px;
+	height: calc(100vh - 130px);
+}
+
+/* Режимы работы */
+.cp {
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	grid-template-rows: repeat(4, var(--fsz65));
+	width: calc(70% - 5px);
+	height: calc(100vh - 130px);
+	opacity: 1;
+	transition-property: opacity, width;
+	transition-duration: 0.5s;
+	transition-timing-function: ease;
+}
+.cp-hide {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 0%;
+}
+.auth_bg {
+	background-color: var(--surface);
+}
+.build-warming{
+	grid-area: 5/1/5/1;
+	/* margin-top: 100px; */
+}
+

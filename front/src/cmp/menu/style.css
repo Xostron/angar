@@ -1,0 +1,21 @@
+menu  {
+	display: flex;
+	flex-grow: 1;
+	/* justify-content: space-between; */
+	align-items: center;
+	margin-right: 20px;
+	gap: 10px
+}
+
+menu button {
+	flex-direction: row;
+	font-family: Q-Medium;
+	font-size: var(--fsz24);
+	padding:3px;
+	
+}
+
+menu button img {
+	margin-right: var(--fsz10);
+}
+

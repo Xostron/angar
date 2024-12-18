@@ -1,0 +1,12 @@
+:root {
+	--h-weather: clamp(12rem, 3rem + 11.1111vw, 17rem);
+	--h-section: calc(100vh - var(--h-weather) - 140px);
+}
+.build {
+	height: calc(100% - 100px);
+	display: grid;
+	grid-template-columns: 1fr 65% 1fr;
+	grid-template-rows: auto var(--h-weather) var(--h-section);
+	gap: 10px 40px;
+	overflow: hidden;
+}

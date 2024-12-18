@@ -1,0 +1,15 @@
+const { ctrlV } = require('@tool/command/valve')
+const wait = require('./wait')
+
+function prepare(vlv, state) {
+	// Команда на управление клапаном
+	ctrlV(vlv, vlv._build,'open')
+	// Переход на стадию
+	vlv._stage = 'wait'
+	// Действие клапана (открывается/закрывается)
+	vlv._type = 'iopn'
+	wait(vlv, state)
+	// console.log('333 prepare', state, vlv)
+}
+
+module.exports = prepare

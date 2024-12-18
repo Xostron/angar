@@ -1,0 +1,16 @@
+.dia {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: none;
+	border-radius: 10px;
+}
+
+.dia::backdrop {
+	background-color: rgba(0, 0, 0, 0.144);
+}
+.dia:focus{
+	border:none;
+	outline: none;
+}

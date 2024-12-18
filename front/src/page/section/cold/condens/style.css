@@ -1,0 +1,14 @@
+.page-section-cold-condens {
+	width: unset !important;
+	padding-left: 10px;
+	padding-right: 10px;
+	gap: 1.25rem;
+}
+
+.page-section-cold-condens img:first-child {
+	height: 75px !important;
+}
+
+.page-section-cold-condens img.run {
+	animation: rotate 2s linear infinite; /* вращение каждые 2 секунды */
+}

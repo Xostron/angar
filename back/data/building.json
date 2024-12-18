@@ -1,0 +1,54 @@
+[
+ {
+  "_id": "6760195ed9da5c2bcc25f682",
+  "code": "2024-1",
+  "name": "Обычный",
+  "on": true,
+  "companyId": "67601891d9da5c2bcc25f67f",
+  "order": 1,
+  "pcId": "676018dbd9da5c2bcc25f681",
+  "type": "normal",
+  "company": {
+   "name": "СТЕНД",
+   "code": "2024-1"
+  },
+  "kindList": [
+   "mois",
+   "drying",
+   "cure",
+   "cooling",
+   "heat",
+   "antibliz",
+   "heating",
+   "vent",
+   "heater",
+   "co2",
+   "ozon",
+   "accel",
+   "sys",
+   "idle",
+   "overVlv"
+  ]
+ },
+ {
+  "_id": "67601969d9da5c2bcc25f685",
+  "code": "2024-2",
+  "name": "Холодильник 1",
+  "on": true,
+  "companyId": "67601891d9da5c2bcc25f67f",
+  "order": 3,
+  "pcId": "676018dbd9da5c2bcc25f681",
+  "type": "cold",
+  "company": {
+   "name": "СТЕНД",
+   "code": "2024-1"
+  },
+  "kindList": [
+   "ozon",
+   "co2",
+   "wetting",
+   "cooler",
+   "cold"
+  ]
+ }
+]

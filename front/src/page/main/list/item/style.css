@@ -1,0 +1,32 @@
+.item .top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.item .top p {
+	font-size: 25px;
+}
+
+.item .top span {
+	font-size: 16px;
+	border: solid 1px #192646;
+	padding: 5px 10px;
+	border-radius: 15px;
+}
+
+.item > div {
+	height: 100%;
+	padding: 10px;
+}
+.item.out > div {
+	background-color: #ededed;
+}
+
+.item .bottom {
+	display: flex;
+	justify-content: space-between;
+	/* align-items: center; */
+	/* padding: 10px; */
+	gap: 20px;
+}

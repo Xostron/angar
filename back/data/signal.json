@@ -1,0 +1,109 @@
+[
+ {
+  "_id": "676287f3d05b8d229808ec09",
+  "type": "supply",
+  "module": {
+   "id": "676285ded05b8d229808ebff",
+   "channel": 1
+  },
+  "owner": {
+   "type": "building",
+   "id": "67601969d9da5c2bcc25f685"
+  },
+  "reverse": false
+ },
+ {
+  "_id": "67628819d05b8d229808ec0a",
+  "type": "local",
+  "module": {
+   "id": "676285ded05b8d229808ebff",
+   "channel": 2
+  },
+  "owner": {
+   "type": "building",
+   "id": "67601969d9da5c2bcc25f685"
+  },
+  "reverse": true
+ },
+ {
+  "_id": "67628bb899a6d09a31881300",
+  "extra": {
+   "type": "compressorList",
+   "id": "675008b0449fd312ef2085ad"
+  },
+  "owner": {
+   "type": "beep",
+   "id": "675006c03a422312eeb2e7b4"
+  },
+  "module": {
+   "channel": 3,
+   "id": "676285ded05b8d229808ebff"
+  },
+  "type": "run"
+ },
+ {
+  "_id": "67628bead05b8d229808ec0e",
+  "type": "condenser",
+  "order": 1,
+  "owner": {
+   "type": "condenser",
+   "id": "67628bd4d05b8d229808ec0d"
+  },
+  "module": {
+   "channel": 4,
+   "id": "676285ded05b8d229808ebff"
+  }
+ },
+ {
+  "_id": "67602cb4d9da5c2bcc25f6d5",
+  "type": "on",
+  "owner": {
+   "type": "valve",
+   "id": "67602cb4d9da5c2bcc25f6d4",
+   "name": ""
+  },
+  "module": {
+   "channel": 1,
+   "id": "6760216cd9da5c2bcc25f6c3"
+  }
+ },
+ {
+  "_id": "67602cb4d9da5c2bcc25f6d6",
+  "type": "off",
+  "owner": {
+   "type": "valve",
+   "id": "67602cb4d9da5c2bcc25f6d4",
+   "name": ""
+  },
+  "module": {
+   "channel": 2,
+   "id": "6760216cd9da5c2bcc25f6c3"
+  }
+ },
+ {
+  "_id": "67602cfcd9da5c2bcc25f6d9",
+  "type": "on",
+  "owner": {
+   "type": "valve",
+   "id": "67602cfcd9da5c2bcc25f6d8",
+   "name": ""
+  },
+  "module": {
+   "channel": 3,
+   "id": "6760216cd9da5c2bcc25f6c3"
+  }
+ },
+ {
+  "_id": "67602cfcd9da5c2bcc25f6da",
+  "type": "off",
+  "owner": {
+   "type": "valve",
+   "id": "67602cfcd9da5c2bcc25f6d8",
+   "name": ""
+  },
+  "module": {
+   "channel": 4,
+   "id": "6760216cd9da5c2bcc25f6c3"
+  }
+ }
+]

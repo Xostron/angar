@@ -1,0 +1,44 @@
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.cold .page-section-cold-aggregate img.run {
+	animation: rotate 2s linear infinite; /* вращение каждые 2 секунды */
+}
+
+.cold .page-section-cold-aggregate {
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	position: relative;
+	border-radius: 20px;
+
+	max-width: 123px;
+	height: 75px;
+}
+
+.cold .page-section-cold-aggregate img {
+	width: 33px;
+	height: 33px;
+	position: absolute;
+	top: 14px;
+	left: 31px;
+}
+
+.cold .page-section-cold-aggregate img.someAlr {
+	/* margin: 2px; */
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	top: 32px;
+	right: 23px;
+	left: unset;
+	background-color: white;
+	border-radius: 50%;
+	border: 1.5px solid red;
+}

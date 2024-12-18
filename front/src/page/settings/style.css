@@ -1,0 +1,90 @@
+.sett {
+	display: grid;
+	grid-column-gap: var(--fsz20);
+	grid-row-gap: var(--fsz20);
+	height: calc(100vh - var(--fsz110));
+}
+
+/* Таблица */
+.set-list {
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	overflow-y: scroll;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	padding-bottom: 3px;
+}
+.set-list::-webkit-scrollbar {
+	display: none;
+}
+
+/* Заголовок таблицы */
+.set-head {
+	display: grid;
+	height: 100%;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	align-items: center;
+}
+.set-btn {
+	padding: 0 var(--fsz15);
+}
+.title {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--fsz10);
+	font-size: var(--fsz28);
+	font-family: Q-SemiBold;
+	/* overflow-x: hidden; */
+	.line{
+		margin-top: 0;
+	}
+}
+.title > span {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.usual {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--fsz26);
+}
+/* Боковая панель */
+.nav-set {
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	height: calc(100vh - 130px);
+	overflow-y: scroll;
+}
+.nav-set::-webkit-scrollbar {
+	display: none;
+}
+.nav-set {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.nav-set > button {
+	display: flex;
+	row-gap: 2px;
+	padding: 5px;
+	border-radius: 5px;
+	font-size: var(--fsz20);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: var(--background);
+}
+
+.nav-set > button > img {
+	height: var(--fsz26);
+	fill: white;
+	stroke: white;
+	filter: brightness(20);
+}

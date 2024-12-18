@@ -1,0 +1,100 @@
+[
+ {
+  "_id": "67602c35d9da5c2bcc25f6ce",
+  "name": "ВНО1",
+  "order": 1,
+  "owner": {
+   "type": "section",
+   "id": "67602254d9da5c2bcc25f6c9"
+  },
+  "module": {
+   "channel": 1,
+   "id": "67602155d9da5c2bcc25f6c1"
+  },
+  "type": "fan"
+ },
+ {
+  "_id": "67602c77d9da5c2bcc25f6d0",
+  "name": "ВНО2",
+  "order": 2,
+  "owner": {
+   "type": "section",
+   "id": "67602254d9da5c2bcc25f6c9"
+  },
+  "module": {
+   "channel": 2,
+   "id": "67602155d9da5c2bcc25f6c1"
+  },
+  "type": "fan"
+ },
+ {
+  "_id": "67602c8dd9da5c2bcc25f6d2",
+  "name": "ВНО3",
+  "order": 3,
+  "owner": {
+   "type": "section",
+   "id": "67602254d9da5c2bcc25f6c9"
+  },
+  "module": {
+   "channel": 3,
+   "id": "67602155d9da5c2bcc25f6c1"
+  },
+  "type": "fan"
+ },
+ {
+  "_id": "67628cf6d05b8d229808ec1a",
+  "name": "Вентилятор испарителя 1",
+  "order": 1,
+  "owner": {
+   "type": "cooler",
+   "id": "67628ca2d05b8d229808ec14"
+  },
+  "module": {
+   "channel": 6,
+   "id": "676285c3d05b8d229808ebfd"
+  },
+  "type": "fan"
+ },
+ {
+  "_id": "67602d59d9da5c2bcc25f6dd",
+  "name": "Разгонный",
+  "order": 1,
+  "owner": {
+   "type": "building",
+   "id": "6760195ed9da5c2bcc25f682"
+  },
+  "module": {
+   "channel": 5,
+   "id": "67602160d9da5c2bcc25f6c2"
+  },
+  "type": "accel"
+ },
+ {
+  "_id": "676287b9d05b8d229808ec07",
+  "name": "Разгонный",
+  "order": 1,
+  "owner": {
+   "type": "building",
+   "id": "67601969d9da5c2bcc25f685"
+  },
+  "module": {
+   "channel": 1,
+   "id": "676285c3d05b8d229808ebfd"
+  },
+  "type": "accel"
+ },
+ {
+  "_id": "676287ced05b8d229808ec08",
+  "name": "Разгонный 2",
+  "order": 2,
+  "owner": {
+   "type": "building",
+   "id": "67601969d9da5c2bcc25f685"
+  },
+  "module": {
+   "channel": 2,
+   "id": "676285c3d05b8d229808ebfd"
+  },
+  "type": "accel"
+ }
+]

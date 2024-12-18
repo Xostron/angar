@@ -1,0 +1,95 @@
+{
+ "6760195ed9da5c2bcc25f682": {
+  "automode": "drying",
+  "product": {
+   "_id": "66d0886536e7e1b1ff9e0788",
+   "name": "Лук",
+   "code": "onion"
+  },
+  "setting": {
+   "cooling": {
+    "cabbage": {
+     "target": {
+      "target": "2"
+     }
+    }
+   },
+   "sys": {
+    "potato": {
+     "debounce": {
+      "debounce": "00:01"
+     }
+    },
+    "onion": {
+     "debounce": {
+      "debounce": "00:01"
+     }
+    }
+   }
+  },
+  "67602199d9da5c2bcc25f6c4": {
+   "on": true
+  },
+  "6760221ad9da5c2bcc25f6c7": {
+   "on": true
+  },
+  "676021cbd9da5c2bcc25f6c5": {
+   "on": true
+  },
+  "valvePosition": {}
+ },
+ "67601969d9da5c2bcc25f685": {
+  "supply": {
+   "off": null,
+   "on": "2024-12-18T10:48:34.289Z"
+  },
+  "smoking": {},
+  "automode": "cooling",
+  "product": {
+   "_id": "66d0887936e7e1b1ff9e078a",
+   "name": "Картофель",
+   "code": "potato"
+  },
+  "setting": {
+   "wetting": {
+    "onion": {
+     "sp": {
+      "sp": "11"
+     }
+    }
+   },
+   "ozon": {
+    "wait": {
+     "wait": "00:11"
+    }
+   },
+   "cooler": {
+    "cabbage": {
+     "accel": {
+      "accel": "off"
+     }
+    }
+   },
+   "co2": {
+    "mode": {
+     "mode": "off"
+    }
+   }
+  },
+  "start": true,
+  "67628798d05b8d229808ec06": {
+   "on": false
+  },
+  "67628785d05b8d229808ec05": {
+   "on": false
+  },
+  "67628c64d05b8d229808ec11": {
+   "on": false
+  }
+ },
+ "undefined": {
+  "setting": {
+   "undefined": {}
+  }
+ }
+}

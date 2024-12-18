@@ -1,0 +1,22 @@
+[
+ {
+  "_id": "675fc4dea10873618b8e59ec",
+  "code": "cabbage",
+  "name": "Капуста"
+ },
+ {
+  "_id": "66d0887936e7e1b1ff9e078a",
+  "name": "Картофель",
+  "code": "potato"
+ },
+ {
+  "_id": "66d0886536e7e1b1ff9e0788",
+  "name": "Лук",
+  "code": "onion"
+ },
+ {
+  "_id": "66d0886f36e7e1b1ff9e0789",
+  "name": "Морковь",
+  "code": "carrot"
+ }
+]

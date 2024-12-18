@@ -1,0 +1,105 @@
+{
+ "67601c89d9da5c2bcc25f6be": {
+  "name": "МВ110-16К",
+  "interface": "rtu",
+  "use": "w",
+  "wr": {
+   "channel": 16,
+   "noreverse": false,
+   "on": 1000,
+   "start": 0,
+   "step": 1,
+   "type": "boolean"
+  }
+ },
+ "67601bf1d9da5c2bcc25f6bb": {
+  "name": "МВ110-32ДН",
+  "interface": "rtu",
+  "use": "r",
+  "re": {
+   "channel": 32,
+   "noreverse": false,
+   "start": 99,
+   "step": 1,
+   "type": "boolean"
+  }
+ },
+ "67601a21d9da5c2bcc25f6b5": {
+  "name": "МВ110-8А",
+  "interface": "rtu",
+  "use": "r",
+  "re": {
+   "channel": 8,
+   "noreverse": false,
+   "start": 1,
+   "step": 6,
+   "type": "int10"
+  }
+ },
+ "67601b37d9da5c2bcc25f6b7": {
+  "name": "МВ110-8АС",
+  "interface": "rtu",
+  "use": "r",
+  "re": {
+   "channel": 8,
+   "noreverse": false,
+   "start": 100,
+   "step": 6,
+   "type": "int10"
+  }
+ },
+ "66c73f39320b24af61331176": {
+  "name": "МВ210-101",
+  "interface": "tcp",
+  "use": "r",
+  "re": {
+   "channel": 8,
+   "start": 4000,
+   "step": 3,
+   "type": "float"
+  }
+ },
+ "66cee351eeb92a11d628b025": {
+  "name": "МВ210-202",
+  "interface": "tcp",
+  "use": "r",
+  "re": {
+   "channel": 20,
+   "start": 51,
+   "step": 1,
+   "type": "boolean",
+   "noreverse": true
+  }
+ },
+ "66cee314eeb92a11d628b024": {
+  "name": "МК210-301",
+  "interface": "tcp",
+  "use": "rw",
+  "re": {
+   "channel": 6,
+   "start": 51,
+   "step": 1,
+   "type": "boolean"
+  },
+  "wr": {
+   "channel": 8,
+   "on": 1,
+   "start": 470,
+   "step": 1,
+   "type": "boolean"
+  }
+ },
+ "67601b82d9da5c2bcc25f6b9": {
+  "name": "МУ110-8К",
+  "interface": "rtu",
+  "use": "w",
+  "wr": {
+   "channel": 8,
+   "noreverse": false,
+   "on": 1000,
+   "start": 0,
+   "step": 1,
+   "type": "boolean"
+  }
+ }
+}

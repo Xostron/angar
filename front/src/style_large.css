@@ -1,0 +1,212 @@
+/* Стиль для больших экранов (больше 1300px) */
+@media screen and (min-width: 1600px) {
+	/* header */
+	.logo {
+		/* height: var(--fsz50); */
+		/* background-color: rgb(114, 239, 201); */
+	}
+	.btn {
+		/* line-height: var(--fsz30); */
+		font-size: var(--fsz24);
+		padding-block: 2px;
+	}
+	.btn > img {
+		height: var(--fsz24);
+	}
+	/* subheader */
+	.control {
+		font-size: var(--fsz28);
+	}
+	.control > img {
+		height: var(--fsz40);
+		aspect-ratio: 1/1;
+	}
+	.mes {
+		padding-block: 3px;
+	}
+	/* Weather */
+	.mwr-left {
+		font-size: var(--fsz24);
+	}
+	.mwrl-info {
+		font-size: var(--fsz22);
+	}
+	.mwrl-info > span {
+		font-size: var(--fsz50);
+	}
+	/* page main - list - item */
+	.ctx1,
+	.ctx2 {
+		width: var(--fsz24);
+		height: var(--fsz24);
+		font-size: var(--fsz20);
+	}
+	.ctx3,
+	.ctx4,
+	.ctx5,
+	.ctx6,
+	.ctx7,
+	.ctx8 {
+		width: var(--fsz20);
+		height: var(--fsz20);
+		font-size: var(--fsz15);
+	}
+	.dcx3,
+	.dcx4,
+	.dcx5,
+	.dcx6,
+	.dcx7,
+	.dcx8 {
+		width: var(--fsz26);
+		height: var(--fsz26);
+		font-size: var(--fsz18);
+	}
+	.ctx9,
+	.ctx10,
+	.ctx11,
+	.ctx12 {
+		width: var(--fsz20);
+		height: var(--fsz20);
+		font-size: var(--fsz15);
+	}
+	.dcx9,
+	.dcx10,
+	.dcx11,
+	.dcx12 {
+		width: var(--fsz22);
+		height: var(--fsz22);
+		font-size: var(--fsz20);
+	}
+	/* page building - paging - item */
+	.vfx3,
+	.vfx4 {
+		height: var(--fsz65);
+	}
+	.ssx3,
+	.ssx4 {
+		font-size: var(--fsz28);
+	}
+	.sx3,
+	.sx4 {
+		font-size: var(--fsz28);
+	}
+	/* page section - rowTemp / rowFan - item */
+	.sir-item {
+		width: var(--fsz110);
+		height: var(--fsz50);
+	}
+	.section-info-row {
+		font-size: var(--fsz22);
+	}
+	.section-info-other {
+		font-size: var(--fsz22);
+	}
+	.sir-item-act > img {
+		height: var(--fsz40) !important;
+	}
+
+	.sio-btn > img {
+		height: var(--fsz70) !important;
+		padding: var(--fsz10);
+	}
+	.section-info-other > img {
+		height: var(--fsz70);
+	}
+	/* page sensor */
+	/* slider */
+	.switch {
+		width: calc(var(--fsz90));
+		height: var(--fsz35);
+	}
+	.slider > p {
+		font-size: var(--fsz20);
+		left: var(--fsz10);
+	}
+	input:not(:checked) + .slider > p {
+		--tr-t: var(--fsz20);
+	}
+	.slider:before {
+		/* left: 4px; */
+	}
+	input:checked + .slider:before {
+		--tr: var(--fsz50);
+	}
+	/* Cell */
+	.cell {
+		padding: var(--fsz10) var(--fsz10);
+		font-size: var(--fsz24);
+	}
+	/* page Setting */
+	.nav-set > button {
+		font-size: var(--fsz15);
+	}
+	.nav-set {
+		height: calc(100vh - clamp(11.25rem, 5.0857rem + 7.2202vw, 13.75rem));
+	}
+	.set-list {
+		height: calc(100vh - clamp(11.25rem, 5.0857rem + 7.2202vw, 13.75rem));
+	}
+	/*  */
+	.nav-item {
+		/* padding: var(--fsz15); */
+	}
+	/* Warn */
+	.entry-control > button,
+	.ec-yes-no > button {
+		line-height: var(--fsz30);
+		font-size: var(--fsz24);
+	}
+	/*  */
+	.cell-entry {
+		line-height: var(--fsz30);
+	}
+	.btn_turn {
+		width: var(--fsz160) !important;
+		height: var(--fsz45) !important;
+		font-size: var(--fsz24) !important;
+	}
+	.cell-login {
+		height: var(--fsz45);
+	}
+	/*  */
+	.entry {
+		gap: var(--fsz16);
+	}
+	.ef-field {
+		gap: var(--fsz16);
+		font-size: var(--fsz24);
+		padding-bottom: 0;
+	}
+	.ef-title {
+		position: relative;
+		font-size: var(--fsz24);
+		justify-content: center;
+		padding-top: 6px;
+		img {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+	}
+	.ef-title + p {
+		font-size: var(--fsz24);
+	}
+	.cell-modal {
+		width: clamp(4rem, 2.571rem + 3.91vw, 6rem);
+		height: var(--fsz40);
+	}
+}
+
+.test {
+	position: absolute;
+	right: 0;
+	top: 100px;
+}
+.png {
+	position: absolute;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 350px;
+	width: 705px;
+}

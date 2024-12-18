@@ -1,0 +1,22 @@
+.warming {
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	grid-template-rows: (auto, repeat(2, var(--fsz65)));
+	width: calc(100%);
+	height: calc(var(--fsz65) * 3 + 4 * var(--fsz10));
+	opacity: 1;
+	transition-property: opacity, width;
+	transition-duration: 0.5s;
+	transition-timing-function: ease;
+}
+
+.warming-span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-wrap: nowrap;
+	font-family: Q-SemiBold;
+	font-size: var(--fsz22);
+	color: var(--primary);
+}

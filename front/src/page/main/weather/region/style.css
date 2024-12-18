@@ -1,0 +1,39 @@
+.mw-region {
+	display: flex;
+	color: white;
+	padding: 8px;
+	gap: 18px;
+}
+/* ******************* */
+.mwr-left {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 8px;
+	font-size: var(--fsz26);
+}
+.mwrl-info {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: var(--fsz24);
+}
+.mwrl-info > div {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.mwrl-info > span {
+	display: flex;
+	font-size: var(--fsz45);
+	align-items: center;
+}
+/* ********************* */
+.mwr-right {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.mwr-right > img {
+	height: 90px;
+}

@@ -1,0 +1,29 @@
+:root {
+	--w-owner-pad32: clamp(2rem, 0.9583rem + 1.3889vw, 2.625rem);
+	--w-owner-pad20: clamp(1.25rem, 0.2083rem + 1.3889vw, 1.875rem);
+	--w-owner-gap: clamp(0.625rem, -0.4167rem + 1.3889vw, 1.25rem);
+}
+
+.w-owner {
+	display: flex;
+	flex-direction: column;
+	color: var(--background);
+	padding: var(--w-owner-pad32) var(--w-owner-pad20);
+}
+
+.w-owner-head {
+	display: flex;
+	font-size: var(--fsz28);
+	gap: var(--w-owner-gap);
+}
+.w-owner-head span > p {
+	margin: 0px;
+	
+}
+
+.w-owner > span {
+	display: block;
+	font-size: var(--fsz20);
+	padding-top: var(--w-owner-pad20);
+    line-height: 1.5;
+}

@@ -1,0 +1,32 @@
+.item-prod {
+	min-height: 90px;
+	height: 90px;
+	display: flex;
+	justify-content: space-between;
+	margin: 10px 0 10px;
+	font-size: 22px;
+}
+
+.main-list-item-mode-prd {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.main-list-item-mode-prd .icon-text {
+	display: flex;
+	align-items: center;
+}
+.main-list-item-mode-prd .icon-text {
+	margin-bottom: 5px;
+}
+
+.main-list-item-mode-prd .icon-text img {
+	margin-right: 10px;
+}
+
+.main-list-item-mode {
+	align-content: center;
+	margin: 10px;
+	margin-right: 0;
+}

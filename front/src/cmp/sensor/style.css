@@ -1,0 +1,35 @@
+.gr-sens {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	width: 100%;
+}
+
+.gr-sens > div {
+	display: flex;
+	align-items: center;
+	gap: 7%;
+}
+.gr-sens > div:not(:first-child) {
+	margin-top: 0;
+}
+
+.gr-sens-fan {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--fsz55) !important;
+	height: var(--fsz55) !important;
+	border: none;
+}
+.gr-sens-fan-img {
+	height: var(--fsz60) !important;
+	/* clip-path: circle(); */
+	padding: 6px;
+} 
+
+.gr-sens-empty {
+	background-color: transparent;
+	height: calc(var(--fsz45) + 14px) !important;
+	width: calc(var(--fsz45) + 14px) !important;
+}

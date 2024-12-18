@@ -1,0 +1,84 @@
+// Исполнительные механизмы секции
+function mech(data, sId) {
+	const { valve, fan, heating, signal } = data
+	// Периферия секции: клапаны, вентиляторы, обогрев клапанов
+	const vlvS = valve.filter((el) => el.sectionId.includes(sId))
+	const fanS = fan.filter((el) => el.owner.id === sId && el.type === 'fan')
+	const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
+	// Обогрев клапанов
+	const heatS = heating.filter((el) => el?.owner?.id === sId)
+	// TODO Обогрев у холодильника
+	// const heatCo = heating.filter((el) => el?.owner?.id === sId)
+	// Выход "Модуль в работе" для реле безопасности
+	const connect = signal.filter((el) => el.owner.id == sId && el.type == 'connect')
+	const reset = signal.filter((el) => el.owner.id == sId && el.type == 'reset')
+	return { vlvS, fanS, fanAux, heatS, connect, reset }
+}
+
+// Исполнительные механизмы склада
+function mechB(bId, obj) {
+	const { data } = obj
+	//ID склада и секций
+	let idS = getId(data?.section, bId)
+	// Разгонные вентиляторы
+	const fanA = data.fan.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
+	// Выход "Модуль в работе" для реле безопасности
+	const connect = data.signal.filter((el) => idS.includes(el.owner.id) && el.type == 'connect') ?? []
+	// Выход Сброс аварии для реле безопасности
+	const reset = data.signal.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
+
+	const cold = fnCold(bId, obj)
+	return { fanA, connect, reset, cold }
+}
+
+function getId(section, bId) {
+	const ids = section?.filter((el) => el.buildingId === bId)?.map((el) => el._id) ?? []
+	ids.push(bId)
+	return ids
+}
+
+// Оборудование камеры
+function fnCold(idB, obj) {
+	//ID склада и камер
+	const idS = getId(obj.data?.section, idB)
+	// Id камер
+	const idSec = idS.filter((el) => el !== idB)
+
+	// Сигналы склада и камер
+	const sigB = obj.data.signal.filter((el) => idS.includes(el.owner.id))
+	// Агрегаты склада
+	const aggr = obj.data.aggregate.filter((el) => el.buildingId === idB)
+	// Испарители камеры
+	const cooler = []
+	obj.data.cooler.forEach((doc) => {
+		if (!idSec.includes(doc.sectionId)) return
+
+		doc.solenoid = doc.solenoid.map((el) => {
+			const b = obj.data.binding.find((e) => e.owner.id === el._id)
+			return { ...el, module: { id: b.moduleId, channel: b.channel } }
+		})
+
+		const clr = {
+			...doc,
+			fan: obj.data.fan.filter((el) => el.owner.id === doc._id),
+			heating: obj.data.heating.filter((el) => el.owner.id === doc._id),
+		}
+
+		cooler.push(clr)
+	})
+
+	// Подогрев (клапаны, слив воды)
+	const heating = obj.data.heating.filter((el) => idS.includes(el.owner.id))
+	// Устройства
+	const device = {}
+	obj.data.device.forEach((el) => {
+		if (!idSec.includes(el.sectionId)) return
+		const code = el.device.code
+		device[code] ??= []
+		device[code].push(el)
+	})
+
+	return { signal: sigB, aggregate: aggr, cooler, heating, device }
+}
+
+module.exports = { mech, mechB, getId }

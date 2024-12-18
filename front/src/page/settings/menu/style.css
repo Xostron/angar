@@ -1,0 +1,32 @@
+.setting-menu {
+	display: grid;
+	grid-template-columns: 1fr 65% 1fr;
+	grid-template-rows: auto;
+}
+
+.list-menu {
+	display: grid;
+	grid-area: 2/1/2/4;
+	grid-template-columns: repeat(6, 1fr);
+	grid-row-gap: var(--fsz24);
+	grid-column-gap: var(--fsz24);
+}
+
+.setm {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: var(--fsz20);
+	border-radius: 5px;
+	font-family: Q-Medium;
+	font-size: var(--fsz26);
+	color: var(--background);
+	gap: var(--fsz30);
+}
+
+.setm > img {
+	padding: 5px;
+	clip-path: circle();
+	background-color: var(--background);
+	height: var(--fsz50);
+}

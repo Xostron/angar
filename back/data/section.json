@@ -1,0 +1,14 @@
+[
+ {
+  "_id": "67628b82d05b8d229808ec0b",
+  "name": "Камера 1",
+  "order": 1,
+  "buildingId": "67601969d9da5c2bcc25f685"
+ },
+ {
+  "_id": "67602254d9da5c2bcc25f6c9",
+  "name": "Секция 1",
+  "order": 1,
+  "buildingId": "6760195ed9da5c2bcc25f682"
+ }
+]

@@ -1,0 +1,89 @@
+/* Индикаторы аварий */
+.indi {
+	position: relative;
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	height: calc(100vh - 130px);
+	overflow-y: scroll;
+	width: calc(30% - 5px);
+	transition: 0.5s;
+	max-width: var(--fsz70);
+}
+/* Таймеры запретов */
+.indi > span {
+	font-family: 'Q-SemiBold';
+	font-size: var(--fsz22);
+	white-space: nowrap;
+	transition: width 5s ease;
+	display: inline-flex;
+	align-items: center;
+	max-width: var(--fsz70);
+}
+.indi-span {
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}
+.indi-span-active {
+	opacity: 1;
+}
+/*  */
+.indi-item {
+	display: flex;
+	align-items: center;
+	/* background-color: antiquewhite; */
+	/* max-width: var(--fsz70); */
+}
+/*  */
+.indi-item-img {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--secondary);
+	border-radius: 50%;
+	width: var(--fsz40);
+	height: var(--fsz40);
+}
+.indi-item-img > img {
+	height: var(--fsz30);
+}
+/*  */
+.indi-item-square {
+	border-radius: 5px;
+	background-color: var(--primary);
+}
+
+/* Скрыть/показать панель */
+.indi-show {
+	width: 100%;
+	max-width: 100%;
+	/* overflow: hidden; */
+}
+
+.indi-item-hide {
+	position: absolute;
+	width: clamp(6.25rem, -2.1rem + 13.5vw, 12.5rem);
+	left: calc(var(--fsz28) + 20px + var(--fsz10));
+	opacity: 0;
+	font-size: var(--fsz17);
+	transition: opacity 0.5s ease;
+	pointer-events: none;
+
+	overflow: hidden;
+	/* display: -moz-box; */
+	/* -moz-box-orient: vertical; */
+	/* text-overflow: ellipsis; */
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	/* line-clamp: 2; */
+	/* box-orient: vertical; */
+}
+.indi-item-show {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.indi-tmr {
+	white-space: nowrap;
+}
