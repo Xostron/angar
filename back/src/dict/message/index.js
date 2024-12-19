@@ -93,8 +93,8 @@ const data = {
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой при охлаждения (по продукту)',
 	},
-	15: { code: 'cooling-1', msg: 'Продукт достиг температуры задания' },
-
+	15: { order: 1, code: 'cooling-1', msg: 'Продукт достиг температуры задания' },
+	150: { order: 2, code: 'cooling-2', msg: 'Задание канала, задание продукта' },
 	// ======== extralrm ========
 	// Антивьюга antibliz
 	13: { count: false, code: 'antibliz', type: 'antibliz', typeSignal: 'valve', msg: 'Сработал режим антивьюги' },
@@ -192,8 +192,8 @@ const data = {
 	72: { code: 'temp', typeSignal: 'info', msg: 'Оттайка слива воды: Отключена' },
 
 	// ======== Склад-холодильник ========
-	80: { code: 'target', msg: 'Продукт достиг температуры задания ' },
-	81: { code: 'status', msg: '' },
+	80: { order: 1, code: 'target', msg: 'Продукт достиг температуры задания ' },
+	81: { order: 2, code: 'status', msg: '' },
 	// ======== Окуривание (холодильник) ========
 	82: {
 		code: 'smoking',

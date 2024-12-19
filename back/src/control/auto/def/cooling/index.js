@@ -64,7 +64,7 @@ function middlew(building, section, s, se, seB, alr, acc) {
 	// ********************************************************
 
 	wrAchieve(building._id, 'cooling', {
-		...msgB(building, 16),
+		...msgB(building, 150),
 		msg: `t задания канала = ${acc.tcnl.toFixed(1)} °С, t задания продукта = ${acc.tgt.toFixed(1)} °С`,
 	})
 }

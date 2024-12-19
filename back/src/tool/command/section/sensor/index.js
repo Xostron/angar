@@ -15,8 +15,8 @@ function sensor(idB, idS, obj) {
 		hin: value?.total?.[idB]?.hin?.min,
 		// Абсолютная влажность проукта
 		hAbsIn: +value?.humAbs?.[idB],
-		// Максимальная температура продукта по секции
-		tprd: value?.total?.[idS]?.tprd?.max,
+		// Минимальная температура продукта по секции
+		tprd: value?.total?.[idS]?.tprd?.min,
 		// Температура канала - мин
 		tcnl: value?.total?.[idS]?.tcnl?.min,
 		// Давление - макс
@@ -44,7 +44,7 @@ function sensorBuilding(idB, obj) {
 		//  Абс. влажность продукта
 		hAbsIn: +value?.humAbs?.[idB],
 		// Максимальная температура продукта по складу (по всем секция в авто режиме)
-		tprd: value?.total?.[idB]?.tprd?.max,
+		tprd: value?.total?.[idB]?.tprd?.min,
 		// Датчики по камере и испарителю
 		cooler: cooler(idB, obj),
 	}

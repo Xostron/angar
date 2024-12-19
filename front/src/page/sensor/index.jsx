@@ -89,7 +89,7 @@ export default function Sensor({}) {
 		arr.forEach((el) => {
 			if (section?.[el]?.length) data.push(...section?.[el])
 		})
-		section?.cooler.forEach((clr) => {
+		section?.cooler?.forEach((clr) => {
 			if (clr?.sensor?.length) data.push(...clr?.sensor)
 		})
 	}

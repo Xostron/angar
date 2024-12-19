@@ -162,7 +162,7 @@
   },
   "accuracy": 1,
   "module": {
-   "channel": 3,
+   "channel": 6,
    "id": "67602133d9da5c2bcc25f6bf"
   },
   "type": "tcnl"
@@ -190,7 +190,7 @@
   },
   "accuracy": 1,
   "module": {
-   "channel": 6,
+   "channel": 3,
    "id": "67602133d9da5c2bcc25f6bf"
   },
   "type": "tprd"

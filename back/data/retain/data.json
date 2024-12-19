@@ -1,6 +1,6 @@
 {
  "6760195ed9da5c2bcc25f682": {
-  "automode": "drying",
+  "automode": "cooling",
   "product": {
    "_id": "66d0886536e7e1b1ff9e0788",
    "name": "Лук",
@@ -36,7 +36,14 @@
   "676021cbd9da5c2bcc25f6c5": {
    "on": true
   },
-  "valvePosition": {}
+  "valvePosition": {
+   "67602cb4d9da5c2bcc25f6d4": 0,
+   "67602cfcd9da5c2bcc25f6d8": 0
+  },
+  "start": true,
+  "mode": {
+   "67602254d9da5c2bcc25f6c9": true
+  }
  },
  "67601969d9da5c2bcc25f685": {
   "supply": {

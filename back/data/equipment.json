@@ -30,10 +30,10 @@
   "use": "r",
   "re": {
    "channel": 8,
-   "noreverse": false,
-   "start": 1,
+   "noreverse": true,
+   "start": 3,
    "step": 6,
-   "type": "int10"
+   "type": "float"
   }
  },
  "67601b37d9da5c2bcc25f6b7": {
@@ -42,10 +42,10 @@
   "use": "r",
   "re": {
    "channel": 8,
-   "noreverse": false,
-   "start": 100,
-   "step": 6,
-   "type": "int10"
+   "noreverse": true,
+   "start": 120,
+   "step": 3,
+   "type": "float"
   }
  },
  "66c73f39320b24af61331176": {
@@ -97,7 +97,7 @@
    "channel": 8,
    "noreverse": false,
    "on": 1000,
-   "start": 0,
+   "start": 1,
    "step": 1,
    "type": "boolean"
   }
