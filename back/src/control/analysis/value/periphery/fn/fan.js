@@ -7,10 +7,9 @@ function fan(equip, val, retain, ehour, result) {
 	fan.forEach((el) => {
 		result[el._id] ??= {}
 		result[el._id].state = stateF(el, equip, result, retain)
+		// Моточасы
 		engineHour(el, result[el._id].state, ehour)
 	})
 }
 
 module.exports = fan
-
-

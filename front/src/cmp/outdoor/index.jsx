@@ -31,10 +31,6 @@ export default function Outdoor() {
 	else 
 		sens.push({ type: 'calcMois', value: humAbs?.[build?._id] })
 	
-	
-	// { type: 'calcMois', value: humAbs?.[build?._id] },
-	// sens[2].state = checkS(sens?.[0]?.state, sens?.[1]?.state)
-
 	return (
 		<section className='outdoor'>
 			<Weather />

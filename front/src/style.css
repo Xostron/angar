@@ -240,6 +240,29 @@ a {
 .alarm > img {
 	filter: opacity(50%) !important;
 }
+/* .sir-item-run img, */
+/* .gr-sens-fan-img, */
+/* .run {
+	animation-name: rotation;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+} */
+.sir-item-run img,
+.a-run {
+	animation-name: rotation;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+@keyframes rotation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
 
 .changed {
 	border-color: #39c571 !important;

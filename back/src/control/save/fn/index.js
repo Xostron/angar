@@ -112,7 +112,6 @@ function cbSmoking(obj, data) {
 	return result
 }
 
-
 function check(obj, build, result) {
 	if (!result.setting?.smoking?.on) return false
 	const stop = obj[build].work === null && obj[build].wait === null
@@ -126,7 +125,6 @@ function cbTracing(obj, data) {
 		result[key] ??= {}
 		result[key] = obj[key]
 	}
-	console.log(2222, 'cbTracing', result)
 	return result
 }
 module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbTracing }

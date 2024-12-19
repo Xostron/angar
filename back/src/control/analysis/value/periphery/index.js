@@ -21,7 +21,6 @@ function periphery(val, obj) {
 	result.outputM = outputM(equip, val)
 	// Исполнительные механизмы: значение выхода
 	result.outputEq = outputEq(equip, val)
-
 	// console.log(result)
 	// Анализ датчиков
 	sensor(equip, val, retain, result)

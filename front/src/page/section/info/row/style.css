@@ -28,7 +28,3 @@
 .sir-item-act > img {
 	height: var(--fsz50) !important;
 }
-
-.sir-item-off{
-	background-color: #D9D9D9;
-}
