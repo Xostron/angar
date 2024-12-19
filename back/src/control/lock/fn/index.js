@@ -52,6 +52,7 @@ function fan(obj) {
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null
 		// offS = offS && !store.aCmd?.[f.owner.id]?.fan?.end
 		// output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !isAlrOff && !local && offS !== null)
+
 		out(output, f, isAlrOff, localB, local, offS, alrStop)
 	}
 }
@@ -73,7 +74,6 @@ function fanAccel(obj) {
 		const alrStop = isExtralrm(idB, null, 'alarm') //&& !store.aCmd?.[el.owner.id]?.fan?.end
 		// Таймер запрета
 		const ban = store.alarm.timer?.[idB]?.accel
-
 		out(output, el, localB, local, !!ban, alrStop)
 	}
 }

@@ -5,7 +5,7 @@
 
 # Dist
 node_modules
-build/
+./build/
 # IDE
 .vscode/*
 !.vscode/extensions.json

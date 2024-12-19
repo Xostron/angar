@@ -16,7 +16,7 @@ function main(listId, fan, buildingId) {
 	if (!listId?.length) return
 	listId.forEach((sectionId) => {
 		const aCmd = store.aCmd?.[sectionId]?.fan
-		// console.log(222, aCmd, store.watchdog)
+
 		if (!aCmd) return
 		// Расчет задержек вкл/выкл вентиляторов
 		if ((aCmd.type === 'on' && aCmd.status != 'readyOn') || (aCmd.type === 'off' && aCmd.status != 'readyOff')) {

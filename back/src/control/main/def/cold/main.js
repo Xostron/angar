@@ -37,11 +37,7 @@ function main(bld, obj, bdata, alr) {
 			continue
 		}
 		// Вычисление Т target
-		if (
-			!accAuto.targetDT ||
-			accAuto.targetDT.getDate() !== new Date().getDate() ||
-			accAuto?.isChange(s.cold.decrease, s.cold.target)
-		) {
+		if (!accAuto.targetDT || accAuto.targetDT.getDate() !== new Date().getDate() || accAuto?.isChange(s.cold.decrease, s.cold.target)) {
 			// Замыкание на изменение настроек
 			accAuto.isChange = isChange(s.cold.decrease, s.cold.target)
 
@@ -54,19 +50,9 @@ function main(bld, obj, bdata, alr) {
 			accAuto.state ??= {}
 		}
 
-		console.log(
-			'\tТмп. задания на сутки',
-			se.cooler.tprd,
-			'-',
-			s.cold.decrease,
-			'=',
-			accAuto.target,
-			'от',
-			accAuto.targetDT.toLocaleString()
-		)
+		console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
 
-		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler))
-			def?.[stateCooler.state](fnChange, accAuto, se, s, bld)
+		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) def?.[stateCooler.state](fnChange, accAuto, se, s, bld)
 	}
 }
 

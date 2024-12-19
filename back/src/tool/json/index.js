@@ -1,4 +1,4 @@
-const { retainDir, factoryDir, dataDir } = require('@store')
+const { retainDir, factoryDir, dataDir, tracingDir } = require('@store')
 const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')
@@ -116,10 +116,11 @@ function readTO(names, ph = dataDir) {
 function readAll(obj) {
 	return new Promise((resolve, reject) => {
 		const list = Object.keys(obj.data)
-		Promise.all([read(list), read(['data'], retainDir), read(['factory'], factoryDir)])
-			.then(([eq, rtn, fct]) => {
+		Promise.all([read(list), read(['data'], retainDir), read(['factory'], factoryDir), read(['ehour'], tracingDir)])
+			.then(([eq, rtn, fct, ehour]) => {
 				obj.retain = rtn[0]
 				obj.factory = fct[0]
+				obj.ehour = ehour[0]
 				list.forEach((el, i) => {
 					if (eq[i]) obj.data[el] = eq[i]
 				})
@@ -165,7 +166,7 @@ function createAndModifySync(obj, filename, ph, cb) {
 		readOne(filename, ph)
 			.then((d) => {
 				const result = d ? cb(obj, d) : {}
-				return writeSync({ data: result }, ph, null, true)
+				return writeSync({ [filename]: result }, ph, null, true)
 			})
 			.then(resolve)
 			.catch(reject)

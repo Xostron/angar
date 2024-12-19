@@ -7,20 +7,6 @@
   "equipmentId": "67601a21d9da5c2bcc25f6b5"
  },
  {
-  "_id": "67602148d9da5c2bcc25f6c0",
-  "ip": "COM3",
-  "port": 2,
-  "buildingId": "6760195ed9da5c2bcc25f682",
-  "equipmentId": "67601b37d9da5c2bcc25f6b7"
- },
- {
-  "_id": "67602155d9da5c2bcc25f6c1",
-  "ip": "COM3",
-  "port": 3,
-  "buildingId": "6760195ed9da5c2bcc25f682",
-  "equipmentId": "67601b82d9da5c2bcc25f6b9"
- },
- {
   "_id": "67602160d9da5c2bcc25f6c2",
   "ip": "COM3",
   "port": 4,

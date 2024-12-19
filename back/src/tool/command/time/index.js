@@ -1,3 +1,4 @@
+const { data: store } = require('@store')
 /**
  * Преобразование hh:mm (string) в миллисекунды
  * @param {*} hm hh:mm (string), 01:42
@@ -45,34 +46,59 @@ function range(o) {
  */
 function compareTime(t, d) {
 	try {
-		if(typeof t === 'string') t = new Date(t)
+		if (typeof t === 'string') t = new Date(t)
 		const now = new Date()
 		return now - t >= d
-
 	} catch (error) {
 		console.log('compareTime', error)
-	 	return true	
+		return true
 	}
 }
-
 
 /**
  * Читаемая разница между переданным временем и текущим в минутах и секундах
- * @param {String||DateTime} doc время 
+ * @param {String||DateTime} doc время
  * @returns {String}
  */
-function runTime(doc){
+function runTime(doc) {
 	try {
-		if(typeof doc === 'string') doc = new Date(doc)
-		const t = (new Date() - doc) / 1000;
-		let m = Math.trunc(t / 60);
-		return `Продолжительность: ${m ? m + ' мин ' : ''}${
-				(t % 60).toFixed(0) + ' сек'
-			} `
+		if (typeof doc === 'string') doc = new Date(doc)
+		const t = (new Date() - doc) / 1000
+		let m = Math.trunc(t / 60)
+		return `Продолжительность: ${m ? m + ' мин ' : ''}${(t % 60).toFixed(0) + ' сек'} `
 	} catch (error) {
 		console.log('runTime', error)
-	 return ''	
+		return ''
 	}
 }
 
-module.exports = { ms, delay, range, compareTime, runTime }
+/**
+ * @param {*} doc Старт
+ * @param {*} sum моточасы
+ * @returns моточасы+зафиксированные часы работы
+ */
+function engineTime(doc, sum) {
+	try {
+		if (typeof doc === 'string') doc = new Date(doc)
+		// Фиксирование
+		const t = (new Date() - doc) / 1000
+		let h = +(t / 3600)
+		return +(sum + h).toFixed(2)
+	} catch (error) {
+		return ''
+	}
+}
+
+// Подсчет моточасов
+function engineHour(el, state, ehour) {
+	// Включение
+	if (state === 'run' && !ehour[el._id]?.start) {
+		store.engineHour[el._id] = { value: ehour[el._id]?.value ?? 0, start: new Date() }
+	}
+	// Выключение
+	if (state !== 'run' && ehour[el._id]?.start) {
+		store.engineHour[el._id] = { value: engineTime(ehour[el._id].start, ehour[el._id]?.value ?? 0) }
+	}
+}
+
+module.exports = { ms, delay, range, compareTime, runTime, engineTime, engineHour }

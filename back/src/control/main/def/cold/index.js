@@ -18,7 +18,7 @@ function runExtra(building, obj, bdata) {
 	let alr = false
 	// Всегда
 	alr = alr || extralrm(building, null, obj, s, se, m, null, null, 'cold', 'always')
-	// console.log(222,alr)
+
 	extra(building, null, obj, s, se, m, null, null, null, 'cold', 'always')
 
 	// Склад выключен

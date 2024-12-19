@@ -25,6 +25,13 @@
       "debounce": "00:01"
      }
     }
+   },
+   "cure": {
+    "onion": {
+     "differenceMin": {
+      "differenceMin": "2"
+     }
+    }
    }
   },
   "67602199d9da5c2bcc25f6c4": {
@@ -42,7 +49,20 @@
   },
   "start": true,
   "mode": {
-   "67602254d9da5c2bcc25f6c9": true
+   "67602254d9da5c2bcc25f6c9": false
+  },
+  "fan": {
+   "67602254d9da5c2bcc25f6c9": {
+    "67602c35d9da5c2bcc25f6ce": false,
+    "67602c77d9da5c2bcc25f6d0": false,
+    "67602c8dd9da5c2bcc25f6d2": false
+   }
+  },
+  "676021e3d9da5c2bcc25f6c6": {
+   "on": false
+  },
+  "67602233d9da5c2bcc25f6c8": {
+   "on": false
   }
  },
  "67601969d9da5c2bcc25f685": {
@@ -72,6 +92,11 @@
    },
    "cooler": {
     "cabbage": {
+     "accel": {
+      "accel": "off"
+     }
+    },
+    "potato": {
      "accel": {
       "accel": "off"
      }

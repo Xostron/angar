@@ -8,7 +8,7 @@ var debug = require('debug')('angar:server')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { server, io } = require('@tool/server')
-const { retainDir, factoryDir, dataDir } = require('@store')
+const { retainDir, factoryDir, dataDir, tracingDir } = require('@store')
 
 // Получение настроек от сервера с переодичностью
 const init = require('@root/client/init')
@@ -74,7 +74,10 @@ if (!fs.existsSync(retainDir)) {
 	fs.mkdirSync(retainDir)
 	fs.writeFileSync(path.join(retainDir, 'data.json'), '{}')
 }
-
+if (!fs.existsSync(tracingDir)) {
+	fs.mkdirSync(tracingDir)
+	fs.writeFileSync(path.join(tracingDir, 'ehour.json'), '{}')
+}
 // Запрос конфигурации у админ-сервера
 init()
 // Главный цикл управления

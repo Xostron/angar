@@ -13,13 +13,15 @@ const device = require('./fn/device')
  * @param {*} equip данные json по оборудованию
  * @returns {id_input: value,..., outputM:{id_module:[arr_value],...}}
  */
-function periphery(val, equip, retain) {
+function periphery(val, obj) {
+	const { data: equip, retain, ehour } = obj
 	let result = {}
 
 	// Маска выходных модулей DO
 	result.outputM = outputM(equip, val)
 	// Исполнительные механизмы: значение выхода
 	result.outputEq = outputEq(equip, val)
+
 	// console.log(result)
 	// Анализ датчиков
 	sensor(equip, val, retain, result)
@@ -30,7 +32,7 @@ function periphery(val, equip, retain) {
 	// Состояния клапанов
 	valve(equip, val, retain, result)
 	// Состояние вентиляторов (предварительное)
-	fan(equip, val, retain, result)
+	fan(equip, val, retain, ehour, result)
 	// Испаритель
 	cooler(equip, val, retain, result)
 	// Агрегат
@@ -38,8 +40,7 @@ function periphery(val, equip, retain) {
 	// Устройства (СО2, увлажнитель)
 	device(equip, val, retain, result)
 
-	// console.log(222, result)
-	
+
 	return result
 }
 

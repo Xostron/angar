@@ -3,7 +3,6 @@ const { readAll } = require('@tool/json')
 const read = require('./read')
 const value = require('./value')
 
-
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
  * @param {*} obj объект данных для работы основного цикла
