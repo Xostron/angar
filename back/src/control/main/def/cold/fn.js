@@ -11,7 +11,7 @@ function checkDefrost(fnChange, acc, se, s, stateCooler) {
 		if(!acc.state.defrostCount) acc.state.defrostCount = 1
 		// TODO Авария при достижение максимума
 		if(acc.state.defrostCount > max) 
-			console.log(`\n\n********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`);
+			console.log(`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`);
 		return false
 	}
 	
@@ -20,7 +20,7 @@ function checkDefrost(fnChange, acc, se, s, stateCooler) {
 	// Запуск оттайки по температре и времени
 	if ( tmp || time) {
 		acc.state.defrostCount += 1
-		console.log('Оттайка по ', tmp ? 'тмп. дт. всасывания': 'времени между интервалами' );
+		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания': 'времени между интервалами' );
 		// acc.targetDT = new Date()
 		fnChange(0, 0, 1, 0, 'defrost')
 		return true
@@ -44,7 +44,7 @@ function change(bdata, idB, sl, f, h, add, code) {
 	// Обновление времени включения состояния
 	if (code) accAuto.state[code] = new Date()
 
-	console.log('Смена режима ', code, ' : ', sl, f, h, add)
+	console.log('\tСмена режима ', code, ' : ', sl, f, h, add)
 }
 
 module.exports = { change, checkDefrost }

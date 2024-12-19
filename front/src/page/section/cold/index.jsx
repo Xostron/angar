@@ -20,6 +20,7 @@ export default function Cold() {
 	const aggregates = build?.aggregate ?? []
 	let condenser = aggregates.map((el) => el.condenser).flat()
 	const { tprd, cooler } = section
+	const start = input?.retain?.[build?._id]?.start
 
 	return (
 		<section className='sect cold'>
@@ -39,7 +40,7 @@ export default function Cold() {
 				<div className='top'>
 						{/* Испарители + Температура [] */}
 					{cooler.length
-						?cooler?.map((el, i)=><Cooler key={i} state={el} data={input?.[el?._id]}/>)
+						?cooler?.map((el, i)=><Cooler key={i} state={el} data={input?.[el?._id]} start={start}/>)
 						:null
 					}
 				<CO2 data={co2}/>

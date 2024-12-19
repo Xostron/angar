@@ -50,7 +50,7 @@ function cooler(equip, val, retain, result) {
 		result[clr._id].state = state(result[clr._id]);
 		if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add';
 		//Добавление читаемого названия состояния
-		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? null;
+		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? '';
 	});
 }
 module.exports = cooler;
@@ -66,10 +66,10 @@ function state(o) {
 }
 
 const coolerDef = {
-	'off-off-off': 'Выключен',
-	'on-off-off': 'Набор холода',
 	'on-on-off': 'Охлаждение',
-	'off-off-off-add': 'Слив',
-	'off-off-on': 'Оттайка',
+	'on-off-off': 'Набор холода',
 	'off-on-off': 'Вентилятор',
+	'off-off-on': 'Оттайка',
+	'off-off-off': 'Пауза',
+	'off-off-off-add': 'Слив',
 };

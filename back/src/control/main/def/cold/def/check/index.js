@@ -5,9 +5,8 @@ const mes = require('@dict/message')
 
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, acc, se, s, bld) {
-	console.log('delta', s.cold.deltaRoom, s.cooler.deltaCold)
 	onTime(code, acc);
-	console.log('\nПроверка условий принятия решений');
+	console.log('\n\tПроверка условий принятия решений');
 	// Выключение (Температура задания достигнута)
 	if (se.cooler.tprd <= acc.target) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${acc.target} °C`));
@@ -28,7 +27,7 @@ function check(fnChange, code, acc, se, s, bld) {
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0; //Вентилятор
 
 	console.log(
-		'Условие',
+		'\tУсловие',
 		1,
 		`Соленоид 1. Тмп. помещения ${se.tin} > ${
 			s.cold.room + s.cold.deltaRoom
@@ -36,19 +35,19 @@ function check(fnChange, code, acc, se, s, bld) {
 		se.tin > s.cold.room + s.cold.deltaRoom
 	);
 	console.log(
-		'Условие',
+		'\tУсловие',
 		2,
 		`Соленоид 0, Тмп. помещения ${se.tin} =< ${s.cold.room} Целевая тмп. помещения, r =`,
 		se.tin <= s.cold.room
 	);
 	console.log(
-		'Условие',
+		'\tУсловие',
 		3,
 		`Вентилятор 1. Тмп. дт. всасывания ${se.cooler.clr} < ${s.cooler.cold} Целевой тмп. дт.`,
 		se.cooler.clr <= s.cooler.cold
 	);
 	console.log(
-		'Условие',
+		'\tУсловие',
 		4,
 		`Вентилятор 0. Тмп. дт. всасывания ${se.cooler.clr} > ${
 			s.cooler.cold + s.cooler.deltaCold

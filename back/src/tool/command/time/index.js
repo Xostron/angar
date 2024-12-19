@@ -46,7 +46,6 @@ function range(o) {
 function compareTime(t, d) {
 	try {
 		if(typeof t === 'string') t = new Date(t)
-		console.log()
 		const now = new Date()
 		return now - t >= d
 

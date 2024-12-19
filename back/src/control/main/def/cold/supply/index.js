@@ -13,7 +13,7 @@ function supply(state, idB, retain) {
 	// Получаем время последнего запуска и выключения
 	const doc = retain[idB]?.supply ?? {};
 	store.supply[idB] = doc;
-	console.log('Supply: state', state, 'doc', doc);
+	console.log('\tSupply: state', state, 'doc', doc);
 	if(!state) return false
 
 	// Питание отключено
@@ -25,7 +25,7 @@ function supply(state, idB, retain) {
 			doc.on = null;
 		}
 		console.log(
-			'Питание отключено в',
+			'\t\tПитание отключено в',
 			doc?.off?.toLocaleString(),
 			'Проверка:',
 			compareTime(new Date(doc.off), time)
@@ -42,12 +42,12 @@ function supply(state, idB, retain) {
 	if (!doc.on) doc.on = new Date();
 	// Питания дали раньше дельты. или вышло время ожидания
 	if (!compareTime(new Date(doc.off), time) || compareTime(new Date(doc.on), time)) {
-		console.log('Питание дали раньше ')
+		console.log('\t\tПитание дали раньше ')
 		// Обнуляю время отключения
 		doc.off = null;
 		return true;
 	}
-	console.log('Питание дали в ', doc.on, ' ожидаем проверку ', compareTime(new Date(doc.on), time))
+	console.log('\t\tПитание дали в ', doc.on, ' ожидаем проверку ', compareTime(new Date(doc.on), time))
 	return false
 }
 
