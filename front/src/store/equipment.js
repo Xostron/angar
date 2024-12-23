@@ -3,12 +3,14 @@ import { create } from 'zustand';
 const useEquipStore = create((set, get) => ({
 	list: [],
 	factory: {},
+	weather:{},
 	curB: null,
 	curS: null,
 	// сохранить в стейт list[]
 	initE: (r) => {
 		set({ factory: r.factory });
 		set({ list: r.building });
+		set({ weather: r.weather })
 	},
 	// установить индекс массива (для навигации по стейту list[])
 	setCurB: (i) => set({ curB: i }),

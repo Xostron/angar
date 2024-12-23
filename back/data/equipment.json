@@ -36,15 +36,16 @@
    "type": "float"
   }
  },
- "66c73f39320b24af61331176": {
-  "name": "МВ210-101",
+ "673f2400c19393bb9bd7567a": {
+  "name": "МВ210-101 Int/10",
   "interface": "tcp",
   "use": "r",
   "re": {
    "channel": 8,
-   "start": 4000,
-   "step": 3,
-   "type": "float"
+   "noreverse": true,
+   "start": 4064,
+   "step": 1,
+   "type": "int10"
   }
  },
  "66cee351eeb92a11d628b025": {

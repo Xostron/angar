@@ -57,4 +57,5 @@ const t = [
 	'device',
 	'cooler',
 	'binding',
+	'weather'
 ];

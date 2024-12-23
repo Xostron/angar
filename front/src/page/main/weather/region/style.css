@@ -17,6 +17,8 @@
 	align-items: center;
 	gap: 8px;
 	font-size: var(--fsz24);
+	justify-content: flex-end;
+	gap: 20px;
 }
 .mwrl-info > div {
 	display: flex;

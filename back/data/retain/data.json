@@ -59,7 +59,8 @@
    }
   },
   "676021e3d9da5c2bcc25f6c6": {
-   "on": false
+   "on": true,
+   "corr": "50"
   },
   "67602233d9da5c2bcc25f6c8": {
    "on": false
@@ -105,6 +106,13 @@
    "co2": {
     "mode": {
      "mode": "off"
+    }
+   },
+   "cold": {
+    "potato": {
+     "target": {
+      "target": "1"
+     }
     }
    }
   },

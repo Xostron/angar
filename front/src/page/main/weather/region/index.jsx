@@ -1,23 +1,29 @@
 import useEquipStore from '@store/equipment'
+import { useShallow } from 'zustand/react/shallow'
 import './style.css'
 
 export default function Region() {
-	const { list } = useEquipStore()
-	const address = list?.[0]?.company?.address
+	const [list, weather] = useEquipStore(useShallow(({ list, weather }) => [list, weather]))
+	const address = list?.[0]?.pc?.address?.value ?? '--'
+	// const img = `/img/weather${weather.code}.svg`
+	const img = `/img/wea.svg`
+	let temp = weather?.temp 
+	if(temp>0) temp = '+' + temp
+	// const address = ''
+	console.log(weather)
 	return (
 		<div className='mw-region'>
 			<div className='mwr-left'>
-				<span>{address || 'Волгоградская обл.'}</span>
+				<span>{address}</span>
 				<div className='mwrl-info'>
 					<div>
-						<span>{'Ощущается +25°'}</span>
-						<span>{'Влажность 38 %'}</span>
+						<span>Влажность: {weather.humidity} % </span>
 					</div>
-					<span>+28°</span>
+					<span>{temp ?? '--'}°C</span>
 				</div>
 			</div>
 			<div className='mwr-right'>
-				<img src='img/wea.svg' alt='' />
+				<img src={img} alt='' />
 			</div>
 		</div>
 	)

@@ -1,0 +1,41 @@
+.weather-fore {
+	display: flex;
+	flex-direction: column;
+	padding: 20px 0px;
+
+	gap: 20px;
+}
+
+.weather-fore .adr {
+	display: flex;
+	gap: 20px;
+	font-size: var(--fsz20);
+	color: var(--background);
+	padding-right: 20px;
+}
+
+.weather-fore .wthr {
+	display: flex;
+	gap: 20px;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	font-size: var(--fsz28);
+	color: var(--background);
+	padding-right: 20px;
+}
+
+.weather-fore .wthr > div:first-child {
+	display: flex;
+	gap: 20px;
+	flex-direction: column;
+}
+
+.weather-fore .wthr .temp {
+	font-size: var(--fsz55);
+}
+
+.weather-fore .wthr img {
+	width: 100px;
+	height: 100px;
+}

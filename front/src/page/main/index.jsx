@@ -6,17 +6,14 @@ import List from './list'
 import './style.css'
 
 const Main = () => {
-	const list = useEquipStore(useShallow(({ list }) => list))
-	const {name} = list?.[0]?.company ?? {}
-	
+	const [list] = useEquipStore(useShallow(({ list }) => [list]))
+	const { name } = list?.[0]?.company ?? {}
 	return (
 		<>
-			<Header>
-				{name && <span className='header-cmp'>{name ?? ''} </span>}
-			</Header>
+			<Header>{name && <span className='header-cmp'>{name ?? ''} </span>}</Header>
 			<main className='main'>
 				<Weather />
-				<List list={list}/>
+				<List list={list} />
 			</main>
 		</>
 	)

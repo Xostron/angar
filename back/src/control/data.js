@@ -16,6 +16,7 @@ const obj = {
 		aggregate: [],
 		binding: [],
 		device: [],
+		weather:{}
 	},
 	// файл json - Сохраненые настройки, калибровки, режимы
 	retain: {},

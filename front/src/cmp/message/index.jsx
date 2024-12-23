@@ -7,12 +7,10 @@ import useInputStore from '@store/input'
 export default function Message() {
 	const { build } = useParams()
 	const [hid, setHid] = useState(true)
-	const [achieve, automode] = useInputStore(({ alarm, automode }) => [alarm.achieve, automode])
-	// const mode = automode(build)
-	let arr = achieve?.[build]
-	// if (achieve?.[build]) arr = Object.values(achieve?.[build]?.[mode]).reverse()
-
-
+	const [achieve] = useInputStore(({ alarm }) => [alarm.achieve])
+	
+	// Подсветка "синим" - продукт достиг задания
+	let cl = ['mes']
 	useEffect(
 		(_) => {
 			const onClick = (e) => {
@@ -24,12 +22,18 @@ export default function Message() {
 		},
 		[hid]
 	)
+	let arr = achieve?.[build]
+	if (!arr?.length) return null
+
+	const act = arr.find((el) => el?.order === 1)
+	if (act) cl.push('act')
+	cl = cl.join(' ')
 
 	// если нет сообщений - для каждого режима своя инфа
-	if (!arr?.length) return <></>
+	
 	if (arr.length == 1)
 		return (
-			<div className='mes'>
+			<div className={cl}>
 				<p className='text'>{arr[0]?.msg}</p>
 			</div>
 		)
@@ -40,7 +44,7 @@ export default function Message() {
 					<p key={i}>{el.msg}</p>
 				))}
 			</div>
-			<div className='mes act' onClick={(_) => setHid(false)}>
+			<div className={cl} onClick={(_) => setHid(false)}>
 				<p className='text'>{arr[0]?.msg}</p>
 			</div>
 		</div>

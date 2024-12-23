@@ -26,17 +26,18 @@
 factory:{}
 }*/
 const { debugJson } = require('@tool/json')
-const building = require('./building');
-const factory = require('./factory');
+const building = require('./building')
+const factory = require('./factory')
 
 // Рама для web
 function equip(data) {
 	const result = {
 		building: data.building.map((el) => building(el, data)),
 		factory: factory(data?.factory),
-	};
+		weather: data?.weather,
+	}
 	// debugJson('awe', result.building, __dirname)
-	return result;
+	return result
 }
 
-module.exports = equip;
+module.exports = equip
