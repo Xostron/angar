@@ -27,14 +27,17 @@
 
 .weather-fore .wthr > div:first-child {
 	display: flex;
-	gap: 20px;
+	/* gap: 20px; */
 	flex-direction: column;
 }
 
 .weather-fore .wthr .temp {
 	font-size: var(--fsz55);
+	text-align: right;
 }
-
+.weather-fore .wthr span:last-child {
+	font-size: var(--fsz16);
+}
 .weather-fore .wthr img {
 	width: 100px;
 	height: 100px;

@@ -3,24 +3,24 @@ import './style.css'
 export default function Forecast({ address, weather, cls }) {
 	let cl = ['w-fore', cls]
 	cl = cl.join(' ')
-	// const img = `img/weather${weather.code}.svg`
-	const img = `/img/wea.svg`
-	let temp = weather?.temp 
-	if(temp>0) temp = '+' + temp
+	const img = `/img/weather/${weather.code}.svg`
+	// const img = `/img/wea.svg`
 	return (
 		<div className={cl}>
 			<div className='adr'>
 				<img src='/img/geo.svg' />	
-				<span>{address}</span>
+				<span>{address ?? '--'}</span>
 			</div>
 			
 			<div className='wthr'>
 				<div>
-					<div className='temp'>{temp}°C</div>
-					<div>Влажность: {weather.humidity}%</div>
+					<span className='temp'>{weather?.temp ?? '--'}°C</span>
+					<span>Влажность: {weather.humidity ?? '--'}%</span>
+					<span>{weather.weather ?? ''}</span>
 				</div>
 				<div>
-					<img src={img} alt='' />
+					<img src={img} alt={weather.weather} />
+					
 				</div>
 			</div>
 			
