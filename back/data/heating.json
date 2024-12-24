@@ -31,5 +31,16 @@
    "id": "67628ca2d05b8d229808ec14",
    "type": "cooler"
   }
+ },
+ {
+  "_id": "676aa867f09a4a1e4031b9c2",
+  "module": {
+   "channel": 4,
+   "id": "676285c3d05b8d229808ebfd"
+  },
+  "owner": {
+   "id": "67628b82d05b8d229808ec0b",
+   "type": "section"
+  }
  }
 ]

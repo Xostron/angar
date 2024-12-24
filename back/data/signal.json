@@ -1,5 +1,17 @@
 [
  {
+  "_id": "67602c35d9da5c2bcc25f6cf",
+  "type": "fan",
+  "owner": {
+   "type": "fan",
+   "id": "67602c35d9da5c2bcc25f6ce"
+  },
+  "module": {
+   "channel": 5,
+   "id": "6760216cd9da5c2bcc25f6c3"
+  }
+ },
+ {
   "_id": "676287f3d05b8d229808ec09",
   "type": "supply",
   "module": {
