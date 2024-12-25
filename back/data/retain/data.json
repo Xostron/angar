@@ -1,138 +1,18 @@
 {
+ "67601969d9da5c2bcc25f685": {
+  "supply": {},
+  "smoking": {}
+ },
  "6760195ed9da5c2bcc25f682": {
-  "automode": "cooling",
-  "product": {
-   "_id": "66d0886536e7e1b1ff9e0788",
-   "name": "Лук",
-   "code": "onion"
-  },
-  "setting": {
-   "cooling": {
-    "cabbage": {
-     "target": {
-      "target": "2"
-     }
-    }
-   },
-   "sys": {
-    "potato": {
-     "debounce": {
-      "debounce": "00:01"
-     }
-    },
-    "onion": {
-     "debounce": {
-      "debounce": "00:01"
-     }
-    }
-   },
-   "cure": {
-    "onion": {
-     "differenceMin": {
-      "differenceMin": "2"
-     }
-    }
-   }
-  },
-  "67602199d9da5c2bcc25f6c4": {
-   "on": true
-  },
-  "6760221ad9da5c2bcc25f6c7": {
-   "on": true
-  },
-  "676021cbd9da5c2bcc25f6c5": {
-   "on": true
-  },
   "valvePosition": {
    "67602cb4d9da5c2bcc25f6d4": 0,
    "67602cfcd9da5c2bcc25f6d8": 0
   },
-  "start": true,
-  "mode": {
-   "67602254d9da5c2bcc25f6c9": false
-  },
-  "fan": {
-   "67602254d9da5c2bcc25f6c9": {
-    "67602c35d9da5c2bcc25f6ce": false,
-    "67602c77d9da5c2bcc25f6d0": false,
-    "67602c8dd9da5c2bcc25f6d2": true
-   }
-  },
-  "676021e3d9da5c2bcc25f6c6": {
-   "on": true,
-   "corr": "50"
-  },
-  "67602233d9da5c2bcc25f6c8": {
-   "on": false
-  }
- },
- "67601969d9da5c2bcc25f685": {
-  "supply": {
-   "off": null,
-   "on": "2024-12-18T10:48:34.289Z"
-  },
-  "smoking": {},
   "automode": "cooling",
   "product": {
-   "_id": "66d0887936e7e1b1ff9e078a",
-   "name": "Картофель",
-   "code": "potato"
-  },
-  "setting": {
-   "wetting": {
-    "onion": {
-     "sp": {
-      "sp": "11"
-     }
-    }
-   },
-   "ozon": {
-    "wait": {
-     "wait": "00:11"
-    }
-   },
-   "cooler": {
-    "cabbage": {
-     "accel": {
-      "accel": "off"
-     }
-    },
-    "potato": {
-     "accel": {
-      "accel": "on"
-     },
-     "drain": {
-      "drain": "on"
-     }
-    }
-   },
-   "co2": {
-    "mode": {
-     "mode": "off"
-    }
-   },
-   "cold": {
-    "potato": {
-     "target": {
-      "target": "1"
-     }
-    }
-   }
-  },
-  "start": true,
-  "67628798d05b8d229808ec06": {
-   "on": false
-  },
-  "67628785d05b8d229808ec05": {
-   "on": false
-  },
-  "67628c64d05b8d229808ec11": {
-   "on": false
-  }
- },
- "undefined": {
-  "setting": {
-   "undefined": {}
+   "_id": "675fc4dea10873618b8e59ec",
+   "name": "Капуста",
+   "code": "cabbage"
   }
  }
 }

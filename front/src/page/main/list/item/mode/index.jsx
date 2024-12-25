@@ -13,7 +13,7 @@ export default function Mode({ buildingId , type}) {
 			<div className='main-list-item-mode-prd'>
 				<div className='icon-text'>
 					{product?.name 
-						?<img className='icon-prod' src={defImg.product?.[product?.name]?.img} alt='' /> 
+						?<img className='icon-prod' src={defImg.product?.[product?.code]?.img} alt='' /> 
 						: null
 					}
 					{product?.name}

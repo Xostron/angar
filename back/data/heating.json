@@ -19,28 +19,19 @@
   "owner": {
    "id": "67628b82d05b8d229808ec0b",
    "type": "section"
-  }
+  },
+  "type": "water"
  },
  {
-  "_id": "67628ce4d05b8d229808ec18",
+  "_id": "676bc3db639f6f3514c5bf25",
   "module": {
    "channel": 5,
    "id": "676285c3d05b8d229808ebfd"
   },
   "owner": {
-   "id": "67628ca2d05b8d229808ec14",
+   "id": "676bc3cd639f6f3514c5bf23",
    "type": "cooler"
-  }
- },
- {
-  "_id": "676aa867f09a4a1e4031b9c2",
-  "module": {
-   "channel": 4,
-   "id": "676285c3d05b8d229808ebfd"
   },
-  "owner": {
-   "id": "67628b82d05b8d229808ec0b",
-   "type": "section"
-  }
+  "type": "cooler"
  }
 ]

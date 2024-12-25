@@ -13,7 +13,7 @@ function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, result
 	const state = s?.smoking
 	const arr = collect(m)
 	const buildingId = building._id
-	const doc = obj.retain[buildingId]?.smoking ?? {}
+	const doc = obj.retain?.[buildingId]?.smoking ?? {}
 	store.smoking[buildingId] = doc
 
 	// Выключено окуривание

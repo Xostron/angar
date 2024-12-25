@@ -1,5 +1,6 @@
 const path = require('path')
 const mesTimer = require('@dict/timer_lock')
+const { msgM } = require('@tool/message')
 
 const data = {
 	_cycle_ms_: 0,
@@ -74,9 +75,7 @@ const data = {
 	// Прогрев секции
 	warming: {},
 	accWarm: {},
-	// Неисправные модули
-	errMdl: {},
-	timeout: {},
+
 	// Данные после анализа
 	value: {},
 	// Антидребезг аналоговых датчиков - буфер показаний датчиков
@@ -95,11 +94,20 @@ const data = {
 	denied: {},
 	// Моточасы
 	engineHour: {},
+	// Неисправные модули
+	// errMdl: {},
+	timeout: {},
+	debMdl: {},
 }
-// Разрешить/заблокировать опрос модуля
-function timeout(buildingId, moduleId, ip, el) {
+// Разрешить true/заблокировать false опрос модуля
+function timeout(buildingId, moduleId, ip, opt) {
+	// console.log(3333, opt.name, data.alarm.module?.[buildingId]?.[moduleId], data.debMdl?.[moduleId])
+	// Проверка debounce модуля: true - модуль ОК
+	if (isDebMdl(buildingId, moduleId, opt)) {
+		// console.log(opt.name, 'в debounce')
+		return true
+	}
 	// Модуль исправен - разрешить опрос
-
 	if (!isErrM(buildingId, moduleId)) return true
 
 	// Поставить неисправный модуль в ожидание
@@ -110,14 +118,36 @@ function timeout(buildingId, moduleId, ip, el) {
 
 	// Время не прошло - блокировать опрос модуля
 	if (now <= data.timeout?.[moduleId]) {
-		console.log('Блокировать модуль', el?.name, el?.use, ip)
+		console.log('Блокировать модуль', opt?.name, opt?.use, ip)
 		return false
 	}
 
 	data.timeout[moduleId] = new Date().getTime() + _TIME
-	console.log('Разрешить опрос', el?.name, el?.use, ip)
+	console.log('Разрешить опрос', opt?.name, opt?.use, ip)
 	// Время прошло - разрешить опрос
 	return true
+}
+
+function isDebMdl(buildingId, mdlId, opt) {
+	const _time = 10000
+	if (!data.debMdl[mdlId]) return true
+	const time = data.debMdl[mdlId].getTime() + _time
+	const cur = new Date().getTime()
+	// Время прошло: авария осталась
+	if (cur >= time) {
+		wrModule(buildingId, mdlId, { date: new Date(), ...msgM(buildingId, opt, 110) })
+		// delDebMdl(mdlId)
+		return false
+	}
+	// Опрашиваем модуль
+	return true
+}
+function wrDebMdl(mdlId) {
+	if (!data.debMdl?.[mdlId]) data.debMdl[mdlId] = new Date()
+}
+function delDebMdl(mdlId='') {
+	if (!mdlId) data.debMdl = {}
+	delete data.debMdl?.[mdlId]
 }
 
 // Проверка внесен ли модуль в список неисправных
@@ -128,7 +158,7 @@ function isErrM(buildingId, moduleId) {
 // Сохранить неисправный модуль в список аварий
 function wrModule(buildingId, moduleId, o) {
 	data.alarm.module[buildingId] ??= {}
-	data.alarm.module[buildingId][moduleId] = o
+	if (!data.alarm.module?.[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
 }
 
 // Удалить модуль из списка аварий
@@ -234,7 +264,6 @@ function delTimer(buildingId, key) {
  * @param {*} arr {id код аварии, set условие установки аварии, reset условие сброса аварии, msg текст аварии}
  */
 function rs(buildingId, sectionId, automode, arr) {
-	// data.alarm ??= {}
 	data.alarm.auto ??= {}
 	data.alarm.auto[buildingId] ??= {}
 	data.alarm.auto[buildingId][automode] ??= {}
@@ -247,7 +276,6 @@ function rs(buildingId, sectionId, automode, arr) {
 		let r = null
 		if (o.set && !d?.[o.msg.code]) d[o.msg.code] = { id: idx, date: new Date(), ...o.msg }
 		if (o.reset) delete d[o.msg.code]
-		// d[o.msg.code] = r
 	})
 }
 // Наличие аварии
@@ -420,4 +448,7 @@ module.exports = {
 	delModule,
 	isErrM,
 	timeout,
+	isDebMdl,
+	wrDebMdl,
+	delDebMdl,
 }

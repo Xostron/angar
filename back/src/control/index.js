@@ -9,7 +9,7 @@ const convCmd = require('./output')
 const save = require('./save')
 const data = require('./data')
 const hrtime = process.hrtime.bigint
-const { data: store } = require('@store')
+const { data: store, reset } = require('@store')
 
 // Главный цикл управления
 async function loop() {
@@ -43,7 +43,8 @@ async function control() {
 		await webAlarm(obj)
 		// Задержка цикла
 		await delay(store.tDelay)
-
+		// Обнулить команду reset
+		reset({}, false)
 		// TODO
 		if(store._cycle_ms_ < 50) await delay(2000)
 		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${((store._cycle_ms_/1000)).toFixed(2) + ' сек'}  ${store._cycle_ms_}`)

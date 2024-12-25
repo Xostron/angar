@@ -112,20 +112,6 @@
   "type": "tout"
  },
  {
-  "_id": "67628d1ad05b8d229808ec1d",
-  "name": "Темп всасывания",
-  "owner": {
-   "type": "cooler",
-   "id": "67628ca2d05b8d229808ec14"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 7,
-   "id": "676285d2d05b8d229808ebfe"
-  },
-  "type": "cooler"
- },
- {
   "_id": "67628c4ad05b8d229808ec10",
   "name": "Темп продукта 1",
   "owner": {

@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
-const { wrModule, delModule } = require('@store')
-const { msgM } = require('@tool/message')
+const { wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+// const { msgM } = require('@tool/message')
 
 // Запись данных для RTU модуля
 function writeRTU(path, position, opt) {
@@ -20,7 +20,8 @@ function writeRTU(path, position, opt) {
 
 		socket.on('error', (e) => {
 			socket.end()
-			wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+			// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+			wrDebMdl(opt._id)
 			resolve({ error: e, info: opt })
 		})
 		socket.on('open', (_) => {
@@ -29,10 +30,12 @@ function writeRTU(path, position, opt) {
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)
+					delDebMdl(opt._id)
 					resolve(true)
 				})
 				.catch((e) => {
-					wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+					// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})
 				.finally((_) => {

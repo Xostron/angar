@@ -1,16 +1,9 @@
 [
  {
-  "_id": "67628ca2d05b8d229808ec14",
+  "_id": "676bc3cd639f6f3514c5bf23",
   "name": "Испаритель",
   "order": 1,
   "sectionId": "67628b82d05b8d229808ec0b",
-  "solenoid": [
-   {
-    "_id": "67628cb3d05b8d229808ec16",
-    "name": "Соленоид",
-    "order": 1,
-    "coolerId": "67628ca2d05b8d229808ec14"
-   }
-  ]
+  "solenoid": []
  }
 ]

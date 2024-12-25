@@ -1,9 +1,9 @@
 const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
 const { rhr } = require('../fn')
-const { wrModule, delModule } = require('@store')
-const { msgM } = require('@tool/message')
-const { data: store } = require('@store')
+const { data: store, wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+// const { msgM } = require('@tool/message')
+
 // Чтение данных RTU модуля
 function readRTU(path, position, opt) {
 	const optRTU = {
@@ -23,8 +23,9 @@ function readRTU(path, position, opt) {
 		socket.on('error', (e) => {
 			socket.end()
 			// При первом запуске неисправные модули не блокируются
-			if (!store.startup)
-				wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+			// if (!store.startup)
+			// 	wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+			wrDebMdl(opt._id)
 			resolve({ error: e, info: opt })
 		})
 		socket.on('open', (_) => {
@@ -45,10 +46,12 @@ function readRTU(path, position, opt) {
 			Promise.all(p)
 				.then((r) => {
 					delModule(opt.buildingId, opt._id)
+					delDebMdl(opt._id)
 					resolve(r)
 				})
 				.catch((e) => {
-					wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+					// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})
 				.finally((_) => {

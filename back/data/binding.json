@@ -1,17 +1,5 @@
 [
  {
-  "_id": "67628cd899a6d09a31881301",
-  "owner": {
-   "type": "solenoid",
-   "id": "67628cb3d05b8d229808ec16"
-  },
-  "channel": 4,
-  "date": "2024-12-18T08:50:32.546Z",
-  "moduleId": "676285c3d05b8d229808ebfd",
-  "type": "w",
-  "update": "2024-12-18T08:50:32.546Z"
- },
- {
   "_id": "6762c54c99a6d09a31881304",
   "owner": {
    "type": "deviceList",

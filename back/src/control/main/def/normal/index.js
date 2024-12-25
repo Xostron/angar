@@ -16,7 +16,7 @@ function normal(building, obj, bdata) {
 	// Управление напорными вентиляторами
 	fan(building, resultFan, s, obj)
 	// Обнулить команду reset
-	reset(building._id, false)
+	// reset(building._id, false)
 }
 
 module.exports = normal

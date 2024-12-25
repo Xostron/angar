@@ -24,7 +24,7 @@ export default function Weather({}) {
 	]
 	sens[2].state = checkS(sens?.[0]?.state, sens?.[1]?.state)
 	return (
-		<section className='weather' style={{ backgroundImage: 'url(/img/weather.png)' }}>
+		<section className='weather' style={{ backgroundImage: 'url(/img/w.jpg)' }}>
 			<Owner
 				data={{ company: build.company, code: build.code, address: build?.pc?.address?.value }}
 				cls='weather-owner'

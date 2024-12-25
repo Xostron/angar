@@ -1,9 +1,8 @@
 const modbus = require('jsmodbus')
 const net = require('net')
 const { rhr } = require('../fn')
-const { wrModule, delModule } = require('@store')
-const { msgM } = require('@tool/message')
-const { data: store } = require('@store')
+const { data: store, wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+// const { msgM } = require('@tool/message')
 
 function readTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
@@ -16,7 +15,8 @@ function readTCP(host, port, opt) {
 		socket.on('error', (e) => {
 			socket.end()
 			// При первом запуске неисправные модули не блокируются
-			if (!store.startup) wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+			// if (!store.startup) wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+			wrDebMdl(opt._id)
 			resolve({ error: e, info: opt })
 		})
 		socket.on('connect', (_) => {
@@ -37,10 +37,12 @@ function readTCP(host, port, opt) {
 			Promise.all(p)
 				.then(([r, w]) => {
 					delModule(opt.buildingId, opt._id)
+					delDebMdl(opt._id)
 					resolve([r, w])
 				})
 				.catch((e) => {
-					wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+					// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
+					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})
 				.finally((_) => {

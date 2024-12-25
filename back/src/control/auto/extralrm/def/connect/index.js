@@ -1,4 +1,4 @@
-const { data: store,  isReset, delModule } = require('@store')
+const { data: store, isReset, delModule, delDebMdl } = require('@store')
 
 // Авария "Модуль не в сети" для склада
 function connect(building, section, obj, s, se, m, automode, acc, data) {
@@ -8,11 +8,14 @@ function connect(building, section, obj, s, se, m, automode, acc, data) {
 		delModule(building._id)
 		acc.alarm = false
 	}
+
+	if (isReset(building._id)) delDebMdl()
+
 	// Модули склада неисправны
 	if (isErrM) {
 		acc.alarm = true
 	}
-	return acc?.alarm ?? false 
+	return acc?.alarm ?? false
 }
 
 module.exports = connect

@@ -11,7 +11,7 @@ function supply(state, idB, retain) {
 	// const time = 10000;
 	const time = 30 * 60000
 	// Получаем время последнего запуска и выключения
-	const doc = retain[idB]?.supply ?? {};
+	const doc = retain?.[idB]?.supply ?? {};
 	store.supply[idB] = doc;
 	console.log('\tSupply: state', state, 'doc', doc);
 	if(!state) return false

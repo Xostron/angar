@@ -42,20 +42,6 @@
   "type": "fan"
  },
  {
-  "_id": "67628cf6d05b8d229808ec1a",
-  "name": "Вентилятор испарителя 1",
-  "order": 1,
-  "owner": {
-   "type": "cooler",
-   "id": "67628ca2d05b8d229808ec14"
-  },
-  "module": {
-   "channel": 6,
-   "id": "676285c3d05b8d229808ebfd"
-  },
-  "type": "fan"
- },
- {
   "_id": "67602d59d9da5c2bcc25f6dd",
   "name": "Разгонный",
   "order": 1,
