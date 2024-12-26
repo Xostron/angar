@@ -1,36 +1,36 @@
 #!/usr/bin/env node
-require('module-alias/register')
+require('module-alias/register');
 /**
  * Module dependencies.
-*/
-const fs = require('fs')
-var debug = require('debug')('angar:server')
-const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-const { server, io } = require('@tool/server')
-const { retainDir, factoryDir, dataDir, tracingDir } = require('@store')
+ */
+const fs = require('fs');
+var debug = require('debug')('angar:server');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+const { server, io } = require('@tool/server');
+const { retainDir, factoryDir, dataDir, tracingDir } = require('@store');
 
 // Получение настроек от сервера с переодичностью
-const init = require('@root/client/init')
+const init = require('@root/client/init');
 // Выполненине основных алгоритмов
-const loop = require('@root/control')
+const loop = require('@root/control');
 
 // const passport = require('passport');
-const onConnection = require('../socket/on/def')
+const onConnection = require('../socket/on/def');
 
 if (process.env.NODE_ENV === 'development') {
-	console.log('Подключение .env ', path.join(__dirname, '../../.env'))
-	require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-	console.log('NODE_ENV ', process.env?.NODE_ENV)
+	console.log('Подключение .env ', path.join(__dirname, '../../.env'));
+	require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+	console.log('NODE_ENV ', process.env?.NODE_ENV);
 }
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-var port = normalizePort(process.env.PORT || '4000')
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
+var port = normalizePort(process.env.PORT || '4000');
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 // 	if (!isHandshake) {
 // 		return next();
@@ -65,45 +65,44 @@ server.on('listening', onListening)
 // 	});
 // });
 io.on('connection', (socket) => {
-	onConnection(io, socket)
-})
+	onConnection(io, socket);
+});
 
 // Создание папки data, data/retain и retain/data.json
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir)
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 if (!fs.existsSync(retainDir)) {
-	fs.mkdirSync(retainDir)
-	fs.writeFileSync(path.join(retainDir, 'data.json'), '{}')
+	fs.mkdirSync(retainDir);
+	fs.writeFileSync(path.join(retainDir, 'data.json'), '{}');
 }
 if (!fs.existsSync(tracingDir)) {
-	fs.mkdirSync(tracingDir)
-	fs.writeFileSync(path.join(tracingDir, 'ehour.json'), '{}')
+	fs.mkdirSync(tracingDir);
+	fs.writeFileSync(path.join(tracingDir, 'ehour.json'), '{}');
 }
 // Запрос конфигурации у админ-сервера
-init()
+init();
 // Главный цикл управления
 loop()
 	.then(() => console.log('Основной цикл остановлен'))
-	.catch(console.error)
-
+	.catch(console.error);
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-	var port = parseInt(val, 10)
+	var port = parseInt(val, 10);
 
 	if (isNaN(port)) {
 		// named pipe
-		return val
+		return val;
 	}
 
 	if (port >= 0) {
 		// port number
-		return port
+		return port;
 	}
 
-	return false
+	return false;
 }
 
 /**
@@ -112,23 +111,23 @@ function normalizePort(val) {
 
 function onError(error) {
 	if (error.syscall !== 'listen') {
-		throw error
+		throw error;
 	}
 
-	var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port
+	var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
 	// handle specific listen errors with friendly messages
 	switch (error.code) {
 		case 'EACCES':
-			console.error(bind + ' requires elevated privileges')
-			process.exit(1)
-			break
+			console.error(bind + ' requires elevated privileges');
+			process.exit(1);
+			break;
 		case 'EADDRINUSE':
-			console.error(bind + ' is already in use')
-			process.exit(1)
-			break
+			console.error(bind + ' is already in use');
+			process.exit(1);
+			break;
 		default:
-			throw error
+			throw error;
 	}
 }
 
@@ -137,15 +136,15 @@ function onError(error) {
  */
 
 function onListening() {
-	var addr = server.address()
-	var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
-	debug('Listening on ' + bind)
+	var addr = server.address();
+	var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+	debug('Listening on ' + bind);
 }
 
 /**
  * Graceful Shutdown
  */
 process.on('SIGINT', function () {
-	console.log('Graceful Shutdown')
-	 process.exit(0)
+	console.log('Graceful Shutdown');
+	process.exit(0);
 });

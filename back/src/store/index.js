@@ -129,7 +129,7 @@ function timeout(buildingId, moduleId, ip, opt) {
 }
 
 function isDebMdl(buildingId, mdlId, opt) {
-	const _time = 10000
+	const _time = 20000
 	if (!data.debMdl[mdlId]) return true
 	const time = data.debMdl[mdlId].getTime() + _time
 	const cur = new Date().getTime()

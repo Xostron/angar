@@ -24,13 +24,14 @@
 		]
 	},
 	"dependencies": {
+		"app-root-path": "^3.1.0",
 		"axios": "^1.6.7",
 		"compression": "^1.7.4",
 		"cookie-parser": "~1.4.4",
 		"cors": "^2.8.5",
 		"debug": "~2.6.9",
 		"dotenv": "^16.4.1",
-		"express": "~4.16.1",
+		"express": "^4.21.2",
 		"http-errors": "~1.6.3",
 		"jsmodbus": "^4.0.10",
 		"jsonwebtoken": "^9.0.2",
@@ -38,9 +39,11 @@
 		"morgan": "~1.9.1",
 		"passport": "^0.7.0",
 		"passport-jwt": "^4.0.1",
-		"pug": "2.0.0-beta11",
+		"pug": "^2.0.4",
 		"serialport": "^12.0.0",
-		"socket.io": "^4.7.4"
+		"socket.io": "^4.7.4",
+		"winston": "^3.17.0",
+		"winston-daily-rotate-file": "^5.0.0"
 	},
 	"devDependencies": {
 		"nodemon": "^3.1.0"
