@@ -10,7 +10,8 @@ function rhr(client, opt, name, options = {}) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
-				// console.log(333, v)
+				if (options.name === 'Delta') console.log(333, 'Чтение', opt.start, options.name, v)
+				if (options.name === 'Delta bool') console.log(333, 'Чтение', opt.start, options.name, v)
 				resolve(v)
 			})
 			.catch(reject)

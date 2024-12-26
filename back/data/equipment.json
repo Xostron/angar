@@ -1,4 +1,36 @@
 {
+ "676d39ea0a96651f7cdd5dd4": {
+  "name": "Delta",
+  "interface": "tcp",
+  "use": "rw",
+  "re": {
+   "channel": 16,
+   "noreverse": true,
+   "start": 2032,
+   "step": 1,
+   "type": "int10"
+  },
+  "wr": {
+   "channel": 32,
+   "noreverse": true,
+   "on": 1,
+   "start": 2042,
+   "step": 1,
+   "type": "boolean"
+  }
+ },
+ "676d56990a96651f7cdd5dea": {
+  "name": "Delta bool",
+  "interface": "tcp",
+  "use": "r",
+  "re": {
+   "channel": 32,
+   "noreverse": true,
+   "start": 2100,
+   "step": 1,
+   "type": "boolean"
+  }
+ },
  "67601c89d9da5c2bcc25f6be": {
   "name": "МВ110-16К",
   "interface": "rtu",

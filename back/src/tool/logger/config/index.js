@@ -1,6 +1,5 @@
 const { format } = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
-
 const { combine, timestamp, json } = format;
 
 /**
@@ -40,7 +39,7 @@ function hourlyT(level) {
 		datePattern: 'YYYY-MM-DD-HH',
 		// Сколько файлов хранить (пример: 24 часа)
 		// Если хотите хранить дольше, можно ставить '7d' и т.п.
-		maxFiles: '1m',
+		maxFiles: '1h',
 		// Формат лога
 		format: combine(
 			filterOnly(level), // пропускаем только нужный level

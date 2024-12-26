@@ -65,7 +65,7 @@
   },
   "module": {
    "channel": 1,
-   "id": "676285c3d05b8d229808ebfd"
+   "id": "676d3a8d0a96651f7cdd5dd6"
   },
   "type": "accel"
  },
@@ -78,8 +78,8 @@
    "id": "67601969d9da5c2bcc25f685"
   },
   "module": {
-   "channel": 2,
-   "id": "676285c3d05b8d229808ebfd"
+   "channel": 30,
+   "id": "676d3a8d0a96651f7cdd5dd6"
   },
   "type": "accel"
  }

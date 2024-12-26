@@ -42,10 +42,17 @@
   "equipmentId": "673f2400c19393bb9bd7567a"
  },
  {
-  "_id": "6768ff4739a86d3ebc43cd76",
-  "ip": "192.168.1.232",
+  "_id": "676d3a8d0a96651f7cdd5dd6",
+  "ip": "192.168.1.233",
   "port": 502,
   "buildingId": "67601969d9da5c2bcc25f685",
-  "equipmentId": "673f2400c19393bb9bd7567a"
+  "equipmentId": "676d39ea0a96651f7cdd5dd4"
+ },
+ {
+  "_id": "676d56d90a96651f7cdd5ded",
+  "ip": "192.168.1.233",
+  "port": 502,
+  "buildingId": "67601969d9da5c2bcc25f685",
+  "equipmentId": "676d56990a96651f7cdd5dea"
  }
 ]

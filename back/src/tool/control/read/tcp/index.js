@@ -29,8 +29,8 @@ function readTCP(host, port, opt) {
 					p.push(rhr(cl, opt.wr, 'valuesAsArray'))
 					break
 				case 'rw':
-					p.push(rhr(cl, opt.re, 'valuesAsArray'))
-					p.push(rhr(cl, opt.wr, 'valuesAsArray'))
+					p.push(rhr(cl, opt.re, 'valuesAsArray',opt))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray',opt))
 					break
 				default:
 			}

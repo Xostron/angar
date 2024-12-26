@@ -60,11 +60,11 @@
    }
   },
   "potato": {
-   "ventilation": {
-    "ventilation": false
-   },
    "channelMin": {
     "channelMin": "10"
+   },
+   "ventilation": {
+    "ventilation": false
    },
    "humidityMin": {
     "humidityMin": "10"
@@ -154,14 +154,6 @@
  },
  "cooling": {
   "_prd": true,
-  "cabbage": {
-   "target": {
-    "target": 1
-   },
-   "decrease": {
-    "decrease": 1
-   }
-  },
   "onion": {
    "differenceMin": {
     "differenceMin": 2
@@ -195,11 +187,11 @@
    }
   },
   "carrot": {
-   "target": {
-    "target": 2
-   },
    "decrease": {
     "decrease": "1"
+   },
+   "target": {
+    "target": 2
    },
    "differenceMin": {
     "differenceMin": 2
@@ -256,6 +248,14 @@
    },
    "hysteresisOut": {
     "hysteresisOut": 1
+   }
+  },
+  "cabbage": {
+   "target": {
+    "target": 1
+   },
+   "decrease": {
+    "decrease": 1
    }
   }
  },
@@ -613,9 +613,6 @@
    "fan": {
     "fan": 3
    },
-   "outDefault": {
-    "outDefault": "2"
-   },
    "step": {
     "step": 30
    },
@@ -639,6 +636,9 @@
    "out3": {
     "temp": -10,
     "k": 0
+   },
+   "outDefault": {
+    "outDefault": "2"
    },
    "debounce": {
     "debounce": "00:15"
@@ -691,23 +691,23 @@
    }
   },
   "potato": {
-   "detection": {
-    "detection": false
-   },
    "fan": {
     "fan": 3
-   },
-   "step": {
-    "step": 30
    },
    "wait": {
     "wait": 20
    },
-   "until": {
-    "until": 10
-   },
    "limit": {
     "limit": 1
+   },
+   "detection": {
+    "detection": false
+   },
+   "step": {
+    "step": 30
+   },
+   "until": {
+    "until": 10
    },
    "outDefault": {
     "outDefault": "2"
@@ -962,17 +962,20 @@
    "room": {
     "room": 3
    },
-   "hysteresis": {
-    "hysteresis": 0.3
-   },
    "decrease": {
     "decrease": 1
+   },
+   "hysteresis": {
+    "hysteresis": 0.3
    },
    "deltaRoom": {
     "deltaRoom": 0.5
    }
   },
   "cabbage": {
+   "deltaRoom": {
+    "deltaRoom": 0.5
+   },
    "target": {
     "target": 0
    },
@@ -984,9 +987,6 @@
    },
    "hysteresis": {
     "hysteresis": 0.2
-   },
-   "deltaRoom": {
-    "deltaRoom": 0.5
    }
   }
  }

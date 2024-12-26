@@ -1,7 +1,22 @@
 {
  "67601969d9da5c2bcc25f685": {
   "supply": {},
-  "smoking": {}
+  "smoking": {},
+  "automode": "cooling",
+  "product": {
+   "_id": "66d0886536e7e1b1ff9e0788",
+   "name": "Лук",
+   "code": "onion"
+  },
+  "setting": {
+   "cooler": {
+    "onion": {
+     "accel": {
+      "accel": "on"
+     }
+    }
+   }
+  }
  },
  "6760195ed9da5c2bcc25f682": {
   "valvePosition": {
