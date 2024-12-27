@@ -60,11 +60,11 @@
    }
   },
   "potato": {
-   "channelMin": {
-    "channelMin": "10"
-   },
    "ventilation": {
     "ventilation": false
+   },
+   "channelMin": {
+    "channelMin": "10"
    },
    "humidityMin": {
     "humidityMin": "10"
@@ -91,26 +91,6 @@
  },
  "cure": {
   "_prd": true,
-  "onion": {
-   "differenceMin": {
-    "differenceMin": 1
-   },
-   "differenceValue": {
-    "differenceValue": "3"
-   },
-   "hysteresisOut": {
-    "hysteresisOut": "1"
-   },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
-   "differenceMax": {
-    "differenceMax": 25
-   },
-   "min": {
-    "min": -10
-   }
-  },
   "carrot": {
    "differenceValue": {
     "differenceValue": "3"
@@ -129,6 +109,26 @@
    },
    "hysteresisOut": {
     "hysteresisOut": "1"
+   }
+  },
+  "onion": {
+   "differenceMin": {
+    "differenceMin": 1
+   },
+   "differenceValue": {
+    "differenceValue": "3"
+   },
+   "hysteresisOut": {
+    "hysteresisOut": "1"
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
+   },
+   "differenceMax": {
+    "differenceMax": 25
+   },
+   "min": {
+    "min": -10
    }
   },
   "potato": {
@@ -355,11 +355,11 @@
    "max_add": {
     "max_add": "00:15"
    },
-   "work": {
-    "work": "00:05"
-   },
    "wait": {
     "wait": "00:10"
+   },
+   "work": {
+    "work": "00:05"
    },
    "mode": {
     "mode": "off"
@@ -691,23 +691,23 @@
    }
   },
   "potato": {
-   "fan": {
-    "fan": 3
-   },
-   "wait": {
-    "wait": 20
-   },
-   "limit": {
-    "limit": 1
-   },
    "detection": {
     "detection": false
+   },
+   "fan": {
+    "fan": 3
    },
    "step": {
     "step": 30
    },
+   "wait": {
+    "wait": 20
+   },
    "until": {
     "until": 10
+   },
+   "limit": {
+    "limit": 1
    },
    "outDefault": {
     "outDefault": "2"
@@ -876,11 +876,11 @@
    "defrostOff": {
     "defrostOff": 8
    },
-   "water": {
-    "water": "00:02"
-   },
    "deltaCold": {
     "deltaCold": 6
+   },
+   "water": {
+    "water": "00:02"
    },
    "accel": {
     "accel": "auto"
@@ -973,9 +973,6 @@
    }
   },
   "cabbage": {
-   "deltaRoom": {
-    "deltaRoom": 0.5
-   },
    "target": {
     "target": 0
    },
@@ -987,6 +984,9 @@
    },
    "hysteresis": {
     "hysteresis": 0.2
+   },
+   "deltaRoom": {
+    "deltaRoom": 0.5
    }
   }
  }

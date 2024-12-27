@@ -9,7 +9,7 @@
   "accuracy": 1,
   "module": {
    "channel": 6,
-   "id": "676285d2d05b8d229808ebfe"
+   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "co2"
  },
@@ -36,8 +36,8 @@
   },
   "accuracy": 1,
   "module": {
-   "channel": 1,
-   "id": "676285d2d05b8d229808ebfe"
+   "channel": 2,
+   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "hin"
  },
@@ -65,7 +65,7 @@
   "accuracy": 1,
   "module": {
    "channel": 3,
-   "id": "676285d2d05b8d229808ebfe"
+   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "pin"
  },
@@ -79,7 +79,7 @@
   "accuracy": 1,
   "module": {
    "channel": 4,
-   "id": "676285d2d05b8d229808ebfe"
+   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "pout"
  },
@@ -121,7 +121,7 @@
   "accuracy": 1,
   "module": {
    "channel": 5,
-   "id": "676285d2d05b8d229808ebfe"
+   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "tprd"
  },
@@ -190,8 +190,8 @@
   },
   "accuracy": 1,
   "module": {
-   "channel": 2,
-   "id": "676285d2d05b8d229808ebfe"
+   "channel": 7,
+   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "tin"
  },

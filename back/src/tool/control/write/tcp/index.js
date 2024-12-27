@@ -2,7 +2,7 @@ const modbus = require('jsmodbus')
 const net = require('net')
 const { wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
 const { regist } = require('./fn')
-// const { msgM } = require('@tool/message')
+
 // Запись данных для TCP/IP модуля
 function writeTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
@@ -14,7 +14,6 @@ function writeTCP(host, port, opt) {
 		}
 		socket.on('error', (e) => {
 			socket.end()
-			// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
 			wrDebMdl(opt._id)
 			resolve({ error: e, info: opt })
 		})

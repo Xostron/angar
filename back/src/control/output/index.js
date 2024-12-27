@@ -14,7 +14,7 @@ function convCmd(obj) {
 		...el,
 		...data?.equipment[el.equipmentId],
 	}));
-	// Макса выходов DO
+	// Маска выходов DO
 	const out = {};
 
 	for (const key in value?.outputM) {

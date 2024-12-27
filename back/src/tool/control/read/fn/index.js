@@ -10,14 +10,11 @@ function rhr(client, opt, name, options = {}) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
-				if (options.name === 'Delta') console.log(333, 'Чтение', opt.start, options.name, v)
-				if (options.name === 'Delta bool') console.log(333, 'Чтение', opt.start, options.name, v)
 				resolve(v)
 			})
 			.catch(reject)
 	})
 }
-
 // Преобразование данных модуля
 function count(opt, options) {
 	switch (opt.type) {
@@ -32,7 +29,6 @@ function count(opt, options) {
 	}
 	return 1
 }
-
 // Преобразование данных модуля
 function data(arr, opt, options) {
 	let a
@@ -49,7 +45,6 @@ function data(arr, opt, options) {
 	}
 	return arr
 }
-
 // Преобразование данных модуля типа float
 function dataFloat(arr, opt) {
 	const a = []
@@ -61,7 +56,6 @@ function dataFloat(arr, opt) {
 	}
 	return a
 }
-
 // Вернуть битовую маску
 function bit(arr, noreverse) {
 	arr = arr.map((v) => v.toString(2).split('').reverse().join('').padEnd(16, 0))
@@ -87,7 +81,6 @@ function bit(arr, noreverse) {
 
 	// return Array.from(arr.reverse().join(""), (v) => +v)
 }
-
 // Вернуть дробное число из двух чисел
 function float(arr) {
 	const a = arr[0].toString(16)
@@ -116,32 +109,23 @@ function HexToDec(hex) {
 function HexTobin(hex) {
 	return '00000000' + parseInt(hex, 16).toString(2)
 }
-
 // Массив boolean => целое число Integer
 function int(arr) {
 	const a = arr.join('')
 	return parseInt(a, 2)
 }
 
-module.exports = {
-	data,
-	count,
-	rhr,
-	int,
-}
-
 // Только для модуля МВ210-101 Int/10 - кол-во регистров на чтение
 function countMB101(opt, options) {
 	const { name, interface, use } = options
-	// Обычный модуль int10
+	// Другие модули
 	if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8) {
 		return opt.channel
 	}
 	// Модуль МВ210-101 Int/10
 	return opt.channel * 2
 }
-
-//
+// Чтение и анализ только для модуля 'МВ210-101 Int/10'
 function dataMB101(arr, opt, options, max) {
 	const { name, interface, use } = options
 	// Для вычисления отрицательных чисел
@@ -153,8 +137,13 @@ function dataMB101(arr, opt, options, max) {
 	const status = arr.splice(opt.channel, opt.channel)
 	return arr.map((v, i) => (status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false)))
 }
-
 function fnLimit(v, limit, max, ok = true) {
-	// arr.map((v) => (v > limit ? v - max : v) / 10)
 	return ok ? (v > limit ? v - max : v) / 10 : null
+}
+
+module.exports = {
+	data,
+	count,
+	rhr,
+	int,
 }
