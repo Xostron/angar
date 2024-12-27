@@ -13,7 +13,7 @@
    "code": "2024-1"
   },
   "kindList": [
-   "mois",
+   "heater",
    "drying",
    "cure",
    "cooling",
@@ -21,9 +21,9 @@
    "antibliz",
    "heating",
    "vent",
-   "heater",
-   "ozon",
+   "mois",
    "co2",
+   "ozon",
    "accel",
    "sys",
    "idle",

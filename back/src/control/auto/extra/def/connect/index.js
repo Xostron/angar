@@ -4,11 +4,9 @@ const { msg } = require('@tool/message')
 
 // Модуль в сети
 function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
-	// Берем все выхода "Модуль в работе" и включаем
-	const isErrM = !!Object.keys(store.alarm?.module?.[building._id] ?? {}).length
 
 	m.connect.forEach((el) => {
-		// Включение
+		// Включение выхода - Модуль в сети
 		ctrlB(el, building._id, 'on')
 		const sig = obj.value?.[el._id]
 		if (!sig) {

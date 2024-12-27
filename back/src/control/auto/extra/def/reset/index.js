@@ -1,7 +1,6 @@
 const { ctrlB } = require('@tool/command/fan')
 const { data: store, delExtra, wrExtra } = require('@store')
 
-
 // Нажата кнопка "Сброс аварии"
 function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	const cur = +new Date().getTime()
@@ -10,6 +9,10 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 		acc.end = cur + 3000
 		acc.firstFlag = true
 	}
+
+	// Сброс аварии при потери связи
+	connect(obj, building, m, acc, cur)
+
 	// Включить выход
 	if (!!acc.end && cur < acc.end) {
 		fnReset(m.reset, building, 'on')
@@ -35,3 +38,20 @@ function fnReset(arr, building, type) {
  * которое все отключает
  * Реле безопасности у каждой секции
  */
+
+// Если сигнал "Модуль в сети" пропадал, то включаем выход сброса аварии 
+function connect(obj, building, m, acc, cur) {
+	acc.reset ??= {}
+	m.connect.forEach((el) => {
+		const sig = obj.value?.[el._id]
+		const mdlId = el.module?.id
+		const isErr = store.alarm?.module?.[building._id]?.[mdlId]
+		if (isErr || !sig) acc.reset[mdlId] = true
+
+		if (sig && acc.reset?.[mdlId]) {
+			acc.end = cur + 3000
+			acc.firstFlag = true
+			delete acc.reset?.[mdlId]
+		}
+	})
+}

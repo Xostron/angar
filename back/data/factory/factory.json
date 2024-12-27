@@ -355,11 +355,11 @@
    "max_add": {
     "max_add": "00:15"
    },
-   "wait": {
-    "wait": "00:10"
-   },
    "work": {
     "work": "00:05"
+   },
+   "wait": {
+    "wait": "00:10"
    },
    "mode": {
     "mode": "off"
@@ -616,11 +616,11 @@
    "step": {
     "step": 30
    },
-   "until": {
-    "until": 10
-   },
    "wait": {
     "wait": 20
+   },
+   "until": {
+    "until": 10
    },
    "limit": {
     "limit": 1
@@ -629,6 +629,9 @@
     "temp": -5,
     "k": 0.5
    },
+   "outDefault": {
+    "outDefault": "2"
+   },
    "out2": {
     "temp": -8,
     "k": 0.3
@@ -636,9 +639,6 @@
    "out3": {
     "temp": -10,
     "k": 0
-   },
-   "outDefault": {
-    "outDefault": "2"
    },
    "debounce": {
     "debounce": "00:15"
@@ -876,11 +876,11 @@
    "defrostOff": {
     "defrostOff": 8
    },
-   "deltaCold": {
-    "deltaCold": 6
-   },
    "water": {
     "water": "00:02"
+   },
+   "deltaCold": {
+    "deltaCold": 6
    },
    "accel": {
     "accel": "auto"

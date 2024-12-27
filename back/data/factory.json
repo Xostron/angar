@@ -1514,20 +1514,6 @@
      "max": null
     }
    },
-   "wait": {
-    "_name": "Ожидание внутренней вентиляции",
-    "_order": 5,
-    "_icon": "interval",
-    "wait": {
-     "_name": "Ожидание внутренней вентиляции",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:10",
-     "min": null,
-     "max": null
-    }
-   },
    "work": {
     "_name": "Работа внутренней вентиляции",
     "_order": 6,
@@ -1538,6 +1524,20 @@
      "type": "time",
      "unit": null,
      "value": "00:05",
+     "min": null,
+     "max": null
+    }
+   },
+   "wait": {
+    "_name": "Ожидание внутренней вентиляции",
+    "_order": 5,
+    "_icon": "interval",
+    "wait": {
+     "_name": "Ожидание внутренней вентиляции",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:10",
      "min": null,
      "max": null
     }
@@ -2751,20 +2751,6 @@
      "max": 200
     }
    },
-   "until": {
-    "_name": "Число ипульсов отступа от верхнего концевика клапана",
-    "_order": 5,
-    "_icon": "clap",
-    "until": {
-     "_name": "Число ипульсов отступа от верхнего концевика клапана",
-     "_order": 1,
-     "type": "number",
-     "unit": "имп",
-     "value": 10,
-     "min": 0,
-     "max": 100
-    }
-   },
    "wait": {
     "_name": "Время ожидания следующего шага движения клапана",
     "_order": 4,
@@ -2775,6 +2761,20 @@
      "type": "number",
      "unit": "сек",
      "value": 20,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "until": {
+    "_name": "Число ипульсов отступа от верхнего концевика клапана",
+    "_order": 5,
+    "_icon": "clap",
+    "until": {
+     "_name": "Число ипульсов отступа от верхнего концевика клапана",
+     "_order": 1,
+     "type": "number",
+     "unit": "имп",
+     "value": 10,
      "min": 0,
      "max": 100
     }
@@ -2812,6 +2812,20 @@
      "type": "number",
      "unit": null,
      "value": 0.5,
+     "min": 0,
+     "max": 10
+    }
+   },
+   "outDefault": {
+    "_name": "Коэффициент выпускного клапана",
+    "_order": 7,
+    "_icon": "edit",
+    "outDefault": {
+     "_name": "Коэффициент выпускного клапана",
+     "_order": 1,
+     "type": "number",
+     "unit": null,
+     "value": "2",
      "min": 0,
      "max": 10
     }
@@ -2858,20 +2872,6 @@
      "type": "number",
      "unit": null,
      "value": 0,
-     "min": 0,
-     "max": 10
-    }
-   },
-   "outDefault": {
-    "_name": "Коэффициент выпускного клапана",
-    "_order": 7,
-    "_icon": "edit",
-    "outDefault": {
-     "_name": "Коэффициент выпускного клапана",
-     "_order": 1,
-     "type": "number",
-     "unit": null,
-     "value": "2",
      "min": 0,
      "max": 10
     }
@@ -3974,20 +3974,6 @@
      "max": 30
     }
    },
-   "deltaCold": {
-    "_name": "Дельта охлаждения испарителя",
-    "_order": 2,
-    "_icon": "cr-cold",
-    "deltaCold": {
-     "_name": "",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": 6,
-     "min": 0,
-     "max": 20
-    }
-   },
    "water": {
     "_name": "Время стекания воды",
     "_order": 5,
@@ -4000,6 +3986,20 @@
      "value": "00:02",
      "min": null,
      "max": null
+    }
+   },
+   "deltaCold": {
+    "_name": "Дельта охлаждения испарителя",
+    "_order": 2,
+    "_icon": "cr-cold",
+    "deltaCold": {
+     "_name": "",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": 6,
+     "min": 0,
+     "max": 20
     }
    },
    "accel": {

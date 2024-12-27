@@ -91,6 +91,30 @@
   }
  },
  {
+  "_id": "676e8dcdfc9fce43a876293b",
+  "type": "reset",
+  "module": {
+   "id": "67602160d9da5c2bcc25f6c2",
+   "channel": 16
+  },
+  "owner": {
+   "type": "building",
+   "id": "6760195ed9da5c2bcc25f682"
+  }
+ },
+ {
+  "_id": "676e8e65fc9fce43a876293c",
+  "type": "connect",
+  "module": {
+   "id": "67602160d9da5c2bcc25f6c2",
+   "channel": 15
+  },
+  "owner": {
+   "type": "building",
+   "id": "6760195ed9da5c2bcc25f682"
+  }
+ },
+ {
   "_id": "67602cb4d9da5c2bcc25f6d5",
   "type": "on",
   "owner": {
