@@ -47,7 +47,6 @@ function connect(obj, building, m, acc, cur) {
 		const mdlId = el.module?.id
 		const isErr = store.alarm?.module?.[building._id]?.[mdlId]
 		if (isErr || !sig) acc.reset[mdlId] = true
-
 		if (sig && acc.reset?.[mdlId]) {
 			acc.end = cur + 3000
 			acc.firstFlag = true
