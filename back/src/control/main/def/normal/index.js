@@ -8,7 +8,6 @@ function normal(building, obj, bdata) {
 	// Данные по складу
 	const { start, automode, s, se, m, accAuto, resultFan } = bdata
 	if (building?.type !== 'normal') return
-	console.log(111, 'Простой склад')
 	// СКЛАД: доп.функции - extra, доп. аварии - extralrm
 	let alrB = build(start, building, obj, s, se, m, automode)
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm

@@ -28,9 +28,30 @@
   },
   "automode": "cooling",
   "product": {
-   "_id": "675fc4dea10873618b8e59ec",
-   "name": "Капуста",
-   "code": "cabbage"
+   "_id": "66d0886536e7e1b1ff9e0788",
+   "name": "Лук",
+   "code": "onion"
+  },
+  "mode": {
+   "67602254d9da5c2bcc25f6c9": true
+  },
+  "start": true,
+  "setting": {
+   "cooling": {
+    "cabbage": {
+     "decrease": {
+      "decrease": "3"
+     }
+    },
+    "onion": {
+     "decrease": {
+      "decrease": "3"
+     },
+     "target": {
+      "target": "9"
+     }
+    }
+   }
   }
  }
 }
