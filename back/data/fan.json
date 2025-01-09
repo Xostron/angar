@@ -1,19 +1,5 @@
 [
  {
-  "_id": "676e48f999b11313a8d4b8c9",
-  "name": "asd",
-  "order": 3,
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "module": {
-   "channel": 64,
-   "id": "676e4c3599b11313a8d4b8d4"
-  },
-  "type": "accel"
- },
- {
   "_id": "67602c35d9da5c2bcc25f6ce",
   "name": "ВНО1",
   "order": 1,
@@ -66,34 +52,6 @@
   "module": {
    "channel": 5,
    "id": "67602160d9da5c2bcc25f6c2"
-  },
-  "type": "accel"
- },
- {
-  "_id": "676287b9d05b8d229808ec07",
-  "name": "Разгонный",
-  "order": 1,
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "module": {
-   "channel": 1,
-   "id": "676e4c3599b11313a8d4b8d4"
-  },
-  "type": "accel"
- },
- {
-  "_id": "676287ced05b8d229808ec08",
-  "name": "Разгонный 2",
-  "order": 2,
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "module": {
-   "channel": 31,
-   "id": "676e4c3599b11313a8d4b8d4"
   },
   "type": "accel"
  }

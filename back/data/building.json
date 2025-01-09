@@ -6,7 +6,7 @@
   "on": true,
   "companyId": "67601891d9da5c2bcc25f67f",
   "order": 1,
-  "pcId": "676018dbd9da5c2bcc25f681",
+  "pcId": "677fc8a0a61e120c0c75607b",
   "type": "normal",
   "company": {
    "name": "СТЕНД",
@@ -21,8 +21,8 @@
    "antibliz",
    "heating",
    "vent",
-   "co2",
    "heater",
+   "co2",
    "ozon",
    "accel",
    "sys",
@@ -31,13 +31,13 @@
   ]
  },
  {
-  "_id": "67601969d9da5c2bcc25f685",
-  "code": "2024-2",
-  "name": "Холодильник 1",
+  "_id": "67601974d9da5c2bcc25f689",
+  "code": "2024-3",
+  "name": "Холодильник 2",
   "on": true,
   "companyId": "67601891d9da5c2bcc25f67f",
-  "order": 3,
-  "pcId": "676018dbd9da5c2bcc25f681",
+  "order": 4,
+  "pcId": "677fc8a0a61e120c0c75607b",
   "type": "cold",
   "company": {
    "name": "СТЕНД",

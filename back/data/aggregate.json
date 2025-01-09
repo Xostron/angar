@@ -1,138 +1,73 @@
 [
  {
-  "_id": "67628b93d05b8d229808ec0c",
+  "_id": "677fc91ea61e120c0c756081",
   "order": 1,
-  "buildingId": "67601969d9da5c2bcc25f685",
-  "aggregateId": "674f0080aec7225b4a1cace2",
-  "condenser": [
-   {
-    "_id": "67628bd4d05b8d229808ec0d",
-    "order": 1,
-    "name": "Конденсатор",
-    "aggregateListId": "67628b93d05b8d229808ec0c",
-    "signal": [
-     {
-      "_id": "67628bead05b8d229808ec0e",
-      "type": "condenser",
-      "order": 1,
-      "owner": {
-       "type": "condenser",
-       "id": "67628bd4d05b8d229808ec0d"
-      },
-      "module": {
-       "channel": 4,
-       "id": "676285ded05b8d229808ebff"
-      }
-     }
-    ]
-   }
-  ],
+  "buildingId": "67601974d9da5c2bcc25f689",
+  "aggregateId": "674dbc3ec589741fb3633006",
+  "condenser": [],
   "aggregate": {
-   "_id": "674f0080aec7225b4a1cace2",
-   "name": "Агрегат 2"
+   "_id": "674dbc3ec589741fb3633006",
+   "name": "Агрегат 1"
   },
   "compressorList": [
    {
-    "_id": "675008b0449fd312ef2085ad",
+    "_id": "674dbef8d0943021ec627184",
     "order": 1,
-    "aggregateId": "674f0080aec7225b4a1cace2",
-    "compressorId": "675005553a422312eeb2e7ad",
+    "aggregateId": "674dbc3ec589741fb3633006",
+    "compressorId": "674dbbaac589741fb3632ffe",
     "compressor": {
-     "_id": "675005553a422312eeb2e7ad",
-     "name": "компрессор 2"
+     "_id": "674dbbaac589741fb3632ffe",
+     "name": "Компрессор 1"
     },
     "beep": [
      {
-      "_id": "675005833a422312eeb2e7ae",
+      "_id": "674ec286a68e915b4450af86",
       "code": "off",
-      "name": "Автомат 1 компрессора выбит ",
+      "name": "авария компрессора",
       "owner": {
-       "id": "675005553a422312eeb2e7ad",
+       "id": "674dbbaac589741fb3632ffe",
        "type": "compressor"
       },
-      "alarm": true,
-      "reverse": false
+      "alarm": true
      },
      {
-      "_id": "675005b83a422312eeb2e7af",
-      "code": "off",
-      "name": "Автомат 2 компрессора выбит ",
+      "_id": "674ec2cdaec7225b4a1caca6",
+      "code": "high",
+      "name": "авария давления ",
       "owner": {
-       "id": "675005553a422312eeb2e7ad",
+       "id": "674dbbaac589741fb3632ffe",
        "type": "compressor"
       },
-      "alarm": true,
-      "reverse": false
+      "alarm": false
      },
      {
-      "_id": "675006013a422312eeb2e7b0",
-      "code": "freon",
-      "name": "Низкий уровень фреона",
-      "owner": {
-       "id": "675005553a422312eeb2e7ad",
-       "type": "compressor"
-      }
-     },
-     {
-      "_id": "675006243a422312eeb2e7b1",
-      "code": "stator",
-      "name": "ТК компрессора ",
-      "owner": {
-       "id": "675005553a422312eeb2e7ad",
-       "type": "compressor"
-      },
-      "alarm": true,
-      "reverse": false
-     },
-     {
-      "_id": "675006593a422312eeb2e7b3",
+      "_id": "674ec2f6a68e915b4450af87",
       "code": "low",
-      "name": "низкий уровень масла ",
+      "name": "Низкий уровень масла в компрессоре",
       "owner": {
-       "id": "675005553a422312eeb2e7ad",
+       "id": "674dbbaac589741fb3632ffe",
        "type": "compressor"
       },
-      "alarm": false
+      "alarm": true
      },
      {
-      "_id": "67500684449fd312ef2085ac",
-      "code": "heating",
-      "name": "Подогрев картера",
-      "owner": {
-       "id": "675005553a422312eeb2e7ad",
-       "type": "compressor"
-      },
-      "alarm": false
-     },
-     {
-      "_id": "675006c03a422312eeb2e7b4",
+      "_id": "674ec324a68e915b4450af88",
       "code": "run",
       "name": "Компрессор в работе",
       "owner": {
-       "id": "675005553a422312eeb2e7ad",
+       "id": "674dbbaac589741fb3632ffe",
        "type": "compressor"
       },
-      "reverse": true
+      "reverse": false
      },
      {
-      "_id": "675007e73a422312eeb2e7b5",
-      "code": "vacuum",
-      "name": "Система под вакуумом ",
+      "_id": "674ec35ba68e915b4450af89",
+      "code": "gotov",
+      "name": "задержка работы компрессора",
       "owner": {
-       "id": "675005553a422312eeb2e7ad",
+       "id": "674dbbaac589741fb3632ffe",
        "type": "compressor"
       }
-     },
-     {
-      "_id": "675008273a422312eeb2e7b6",
-      "code": "high",
-      "name": "Высокий уровень давления ",
-      "owner": {
-       "id": "675005553a422312eeb2e7ad",
-       "type": "compressor"
-      },
-      "alarm": true,
-      "reverse": false
      }
     ]
    }

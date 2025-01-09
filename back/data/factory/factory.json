@@ -234,6 +234,9 @@
    "differenceMax": {
     "differenceMax": 25
    },
+   "hysteresisOut": {
+    "hysteresisOut": 1
+   },
    "decrease": {
     "decrease": "1"
    },
@@ -245,9 +248,6 @@
    },
    "minChannel": {
     "minChannel": 2
-   },
-   "hysteresisOut": {
-    "hysteresisOut": 1
    }
   },
   "cabbage": {
@@ -261,26 +261,6 @@
  },
  "heat": {
   "_prd": true,
-  "carrot": {
-   "max": {
-    "max": 1
-   },
-   "outMax": {
-    "outMax": "5"
-   },
-   "channel": {
-    "channel": "2"
-   },
-   "hysteresis": {
-    "hysteresis": 0.3
-   },
-   "difference": {
-    "difference": "3"
-   },
-   "outMin": {
-    "outMin": "4"
-   }
-  },
   "onion": {
    "max": {
     "max": "1"
@@ -301,6 +281,26 @@
     "outMin": "4"
    }
   },
+  "carrot": {
+   "outMax": {
+    "outMax": "5"
+   },
+   "max": {
+    "max": 1
+   },
+   "channel": {
+    "channel": "2"
+   },
+   "hysteresis": {
+    "hysteresis": 0.3
+   },
+   "difference": {
+    "difference": "3"
+   },
+   "outMin": {
+    "outMin": "4"
+   }
+  },
   "potato": {
    "max": {
     "max": 1
@@ -311,11 +311,11 @@
    "channel": {
     "channel": "2"
    },
-   "outMax": {
-    "outMax": "5"
-   },
    "hysteresis": {
     "hysteresis": 0.3
+   },
+   "outMax": {
+    "outMax": "5"
    },
    "difference": {
     "difference": "3"
@@ -613,21 +613,21 @@
    "step": {
     "step": 30
    },
-   "wait": {
-    "wait": 20
-   },
-   "limit": {
-    "limit": 1
-   },
-   "fan": {
-    "fan": 3
-   },
    "until": {
     "until": 10
    },
    "out1": {
     "temp": -5,
     "k": 0.5
+   },
+   "fan": {
+    "fan": 3
+   },
+   "wait": {
+    "wait": 20
+   },
+   "limit": {
+    "limit": 1
    },
    "out2": {
     "temp": -8,
@@ -706,19 +706,19 @@
    "until": {
     "until": 10
    },
-   "limit": {
-    "limit": 1
-   },
    "outDefault": {
     "outDefault": "2"
    },
-   "out2": {
-    "temp": -8,
-    "k": 0.3
+   "limit": {
+    "limit": 1
    },
    "out1": {
     "temp": -5,
     "k": 0.5
+   },
+   "out2": {
+    "temp": -8,
+    "k": 0.3
    },
    "out3": {
     "temp": -10,

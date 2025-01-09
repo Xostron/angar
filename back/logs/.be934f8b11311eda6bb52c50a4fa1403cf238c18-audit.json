@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 1
+    },
+    "auditLog": "logs\\.be934f8b11311eda6bb52c50a4fa1403cf238c18-audit.json",
+    "files": [
+        {
+            "date": 1736427615408,
+            "name": "logs\\heating-2025-01-09-16.log",
+            "hash": "a00f20d00f0188b8d17d17b9e0eff8dbc39501ae61e5f62482809244bc1a2f3e"
+        }
+    ],
+    "hashType": "sha256"
+}

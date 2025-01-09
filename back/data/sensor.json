@@ -1,19 +1,5 @@
 [
  {
-  "_id": "67628c64d05b8d229808ec11",
-  "name": "co2",
-  "owner": {
-   "type": "section",
-   "id": "67628b82d05b8d229808ec0b"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 6,
-   "id": "676e4c2699b11313a8d4b8d3"
-  },
-  "type": "co2"
- },
- {
   "_id": "67602233d9da5c2bcc25f6c8",
   "name": "Влажность продукта",
   "owner": {
@@ -24,20 +10,6 @@
   "module": {
    "channel": 2,
    "id": "67602148d9da5c2bcc25f6c0"
-  },
-  "type": "hin"
- },
- {
-  "_id": "67628738d05b8d229808ec03",
-  "name": "Влажность продукта",
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 2,
-   "id": "676e4c2699b11313a8d4b8d3"
   },
   "type": "hin"
  },
@@ -54,34 +26,6 @@
    "id": "67602148d9da5c2bcc25f6c0"
   },
   "type": "hout"
- },
- {
-  "_id": "67628785d05b8d229808ec05",
-  "name": "Давление всасывания",
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 3,
-   "id": "676e4c2699b11313a8d4b8d3"
-  },
-  "type": "pin"
- },
- {
-  "_id": "67628798d05b8d229808ec06",
-  "name": "Давление нагнетания",
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 4,
-   "id": "676e4c2699b11313a8d4b8d3"
-  },
-  "type": "pout"
  },
  {
   "_id": "67602199d9da5c2bcc25f6c4",
@@ -110,20 +54,6 @@
    "id": "67602133d9da5c2bcc25f6bf"
   },
   "type": "tout"
- },
- {
-  "_id": "67628c4ad05b8d229808ec10",
-  "name": "Темп продукта 1",
-  "owner": {
-   "type": "section",
-   "id": "67628b82d05b8d229808ec0b"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 5,
-   "id": "676e4c2699b11313a8d4b8d3"
-  },
-  "type": "tprd"
  },
  {
   "_id": "676022b3d9da5c2bcc25f6cc",
@@ -180,20 +110,6 @@
    "id": "67602133d9da5c2bcc25f6bf"
   },
   "type": "tprd"
- },
- {
-  "_id": "6762875ad05b8d229808ec04",
-  "name": "Температура помещения",
-  "owner": {
-   "type": "building",
-   "id": "67601969d9da5c2bcc25f685"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 7,
-   "id": "676e4c2699b11313a8d4b8d3"
-  },
-  "type": "tin"
  },
  {
   "_id": "6760221ad9da5c2bcc25f6c7",

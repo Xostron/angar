@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 1
+    },
+    "auditLog": "logs\\.d0307bf036eee3c9b0779e06f01bf5647b0e161f-audit.json",
+    "files": [
+        {
+            "date": 1736427615406,
+            "name": "logs\\valve-2025-01-09-16.log",
+            "hash": "89344d64f88d7fe1240cfa3360770923dcafd2c9536e65d9a79fc4b1e073543d"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -95,6 +95,8 @@ const data = {
 	// errMdl: {},
 	timeout: {},
 	debMdl: {},
+	// Прошлые состояния
+	prev:{}
 }
 // Разрешить true/заблокировать false опрос модуля
 function timeout(buildingId, moduleId, ip, opt) {

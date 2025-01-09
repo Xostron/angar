@@ -26,6 +26,21 @@ const customLevels = {
 	verbose: 4,
 	debug: 5,
 	silly: 6,
+
+	fan:7,
+	valve:8,
+	heating:9,
+	solenoid:10,
+	cooler:11,
+	aggregate:12,
+	compressor:13,
+	condenser:14,
+	device:15,
+	building:16, // События склада и секций: таймеры запретов, аварии авторежимов, 
+	user:17, // Действия пользователя
+	
+
+
 };
 
 /**

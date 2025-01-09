@@ -1,8 +1,8 @@
 {
  "67601969d9da5c2bcc25f685": {
   "supply": {
-   "off": "2025-01-09T06:50:53.243Z",
-   "on": null
+   "off": null,
+   "on": "2025-01-09T07:07:38.064Z"
   },
   "smoking": {},
   "automode": "cooling",
@@ -59,6 +59,16 @@
     "67602c77d9da5c2bcc25f6d0": false,
     "67602c8dd9da5c2bcc25f6d2": false
    }
+  },
+  "676021e3d9da5c2bcc25f6c6": {
+   "on": false
+  }
+ },
+ "67601974d9da5c2bcc25f689": {
+  "smoking": {},
+  "supply": {
+   "off": "2025-01-09T13:19:16.952Z",
+   "on": null
   }
  }
 }
