@@ -29,7 +29,11 @@ const { debugJson } = require('@tool/json')
 const building = require('./building')
 const factory = require('./factory')
 
-// Рама для web
+/**
+ * Конфигурация рамы для web
+ * @param {*} data Коллекция рамы
+ * @returns Коллекция рамы для web
+ */
 function equip(data) {
 	const result = {
 		building: data.building.map((el) => building(el, data)),

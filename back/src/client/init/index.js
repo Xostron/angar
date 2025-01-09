@@ -1,13 +1,18 @@
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
-const { retainDir, factoryDir, dataDir } = require('@store')
-const api = require('@tool/api')
+const { factoryDir, dataDir } = require('@store')
 const { writeSync } = require('@tool/json')
 const equipment = require('@tool/equipment')
 const { cEquip } = require('@socket/emit')
 const transformF = require('./fn')
+const api = require('@tool/api')
 
-// Запрос конфигурации у админ-сервера и сохранение в json
+/**
+ * Запрос конфигурации склада у админ-сервера
+ * Сохранение в json
+ * Формирование и отправка конфигурации (рамы) на web
+ * Периодическое выполнение каждые 7 мин
+ */
 function init() {
 	const config = {
 		method: 'GET',
@@ -21,9 +26,9 @@ function init() {
 				return
 			}
 			console.log('\x1b[32m%s\x1b[0m', `Данные с AdminServer ${process.env.API_URI} получены`)
-			// сохранение конфигурации в json
+			// Сохранение конфигурации в json
 			writeSync(r.data.result, dataDir, t)
-			// Сохранение значений "marklist-def" из рамы заводских настроек
+			// Заводские настройки в json
 			transformF(r?.data?.result?.factory, factoryDir)
 			// Формирование рамы для клиента
 			return equipment()
@@ -57,5 +62,5 @@ const t = [
 	'device',
 	'cooler',
 	'binding',
-	'weather'
-];
+	'weather',
+]

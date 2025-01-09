@@ -92,9 +92,9 @@ function read(names, ph = dataDir) {
 
 /**
  * Прочитать файлы json
- * @param {*} names массив имен файлов json
- * @param {*} ph путь до файлов
- * @returns объект
+ * @param {*} names Массив имен файлов json
+ * @param {*} ph Путь до файлов
+ * @returns
  */
 function readTO(names, ph = dataDir) {
 	return new Promise((resolve, reject) => {
@@ -137,6 +137,14 @@ async function findOne(filename, q) {
 	return r
 }
 
+/**
+ * Сохранение коллекций в json файлы
+ *
+ * @param {object} data Коллекция
+ * @param {string} ph Путь сохранения
+ * @param {array} ref Массив ключей коллекции data, значения которых будут сохранять в отдельные json файлы
+ * @param {boolean} toRetain Флаг для логов сохранение в файлы или в data/retain
+ */
 function writeSync(data, ph = dataDir, ref, toRetain) {
 	try {
 		// Создание папки

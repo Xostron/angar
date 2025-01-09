@@ -1,5 +1,11 @@
 const { writeSync } = require('@tool/json')
 
+/**
+ * Преобразование и сохранение заводских настроек
+ * @param {*} factory Заводские настройки от админ-сервера
+ * @param {*} phF Путь сохранения
+ * @returns Сохранение json: ./data/factory/factory.json
+ */
 function transformF(factory, phF) {
 	if (!factory || !phF) return
 	// writeSync(fct, phF, t)

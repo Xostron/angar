@@ -1,4 +1,3 @@
-const equipment = require('@tool/equipment')
 const { io } = require('@tool/server')
 
 // Широковещательные сообщения (всем клиентам)
@@ -21,14 +20,5 @@ function cAlarm(data) {
 function cWarm(data) {
 	io.emit('c_warm', data)
 }
-// Ответ конкретному клиенту
-// function cEquipTo(socket) {
-// 	console.log('Запрос от клиента')
-// 	equipment().then(console.log)
-// 	return () =>
-// 		equipment().then((data) => {
-// 			socket.emit('c_equip', data)
-// 		})
-// }
 
-module.exports = { cValue, cEquip, cAlarm, cWarm /*cEquipTo*/ }
+module.exports = { cValue, cEquip, cAlarm, cWarm }

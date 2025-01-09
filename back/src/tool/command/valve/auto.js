@@ -146,7 +146,7 @@ function flyingVlv(buildingId, sectionId, obj, acc, vlvS, s, forceOff) {
 		// Позиция выпускного клапана в %
 		const pos = vlvPercent(v._id, retain?.[buildingId])
 		// Гистерезис в %
-		const hyst = 2
+		const hyst = 3
 		// Направление клапана открыть/закрыть/стоп
 		const open = acc.vOut[v._id].target > pos + hyst
 		const close = acc.vOut[v._id].target < pos - hyst
