@@ -23,6 +23,7 @@ const logger = createLogger({
 		// hourlyT('compressor'),
 		// hourlyT('condenser'),
 		hourlyT('device'),
+		hourlyT('sensor'),
 		// hourlyT('building'),
 		// hourlyT('user'),
 	],
