@@ -118,13 +118,5 @@ function check(obj, build, result) {
 	return stop
 }
 
-// 
-function cbTracing(obj, data) {
-	const result = data ? data : {}
-	for (const key in obj) {
-		result[key] ??= {}
-		result[key] = obj[key]
-	}
-	return result
-}
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbTracing }
+
+module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking }

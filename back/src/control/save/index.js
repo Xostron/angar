@@ -1,6 +1,6 @@
-const { data: store, retainDir, tracingDir } = require('@store')
+const { data: store, retainDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
-const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbTracing } = require('./fn')
+const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking } = require('./fn')
 const retainStart = require('@tool/retain/start')
 
 // Сохранение в файл retain (Настройки, режимы работы и т.д.)
@@ -20,10 +20,6 @@ async function save(obj) {
 	if (store.tuneTime) await createAndModifySync(store.tuneTime, 'data', retainDir, cbTune)
 	if (store.supply) await createAndModifySync(store.supply, 'data', retainDir, cbSupply)
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
-	if (Object.keys(store.engineHour).length) {
-		await createAndModifySync(store.engineHour, 'ehour', tracingDir, cbTracing)
-		store.engineHour={}
-	}
 }
 
 module.exports = save

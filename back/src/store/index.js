@@ -20,7 +20,6 @@ const data = {
 	dataDir: path.join(process.env.PATH_DATA),
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
-	tracingDir: path.join(process.env.PATH_DATA, 'tracing'),
 	// Web клиент: команды на включение
 	command: null,
 	// Web клиент: Команды на управление клапанами по времени
@@ -92,8 +91,6 @@ const data = {
 	smoking: {},
 	// Запрет работы холодильника
 	denied: {},
-	// Моточасы
-	engineHour: {},
 	// Неисправные модули
 	// errMdl: {},
 	timeout: {},
@@ -404,7 +401,7 @@ const dataDir = data.dataDir
 const retainDir = data.retainDir
 const factoryDir = data.factoryDir
 const rootDir = data.rootDir
-const tracingDir = data.tracingDir
+
 
 module.exports = {
 	data,
@@ -413,7 +410,6 @@ module.exports = {
 	dataDir,
 	retainDir,
 	factoryDir,
-	tracingDir,
 	setCmd,
 	setTune,
 	setCmdT,

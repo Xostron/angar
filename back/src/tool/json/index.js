@@ -1,4 +1,4 @@
-const { retainDir, factoryDir, dataDir, tracingDir } = require('@store')
+const { retainDir, factoryDir, dataDir } = require('@store')
 const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')
@@ -116,11 +116,10 @@ function readTO(names, ph = dataDir) {
 function readAll(obj) {
 	return new Promise((resolve, reject) => {
 		const list = Object.keys(obj.data)
-		Promise.all([read(list), read(['data'], retainDir), read(['factory'], factoryDir), read(['ehour'], tracingDir)])
-			.then(([eq, rtn, fct, ehour]) => {
+		Promise.all([read(list), read(['data'], retainDir), read(['factory'], factoryDir)])
+			.then(([eq, rtn, fct]) => {
 				obj.retain = rtn[0]
 				obj.factory = fct[0]
-				obj.ehour = ehour[0]
 				list.forEach((el, i) => {
 					if (eq[i]) obj.data[el] = eq[i]
 				})

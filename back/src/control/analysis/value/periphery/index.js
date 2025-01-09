@@ -14,7 +14,7 @@ const device = require('./fn/device')
  * @returns {id_input: value,..., outputM:{id_module:[arr_value],...}}
  */
 function periphery(val, obj) {
-	const { data: equip, retain, ehour } = obj
+	const { data: equip, retain } = obj
 	let result = {}
 
 	// Маска выходных модулей DO
@@ -31,7 +31,7 @@ function periphery(val, obj) {
 	// Состояния клапанов
 	valve(equip, val, retain, result)
 	// Состояние вентиляторов (предварительное)
-	fan(equip, val, retain, ehour, result)
+	fan(equip, val, retain, result)
 	// Испаритель
 	cooler(equip, val, retain, result)
 	// Агрегат

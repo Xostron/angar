@@ -1,8 +1,8 @@
 {
  "67601969d9da5c2bcc25f685": {
   "supply": {
-   "off": null,
-   "on": "2024-12-27T11:26:42.249Z"
+   "off": "2025-01-09T06:50:53.243Z",
+   "on": null
   },
   "smoking": {},
   "automode": "cooling",
@@ -33,7 +33,7 @@
    "code": "onion"
   },
   "mode": {
-   "67602254d9da5c2bcc25f6c9": true
+   "67602254d9da5c2bcc25f6c9": false
   },
   "start": true,
   "setting": {
@@ -51,6 +51,13 @@
       "target": "9"
      }
     }
+   }
+  },
+  "fan": {
+   "67602254d9da5c2bcc25f6c9": {
+    "67602c35d9da5c2bcc25f6ce": false,
+    "67602c77d9da5c2bcc25f6d0": false,
+    "67602c8dd9da5c2bcc25f6d2": false
    }
   }
  }
