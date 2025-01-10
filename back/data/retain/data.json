@@ -51,6 +51,11 @@
       "target": "9"
      }
     }
+   },
+   "accel": {
+    "mode": {
+     "mode": "on"
+    }
    }
   },
   "fan": {

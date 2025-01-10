@@ -6,9 +6,9 @@
     "auditLog": "logs\\.052791d5bb5a27f8ad9371b6d684bca8b784dbb4-audit.json",
     "files": [
         {
-            "date": 1736427615409,
-            "name": "logs\\cooler-2025-01-09-16.log",
-            "hash": "66b37f76342e50431e5948b21a06ef39dfb718acfe834c67e7bf5cda75c7b28d"
+            "date": 1736488934399,
+            "name": "logs\\cooler-2025-01-10-09.log",
+            "hash": "58467280eb73a305381044658fd22c12d77436477999ebed62c7db140f2a61f4"
         }
     ],
     "hashType": "sha256"
