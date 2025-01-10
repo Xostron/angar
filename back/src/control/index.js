@@ -9,7 +9,8 @@ const convCmd = require('./output')
 const save = require('./save')
 const data = require('./data')
 const hrtime = process.hrtime.bigint
-const statistic  = require('./statistic')
+const statistic = require('./statistic')
+const monitoring = require('./monitoring')
 const { data: store, reset } = require('@store')
 
 // Главный цикл управления
@@ -41,11 +42,11 @@ async function control() {
 		// Запись в retain файл json
 		await save(obj)
 		// Аварии для web
-		await webAlarm(obj)
-		// Статистика
-		statistic(obj)
+		let alr = await webAlarm(obj)
 		// Мониторинг
-		// monitoring(obj)
+		alr = monitoring(alr.signal)
+		// Статистика
+		statistic(obj, alr)
 		// Задержка цикла
 		await delay(store.tDelay)
 		// Обнулить команду reset

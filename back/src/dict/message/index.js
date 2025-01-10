@@ -6,116 +6,91 @@ const data = {
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы не подходит при сушке',
-		count: false, // Участие в счетчике аварий
-		monitoring: true, // Участие в мониторинге
+		count: false, // Участие в счетчике аварий и экран мониторинга
 	},
 	2: {
-		count: false,
 		code: 'tout2',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой при сушке',
-		monitoring: true,
 	},
 	3: {
-		count: false,
 		code: 'hout1',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы ниже допустимой при сушке',
-		monitoring: true,
 	},
 	4: {
-		count: false,
 		code: 'hout2',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы выше допустимой при сушке',
-		monitoring: true,
 	},
 	5: {
-		count: false,
 		code: 'ahout1',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы ниже допустимой при сушке',
-		monitoring: true,
 	},
 	6: {
-		count: false,
 		code: 'ahout2',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы выше допустимой при сушке',
-		monitoring: true,
 	},
 	// ======== Охаждение (Авто) ========
 	7: {
-		count: false,
 		code: 'ahout1',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы ниже допустимой при охлаждении',
-		monitoring: true,
 	},
 	8: {
-		count: false,
 		code: 'ahout2',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы выше допустимой при охлаждении',
-		monitoring: true,
 	},
 	9: {
-		count: false,
 		code: 'hout1',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы ниже допустимой при охлаждении',
-		monitoring: true,
 	},
 	10: {
-		count: false,
 		code: 'hout2',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы выше допустимой при охлаждении',
-		monitoring: true,
 	},
 	11: {
-		count: false,
 		code: 'tout1',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы выше допустимой при охлаждения',
-		monitoring: true,
 	},
 	12: {
-		count: false,
 		code: 'tout2',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой при охлаждения',
-		monitoring: true,
 	},
 	16: {
-		count: false,
 		code: 'tout3',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой при охлаждения (по продукту)',
-		monitoring: true,
 	},
-	15: { order: 1, code: 'cooling-1', msg: 'Продукт достиг температуры задания', monitoring: true },
+	15: { order: 1, code: 'cooling-1', msg: 'Продукт достиг температуры задания' },
 	150: { order: 2, code: 'cooling-2', msg: 'Задание канала, задание продукта' },
 
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
-	13: { count: false, code: 'antibliz', type: 'antibliz', typeSignal: 'valve', msg: 'Сработал режим антивьюги', monitoring: true },
+	13: { code: 'antibliz', type: 'antibliz', typeSignal: 'valve', msg: 'Сработал режим антивьюги' },
 	// Работа клапанов over_vlv
-	14: { count: false, code: 'over_vlv', typeSignal: 'valve', msg: 'Превышено время работы с закрытыми клапанами', monitoring: true },
+	14: { code: 'over_vlv', typeSignal: 'valve', msg: 'Превышено время работы с закрытыми клапанами' },
 	// Авария низкой температуры (Аварийное закрытие клапанов) Реле безопасности
-	26: { count: true, code: 'alrClosed', type: 'alr', typeSignal: 'critical', msg: 'Аварийное закрытие клапанов', monitoring: true },
+	26: { count: true, code: 'alrClosed', type: 'alr', typeSignal: 'critical', msg: 'Аварийное закрытие клапанов' },
 	// Переключатель на щите секции - местный режим
 	27: {
 		count: true,
@@ -123,7 +98,6 @@ const data = {
 		type: '',
 		typeSignal: 'critical',
 		msg: 'Управление переведено переключателем на щите',
-		monitoring: true,
 	},
 	// Модуль не в сети
 	28: {
@@ -132,7 +106,6 @@ const data = {
 		type: '',
 		typeSignal: 'critical',
 		msg: 'Обратитесь в сервисный центр (пропала связь с модулем)',
-		monitoring: true,
 	},
 	// Генератор (склад)
 	29: {
@@ -141,16 +114,15 @@ const data = {
 		type: '',
 		typeSignal: 'critical',
 		msg: 'Нет электропитания: работа от генератора',
-		monitoring: true,
 	},
 	// Аварии клапанов
 	30: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Превышено время открытия' },
 	31: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Превышено время закрытия' },
-	32: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Оба концевика сработало', monitoring: true },
-	33: { count: true, code: 'vlvLim', typeSignal: 'valve', msg: 'Нет питания концевиков', monitoring: true },
-	34: { count: true, code: 'vlvCrash', typeSignal: 'valve', msg: 'Авария двигателя', monitoring: true },
+	32: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Оба концевика сработало' },
+	33: { count: true, code: 'vlvLim', typeSignal: 'valve', msg: 'Нет питания концевиков' },
+	34: { count: true, code: 'vlvCrash', typeSignal: 'valve', msg: 'Авария двигателя' },
 	// Аварии вентиляторов
-	35: { count: true, code: 'fanCrash', typeSignal: 'fan', msg: 'Авария двигателя', monitoring: true },
+	35: { count: true, code: 'fanCrash', typeSignal: 'fan', msg: 'Авария двигателя' },
 	// Нажат аварийный стоп
 	36: {
 		count: true,
@@ -158,7 +130,6 @@ const data = {
 		type: '',
 		typeSignal: 'critical',
 		msg: 'Нажат аварийный стоп',
-		monitoring: true,
 	},
 	// Питание отключено
 	38: {
@@ -167,22 +138,21 @@ const data = {
 		type: '',
 		typeSignal: 'critical',
 		msg: 'Питание отключено',
-		monitoring: true,
 	},
 	// beep alarm
-	65: [{ code: 'off', typeSignal: 'critical', msg: 'Выбит автоматический выключатель', monitoring: true }],
+	65: [{ count: true, code: 'off', typeSignal: 'critical', msg: 'Выбит автоматический выключатель' }],
 	// ======== Компрессоры агрегата ========
 	// beep alarm
 	66: [
-		{ code: 'low', typeSignal: 'critical', msg: 'Низкий уровень масла в компрессоре', monitoring: true },
-		{ code: 'off', typeSignal: 'critical', msg: 'Отключен автомат питания', monitoring: true },
-		{ code: 'stator', typeSignal: 'critical', msg: 'Перегрев обмотки двигателя', monitoring: true },
+		{ count: true, code: 'low', typeSignal: 'critical', msg: 'Низкий уровень масла в компрессоре' },
+		{ count: true, code: 'off', typeSignal: 'critical', msg: 'Отключен автомат питания' },
+		{ count: true, code: 'stator', typeSignal: 'critical', msg: 'Перегрев обмотки двигателя' },
 	],
 	// ======== Неисправность датчика ========
-	99: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика', monitoring: true },
-	100: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика', monitoring: true },
+	99: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
+	100: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
 	// ======== Неисправность модуля ========
-	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи', monitoring: true },
+	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
 
 	// ======== Сообщения extra - доп. функции ========
 	// Модуль в сети
@@ -219,7 +189,7 @@ const data = {
 	72: { code: 'temp', typeSignal: 'info', msg: 'Оттайка слива воды: Отключена' },
 
 	// ======== Склад-холодильник ========
-	80: { order: 1, code: 'target', msg: 'Продукт достиг температуры задания ', monitoring: true },
+	80: { order: 1, code: 'target', msg: 'Продукт достиг температуры задания ' },
 	81: { order: 2, code: 'status', msg: '' },
 	// ======== Окуривание (холодильник) ========
 	82: {

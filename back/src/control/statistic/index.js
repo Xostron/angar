@@ -1,7 +1,7 @@
 const logger = require('@tool/logger')
 const { data: store } = require('@store')
 
-function statistic(obj) {
+function statistic(obj, alr) {
 	const { data, value } = obj
 
 	// Вентиляторы
@@ -18,6 +18,8 @@ function statistic(obj) {
 	groupLog(data.device, value, store.prev, 'device')
 	// Датчики
 	groupLog(data.sensor, value, store.prev, 'sensor')
+	// Неисправности
+	alarmLog(alr, store.prev)
 }
 
 module.exports = statistic
@@ -41,5 +43,15 @@ function groupLog(arr, value, prev, level) {
 			return
 		}
 		logger[level]({ _id, message: value[_id] })
+	})
+}
+
+function alarmLog(arr, prev){
+	arr.forEach((el)=>{
+		const message = el.title+' '+el.msg
+		if (el.date===prev[message]) return
+		// фиксируем состояние по изменению
+		prev[message] = el.date
+		logger['alarm']({ _id:el.buildingId, message })
 	})
 }

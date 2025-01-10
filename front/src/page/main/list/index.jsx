@@ -28,7 +28,6 @@ export default function List({list}) {
 		}, [list])
 	
 	if(!list?.length) return null
-
 	let cl = ['store-wrapper'].join(' ')
 	let clList = [
 		'list', 

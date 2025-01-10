@@ -26,6 +26,7 @@ const logger = createLogger({
 		hourlyT('sensor'),
 		// hourlyT('building'),
 		// hourlyT('user'),
+		hourlyT('alarm'),
 	],
 });
 

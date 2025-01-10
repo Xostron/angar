@@ -7,6 +7,7 @@ import Signal from '@page/signal'
 import NotFound from '@page/404'
 import BuildOrSect from '@page/build_or_sect'
 
+//Роутинг склада
 const building = [
 	{
 		path: '',
