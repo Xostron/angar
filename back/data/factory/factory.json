@@ -30,35 +30,6 @@
     "day": 30
    }
   },
-  "onion": {
-   "ventilation": {
-    "ventilation": false
-   },
-   "channelMin": {
-    "channelMin": 10
-   },
-   "humidityMin": {
-    "humidityMin": "10"
-   },
-   "humidityMax": {
-    "humidityMax": "75"
-   },
-   "min": {
-    "min": "0"
-   },
-   "channelMax": {
-    "channelMax": 20
-   },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
-   "hysteresisOut": {
-    "hysteresisOut": "1"
-   },
-   "day": {
-    "day": 30
-   }
-  },
   "potato": {
    "ventilation": {
     "ventilation": false
@@ -87,30 +58,39 @@
    "min": {
     "min": "0"
    }
-  }
- },
- "cure": {
-  "_prd": true,
-  "carrot": {
-   "differenceValue": {
-    "differenceValue": "3"
+  },
+  "onion": {
+   "ventilation": {
+    "ventilation": false
    },
-   "differenceMin": {
-    "differenceMin": 1
+   "channelMin": {
+    "channelMin": 10
+   },
+   "humidityMin": {
+    "humidityMin": "10"
+   },
+   "humidityMax": {
+    "humidityMax": "75"
    },
    "min": {
-    "min": "10"
+    "min": "0"
+   },
+   "channelMax": {
+    "channelMax": 20
    },
    "hysteresisIn": {
     "hysteresisIn": 0.3
    },
-   "differenceMax": {
-    "differenceMax": 25
-   },
    "hysteresisOut": {
     "hysteresisOut": "1"
+   },
+   "day": {
+    "day": 30
    }
-  },
+  }
+ },
+ "cure": {
+  "_prd": true,
   "onion": {
    "differenceMin": {
     "differenceMin": 1
@@ -129,6 +109,26 @@
    },
    "min": {
     "min": -10
+   }
+  },
+  "carrot": {
+   "differenceValue": {
+    "differenceValue": "3"
+   },
+   "differenceMin": {
+    "differenceMin": 1
+   },
+   "min": {
+    "min": "10"
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
+   },
+   "differenceMax": {
+    "differenceMax": 25
+   },
+   "hysteresisOut": {
+    "hysteresisOut": "1"
    }
   },
   "potato": {
@@ -154,6 +154,38 @@
  },
  "cooling": {
   "_prd": true,
+  "onion": {
+   "differenceMin": {
+    "differenceMin": 2
+   },
+   "minChannel": {
+    "minChannel": 2
+   },
+   "target": {
+    "target": 2
+   },
+   "differenceMax": {
+    "differenceMax": 25
+   },
+   "decrease": {
+    "decrease": "1"
+   },
+   "max": {
+    "max": 2
+   },
+   "differenceValue": {
+    "differenceValue": 2
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
+   },
+   "minOut": {
+    "minOut": -10
+   },
+   "hysteresisOut": {
+    "hysteresisOut": 1
+   }
+  },
   "carrot": {
    "decrease": {
     "decrease": "1"
@@ -213,38 +245,6 @@
    },
    "minChannel": {
     "minChannel": 2
-   },
-   "hysteresisOut": {
-    "hysteresisOut": 1
-   }
-  },
-  "onion": {
-   "differenceMin": {
-    "differenceMin": 2
-   },
-   "minChannel": {
-    "minChannel": 2
-   },
-   "target": {
-    "target": 2
-   },
-   "differenceMax": {
-    "differenceMax": 25
-   },
-   "decrease": {
-    "decrease": "1"
-   },
-   "max": {
-    "max": 2
-   },
-   "differenceValue": {
-    "differenceValue": 2
-   },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
-   "minOut": {
-    "minOut": -10
    },
    "hysteresisOut": {
     "hysteresisOut": 1
@@ -402,6 +402,32 @@
  },
  "mois": {
   "_prd": true,
+  "onion": {
+   "outMax": {
+    "outMax": 80
+   },
+   "outMin": {
+    "outMin": "10"
+   },
+   "humidity": {
+    "humidity": 80
+   },
+   "differenceMin": {
+    "differenceMin": "0"
+   },
+   "differenceMax": {
+    "differenceMax": "10"
+   },
+   "hysteresisRel": {
+    "hysteresisRel": 2.5
+   },
+   "max": {
+    "max": 1
+   },
+   "hysteresisAbs": {
+    "hysteresisAbs": "1"
+   }
+  },
   "carrot": {
    "outMin": {
     "outMin": "10"
@@ -452,32 +478,6 @@
    },
    "hysteresisRel": {
     "hysteresisRel": 2.5
-   }
-  },
-  "onion": {
-   "outMax": {
-    "outMax": 80
-   },
-   "outMin": {
-    "outMin": "10"
-   },
-   "humidity": {
-    "humidity": 80
-   },
-   "differenceMin": {
-    "differenceMin": "0"
-   },
-   "differenceMax": {
-    "differenceMax": "10"
-   },
-   "max": {
-    "max": 1
-   },
-   "hysteresisRel": {
-    "hysteresisRel": 2.5
-   },
-   "hysteresisAbs": {
-    "hysteresisAbs": "1"
    }
   }
  },
@@ -531,15 +531,15 @@
  },
  "wetting": {
   "_prd": true,
-  "onion": {
-   "work": {
-    "work": "02:00"
+  "carrot": {
+   "sp": {
+    "sp": 10
    },
    "hysteresis": {
     "hysteresis": "5"
    },
-   "sp": {
-    "sp": 10
+   "work": {
+    "work": "02:00"
    },
    "stop": {
     "stop": "00:30"
@@ -548,12 +548,12 @@
     "mode": "time"
    }
   },
-  "carrot": {
-   "sp": {
-    "sp": 10
-   },
+  "onion": {
    "hysteresis": {
     "hysteresis": "5"
+   },
+   "sp": {
+    "sp": 10
    },
    "work": {
     "work": "02:00"
@@ -607,17 +607,21 @@
    }
   },
   "carrot": {
-   "fan": {
-    "fan": 3
-   },
-   "until": {
-    "until": 10
+   "out2": {
+    "temp": -8,
+    "k": 0.3
    },
    "detection": {
     "detection": false
    },
+   "fan": {
+    "fan": 3
+   },
    "step": {
     "step": 30
+   },
+   "until": {
+    "until": 10
    },
    "wait": {
     "wait": 20
@@ -633,10 +637,6 @@
     "temp": -10,
     "k": 0
    },
-   "out2": {
-    "k": 0.3,
-    "temp": -8
-   },
    "outDefault": {
     "outDefault": "2"
    },
@@ -649,11 +649,11 @@
    }
   },
   "onion": {
-   "fan": {
-    "fan": 3
-   },
    "detection": {
     "detection": false
+   },
+   "fan": {
+    "fan": 3
    },
    "step": {
     "step": 30
@@ -691,27 +691,23 @@
    }
   },
   "potato": {
-   "step": {
-    "step": 30
-   },
-   "until": {
-    "until": 10
-   },
    "detection": {
     "detection": false
    },
    "fan": {
     "fan": 3
    },
+   "step": {
+    "step": 30
+   },
    "wait": {
     "wait": 20
    },
+   "until": {
+    "until": 10
+   },
    "limit": {
     "limit": 1
-   },
-   "out3": {
-    "k": 0,
-    "temp": -10
    },
    "outDefault": {
     "outDefault": "2"
@@ -723,6 +719,10 @@
    "out2": {
     "temp": -8,
     "k": 0.3
+   },
+   "out3": {
+    "temp": -10,
+    "k": 0
    },
    "debounce": {
     "debounce": "00:15"
