@@ -5,7 +5,7 @@ import Sensor from '@page/sensor'
 import Settings from '@page/settings'
 import Signal from '@page/signal'
 import NotFound from '@page/404'
-import BuildOrSect from '@page/build_section'
+import BuildOrSect from '@page/build_or_sect'
 
 const building = [
 	{
