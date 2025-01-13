@@ -1,57 +1,27 @@
-const logger = require('@tool/logger')
-const { data: store } = require('@store')
-
+const { pLog, alarmLog, sensLog } = require('./fn')
+/**
+ * Статистика - сбор данных по изменению
+ * @param {object} obj глобальный объект склада (рама, значения с модулей, аварии)
+ * @param {object[]} alr данные для логирования неисправностей
+ */
 function statistic(obj, alr) {
 	const { data, value } = obj
-
 	// Вентиляторы
-	groupLog(data.fan, value, store.prev, 'fan')
+	pLog(data.fan, value, 'fan')
 	// Клапан
-	groupLog(data.valve, value, store.prev, 'valve')
+	pLog(data.valve, value, 'valve')
 	// Обогрев
-	groupLog(data.heating, value.outputEq, store.prev, 'heating')
+	pLog(data.heating, value.outputEq, 'heating')
 	// Холодильник
-	groupLog(data.cooler, value, store.prev, 'cooler')
+	pLog(data.cooler, value, 'cooler')
 	// Агрегат
-	groupLog(data.aggregate, value, store.prev, 'aggregate')
+	pLog(data.aggregate, value, 'aggregate')
 	// Устройства
-	groupLog(data.device, value, store.prev, 'device')
+	pLog(data.device, value, 'device')
 	// Датчики
-	groupLog(data.sensor, value, store.prev, 'sensor')
+	sensLog(value.total, data.building)
 	// Неисправности
-	alarmLog(alr, store.prev)
+	alarmLog(alr)
 }
 
 module.exports = statistic
-
-// Логирование периферии
-function groupLog(arr, value, prev, level) {
-	if (!arr?.length) return
-	arr.forEach((el) => {
-		const { _id } = el
-		if (!value?.[_id]) return
-		if (JSON.stringify(value[_id]) === JSON.stringify(prev[_id])) return
-		// фиксируем состояние по изменению
-		prev[_id] = value[_id]
-
-		if (['cooler', 'aggregate', 'device', 'valve', 'fan'].includes(level)) {
-			logger[level]({ _id, message: { state: value[_id]?.state } })
-			return
-		}
-		if (level === 'sensor') {
-			logger[level]({ _id, message: { value: value[_id]?.value, state: value[_id]?.state, type: el.type } })
-			return
-		}
-		logger[level]({ _id, message: value[_id] })
-	})
-}
-
-function alarmLog(arr, prev){
-	arr.forEach((el)=>{
-		const message = el.title+' '+el.msg
-		if (el.date===prev[message]) return
-		// фиксируем состояние по изменению
-		prev[message] = el.date
-		logger['alarm']({ _id:el.buildingId, message })
-	})
-}

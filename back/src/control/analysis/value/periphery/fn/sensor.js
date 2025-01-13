@@ -62,10 +62,13 @@ function total(equip, result, retain) {
 	}
 
 	for (const bld of building) {
-		// Найти секции которые в авто
 		let idsS = []
+		let idsAll = []
 		if (bld.type === 'normal') {
+			// Найти секции которые в авто
 			idsS = section.filter((el) => el.buildingId === bld._id && retain?.[bld?._id]?.mode?.[el?._id]).map((el) => el._id)
+			// Все секции
+			idsAll = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
 		} else {
 			idsS = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
 		}
@@ -74,7 +77,7 @@ function total(equip, result, retain) {
 		flt = (el) => idsS.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
 		fltA = (el) => idsS.includes(el.owner.id) && el.type === 'tprd'
 		const tprd = state(sensor, result, flt, fltA)
-		
+
 		// Температура потолка (Температура помещения)
 		const tin = fnState(sensor, result, bld._id, 'tin')
 		// Влажность продукта (макс)
@@ -88,7 +91,14 @@ function total(equip, result, retain) {
 		// Температура всасывания
 		// const tina = fnState(sensor, result, bld._id, 'cooler')
 
-		result.total[bld._id] = { tin, tprd, hin, pin, pout }
+		// Для логирования
+		// Температура продукта
+		flt = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
+		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd'
+		const tprdL = state(sensor, result, flt, fltA)
+
+
+		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL }
 		// Абсолютная влажность продукта
 		result.humAbs[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max)?.toFixed(1)
 	}
@@ -116,7 +126,7 @@ function total(equip, result, retain) {
 function state(sensor, result, flt, fltA) {
 	// Значения группы датчиков
 	let values = getS(sensor, result, flt)
-	
+
 	let on = getSA(sensor, result, fltA).some((el) => el === 'on')
 	let off = getSA(sensor, result, fltA).some((el) => el === 'off')
 

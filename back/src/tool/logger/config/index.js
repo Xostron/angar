@@ -1,7 +1,8 @@
 const { format } = require('winston')
 const DailyRotateFile = require('winston-daily-rotate-file')
-
+const path = require('path')
 const { combine, timestamp, json } = format
+
 
 /**
  * Фильтр, пропускающий только указанный уровень
@@ -49,12 +50,12 @@ const customLevels = {
 function hourlyT(level) {
 	return new DailyRotateFile({
 		level,
-		filename: `logs/${level}-%DATE%.log`,
+		filename: path.join(process.env.PATH_LOG, `${level}-%DATE%.log`),
 		// Ротация по часу: "YYYY-MM-DD-HH"
 		datePattern: 'YYYY-MM-DD-HH',
 		// Сколько файлов хранить (пример: 24 часа)
 		// Если хотите хранить дольше, можно ставить '7d' и т.п.
-		maxFiles: '1h',
+		maxFiles: '7d',
 		// Формат лога
 		format: combine(
 			filterOnly(level), // пропускаем только нужный level

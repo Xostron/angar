@@ -2,7 +2,6 @@
 function monitoring(alr) {
 	let r = []
 	for (const key in alr) r = r.concat(...alr[key].filter((el) => el.count))
-		console.log(r)
 	return r
 }
 

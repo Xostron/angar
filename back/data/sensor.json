@@ -8,8 +8,8 @@
   },
   "accuracy": 1,
   "module": {
-   "channel": 2,
-   "id": "67602148d9da5c2bcc25f6c0"
+   "channel": 7,
+   "id": "67602133d9da5c2bcc25f6bf"
   },
   "type": "hin"
  },
@@ -37,20 +37,6 @@
   "accuracy": 1,
   "module": {
    "channel": 1,
-   "id": "67602133d9da5c2bcc25f6bf"
-  },
-  "type": "tout"
- },
- {
-  "_id": "676021cbd9da5c2bcc25f6c5",
-  "name": "Датчик улицы 2",
-  "owner": {
-   "type": "building",
-   "id": "6760195ed9da5c2bcc25f682"
-  },
-  "accuracy": 1,
-  "module": {
-   "channel": 7,
    "id": "67602133d9da5c2bcc25f6bf"
   },
   "type": "tout"

@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.216ce09212eb5f1d67414176b090c1306a104202-audit.json",
+    "files": [
+        {
+            "date": 1736768089102,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-13-14.log",
+            "hash": "2c565cbb884a95f265526357407cb0a669df0a0868769bd4cbc1a132e714dd4d"
+        }
+    ],
+    "hashType": "sha256"
+}

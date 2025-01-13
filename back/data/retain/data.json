@@ -23,7 +23,6 @@
  },
  "6760195ed9da5c2bcc25f682": {
   "valvePosition": {
-   "67602cb4d9da5c2bcc25f6d4": 0,
    "67602cfcd9da5c2bcc25f6d8": 0
   },
   "automode": "cooling",
@@ -66,7 +65,7 @@
    }
   },
   "676021e3d9da5c2bcc25f6c6": {
-   "on": false
+   "on": true
   }
  },
  "67601974d9da5c2bcc25f689": {

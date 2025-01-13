@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.ed6dbebf09d92c572ce26835ac6ca3e94407df05-audit.json",
+    "files": [
+        {
+            "date": 1736768089112,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-13-14.log",
+            "hash": "2416765145ac90e6adb019a3837272744109ed3237e78743141beb38d60cc478"
+        }
+    ],
+    "hashType": "sha256"
+}
