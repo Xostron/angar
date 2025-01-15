@@ -1,11 +1,5 @@
 [
  {
-  "_id": "677fcc8ca61e120c0c756082",
-  "name": "Камера 1",
-  "order": 1,
-  "buildingId": "67601974d9da5c2bcc25f689"
- },
- {
   "_id": "67602254d9da5c2bcc25f6c9",
   "name": "Секция 1",
   "order": 1,

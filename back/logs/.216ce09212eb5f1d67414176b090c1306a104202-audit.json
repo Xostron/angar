@@ -19,6 +19,36 @@
             "date": 1736837325248,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-14-09.log",
             "hash": "9b134b9c74ec5164a5dd14c7b5dbd4b6cbbff8cb4f4253a14a224df57291604d"
+        },
+        {
+            "date": 1736919045785,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-15-08.log",
+            "hash": "31885a9db22a6f790e3cdde50368f0b604c05b4e7d11ef19e80788f6d22aded0"
+        },
+        {
+            "date": 1736920912860,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-15-09.log",
+            "hash": "fca39713cb8283a6db2815072d3595d8d7552ff39139ceee3b08c8c9cbfd2a64"
+        },
+        {
+            "date": 1736927257187,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-15-10.log",
+            "hash": "3eda3cb8379343da57ac7f7134eb1e04eb820f83d17d3d1bc14192a252c2ea40"
+        },
+        {
+            "date": 1736928345826,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-15-11.log",
+            "hash": "45feb06e1970e73953a920b73599e61f43b6da5a4438a864f260114fcbe4b2da"
+        },
+        {
+            "date": 1736931628139,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-15-12.log",
+            "hash": "dfafdaabb66cb7c2690b89ef114daf43459b7a8a550cb4f905a8a2ea655e064f"
+        },
+        {
+            "date": 1736939265196,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-15-14.log",
+            "hash": "a636fe0949ac7c9b97ef5c3662b710760ee70a044c67e904fd0373bacebcd9b3"
         }
     ],
     "hashType": "sha256"

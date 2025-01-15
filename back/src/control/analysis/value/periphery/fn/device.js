@@ -1,7 +1,7 @@
 function dnDevice(equip, val, retain, result) {
 	const { device, signal, section } = equip
 	// Состояние отдельного устройства
-	single(device, signal, result)
+	single(device, signal, result, val)
 
 	// Суммарное состояние по устройствам одного типа и одного владельца
 	sum(section, device, result, 'co2')
@@ -12,22 +12,45 @@ function dnDevice(equip, val, retain, result) {
 module.exports = dnDevice
 
 // Состояние отдельного устройства
-function single(device, signal, result) {
+function single(device, signal, result, val) {
 	// По устройствам deviceList
 	device.forEach((doc) => {
-		result[doc._id] ??= {}
-		// По команде управления binding
-		const out = result.outputEq?.[doc._id]
-		// По сигналам beep
-		doc?.beep?.forEach((be) => {
-			result[doc._id].beep ??= {}
-			sig = signal.find((s) => s.owner.id === be._id && s?.extra?.id === doc._id)
-			if (!sig) return
-			result[doc._id].beep[be.code] = { value: result[sig._id], alarm: be.alarm }
-		})
-		// Состояние устройства
-		result[doc._id].state = stateD(result[doc._id].beep, out)
+		if (doc.device.code === 'pui') pui(doc, result, val)
+		other(doc, signal, result)
 	})
+}
+
+// Значения каналов модуля электроизмерений
+function pui(doc, result, val) {
+	result[doc._id] ??= {}
+	if (!doc.module.id || !val) return
+	// Напряжение
+	result[doc._id].Ua = val[doc.module.id][0]
+	result[doc._id].Ub = val[doc.module.id][1]
+	result[doc._id].Uc = val[doc.module.id][2]
+	// Ток
+	result[doc._id].Ia = val[doc.module.id][3]
+	result[doc._id].Ib = val[doc.module.id][4]
+	result[doc._id].Ic = val[doc.module.id][5]
+	// активная мощность
+	result[doc._id].Pa = val[doc.module.id][9]
+	result[doc._id].Pb = val[doc.module.id][10]
+	result[doc._id].Pc = val[doc.module.id][11]
+}
+
+function other(doc, signal, result) {
+	result[doc._id] ??= {}
+	// По команде управления binding
+	const out = result.outputEq?.[doc._id]
+	// По сигналам beep
+	doc?.beep?.forEach((be) => {
+		result[doc._id].beep ??= {}
+		sig = signal.find((s) => s.owner.id === be._id && s?.extra?.id === doc._id)
+		if (!sig) return
+		result[doc._id].beep[be.code] = { value: result[sig._id], alarm: be.alarm }
+	})
+	// Состояние устройства
+	result[doc._id].state = stateD(result[doc._id].beep, out)
 }
 
 // Состояние устройства

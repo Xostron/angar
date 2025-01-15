@@ -14,6 +14,7 @@ async function analysis(obj) {
 	let v = await read(obj)
 	// Анализ - данные для клиента и работы алгоритма
 	v = await value(v, obj)
+	console.log(v['6787712732e29408bc9fa4c3'])
 	// Передача мяса по Socket.io на web-клиент
 	await cValue(v)
 }

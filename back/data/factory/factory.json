@@ -2,6 +2,9 @@
  "drying": {
   "_prd": true,
   "carrot": {
+   "channelMin": {
+    "channelMin": "10"
+   },
    "channelMax": {
     "channelMax": "20"
    },
@@ -10,9 +13,6 @@
    },
    "humidityMax": {
     "humidityMax": "75"
-   },
-   "channelMin": {
-    "channelMin": "10"
    },
    "hysteresisIn": {
     "hysteresisIn": 0.3
@@ -402,32 +402,6 @@
  },
  "mois": {
   "_prd": true,
-  "carrot": {
-   "outMin": {
-    "outMin": "10"
-   },
-   "outMax": {
-    "outMax": 80
-   },
-   "differenceMin": {
-    "differenceMin": "0"
-   },
-   "max": {
-    "max": 1
-   },
-   "differenceMax": {
-    "differenceMax": "10"
-   },
-   "hysteresisRel": {
-    "hysteresisRel": 2.5
-   },
-   "hysteresisAbs": {
-    "hysteresisAbs": "1"
-   },
-   "humidity": {
-    "humidity": 80
-   }
-  },
   "onion": {
    "outMax": {
     "outMax": 80
@@ -478,6 +452,32 @@
    },
    "hysteresisRel": {
     "hysteresisRel": 2.5
+   }
+  },
+  "carrot": {
+   "outMin": {
+    "outMin": "10"
+   },
+   "outMax": {
+    "outMax": 80
+   },
+   "differenceMin": {
+    "differenceMin": "0"
+   },
+   "max": {
+    "max": 1
+   },
+   "differenceMax": {
+    "differenceMax": "10"
+   },
+   "hysteresisRel": {
+    "hysteresisRel": 2.5
+   },
+   "hysteresisAbs": {
+    "hysteresisAbs": "1"
+   },
+   "humidity": {
+    "humidity": 80
    }
   }
  },
@@ -619,10 +619,6 @@
    "until": {
     "until": 10
    },
-   "out3": {
-    "temp": -10,
-    "k": 0
-   },
    "wait": {
     "wait": 20
    },
@@ -636,6 +632,10 @@
    "out2": {
     "temp": -8,
     "k": 0.3
+   },
+   "out3": {
+    "temp": -10,
+    "k": 0
    },
    "outDefault": {
     "outDefault": "2"
@@ -658,11 +658,11 @@
    "step": {
     "step": 30
    },
-   "limit": {
-    "limit": 1
-   },
    "until": {
     "until": 10
+   },
+   "limit": {
+    "limit": 1
    },
    "outDefault": {
     "outDefault": 2
@@ -855,6 +855,9 @@
    }
   },
   "carrot": {
+   "stop": {
+    "stop": "03:00"
+   },
    "cold": {
     "cold": 8
    },
@@ -863,9 +866,6 @@
    },
    "defrostWork": {
     "defrostWork": "00:30"
-   },
-   "stop": {
-    "stop": "03:00"
    },
    "blow": {
     "blow": "00:30"
@@ -921,23 +921,6 @@
  },
  "cold": {
   "_prd": true,
-  "onion": {
-   "decrease": {
-    "decrease": 1
-   },
-   "target": {
-    "target": 1
-   },
-   "room": {
-    "room": 3
-   },
-   "hysteresis": {
-    "hysteresis": 0.3
-   },
-   "deltaRoom": {
-    "deltaRoom": 0.5
-   }
-  },
   "carrot": {
    "decrease": {
     "decrease": 1
@@ -947,6 +930,23 @@
    },
    "target": {
     "target": 1
+   },
+   "hysteresis": {
+    "hysteresis": 0.3
+   },
+   "deltaRoom": {
+    "deltaRoom": 0.5
+   }
+  },
+  "onion": {
+   "decrease": {
+    "decrease": 1
+   },
+   "target": {
+    "target": 1
+   },
+   "room": {
+    "room": 3
    },
    "hysteresis": {
     "hysteresis": 0.3

@@ -15,6 +15,7 @@ function rhr(client, opt, name, options = {}) {
 			.catch(reject)
 	})
 }
+
 // Преобразование данных модуля
 function count(opt, options) {
 	switch (opt.type) {
@@ -29,6 +30,7 @@ function count(opt, options) {
 	}
 	return 1
 }
+
 // Преобразование данных модуля
 function data(arr, opt, options) {
 	let a
@@ -45,6 +47,7 @@ function data(arr, opt, options) {
 	}
 	return arr
 }
+
 // Преобразование данных модуля типа float
 function dataFloat(arr, opt) {
 	const a = []
@@ -56,31 +59,14 @@ function dataFloat(arr, opt) {
 	}
 	return a
 }
+
 // Вернуть битовую маску
 function bit(arr, noreverse) {
 	arr = arr.map((v) => v.toString(2).split('').reverse().join('').padEnd(16, 0))
-
 	if (!noreverse) arr.reverse()
 	return Array.from(arr.join(''), (v) => +v)
-
-	// if (noreverse) {
-	// 	for (let i = 0; i < arr.length; i++) {
-	// 		arr[i] = arr[i]
-	// 			.toString(2)
-	// 			.split("")
-	// 			.reverse()
-	// 			.join("")
-	// 			.padEnd(16, 0)
-	// 	}
-
-	// 	return Array.from(arr.join(""), (v) => +v)
-	// }
-	// for (let i = 0; i < arr.length; i++) {
-	// 	arr[i] = arr[i].toString(2).split("").reverse().join("").padEnd(16, 0)
-	// }
-
-	// return Array.from(arr.reverse().join(""), (v) => +v)
 }
+
 // Вернуть дробное число из двух чисел
 function float(arr) {
 	const a = arr[0].toString(16)
@@ -98,17 +84,21 @@ function float(arr) {
 	}
 	return float32 * sign
 }
+
 function ArrintToBin(arr) {
 	const a = arr[0].toString(16)
 	const b = arr[1].toString(16)
 	return HexTobin(b + a)
 }
+
 function HexToDec(hex) {
 	return parseInt(hex, 16)
 }
+
 function HexTobin(hex) {
 	return '00000000' + parseInt(hex, 16).toString(2)
 }
+
 // Массив boolean => целое число Integer
 function int(arr) {
 	const a = arr.join('')
@@ -125,6 +115,7 @@ function countMB101(opt, options) {
 	// Модуль МВ210-101 Int/10
 	return opt.channel * 2
 }
+
 // Чтение и анализ только для модуля 'МВ210-101 Int/10'
 function dataMB101(arr, opt, options, max) {
 	const { name, interface, use } = options
@@ -132,11 +123,11 @@ function dataMB101(arr, opt, options, max) {
 	const limit = max / 2
 	// Обычный модуль int10
 	if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8) return arr.map((v) => fnLimit(v, limit, max))
-
 	// Модуль МВ210-101 Int/10
 	const status = arr.splice(opt.channel, opt.channel)
 	return arr.map((v, i) => (status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false)))
 }
+
 function fnLimit(v, limit, max, ok = true) {
 	return ok ? (v > limit ? v - max : v) / 10 : null
 }

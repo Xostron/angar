@@ -19,6 +19,36 @@
             "date": 1736837325263,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-14-09.log",
             "hash": "2f7d87cee68eb266a94f9e08589101a74a7e47ca80f82338394e4c8bd5dbfe33"
+        },
+        {
+            "date": 1736919045802,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-15-08.log",
+            "hash": "b56c2c9f4c40f3ac5c4f2c4e73b13c7340fd9e9ba07c794d6bd248797f9930fe"
+        },
+        {
+            "date": 1736920912865,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-15-09.log",
+            "hash": "21dc5180f9db9cdb8dd705eb21fe9c3f0935812cb0c673f38b6fb3ed72e69150"
+        },
+        {
+            "date": 1736927257204,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-15-10.log",
+            "hash": "2e146d64e8e702442a24f7dadc58f9a13ea142b58e4641eef5f1b7b2a1a0171c"
+        },
+        {
+            "date": 1736928345832,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-15-11.log",
+            "hash": "150078520535fe55ed460e915a7b913d45ae05fccafbb44031bf6b7c209a850b"
+        },
+        {
+            "date": 1736931628143,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-15-12.log",
+            "hash": "a0f9d5a39d5bbb21a5c6c19cc26a0f602589888a22d569b867e5e8958fdb0446"
+        },
+        {
+            "date": 1736939265203,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-15-14.log",
+            "hash": "d889a3110607f044ea49090f39d39a72c2f2c83a379fdecafde815ca1a1ebe03"
         }
     ],
     "hashType": "sha256"

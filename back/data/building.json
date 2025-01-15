@@ -13,7 +13,6 @@
    "code": "2024-1"
   },
   "kindList": [
-   "mois",
    "drying",
    "cure",
    "cooling",
@@ -21,34 +20,14 @@
    "antibliz",
    "heating",
    "vent",
+   "mois",
    "heater",
-   "co2",
    "ozon",
+   "co2",
    "accel",
    "sys",
    "idle",
    "overVlv"
-  ]
- },
- {
-  "_id": "67601974d9da5c2bcc25f689",
-  "code": "2024-3",
-  "name": "Холодильник 2",
-  "on": true,
-  "companyId": "67601891d9da5c2bcc25f67f",
-  "order": 4,
-  "pcId": "677fc8a0a61e120c0c75607b",
-  "type": "cold",
-  "company": {
-   "name": "СТЕНД",
-   "code": "2024-1"
-  },
-  "kindList": [
-   "ozon",
-   "co2",
-   "wetting",
-   "cooler",
-   "cold"
   ]
  }
 ]
