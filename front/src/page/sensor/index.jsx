@@ -67,7 +67,7 @@ export default function Sensor({}) {
 	// Склад без оборудования
 	if (!build) return null
 
-	// Список датчиков
+	// Список датчиков из рамы
 	const data = sensList(build, section, sections, sect)
 
 	// Заголовок

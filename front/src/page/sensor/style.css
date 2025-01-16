@@ -16,6 +16,9 @@
 	grid-template-rows: repeat(12, var(--fsz65));
 	grid-row-gap: var(--fsz10);
 	grid-column-gap: var(--fsz10);
+	overflow-y: scroll;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 	height: calc(100vh - clamp(11.25rem, 5.0857rem + 7.2202vw, 13.75rem));
 }
 

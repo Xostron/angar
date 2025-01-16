@@ -49,6 +49,21 @@
             "date": 1736939265205,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-15-14.log",
             "hash": "4a0a49dacac27e7459838d13f7f66c32c317d2196c0150020014e46219fcf074"
+        },
+        {
+            "date": 1737024098344,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-16-13.log",
+            "hash": "39f574e7c2424a514713b7634207759a9399a9fcf59336c491b3c287b3f85a88"
+        },
+        {
+            "date": 1737030651854,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-16-15.log",
+            "hash": "4c612eb8496014f252c41353006e4c3ccc39b9463e8fc3a7dce58e2fd61f21d4"
+        },
+        {
+            "date": 1737032768321,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-16-16.log",
+            "hash": "9d5a7a4566a7bfd1c558373b3771b0c5873726762e8b903e4e945960eba4de3f"
         }
     ],
     "hashType": "sha256"

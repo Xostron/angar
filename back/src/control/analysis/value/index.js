@@ -14,7 +14,6 @@ function value(val, obj) {
 		// Данные для главного цикла
 		obj.value = { ...data }
 		obj.errBuilding = val.error
-		// console.log(111, obj)
 		// Данные для web клиента
 		resolve({ ...data, retain: obj.retain, factory: obj.factory, time: new Date(), errBuilding: val.error })
 	})

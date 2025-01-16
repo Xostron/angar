@@ -1,6 +1,5 @@
 import { io } from 'socket.io-client'
 
-// console.log(1111, window.location.host)
 // "undefined" means the URL will be computed from the `window.location` object
 // const URL = process.env.NODE_ENV === 'production' ? process.env.PUBLIC_SOCKET_URI : process.env.PUBLIC_SOCKET_URI
 const URL = process.env.NODE_ENV === 'production' ? window.location.host : process.env.PUBLIC_SOCKET_URI
