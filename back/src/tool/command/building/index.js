@@ -12,8 +12,7 @@ function getB(building, idB) {
 // Получить склад и секцию по датчику
 function getBS(sens, equip) {
 	let section, building
-	if (sens?.owner?.type === 'building')
-		return { building: equip.building.find((b) => b._id == sens?.owner?.id), section: null }
+	if (sens?.owner?.type === 'building') return { building: equip.building.find((b) => b._id == sens?.owner?.id), section: null }
 	if (sens?.owner?.type === 'section') {
 		section = equip.section.find((o) => o._id == sens?.owner?.id)
 		building = equip.building.find((b) => b._id == section?.buildingId)
@@ -30,8 +29,18 @@ function getS(id, where = []) {
 	return f?.sectionId ?? f?.owner?.id ?? null
 }
 // Получить id склада по холодильника
-function getIdByClr(section, clr){
-	return section.find(el=>el._id===clr.sectionId)?.buildingId
+function getIdByClr(section, clr) {
+	return section.find((el) => el._id === clr.sectionId)?.buildingId
 }
 
-module.exports = { getIdB, getB, getBS, getS, getIdByClr }
+/**
+ * Получить Id склада
+ * @param {*} section Рама секций
+ * @param {*} id ID секции
+ * @returns 
+ */
+function getIdSB(section, id) {
+	return section.find((el) => el.sectionId === id)?.buildingId
+}
+
+module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB }

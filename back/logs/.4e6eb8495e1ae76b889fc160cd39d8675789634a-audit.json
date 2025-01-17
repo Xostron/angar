@@ -109,6 +109,11 @@
             "date": 1737116459315,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-15.log",
             "hash": "0c29f43091b263cace83bf01093465131751647deb06cfc9779e94c777d50185"
+        },
+        {
+            "date": 1737122526307,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-17.log",
+            "hash": "cfbccf9772898b6702af54aa77fd84e696645aef5f93091b4095885b1b5d068b"
         }
     ],
     "hashType": "sha256"

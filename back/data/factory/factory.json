@@ -1,35 +1,6 @@
 {
  "drying": {
   "_prd": true,
-  "potato": {
-   "ventilation": {
-    "ventilation": false
-   },
-   "channelMin": {
-    "channelMin": "10"
-   },
-   "humidityMin": {
-    "humidityMin": "10"
-   },
-   "channelMax": {
-    "channelMax": "20"
-   },
-   "humidityMax": {
-    "humidityMax": "75"
-   },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
-   "hysteresisOut": {
-    "hysteresisOut": "1"
-   },
-   "day": {
-    "day": 30
-   },
-   "min": {
-    "min": "0"
-   }
-  },
   "carrot": {
    "channelMax": {
     "channelMax": "20"
@@ -86,6 +57,35 @@
    },
    "day": {
     "day": 30
+   }
+  },
+  "potato": {
+   "ventilation": {
+    "ventilation": false
+   },
+   "channelMin": {
+    "channelMin": "10"
+   },
+   "humidityMin": {
+    "humidityMin": "10"
+   },
+   "channelMax": {
+    "channelMax": "20"
+   },
+   "humidityMax": {
+    "humidityMax": "75"
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
+   },
+   "hysteresisOut": {
+    "hysteresisOut": "1"
+   },
+   "day": {
+    "day": 30
+   },
+   "min": {
+    "min": "0"
    }
   }
  },
@@ -302,11 +302,11 @@
    }
   },
   "potato": {
-   "max": {
-    "max": 1
-   },
    "outMin": {
     "outMin": "4"
+   },
+   "max": {
+    "max": 1
    },
    "channel": {
     "channel": "2"
@@ -355,11 +355,11 @@
    "max_add": {
     "max_add": "00:15"
    },
-   "work": {
-    "work": "00:05"
-   },
    "wait": {
     "wait": "00:10"
+   },
+   "work": {
+    "work": "00:05"
    },
    "mode": {
     "mode": "off"
@@ -403,11 +403,11 @@
  "mois": {
   "_prd": true,
   "onion": {
-   "outMin": {
-    "outMin": "10"
-   },
    "outMax": {
     "outMax": 80
+   },
+   "outMin": {
+    "outMin": "10"
    },
    "humidity": {
     "humidity": 80
@@ -461,11 +461,11 @@
    "outMin": {
     "outMin": "10"
    },
-   "outMax": {
-    "outMax": 80
-   },
    "differenceMax": {
     "differenceMax": "10"
+   },
+   "outMax": {
+    "outMax": 80
    },
    "differenceMin": {
     "differenceMin": "0"
@@ -555,11 +555,11 @@
    "sp": {
     "sp": 10
    },
-   "stop": {
-    "stop": "00:30"
-   },
    "work": {
     "work": "02:00"
+   },
+   "stop": {
+    "stop": "00:30"
    },
    "mode": {
     "mode": "time"
@@ -569,11 +569,11 @@
    "stop": {
     "stop": "00:30"
    },
-   "work": {
-    "work": "02:00"
-   },
    "hysteresis": {
     "hysteresis": "5"
+   },
+   "work": {
+    "work": "02:00"
    },
    "sp": {
     "sp": 10

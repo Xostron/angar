@@ -109,6 +109,11 @@
             "date": 1737116459310,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-15.log",
             "hash": "a329c620462574feb451777aad9c8718474f43799de1b886ae3fc2dd52720928"
+        },
+        {
+            "date": 1737122526302,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-17.log",
+            "hash": "97ce2a95972a8f5085cf8f3d95231a6d8ac39705e993d52a28a77d9d75796232"
         }
     ],
     "hashType": "sha256"

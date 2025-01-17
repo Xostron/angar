@@ -1,39 +1,67 @@
 const logger = require('@tool/logger')
 const { data: store } = require('@store')
-
+const { getIdSB } = require('@tool/command/building')
 /**
  * Логирование периферии
+ * @param {string[]} section Рама секций
  * @param {object[]} arr данные рамы текущего механизма
  * @param {object} value данные с модулей
  * @param {object} prev хранилище прошлого значения
  * @param {string} level приоритет логирования
  * @returns
  */
-function pLog(arr, value, level) {
+function pLog(section, arr, value, level) {
 	if (!arr?.length) return
 	arr.forEach((el) => {
 		const { _id } = el
 		if (!check(value?.[_id], store.prev[_id])) return
 		// фиксируем состояние по изменению
 		store.prev[_id] = value[_id]
-		switch (level) {
-			case 'fan':
-			case 'cooler':
-			case 'device':
-			case 'aggregate':
-				logger[level]({ _id, message: { state: value[_id]?.state } })
-				break
-			case 'valve':
-				valve(_id, value[_id], store.prev[_id])
-				break
-			// case 'sensor':
-			// 	logger[level]({ _id, message: { value: value[_id]?.value, state: value[_id]?.state, type: el.type } })
-			// 	break
-			default:
-				logger[level]({ _id, message: value[_id] })
-				break
-		}
+		// Лог
+		logger[level]({ message: message(el, level, value, section) })
 	})
+}
+
+/**
+ * Данные для лога
+ * @param {object} el Элемент рамы
+ * @param {string} level Уровень лога (Имя лог файла)
+ * @param {object} value Глобальный объект со значениями склада
+ * @param {object[]} section Рама секций
+ * @returns
+ */
+function message(el, level, value, section) {
+	let secId, bldId, clrId, v
+	switch (level) {
+		case 'fan':
+			el.owner.type == 'section' ? (secId = el.owner.id) : (bldId = el.owner.id)
+			break
+		case 'device':
+		case 'cooler':
+			secId = el.sectionId
+			break
+		case 'aggregate':
+			bldId = el.buildingId
+			break
+		case 'valve':
+			secId = el.sectionId
+			v = value[_id]?.close ? 'cls' : 'opn'
+			break
+		case 'heating':
+			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
+			break
+		default:
+			break
+	}
+	if (secId && !bldId) bldId = getIdSB(section, secId)
+
+	return {
+		bldId,
+		secId,
+		clrId, // только у heating
+		id: el._id,
+		value: v ? v : value[el._id]?.state,
+	}
 }
 
 /**
@@ -50,23 +78,13 @@ function check(val, prev) {
 }
 
 /**
- * Логирование клапана по концевикам
- * @param {*} _id
- * @param {*} val
- * @param {*} prev
- */
-function valve(_id, val, prev) {
-	val?.close ? logger['valve']({ _id, message: { state: 'cls' } }) : logger['valve']({ _id, message: { state: 'opn' } })
-}
-
-/**
  * Логирование неисправностей
  * @param {object[]} arr массив текущих неисправностей
  * @param {object} prev хранилище прошлого значения
  */
 function alarmLog(arr) {
 	arr.forEach((el) => {
-		const message = el.title + ' ' + el.msg
+		const message ={ bldId:'', value: el.title + ' ' + el.msg}
 		if (el.date === store.prev[message]) return
 		// фиксируем состояние по изменению
 		store.prev[message] = el.date
@@ -83,8 +101,18 @@ function sensLog(total, building) {
 			// фиксируем состояние по изменению
 			store.prev[id] = val[el]
 			const m = el === 'hin' ? 'max' : 'min'
-			logger['sensor']({ id: bld._id, message: { type:el, state: val[el]?.state, value: val[el]?.[m] } })
+			logger['sensor']({ message: { bldId:bld._id, type: el, state: val[el]?.state, value: val[el]?.[m] } })
 		})
 	})
 }
 module.exports = { pLog, alarmLog, sensLog }
+
+/**
+ * Логирование клапана по концевикам
+ * @param {*} _id
+ * @param {*} val
+ * @param {*} prev
+ */
+function valve(_id, val, prev) {
+	val?.close ? logger['valve']({ _id, message: { state: 'cls' } }) : logger['valve']({ _id, message: { state: 'opn' } })
+}

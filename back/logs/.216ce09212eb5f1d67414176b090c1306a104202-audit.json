@@ -109,6 +109,11 @@
             "date": 1737116459306,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-17-15.log",
             "hash": "c4e395c3967ae9158c96c5779f83911449b03fd57474138ccca3f6b19f205fd8"
+        },
+        {
+            "date": 1737122526300,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\valve-2025-01-17-17.log",
+            "hash": "60a2afc6d7613d98473ee7ef4f40588087b43607dfa039ae37d3658eb073fa81"
         }
     ],
     "hashType": "sha256"

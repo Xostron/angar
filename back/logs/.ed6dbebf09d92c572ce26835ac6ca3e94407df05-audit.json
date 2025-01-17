@@ -134,6 +134,11 @@
             "date": 1737115230904,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-17-15.log",
             "hash": "cdd8cd8243f5daa7623c662c72663193bc3b96113b2d29a91f690e749d2b6af9"
+        },
+        {
+            "date": 1737122526310,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-17-17.log",
+            "hash": "55dddaf7ce0f39175b708fb3c4d8bc95ab28d312799ff49c5592c36e54eaa7dc"
         }
     ],
     "hashType": "sha256"
