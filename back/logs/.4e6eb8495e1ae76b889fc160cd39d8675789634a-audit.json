@@ -64,6 +64,46 @@
             "date": 1737032768321,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-16-16.log",
             "hash": "9d5a7a4566a7bfd1c558373b3771b0c5873726762e8b903e4e945960eba4de3f"
+        },
+        {
+            "date": 1737037231170,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-16-17.log",
+            "hash": "146c1bd5bb98956e59023975233a7caaf54dae47efd5a826e049823660620b57"
+        },
+        {
+            "date": 1737092364998,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-08.log",
+            "hash": "15f14ca6e24e082c022d14eb716a0b8aefd27ed69643c347a684b770c3340010"
+        },
+        {
+            "date": 1737095509554,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-09.log",
+            "hash": "2be8c8948b697ca4592e88c32b77224deb8a9c36a655627a2049e2e50989d7e5"
+        },
+        {
+            "date": 1737097524717,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-10.log",
+            "hash": "ff77baa05c2745f7dce0cd779034eb61e4b7df6471e72c4aa6ddeb11282109da"
+        },
+        {
+            "date": 1737100959834,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-11.log",
+            "hash": "39a0a17fb0f7b49db4cb4546b7c1674a78113149b3e01d6da8ed3c5338b8eb52"
+        },
+        {
+            "date": 1737105685281,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-12.log",
+            "hash": "c7196b6fc4a3b4009c836033caba304f07f329eae628766118019b7ad0958fb8"
+        },
+        {
+            "date": 1737111019082,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-13.log",
+            "hash": "d4ec6074d8a257eef3ea88b1864a4142d07b37c85391df66440c6dee4660496d"
+        },
+        {
+            "date": 1737111641877,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-17-14.log",
+            "hash": "4caa0729d35e8a8cd57afd4ec1eaa594a9f345ad7754d5e98dae97a25227b5f6"
         }
     ],
     "hashType": "sha256"

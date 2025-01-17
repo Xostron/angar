@@ -64,6 +64,46 @@
             "date": 1737032768318,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-16-16.log",
             "hash": "5d03ecd6adaff25e837f7f97416fb32d3cc61a1abbe4f24c2f86f8ce5b06a1cb"
+        },
+        {
+            "date": 1737037231168,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-16-17.log",
+            "hash": "dea94bed09dd7e2f722ea4deae086aa598e00be6880a0c7f38f03e2e57909e0b"
+        },
+        {
+            "date": 1737092364991,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-08.log",
+            "hash": "094070ef287fdf5c024e0bd5cd088ef0d851538dd058c3a27e41ef091a528e9a"
+        },
+        {
+            "date": 1737095509551,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-09.log",
+            "hash": "0a6609165fb39330e09eec61e25df9d5aa9d539abceb1217d4fad6cb3dc7c118"
+        },
+        {
+            "date": 1737097524714,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-10.log",
+            "hash": "47235115de02dd0eccf1fa98b51dff552f58b44beab995a6caa280aa4428eb5c"
+        },
+        {
+            "date": 1737100959832,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-11.log",
+            "hash": "9e948a7f8cb1d701c96d784e23520d800780ff6a4c824038f9daecd825b235f7"
+        },
+        {
+            "date": 1737105685279,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-12.log",
+            "hash": "d9ae658ccbe5a31c8e42d0336b7252b19097b221b18fa58015a73b10432e2213"
+        },
+        {
+            "date": 1737111019079,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-13.log",
+            "hash": "f6ef5ae46a27b37e5ee6c27cb5ec4f04220e027f50ee8225a9c23953b4806818"
+        },
+        {
+            "date": 1737111641874,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-14.log",
+            "hash": "04695ee1a14871f8add4e24f17469ce27afd7fff90be9da4010265166b4b8e30"
         }
     ],
     "hashType": "sha256"

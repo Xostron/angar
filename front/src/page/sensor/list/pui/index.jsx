@@ -10,7 +10,7 @@ export default function Pui({ data }) {
 	const [input] = useInputStore(useShallow(({ input }) => [input]))
 	//Получить линии показаний
 	const r = useMemo(() => fnList(data, input), [input])
-	// const r = list(data,input)
+
 	let cl = ['cell-w']
 	cl = cl.join(' ')
 	const listSen = { gridTemplateColumns: '70% repeat(2, 1fr)', gridTemplateRows: `repeat(${r.length}, var(--fsz65))` }
@@ -33,8 +33,8 @@ export default function Pui({ data }) {
 	)
 }
 
-// const data1 = [
-// 	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 1' },
-// 	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 2' },
-// 	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 3' },
-// ]
+const data1 = [
+	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 1' },
+	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 2' },
+	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 3' },
+]

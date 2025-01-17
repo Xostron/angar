@@ -4,5 +4,11 @@
   "name": "Секция 1",
   "order": 1,
   "buildingId": "6760195ed9da5c2bcc25f682"
+ },
+ {
+  "_id": "678a1740984a412af40f5846",
+  "name": "Секция 2",
+  "order": 2,
+  "buildingId": "6760195ed9da5c2bcc25f682"
  }
 ]
