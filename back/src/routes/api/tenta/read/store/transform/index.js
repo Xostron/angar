@@ -35,7 +35,6 @@ async function transform(idB, secId) {
 		let idsS = getId(section, idB)
 		let f = fan.filter((el) => idsS.includes(el.owner.id) && el.type === 'accel')
 		f = f.some((el) => data?.[el?._id]?.state === 'run') ?'run' : 'stop'
-
 		// Формируем объект с результатами для склада
 		let result = {
 			// Погода
@@ -49,6 +48,7 @@ async function transform(idB, secId) {
 			mode: bldData?.automode ?? null,
 			// Сообщение авторежима
 			note: data.alarm?.achieve?.[idB] ?? null,
+			crash:data.alarm?.count?.[idB] ?? 0,
 			alarm: alarm(idB, null, data)?? null, 
 			banner: banner(idB, data)?? null,
 			//Краткая информация по секциям

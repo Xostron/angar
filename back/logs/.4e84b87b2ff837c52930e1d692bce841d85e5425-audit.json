@@ -104,6 +104,11 @@
             "date": 1737111641885,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-17-14.log",
             "hash": "35901706f99695342fbd97714fffc64c5cfa3fe00b17124333616201ca1b1906"
+        },
+        {
+            "date": 1737116459321,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-17-15.log",
+            "hash": "f7fa0861f58fd01c969e8d39da2358847c1d82cd085e1e274da57ef802e03eba"
         }
     ],
     "hashType": "sha256"

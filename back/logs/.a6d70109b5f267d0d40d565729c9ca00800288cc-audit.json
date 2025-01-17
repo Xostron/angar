@@ -104,6 +104,11 @@
             "date": 1737111641874,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-14.log",
             "hash": "04695ee1a14871f8add4e24f17469ce27afd7fff90be9da4010265166b4b8e30"
+        },
+        {
+            "date": 1737116459313,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\cooler-2025-01-17-15.log",
+            "hash": "5c1ea2c763e1f42956889b6fb1592ca428664bd290723e9a3336560cdee1a843"
         }
     ],
     "hashType": "sha256"

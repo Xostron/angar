@@ -9,6 +9,7 @@ import { useShallow } from 'zustand/react/shallow'
 export default function Pui({ data }) {
 	const [input] = useInputStore(useShallow(({ input }) => [input]))
 	//Получить линии показаний
+	console.log(222, data)
 	const r = useMemo(() => fnList(data, input), [input])
 
 	let cl = ['cell-w']
@@ -32,9 +33,3 @@ export default function Pui({ data }) {
 		</section>
 	)
 }
-
-const data1 = [
-	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 1' },
-	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 2' },
-	{ _id: '6787712732e29408bc9fa4c3', sectName: 'Секция 3' },
-]

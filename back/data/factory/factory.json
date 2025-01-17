@@ -1,6 +1,35 @@
 {
  "drying": {
   "_prd": true,
+  "potato": {
+   "ventilation": {
+    "ventilation": false
+   },
+   "channelMin": {
+    "channelMin": "10"
+   },
+   "humidityMin": {
+    "humidityMin": "10"
+   },
+   "channelMax": {
+    "channelMax": "20"
+   },
+   "humidityMax": {
+    "humidityMax": "75"
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
+   },
+   "hysteresisOut": {
+    "hysteresisOut": "1"
+   },
+   "day": {
+    "day": 30
+   },
+   "min": {
+    "min": "0"
+   }
+  },
   "carrot": {
    "channelMax": {
     "channelMax": "20"
@@ -57,35 +86,6 @@
    },
    "day": {
     "day": 30
-   }
-  },
-  "potato": {
-   "humidityMin": {
-    "humidityMin": "10"
-   },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
-   "ventilation": {
-    "ventilation": false
-   },
-   "channelMin": {
-    "channelMin": "10"
-   },
-   "channelMax": {
-    "channelMax": "20"
-   },
-   "humidityMax": {
-    "humidityMax": "75"
-   },
-   "hysteresisOut": {
-    "hysteresisOut": "1"
-   },
-   "day": {
-    "day": 30
-   },
-   "min": {
-    "min": "0"
    }
   }
  },
@@ -402,6 +402,32 @@
  },
  "mois": {
   "_prd": true,
+  "onion": {
+   "outMin": {
+    "outMin": "10"
+   },
+   "outMax": {
+    "outMax": 80
+   },
+   "humidity": {
+    "humidity": 80
+   },
+   "differenceMin": {
+    "differenceMin": "0"
+   },
+   "differenceMax": {
+    "differenceMax": "10"
+   },
+   "max": {
+    "max": 1
+   },
+   "hysteresisRel": {
+    "hysteresisRel": 2.5
+   },
+   "hysteresisAbs": {
+    "hysteresisAbs": "1"
+   }
+  },
   "carrot": {
    "outMin": {
     "outMin": "10"
@@ -426,32 +452,6 @@
    },
    "humidity": {
     "humidity": 80
-   }
-  },
-  "onion": {
-   "outMax": {
-    "outMax": 80
-   },
-   "outMin": {
-    "outMin": "10"
-   },
-   "humidity": {
-    "humidity": 80
-   },
-   "differenceMin": {
-    "differenceMin": "0"
-   },
-   "differenceMax": {
-    "differenceMax": "10"
-   },
-   "max": {
-    "max": 1
-   },
-   "hysteresisRel": {
-    "hysteresisRel": 2.5
-   },
-   "hysteresisAbs": {
-    "hysteresisAbs": "1"
    }
   },
   "potato": {
@@ -555,11 +555,11 @@
    "sp": {
     "sp": 10
    },
-   "work": {
-    "work": "02:00"
-   },
    "stop": {
     "stop": "00:30"
+   },
+   "work": {
+    "work": "02:00"
    },
    "mode": {
     "mode": "time"
@@ -569,11 +569,11 @@
    "stop": {
     "stop": "00:30"
    },
-   "hysteresis": {
-    "hysteresis": "5"
-   },
    "work": {
     "work": "02:00"
+   },
+   "hysteresis": {
+    "hysteresis": "5"
    },
    "sp": {
     "sp": 10
@@ -610,9 +610,6 @@
    "detection": {
     "detection": false
    },
-   "limit": {
-    "limit": 1
-   },
    "fan": {
     "fan": 3
    },
@@ -624,6 +621,9 @@
    },
    "wait": {
     "wait": 20
+   },
+   "limit": {
+    "limit": 1
    },
    "out1": {
     "temp": -5,
@@ -787,6 +787,38 @@
  },
  "cooler": {
   "_prd": true,
+  "onion": {
+   "defrostWait": {
+    "defrostWait": "10:00"
+   },
+   "cold": {
+    "cold": 8
+   },
+   "water": {
+    "water": "00:02"
+   },
+   "stop": {
+    "stop": "03:00"
+   },
+   "blow": {
+    "blow": "00:30"
+   },
+   "defrostWork": {
+    "defrostWork": "00:30"
+   },
+   "defrostOn": {
+    "defrostOn": -10
+   },
+   "defrostOff": {
+    "defrostOff": 20
+   },
+   "deltaCold": {
+    "deltaCold": 6
+   },
+   "accel": {
+    "accel": "auto"
+   }
+  },
   "potato": {
    "defrostWait": {
     "defrostWait": "10:00"
@@ -820,38 +852,6 @@
    },
    "drain": {
     "drain": "auto"
-   }
-  },
-  "onion": {
-   "defrostWait": {
-    "defrostWait": "10:00"
-   },
-   "cold": {
-    "cold": 8
-   },
-   "water": {
-    "water": "00:02"
-   },
-   "stop": {
-    "stop": "03:00"
-   },
-   "blow": {
-    "blow": "00:30"
-   },
-   "defrostWork": {
-    "defrostWork": "00:30"
-   },
-   "defrostOn": {
-    "defrostOn": -10
-   },
-   "defrostOff": {
-    "defrostOff": 20
-   },
-   "deltaCold": {
-    "deltaCold": 6
-   },
-   "accel": {
-    "accel": "auto"
    }
   },
   "carrot": {

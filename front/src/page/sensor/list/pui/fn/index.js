@@ -8,8 +8,10 @@ import defImg from '@tool/icon'
  */
 export default function fnList(data, input) {
 	const r = []
+	console.log(1111, data)
 	data.forEach((el, i) => {
-		const d = input[el._id]
+		if (!el) return
+		const d = input[el?._id]
 		// Линии заголовки
 		if (data.length > 1) r.push({ name: el.sectName, type: 'text' })
 		// Линии показаний

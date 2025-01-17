@@ -9,7 +9,6 @@ function signal() {
 		try {
 			// Получение параметров из запроса
 			const { bldId, secId } = req.params
-			// console.log(1111, store.value)
 			if (!bldId || !secId) {
 				return res.status(400).json({ error: 'Не указаны обязательные параметры' })
 			}
@@ -21,13 +20,5 @@ function signal() {
 		}
 	}
 }
-
-
-
-
-
-
-
-
 
 module.exports = signal

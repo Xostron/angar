@@ -10,7 +10,7 @@ const puiSens = ['Ua', 'Ub', 'Uc', 'Ia', 'Ib', 'Ic', 'Pa', 'Pb', 'Pc']
 export function navList(sections = []) {
 	const r = [{ _id: 'all', name: 'Общие' }, ...sections]
 	// Список устройств со всех секций
-	const pui = sections.flatMap((el) => el.device.filter((d) => d?.device?.code === 'pui'))
+	const pui = sections.flatMap((el) => el.device?.filter((d) => d?.device?.code === 'pui'))
 	if (pui.length) r.splice(1, 0, { _id: 'pui', name: 'Сеть' })
 	return r
 }
@@ -24,13 +24,14 @@ export function navList(sections = []) {
  * @returns {object[]}
  */
 export function sensList(build, section, sections, sect) {
+	console.log(444,sections)
 	let data = []
 	switch (sect) {
 		case 'all':
 			bldSens.forEach((el) => (build?.[el]?.length ? data.push(...build?.[el]) : null))
 			break
 		case 'pui':
-			data = sections.flatMap((el) => el.device.filter((d) => d?.device?.code === 'pui').map((d) => ({ _id: d._id, sectName: el.name })))
+			data = sections.flatMap((el) => el.device?.filter((d) => d?.device?.code === 'pui').map((d) => ({ _id: d._id, sectName: el.name }))).filter(el=>el)
 			break
 		default:
 			sectSens.forEach((el) => (section?.[el]?.length ? data.push(...section?.[el]) : null))
