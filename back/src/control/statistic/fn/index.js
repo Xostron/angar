@@ -92,7 +92,7 @@ function check(val, prev) {
  */
 function alarmLog(arr) {
 	arr.forEach((el) => {
-		const message = { bldId: "", value: el.title + " " + el.msg }
+		const message = { bldId: el.buildingId, value: el.title + " " + el.msg }
 		if (el.date === store.prev[message]) return
 		// фиксируем состояние по изменению
 		store.prev[message] = el.date
