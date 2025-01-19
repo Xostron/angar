@@ -58,7 +58,7 @@ function message(el, level, value, section) {
 	return {
 		bldId,
 		secId,
-		clrId, // только у heating
+		clrId, // только у heating?
 		id: el._id,
 		value: v ? v : value[el._id]?.state,
 	}
