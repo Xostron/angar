@@ -12,13 +12,19 @@ function getB(building, idB) {
 // Получить склад и секцию по датчику
 function getBS(sens, equip) {
 	let section, building
-	if (sens?.owner?.type === 'building') return { building: equip.building.find((b) => b._id == sens?.owner?.id), section: null }
-	if (sens?.owner?.type === 'section') {
+	if (sens?.owner?.type === "building")
+		return {
+			building: equip.building.find((b) => b._id == sens?.owner?.id),
+			section: null,
+		}
+	if (sens?.owner?.type === "section") {
 		section = equip.section.find((o) => o._id == sens?.owner?.id)
 		building = equip.building.find((b) => b._id == section?.buildingId)
 		return { building, section }
 	}
-	const sectionId = equip.cooler.find((o) => o._id === sens?.owner?.id)?.sectionId
+	const sectionId = equip.cooler.find(
+		(o) => o._id === sens?.owner?.id
+	)?.sectionId
 	section = equip.section.find((o) => o._id === sectionId)
 	building = equip.building.find((b) => b._id == section?.buildingId)
 	return { building, section }
@@ -33,14 +39,25 @@ function getIdByClr(section, clr) {
 	return section.find((el) => el._id === clr.sectionId)?.buildingId
 }
 
+// Получить id склада и секции по id холодильника
+function getOwnerClr(section, cooler, id) {
+	const clr = cooler.find((el) => el._id === id)
+	const s = section.find((el) => el._id === clr.sectionId)
+	if (!s) return null
+	return {
+		bldId: s?.buildingId,
+		secId: s?._id,
+	}
+}
+
 /**
  * Получить Id склада
  * @param {*} section Рама секций
  * @param {*} id ID секции
- * @returns 
+ * @returns
  */
 function getIdSB(section, id) {
 	return section.find((el) => el.sectionId === id)?.buildingId
 }
 
-module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB }
+module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB, getOwnerClr }

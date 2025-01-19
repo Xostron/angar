@@ -1,6 +1,6 @@
-const logger = require('@tool/logger')
-const { data: store } = require('@store')
-const { getIdSB } = require('@tool/command/building')
+const logger = require("@tool/logger")
+const { data: store } = require("@store")
+const { getIdSB,getOwnerClr } = require("@tool/command/building")
 /**
  * Логирование периферии
  * @param {string[]} section Рама секций
@@ -10,51 +10,59 @@ const { getIdSB } = require('@tool/command/building')
  * @param {string} level приоритет логирования
  * @returns
  */
-function pLog(section, arr, value, level) {
+function pLog(data, arr, value, level) {
 	if (!arr?.length) return
 	arr.forEach((el) => {
 		const { _id } = el
+		// Проверка изменения были?
 		if (!check(value?.[_id], store.prev[_id])) return
 		// фиксируем состояние по изменению
 		store.prev[_id] = value[_id]
 		// Лог
-		logger[level]({ message: message(el, level, value, section) })
+		logger[level]({ message: message(data, el, level, value) })
 	})
 }
 
 /**
- * Данные для лога
+ * Данные для записи в логи
  * @param {object} el Элемент рамы
  * @param {string} level Уровень лога (Имя лог файла)
  * @param {object} value Глобальный объект со значениями склада
  * @param {object[]} section Рама секций
  * @returns
  */
-function message(el, level, value, section) {
+function message(data, el, level, value) {
+	const { section, cooler} = data
 	let secId, bldId, clrId, v
 	switch (level) {
-		case 'fan':
-			el.owner.type == 'section' ? (secId = el.owner.id) : (bldId = el.owner.id)
+		case "fan":
+			el.owner.type == "section"
+				? (secId = el.owner.id)
+				: (bldId = el.owner.id)
 			break
-		case 'device':
-		case 'cooler':
+		case "device":
+		case "cooler":
 			secId = el.sectionId
 			break
-		case 'aggregate':
+		case "aggregate":
 			bldId = el.buildingId
 			break
-		case 'valve':
+		case "valve":
 			secId = el.sectionId
-			v = value[_id]?.close ? 'cls' : 'opn'
+			v = value[_id]?.close ? "cls" : "opn"
 			break
-		case 'heating':
-			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
+		case "heating":
+			el.owner.type == "section"
+				? (secId = el.owner.id)
+				: el.owner.type == "building"
+				? (bldId = el.owner.id)
+				: (clrId = el.owner.id)
 			break
 		default:
 			break
 	}
 	if (secId && !bldId) bldId = getIdSB(section, secId)
-
+	if (clrId) ({secId, bldId}) = getOwnerClr(section, cooler, clrId) 
 	return {
 		bldId,
 		secId,
@@ -84,24 +92,31 @@ function check(val, prev) {
  */
 function alarmLog(arr) {
 	arr.forEach((el) => {
-		const message ={ bldId:'', value: el.title + ' ' + el.msg}
+		const message = { bldId: "", value: el.title + " " + el.msg }
 		if (el.date === store.prev[message]) return
 		// фиксируем состояние по изменению
 		store.prev[message] = el.date
-		logger['alarm']({ _id: el.buildingId, message })
+		logger["alarm"]({ _id: el.buildingId, message })
 	})
 }
 
 function sensLog(total, building) {
 	building.forEach((bld) => {
 		const val = total[bld._id]
-		;['hin', 'tprdL'].forEach((el) => {
-			const id = bld._id + '_' + el
+		;["hin", "tprdL"].forEach((el) => {
+			const id = bld._id + "_" + el
 			if (!check(val[el], store.prev[id])) return
 			// фиксируем состояние по изменению
 			store.prev[id] = val[el]
-			const m = el === 'hin' ? 'max' : 'min'
-			logger['sensor']({ message: { bldId:bld._id, type: el, state: val[el]?.state, value: val[el]?.[m] } })
+			const m = el === "hin" ? "max" : "min"
+			logger["sensor"]({
+				message: {
+					bldId: bld._id,
+					type: el,
+					state: val[el]?.state,
+					value: val[el]?.[m],
+				},
+			})
 		})
 	})
 }
@@ -114,5 +129,7 @@ module.exports = { pLog, alarmLog, sensLog }
  * @param {*} prev
  */
 function valve(_id, val, prev) {
-	val?.close ? logger['valve']({ _id, message: { state: 'cls' } }) : logger['valve']({ _id, message: { state: 'opn' } })
+	val?.close
+		? logger["valve"]({ _id, message: { state: "cls" } })
+		: logger["valve"]({ _id, message: { state: "opn" } })
 }

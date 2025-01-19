@@ -8,17 +8,17 @@ function statistic(obj, alr) {
 	const { data, value } = obj
 
 	// Вентиляторы
-	pLog(data.section, data.fan, value, 'fan')
+	pLog(data, data.fan, value, 'fan')
 	// Клапан
-	pLog(data.section, data.valve, value, 'valve')
+	pLog(data, data.valve, value, 'valve')
 	// Обогрев
-	pLog(data.section, data.heating, value.outputEq, 'heating')
+	pLog(data, data.heating, value.outputEq, 'heating')
 	// Холодильник
-	pLog(data.section, data.cooler, value, 'cooler')
+	pLog(data, data.cooler, value, 'cooler')
 	// Агрегат
-	pLog(data.section, data.aggregate, value, 'aggregate')
+	pLog(data, data.aggregate, value, 'aggregate')
 	// Устройства
-	pLog(data.section, data.device, value, 'device')
+	pLog(data, data.device, value, 'device')
 	// Датчики
 	sensLog(value.total, data.building)
 	// Неисправности
