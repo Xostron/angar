@@ -26,5 +26,19 @@
   "port": 16,
   "buildingId": "6760195ed9da5c2bcc25f682",
   "equipmentId": "678652a91461f037a47a017f"
+ },
+ {
+  "_id": "677fc8f1a61e120c0c75607e",
+  "ip": "192.168.1.230",
+  "port": 502,
+  "buildingId": "67601974d9da5c2bcc25f689",
+  "equipmentId": "66cee351eeb92a11d628b025"
+ },
+ {
+  "_id": "677fc905a61e120c0c75607f",
+  "ip": "192.168.1.228",
+  "port": 502,
+  "buildingId": "67601974d9da5c2bcc25f689",
+  "equipmentId": "66cee314eeb92a11d628b024"
  }
 ]

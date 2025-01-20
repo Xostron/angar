@@ -8,6 +8,31 @@
   "owner": {
    "id": "67602254d9da5c2bcc25f6c9",
    "type": "section"
-  }
+  },
+  "type": "heating"
+ },
+ {
+  "_id": "678df6408d068044b41b38c5",
+  "module": {
+   "channel": 1,
+   "id": "677fc8f1a61e120c0c75607e"
+  },
+  "owner": {
+   "id": "677fcc8ca61e120c0c756082",
+   "type": "section"
+  },
+  "type": "cooler"
+ },
+ {
+  "_id": "678df6718d068044b41b38c9",
+  "module": {
+   "channel": 2,
+   "id": "677fc8f1a61e120c0c75607e"
+  },
+  "owner": {
+   "id": "678df6698d068044b41b38c7",
+   "type": "cooler"
+  },
+  "type": "water"
  }
 ]

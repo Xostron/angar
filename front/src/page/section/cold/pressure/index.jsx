@@ -4,7 +4,7 @@ import defUn from '@src/tool/unit'
 // Отображение датчика давления
 export default function Pressure({data, state=[], value='min'}) {
 	// Нет структуры 
-	if(!state.length || !data)  return null
+	if(!state?.length || !data)  return null
 	const unit = defUn?.['p'] ?? ''
 	// ошибка датчика
 	let cls = ['page-section-cold-pressure', 'brd']

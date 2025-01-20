@@ -23,7 +23,7 @@ function single(device, signal, result, val) {
 // Значения каналов модуля электроизмерений
 function pui(doc, result, val) {
 	result[doc._id] ??= {}
-	if (!doc.module.id || !val) return
+	if (!doc.module.id || !val?.[doc.module.id]) return
 	// Напряжение
 	result[doc._id].Ua = val[doc.module.id][0]
 	result[doc._id].Ub = val[doc.module.id][1]

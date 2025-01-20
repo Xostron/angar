@@ -6,7 +6,7 @@ const logger = createLogger({
 	// Ставим 'silly', чтобы при желании логировать всё подряд
 	// level: 'silly',
 	transports: [
-		hourlyT('error'),
+		// hourlyT('error'),
 		// hourlyT('warn'),
 		// hourlyT('info'),
 		// hourlyT('http'),
@@ -25,7 +25,7 @@ const logger = createLogger({
 		hourlyT('device'),
 		hourlyT('sensor'),
 		// hourlyT('building'),
-		// hourlyT('user'),
+		hourlyT('activity'),
 		hourlyT('alarm'),
 	],
 });

@@ -6,114 +6,14 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.c044ae9075a5430d76cdc0191d5716b1394b5540-audit.json",
     "files": [
         {
-            "date": 1736768089104,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-13-14.log",
-            "hash": "bf1e457a00c07970190513f9024ee46d2e79062ccdb31a7990cdf7fbae12f1fe"
+            "date": 1737358455441,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-20-10.log",
+            "hash": "226ef89b4a4bca42b6aaa6f6d63b6b04b838fbce7c34a2b3321a59d62cbb194d"
         },
         {
-            "date": 1736777412983,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-13-17.log",
-            "hash": "c106a4d1ed24533b6a05da9a33a33bed0516569fc34eb214117f999972bb5f45"
-        },
-        {
-            "date": 1736837325255,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-14-09.log",
-            "hash": "e8abedab49f56a096c29c0c7ca9a5af6e3f93994a5bbbd19489af1400588f645"
-        },
-        {
-            "date": 1736919045794,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-15-08.log",
-            "hash": "eb567168dfd8abbcdab3a33d4cd629c21f8cf58ecc6594b26a6fe7a673f1eabd"
-        },
-        {
-            "date": 1736920912862,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-15-09.log",
-            "hash": "0129ee1504606b01bbd36c67dd7a48797281d69a924b136d3fb4fc5c29582acb"
-        },
-        {
-            "date": 1736927257196,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-15-10.log",
-            "hash": "822934de2e665d9e04d064826902cd52e1c04edc3c9fcfefb6e5e1b261c6dace"
-        },
-        {
-            "date": 1736928345829,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-15-11.log",
-            "hash": "895fd15b3cfe85f6edb35b6b55785e01bdd7c72746a9b98ce4f8b5072f95ea3e"
-        },
-        {
-            "date": 1736931628141,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-15-12.log",
-            "hash": "cc0f5fbe5f9231e865583f905eaff2ef810c38ee6f2925493c78996c9419e783"
-        },
-        {
-            "date": 1736939265199,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-15-14.log",
-            "hash": "541d71081e00465a2753ab084c1566b47cf12614cbed4fbe51582bd6e4eebfa2"
-        },
-        {
-            "date": 1737024098325,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-16-13.log",
-            "hash": "138d896076f9652f368d931d12e2dbd44806ca5b6b74476d2fa45219c6e46ba5"
-        },
-        {
-            "date": 1737030651849,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-16-15.log",
-            "hash": "10c1588808f85ef204e61afdd413b7981478526056960b81f4ea87752b9c677b"
-        },
-        {
-            "date": 1737032768316,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-16-16.log",
-            "hash": "a31c350378a1615bcd091c42a73bad11293b6363c7a17a0ee6fd1447f196a202"
-        },
-        {
-            "date": 1737037231165,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-16-17.log",
-            "hash": "f9878fdc32e2ae80c1d729f29e9d0eb87b61e4e53dbe14932c6f50ac90da5f0b"
-        },
-        {
-            "date": 1737092364982,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-08.log",
-            "hash": "549ea1f50a1c1f0be23f0527598ded9b426fe69e23c9563ce20bfee1cb6885bc"
-        },
-        {
-            "date": 1737095509549,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-09.log",
-            "hash": "cf92062c5163c4aae916573cde78c133a8920eb9a1b255fcb0efbf867b108436"
-        },
-        {
-            "date": 1737097524712,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-10.log",
-            "hash": "5858bcc74d854dca696d657845b8fe7b60269f161df22e767b04c905ff21d7e2"
-        },
-        {
-            "date": 1737100959830,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-11.log",
-            "hash": "963767db72da09879dd5b87697149ebcdbf6d1101d5325ee6f657b823f3f41d7"
-        },
-        {
-            "date": 1737105685276,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-12.log",
-            "hash": "c55343598127fcd1614048be4b8f9200c3776017831d94a8f26ff64851930f79"
-        },
-        {
-            "date": 1737111019076,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-13.log",
-            "hash": "95caa1b34b552dbde8383a485401e1bc319c6c7fcac8ba0f8a372b894fcd7419"
-        },
-        {
-            "date": 1737111641871,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-14.log",
-            "hash": "21dd918cf7fa8d26d5751555d0a46e2e5554f536ff74c2943a60cd00f77d6631"
-        },
-        {
-            "date": 1737116459310,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-15.log",
-            "hash": "a329c620462574feb451777aad9c8718474f43799de1b886ae3fc2dd52720928"
-        },
-        {
-            "date": 1737122526302,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-17-17.log",
-            "hash": "97ce2a95972a8f5085cf8f3d95231a6d8ac39705e993d52a28a77d9d75796232"
+            "date": 1737361998131,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-20-11.log",
+            "hash": "d0508914d40c7f9ca2cab05190059331ddad4f1270c3498021614c43e439d398"
         }
     ],
     "hashType": "sha256"
