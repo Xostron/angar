@@ -69,7 +69,7 @@ export default function Sensor({}) {
 
 	// Список датчиков из рамы
 	const data = sensList(build, section, sections, sect)
-	console.log(333, data)
+
 	// Заголовок
 	const title = sect === 'all' ? 'Общие' : sect === 'pui' ? 'Сеть' : `Секция ${curS + 1}`
 	// Боковая панель

@@ -6,7 +6,6 @@ const { pLog, alarmLog, sensLog } = require('./fn')
  */
 function statistic(obj, alr) {
 	const { data, value } = obj
-// console.log(111, value)
 	// Вентиляторы
 	pLog(data, data.fan, value, 'fan')
 	// Клапан
@@ -28,5 +27,3 @@ function statistic(obj, alr) {
 }
 
 module.exports = statistic
-
-

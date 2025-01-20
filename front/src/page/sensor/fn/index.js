@@ -24,7 +24,6 @@ export function navList(sections = []) {
  * @returns {object[]}
  */
 export function sensList(build, section, sections, sect) {
-	console.log(444,sections)
 	let data = []
 	switch (sect) {
 		case 'all':

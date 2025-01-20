@@ -9,7 +9,6 @@ import { useShallow } from 'zustand/react/shallow'
 export default function Pui({ data }) {
 	const [input] = useInputStore(useShallow(({ input }) => [input]))
 	//Получить линии показаний
-	console.log(222, data)
 	const r = useMemo(() => fnList(data, input), [input])
 
 	let cl = ['cell-w']

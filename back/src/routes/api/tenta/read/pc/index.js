@@ -8,7 +8,6 @@ function pc() {
 			const building = await readOne('building') // Считываем данные складов
 			// const result = transform(store.value, building, section, sensor);
 			const result = transform(store.value, building);
-			console.log(1111, result)
 			res.json(result);
 		} catch (error) {
 			console.log(error);			

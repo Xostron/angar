@@ -8,7 +8,6 @@ import defImg from '@tool/icon'
  */
 export default function fnList(data, input) {
 	const r = []
-	console.log(1111, data)
 	data.forEach((el, i) => {
 		if (!el) return
 		const d = input[el?._id]
