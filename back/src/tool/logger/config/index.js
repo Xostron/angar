@@ -41,6 +41,7 @@ const customLevels = {
 	activity: 17, // Действия пользователя
 	sensor: 18,
 	alarm: 19, // Неисправности
+	watt:20 // Электросчетчик
 }
 
 /**

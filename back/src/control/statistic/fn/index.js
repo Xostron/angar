@@ -15,15 +15,29 @@ function pLog(data, arr, value, level) {
 	arr.forEach((el) => {
 		const { _id } = el
 		// Проверка изменения были?
-		if (!check(value?.[_id], store.prev[_id])) return
+		if (!check(value?.[_id], store.prev[_id], level)) return
 		// фиксируем состояние по изменению
-		store.prev[_id] = value[_id]
+		fnPrev(_id, value[_id], level)
 		// Лог
 		// if (level === 'heating') console.log(111)
 		logger[level]({ message: message(data, el, level, value) })
 	})
 }
+/**
+ * Сохранение изменений
+ * @param {object} val значение
+ */
+function fnPrev(id, val, level) {
+	switch (level) {
+		case 'watt':
+			store.prev[id] = [val.Pa, val.Pb, val.Pc]
+			break
 
+		default:
+			store.prev[id] = val
+			break
+	}
+}
 /**
  * Данные для записи в логи
  * @param {object} data Рама
@@ -55,6 +69,11 @@ function message(data, el, level, value) {
 			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
 			v = value[el._id] ?? false
 			break
+		case 'watt':
+			secId = el.sectionId
+			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
+			// console.log(222, v)
+			break
 		default:
 			break
 	}
@@ -76,11 +95,19 @@ function message(data, el, level, value) {
  * @param {object} val состояние
  * @returns {boolean}
  */
-function check(val, prev) {
+function check(val, prev, level) {
 	// Значение состояния
 	if (val === undefined) return false
+	let v
+	switch (level) {
+		case 'watt':
+			v = [val.Pa, val.Pb, val.Pc]
+			break
+		default:
+			v = val
+	}
 	// Состояние не изменилось
-	if (JSON.stringify(val) === JSON.stringify(prev)) return false
+	if (JSON.stringify(v) === JSON.stringify(prev)) return false
 	return true
 }
 
@@ -99,6 +126,11 @@ function alarmLog(arr) {
 	})
 }
 
+/**
+ * Логирование датчиков (по total)
+ * @param {object} total Расчетные данные с анализа (мин,макс датчиков)
+ * @param {object[]} building Рама складов
+ */
 function sensLog(total, building) {
 	building.forEach((bld) => {
 		const val = total[bld._id]
@@ -119,4 +151,5 @@ function sensLog(total, building) {
 		})
 	})
 }
+
 module.exports = { pLog, alarmLog, sensLog }

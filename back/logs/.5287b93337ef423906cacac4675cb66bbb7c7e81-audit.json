@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.5287b93337ef423906cacac4675cb66bbb7c7e81-audit.json",
+    "files": [
+        {
+            "date": 1737441479707,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-21-09.log",
+            "hash": "516b08b8d2cdebbc93c6d2efba34cda1bd0d7c2f8c51a647aaa5704325d1f604"
+        },
+        {
+            "date": 1737444710144,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-21-10.log",
+            "hash": "1dc1f3b782afca83c5f5014da7c999f2b1d744ffec035ff6451201d45557348f"
+        },
+        {
+            "date": 1737446401006,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-21-11.log",
+            "hash": "4079e0b8482c86bdcb815a0b923de359b9a13197649fd3aef44ee53cd02ba848"
+        }
+    ],
+    "hashType": "sha256"
+}

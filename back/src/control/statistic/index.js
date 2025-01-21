@@ -16,14 +16,17 @@ function statistic(obj, alr) {
 	pLog(data, data.cooler, value, 'cooler')
 	// Агрегат
 	pLog(data, data.aggregate, value, 'aggregate')
-	// Устройства
-	pLog(data, data.device, value, 'device')
+	// Устройства (состояние)
+	const dvc = data.device.filter(el=>el.device.code!=='pui')
+	pLog(data, dvc, value, 'device')
+	// Электросчетчики
+	const pui = data.device.filter(el=>el.device.code==='pui')
+	pLog(data, pui, value, 'watt')
 	// Датчики
 	sensLog(value.total, data.building)
 	// Неисправности
 	alarmLog(alr)
 	// activity - действия пользователя
-	
 }
 
 module.exports = statistic

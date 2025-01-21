@@ -24,9 +24,9 @@ const logger = createLogger({
 		// hourlyT('condenser'),
 		hourlyT('device'),
 		hourlyT('sensor'),
-		// hourlyT('building'),
 		hourlyT('activity'),
 		hourlyT('alarm'),
+		hourlyT('watt'),
 	],
 });
 

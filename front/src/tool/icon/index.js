@@ -9,7 +9,7 @@ import product from './product'
 import mode from './mode'
 import isAlarm from './alarm'
 import automode from './automode'
-import electro from './electro'
+import pui from './pui'
 
 const def = {
 	fan,
@@ -25,6 +25,6 @@ const def = {
 	automode,
 	co2: { on: '/img/cold/co/co2.svg' },
 	pressure: { on: '/img/periphery/pressure/on.svg' },
-	electro,
+	pui,
 }
 export default def

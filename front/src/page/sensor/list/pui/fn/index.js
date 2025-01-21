@@ -21,17 +21,17 @@ export default function fnList(data, input) {
 				case 'U':
 					name = `Напряжение по входу ${key}`
 					unit = 'В'
-					icon = defImg.electro.voltage
+					icon = defImg.pui.voltage
 					break
 				case 'I':
 					name = `Ток по входу ${key}`
 					unit = 'А'
-					icon = defImg.electro.current
+					icon = defImg.pui.current
 					break
 				case 'P':
 					name = `Мощность по входу ${key}`
 					unit = 'Вт'
-					icon = defImg.electro.power
+					icon = defImg.pui.power
 					break
 				default:
 					break
