@@ -9,6 +9,7 @@ function main(obj) {
 	prepare(obj)
 	// TODO Узнать требуется ли подготовка для холодильника (вкл/выкл склада)
 
+
 	// Обработка складов
 	for (const bld of data.building) {
 		// Данные по складу

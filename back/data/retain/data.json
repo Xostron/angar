@@ -22,9 +22,7 @@
   }
  },
  "6760195ed9da5c2bcc25f682": {
-  "valvePosition": {
-   "67602cfcd9da5c2bcc25f6d8": 0
-  },
+  "valvePosition": {},
   "automode": "cooling",
   "product": {
    "_id": "66d0886536e7e1b1ff9e0788",
@@ -54,6 +52,12 @@
    "accel": {
     "mode": {
      "mode": "on"
+    }
+   },
+   "idle": {
+    "ozon": {
+     "end": "23:00",
+     "begin": "01:00"
     }
    }
   },

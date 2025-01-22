@@ -13,7 +13,7 @@ function supply(state, idB, retain) {
 	// Получаем время последнего запуска и выключения
 	const doc = retain?.[idB]?.supply ?? {};
 	store.supply[idB] = doc;
-	console.log('\tSupply: state', state, 'doc', doc);
+	console.log('\tПитание: state', state, 'doc', doc);
 	if(!state) return false
 
 	// Питание отключено

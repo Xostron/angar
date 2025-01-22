@@ -9,8 +9,6 @@ function co2(building, section, obj, s, se, m, automode, acc, data) {
 	// return acc?.alarm ?? false
 }
 
-// function cb(value, parent, be) {
-// 	return value[parent._id].beep[be.code].value
-// }
+
 
 module.exports = co2

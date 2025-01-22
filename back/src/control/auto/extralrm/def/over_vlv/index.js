@@ -1,14 +1,13 @@
 const { stateV } = require('@tool/command/valve')
 const { stateEq } = require('@tool/command/fan')
 const { wrExtralrm, delExtralrm, isReset } = require('@store')
-const mes = require('@dict/message')
 const { msg } = require('@tool/message')
 
 /**
  * Превышено время работы с закрытыми клапанами
- * @param {*} building Склад
- * @param {*} section секция
- * @param {*} obj Данные основного цикла
+ * @param {*} building Рама склада
+ * @param {*} section Рама секции
+ * @param {*} obj Глобальный объект цикла
  * @param {*} s Настройки склада
  * @param {*} se Показания датчиков секции
  * @param {*} m Исполнительные механизмы
@@ -19,9 +18,10 @@ const { msg } = require('@tool/message')
  * @returns
  */
 function overVlv(building, section, obj, s, se, m, automode, acc, data) {
-	const { retain, factory, value } = obj
+	const { value } = obj
 	const { vlvS, fanS } = m
 	const { exclude } = data
+	const o = { bldId: building._id, secId:section._id, code: 'over_vlv' }
 
 	// Отмена выполнения подпрограммы
 	if (exclude) return null
@@ -45,17 +45,19 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 		acc.endTime = acc.beginTime + s.overVlv.time
 		// Сигнал аварии
 		acc.alarm = false
-		// acc.log = false
 	}
-	// Условие аварии
+
+	// Установка
 	if (run && state === 'cls' && curTime >= acc.endTime && !acc.alarm) {
 		acc.alarm = true
 		acc.beginWait = +new Date().getTime()
 		acc.endWait = acc.beginWait + s.overVlv.wait
-		wrExtralrm(building._id, section._id, 'over_vlv', { date: new Date(), ...msg(building, section,14) })
+		const mes = { date: new Date(), ...msg(building, section,14) }
+		wrExtralrm(building._id, section._id, 'over_vlv', mes)
+		writeAcc(obj.acc, { ...o, mes }, 'extralrm')
 	}
 
-	// Сброс аварии - По времени ожидания
+	// Сброс
 	if (curTime >= acc.endWait || isReset(building._id)) {
 		delete acc.alarm
 		delete acc.beginTime
@@ -63,6 +65,7 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 		delete acc.beginWait
 		delete acc.endWait
 		delExtralrm(building._id, section._id, 'over_vlv')
+		removeAcc(obj.acc, o, 'extralrm')
 	}
 	return acc?.alarm ?? false 
 }

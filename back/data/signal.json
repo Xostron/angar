@@ -36,6 +36,18 @@
   }
  },
  {
+  "_id": "67908a93f8f0b51d14b1b0a5",
+  "type": "low",
+  "module": {
+   "id": "6760216cd9da5c2bcc25f6c3",
+   "channel": 8
+  },
+  "owner": {
+   "type": "building",
+   "id": "6760195ed9da5c2bcc25f682"
+  }
+ },
+ {
   "_id": "67602cb4d9da5c2bcc25f6d5",
   "type": "on",
   "owner": {

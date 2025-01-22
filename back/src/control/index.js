@@ -11,7 +11,8 @@ const data = require('./data')
 const hrtime = process.hrtime.bigint
 const statistic = require('./statistic')
 const monitoring = require('./monitoring')
-const { data: store, reset } = require('@store')
+const { data: store, reset, accDir } = require('@store')
+const { readOne } = require('@tool/json')
 
 // Главный цикл управления
 async function loop() {
@@ -29,6 +30,7 @@ async function control() {
 		console.log('\x1b[36m%s\x1b[0m', '\n-------------------Начало-------------------')
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
+		obj.acc = await readOne('acc.json', accDir )
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
 		await analysis(obj)
 		// Логика

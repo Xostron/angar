@@ -20,6 +20,7 @@ const data = {
 	dataDir: path.join(process.env.PATH_DATA),
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
+	accDir:path.join(process.env.PATH_DATA,'acc'),
 	// Web клиент: команды на включение
 	command: null,
 	// Web клиент: Команды на управление клапанами по времени
@@ -403,7 +404,7 @@ const dataDir = data.dataDir
 const retainDir = data.retainDir
 const factoryDir = data.factoryDir
 const rootDir = data.rootDir
-
+const accDir = data.accDir
 
 module.exports = {
 	data,
@@ -412,6 +413,7 @@ module.exports = {
 	dataDir,
 	retainDir,
 	factoryDir,
+	accDir,
 	setCmd,
 	setTune,
 	setCmdT,

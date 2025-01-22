@@ -1,6 +1,5 @@
 const antibliz = require('./antibliz')
 const overVlv = require('./over_vlv')
-const idle = require('./idle')
 const alrClosed = require('./alr_closed')
 const alrClosedB = require('./alr_closed_b')
 const local = require('./local')
@@ -17,6 +16,7 @@ const alrStop = require('./alr_stop')
 const supply = require('./supply')
 const co2 = require('./co2')
 const aggregate = require('./aggregate')
+const idle = require('./idle')
 
 const def = {
 	section: {

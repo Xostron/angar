@@ -1,0 +1,16 @@
+{
+ "extralrm": {
+  "6760195ed9da5c2bcc25f682": {
+   "low": {
+    "date": "2025-01-22T13:29:38.372Z",
+    "count": true,
+    "code": "alrClosed",
+    "type": "alr",
+    "typeSignal": "critical",
+    "msg": "Аварийное закрытие клапанов",
+    "title": "",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   }
+  }
+ }
+}

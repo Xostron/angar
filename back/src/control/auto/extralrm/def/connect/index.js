@@ -1,4 +1,5 @@
 const { data: store, isReset, delModule, delDebMdl } = require('@store')
+const { writeAcc, removeAcc } = require('@tool/acc_json')
 
 // Авария "Модуль не в сети" для склада
 function connect(building, section, obj, s, se, m, automode, acc, data) {

@@ -118,5 +118,92 @@ function check(obj, build, result) {
 	return stop
 }
 
+/**
+ * Обновление аккумулятора - пересечение данных файла и данных итерации (по ключам)
+ * Данные файла остаются нетронутыми только те объекты,
+ * которые имеются в данных итерации
+ * Только для extralrm
+ * @param {*} obj Данные итерации
+ * @param {*} data Данные файла
+ * @returns
+ */
+function cbAcc(obj, data) {
+	const a = { a: 1, b: 2 }
+	console.log(111, obj, data)
 
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking }
+	for (const key in data) {
+		data[key] ??= {}
+		const ksBld = Object.keys(obj[key] ?? {})
+		const keysBld = Object.keys(data[key])
+
+		// Проход добавление-удаление по ключам bld
+		fromFile(keysBld, ksBld, data, obj)
+		// Добавление новых складов в файл
+		fromIter(keysBld, ksBld, data, obj)
+	}
+	return data
+}
+
+function fromFile(keysBld, ksBld, data, obj) {
+	keysBld.forEach((bld) => {
+		// Ключ склада не найден в итерации (новых аварий не обнаружено) - удаляем все аварии склада из файла
+		if (!ksBld.includes(bld)) {
+			delete data.extralrm[bld]
+			return
+		}
+		// Ключ склада найден в итерации -> добавление/удаление/без_изменений аварий склада
+		const ksAlr = Object.keys(obj.extralrm[bld])
+		const keysAlr = Object.keys(data.extralrm[bld])
+
+		// По авариям склада из файла (удаление,без_изменений)
+		keysAlr.forEach((el) => (!ksAlr.includes(el) ? delete data.extralrm[bld][el] : null))
+		// Добавление новых аварий из итерации
+		ksAlr.forEach((el) => (!keysAlr.includes(el) ? (data.extralrm[bld][el] = obj.extralrm[bld][el]) : null))
+	})
+}
+
+function fromIter(keysBld, ksBld, data, obj) {
+	ksBld.forEach((bld) => {
+		// Склад уже записан в файл - пропускаем
+		if (keysBld.includes(bld)) return
+		// Добавляем склад в файл
+		data.extralrm[bld] = obj.extralrm[bld]
+	})
+}
+
+function all(data, obj) {
+	const adata = Object.keys(data[key])
+	const aobj = Object.keys(obj[key])
+	const r = new Set([...Object.keys(data[key]), ...Object.keys(data[key])])
+	keys.forEach((key) => {
+		// Ключа нет в объекте итерации - удалить из файла
+		if (!(key in obj)) {
+			delete data[key]
+			return
+		}
+		// Ключ есть в объекте итерации
+		// Ключа нет в файле - добавить в файл
+		if (!(key in data)) {
+			data ??= {}
+			data[key] = obj[key]
+			return
+		}
+		// Ключ есть в файле
+		// all()
+	})
+}
+
+// function intersection(data,obj){
+// 	data
+// }
+
+// function getKeys(o){
+// 	const keys = Object.keys(o)
+// 	keys.forEach(k =>{
+// 		if (typeof o[k] !== 'object') return
+// 		getKeys(o)
+// 	})
+// 	return keys 
+// }
+
+module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc }
