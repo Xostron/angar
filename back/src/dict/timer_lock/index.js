@@ -15,7 +15,7 @@ module.exports = data = {
 			date: new Date(),
 			type: key,
 			typeSignal: 'timer',
-			msg: this?.[key] ?? `Не определено: ${name}, ${key}`,
+			msg: this?.[key] ?? `Таймер: ${name}, ${key}`,
 			// msg:`${name}: ${this?.[key] ?? `Не определено: ${name}, ${key}`}`
 		}
 	},
