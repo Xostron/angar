@@ -214,20 +214,6 @@
      "max": 50
     }
    },
-   "hysteresisIn": {
-    "_name": "Гистерезис",
-    "_order": 8,
-    "_icon": "hysteresis",
-    "hysteresisIn": {
-     "_name": "Гистерезис температуры",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": 0.3,
-     "min": 0,
-     "max": 5
-    }
-   },
    "hysteresisOut": {
     "_name": "Гистерезис улицы",
     "_order": 9,
@@ -238,6 +224,20 @@
      "type": "number",
      "unit": "°C",
      "value": "1",
+     "min": 0,
+     "max": 5
+    }
+   },
+   "hysteresisIn": {
+    "_name": "Гистерезис",
+    "_order": 8,
+    "_icon": "hysteresis",
+    "hysteresisIn": {
+     "_name": "Гистерезис температуры",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": 0.3,
      "min": 0,
      "max": 5
     }
@@ -4258,20 +4258,6 @@
   },
   "onion": {
    "_name": "Лук",
-   "deltaRoom": {
-    "_name": "Дельта температуры помещения",
-    "_order": 5,
-    "_icon": "hysteresis-out",
-    "deltaRoom": {
-     "_name": "",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": 0.5,
-     "min": 0,
-     "max": 5
-    }
-   },
    "decrease": {
     "_name": "Уменьшение температуры в день",
     "_order": 3,
@@ -4324,6 +4310,20 @@
      "type": "number",
      "unit": "°C",
      "value": 0.3,
+     "min": 0,
+     "max": 5
+    }
+   },
+   "deltaRoom": {
+    "_name": "Дельта температуры помещения",
+    "_order": 5,
+    "_icon": "hysteresis-out",
+    "deltaRoom": {
+     "_name": "",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": 0.5,
      "min": 0,
      "max": 5
     }

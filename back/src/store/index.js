@@ -1,6 +1,7 @@
 const path = require('path')
 const mesTimer = require('@dict/timer_lock')
 const { msgM } = require('@tool/message')
+const { writeAcc, removeAcc } = require('@tool/acc_json')
 
 const data = {
 	_cycle_ms_: 0,
@@ -14,13 +15,15 @@ const data = {
 	tPause: 500,
 	// 10% от полного времени открытия клапана - время после которого клапан останавливается
 	hystV: 10,
+	// debounce error module plc
+	tDebPlc: 20000,
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
 	pubDir: path.join(process.env.PATH_PUB),
 	dataDir: path.join(process.env.PATH_DATA),
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
-	accDir:path.join(process.env.PATH_DATA,'acc'),
+	accDir: path.join(process.env.PATH_DATA, 'acc'),
 	// Web клиент: команды на включение
 	command: null,
 	// Web клиент: Команды на управление клапанами по времени
@@ -97,13 +100,13 @@ const data = {
 	timeout: {},
 	debMdl: {},
 	// Прошлые состояния
-	prev:{}
+	prev: {},
 }
 // Разрешить true/заблокировать false опрос модуля
-function timeout(buildingId, moduleId, ip, opt) {
+function timeout(buildingId, moduleId, ip, opt, obj) {
 	// console.log(3333, opt.name, data.alarm.module?.[buildingId]?.[moduleId], data.debMdl?.[moduleId])
 	// Проверка debounce модуля: true - модуль ОК
-	if (isDebMdl(buildingId, moduleId, opt)) {
+	if (isDebMdl(buildingId, moduleId, opt, obj)) {
 		// console.log(opt.name, 'в debounce')
 		return true
 	}
@@ -127,25 +130,27 @@ function timeout(buildingId, moduleId, ip, opt) {
 	// Время прошло - разрешить опрос
 	return true
 }
-
-function isDebMdl(buildingId, mdlId, opt) {
-	const _time = 20000
+// Проверка внесен ли модуль в список антидребезга
+function isDebMdl(buildingId, mdlId, opt, obj) {
 	if (!data.debMdl[mdlId]) return true
-	const time = data.debMdl[mdlId].getTime() + _time
+	const time = data.debMdl[mdlId].getTime() + (data.tDebPlc ?? 20000)
 	const cur = new Date().getTime()
 	// Время прошло: авария осталась
 	if (cur >= time) {
-		wrModule(buildingId, mdlId, { date: new Date(), ...msgM(buildingId, opt, 110) })
-		// delDebMdl(mdlId)
+		const mes = { date: new Date(), ...msgM(buildingId, opt, 110) }
+		wrModule(buildingId, mdlId, mes)
+		writeAcc(obj.acc, { bldId:buildingId, code:mdlId, mes }, 'module')
 		return false
 	}
 	// Опрашиваем модуль
 	return true
 }
+// Сохранить неисправный модуль сначала в антидребезг
 function wrDebMdl(mdlId) {
 	if (!data.debMdl?.[mdlId]) data.debMdl[mdlId] = new Date()
 }
-function delDebMdl(mdlId='') {
+// Удалить модуль из антидребезга
+function delDebMdl(mdlId = '') {
 	if (!mdlId) data.debMdl = {}
 	delete data.debMdl?.[mdlId]
 }

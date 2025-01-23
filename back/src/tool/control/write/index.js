@@ -4,20 +4,21 @@ const { data: store, timeout, isErrM } = require('@store')
 
 /**
  * Записать данные в модули
- * @param {*} obj информация по модулю
+ * @param {*} obj Глобальные данные о складе
  * @returns
  */
 async function write(obj) {
+	const {output} = obj
 	try {
-		if (!obj) return null
+		if (!output) return null
 		const ok = {}
-		for (const i in obj) {
+		for (const i in output) {
 			// Проверка модуля (антидребезг или ошибка модуля)
-			if (!timeout(obj[i].buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
+			if (!timeout(output[i].buildingId, output[i]._id, output[i].ip, output[i], obj)) continue
 			// Запись данных в модуль
-			const v = await make(obj[i])
+			const v = await make(output[i], obj.acc)
 			await pause(100)
-			const k = obj[i].name + ' Порт ' + obj[i].port
+			const k = output[i].name + ' Порт ' + output[i].port
 			ok[k] = v
 		}
 		return ok
@@ -32,13 +33,13 @@ function pause(n) {
 	return new Promise((res) => setTimeout(res, n))
 }
 // Запись данных в модуль
-async function make(o) {
+async function make(o, acc) {
 	switch (o.interface) {
 		case 'rtu':
-			return await writeRTU(o.ip, o.port, o)
+			return await writeRTU(o.ip, o.port, o, acc)
 
 		case 'tcp':
-			return await writeTCP(o.ip, o.port, o)
+			return await writeTCP(o.ip, o.port, o, acc)
 		default:
 			return
 	}

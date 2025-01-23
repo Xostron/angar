@@ -8,9 +8,9 @@ async function read(arr, obj) {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
 			// Проверка модуля (антидребезг или ошибка модуля)
-			if (!timeout(arr[i].buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
+			if (!timeout(arr[i].buildingId, arr[i]._id, arr[i].ip, arr[i], obj)) continue
 			// Чтение данных в модуль
-			const v = await make(arr[i])
+			const v = await make(arr[i], obj)
 			// флаг первого запуска сервера
 			store.startup = false
 			const k = arr[i]._id
@@ -50,12 +50,12 @@ function pause(n) {
 }
 
 // Нет связи
-async function make(o) {
+async function make(o, obj) {
 	switch (o.interface) {
 		case 'rtu':
-			return await readRTU(o.ip, o.port, o)
+			return await readRTU(o.ip, o.port, o, obj)
 		case 'tcp':
-			return await readTCP(o.ip, o.port, o)
+			return await readTCP(o.ip, o.port, o, obj)
 	}
 }
 

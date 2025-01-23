@@ -2,14 +2,13 @@
  {
   "_id": "67602d42d9da5c2bcc25f6dc",
   "module": {
-   "channel": 6,
-   "id": "67602160d9da5c2bcc25f6c2"
+   "channel": 5,
+   "id": "6791f1c3f8f0b51d14b1b0ac"
   },
   "owner": {
    "id": "67602254d9da5c2bcc25f6c9",
    "type": "section"
-  },
-  "type": "heating"
+  }
  },
  {
   "_id": "678df6408d068044b41b38c5",

@@ -42,16 +42,16 @@
   "type": "fan"
  },
  {
-  "_id": "67602d59d9da5c2bcc25f6dd",
+  "_id": "6791da01f8f0b51d14b1b0a8",
   "name": "Разгонный",
-  "order": 1,
+  "order": 4,
   "owner": {
-   "type": "building",
-   "id": "6760195ed9da5c2bcc25f682"
+   "type": "section",
+   "id": "67602254d9da5c2bcc25f6c9"
   },
   "module": {
-   "channel": 5,
-   "id": "67602160d9da5c2bcc25f6c2"
+   "channel": 1,
+   "id": "6791f1c3f8f0b51d14b1b0ac"
   },
   "type": "accel"
  }

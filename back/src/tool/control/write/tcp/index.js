@@ -1,10 +1,11 @@
 const modbus = require('jsmodbus')
 const net = require('net')
 const { wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+const { writeAcc, removeAcc } = require('@tool/acc_json')
 const { regist } = require('./fn')
 
 // Запись данных для TCP/IP модуля
-function writeTCP(host, port, opt) {
+function writeTCP(host, port, opt, acc) {
 	return new Promise((resolve, reject) => {
 		const socket = new net.Socket()
 		const cl = new modbus.client.TCP(socket)
@@ -22,6 +23,7 @@ function writeTCP(host, port, opt) {
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)
+					removeAcc(acc, { bldId: opt.buildingId, code: opt._id }, 'module')
 					delDebMdl(opt._id)
 					resolve(true)
 				})

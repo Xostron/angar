@@ -51,13 +51,21 @@
    },
    "accel": {
     "mode": {
-     "mode": "on"
+     "mode": "off"
     }
    },
    "idle": {
     "ozon": {
      "end": "23:00",
      "begin": "01:00"
+    },
+    "accel": {
+     "end": "23:00"
+    }
+   },
+   "heating": {
+    "on": {
+     "on": "-2"
     }
    }
   },
@@ -77,6 +85,11 @@
   "supply": {
    "off": "2025-01-09T13:19:16.952Z",
    "on": null
+  }
+ },
+ "undefined": {
+  "setting": {
+   "undefined": {}
   }
  }
 }

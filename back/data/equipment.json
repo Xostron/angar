@@ -1,4 +1,36 @@
 {
+ "676e4b9c99b11313a8d4b8cf": {
+  "name": "Delta DI/DO",
+  "interface": "tcp",
+  "use": "rw",
+  "re": {
+   "channel": 64,
+   "noreverse": true,
+   "start": 5500,
+   "step": 1,
+   "type": "boolean"
+  },
+  "wr": {
+   "channel": 80,
+   "noreverse": true,
+   "on": 1,
+   "start": 5600,
+   "step": 1,
+   "type": "boolean"
+  }
+ },
+ "676e4b1f99b11313a8d4b8cd": {
+  "name": "Delta Int/10",
+  "interface": "tcp",
+  "use": "r",
+  "re": {
+   "channel": 50,
+   "noreverse": true,
+   "start": 2032,
+   "step": 1,
+   "type": "int10"
+  }
+ },
  "67601c89d9da5c2bcc25f6be": {
   "name": "МВ110-16К",
   "interface": "rtu",

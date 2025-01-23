@@ -137,14 +137,14 @@ function check(obj, build, result) {
 function cbAcc(obj, data) {
 	// Проход по ключам аккумулятора (extralrm, extra, timer ...)
 	for (const key in obj) {
-		// запись пересечений obj c data
+		// Запись пересечений obj c data
 		all(obj[key], data[key])
 	}
 	return obj
 }
 
 /**
- * obj - актуальные аварии, data - сохраненые аварии
+ * obj - новые аварии, data - сохраненые аварии
  * Поиск пересечения между двумя объектами, результат мутированный obj,
  * в котором пересечения копируются из data
  * @param {*} data данные из файла (слудующая вложенность)
@@ -153,7 +153,7 @@ function cbAcc(obj, data) {
  * @param {*} key предыдущий ключ
  * @returns
  */
-function all(obj, data, prev, key) {
+function all(obj, data={}, prev, key) {
 	const keys = Object.keys(obj)
 	// console.log(111, key, obj, keys)
 	for (const k of keys) {
@@ -169,66 +169,6 @@ function all(obj, data, prev, key) {
 		}
 	}
 }
-// function fromFile(keysBld, ksBld, data, obj) {
-// 	keysBld.forEach((bld) => {
-// 		// Ключ склада не найден в итерации (новых аварий не обнаружено) - удаляем все аварии склада из файла
-// 		if (!ksBld.includes(bld)) {
-// 			delete data.extralrm[bld]
-// 			return
-// 		}
-// 		// Ключ склада найден в итерации -> добавление/удаление/без_изменений аварий склада
-// 		const ksAlr = Object.keys(obj.extralrm[bld])
-// 		const keysAlr = Object.keys(data.extralrm[bld])
 
-// 		// По авариям склада из файла (удаление,без_изменений)
-// 		keysAlr.forEach((el) => (!ksAlr.includes(el) ? delete data.extralrm[bld][el] : null))
-// 		// Добавление новых аварий из итерации
-// 		ksAlr.forEach((el) => (!keysAlr.includes(el) ? (data.extralrm[bld][el] = obj.extralrm[bld][el]) : null))
-// 	})
-// }
-
-// function fromIter(keysBld, ksBld, data, obj) {
-// 	ksBld.forEach((bld) => {
-// 		// Склад уже записан в файл - пропускаем
-// 		if (keysBld.includes(bld)) return
-// 		// Добавляем склад в файл
-// 		data.extralrm[bld] = obj.extralrm[bld]
-// 	})
-// }
-
-// function all(data, obj) {
-// 	const adata = Object.keys(data[key])
-// 	const aobj = Object.keys(obj[key])
-// 	const r = new Set([...Object.keys(data[key]), ...Object.keys(data[key])])
-// 	keys.forEach((key) => {
-// 		// Ключа нет в объекте итерации - удалить из файла
-// 		if (!(key in obj)) {
-// 			delete data[key]
-// 			return
-// 		}
-// 		// Ключ есть в объекте итерации
-// 		// Ключа нет в файле - добавить в файл
-// 		if (!(key in data)) {
-// 			data ??= {}
-// 			data[key] = obj[key]
-// 			return
-// 		}
-// 		// Ключ есть в файле
-// 		// all()
-// 	})
-// }
-
-// function intersection(data,obj){
-// 	data
-// }
-
-// function getKeys(o){
-// 	const keys = Object.keys(o)
-// 	keys.forEach(k =>{
-// 		if (typeof o[k] !== 'object') return
-// 		getKeys(o)
-// 	})
-// 	return keys
-// }
 
 module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc }

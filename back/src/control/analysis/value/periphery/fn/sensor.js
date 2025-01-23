@@ -13,11 +13,11 @@ const calc = require('@tool/command/abs_humidity')
  * @param {*} result результат
  *
  */
-function sensor(equip, val, retain, result) {
+function sensor(equip, val, retain, result, acc) {
 	const { sensor, section, building } = equip
 	// Проверка каждого датчика на неисправность показаний
 	for (const s of sensor) {
-		const r = isValid(s, val, equip, retain)
+		const r = isValid(s, val, equip, retain, acc)
 		// Владелец датчика
 		const owner = getBS(s, equip)
 		const hold = debounce(owner?.building?._id, s._id, r, store.holdSensor?.[s._id], retain, s)
@@ -26,7 +26,7 @@ function sensor(equip, val, retain, result) {
 	}
 
 	// Проверка по секционно датчиков температуры продукта
-	fnDetection(equip, result, retain)
+	fnDetection(equip, result, retain, acc)
 
 	// Абсолютная влажность склада
 	total(equip, result, retain)

@@ -3,9 +3,9 @@ const { msgBS } = require('@tool/message')
 const { data: store, wrExtralrm, delExtralrm } = require('@store')
 const { getListSens } = require('@tool/command/sensor')
 const { getB, getBS } = require('@tool/command/building')
-
+const { writeAcc, removeAcc } = require('@tool/acc_json')
 // Неисправность датчика
-function isValid(sens, val, equip, retain) {
+function isValid(sens, val, equip, retain, acc) {
 	// Владельцы датчика (склад и секция)
 	const { building, section } = getBS(sens, equip)
 
@@ -31,7 +31,7 @@ function isValid(sens, val, equip, retain) {
 	range(r, sens)
 
 	// Аварийные сообщения
-	webAlarm(r, building, section, sens)
+	webAlarm(r, building, section, sens, acc)
 	return r
 }
 
@@ -51,15 +51,15 @@ function ruleModule(equip, sens, v) {
 }
 
 // Автообнаружжение неисправностей датчиков температуры продукта (посекционно)
-function fnDetection(equip, result, retain) {
+function fnDetection(equip, result, retain, acc) {
 	const { section, sensor, building } = equip
 	// В секции отбираем датчики температуры продукта
 	for (const s of section) {
 		// Владелец склад
-		const buildingId = s.buildingId
-		const b = getB(building, buildingId)
+		const bldId = s.buildingId
+		const b = getB(building, bldId)
 		// Настройка Разрешить автообнаружение неисправностей
-		if (!retain?.[buildingId]?.setting?.sys?.detection) continue
+		if (!retain?.[bldId]?.setting?.sys?.detection) continue
 
 		// Датчики температуры продукта
 		const aTprd = getListSens(s._id, sensor, result, 'tprd')
@@ -70,11 +70,11 @@ function fnDetection(equip, result, retain) {
 
 		// Неисправные - взводим аварию
 		err.forEach((el) => {
-			if (!store.alarm?.extralrm?.[buildingId]?.[s._id]?.[el?._id]) {
-				wrExtralrm(buildingId, s._id, el._id, {
-					date: new Date(),
-					...msgBS(b, s, el, 99),
-				})
+			if (!store.alarm?.extralrm?.[bldId]?.[s._id]?.[el?._id]) {
+				const mes = { date: new Date(), ...msgBS(b, s, el, 99) }
+				wrExtralrm(bldId, s._id, el._id)
+				const o = { bldId, secId: s._id, code: el._id }
+				writeAcc(acc, { ...o, mes }, 'extralrm')
 			}
 			// Перезапись датчика как не валидного
 			result[el._id] ??= {}
@@ -82,7 +82,9 @@ function fnDetection(equip, result, retain) {
 		})
 		// Здоровые датчики - удаление аварии
 		ref.forEach((el) => {
-			delExtralrm(buildingId, s?._id, el._id)
+			delExtralrm(bldId, s?._id, el._id)
+			const o = { bldId, secId: s._id, code: el._id }
+			removeAcc(acc, o, 'extralrm')
 		})
 	}
 }
@@ -153,21 +155,27 @@ function range(r, sens) {
 }
 
 // Аварийные сообщения о неисправности датчика
-function webAlarm(r, bld, sect, sens) {
+function webAlarm(r, bld, sect, sens, acc) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
 	if (r.state === 'alarm' && !store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id]) {
-		sect?.name
-			? wrExtralrm(bld._id, sect?._id, sens._id, {
-					date: new Date(),
-					...msgBS(bld, sect, sens, 100),
-			  })
-			: wrExtralrm(bld._id, 'sensor', sens._id, {
-					date: new Date(),
-					...msgBS(bld, 'sensor', sens, 100),
-			  })
+		if (sect?.name) {
+			const o = { bldId: bld._id, secId: sect?._id, code: sens._id }
+			const mes = { date: new Date(), ...msgBS(bld, sect, sens, 100) }
+			wrExtralrm(bld._id, sect?._id, sens._id, mes)
+			writeAcc(acc, { ...o, mes }, 'extralrm')
+		} else {
+			const o = { bldId: bld._id, secId: 'sensor', code: sens._id }
+			const mes = { date: new Date(), ...msgBS(bld, 'sensor', sens, 100) }
+			wrExtralrm(bld._id, 'sensor', sens._id, mes)
+			writeAcc(acc, { ...o, mes }, 'extralrm')
+		}
 	}
 	// Если валидный - удаляем аварию
-	if (r.state !== 'alarm') delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
+	if (r.state !== 'alarm') {
+		delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
+		const o = { bldId: bld._id, secId: sect?._id ?? 'sensor', code: sens._id }
+		removeAcc(acc, o, 'extralrm')
+	}
 }
 
 module.exports = { isValid, fnDetection, detection }

@@ -48,6 +48,18 @@
   }
  },
  {
+  "_id": "6791fe9af8f0b51d14b1b0b3",
+  "type": "local",
+  "module": {
+   "id": "6760216cd9da5c2bcc25f6c3",
+   "channel": 7
+  },
+  "owner": {
+   "type": "building",
+   "id": "6760195ed9da5c2bcc25f682"
+  }
+ },
+ {
   "_id": "67602cb4d9da5c2bcc25f6d5",
   "type": "on",
   "owner": {

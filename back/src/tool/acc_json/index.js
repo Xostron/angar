@@ -20,6 +20,10 @@ function writeAcc(acc, data, key = 'extralrm') {
 
 function removeAcc(acc, data, key = 'extralrm') {
 	const { bldId, secId, code } = data
+	if (!secId && !code) {
+		delete acc?.[key]?.[bldId]
+		return
+	}
 	if (!secId) {
 		delete acc?.[key]?.[bldId]?.[code]
 		return

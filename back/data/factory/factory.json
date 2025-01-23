@@ -49,11 +49,11 @@
    "channelMax": {
     "channelMax": 20
    },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
    "hysteresisOut": {
     "hysteresisOut": "1"
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
    },
    "day": {
     "day": 30
@@ -939,9 +939,6 @@
    }
   },
   "onion": {
-   "deltaRoom": {
-    "deltaRoom": 0.5
-   },
    "decrease": {
     "decrease": 1
    },
@@ -953,6 +950,9 @@
    },
    "hysteresis": {
     "hysteresis": 0.3
+   },
+   "deltaRoom": {
+    "deltaRoom": 0.5
    }
   },
   "potato": {

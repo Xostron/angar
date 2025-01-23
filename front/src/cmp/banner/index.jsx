@@ -1,15 +1,15 @@
+import { useShallow } from 'zustand/react/shallow'
 import Dialog from '@cmp/dialog'
 import useBanner from '@cmp/banner/use_banner'
 import useInputStore from '@store/input'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 import Item from './item'
 
 export default function Banner({ type = 'building' }) {
 	let { build, sect } = useParams()
-	const { refBanner, open, close } = useBanner()
-	const [bannerB, bannerS, alarm] = useInputStore(({ bannerB, bannerS, alarm }) => [bannerB, bannerS, alarm])
+	const { refBanner, open } = useBanner()
+	const [bannerB, bannerS] = useInputStore(({ bannerB, bannerS }) => [bannerB, bannerS])
 
 	useEffect(() => {
 		open()
