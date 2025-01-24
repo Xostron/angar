@@ -26,8 +26,10 @@ async function save(obj) {
 	 * Перед тем как аварии сохранить в файл, прочитаем сохраненные аварии модулей ПЛК,
 	 * для того чтобы не потерять их при перезагрузке POS
 	 *  */
-	obj.acc = await readOne('acc.json', accDir)
-	store.alarm.module = obj.acc?.module
+	if (store.first) {
+		obj.acc = await readOne('acc.json', accDir)
+		store.alarm.module = obj.acc?.module
+	}
 	// Сохранение текущих аварий в файл
 	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }

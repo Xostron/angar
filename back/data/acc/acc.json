@@ -1,7 +1,5 @@
 {
- "auto": {
-  "67601974d9da5c2bcc25f689": {}
- },
+ "auto": {},
  "timer": {
   "6760195ed9da5c2bcc25f682": {
    "ozon": {
@@ -45,8 +43,7 @@
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
    }
-  },
-  "67601974d9da5c2bcc25f689": {}
+  }
  },
  "extra": {
   "6760195ed9da5c2bcc25f682": {
@@ -82,17 +79,7 @@
  },
  "achieve": {},
  "module": {
-  "67601974d9da5c2bcc25f689": {
-   "677fc905a61e120c0c75607f": {
-    "date": "2025-01-24T13:52:15.670Z",
-    "count": true,
-    "code": "module",
-    "typeSignal": "critical",
-    "msg": "Нет связи",
-    "title": "Модуль МК210-301 (IP 192.168.1.228:502):",
-    "buildingId": "67601974d9da5c2bcc25f689"
-   }
-  }
+  "67601974d9da5c2bcc25f689": {}
  },
  "debounce": {}
 }

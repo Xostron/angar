@@ -15,10 +15,12 @@ const { data: store, reset, accDir } = require('@store')
 
 // Главный цикл управления
 async function loop() {
+	store.first = true
 	while (true) {
 		const bgn = hrtime()
 		await control()
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
+		store.first = false
 	}
 }
 
