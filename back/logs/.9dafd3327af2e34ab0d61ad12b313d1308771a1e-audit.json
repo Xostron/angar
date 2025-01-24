@@ -189,6 +189,21 @@
             "date": 1737718427776,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-14.log",
             "hash": "5a0bb73b82f84a00548449847e57698dfba49947548047d2379a04a0921546ec"
+        },
+        {
+            "date": 1737720008009,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-15.log",
+            "hash": "8f2a4e1e7e7f1697c64252b2868884a56e3597220cc1131c74dac2afd51ec7fe"
+        },
+        {
+            "date": 1737723613955,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-16.log",
+            "hash": "d3029b964f9036f0459f0a2e32c306a9bee3b56f9c454577b64f0e54d581d488"
+        },
+        {
+            "date": 1737727438016,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-17.log",
+            "hash": "d99d718e604924708fae4194940a4cb1fed2f64e5024f16616e7c90d224fabfc"
         }
     ],
     "hashType": "sha256"

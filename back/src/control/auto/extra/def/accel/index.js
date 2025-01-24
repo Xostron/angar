@@ -49,10 +49,25 @@ function fnMsg(building, acc, s) {
 				code = 400
 				break
 		}
-		delExtra(building._id, null, 'accel')
-		wrExtra(building._id, null, 'accel', {
-			date: new Date(),
-			...msgB(building, code),
-		})
+		delUnused(s?.accel?.mode, building, code)
+		// delExtra(building._id, null, 'accel', s?.accel?.mode ?? 'off')
+		// wrExtra(
+		// 	building._id,
+		// 	null,
+		// 	'accel',
+		// 	{
+		// 		date: new Date(),
+		// 		...msgB(building, code),
+		// 	},
+		// 	s?.accel?.mode ?? 'off'
+		// )
 	}
+}
+
+function delUnused(cur, building, code) {
+	;[null, 'off', 'on', 'temp', 'time'].forEach((el) => {
+		if (el == cur) return wrExtra(building._id, null, 'accel', { date: new Date(), ...msgB(building, code) }, cur ?? 'off')
+		// console.log(1111, el)
+		delExtra(building._id, null, 'accel', el ?? 'off')
+	})
 }

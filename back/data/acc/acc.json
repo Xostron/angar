@@ -1,5 +1,7 @@
 {
- "auto": {},
+ "auto": {
+  "67601974d9da5c2bcc25f689": {}
+ },
  "timer": {
   "6760195ed9da5c2bcc25f682": {
    "ozon": {
@@ -23,6 +25,16 @@
      "buildingId": "6760195ed9da5c2bcc25f682"
     }
    },
+   "alrClosed": {
+    "date": "2025-01-24T12:34:28.071Z",
+    "count": true,
+    "code": "alrClosed",
+    "type": "alr",
+    "typeSignal": "critical",
+    "msg": "Аварийное закрытие клапанов",
+    "title": "",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
    "local": {
     "date": "2025-01-24T10:22:13.857Z",
     "count": true,
@@ -33,17 +45,20 @@
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
    }
-  }
+  },
+  "67601974d9da5c2bcc25f689": {}
  },
  "extra": {
   "6760195ed9da5c2bcc25f682": {
    "accel": {
-    "date": "2025-01-24T11:33:51.383Z",
-    "code": "off",
-    "typeSignal": "info",
-    "msg": "Режим работы разгонного вентилятора: Выключен",
-    "title": "",
-    "buildingId": "6760195ed9da5c2bcc25f682"
+    "on": {
+     "date": "2025-01-24T13:28:25.128Z",
+     "code": "on",
+     "typeSignal": "info",
+     "msg": "Режим работы разгонного вентилятора: Включен",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
    },
    "67602254d9da5c2bcc25f6c9": {
     "connect": {
@@ -66,6 +81,18 @@
   }
  },
  "achieve": {},
- "module": {},
+ "module": {
+  "67601974d9da5c2bcc25f689": {
+   "677fc905a61e120c0c75607f": {
+    "date": "2025-01-24T13:52:15.670Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МК210-301 (IP 192.168.1.228:502):",
+    "buildingId": "67601974d9da5c2bcc25f689"
+   }
+  }
+ },
  "debounce": {}
 }

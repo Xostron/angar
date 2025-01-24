@@ -51,7 +51,7 @@
    },
    "accel": {
     "mode": {
-     "mode": "off"
+     "mode": "on"
     }
    },
    "idle": {
@@ -60,6 +60,9 @@
      "begin": "01:00"
     },
     "accel": {
+     "end": "00:00"
+    },
+    "cooling": {
      "end": "00:00"
     }
    },

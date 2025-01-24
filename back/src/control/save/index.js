@@ -2,6 +2,7 @@ const { data: store, retainDir, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
 const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc } = require('./fn')
 const retainStart = require('@tool/retain/start')
+const { readOne } = require('@tool/json')
 
 // Сохранение в файл retain (Настройки, режимы работы и т.д.)
 async function save(obj) {
@@ -21,6 +22,12 @@ async function save(obj) {
 	if (store.supply) await createAndModifySync(store.supply, 'data', retainDir, cbSupply)
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
 
+	/**
+	 * Перед тем как аварии сохранить в файл, прочитаем сохраненные аварии модулей ПЛК,
+	 * для того чтобы не потерять их при перезагрузке POS
+	 *  */
+	obj.acc = await readOne('acc.json', accDir)
+	store.alarm.module = obj.acc?.module
 	// Сохранение текущих аварий в файл
 	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }

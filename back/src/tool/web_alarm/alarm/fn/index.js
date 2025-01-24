@@ -2,7 +2,7 @@ const { data: store } = require('@store')
 const mes = require('@dict/message')
 
 // Аварии на боковой колонке на странице "внутренности" Секции
-function bar(acc, r, bld, sect, am, start) {
+function bar(r, bld, sect, am, start) {
 	// склад выключен, авторежим не выбран - очищаем аварии, сообщения, таймеры запретов авторежима
 	if (!am || !start) {
 		r.bar ??= {}
@@ -20,7 +20,7 @@ function bar(acc, r, bld, sect, am, start) {
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.ahout2 ?? null
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed ?? null
 	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
-	const antibliz = acc.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
+	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
@@ -57,11 +57,11 @@ function barB(r, bld) {
 }
 
 // Аварии на странице "Сигналы" (собираем по секции)
-function signal(acc, r, bld, sect, am) {
+function signal(r, bld, sect, am) {
 	r.signal[bld._id] ??= []
 	// Сообщения: авторежимы, доп. аварии, доп. функции
 	const auto = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
-	const extralrm = acc.extralrm?.[bld._id]?.[sect?._id]
+	const extralrm = store.alarm.extralrm?.[bld._id]?.[sect?._id]
 	const extra = store.alarm?.extra?.[bld._id]?.[sect._id]
 
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
@@ -70,7 +70,7 @@ function signal(acc, r, bld, sect, am) {
 }
 
 // Аварии на странице "Сигналы" (собираем по складу и суммируем с секциями)
-function signalB(acc, r, bld, am, data) {
+function signalB(r, bld, am, data) {
 	r.signal[bld._id] ??= []
 	// CO2
 	const idS = data.section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
@@ -91,8 +91,8 @@ function signalB(acc, r, bld, am, data) {
 	})
 
 	const timer = Object.values(r.timer?.[bld._id] ?? {})
-	const module = Object.values(acc.module?.[bld._id] ?? {})
-	const accel = store.alarm.extra?.[bld._id]?.accel ?? null
+	const module = Object.values(store.alarm.module?.[bld._id] ?? {})
+	const accel = Object.values(store.alarm.extra?.[bld._id]?.accel ?? {})
 	const cable = store.alarm.extra?.[bld._id]?.cable ?? null
 	const co2 = store.alarm.extra?.[bld._id]?.co2 ?? null
 	const drain = store.alarm.extra?.[bld._id]?.drain ?? null
@@ -100,20 +100,20 @@ function signalB(acc, r, bld, am, data) {
 	const smoking = store.alarm.extra?.[bld._id]?.smoking ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 
-	const gen = acc.extralrm?.[bld._id]?.gen ?? null
-	const vlvLim = acc?.extralrm?.[bld._id]?.vlvLim ?? null
-	const local = acc?.extralrm?.[bld._id]?.local ?? null
-	const alrClosed = acc?.extralrm?.[bld._id]?.alrClosed ?? null
-	const alrStop = acc?.extralrm?.[bld._id]?.alarm ?? null
-	const supply = acc?.extralrm?.[bld._id]?.supply ?? null
-	const low = acc?.extralrm?.[bld._id]?.low ?? null
+	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
+	const vlvLim = store.alarm?.extralrm?.[bld._id]?.vlvLim ?? null
+	const local = store.alarm?.extralrm?.[bld._id]?.local ?? null
+	const alrClosed = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
+	const alrStop = store.alarm?.extralrm?.[bld._id]?.alarm ?? null
+	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
+	const low = store.alarm?.extralrm?.[bld._id]?.low ?? null
 
 	// аварии датчиков склада
-	const extralrmS = acc?.extralrm?.[bld._id]?.sensor
+	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
 	if (timer?.length) r.signal[bld._id].push(...timer)
-	if (accel) r.signal[bld._id].push(accel)
 	if (module?.length) r.signal[bld._id].push(...module)
+	if (accel) r.signal[bld._id].push(...accel)
 	if (gen) r.signal[bld._id].push(gen)
 	if (cable) r.signal[bld._id].push(cable)
 	if (vlvLim) r.signal[bld._id].push(vlvLim)

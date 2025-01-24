@@ -5,7 +5,7 @@ function connect(building, section, obj, s, se, m, automode, acc, data) {
 	const isErrM = !!Object.keys(store.alarm?.module?.[building._id] ?? {}).length
 	
 	if (!isErrM || isReset(building._id)) {
-		delModule(building._id)
+		// delModule(building._id)
 		acc.alarm = false
 	}
 
