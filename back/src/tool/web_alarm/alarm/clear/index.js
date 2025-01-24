@@ -4,8 +4,8 @@ function normal(bld, r, data = {}) {
 	if (!am || !start || !sumAuto) {
 		r.achieve ??= {}
 		r.achieve[bld._id] = {}
-		r.timer ??= {}
-		r.timer[bld._id] = {}
+		// r.timer ??= {}
+		// r.timer[bld._id] = {}
 	}
 }
 

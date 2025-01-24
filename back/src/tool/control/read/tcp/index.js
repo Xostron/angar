@@ -2,10 +2,9 @@ const modbus = require('jsmodbus')
 const net = require('net')
 const { rhr } = require('../fn')
 const { data: store, wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 // const { msgM } = require('@tool/message')
 
-function readTCP(host, port, opt, obj) {
+function readTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
 		const socket = new net.Socket()
 		const cl = new modbus.client.TCP(socket)
@@ -38,7 +37,6 @@ function readTCP(host, port, opt, obj) {
 			Promise.all(p)
 				.then(([r, w]) => {
 					delModule(opt.buildingId, opt._id)
-					removeAcc(obj.acc, { bldId: opt.buildingId, code: opt._id }, 'module')
 					delDebMdl(opt._id)
 					resolve([r, w])
 				})

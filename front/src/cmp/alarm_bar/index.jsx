@@ -11,7 +11,6 @@ export default function AlarmBar({ setActive }) {
 	const { build, sect } = useParams()
 	const [bar, barB, timer] = useInputStore(({ alarm }) => [alarm.bar, alarm.barB, alarm.timer])
 	// Аварии для панели
-	// const r = {alr:'', tmr:''}
 	let r
 	if (sect) r = fnAlarm(build, sect, bar, timer)
 	else r = fnAlarmB(build, barB, timer)
@@ -24,7 +23,6 @@ export default function AlarmBar({ setActive }) {
 	const fnAction = alr.length || tmr.length ? action : null
 	// стили
 	const { cl, span, grid, cursor } = fnStyle(alr, tmr, show)
-
 
 	return (
 		<>

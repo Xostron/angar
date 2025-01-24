@@ -1,7 +1,6 @@
 const path = require('path')
 const mesTimer = require('@dict/timer_lock')
 const { msgM } = require('@tool/message')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 
 const data = {
 	_cycle_ms_: 0,
@@ -10,7 +9,7 @@ const data = {
 	// Прогрев клапанов 60сек
 	tWarming: 60,
 	// TCP период повторной проверки модуля - каждую 1 мин
-	tTCP: 1,
+	tTCP: 10,
 	// Пауза при чтении очередного модуля, мс
 	tPause: 500,
 	// 10% от полного времени открытия клапана - время после которого клапан останавливается
@@ -103,10 +102,10 @@ const data = {
 	prev: {},
 }
 // Разрешить true/заблокировать false опрос модуля
-function timeout(buildingId, moduleId, ip, opt, obj) {
+function timeout(buildingId, moduleId, ip, opt) {
 	// console.log(3333, opt.name, data.alarm.module?.[buildingId]?.[moduleId], data.debMdl?.[moduleId])
 	// Проверка debounce модуля: true - модуль ОК
-	if (isDebMdl(buildingId, moduleId, opt, obj)) {
+	if (isDebMdl(buildingId, moduleId, opt)) {
 		// console.log(opt.name, 'в debounce')
 		return true
 	}
@@ -118,28 +117,25 @@ function timeout(buildingId, moduleId, ip, opt, obj) {
 	const _TIME = data.tTCP * 60 * 1000
 	const now = new Date().getTime()
 	if (!data.timeout?.[moduleId]) data.timeout[moduleId] = now + _TIME
-
 	// Время не прошло - блокировать опрос модуля
 	if (now <= data.timeout?.[moduleId]) {
 		console.log('Блокировать модуль', opt?.name, opt?.use, ip)
 		return false
 	}
-
 	data.timeout[moduleId] = new Date().getTime() + _TIME
 	console.log('Разрешить опрос', opt?.name, opt?.use, ip)
 	// Время прошло - разрешить опрос
 	return true
 }
 // Проверка внесен ли модуль в список антидребезга
-function isDebMdl(buildingId, mdlId, opt, obj) {
+function isDebMdl(buildingId, mdlId, opt) {
 	if (!data.debMdl[mdlId]) return true
 	const time = data.debMdl[mdlId].getTime() + (data.tDebPlc ?? 20000)
 	const cur = new Date().getTime()
 	// Время прошло: авария осталась
 	if (cur >= time) {
-		const mes = { date: new Date(), ...msgM(buildingId, opt, 110) }
-		wrModule(buildingId, mdlId, mes)
-		writeAcc(obj.acc, { bldId:buildingId, code:mdlId, mes }, 'module')
+		wrModule(buildingId, mdlId, { date: new Date(), ...msgM(buildingId, opt, 110) })
+		// delDebMdl(mdlId)
 		return false
 	}
 	// Опрашиваем модуль
@@ -207,12 +203,10 @@ function delExtra(buildingId, sectionId, name) {
 }
 
 // Получить extralrm аварию
-function isExtralrm(buildingId, sectionId, name) {
-	if (!sectionId) {
-		return !!data.alarm?.extralrm?.[buildingId]?.[name]
-	}
-	return !!data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
+function isExtralrm(bldId, secId, name) {
+	return secId ? !!data.alarm?.extralrm?.[bldId]?.[secId]?.[name] : !!data.alarm?.extralrm?.[bldId]?.[name]
 }
+
 // Записать в extralrm (доп. аварии)
 function wrExtralrm(buildingId, sectionId, name, o) {
 	data.alarm.extralrm ??= {}
@@ -228,10 +222,6 @@ function wrExtralrm(buildingId, sectionId, name, o) {
 function delExtralrm(buildingId, sectionId, name, id) {
 	if (!sectionId) {
 		delete data.alarm?.extralrm?.[buildingId]?.[name]
-		return
-	}
-	if (!id) {
-		delete data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
 		return
 	}
 	delete data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]?.[id]

@@ -1,6 +1,5 @@
 const { wrTimer, delTimer } = require('@store')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
-const mesTimer = require('@dict/timer_lock')
+
 // Авторежимы склада
 const am = ['drying', 'cure', 'cooling', 'heat']
 
@@ -11,21 +10,17 @@ function idle(building, section, obj, s, se, m, automode, acc, data) {
 	// По таймерам запрета
 	for (const key in s.idle) {
 		acc[key] ??= {}
-		const o = { bldId: building._id, code: key }
 		// Проверка диапазона
 		const check = checkRange(s?.idle?.[key]?.begin, s?.idle?.[key]?.end, exclude.includes(key))
 		// Включение запрета
 		if (check && !acc?.[key]?.flag) {
 			acc[key].flag = true
 			wrTimer(building._id, key, name)
-			const mes = mesTimer.get(name, key)
-			writeAcc(obj.acc, { ...o, mes }, 'timer')
 		}
 		// Удаление запрета
 		if (!check) {
 			delete acc?.[key]?.flag
 			delTimer(building._id, key)
-			removeAcc(obj.acc, o, 'timer')
 		}
 	}
 }

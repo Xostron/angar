@@ -1,7 +1,7 @@
 const def = require('./def')
 const checkSupply = require('./supply')
 const { change, checkDefrost } = require('./fn')
-const { setACmd, data: store, isExtralrm } = require('@store')
+const { data: store } = require('@store')
 
 function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj

@@ -1,6 +1,5 @@
 const { data: store, delExtralrm } = require('@store')
 const { longOpn, longCls } = require('./fn')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 
 /**
  * Авария клапана: долгое открытие/закрытие
@@ -13,7 +12,7 @@ function alarmV(building, section, obj, s, se, m, automode, acc, data) {
 	const { retain, value } = obj
 	for (const v of m.vlvS) {
 		acc[v._id] ??= {}
-		const o = { bldId: building._id, secId: section._id, code: 'alrValve'+v._id }
+
 		// Состояние и текущее положение клапана
 		const { state, val } = value?.[v._id]
 		// if (v.type === 'in') console.log(1111, 'roma', acc[v._id])
@@ -22,7 +21,6 @@ function alarmV(building, section, obj, s, se, m, automode, acc, data) {
 		if (acc[v._id]?.finish) {
 			acc[v._id] = {}
 			delExtralrm(building._id, section._id, 'alrValve')
-			removeAcc(obj.acc, o, 'extralrm')
 		}
 
 		// Клапан не в состоянии закрытия/открытия - выходим, очищая аккумулятор

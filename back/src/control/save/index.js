@@ -22,7 +22,7 @@ async function save(obj) {
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
 
 	// Сохранение текущих аварий в файл
-	await createAndModifySync(obj.acc, 'acc', accDir, cbAcc)
+	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }
 
 module.exports = save

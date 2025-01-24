@@ -21,7 +21,6 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 	const { value } = obj
 	const { vlvS, fanS } = m
 	const { exclude } = data
-	const o = { bldId: building._id, secId:section._id, code: 'over_vlv' }
 
 	// Отмена выполнения подпрограммы
 	if (exclude) return null
@@ -52,9 +51,7 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 		acc.alarm = true
 		acc.beginWait = +new Date().getTime()
 		acc.endWait = acc.beginWait + s.overVlv.wait
-		const mes = { date: new Date(), ...msg(building, section,14) }
-		wrExtralrm(building._id, section._id, 'over_vlv', mes)
-		writeAcc(obj.acc, { ...o, mes }, 'extralrm')
+		wrExtralrm(building._id, section._id, 'over_vlv', { date: new Date(), ...msg(building, section,14) })
 	}
 
 	// Сброс
@@ -65,7 +62,6 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 		delete acc.beginWait
 		delete acc.endWait
 		delExtralrm(building._id, section._id, 'over_vlv')
-		removeAcc(obj.acc, o, 'extralrm')
 	}
 	return acc?.alarm ?? false 
 }

@@ -1,11 +1,10 @@
 const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
 const { wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 // const { msgM } = require('@tool/message')
 
 // Запись данных для RTU модуля
-function writeRTU(path, position, opt, obj) {
+function writeRTU(path, position, opt) {
 	const optRTU = {
 		baudRate: 9600,
 		stopBits: 1,
@@ -31,7 +30,6 @@ function writeRTU(path, position, opt, obj) {
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)
-					removeAcc(acc, { bldId: opt.buildingId, code: opt._id }, 'module')
 					delDebMdl(opt._id)
 					resolve(true)
 				})

@@ -14,7 +14,7 @@ const device = require('./fn/device')
  * @returns {id_input: value,..., outputM:{id_module:[arr_value],...}}
  */
 function periphery(val, obj) {
-	const { data: equip, retain, acc } = obj
+	const { data: equip, retain } = obj
 	let result = {}
 
 	// Маска выходных модулей DO
@@ -23,7 +23,7 @@ function periphery(val, obj) {
 	result.outputEq = outputEq(equip, val)
 	// console.log(result)
 	// Анализ датчиков
-	sensor(equip, val, retain, result, acc)
+	sensor(equip, val, retain, result)
 	// Значения сигналов и состояние ИМ
 	signal(equip, val, retain, result)
 

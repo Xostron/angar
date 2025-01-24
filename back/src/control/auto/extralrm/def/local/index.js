@@ -1,23 +1,18 @@
 const { getSignal } = require('@tool/command/signal')
 const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msg } = require('@tool/message')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 
 // Местное управление (сигнал секции)
 function local(building, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(section?._id, obj, 'local')
-	const o = { bldId: building._id, secId: section._id, code: 'local' }
 	// Сброс
 	if (sig===true || isReset(building._id)) {
 		delExtralrm(building._id, section._id, 'local')
-		removeAcc(obj.acc, o, 'extralrm')
 		acc.alarm = false
 	}
 	// Установка
 	if (sig===false && !acc.alarm) {
-		const mes = { date: new Date(), ...msg(building, section,27) }
-		wrExtralrm(building._id, section._id, 'local', mes)
-		writeAcc(obj.acc, { ...o, mes }, 'extralrm')
+		wrExtralrm(building._id, section._id, 'local', { date: new Date(), ...msg(building, section,27) })
 		acc.alarm = true
 	}
 }

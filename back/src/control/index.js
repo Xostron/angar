@@ -40,7 +40,7 @@ async function control() {
 		// Выхода: Блокировки
 		writeLock(obj)
 		// Выхода: Запись в модули
-		await writeVal(obj)
+		await writeVal(obj.output)
 		// Запись в retain файл json
 		await save(obj)
 		// Аварии для web

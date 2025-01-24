@@ -129,6 +129,51 @@
             "date": 1737630030834,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-23-14.log",
             "hash": "4fd30c275cbc87a270fc9cf5cc7e16a8972a3a1240d3f3e44157002f734b2884"
+        },
+        {
+            "date": 1737634756036,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-23-15.log",
+            "hash": "b0b92b151c4e995cd25272a565002800e70dffa44f3376536f4925bb08839b13"
+        },
+        {
+            "date": 1737637548296,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-23-16.log",
+            "hash": "1511bc36fe7561bb5b4d10ced793d6cd5edc7c85ef0bbc9b52315b42dea7ea8b"
+        },
+        {
+            "date": 1737640806620,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-23-17.log",
+            "hash": "40eebb64c37a93699bd21b69cab89bbfcc3446f014e4fce5d09303bf9540966d"
+        },
+        {
+            "date": 1737696408399,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-24-08.log",
+            "hash": "93ffb24e066a6ebd8f5e915b52a29ce67451d50ef78d7d1ca2aa36869fe73a83"
+        },
+        {
+            "date": 1737702114522,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-24-10.log",
+            "hash": "7ac22f6df30cd6dd7bbf6a04ca4bb1d1cb002d2e997a6fe9dd9a21ace907c5a0"
+        },
+        {
+            "date": 1737706469740,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-24-11.log",
+            "hash": "fb40124c14fd680eacf94d080b8b4d2ffaf4efcb93d839d8144c24f416c9681a"
+        },
+        {
+            "date": 1737709689671,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-24-12.log",
+            "hash": "ff134c784bae9576990e800d96b7f8a364930f4a6b8c4a29d61c181800e16a51"
+        },
+        {
+            "date": 1737713557786,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-24-13.log",
+            "hash": "543e80917bf0e8884eb8a4ce82ca87dfe7ec8d12549c9872a31f8344db54d233"
+        },
+        {
+            "date": 1737718427773,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-24-14.log",
+            "hash": "0f10d8d973b21e818c052b76812cd194b55af134d421e99136b14a7119eeee69"
         }
     ],
     "hashType": "sha256"

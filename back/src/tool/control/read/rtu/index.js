@@ -2,11 +2,10 @@ const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
 const { rhr } = require('../fn')
 const { data: store, wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 // const { msgM } = require('@tool/message')
 
 // Чтение данных RTU модуля
-function readRTU(path, position, opt, obj) {
+function readRTU(path, position, opt) {
 	const optRTU = {
 		baudRate: 9600,
 		stopBits: 1,
@@ -48,7 +47,6 @@ function readRTU(path, position, opt, obj) {
 				.then((r) => {
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
-					removeAcc(obj.acc, { bldId: opt.buildingId, code: opt._id }, 'module')
 					resolve(r)
 				})
 				.catch((e) => {

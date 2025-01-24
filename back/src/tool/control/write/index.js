@@ -8,17 +8,16 @@ const { data: store, timeout, isErrM } = require('@store')
  * @returns
  */
 async function write(obj) {
-	const {output} = obj
 	try {
-		if (!output) return null
+		if (!obj) return null
 		const ok = {}
-		for (const i in output) {
+		for (const i in obj) {
 			// Проверка модуля (антидребезг или ошибка модуля)
-			if (!timeout(output[i].buildingId, output[i]._id, output[i].ip, output[i], obj)) continue
+			if (!timeout(obj[i].buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль
-			const v = await make(output[i], obj.acc)
+			const v = await make(obj[i])
 			await pause(100)
-			const k = output[i].name + ' Порт ' + output[i].port
+			const k = obj[i].name + ' Порт ' + obj[i].port
 			ok[k] = v
 		}
 		return ok
@@ -33,13 +32,13 @@ function pause(n) {
 	return new Promise((res) => setTimeout(res, n))
 }
 // Запись данных в модуль
-async function make(o, acc) {
+async function make(o) {
 	switch (o.interface) {
 		case 'rtu':
-			return await writeRTU(o.ip, o.port, o, acc)
+			return await writeRTU(o.ip, o.port, o)
 
 		case 'tcp':
-			return await writeTCP(o.ip, o.port, o, acc)
+			return await writeTCP(o.ip, o.port, o)
 		default:
 			return
 	}

@@ -1,20 +1,5 @@
 {
- "extralrm": {
-  "6760195ed9da5c2bcc25f682": {
-   "sensor": {
-    "676021e3d9da5c2bcc25f6c6": {
-     "date": "2025-01-23T11:19:58.420Z",
-     "count": true,
-     "code": "sensor",
-     "typeSignal": "sensor",
-     "msg": "Неисправность датчика",
-     "title": "Влажность улицы:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    }
-   },
-   "67602254d9da5c2bcc25f6c9": {}
-  }
- },
+ "auto": {},
  "timer": {
   "6760195ed9da5c2bcc25f682": {
    "ozon": {
@@ -22,35 +7,65 @@
     "type": "ozon",
     "typeSignal": "timer",
     "msg": "Озонатор запрещен"
-   },
-   "accel": {
-    "date": "2025-01-23T06:11:53.814Z",
-    "type": "accel",
-    "typeSignal": "timer",
-    "msg": "Разгонные вентиляторы запрещены"
    }
   }
  },
- "module": {
+ "extralrm": {
   "6760195ed9da5c2bcc25f682": {
-   "6791f1c3f8f0b51d14b1b0ac": {
-    "date": "2025-01-23T11:19:58.731Z",
-    "count": true,
-    "code": "module",
-    "typeSignal": "critical",
-    "msg": "Нет связи",
-    "title": "Модуль Delta DI/DO (IP 192.168.1.233:502):",
-    "buildingId": "6760195ed9da5c2bcc25f682"
+   "67602254d9da5c2bcc25f6c9": {
+    "676022c3d9da5c2bcc25f6cd": {
+     "date": "2025-01-24T11:33:51.376Z",
+     "count": true,
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Секция 1. Темп. канала 2:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
    },
-   "6791f4c1f8f0b51d14b1b0b1": {
-    "date": "2025-01-23T11:26:05.654Z",
+   "local": {
+    "date": "2025-01-24T10:22:13.857Z",
     "count": true,
-    "code": "module",
+    "code": "local",
+    "type": "",
     "typeSignal": "critical",
-    "msg": "Нет связи",
-    "title": "Модуль Delta Int/10 (IP 192.168.1.233:502):",
+    "msg": "Управление переведено переключателем на щите",
+    "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
    }
   }
- }
+ },
+ "extra": {
+  "6760195ed9da5c2bcc25f682": {
+   "accel": {
+    "date": "2025-01-24T11:33:51.383Z",
+    "code": "off",
+    "typeSignal": "info",
+    "msg": "Режим работы разгонного вентилятора: Выключен",
+    "title": "",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "67602254d9da5c2bcc25f6c9": {
+    "connect": {
+     "date": "2025-01-24T11:33:51.384Z",
+     "code": "",
+     "typeSignal": "info",
+     "msg": "Модуль в сети",
+     "title": "Секция 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
+   },
+   "connect": {
+    "date": "2025-01-24T11:33:51.384Z",
+    "code": "",
+    "typeSignal": "info",
+    "msg": "Модуль в сети",
+    "title": "",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   }
+  }
+ },
+ "achieve": {},
+ "module": {},
+ "debounce": {}
 }

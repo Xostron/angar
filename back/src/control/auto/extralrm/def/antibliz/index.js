@@ -1,7 +1,6 @@
 const { stateV } = require('@tool/command/valve')
 const { wrExtralrm, delExtralrm, data: store, isReset } = require('@store')
 const { msg } = require('@tool/message')
-const { writeAcc, removeAcc } = require('@tool/acc_json')
 
 /**
  * если за время time, концевик закрыто приточного клапана хлопнул (сработал)
@@ -18,16 +17,15 @@ const { writeAcc, removeAcc } = require('@tool/acc_json')
  * @returns {} alarm:bool Авария, datalog:{дата аварии и текст аварии}, reset:bool сброс аварии
  */
 function antibliz(building, section, obj, s, se, m, automode, acc, data) {
-	const { value } = obj
+	const { retain, factory, value } = obj
 	const { vlvS } = m
-	const o = { bldId: building._id, secId: section._id, code: 'antibliz' }
 
 	// Настроек нет - функцию не выполняем
 	if (!s.antibliz.count || !s.antibliz.time || !s.antibliz.wait || !s?.antibliz?.mode || s.antibliz.mode === 'off') return null
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	const state = stateV(vlvIn._id, value, building._id, vlvIn.sectionId[0])
-
+	
 	// Логика
 	// Текущее время
 	const curTime = +new Date().getTime()
@@ -45,7 +43,6 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 		// Сигнал аварии
 		acc.alarm = false
 		delExtralrm(building._id, section._id, 'antibliz')
-		removeAcc(obj.acc, o, 'extralrm')
 	}
 
 	// Ловим хлопки закрытого концевика клапана
@@ -55,9 +52,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 			acc.alarm = true
 			acc.beginWait = +new Date().getTime()
 			acc.endWait = acc.beginWait + s.antibliz.wait
-			const mes = { date: new Date(), ...msg(building, section, 13) }
-			wrExtralrm(building._id, section._id, 'antibliz', mes)
-			writeAcc(obj.acc, { ...o, mes }, 'extralrm')
+			wrExtralrm(building._id, section._id, 'antibliz', { date: new Date(), ...msg(building, section, 13) })
 		}
 	}
 	// Обновление состояния клапана после проверки в каждой итерации
@@ -73,9 +68,8 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 		delete acc.lastSt
 		delete acc.cnt
 		delExtralrm(building._id, section._id, 'antibliz')
-		removeAcc(obj.acc, o, 'extralrm')
 	}
-	return acc?.alarm ?? false
+	return acc?.alarm ?? false 
 }
 
 module.exports = antibliz

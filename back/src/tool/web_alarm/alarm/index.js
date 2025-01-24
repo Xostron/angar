@@ -3,7 +3,7 @@ const { barB, bar, bannerB, banner, signalB, signal, count } = require('./fn')
 const defClear = require('./clear')
 
 function alarm(obj) {
-	const { data, retain } = obj
+	const { data, retain, acc } = obj
 
 	const r = {
 		// Все сообщения [страница "Сигналы"]
@@ -25,8 +25,8 @@ function alarm(obj) {
 	}
 
 	// Таймер запретов (слабое клонирование)
-	r.timer = { ...store?.alarm?.timer }
-
+	r.timer = { ...acc.timer }
+	// console.log(r.timer)
 	for (const bld of data.building) {
 		// Склад запущен
 		const start = retain?.[bld._id]?.start
@@ -45,13 +45,13 @@ function alarm(obj) {
 		// аварии по секции
 		for (const section of data.section) {
 			if (section.buildingId != bld._id) continue
-			signal(r, bld, section, am)
-			bar(r, bld, section, am, start)
+			signal(acc, r, bld, section, am)
+			bar(acc, r, bld, section, am, start)
 			banner(r, bld, section, am)
 			sumMode.push(retain?.[bld._id]?.mode?.[section._id])
 		}
 		// аварии общие склада
-		signalB(r, bld, am, data)
+		signalB(acc, r, bld, am, data)
 		barB(r, bld, am)
 		bannerB(r, bld)
 		// Наличие хотя бы одной секции в авто

@@ -11,7 +11,7 @@ function build(start, building, obj, s, se, m, automode) {
 	// Склад включен
 	if (start) {
 		// Дополнительные аварии склада
-		alr = alr || extralrm(building, null, obj, s, se, m, automode, null, 'building', 'on')
+		alr =  extralrm(building, null, obj, s, se, m, automode, null, 'building', 'on')
 		// Дополнительные функции склада (Склад включен)
 		extra(building, null, obj, s, se, m, null, null, null, 'building', 'on')
 	} else {
