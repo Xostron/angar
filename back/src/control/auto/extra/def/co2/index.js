@@ -1,7 +1,5 @@
 const def = require('./fn')
-const { data: store, delExtra, wrExtra } = require('@store')
-const { msgB } = require('@tool/message')
-const {fnAlarm} = require('@tool/command/extra')
+const { fnAlarm, delUnused } = require('@tool/command/extra')
 
 // Удаление СО2
 function coOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -47,16 +45,7 @@ function fnMsg(building, acc, s) {
 				code = 64
 				break
 		}
-		delExtra(building._id, null, 'co2')
-		wrExtra(building._id, null, 'co2', {
-			date: new Date(),
-			...msgB(building, code),
-		})
+		const arr = [null, 'off', 'on', 'sens', 'time']
+		delUnused(arr, s?.co2?.mode, building, code, 'co2')
 	}
 }
-
-// function fnAlarm(building, co2, value) {
-// 	co2.forEach((f) => {
-// 		if (value?.[f._id]?.state === 'alarm') return ctrlB(f, building._id, 'off')
-// 	})
-// }

@@ -1,6 +1,5 @@
 const def = require('./fn')
-const { data: store, delExtra, wrExtra } = require('@store')
-const { msgB } = require('@tool/message')
+const { delUnused } = require('@tool/command/extra')
 
 // Разгонные вентиляторы
 function accelCOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -43,10 +42,7 @@ function fnMsg(building, acc, s) {
 				code = 400
 				break
 		}
-		delExtra(building._id, null, 'accel')
-		wrExtra(building._id, null, 'accel', {
-			date: new Date(),
-			...msgB(building, code),
-		})
+		const arr = [null, 'off', 'on', 'auto']
+		delUnused(arr, s?.cooler?.accel, building, code, 'accel')
 	}
 }

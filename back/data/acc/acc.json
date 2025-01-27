@@ -12,17 +12,6 @@
  },
  "extralrm": {
   "6760195ed9da5c2bcc25f682": {
-   "67602254d9da5c2bcc25f6c9": {
-    "676022c3d9da5c2bcc25f6cd": {
-     "date": "2025-01-24T11:33:51.376Z",
-     "count": true,
-     "code": "sensor",
-     "typeSignal": "sensor",
-     "msg": "Неисправность датчика",
-     "title": "Секция 1. Темп. канала 2:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    }
-   },
    "alrClosed": {
     "date": "2025-01-24T12:34:28.071Z",
     "count": true,
@@ -42,17 +31,28 @@
     "msg": "Управление переведено переключателем на щите",
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "67602254d9da5c2bcc25f6c9": {
+    "676022c3d9da5c2bcc25f6cd": {
+     "date": "2025-01-27T07:07:41.319Z",
+     "count": true,
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Секция 1. Темп. канала 2:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
    }
   }
  },
  "extra": {
   "6760195ed9da5c2bcc25f682": {
    "accel": {
-    "on": {
-     "date": "2025-01-24T13:28:25.128Z",
-     "code": "on",
+    "off": {
+     "date": "2025-01-24T14:24:48.736Z",
+     "code": "off",
      "typeSignal": "info",
-     "msg": "Режим работы разгонного вентилятора: Включен",
+     "msg": "Режим работы разгонного вентилятора: Выключен",
      "title": "",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }

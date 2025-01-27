@@ -169,6 +169,16 @@
             "date": 1737727438027,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-17.log",
             "hash": "ffa2a5214915540da8c31cc5723a1a528a63bea13cf9e50418892e42bcba6092"
+        },
+        {
+            "date": 1737960731539,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-27-09.log",
+            "hash": "ae52d19e2d89f42c47354d00c4751ff5f049d1f6beb818ff4779f17cf2400c06"
+        },
+        {
+            "date": 1737961632966,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-27-10.log",
+            "hash": "000453db81cbd2d36a1c7335998e89f96276b21bbc5cf65f6d1fcf744fce7ae1"
         }
     ],
     "hashType": "sha256"

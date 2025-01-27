@@ -23,10 +23,9 @@ async function save(obj) {
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
 
 	/**
-	 * Перед тем как аварии сохранить в файл, прочитаем сохраненные аварии модулей ПЛК,
-	 * для того чтобы не потерять их при перезагрузке POS
+	 * При первом запуске читаем аварии из файла
 	 *  */
-	if (store.first) {
+	if (store._first) {
 		obj.acc = await readOne('acc.json', accDir)
 		store.alarm.module = obj.acc?.module
 	}

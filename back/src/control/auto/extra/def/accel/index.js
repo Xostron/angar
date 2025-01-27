@@ -1,9 +1,7 @@
 const def = require('./fn')
-const { data: store, delExtra, wrExtra } = require('@store')
-const { msgB } = require('@tool/message')
+const { delUnused } = require('@tool/command/extra')
 
 // Разгонные вентиляторы
-
 function accelOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (['time', 'temp'].includes(s?.accel?.mode)) return
 	if (!s?.accel?.mode || !def?.[s?.accel?.mode]) return
@@ -49,25 +47,7 @@ function fnMsg(building, acc, s) {
 				code = 400
 				break
 		}
-		delUnused(s?.accel?.mode, building, code)
-		// delExtra(building._id, null, 'accel', s?.accel?.mode ?? 'off')
-		// wrExtra(
-		// 	building._id,
-		// 	null,
-		// 	'accel',
-		// 	{
-		// 		date: new Date(),
-		// 		...msgB(building, code),
-		// 	},
-		// 	s?.accel?.mode ?? 'off'
-		// )
+		const arr = [null, 'off', 'on', 'temp', 'time']
+		delUnused(arr, s?.accel?.mode, building, code, 'accel')
 	}
-}
-
-function delUnused(cur, building, code) {
-	;[null, 'off', 'on', 'temp', 'time'].forEach((el) => {
-		if (el == cur) return wrExtra(building._id, null, 'accel', { date: new Date(), ...msgB(building, code) }, cur ?? 'off')
-		// console.log(1111, el)
-		delExtra(building._id, null, 'accel', el ?? 'off')
-	})
 }

@@ -189,6 +189,16 @@
             "date": 1737727438004,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-24-17.log",
             "hash": "2b36817701205df316286ee94652b43bf1c9cb461b1e6f41e0d8a3e46ac7b1ac"
+        },
+        {
+            "date": 1737960731470,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-27-09.log",
+            "hash": "5a9748f67ae099cb6d14df2532d9781c3a8633c6f44a40d57230da98dc4f8626"
+        },
+        {
+            "date": 1737961632941,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-01-27-10.log",
+            "hash": "c7ebd905114941acaaf80e071c6134c6b63219389f64660d1478353d4ee1ab0f"
         }
     ],
     "hashType": "sha256"

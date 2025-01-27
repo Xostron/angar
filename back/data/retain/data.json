@@ -51,7 +51,7 @@
    },
    "accel": {
     "mode": {
-     "mode": "on"
+     "mode": "off"
     }
    },
    "idle": {

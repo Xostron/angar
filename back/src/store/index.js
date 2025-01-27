@@ -3,6 +3,9 @@ const mesTimer = require('@dict/timer_lock')
 const { msgM } = require('@tool/message')
 
 const data = {
+	// Флаг первого цикла
+	_first: true,
+	// Расчетное время цикла
 	_cycle_ms_: 0,
 	// Добавочная задержка главного цикла
 	tDelay: 0,
@@ -195,7 +198,7 @@ function wrExtra(buildingId, sectionId, name, o, type) {
 		data.alarm.extra[buildingId][sectionId][name] = o
 	} else {
 		if (!sectionId) {
-			data.alarm.extra[buildingId][name]??={}
+			data.alarm.extra[buildingId][name] ??= {}
 			data.alarm.extra[buildingId][name][type] = o
 			return
 		}
@@ -212,7 +215,7 @@ function delExtra(buildingId, sectionId, name, type) {
 			return
 		}
 		delete data.alarm?.extra?.[buildingId]?.[sectionId]?.[name]
-	}else{
+	} else {
 		if (!sectionId) {
 			delete data.alarm?.extra?.[buildingId]?.[name]?.[type]
 			return

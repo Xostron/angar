@@ -1,7 +1,7 @@
 const def = require('./fn')
 const { data: store, delExtra, wrExtra } = require('@store')
 const { msgB } = require('@tool/message')
-const { fnAlarm } = require('@tool/command/extra')
+const { fnAlarm, delUnused } = require('@tool/command/extra')
 
 // Оттайка слива воды
 // Холодильник вкл/выкл - ручной режим
@@ -45,11 +45,8 @@ function fnMsg(building, acc, s) {
 				code = 70
 				break
 		}
-		delExtra(building._id, null, 'drain')
-		wrExtra(building._id, null, 'drain', {
-			date: new Date(),
-			...msgB(building, code),
-		})
+		const arr = [null, 'off', 'on', 'temp', 'auto']
+		delUnused(arr, s?.cooler?.drain, building, code, 'drain')
 	}
 }
 

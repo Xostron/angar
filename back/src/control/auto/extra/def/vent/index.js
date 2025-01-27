@@ -1,6 +1,6 @@
 const { mAutoByTime, mAutoByDura, mOn } = require('./fn')
-const { data: store, isExtralrm, isReset, delExtra, wrExtra } = require('@store')
-const { msg } = require('@tool/message')
+const { data: store, isExtralrm, isReset } = require('@store')
+const { delUnused } = require('@tool/command/extra')
 
 // Вентиляторы секции
 function vent(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan) {
@@ -8,7 +8,7 @@ function vent(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	const { fanS, vlvS } = m
 	const { fanOff, alwaysFan } = data
 	// Сообщение о выбранном режиме
-	fnMsg(building, section, acc, s)
+	fnMsg(building, acc, s)
 	// Отключение
 	if (!fanS.length) return
 	// Режим вентиляции: Выкл
@@ -68,7 +68,7 @@ module.exports = vent
  * Ожидание внутр вент = 0 , работа внутр вент > 0 - режим Вкл
  */
 
-function fnMsg(building, section, acc, s) {
+function fnMsg(building, acc, s) {
 	if (acc.lastMode != s?.vent?.mode) {
 		acc.lastMode = s?.vent?.mode
 		let code
@@ -87,10 +87,7 @@ function fnMsg(building, section, acc, s) {
 				code = 400
 				break
 		}
-		delExtra(building._id, section._id, 'vent')
-		wrExtra(building._id, section._id, 'vent', {
-			date: new Date(),
-			...msg(building, section, code),
-		})
+		const arr = [null, 'off', 'on', 'auto']
+		delUnused(arr, s?.vent?.mode, building, code, 'vent')
 	}
 }
