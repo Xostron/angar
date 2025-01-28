@@ -1,5 +1,5 @@
-const { data: store } = require('@store')
 const { barB, bar, bannerB, banner, signalB, signal, count } = require('./fn')
+const { data: store } = require('@store')
 const defClear = require('./clear')
 
 function alarm(obj) {
@@ -19,13 +19,14 @@ function alarm(obj) {
 		count: {},
 		// Баннер - всплывающие окна
 		banner: {},
-		// Архив аварий [Страница "Журнал аварий"]
-		// log: [],
+		// Для мониторинга
+		monit: { critical: {} },
+		// statistic history
+		history: [],
 	}
 
 	// Таймер запретов (слабое клонирование)
 	r.timer = { ...store.alarm.timer }
-	// console.log(r.timer)
 	for (const bld of data.building) {
 		// Склад запущен
 		const start = retain?.[bld._id]?.start
@@ -61,7 +62,33 @@ function alarm(obj) {
 	}
 	// Счетчик текущих аварий (карточка склада)
 	count(r, value.total, data.building)
+
+	// История для логов
+	history(r)
+	// Мониторинг: критические аварии
+	critical(r)
 	return r
+}
+
+function history(r) {
+	for (const bld in r.signal) r.history = r.history.concat(...r.signal[bld].filter((el) => el.count))
+}
+
+// Критические аварии
+function critical(r) {
+	for (const bld in r.signal) {
+		// Критические аварии кроме module (Модуль не в сети)
+		const t = r.signal[bld].filter((el) => el.count && el.code !== 'module')
+		// Замена нескольких сообщений не в сети на одно сообщение (Пропала связь)
+		const m = r.signal[bld].filter((el) => el.code === 'module')
+		if (m.length > 1) {
+			const o = { ...m[0], title: '', msg: 'Обратитесь в сервисный центр (пропала связь с модулем)' }
+			t.push(o)
+		} else {
+			m.length ? t.push(m[0]) : null
+		}
+		r.monit.critical[bld] = t
+	}
 }
 
 module.exports = alarm

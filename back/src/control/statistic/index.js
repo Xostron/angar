@@ -24,7 +24,9 @@ function statistic(obj, alr) {
 	pLog(data, pui, value, 'watt')
 	// Датчики
 	sensLog(value.total, data.building)
+
 	// Неисправности
+	
 	alarmLog(alr)
 	// activity - действия пользователя
 }

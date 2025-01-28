@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
-const { ms } = require('@tool/command/time')
 const tSens = require('@dict/sensor')
+const { getDef } = require('@tool/retain/setting')
 /**
  * Антидребезг аналоговых датчиков
  * @param {*} idSens
@@ -26,15 +26,15 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 		return null
 	}
 
-	// Антидребезг (подсовываем значение из аккумулятора в течении промежутка времени, если датчик сигналит 0,
-	// если 0 на датчике остается в течении времени антидребезга - то устанавливаем датчик в аварию)
+	// Антидребезг (подсовываем значение из аккумулятора в течении времени антидребезга,
+	// по истечению времени - устанавливаем датчик в аварию)
 	const curr = +new Date().getTime()
 	store.debounce[idSens] ??= {}
 	const debounce = store.debounce[idSens]
 	// Определяем промежуток времени
 	if (!debounce.end) {
 		// Из системных настроек (по-умолчанию 15мин = 900000мс)
-		const tDebounce = getDef(idB, retain, 'sys', 'debounce') ?? 900000
+		const tDebounce = getDef(idB, retain, 'sys', 'debounce') ?? store.tDebounce
 		debounce.start = +new Date().getTime()
 		debounce.end = +new Date().getTime() + tDebounce
 	}
@@ -52,10 +52,3 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 }
 
 module.exports = debounce
-
-// Получить значение определенного поля настройки
-function getDef(idB, retain, code, name) {
-	const prd = retain?.[idB]?.product?.code
-	const r = retain?.[idB]?.setting?.[code]?.[prd]?.[name]?.[name]
-	return ms(r)
-}

@@ -6,16 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.5287b93337ef423906cacac4675cb66bbb7c7e81-audit.json",
     "files": [
         {
-            "date": 1737450587121,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-21-12.log",
-            "hash": "04233c0cbbea4922470daed850a5a9b1ac827e2bcb673e4d1ac70daf509924a2"
-        },
-        {
-            "date": 1737458913668,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-21-14.log",
-            "hash": "46bd59c1fca08b33462b1f2ffc32f9ce71bc865b9fae9d39f9acdd06d87dfd19"
-        },
-        {
             "date": 1737468641146,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-21-17.log",
             "hash": "5edb26fc5e934538a9569e97a6d9a6aecc80d1fd647a5849220ec2153fd68551"
@@ -189,6 +179,26 @@
             "date": 1738054957080,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-12.log",
             "hash": "2f08c1587299fa3ad48f0b0c8b86d7e05e7d2270f98980285b73cab02359bcaa"
+        },
+        {
+            "date": 1738063913486,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-14.log",
+            "hash": "f1a7673bc25686c55e0b6c2d99ab9e4598b91e00e00d670deb59ef06c56d031a"
+        },
+        {
+            "date": 1738065621548,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-15.log",
+            "hash": "4129fb34eda25e0772c2893be6003571729ade487e64864a084d1aa1e24aa1c3"
+        },
+        {
+            "date": 1738069637885,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-16.log",
+            "hash": "6b0ea087779a9dc5fa15b3168d6a56a5eacaf7019b213cf28e4ac2fdd8caa7cd"
+        },
+        {
+            "date": 1738073028181,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-17.log",
+            "hash": "bbd1fd73327c5d3b60c0a8e739bd366173655fbf50091b4c7937b7984a1cf10a"
         }
     ],
     "hashType": "sha256"

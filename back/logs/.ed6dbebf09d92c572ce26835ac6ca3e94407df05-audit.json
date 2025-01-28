@@ -6,16 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.ed6dbebf09d92c572ce26835ac6ca3e94407df05-audit.json",
     "files": [
         {
-            "date": 1737450587108,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-21-12.log",
-            "hash": "84a2f14bbd03d0d9cb9fa7ee8d60ffc55c3189bc8db65baa211b9fb88376fe42"
-        },
-        {
-            "date": 1737458913658,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-21-14.log",
-            "hash": "d506d6175f7038ef5675c571a9246c6914c52336a834dd8abc0db2cf4ebd2c77"
-        },
-        {
             "date": 1737468641132,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-21-17.log",
             "hash": "218c994ba59c81efdff46678bf67a0a4c7155a3439aac6fdc6cd79bbf36cddb9"
@@ -189,6 +179,26 @@
             "date": 1738054957068,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-12.log",
             "hash": "be939e2b138c9ecda8e02da6df818a7db02eae25d8c526b422f452544bdce66c"
+        },
+        {
+            "date": 1738063913478,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-14.log",
+            "hash": "8df6223e9885b677b112ca1f9918993115ffa89cf63028be6752d678fd46c2f6"
+        },
+        {
+            "date": 1738065621538,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-15.log",
+            "hash": "d41bf61b5b760211d60f7340a965ef5ed71ec2665b44ebf8ec8db6a4760d018c"
+        },
+        {
+            "date": 1738069637875,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-16.log",
+            "hash": "406bd925c6a248cfcc092531dc57a71ccf1213d7b65ecccbe360b7932f2776c5"
+        },
+        {
+            "date": 1738073031054,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-17.log",
+            "hash": "4b415206120d677bb3195ab265f21625f78f426fe6a5621d342d33abdc068753"
         }
     ],
     "hashType": "sha256"

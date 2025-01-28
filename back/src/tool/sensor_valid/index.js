@@ -194,7 +194,6 @@ function fnMsgs(building, val, type, bType) {
 		})
 		return
 	}
-console.log(1111, type)
 	// Датчик выключен или в аварии - создание сообщения
 	bld.forEach((b) => {
 		val.state === 'off' ? delExtralrm(b._id, 'sensor', type + 'alarm') : delExtralrm(b._id, 'sensor', type + 'off')

@@ -12,16 +12,24 @@
  },
  "extralrm": {
   "6760195ed9da5c2bcc25f682": {
-   "sensor": {},
-   "alrClosed": {
-    "date": "2025-01-28T05:37:23.730Z",
-    "count": true,
-    "code": "alrClosed",
-    "type": "alr",
-    "typeSignal": "critical",
-    "msg": "Аварийное закрытие клапанов",
-    "title": "",
-    "buildingId": "6760195ed9da5c2bcc25f682"
+   "sensor": {
+    "676021e3d9da5c2bcc25f6c6": {
+     "date": "2025-01-28T12:51:35.831Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Влажность улицы:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "houtalarm": {
+     "date": "2025-01-28T12:57:59.730Z",
+     "count": true,
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Датчики влажности улицы неисправны",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
    },
    "local": {
     "date": "2025-01-28T05:37:23.730Z",
@@ -30,6 +38,16 @@
     "type": "",
     "typeSignal": "critical",
     "msg": "Управление переведено переключателем на щите",
+    "title": "",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "alrClosed": {
+    "date": "2025-01-28T14:22:31.649Z",
+    "count": true,
+    "code": "alrClosed",
+    "type": "alr",
+    "typeSignal": "critical",
+    "msg": "Аварийное закрытие клапанов",
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
    }
@@ -82,8 +100,55 @@
  },
  "achieve": {},
  "module": {
-  "67601974d9da5c2bcc25f689": {},
-  "6760195ed9da5c2bcc25f682": {}
+  "67601974d9da5c2bcc25f689": {
+   "677fc905a61e120c0c75607f": {
+    "date": "2025-01-28T12:50:05.335Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МК210-301 (IP 192.168.1.228:502):",
+    "buildingId": "67601974d9da5c2bcc25f689"
+   },
+   "677fc8f1a61e120c0c75607e": {
+    "date": "2025-01-28T12:52:22.295Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МВ210-202 (IP 192.168.1.230:502):",
+    "buildingId": "67601974d9da5c2bcc25f689"
+   }
+  },
+  "6760195ed9da5c2bcc25f682": {
+   "6791f1c3f8f0b51d14b1b0ac": {
+    "date": "2025-01-28T12:51:36.112Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль Delta DI/DO (IP 192.168.1.233:502):",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "6791f4c1f8f0b51d14b1b0b1": {
+    "date": "2025-01-28T12:52:02.835Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль Delta Int/10 (IP 192.168.1.233:502):",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "678748cb8a28e91c7c987750": {
+    "date": "2025-01-28T14:24:44.855Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МЭ110-220 (COM3-16):",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   }
+  }
  },
  "debounce": {}
 }

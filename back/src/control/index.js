@@ -1,9 +1,8 @@
-const { data: store, reset, accDir } = require('@store')
 const writeVal = require('@tool/control/write/index')
 const { cValue, cAlarm } = require('@socket/emit')
+const { data: store, reset } = require('@store')
 const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
-const monitoring = require('./monitoring')
 const statistic = require('./statistic')
 const analysis = require('./analysis')
 const hrtime = process.hrtime.bigint
@@ -33,11 +32,9 @@ async function control() {
 		// Запись в retain файл json
 		await save(obj)
 		// Аварии для web
-		let alr = await webAlarm(obj)
-		// Мониторинг
-		alr = monitoring(alr.signal)
+		const alr = await webAlarm(obj)
 		// Статистика
-		statistic(obj, alr)
+		statistic(obj, alr.history)
 		// Задержка цикла
 		await delay(store.tDelay)
 		// Обнулить команду reset (кнопка сброса аварии)

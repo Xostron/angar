@@ -145,11 +145,9 @@ function flyingVlv(buildingId, sectionId, obj, acc, vlvS, s, forceOff) {
 	for (const v of arrOut) {
 		// Позиция выпускного клапана в %
 		const pos = vlvPercent(v._id, retain?.[buildingId])
-		// Гистерезис в %
-		const hyst = 3
 		// Направление клапана открыть/закрыть/стоп
-		const open = acc.vOut[v._id].target > pos + hyst
-		const close = acc.vOut[v._id].target < pos - hyst
+		const open = acc.vOut[v._id].target > pos + store.tDeadzone
+		const close = acc.vOut[v._id].target < pos - store.tDeadzone
 		let type = open ? "open" : "close"
 		if (!open && !close) type = "stop"
 		if (forceOff) type = "close"

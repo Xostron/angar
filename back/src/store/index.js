@@ -11,21 +11,18 @@ const data = {
 	tDelay: 0,
 	// Прогрев клапанов 60сек
 	tWarming: 60,
-	// TCP период повторной проверки модуля, мин
+	// TCP период повторной проверки модуля, мин(sys.tcp)
 	tTCP: 10,
-	// Пауза при чтении очередного модуля, мс
-	tPause: 500,
+	// Пауза при чтении очередного модуля, мс (sys.pauseplc)
+	tPause: 50,
 	// 10% от полного времени открытия клапана - время после которого клапан останавливается
 	hystV: 10,
-	// debounce error module plc
+	// Антидребезг неисправности модуля ПЛК, 20сек (sys.debplc)
 	tDebPlc: 20000,
-	baseDir: path.join(__dirname, '..'),
-	rootDir: path.join(__dirname, '..', '..'),
-	pubDir: path.join(process.env.PATH_PUB),
-	dataDir: path.join(process.env.PATH_DATA),
-	retainDir: path.join(process.env.PATH_RETAIN),
-	factoryDir: path.join(process.env.PATH_FACTORY),
-	accDir: path.join(process.env.PATH_DATA, 'acc'),
+	// Антидребезг датчиков, 15 мин (sys.debounce)
+	tDebounce: 900000,
+	// Зона нечувствительности между клапанами 2%(sys.deadzone)
+	tDeadzone: 2,
 	// Web клиент: команды на включение
 	command: null,
 	// Web клиент: Команды на управление клапанами по времени
@@ -103,6 +100,13 @@ const data = {
 	debMdl: {},
 	// Прошлые состояния
 	prev: {},
+	baseDir: path.join(__dirname, '..'),
+	rootDir: path.join(__dirname, '..', '..'),
+	pubDir: path.join(process.env.PATH_PUB),
+	dataDir: path.join(process.env.PATH_DATA),
+	retainDir: path.join(process.env.PATH_RETAIN),
+	factoryDir: path.join(process.env.PATH_FACTORY),
+	accDir: path.join(process.env.PATH_DATA, 'acc'),
 }
 // Разрешить true/заблокировать false опрос модуля
 function timeout(buildingId, moduleId, ip, opt) {

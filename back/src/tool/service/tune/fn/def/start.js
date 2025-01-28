@@ -33,7 +33,6 @@ function start(vlv, state) {
 			finish(vlv, state)
 		}
 	}
-	// console.log('555 start', JSON.stringify(vlv))
 }
 
 module.exports = start

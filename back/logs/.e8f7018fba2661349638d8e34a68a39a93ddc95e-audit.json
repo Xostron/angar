@@ -6,16 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.e8f7018fba2661349638d8e34a68a39a93ddc95e-audit.json",
     "files": [
         {
-            "date": 1737450587092,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-21-12.log",
-            "hash": "812d4b853a4c5e867a5c356e0e4cc93c2069aed15ac786ad8f5a582c1b3d433e"
-        },
-        {
-            "date": 1737458913645,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-21-14.log",
-            "hash": "526ab81043f016a6249a330f9cd22b10aeffdc12d5d1522efcac51df5ad1b39f"
-        },
-        {
             "date": 1737468641119,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-21-17.log",
             "hash": "47cc0beb6b3d4ce97a0131ca4f8b0fb80db5375444a0b3b6d9dc4b36a7294de5"
@@ -189,6 +179,26 @@
             "date": 1738054957041,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-28-12.log",
             "hash": "e6887c7bd3064ca0962f3b35fc43d63de16c39f84b7c46fcf596d62f464f4a10"
+        },
+        {
+            "date": 1738063913462,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-28-14.log",
+            "hash": "c01eae00d1a8304efd0d988a6575e4e11ef017c3ef8cfeb1b9e92993291b56e3"
+        },
+        {
+            "date": 1738065621518,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-28-15.log",
+            "hash": "8c28a50ed0e8c5a1c67006dd0d921bb156cc3bc96326aef686a2fa6e287a7250"
+        },
+        {
+            "date": 1738069637862,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-28-16.log",
+            "hash": "91d9d969d2496de8755748c05d5da71101269fdda060e289d431f8ed88e13f20"
+        },
+        {
+            "date": 1738072882458,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-28-17.log",
+            "hash": "de50746dcf5e83bcfbfe6b8768d7c3df0316ce82471290b1e2e8958f87b50fc3"
         }
     ],
     "hashType": "sha256"

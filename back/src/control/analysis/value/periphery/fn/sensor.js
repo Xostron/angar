@@ -45,7 +45,6 @@ function total(equip, result, retain) {
 	let fltA = (el) => idsB.includes(el.owner.id) && el.type === 'tout'
 	const tout = state(sensor, result, flt, fltA)
 
-	console.log(tout)
 	// Влажность улицы (макс) среди всех складов данной pc
 	flt = (el) => idsB.includes(el.owner.id) && el.type === 'hout' && result?.[el._id]?.state === 'on'
 	fltA = (el) => idsB.includes(el.owner.id) && el.type === 'hout'

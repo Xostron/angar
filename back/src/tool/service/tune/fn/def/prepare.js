@@ -9,7 +9,6 @@ function prepare(vlv, state) {
 	// Действие клапана (открывается/закрывается)
 	vlv._type = 'iopn'
 	wait(vlv, state)
-	// console.log('333 prepare', state, vlv)
 }
 
 module.exports = prepare
