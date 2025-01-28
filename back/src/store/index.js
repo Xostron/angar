@@ -11,7 +11,7 @@ const data = {
 	tDelay: 0,
 	// Прогрев клапанов 60сек
 	tWarming: 60,
-	// TCP период повторной проверки модуля - каждую 1 мин
+	// TCP период повторной проверки модуля, мин
 	tTCP: 10,
 	// Пауза при чтении очередного модуля, мс
 	tPause: 500,
@@ -241,12 +241,12 @@ function wrExtralrm(buildingId, sectionId, name, o) {
 	data.alarm.extralrm[buildingId][sectionId][name] = o
 }
 // Удалить из extralrm (доп. аварии)
-function delExtralrm(buildingId, sectionId, name, id) {
+function delExtralrm(buildingId, sectionId, name) {
 	if (!sectionId) {
 		delete data.alarm?.extralrm?.[buildingId]?.[name]
 		return
 	}
-	delete data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]?.[id]
+	delete data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
 }
 
 // Записать в achieve (доп. функции)

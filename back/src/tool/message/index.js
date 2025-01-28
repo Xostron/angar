@@ -10,7 +10,7 @@ function msg(building, section, code) {
 	return o
 }
 // Склада
-function msgB(building, code, msg='') {
+function msgB(building, code, msg = '') {
 	const o = { ...mes[code] }
 	o.title = ``
 	o.buildingId = building._id
@@ -34,7 +34,8 @@ function msgF(building, section, name, code) {
 // Датчики
 function msgBS(building, section, sensor, code) {
 	const o = { ...mes[code] }
-	o.title = section == 'sensor' ? `${sensor.name}:` : `${section?.name}. ${sensor.name}:`
+	o.title = section == 'sensor' ? `${sensor?.name}:` : `${section?.name}. ${sensor?.name}:`
+	if (!sensor) o.title = section == 'sensor' ? '' : `${section?.name}.`
 	o.buildingId = building._id
 	return o
 }

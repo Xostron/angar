@@ -170,4 +170,55 @@ function webAlarm(r, bld, sect, sens) {
 	if (r.state !== 'alarm') delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
 }
 
-module.exports = { isValid, fnDetection, detection }
+// Коды сообщений
+const code = {
+	tout: { off: 97, alarm: 98 },
+	hout: { off: 95, alarm: 96 },
+	tin: { off: 93, alarm: 94 },
+}
+/**
+ * Сообщение об общей аварии по датчику для складов
+ * @param {object[]} building склады
+ * @param {object} val значение датчика state, min,max
+ * @param {string} type Тип датчика tout, hout, tin
+ * @param {string} bType Тип склада normal, cold, combi
+ */
+function fnMsgs(building, val, type, bType) {
+	const bld = building.filter((el) => (el.type ?? 'normal') === bType)
+	// Датчик ОК - удаление сообщений
+	if (val.state === 'on') {
+		bld.forEach((b) => {
+			// console.log(111, b._id, 'sensor', type + 'alarm')
+			delExtralrm(b._id, 'sensor', type + 'alarm')
+			delExtralrm(b._id, 'sensor', type + 'off')
+		})
+		return
+	}
+console.log(1111, type)
+	// Датчик выключен или в аварии - создание сообщения
+	bld.forEach((b) => {
+		val.state === 'off' ? delExtralrm(b._id, 'sensor', type + 'alarm') : delExtralrm(b._id, 'sensor', type + 'off')
+		wrExtralrm(b._id, 'sensor', type + val.state, {
+			date: new Date(),
+			...msgBS(b, 'sensor', null, code[type][val.state]),
+		})
+	})
+}
+
+function fnMsg(bld, val, type, bType) {
+	if (bld.type === bType) {
+		// Датчик ОК - удаление сообщений
+		if (val.state === 'on') {
+			delExtralrm(bld._id, 'sensor', type + 'alarm')
+			delExtralrm(bld._id, 'sensor', type + 'off')
+			return
+		}
+		// Датчик выключен или в аварии - создание сообщения
+		wrExtralrm(bld._id, 'sensor', type + val.state, {
+			date: new Date(),
+			...msgBS(bld, 'sensor', null, code[type][val.state]),
+		})
+	}
+}
+
+module.exports = { isValid, fnDetection, detection, fnMsgs, fnMsg }

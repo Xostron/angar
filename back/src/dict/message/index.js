@@ -101,7 +101,6 @@ const data = {
 	},
 	// Модуль не в сети
 	28: {
-		count: true,
 		code: 'connect',
 		type: '',
 		typeSignal: 'critical',
@@ -149,8 +148,14 @@ const data = {
 		{ count: true, code: 'stator', typeSignal: 'critical', msg: 'Перегрев обмотки двигателя' },
 	],
 	// ======== Неисправность датчика ========
-	99: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
-	100: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
+	93: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры потолка выключены' },
+	94: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры потолка неисправны' },
+	95: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики влажности улицы выключены' },
+	96: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики влажности улицы неисправны' },
+	97: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры улицы выключены' },
+	98: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры улицы неисправны' },
+	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
+	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
 

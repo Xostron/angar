@@ -3,8 +3,7 @@ const { barB, bar, bannerB, banner, signalB, signal, count } = require('./fn')
 const defClear = require('./clear')
 
 function alarm(obj) {
-	const { data, retain } = obj
-
+	const { data, retain, value } = obj
 	const r = {
 		// Все сообщения [страница "Сигналы"]
 		signal: {},
@@ -61,7 +60,7 @@ function alarm(obj) {
 		defClear[bld.type](bld, r, { am, start, sumAuto })
 	}
 	// Счетчик текущих аварий (карточка склада)
-	count(r)
+	count(r, value.total, data.building)
 	return r
 }
 

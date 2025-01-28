@@ -12,8 +12,9 @@
  },
  "extralrm": {
   "6760195ed9da5c2bcc25f682": {
+   "sensor": {},
    "alrClosed": {
-    "date": "2025-01-24T12:34:28.071Z",
+    "date": "2025-01-28T05:37:23.730Z",
     "count": true,
     "code": "alrClosed",
     "type": "alr",
@@ -23,7 +24,7 @@
     "buildingId": "6760195ed9da5c2bcc25f682"
    },
    "local": {
-    "date": "2025-01-24T10:22:13.857Z",
+    "date": "2025-01-28T05:37:23.730Z",
     "count": true,
     "code": "local",
     "type": "",
@@ -31,16 +32,18 @@
     "msg": "Управление переведено переключателем на щите",
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
-   },
-   "67602254d9da5c2bcc25f6c9": {
-    "676022c3d9da5c2bcc25f6cd": {
-     "date": "2025-01-27T07:07:41.319Z",
+   }
+  },
+  "67601974d9da5c2bcc25f689": {
+   "sensor": {
+    "tinalarm": {
+     "date": "2025-01-28T09:19:25.355Z",
      "count": true,
      "code": "sensor",
      "typeSignal": "sensor",
-     "msg": "Неисправность датчика",
-     "title": "Секция 1. Темп. канала 2:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "msg": "Датчики температуры потолка неисправны",
+     "title": ":",
+     "buildingId": "67601974d9da5c2bcc25f689"
     }
    }
   }
@@ -79,7 +82,8 @@
  },
  "achieve": {},
  "module": {
-  "67601974d9da5c2bcc25f689": {}
+  "67601974d9da5c2bcc25f689": {},
+  "6760195ed9da5c2bcc25f682": {}
  },
  "debounce": {}
 }

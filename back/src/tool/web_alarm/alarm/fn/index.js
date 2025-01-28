@@ -133,14 +133,31 @@ function signalB(r, bld, am, data) {
 }
 
 // Счетчик аварий на карточке склада (стр. Склады)
-function count(result) {
-	for (const b in result.signal) {
-		result?.signal?.[b]?.forEach((o) => {
-			if (o.count) {
-				result.count[o.buildingId] ??= 0
-				result.count[o.buildingId] += 1
-			}
+function count(r, total, building) {
+	// По складу
+	for (const bId in r.signal) {
+		// По всем аварийным сообщениям
+		r.count[bId] ??= 0
+		r?.signal?.[bId]?.forEach((o) => {
+			if (o.count) r.count[bId] += 1
 		})
+		// По определенным типам датчика
+		// Обычный склад (неисправны датчики темп. улицы, влажность улицы)
+		// Холодильный склад (неисправен темп. потолка)
+		// const bldType = building.find((el) => el._id === bId)?.type ?? 'normal'
+		// switch (bldType) {
+		// 	case 'normal':
+		// 		total.tout.state !== 'on' ? (r.count[bId] += 1) : null
+		// 		total.hout.state !== 'on' ? (r.count[bId] += 1) : null
+		// 		break
+		// 	case 'cold':
+		// 		total[bId].tin.state !== 'on' ? (r.count[bId] += 1) : null
+		// 		break
+		// 	case 'combi':
+		// 		break
+		// 	default:
+		// 		break
+		// }
 	}
 }
 

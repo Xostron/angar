@@ -1,9 +1,10 @@
-const { isValid, fnDetection } = require('@tool/sensor_valid')
-const { data: store } = require('@store')
+const { isValid, fnDetection, fnMsg, fnMsgs } = require('@tool/sensor_valid')
 const debounce = require('@tool/debounce_sensor')
 const { getS, getSA } = require('@tool/command/sensor')
 const { getBS } = require('@tool/command/building')
 const calc = require('@tool/command/abs_humidity')
+const { data: store, wrExtralrm, delExtralrm } = require('@store')
+const { msgBS } = require('@tool/message')
 /**
  * Аналоговые датчики
  * Преобразование с учетом точности и коррекции
@@ -44,10 +45,15 @@ function total(equip, result, retain) {
 	let fltA = (el) => idsB.includes(el.owner.id) && el.type === 'tout'
 	const tout = state(sensor, result, flt, fltA)
 
+	console.log(tout)
 	// Влажность улицы (макс) среди всех складов данной pc
 	flt = (el) => idsB.includes(el.owner.id) && el.type === 'hout' && result?.[el._id]?.state === 'on'
 	fltA = (el) => idsB.includes(el.owner.id) && el.type === 'hout'
 	const hout = state(sensor, result, flt, fltA)
+
+	// Аварийные сообщения для обычного склада
+	fnMsgs(building, tout, 'tout', 'normal')
+	fnMsgs(building, hout, 'hout', 'normal')
 
 	result.total = {
 		// Температура улицы (мин) среди всех складов данной pc
@@ -69,9 +75,7 @@ function total(equip, result, retain) {
 			idsS = section.filter((el) => el.buildingId === bld._id && retain?.[bld?._id]?.mode?.[el?._id]).map((el) => el._id)
 			// Все секции
 			idsAll = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
-		} else {
-			idsS = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
-		}
+		} else idsS = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
 
 		// Температура продукта (макс) по всем секциям склада
 		flt = (el) => idsS.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
@@ -80,6 +84,9 @@ function total(equip, result, retain) {
 
 		// Температура потолка (Температура помещения)
 		const tin = fnState(sensor, result, bld._id, 'tin')
+		// Аварийные сообщения для склада холодильник
+		fnMsg(bld, tin, 'tin', 'cold')
+
 		// Влажность продукта (макс)
 		flt = (el) => el.owner.id === bld._id && el.type === 'hin' && result?.[el._id]?.state !== 'alarm'
 		fltA = (el) => el.owner.id === bld._id && el.type === 'hin'
@@ -96,7 +103,6 @@ function total(equip, result, retain) {
 		flt = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
 		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd'
 		const tprdL = state(sensor, result, flt, fltA)
-
 
 		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL }
 		// Абсолютная влажность продукта
