@@ -1,7 +1,6 @@
-const build = require('@control/main/all/build')
-const section = require('@control/main/all/section')
-const { reset } = require('@store')
-const { fan } = require('@control/main/all/fn')
+const build = require('./all/build')
+const section = require('./all/section')
+const  fan  = require('@tool/command/fan/auto')
 
 // Простой склад
 function normal(building, obj, bdata) {
@@ -14,8 +13,6 @@ function normal(building, obj, bdata) {
 	section(start, building, obj, s, automode, accAuto, resultFan, alrB, se)
 	// Управление напорными вентиляторами
 	fan(building, resultFan, s, obj)
-	// Обнулить команду reset
-	// reset(building._id, false)
 }
 
 module.exports = normal

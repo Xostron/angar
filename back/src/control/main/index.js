@@ -1,5 +1,5 @@
 const prepare = require('../prepare')
-const { scan } = require('./all/fn')
+const  scan  = require('@tool/command/scan')
 const def = require('./def')
 
 // Автоматическое управление

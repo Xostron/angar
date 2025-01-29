@@ -1,4 +1,4 @@
-const def = require('@control/auto/def')
+const def = require('@control/main/def/normal/def')
 const { data: store } = require('@store')
 
 /**

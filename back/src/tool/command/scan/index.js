@@ -2,7 +2,7 @@ const { data: store, readAcc } = require('@store')
 const { mechB } = require('@tool/command/mech')
 const { sensorBuilding } = require('@tool/command/section/sensor')
 const setting = require('@control/auto/setting')
-const { ctrlFSoft, fnFan, fnFanWarm } = require('@tool/command/fan/auto')
+
 
 // Собрать первичные данные по складу
 function scan(bld, obj) {
@@ -31,21 +31,4 @@ function scan(bld, obj) {
 	return { start, automode, s, se, m, accAuto, resultFan, supply }
 }
 
-/**
- * Для секций в авторежиме: если у одной секции формируется сигнал на включение вент (2я секция в авторежиме - вент остановлены),
- * включается вентиляторы на всех секциях в авторежиме
- * @param {*} bld склад
- * @param {*} resultFan задание на включение напор.вент.
- * @param {*} s настройки склада
- */
-
-
-function fan(bld, resultFan, s, retain) {
-	fnFan(resultFan.start.includes(true), resultFan, s, bld._id, retain)
-	// Прогрев клапанов
-	if (!resultFan.start.includes(true)) fnFanWarm(resultFan, s)
-
-	// Непосредственное включение вентиляторов (ступенчато)
-	ctrlFSoft(resultFan, bld._id)
-}
-module.exports = { scan, fan }
+module.exports = scan

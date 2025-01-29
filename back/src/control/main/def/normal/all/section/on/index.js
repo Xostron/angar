@@ -1,4 +1,4 @@
-const def = require('@control/auto/def')
+const def = require('@control/main/def/normal/def')
 const {extra} = require('@control/auto/extra')
 const check = require('@tool/command/section/check')
 const auto = require('./auto')

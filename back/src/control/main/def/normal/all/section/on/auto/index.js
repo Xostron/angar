@@ -1,4 +1,4 @@
-const def = require('@control/auto/def')
+const def = require('@control/main/def/normal/def')
 const { data: store, rs, isAlr } = require('@store')
 const { fnValve } = require('@tool/command/valve/auto')
 const extralrm = require('@control/auto/extralrm')
