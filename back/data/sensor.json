@@ -11,7 +11,8 @@
    "channel": 7,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "hin"
+  "type": "hin",
+  "order": 2
  },
  {
   "_id": "676021e3d9da5c2bcc25f6c6",
@@ -25,7 +26,8 @@
    "channel": 1,
    "id": "6791f4c1f8f0b51d14b1b0b1"
   },
-  "type": "hout"
+  "type": "hout",
+  "order": 4
  },
  {
   "_id": "67602199d9da5c2bcc25f6c4",
@@ -39,7 +41,8 @@
    "channel": 1,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "tout"
+  "type": "tout",
+  "order": 1
  },
  {
   "_id": "676022b3d9da5c2bcc25f6cc",
@@ -53,7 +56,8 @@
    "channel": 2,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "tcnl"
+  "type": "tcnl",
+  "order": 3
  },
  {
   "_id": "676022c3d9da5c2bcc25f6cd",
@@ -67,7 +71,8 @@
    "channel": 6,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "tcnl"
+  "type": "tcnl",
+  "order": 4
  },
  {
   "_id": "6760226dd9da5c2bcc25f6ca",
@@ -81,7 +86,8 @@
    "channel": 5,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "tprd"
+  "type": "tprd",
+  "order": 1
  },
  {
   "_id": "67602292d9da5c2bcc25f6cb",
@@ -95,7 +101,8 @@
    "channel": 3,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "tprd"
+  "type": "tprd",
+  "order": 2
  },
  {
   "_id": "6760221ad9da5c2bcc25f6c7",
@@ -109,6 +116,7 @@
    "channel": 4,
    "id": "67602133d9da5c2bcc25f6bf"
   },
-  "type": "tin"
+  "type": "tin",
+  "order": 3
  }
 ]
