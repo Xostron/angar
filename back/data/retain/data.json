@@ -70,6 +70,13 @@
     "on": {
      "on": "-25"
     }
+   },
+   "sys": {
+    "onion": {
+     "debounce": {
+      "debounce": "00:02"
+     }
+    }
    }
   },
   "fan": {
