@@ -1,7 +1,7 @@
-const def = require('@control/main/def/normal/def')
-const { data: store, rs, isAlr } = require('@store')
 const { fnValve } = require('@tool/command/valve/auto')
-const extralrm = require('@control/auto/extralrm')
+const { data: store, rs, isAlr } = require('@store')
+const def = require('@control/main/def/normal/def')
+const extralrm = require('@control/extra/extralrm')
 
 function auto(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, alrB, alrAlways) {
 	// Таймер запретов - закрываем клапана, выключаем вентиляторы

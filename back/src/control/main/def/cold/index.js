@@ -1,5 +1,5 @@
-const extralrm = require('@control/auto/extralrm')
-const {extra, extraClear} = require('@control/auto/extra')
+const extralrm = require('@control/extra/extralrm')
+const {extra, extraClear} = require('@control/extra/extra')
 const main = require('./main')
 
 // Склад холодильник

@@ -1,8 +1,8 @@
 const def = require('@control/main/def/normal/def')
-const {extra} = require('@control/auto/extra')
 const check = require('@tool/command/section/check')
-const auto = require('./auto')
+const {extra} = require('@control/extra/extra')
 const { valve } = require('./fn')
+const auto = require('./auto')
 
 // Обработка секции в авторежиме
 function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrB, alrAlways) {

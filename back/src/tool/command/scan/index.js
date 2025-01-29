@@ -1,7 +1,7 @@
-const { data: store, readAcc } = require('@store')
-const { mechB } = require('@tool/command/mech')
 const { sensorBuilding } = require('@tool/command/section/sensor')
-const setting = require('@control/auto/setting')
+const { data: store, readAcc } = require('@store')
+const setting = require('@control/extra/setting')
+const { mechB } = require('@tool/command/mech')
 
 
 // Собрать первичные данные по складу
