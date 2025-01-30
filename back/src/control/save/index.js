@@ -27,6 +27,7 @@ async function save(obj) {
 	 *  */
 	if (store._first) {
 		obj.acc = await readOne('acc.json', accDir)
+		clear(obj.data, obj)
 		store.alarm.module = obj.acc?.module
 	}
 	// Сохранение текущих аварий в файл
@@ -34,3 +35,15 @@ async function save(obj) {
 }
 
 module.exports = save
+
+function clear(data, obj){
+const {building, module} = data
+for (const bld of building) {
+	for (const mdlId in obj.acc?.module?.[bld._id]) {
+		if (module.find(el=>el._id===mdlId)) continue
+		// Модуль не найден (удалить из аварий)
+		delete obj.acc?.module?.[bld._id]?.[mdlId]
+	} 
+}
+
+}

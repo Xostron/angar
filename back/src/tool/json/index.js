@@ -25,9 +25,9 @@ function write(data, ph = dataDir, ref, toRetain) {
 		}
 		Promise.all(p)
 			.then((r) => {
-				toRetain
-					? console.log('\x1b[32m%s\x1b[0m', `Данные успешно сохранены в data/retain`)
-					: console.log('\x1b[32m%s\x1b[0m', `Файл(ы) json успешно сохранены в ${ph}`)
+				// toRetain
+					// ? console.log('\x1b[32m%s\x1b[0m', `Данные успешно сохранены в data/retain`)
+					// : console.log('\x1b[32m%s\x1b[0m', `Файл(ы) json успешно сохранены в ${ph}`)
 				resolve()
 			})
 			.catch((error) => {
@@ -155,9 +155,9 @@ function writeSync(data, ph = dataDir, ref, toRetain) {
 			const d = JSON.stringify(data?.[name] ?? [], null, ' ')
 			fs.writeFileSync(filepath, d)
 		}
-		toRetain
-			? console.log('\x1b[32m%s\x1b[0m', `Данные успешно сохранены в data/retain`)
-			: console.log('\x1b[32m%s\x1b[0m', `Файл(ы) json успешно сохранены в ${ph}`)
+		// toRetain
+			// ? console.log('\x1b[32m%s\x1b[0m', `Данные успешно сохранены в data/retain`)
+			// : console.log('\x1b[32m%s\x1b[0m', `Файл(ы) json успешно сохранены в ${ph}`)
 	} catch (error) {
 		console.log('\x1b[31m%s\x1b[0m', 'Ошибка сохранение json: ', error)
 	}

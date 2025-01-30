@@ -35,7 +35,7 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	}
 
 	// Выключить выход
-	if (cur >= acc.end) {
+	if (acc.end && cur >= acc.end) {
 		fnReset(m.reset, building, 'off')
 		delete acc.end
 	}

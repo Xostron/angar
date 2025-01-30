@@ -168,7 +168,7 @@ function isErrM(buildingId, moduleId) {
 function wrModule(buildingId, moduleId, o) {
 	data.alarm.module ??= {}
 	data.alarm.module[buildingId] ??= {}
-	if (!data.alarm?.module?.[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
+	if (!data.alarm.module[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
 }
 
 // Удалить модуль из списка аварий

@@ -21,13 +21,6 @@
   "equipmentId": "67601bf1d9da5c2bcc25f6bb"
  },
  {
-  "_id": "679b7baec4b1733ce46e3385",
-  "ip": "COM3",
-  "port": 10,
-  "buildingId": "6760195ed9da5c2bcc25f682",
-  "equipmentId": "678652a91461f037a47a017f"
- },
- {
   "_id": "678748cb8a28e91c7c987750",
   "ip": "COM3",
   "port": 16,
