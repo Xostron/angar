@@ -61,18 +61,6 @@
   "reverse": false
  },
  {
-  "_id": "6792444bf8f0b51d14b1b0b6",
-  "type": "connect",
-  "module": {
-   "id": "6791f1c3f8f0b51d14b1b0ac",
-   "channel": 1
-  },
-  "owner": {
-   "type": "building",
-   "id": "6760195ed9da5c2bcc25f682"
-  }
- },
- {
   "_id": "679b12386a29f23a6880bde4",
   "type": "deltaMdl",
   "module": {

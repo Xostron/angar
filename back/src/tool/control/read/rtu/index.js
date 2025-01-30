@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
 const { rhr } = require('../fn')
-const { data: store, wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+const { data: store, delModule, wrDebMdl, delDebMdl } = require('@store')
 // const { msgM } = require('@tool/message')
 
 // Чтение данных RTU модуля
@@ -23,8 +23,6 @@ function readRTU(path, position, opt) {
 		socket.on('error', (e) => {
 			socket.end()
 			// При первом запуске неисправные модули не блокируются
-			// if (!store.startup)
-			// 	wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
 			wrDebMdl(opt._id)
 			resolve({ error: e, info: opt })
 		})
@@ -50,7 +48,6 @@ function readRTU(path, position, opt) {
 					resolve(r)
 				})
 				.catch((e) => {
-					// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

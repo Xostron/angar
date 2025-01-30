@@ -13,7 +13,7 @@ async function write(obj) {
 		const ok = {}
 		for (const i in obj) {
 			// Проверка модуля (антидребезг или ошибка модуля)
-			if (!timeout(obj[i].buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
+			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль
 			const v = await make(obj[i])
 			await pause(100)

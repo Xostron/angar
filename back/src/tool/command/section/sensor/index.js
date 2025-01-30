@@ -45,6 +45,7 @@ function sensorBuilding(idB, obj) {
 		hAbsIn: +value?.humAbs?.[idB],
 		// Максимальная температура продукта по складу (по всем секция в авто режиме)
 		tprd: value?.total?.[idB]?.tprd?.min,
+		tcnl:value?.total?.[idB]?.tcnl?.min,
 		// Датчики по камере и испарителю
 		cooler: cooler(idB, obj),
 	}

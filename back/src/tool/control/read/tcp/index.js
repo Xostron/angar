@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const net = require('net')
 const { rhr } = require('../fn')
-const { data: store, wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+const { data: store, delModule, wrDebMdl, delDebMdl } = require('@store')
 // const { msgM } = require('@tool/message')
 
 function readTCP(host, port, opt) {
@@ -15,7 +15,6 @@ function readTCP(host, port, opt) {
 		socket.on('error', (e) => {
 			socket.end()
 			// При первом запуске неисправные модули не блокируются
-			// if (!store.startup) wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
 			wrDebMdl(opt._id)
 			resolve({ error: e, info: opt })
 		})
@@ -41,7 +40,6 @@ function readTCP(host, port, opt) {
 					resolve([r, w])
 				})
 				.catch((e) => {
-					// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

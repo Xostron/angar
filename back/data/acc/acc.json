@@ -26,22 +26,12 @@
   },
   "6760195ed9da5c2bcc25f682": {
    "local": {
-    "date": "2025-01-29T07:43:48.284Z",
+    "date": "2025-01-30T12:19:19.707Z",
     "count": true,
     "code": "local",
     "type": "",
     "typeSignal": "critical",
-    "msg": "Управление переведено переключателем на щите",
-    "title": "",
-    "buildingId": "6760195ed9da5c2bcc25f682"
-   },
-   "alrClosed": {
-    "date": "2025-01-30T08:51:36.526Z",
-    "count": true,
-    "code": "alrClosed",
-    "type": "alr",
-    "typeSignal": "critical",
-    "msg": "Аварийное закрытие клапанов ",
+    "msg": "Управление переведено переключателем на щите ",
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
    }
@@ -76,14 +66,6 @@
      "title": "Секция 1:",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }
-   },
-   "connect": {
-    "date": "2025-01-24T11:33:51.384Z",
-    "code": "",
-    "typeSignal": "info",
-    "msg": "Модуль в сети",
-    "title": "",
-    "buildingId": "6760195ed9da5c2bcc25f682"
    }
   }
  },

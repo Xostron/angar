@@ -1,6 +1,6 @@
 const modbus = require('jsmodbus')
 const net = require('net')
-const { wrModule, delModule, wrDebMdl, delDebMdl } = require('@store')
+const {  delModule, wrDebMdl, delDebMdl } = require('@store')
 const { regist } = require('./fn')
 
 // Запись данных для TCP/IP модуля
@@ -26,7 +26,6 @@ function writeTCP(host, port, opt) {
 					resolve(true)
 				})
 				.catch((e) => {
-					// wrModule(opt.buildingId, opt._id, { date: new Date(), ...msgM(opt.buildingId, opt, 110) })
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

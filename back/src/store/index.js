@@ -14,7 +14,7 @@ const data = {
 	// TCP период повторной проверки модуля, мин(sys.tcp)
 	tTCP: 10,
 	// Пауза при чтении очередного модуля, мс (sys.pauseplc)
-	tPause: 50,
+	tPause: 500,
 	// 10% от полного времени открытия клапана - время после которого клапан останавливается
 	hystV: 10,
 	// Антидребезг неисправности модуля ПЛК, 20сек (sys.debplc)
@@ -111,6 +111,7 @@ const data = {
 // Разрешить true/заблокировать false опрос модуля
 function timeout(buildingId, moduleId, ip, opt) {
 	// console.log(3333, opt.name, data.alarm.module?.[buildingId]?.[moduleId], data.debMdl?.[moduleId])
+	if (!buildingId || !moduleId) return true
 	// Проверка debounce модуля: true - модуль ОК
 	if (isDebMdl(buildingId, moduleId, opt)) {
 		// console.log(opt.name, 'в debounce')
@@ -165,8 +166,9 @@ function isErrM(buildingId, moduleId) {
 
 // Сохранить неисправный модуль в список аварий
 function wrModule(buildingId, moduleId, o) {
+	data.alarm.module ??= {}
 	data.alarm.module[buildingId] ??= {}
-	if (!data.alarm.module?.[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
+	if (!data.alarm?.module?.[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
 }
 
 // Удалить модуль из списка аварий

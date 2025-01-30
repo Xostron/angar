@@ -8,7 +8,7 @@ async function read(arr, obj) {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
 			// Проверка модуля (антидребезг или ошибка модуля)
-			if (!timeout(arr[i].buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
+			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
 			// Чтение данных в модуль
 			const v = await make(arr[i])
 			// флаг первого запуска сервера

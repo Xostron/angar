@@ -281,6 +281,26 @@
     "outMin": "4"
    }
   },
+  "potato": {
+   "max": {
+    "max": 1
+   },
+   "outMin": {
+    "outMin": "4"
+   },
+   "channel": {
+    "channel": "2"
+   },
+   "outMax": {
+    "outMax": "5"
+   },
+   "hysteresis": {
+    "hysteresis": 0.3
+   },
+   "difference": {
+    "difference": "3"
+   }
+  },
   "carrot": {
    "max": {
     "max": 1
@@ -299,26 +319,6 @@
    },
    "outMin": {
     "outMin": "4"
-   }
-  },
-  "potato": {
-   "max": {
-    "max": 1
-   },
-   "outMin": {
-    "outMin": "4"
-   },
-   "outMax": {
-    "outMax": "5"
-   },
-   "channel": {
-    "channel": "2"
-   },
-   "hysteresis": {
-    "hysteresis": 0.3
-   },
-   "difference": {
-    "difference": "3"
    }
   }
  },
@@ -348,7 +348,7 @@
  },
  "vent": {
   "_prd": true,
-  "onion": {
+  "carrot": {
    "add": {
     "add": 10
    },
@@ -365,12 +365,12 @@
     "mode": "off"
    }
   },
-  "carrot": {
-   "max_add": {
-    "max_add": "00:15"
-   },
+  "onion": {
    "add": {
     "add": 10
+   },
+   "max_add": {
+    "max_add": "00:15"
    },
    "work": {
     "work": "00:05"
@@ -622,9 +622,6 @@
    "wait": {
     "wait": 20
    },
-   "limit": {
-    "limit": 1
-   },
    "out1": {
     "temp": -5,
     "k": 0.5
@@ -636,6 +633,9 @@
    "out3": {
     "temp": -10,
     "k": 0
+   },
+   "limit": {
+    "limit": 1
    },
    "outDefault": {
     "outDefault": "2"
@@ -921,23 +921,6 @@
  },
  "cold": {
   "_prd": true,
-  "carrot": {
-   "decrease": {
-    "decrease": 1
-   },
-   "room": {
-    "room": 3
-   },
-   "target": {
-    "target": 1
-   },
-   "hysteresis": {
-    "hysteresis": 0.3
-   },
-   "deltaRoom": {
-    "deltaRoom": 0.5
-   }
-  },
   "onion": {
    "decrease": {
     "decrease": 1
@@ -947,6 +930,23 @@
    },
    "room": {
     "room": 3
+   },
+   "hysteresis": {
+    "hysteresis": 0.3
+   },
+   "deltaRoom": {
+    "deltaRoom": 0.5
+   }
+  },
+  "carrot": {
+   "decrease": {
+    "decrease": 1
+   },
+   "room": {
+    "room": 3
+   },
+   "target": {
+    "target": 1
    },
    "hysteresis": {
     "hysteresis": 0.3

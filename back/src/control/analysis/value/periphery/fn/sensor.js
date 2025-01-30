@@ -81,6 +81,11 @@ function total(equip, result, retain) {
 		fltA = (el) => idsS.includes(el.owner.id) && el.type === 'tprd'
 		const tprd = state(sensor, result, flt, fltA)
 
+		// Темп. канала (мин) по всем секциям
+		flt = (el) => idsAll.includes(el.owner.id) && el.type === 'tcnl' && result?.[el._id]?.state === 'on'
+		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tcnl'
+		const tcnl = state(sensor, result, flt, fltA)
+
 		// Температура потолка (Температура помещения)
 		const tin = fnState(sensor, result, bld._id, 'tin')
 		// Аварийные сообщения для склада холодильник
@@ -103,7 +108,7 @@ function total(equip, result, retain) {
 		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd'
 		const tprdL = state(sensor, result, flt, fltA)
 
-		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL }
+		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl }
 		// Абсолютная влажность продукта
 		result.humAbs[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max)?.toFixed(1)
 	}
