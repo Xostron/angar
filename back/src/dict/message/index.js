@@ -158,7 +158,7 @@ const data = {
 	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
-
+	111: { count: true, code: 'module', typeSignal: 'critical', msg: 'ПЛК Delta. Нет связи с модулем' },
 	// ======== Сообщения extra - доп. функции ========
 	// Модуль в сети
 	50: { code: '', typeSignal: 'info', msg: 'Модуль в сети' },

@@ -478,6 +478,20 @@
   },
   "carrot": {
    "_name": "Морковь",
+   "min": {
+    "_name": "Минимальная внешняя температура",
+    "_order": 5,
+    "_icon": "min-out",
+    "min": {
+     "_name": "Минимальная внешняя температура",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": "10",
+     "min": null,
+     "max": null
+    }
+   },
    "differenceValue": {
     "_name": "Разность продукта и канала",
     "_order": 4,
@@ -504,20 +518,6 @@
      "value": 1,
      "min": 0,
      "max": 10
-    }
-   },
-   "min": {
-    "_name": "Минимальная внешняя температура",
-    "_order": 5,
-    "_icon": "min-out",
-    "min": {
-     "_name": "Минимальная внешняя температура",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": "10",
-     "min": null,
-     "max": null
     }
    },
    "hysteresisIn": {
@@ -713,20 +713,6 @@
      "max": 50
     }
    },
-   "decrease": {
-    "_name": "Уменьшение температуры в день",
-    "_order": 3,
-    "_icon": "temp-channel",
-    "decrease": {
-     "_name": "Уменьшение температуры в день",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": "1",
-     "min": 0,
-     "max": 5
-    }
-   },
    "max": {
     "_name": "Максимальное уменьшение температуры в день",
     "_order": 4,
@@ -739,6 +725,20 @@
      "value": 2,
      "min": 0,
      "max": 6
+    }
+   },
+   "decrease": {
+    "_name": "Уменьшение температуры в день",
+    "_order": 3,
+    "_icon": "temp-channel",
+    "decrease": {
+     "_name": "Уменьшение температуры в день",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": "1",
+     "min": 0,
+     "max": 5
     }
    },
    "differenceValue": {
@@ -870,20 +870,6 @@
      "max": 5
     }
    },
-   "minOut": {
-    "_name": "Минимальная внешняя температура",
-    "_order": 8,
-    "_icon": "min-out",
-    "minOut": {
-     "_name": "Минимальная внешняя температура",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": -10,
-     "min": -50,
-     "max": 10
-    }
-   },
    "differenceMax": {
     "_name": "Максимальная разность продукта и внешней температуры",
     "_order": 6,
@@ -896,6 +882,20 @@
      "value": 25,
      "min": 0,
      "max": 50
+    }
+   },
+   "minOut": {
+    "_name": "Минимальная внешняя температура",
+    "_order": 8,
+    "_icon": "min-out",
+    "minOut": {
+     "_name": "Минимальная внешняя температура",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": -10,
+     "min": -50,
+     "max": 10
     }
    },
    "hysteresisIn": {
@@ -971,6 +971,20 @@
      "max": 6
     }
    },
+   "differenceMax": {
+    "_name": "Максимальная разность продукта и внешней температуры",
+    "_order": 6,
+    "_icon": "max-diff-ah",
+    "differenceMax": {
+     "_name": "Максимальная разность продукта и внешней температуры",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": 25,
+     "min": 0,
+     "max": 50
+    }
+   },
    "differenceValue": {
     "_name": "Разность температур продукта и канала",
     "_order": 7,
@@ -1011,20 +1025,6 @@
      "value": "1",
      "min": 0,
      "max": 5
-    }
-   },
-   "differenceMax": {
-    "_name": "Максимальная разность продукта и внешней температуры",
-    "_order": 6,
-    "_icon": "max-diff-ah",
-    "differenceMax": {
-     "_name": "Максимальная разность продукта и внешней температуры",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": 25,
-     "min": 0,
-     "max": 50
     }
    },
    "hysteresisIn": {
@@ -1296,6 +1296,20 @@
   },
   "potato": {
    "_name": "Картофель",
+   "outMax": {
+    "_name": "Максимальная температура улицы",
+    "_order": 6,
+    "_icon": "max-diff-prd-out",
+    "outMax": {
+     "_name": "Максимальная температура улицы",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": "5",
+     "min": -5,
+     "max": 50
+    }
+   },
    "max": {
     "_name": "Максимальная абсолютная влажность улицы",
     "_order": 2,
@@ -1336,20 +1350,6 @@
      "value": "2",
      "min": 0,
      "max": 30
-    }
-   },
-   "outMax": {
-    "_name": "Максимальная температура улицы",
-    "_order": 6,
-    "_icon": "max-diff-prd-out",
-    "outMax": {
-     "_name": "Максимальная температура улицы",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": "5",
-     "min": -5,
-     "max": 50
     }
    },
    "hysteresis": {
@@ -1484,94 +1484,6 @@
   "_name": "Вентиляция",
   "_order": 7,
   "_prd": true,
-  "onion": {
-   "_name": "Лук",
-   "add": {
-    "_name": "Дополнительная вентиляция",
-    "_order": 3,
-    "_icon": "add-ventilation",
-    "add": {
-     "_name": "",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": 10,
-     "min": 0,
-     "max": 100
-    }
-   },
-   "max_add": {
-    "_name": "Максимальная дополнительная вентиляция",
-    "_order": 4,
-    "_icon": "max-add-ventilation",
-    "max_add": {
-     "_name": "Максимальная дополнительная вентиляция",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:15",
-     "min": null,
-     "max": null
-    }
-   },
-   "work": {
-    "_name": "Работа внутренней вентиляции",
-    "_order": 6,
-    "_icon": "interval",
-    "work": {
-     "_name": "Работа внутренней вентиляции",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:05",
-     "min": null,
-     "max": null
-    }
-   },
-   "wait": {
-    "_name": "Ожидание внутренней вентиляции",
-    "_order": 5,
-    "_icon": "interval",
-    "wait": {
-     "_name": "Ожидание внутренней вентиляции",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:10",
-     "min": null,
-     "max": null
-    }
-   },
-   "mode": {
-    "_name": "Управление вентиляцией",
-    "_order": 2,
-    "_icon": "control",
-    "mode": {
-     "_name": "Управление вентиляцией",
-     "_order": 1,
-     "type": "choice",
-     "unit": null,
-     "value": [
-      "Выкл",
-      "off"
-     ],
-     "list": [
-      {
-       "name": "Авто",
-       "value": "auto"
-      },
-      {
-       "name": "Вкл",
-       "value": "on"
-      },
-      {
-       "name": "Выкл",
-       "value": "off"
-      }
-     ]
-    }
-   }
-  },
   "carrot": {
    "_name": "Морковь",
    "add": {
@@ -1714,6 +1626,94 @@
      "type": "time",
      "unit": null,
      "value": "00:15",
+     "min": null,
+     "max": null
+    }
+   },
+   "mode": {
+    "_name": "Управление вентиляцией",
+    "_order": 2,
+    "_icon": "control",
+    "mode": {
+     "_name": "Управление вентиляцией",
+     "_order": 1,
+     "type": "choice",
+     "unit": null,
+     "value": [
+      "Выкл",
+      "off"
+     ],
+     "list": [
+      {
+       "name": "Авто",
+       "value": "auto"
+      },
+      {
+       "name": "Вкл",
+       "value": "on"
+      },
+      {
+       "name": "Выкл",
+       "value": "off"
+      }
+     ]
+    }
+   }
+  },
+  "onion": {
+   "_name": "Лук",
+   "add": {
+    "_name": "Дополнительная вентиляция",
+    "_order": 3,
+    "_icon": "add-ventilation",
+    "add": {
+     "_name": "",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": 10,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "max_add": {
+    "_name": "Максимальная дополнительная вентиляция",
+    "_order": 4,
+    "_icon": "max-add-ventilation",
+    "max_add": {
+     "_name": "Максимальная дополнительная вентиляция",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:15",
+     "min": null,
+     "max": null
+    }
+   },
+   "work": {
+    "_name": "Работа внутренней вентиляции",
+    "_order": 6,
+    "_icon": "interval",
+    "work": {
+     "_name": "Работа внутренней вентиляции",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:05",
+     "min": null,
+     "max": null
+    }
+   },
+   "wait": {
+    "_name": "Ожидание внутренней вентиляции",
+    "_order": 5,
+    "_icon": "interval",
+    "wait": {
+     "_name": "Ожидание внутренней вентиляции",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:10",
      "min": null,
      "max": null
     }
@@ -1868,121 +1868,6 @@
     }
    }
   },
-  "carrot": {
-   "_name": "Морковь",
-   "outMin": {
-    "_name": "Минимальная внешняя отн. влажность",
-    "_order": 3,
-    "_icon": "min-rh-out",
-    "outMin": {
-     "_name": "Минимальная внешняя отн. влажность",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": "10",
-     "min": 0,
-     "max": 100
-    }
-   },
-   "outMax": {
-    "_name": "Максимальная внеш. отн. влажность",
-    "_order": 4,
-    "_icon": "max-rh-out",
-    "outMax": {
-     "_name": "Максимальная внеш. отн. влажность",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": 80,
-     "min": 0,
-     "max": 100
-    }
-   },
-   "differenceMin": {
-    "_name": "Минимальная разность абс. влажности",
-    "_order": 5,
-    "_icon": "min-diff-ah",
-    "differenceMin": {
-     "_name": "Минимальная разность абс. влажности",
-     "_order": 1,
-     "type": "number",
-     "unit": "г/см3",
-     "value": "0",
-     "min": -3,
-     "max": 10
-    }
-   },
-   "max": {
-    "_name": "Максимальная разность температуры",
-    "_order": 7,
-    "_icon": "max-diff-temp",
-    "max": {
-     "_name": "Максимальная разность температуры",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": 1,
-     "min": 0,
-     "max": 30
-    }
-   },
-   "differenceMax": {
-    "_name": "Максимальная разность абс. влажности",
-    "_order": 6,
-    "_icon": "max-diff-ah",
-    "differenceMax": {
-     "_name": "Максимальная разность абс. влажности",
-     "_order": 1,
-     "type": "number",
-     "unit": "г/см3",
-     "value": "10",
-     "min": 0,
-     "max": 15
-    }
-   },
-   "hysteresisRel": {
-    "_name": "Гистерезис отн. влажности",
-    "_order": 9,
-    "_icon": "hysteresis",
-    "hysteresisRel": {
-     "_name": "Гистерезис отн. влажности",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": 2.5,
-     "min": 0,
-     "max": 10
-    }
-   },
-   "hysteresisAbs": {
-    "_name": "Гистерезис абс. влажности",
-    "_order": 8,
-    "_icon": "hysteresis",
-    "hysteresisAbs": {
-     "_name": "Гистерезис абс. влажности",
-     "_order": 1,
-     "type": "number",
-     "unit": "г/см3",
-     "value": "1",
-     "min": 0,
-     "max": 3
-    }
-   },
-   "humidity": {
-    "_name": "Отн. влажность продукта",
-    "_order": 2,
-    "_icon": "rh-prd",
-    "humidity": {
-     "_name": "Отн. влажность продукта",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": 80,
-     "min": 0,
-     "max": 100
-    }
-   }
-  },
   "potato": {
    "_name": "Картофель",
    "humidity": {
@@ -2095,6 +1980,121 @@
      "value": 2.5,
      "min": 0,
      "max": 10
+    }
+   }
+  },
+  "carrot": {
+   "_name": "Морковь",
+   "outMin": {
+    "_name": "Минимальная внешняя отн. влажность",
+    "_order": 3,
+    "_icon": "min-rh-out",
+    "outMin": {
+     "_name": "Минимальная внешняя отн. влажность",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": "10",
+     "min": 0,
+     "max": 100
+    }
+   },
+   "outMax": {
+    "_name": "Максимальная внеш. отн. влажность",
+    "_order": 4,
+    "_icon": "max-rh-out",
+    "outMax": {
+     "_name": "Максимальная внеш. отн. влажность",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": 80,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "differenceMin": {
+    "_name": "Минимальная разность абс. влажности",
+    "_order": 5,
+    "_icon": "min-diff-ah",
+    "differenceMin": {
+     "_name": "Минимальная разность абс. влажности",
+     "_order": 1,
+     "type": "number",
+     "unit": "г/см3",
+     "value": "0",
+     "min": -3,
+     "max": 10
+    }
+   },
+   "max": {
+    "_name": "Максимальная разность температуры",
+    "_order": 7,
+    "_icon": "max-diff-temp",
+    "max": {
+     "_name": "Максимальная разность температуры",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": 1,
+     "min": 0,
+     "max": 30
+    }
+   },
+   "differenceMax": {
+    "_name": "Максимальная разность абс. влажности",
+    "_order": 6,
+    "_icon": "max-diff-ah",
+    "differenceMax": {
+     "_name": "Максимальная разность абс. влажности",
+     "_order": 1,
+     "type": "number",
+     "unit": "г/см3",
+     "value": "10",
+     "min": 0,
+     "max": 15
+    }
+   },
+   "hysteresisRel": {
+    "_name": "Гистерезис отн. влажности",
+    "_order": 9,
+    "_icon": "hysteresis",
+    "hysteresisRel": {
+     "_name": "Гистерезис отн. влажности",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": 2.5,
+     "min": 0,
+     "max": 10
+    }
+   },
+   "hysteresisAbs": {
+    "_name": "Гистерезис абс. влажности",
+    "_order": 8,
+    "_icon": "hysteresis",
+    "hysteresisAbs": {
+     "_name": "Гистерезис абс. влажности",
+     "_order": 1,
+     "type": "number",
+     "unit": "г/см3",
+     "value": "1",
+     "min": 0,
+     "max": 3
+    }
+   },
+   "humidity": {
+    "_name": "Отн. влажность продукта",
+    "_order": 2,
+    "_icon": "rh-prd",
+    "humidity": {
+     "_name": "Отн. влажность продукта",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": 80,
+     "min": 0,
+     "max": 100
     }
    }
   }
@@ -2423,98 +2423,6 @@
     }
    }
   },
-  "onion": {
-   "_name": "Лук",
-   "hysteresis": {
-    "_name": "Гистерезис влажности",
-    "_order": 4,
-    "_icon": "hysteresis-humid",
-    "hysteresis": {
-     "_name": "",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": "5",
-     "min": 0,
-     "max": 15
-    }
-   },
-   "sp": {
-    "_name": "Уставка относительной влажности продукта",
-    "_order": 3,
-    "_icon": "rh-prd",
-    "sp": {
-     "_name": "",
-     "_order": 1,
-     "type": "number",
-     "unit": "%",
-     "value": 10,
-     "min": 0,
-     "max": 100
-    }
-   },
-   "work": {
-    "_name": "Время работы увлажнителя",
-    "_order": 5,
-    "_icon": "hum-work",
-    "work": {
-     "_name": "",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "02:00",
-     "min": null,
-     "max": null
-    }
-   },
-   "stop": {
-    "_name": "Время остановки увлажнителя",
-    "_order": 6,
-    "_icon": "hum-stop",
-    "stop": {
-     "_name": "Время остановки увлажнителя",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:30",
-     "min": null,
-     "max": null
-    }
-   },
-   "mode": {
-    "_name": "Режим работы",
-    "_order": 2,
-    "_icon": "control",
-    "mode": {
-     "_name": "Режим работы",
-     "_order": 1,
-     "type": "choice",
-     "unit": null,
-     "value": [
-      "Время",
-      "time"
-     ],
-     "list": [
-      {
-       "name": "Датчик",
-       "value": "sensor"
-      },
-      {
-       "name": "Время",
-       "value": "time"
-      },
-      {
-       "name": "Вкл",
-       "value": "on"
-      },
-      {
-       "name": "Выкл",
-       "value": "off"
-      }
-     ]
-    }
-   }
-  },
   "potato": {
    "_name": "Картофель",
    "stop": {
@@ -2571,6 +2479,98 @@
      "value": 10,
      "min": 0,
      "max": 100
+    }
+   },
+   "mode": {
+    "_name": "Режим работы",
+    "_order": 2,
+    "_icon": "control",
+    "mode": {
+     "_name": "Режим работы",
+     "_order": 1,
+     "type": "choice",
+     "unit": null,
+     "value": [
+      "Время",
+      "time"
+     ],
+     "list": [
+      {
+       "name": "Датчик",
+       "value": "sensor"
+      },
+      {
+       "name": "Время",
+       "value": "time"
+      },
+      {
+       "name": "Вкл",
+       "value": "on"
+      },
+      {
+       "name": "Выкл",
+       "value": "off"
+      }
+     ]
+    }
+   }
+  },
+  "onion": {
+   "_name": "Лук",
+   "sp": {
+    "_name": "Уставка относительной влажности продукта",
+    "_order": 3,
+    "_icon": "rh-prd",
+    "sp": {
+     "_name": "",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": 10,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "hysteresis": {
+    "_name": "Гистерезис влажности",
+    "_order": 4,
+    "_icon": "hysteresis-humid",
+    "hysteresis": {
+     "_name": "",
+     "_order": 1,
+     "type": "number",
+     "unit": "%",
+     "value": "5",
+     "min": 0,
+     "max": 15
+    }
+   },
+   "work": {
+    "_name": "Время работы увлажнителя",
+    "_order": 5,
+    "_icon": "hum-work",
+    "work": {
+     "_name": "",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "02:00",
+     "min": null,
+     "max": null
+    }
+   },
+   "stop": {
+    "_name": "Время остановки увлажнителя",
+    "_order": 6,
+    "_icon": "hum-stop",
+    "stop": {
+     "_name": "Время остановки увлажнителя",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:30",
+     "min": null,
+     "max": null
     }
    },
    "mode": {
@@ -2709,6 +2709,204 @@
     }
    }
   },
+  "carrot": {
+   "_name": "Морковь",
+   "fan": {
+    "_name": "Задержка включения вентилятора",
+    "_order": 2,
+    "_icon": "add-ventilation",
+    "fan": {
+     "_name": "Задержка включения вентилятора",
+     "_order": 1,
+     "type": "number",
+     "unit": "сек",
+     "value": 3,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "step": {
+    "_name": "Число импульсов в одном шаге движения клапана",
+    "_order": 3,
+    "_icon": "clap",
+    "step": {
+     "_name": "Число импульсов в одном шаге движения клапана",
+     "_order": 1,
+     "type": "number",
+     "unit": "имп",
+     "value": 30,
+     "min": 0,
+     "max": 200
+    }
+   },
+   "until": {
+    "_name": "Число ипульсов отступа от верхнего концевика клапана",
+    "_order": 5,
+    "_icon": "clap",
+    "until": {
+     "_name": "Число ипульсов отступа от верхнего концевика клапана",
+     "_order": 1,
+     "type": "number",
+     "unit": "имп",
+     "value": 10,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "detection": {
+    "_name": "Автообнаружение неисправ. датчиков темп. продукта",
+    "_order": 0,
+    "_icon": "sensor",
+    "detection": {
+     "_name": "",
+     "_order": 1,
+     "type": "boolean",
+     "unit": null,
+     "value": false
+    }
+   },
+   "wait": {
+    "_name": "Время ожидания следующего шага движения клапана",
+    "_order": 4,
+    "_icon": "interval",
+    "wait": {
+     "_name": "Время ожидания следующего шага движения клапана",
+     "_order": 1,
+     "type": "number",
+     "unit": "сек",
+     "value": 20,
+     "min": 0,
+     "max": 100
+    }
+   },
+   "limit": {
+    "_name": "Число одновременно закрывающихся клапанов при работе от генератора",
+    "_order": 6,
+    "_icon": "clap",
+    "limit": {
+     "_name": "Число одновременно закрывающихся клапанов при работе от генератора",
+     "_order": 1,
+     "type": "number",
+     "unit": "шт",
+     "value": 1,
+     "min": 0,
+     "max": 10
+    }
+   },
+   "out2": {
+    "_name": "2. Коэффициент выпускного клапана при температуре меньше",
+    "_order": 12,
+    "_icon": "temp-out2",
+    "temp": {
+     "_name": "Температура",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": -8,
+     "min": -50,
+     "max": 50
+    },
+    "k": {
+     "_name": "Коэффициент",
+     "_order": 2,
+     "type": "number",
+     "unit": null,
+     "value": 0.3,
+     "min": 0,
+     "max": 10
+    }
+   },
+   "outDefault": {
+    "_name": "Коэффициент выпускного клапана",
+    "_order": 7,
+    "_icon": "edit",
+    "outDefault": {
+     "_name": "Коэффициент выпускного клапана",
+     "_order": 1,
+     "type": "number",
+     "unit": null,
+     "value": "2",
+     "min": 0,
+     "max": 10
+    }
+   },
+   "out1": {
+    "_name": "1. Коэффициент выпускного клапана при температуре меньше",
+    "_order": 11,
+    "_icon": "temp-out2",
+    "k": {
+     "_name": "Коэффициент",
+     "_order": 2,
+     "type": "number",
+     "unit": null,
+     "value": 0.5,
+     "min": 0,
+     "max": 10
+    },
+    "temp": {
+     "_name": "Температура",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": -5,
+     "min": -50,
+     "max": 50
+    }
+   },
+   "out3": {
+    "_name": "3. Коэффициент выпускного клапана при температуре меньше",
+    "_order": 13,
+    "_icon": "temp-out2",
+    "k": {
+     "_name": "Коэффициент",
+     "_order": 2,
+     "type": "number",
+     "unit": null,
+     "value": 0,
+     "min": 0,
+     "max": 10
+    },
+    "temp": {
+     "_name": "Температура",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": -10,
+     "min": -50,
+     "max": 50
+    }
+   },
+   "debounce": {
+    "_name": "Антидребезг датчика",
+    "_order": 1,
+    "_icon": "interval",
+    "debounce": {
+     "_name": "",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:15"
+    }
+   },
+   "text1": {
+    "_name": "Коэф-ты выпуск. клапана в зависимости от темп. улицы",
+    "_order": 8,
+    "_icon": "cog",
+    "_type": "txt",
+    "t": {
+     "_name": "Температура",
+     "_order": 1,
+     "type": "txt",
+     "unit": null
+    },
+    "k": {
+     "_name": "Коэффициент",
+     "_order": 2,
+     "type": "txt",
+     "unit": null
+    }
+   }
+  },
   "onion": {
    "_name": "Лук",
    "detection": {
@@ -2735,43 +2933,6 @@
      "value": 3,
      "min": 0,
      "max": 100
-    }
-   },
-   "wait": {
-    "_name": "Время ожидания следующего шага движения клапана",
-    "_order": 4,
-    "_icon": "interval",
-    "wait": {
-     "_name": "Время ожидания следующего шага движения клапана",
-     "_order": 1,
-     "type": "number",
-     "unit": "сек",
-     "value": 20,
-     "min": 0,
-     "max": 100
-    }
-   },
-   "out3": {
-    "_name": "3. Коэффициент выпускного клапана при температуре меньше",
-    "_order": 13,
-    "_icon": "temp-out2",
-    "temp": {
-     "_name": "Температура",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": -10,
-     "min": -50,
-     "max": 50
-    },
-    "k": {
-     "_name": "Коэффициент",
-     "_order": 2,
-     "type": "number",
-     "unit": null,
-     "value": 0,
-     "min": 0,
-     "max": 10
     }
    },
    "step": {
@@ -2876,93 +3037,6 @@
      "max": 10
     }
    },
-   "debounce": {
-    "_name": "Антидребезг датчика",
-    "_order": 1,
-    "_icon": "interval",
-    "debounce": {
-     "_name": "",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:15"
-    }
-   },
-   "text1": {
-    "_name": "Коэф-ты выпуск. клапана в зависимости от темп. улицы",
-    "_order": 8,
-    "_icon": "cog",
-    "_type": "txt",
-    "t": {
-     "_name": "Температура",
-     "_order": 1,
-     "type": "txt",
-     "unit": null
-    },
-    "k": {
-     "_name": "Коэффициент",
-     "_order": 2,
-     "type": "txt",
-     "unit": null
-    }
-   }
-  },
-  "carrot": {
-   "_name": "Морковь",
-   "detection": {
-    "_name": "Автообнаружение неисправ. датчиков темп. продукта",
-    "_order": 0,
-    "_icon": "sensor",
-    "detection": {
-     "_name": "",
-     "_order": 1,
-     "type": "boolean",
-     "unit": null,
-     "value": false
-    }
-   },
-   "fan": {
-    "_name": "Задержка включения вентилятора",
-    "_order": 2,
-    "_icon": "add-ventilation",
-    "fan": {
-     "_name": "Задержка включения вентилятора",
-     "_order": 1,
-     "type": "number",
-     "unit": "сек",
-     "value": 3,
-     "min": 0,
-     "max": 100
-    }
-   },
-   "step": {
-    "_name": "Число импульсов в одном шаге движения клапана",
-    "_order": 3,
-    "_icon": "clap",
-    "step": {
-     "_name": "Число импульсов в одном шаге движения клапана",
-     "_order": 1,
-     "type": "number",
-     "unit": "имп",
-     "value": 30,
-     "min": 0,
-     "max": 200
-    }
-   },
-   "until": {
-    "_name": "Число ипульсов отступа от верхнего концевика клапана",
-    "_order": 5,
-    "_icon": "clap",
-    "until": {
-     "_name": "Число ипульсов отступа от верхнего концевика клапана",
-     "_order": 1,
-     "type": "number",
-     "unit": "имп",
-     "value": 10,
-     "min": 0,
-     "max": 100
-    }
-   },
    "wait": {
     "_name": "Время ожидания следующего шага движения клапана",
     "_order": 4,
@@ -2975,43 +3049,6 @@
      "value": 20,
      "min": 0,
      "max": 100
-    }
-   },
-   "limit": {
-    "_name": "Число одновременно закрывающихся клапанов при работе от генератора",
-    "_order": 6,
-    "_icon": "clap",
-    "limit": {
-     "_name": "Число одновременно закрывающихся клапанов при работе от генератора",
-     "_order": 1,
-     "type": "number",
-     "unit": "шт",
-     "value": 1,
-     "min": 0,
-     "max": 10
-    }
-   },
-   "out1": {
-    "_name": "1. Коэффициент выпускного клапана при температуре меньше",
-    "_order": 11,
-    "_icon": "temp-out2",
-    "temp": {
-     "_name": "Температура",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": -5,
-     "min": -50,
-     "max": 50
-    },
-    "k": {
-     "_name": "Коэффициент",
-     "_order": 2,
-     "type": "number",
-     "unit": null,
-     "value": 0.5,
-     "min": 0,
-     "max": 10
     }
    },
    "out3": {
@@ -3033,43 +3070,6 @@
      "type": "number",
      "unit": null,
      "value": 0,
-     "min": 0,
-     "max": 10
-    }
-   },
-   "out2": {
-    "_name": "2. Коэффициент выпускного клапана при температуре меньше",
-    "_order": 12,
-    "_icon": "temp-out2",
-    "temp": {
-     "_name": "Температура",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": -8,
-     "min": -50,
-     "max": 50
-    },
-    "k": {
-     "_name": "Коэффициент",
-     "_order": 2,
-     "type": "number",
-     "unit": null,
-     "value": 0.3,
-     "min": 0,
-     "max": 10
-    }
-   },
-   "outDefault": {
-    "_name": "Коэффициент выпускного клапана",
-    "_order": 7,
-    "_icon": "edit",
-    "outDefault": {
-     "_name": "Коэффициент выпускного клапана",
-     "_order": 1,
-     "type": "number",
-     "unit": null,
-     "value": "2",
      "min": 0,
      "max": 10
     }
@@ -3548,6 +3548,20 @@
      "max": null
     }
    },
+   "defrostWork": {
+    "_name": "Время цикла разморозки",
+    "_order": 4,
+    "_icon": "cr-work",
+    "defrostWork": {
+     "_name": "",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:30",
+     "min": null,
+     "max": null
+    }
+   },
    "cold": {
     "_name": "Охлаждение испарителя",
     "_order": 1,
@@ -3595,20 +3609,6 @@
     "_order": 7,
     "_icon": "cr-blow",
     "blow": {
-     "_name": "",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:30",
-     "min": null,
-     "max": null
-    }
-   },
-   "defrostWork": {
-    "_name": "Время цикла разморозки",
-    "_order": 4,
-    "_icon": "cr-work",
-    "defrostWork": {
      "_name": "",
      "_order": 1,
      "type": "time",
@@ -3876,6 +3876,20 @@
   },
   "carrot": {
    "_name": "Морковь",
+   "blow": {
+    "_name": "Время обдува датчиков после остановки",
+    "_order": 7,
+    "_icon": "cr-blow",
+    "blow": {
+     "_name": "",
+     "_order": 1,
+     "type": "time",
+     "unit": null,
+     "value": "00:30",
+     "min": null,
+     "max": null
+    }
+   },
    "cold": {
     "_name": "Охлаждение испарителя",
     "_order": 1,
@@ -3928,20 +3942,6 @@
      "type": "time",
      "unit": null,
      "value": "03:00",
-     "min": null,
-     "max": null
-    }
-   },
-   "blow": {
-    "_name": "Время обдува датчиков после остановки",
-    "_order": 7,
-    "_icon": "cr-blow",
-    "blow": {
-     "_name": "",
-     "_order": 1,
-     "type": "time",
-     "unit": null,
-     "value": "00:30",
      "min": null,
      "max": null
     }
@@ -4300,20 +4300,6 @@
      "max": 10
     }
    },
-   "deltaRoom": {
-    "_name": "Дельта температуры помещения",
-    "_order": 5,
-    "_icon": "hysteresis-out",
-    "deltaRoom": {
-     "_name": "",
-     "_order": 1,
-     "type": "number",
-     "unit": "°C",
-     "value": 0.5,
-     "min": 0,
-     "max": 5
-    }
-   },
    "hysteresis": {
     "_name": "Гистерезис продукта",
     "_order": 6,
@@ -4324,6 +4310,20 @@
      "type": "number",
      "unit": "°C",
      "value": 0.3,
+     "min": 0,
+     "max": 5
+    }
+   },
+   "deltaRoom": {
+    "_name": "Дельта температуры помещения",
+    "_order": 5,
+    "_icon": "hysteresis-out",
+    "deltaRoom": {
+     "_name": "",
+     "_order": 1,
+     "type": "number",
+     "unit": "°C",
+     "value": 0.5,
      "min": 0,
      "max": 5
     }

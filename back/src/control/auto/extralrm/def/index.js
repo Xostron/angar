@@ -17,6 +17,7 @@ const supply = require('./supply')
 const co2 = require('./co2')
 const aggregate = require('./aggregate')
 const idle = require('./idle')
+const deltaMdl = require('./delta_mdl')
 
 const def = {
 	section: {
@@ -46,6 +47,7 @@ const def = {
 			vlvLimB,
 			alrClosedB,
 			localB,
+			deltaMdl
 		},
 	},
 	cold: {

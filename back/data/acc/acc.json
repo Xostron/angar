@@ -36,12 +36,12 @@
     "buildingId": "6760195ed9da5c2bcc25f682"
    },
    "alrClosed": {
-    "date": "2025-01-29T10:12:01.241Z",
+    "date": "2025-01-30T08:44:18.333Z",
     "count": true,
     "code": "alrClosed",
     "type": "alr",
     "typeSignal": "critical",
-    "msg": "Аварийное закрытие клапанов",
+    "msg": "Аварийное закрытие клапанов ",
     "title": "",
     "buildingId": "6760195ed9da5c2bcc25f682"
    }
@@ -65,6 +65,14 @@
      "code": "",
      "typeSignal": "info",
      "msg": "Модуль в сети",
+     "title": "Секция 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "heating": {
+     "date": "2025-01-30T05:26:38.882Z",
+     "code": "heating",
+     "typeSignal": "info",
+     "msg": "Подогрев клапанов включен",
      "title": "Секция 1:",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }

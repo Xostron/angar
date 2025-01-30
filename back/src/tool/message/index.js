@@ -14,7 +14,7 @@ function msgB(building, code, msg = '') {
 	const o = { ...mes[code] }
 	o.title = ``
 	o.buildingId = building._id
-	o.msg += msg
+	o.msg += ' '+msg
 	return o
 }
 // Клапана

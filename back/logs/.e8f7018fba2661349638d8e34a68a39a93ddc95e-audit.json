@@ -6,36 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.e8f7018fba2661349638d8e34a68a39a93ddc95e-audit.json",
     "files": [
         {
-            "date": 1737544281355,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-22-14.log",
-            "hash": "34b35c97d067dd24b98630d7caa097cd81d077005344e208c35bb4b411de4768"
-        },
-        {
-            "date": 1737547989130,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-22-15.log",
-            "hash": "261a7839c190d3baeb88a6508311f6e422be32eaf8ad604867fb6779eb9b1dd4"
-        },
-        {
-            "date": 1737551028195,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-22-16.log",
-            "hash": "f354fb85a1f47658a690bfe9d05448310cfc8a8006db3e213384325e11046655"
-        },
-        {
-            "date": 1737609614585,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-23-08.log",
-            "hash": "974bbdaff30c4a94b59bbc3ce54bf2e258310e3d28da16a36dd43b46528d67a4"
-        },
-        {
-            "date": 1737612716672,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-23-09.log",
-            "hash": "f61bc4e3a18cc219d073fae99fc79c621ac09554d03acfcd892f034befd93f3e"
-        },
-        {
-            "date": 1737615622412,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-23-10.log",
-            "hash": "ea9dab4d5542299e62afad9663464a534d1fc84b8af5d4fd781112092b38bc31"
-        },
-        {
             "date": 1737621208035,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-23-11.log",
             "hash": "7b1ef48596d6e38a75d3091e023cefb4d4c782c0d967df04cd68128ee2fde7ce"
@@ -194,6 +164,26 @@
             "date": 1738144804376,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-29-13.log",
             "hash": "c76cda93cccacd434452e4d8f79f3415593459a1509aaf5b4c55ca3483138a4c"
+        },
+        {
+            "date": 1738214100360,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-30-08.log",
+            "hash": "2f93bc8b6436afcf4e625283668a3dfb14433406acc41baea2dc7625d8a121ab"
+        },
+        {
+            "date": 1738217170659,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-30-09.log",
+            "hash": "80f3bf8abfcde7e47569817a04de53e3574c3db3992f1cabfb11f8cfe9d8b145"
+        },
+        {
+            "date": 1738220559458,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-30-10.log",
+            "hash": "2c0fca033a5b907aea864d5c7c723d88993cd99c1c850b1aeb7cd338e4a5b83a"
+        },
+        {
+            "date": 1738224016485,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-30-11.log",
+            "hash": "cc13fcda85f2c12bedc001fb5ee06beb1835ef6b1d974cbdde6ae5996aea02f9"
         }
     ],
     "hashType": "sha256"
