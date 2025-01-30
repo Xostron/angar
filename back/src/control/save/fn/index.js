@@ -153,7 +153,7 @@ function cbAcc(obj, data) {
  * @param {*} key предыдущий ключ
  * @returns
  */
-function all(obj, data={}, prev, key) {
+function all(obj={}, data={}, prev, key) {
 	const keys = Object.keys(obj)
 	// console.log(111, key, obj, keys)
 	for (const k of keys) {

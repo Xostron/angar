@@ -1,5 +1,5 @@
-const extralrm = require('@control/auto/extralrm')
-const {extra} = require('@control/auto/extra')
+const extralrm = require('@control/extra/extralrm')
+const {extra} = require('@control/extra/extra')
 const tuneup = require('@tool/service/tune')
 
 function build(start, building, obj, s, se, m, automode) {

@@ -1,6 +1,6 @@
 
-const extralrm = require('@control/auto/extralrm')
-const {extra} = require('@control/auto/extra')
+const extralrm = require('@control/extra/extralrm')
+const {extra} = require('@control/extra/extra')
 
 function sectionAlways(bld, sect, obj, s, se, m, am, accAuto, resultFan, alrB) {
 	// Секция: доп. аварии

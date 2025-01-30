@@ -1,6 +1,22 @@
 const { setACmd, data: store, isExtralrm } = require('@store')
 const { ctrlB } = require('@tool/command/fan')
 
+/**
+ * Для секций в авторежиме: если у одной секции формируется сигнал на включение вент (2я секция в авторежиме - вент остановлены),
+ * включается вентиляторы на всех секциях в авторежиме
+ * @param {*} bld склад
+ * @param {*} resultFan задание на включение напор.вент.
+ * @param {*} s настройки склада
+ */
+function fan(bld, resultFan, s, retain) {
+	fnFan(resultFan.start.includes(true), resultFan, s, bld._id, retain)
+	// Прогрев клапанов
+	if (!resultFan.start.includes(true)) fnFanWarm(resultFan, s)
+
+	// Непосредственное включение вентиляторов (ступенчато)
+	ctrlFSoft(resultFan, bld._id)
+}
+
 // Плавный пуск/стоп вентиляторов на всех секция по цепочке
 function ctrlFSoft(resultFan, buildingId) {
 	const warm = Object.values(resultFan.warming)
@@ -90,8 +106,6 @@ function offSection(resultFan, s, idB, obj) {
 	// Пошаговое выключение
 	fnACmd(false, resultFan, s, idB)
 }
-module.exports = {
-	ctrlFSoft,
-	fnFan,
-	fnFanWarm,
-}
+
+module.exports =  fan 
+
