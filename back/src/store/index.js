@@ -14,7 +14,7 @@ const data = {
 	// TCP период повторной проверки модуля, мин(sys.tcp)
 	tTCP: 10,
 	// Пауза при чтении очередного модуля, мс (sys.pauseplc)
-	tPause: 500,
+	tPause: 50,
 	// 10% от полного времени открытия клапана - время после которого клапан останавливается
 	hystV: 10,
 	// Антидребезг неисправности модуля ПЛК, 20сек (sys.debplc)
@@ -52,7 +52,7 @@ const data = {
 	// Cлежение за временем работы периферии (откр/закр клапанов, вкл/выкл вентиляторов )
 	watchdog: null,
 	// Промежуточные данные - расчеты (Авторежим, Доп. функции, Доп. аварии)
-	acc: null,
+	acc: {},
 	// Аварии клапанов
 	alarmV: {},
 	// Аварии для логики
@@ -312,11 +312,15 @@ function readAcc(buildingId, name, sectionId) {
 	data.acc ??= {}
 	data.acc[buildingId] ??= {}
 	data.acc[buildingId][name] ??= {}
-	if (!sectionId) return data.acc?.[buildingId]?.[name]
+	if (!sectionId) return data.acc[buildingId][name]
 
 	data.acc[buildingId][name][sectionId] ??= {}
-	return data.acc?.[buildingId]?.[name]?.[sectionId]
+	return data.acc[buildingId][name][sectionId]
 }
+function saveAcc(buildingId, name) {
+
+}
+
 
 // Команда управления
 function setACmd(type, sectionId, obj) {

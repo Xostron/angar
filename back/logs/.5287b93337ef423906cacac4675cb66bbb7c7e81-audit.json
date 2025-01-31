@@ -6,41 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.5287b93337ef423906cacac4675cb66bbb7c7e81-audit.json",
     "files": [
         {
-            "date": 1737702114532,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-10.log",
-            "hash": "ff4c79477de37267866dcd2e1a46049c547334414a61551699671baa216cae2a"
-        },
-        {
-            "date": 1737706469769,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-11.log",
-            "hash": "5c45a44328c13408f86c4082ef553d1277e3e2f4a59332bc4763fb7b64065a2e"
-        },
-        {
-            "date": 1737709689690,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-12.log",
-            "hash": "751e4d5eaac3eb072d7ff9d84c69e9d476b9454abbd850a97166c739444644e1"
-        },
-        {
-            "date": 1737713557796,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-13.log",
-            "hash": "7af52e6ffa21d87728ac2418a13774e026d36498d5202a210c13b26e16fbe892"
-        },
-        {
-            "date": 1737718427783,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-14.log",
-            "hash": "9b53af1156d5ad0d25e6dbe23a3467c2bb633c6b330a753ea7974048914aa77d"
-        },
-        {
-            "date": 1737720541480,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-15.log",
-            "hash": "518aa428a41bcc94316a2f088ae11fc3a48cc63bae307dc41c09081daaae1794"
-        },
-        {
-            "date": 1737723672938,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-16.log",
-            "hash": "99a388404e861674e2299f1891508b112a309b7cd2be336ce6ec542eeb44cbf3"
-        },
-        {
             "date": 1737727438027,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-24-17.log",
             "hash": "ffa2a5214915540da8c31cc5723a1a528a63bea13cf9e50418892e42bcba6092"
@@ -179,6 +144,46 @@
             "date": 1738303286405,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-09.log",
             "hash": "6fe7e0e03e303fa4d67413d9a2a39802765b68ab4a4f476e4996c42505463efc"
+        },
+        {
+            "date": 1738306801337,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-10.log",
+            "hash": "badc6b86e329c81e9a445a735f3c35f1f1151d035a60cdc98a87967ba7d8efb4"
+        },
+        {
+            "date": 1738310404146,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-11.log",
+            "hash": "e55a0a7de426bc8a2d1f7c142dea3443fe41ccaa939a556cb99bfc3427286d3e"
+        },
+        {
+            "date": 1738314005443,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-12.log",
+            "hash": "7e0d6fb7be06811f3f4afdf797ad47ed06f4646abe8016980b84281c4d351b32"
+        },
+        {
+            "date": 1738320753866,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-13.log",
+            "hash": "28094edaa004930348a8f81bd929a87329d5f91b72c04461b738e41cbd5b1af0"
+        },
+        {
+            "date": 1738321204411,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-14.log",
+            "hash": "e344fb30bea3d286bb952bdbfd7d15be4b8bcf088d9968cd48d6c91365ec0830"
+        },
+        {
+            "date": 1738324806237,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-15.log",
+            "hash": "384bb8d214b9f2ad76355784ddfdab75a0d62da210d3aa53de693730830bfc79"
+        },
+        {
+            "date": 1738328400603,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-16.log",
+            "hash": "762215a4e05216937754befffaa638088a7a7ecad79c157fbe6dddfa49b8193f"
+        },
+        {
+            "date": 1738332001130,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-31-17.log",
+            "hash": "fc62e50d5c0b16fe4ed226ba6e6b85e4de55b68fef37e77f0cd5c734dd2d63ad"
         }
     ],
     "hashType": "sha256"

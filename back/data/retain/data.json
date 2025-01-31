@@ -22,7 +22,10 @@
   }
  },
  "6760195ed9da5c2bcc25f682": {
-  "valvePosition": {},
+  "valvePosition": {
+   "67602cfcd9da5c2bcc25f6d8": 0,
+   "67602cb4d9da5c2bcc25f6d4": 0
+  },
   "automode": "cooling",
   "product": {
    "_id": "66d0886536e7e1b1ff9e0788",
@@ -30,7 +33,7 @@
    "code": "onion"
   },
   "mode": {
-   "67602254d9da5c2bcc25f6c9": false
+   "67602254d9da5c2bcc25f6c9": true
   },
   "start": true,
   "setting": {

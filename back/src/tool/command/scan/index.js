@@ -3,7 +3,6 @@ const { data: store, readAcc } = require('@store')
 const setting = require('@control/extra/setting')
 const { mechB } = require('@tool/command/mech')
 
-
 // Собрать первичные данные по складу
 function scan(bld, obj) {
 	const { data, retain } = obj
@@ -18,9 +17,14 @@ function scan(bld, obj) {
 	// Исполнительные механизмы по складу (без учета секций)
 	const m = mechB(bld._id, obj)
 	// Аккумулятор для хранения промежуточных вычислений (авторежим)
-	const t = bld?.type == 'normal' ? (automode ?? bld?.type) : bld?.type
+	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 	const accAuto = readAcc(bld._id, t)
-	const supply =  store?.acc[bld._id]?.building?.supply
+	// readAcc(bld._id, t)
+	// console.log(444, t)
+	// store.acc[bld._id] ??= {}
+	// store.acc[bld._id][t] ??= {}
+	//  accAuto = store?.acc?.[bld._id]?.[t]
+	const supply = store.acc[bld._id]?.building?.supply
 	// Напорные вентиляторы всех секций
 	const resultFan = {
 		start: [],

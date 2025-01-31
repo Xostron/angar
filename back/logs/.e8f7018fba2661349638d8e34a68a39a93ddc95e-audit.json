@@ -6,41 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.e8f7018fba2661349638d8e34a68a39a93ddc95e-audit.json",
     "files": [
         {
-            "date": 1737702114509,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-10.log",
-            "hash": "c9ce8065232c50307074aef5bbe2503314f622ae72f5f2e9db24373f79bcd5ab"
-        },
-        {
-            "date": 1737706469689,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-11.log",
-            "hash": "b4671bdc336bff9a1f9b4e27e8f46ece1d856706a32581117842e389d744c522"
-        },
-        {
-            "date": 1737709689649,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-12.log",
-            "hash": "649d7cf70f62ac4f164788850893ab0d778c9816ccb0364561db6f096a2fc2cf"
-        },
-        {
-            "date": 1737713557765,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-13.log",
-            "hash": "1da361b2e2aea8e67d29107d2838ec75c54e534945773ae050dc42ad8612a5c5"
-        },
-        {
-            "date": 1737718427759,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-14.log",
-            "hash": "742cc89bf502219dedaaadec7b86975a06751adf00fcf1604bbdf3caa134fc71"
-        },
-        {
-            "date": 1737720541454,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-15.log",
-            "hash": "67baa7cab6a13188d479e7d53626bfad13fe414e578d7e33dcdcf26021eb20dc"
-        },
-        {
-            "date": 1737723672914,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-16.log",
-            "hash": "41a0fe5f2c044fc4b069f4efc6e5ff54c1890d059f6b4466764f8d914db4a40e"
-        },
-        {
             "date": 1737727437995,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-24-17.log",
             "hash": "f2be50326f524bc3e6f48f780ac522a2e2be4152e8d87c570edd000daba05a35"
@@ -184,6 +149,46 @@
             "date": 1738303202461,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-09.log",
             "hash": "68859959b65a730dbba312f40c32c3d63f67d935811848694eae9cda305032be"
+        },
+        {
+            "date": 1738306812141,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-10.log",
+            "hash": "79502f221cefe4f2f87e1d867cd63e41c8d41c00effae6b2c5514ae975f391fd"
+        },
+        {
+            "date": 1738310417449,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-11.log",
+            "hash": "7135d67b5317b304f986f1e1892852ef2c1213017d138314f6e28499dbedd2ae"
+        },
+        {
+            "date": 1738314023569,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-12.log",
+            "hash": "2bd816f40d9de024453d225dc9d9604c06e2b0b47ed0b36ffda915a6136494d3"
+        },
+        {
+            "date": 1738320753828,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-13.log",
+            "hash": "fd09f821c0342a35fa9b567f967bfe1f21de071c6288124f095f7e8e3e9bf644"
+        },
+        {
+            "date": 1738321205176,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-14.log",
+            "hash": "43e12126004bdec1ffac733d3d12c76fe35de8ef0377ebc7c9de12b37405b7bb"
+        },
+        {
+            "date": 1738324806501,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-15.log",
+            "hash": "bf44c8e178c0a54fb81a1c60664deefed7904e1ad96eb3c40cd708c5a0dcfbb4"
+        },
+        {
+            "date": 1738328446675,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-16.log",
+            "hash": "1957a2c2d4a092f5512e916315531f065db946a1040bdf78b3df93ac4c652a8b"
+        },
+        {
+            "date": 1738332017881,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\fan-2025-01-31-17.log",
+            "hash": "d56fc0817fff3f9a735d473de26011d351d91dc04d64bc84360304e517c9c1a7"
         }
     ],
     "hashType": "sha256"

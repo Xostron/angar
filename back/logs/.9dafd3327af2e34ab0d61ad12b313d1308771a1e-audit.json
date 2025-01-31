@@ -6,41 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.9dafd3327af2e34ab0d61ad12b313d1308771a1e-audit.json",
     "files": [
         {
-            "date": 1737702016833,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-10.log",
-            "hash": "8c18b5d058741bc2c4dc02ee8a0809660d5d9a38f1155af1490ef3f30885e537"
-        },
-        {
-            "date": 1737705613092,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-11.log",
-            "hash": "fd85ecb61cf9596c0037f9d40c9bb7420d6afb35a67868cef2672ef517123269"
-        },
-        {
-            "date": 1737709222163,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-12.log",
-            "hash": "da31f6815620b3b6e8d67cb4f92c95177be197020e31cbf0c0745d037f32b382"
-        },
-        {
-            "date": 1737712811509,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-13.log",
-            "hash": "8648a3966a3b3f764a064bde065a8cbe38c4bbd2f4481ab6fc48c1b7d1333678"
-        },
-        {
-            "date": 1737718427776,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-14.log",
-            "hash": "5a0bb73b82f84a00548449847e57698dfba49947548047d2379a04a0921546ec"
-        },
-        {
-            "date": 1737720008009,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-15.log",
-            "hash": "8f2a4e1e7e7f1697c64252b2868884a56e3597220cc1131c74dac2afd51ec7fe"
-        },
-        {
-            "date": 1737723613955,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-16.log",
-            "hash": "d3029b964f9036f0459f0a2e32c306a9bee3b56f9c454577b64f0e54d581d488"
-        },
-        {
             "date": 1737727438016,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-24-17.log",
             "hash": "d99d718e604924708fae4194940a4cb1fed2f64e5024f16616e7c90d224fabfc"
@@ -209,6 +174,46 @@
             "date": 1738303286396,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-09.log",
             "hash": "b54123bf5bf94b91b6f79bd1f6796439f5cfc7b762f6ecf70e8ae9cefdcac22a"
+        },
+        {
+            "date": 1738306801340,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-10.log",
+            "hash": "f9dc063f4269683410e932129b372c2b6a7e3cb9ccd978e11a087437b7eeaca9"
+        },
+        {
+            "date": 1738310404149,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-11.log",
+            "hash": "a703d98425ad26b8171d406cd74e62998d253a4de701804a8b66e21156eac9ec"
+        },
+        {
+            "date": 1738314005450,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-12.log",
+            "hash": "a5a163527368fd2d96c2ac62a07af25c041fa7b5d3a5d72abfa0ee395b5063f6"
+        },
+        {
+            "date": 1738320753855,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-13.log",
+            "hash": "65ddcd870fe62499ce87c2f471fb50e7bb6a885e756407b34b2c0e12ba119ee5"
+        },
+        {
+            "date": 1738321204414,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-14.log",
+            "hash": "026b600ba8b4df150f7a83d940e486a8a9a10e9b09ee828db5e81dd2f90b0d38"
+        },
+        {
+            "date": 1738324806242,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-15.log",
+            "hash": "76a606a99b30ea85ea1e913b536fbfb1c1d4163328189e35c51ccebe06a38736"
+        },
+        {
+            "date": 1738328400608,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-16.log",
+            "hash": "3b3e780f3b0d4ca82db2e9422dd747133a434ee30dd8b0648c7c16e9b7d60cb5"
+        },
+        {
+            "date": 1738332001135,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\sensor-2025-01-31-17.log",
+            "hash": "7a14a76638db787013281ad15a8324c9d737e4efe5cf4e06a54a5b20d0ef9a0f"
         }
     ],
     "hashType": "sha256"

@@ -1,5 +1,22 @@
 {
- "auto": {},
+ "auto": {
+  "6760195ed9da5c2bcc25f682": {
+   "cooling": {
+    "67602254d9da5c2bcc25f6c9": {
+     "hout1": {
+      "id": 2,
+      "date": "2025-01-31T14:26:09.231Z",
+      "code": "hout1",
+      "type": "hout",
+      "typeSignal": "sensor",
+      "msg": "Влажность улицы ниже допустимой при охлаждении",
+      "title": "Секция 1:",
+      "buildingId": "6760195ed9da5c2bcc25f682"
+     }
+    }
+   }
+  }
+ },
  "timer": {
   "6760195ed9da5c2bcc25f682": {
    "ozon": {
@@ -25,15 +42,17 @@
    }
   },
   "6760195ed9da5c2bcc25f682": {
-   "local": {
-    "date": "2025-01-30T12:19:19.707Z",
-    "count": true,
-    "code": "local",
-    "type": "",
-    "typeSignal": "critical",
-    "msg": "Управление переведено переключателем на щите ",
-    "title": "",
-    "buildingId": "6760195ed9da5c2bcc25f682"
+   "sensor": {},
+   "67602254d9da5c2bcc25f6c9": {
+    "antibliz": {
+     "date": "2025-01-31T14:27:06.173Z",
+     "code": "antibliz",
+     "type": "antibliz",
+     "typeSignal": "valve",
+     "msg": "Сработал режим антивьюги",
+     "title": "Секция 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
    }
   }
  },
@@ -57,19 +76,33 @@
      "msg": "Модуль в сети",
      "title": "Секция 1:",
      "buildingId": "6760195ed9da5c2bcc25f682"
-    },
-    "heating": {
-     "date": "2025-01-30T05:26:38.882Z",
-     "code": "heating",
+    }
+   },
+   "vent": {
+    "off": {
+     "date": "2025-01-31T14:24:02.410Z",
+     "code": "off",
      "typeSignal": "info",
-     "msg": "Подогрев клапанов включен",
-     "title": "Секция 1:",
+     "msg": "Режим работы вентиляции: Выключен ",
+     "title": "",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }
    }
   }
  },
- "achieve": {},
+ "achieve": {
+  "6760195ed9da5c2bcc25f682": {
+   "cooling": {
+    "cooling-2": {
+     "order": 2,
+     "code": "cooling-2",
+     "msg": "t задания канала = 2.0 °С, t задания продукта = 9.0 °С",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
+   }
+  }
+ },
  "module": {
   "67601974d9da5c2bcc25f689": {},
   "6760195ed9da5c2bcc25f682": {}
