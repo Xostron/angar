@@ -3,7 +3,7 @@ const { cValue, cAlarm } = require('@socket/emit')
 const { data: store, reset } = require('@store')
 const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
-const statistic = require('./statistic')
+const {statOnChange} = require('../stat')
 const analysis = require('./analysis')
 const hrtime = process.hrtime.bigint
 const writeLock = require('./lock')
@@ -34,9 +34,7 @@ async function control() {
 		// Аварии для web
 		const alr = await webAlarm(obj)
 		// Статистика
-		statistic(obj, alr.history)
-		// Задержка цикла
-		await delay(store.tDelay)
+		statOnChange(obj, alr.history)
 		// Обнулить команду reset (кнопка сброса аварии)
 		reset({}, false)
 		if (store._cycle_ms_ < 50) await delay(2000)

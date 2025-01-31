@@ -23,6 +23,13 @@ function pLog(data, arr, value, level) {
 		logger[level]({ message: message(data, el, level, value) })
 	})
 }
+
+// Лог непрерывных значений
+function pLogConst(data, arr, value, level) {
+	if (!arr?.length) return
+	arr.forEach((el) => logger[level]({ message: message(data, el, level, value) }))
+}
+
 /**
  * Сохранение изменений
  * @param {object} val значение
@@ -69,11 +76,11 @@ function message(data, el, level, value) {
 			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
 			v = value[el._id] ?? false
 			break
-		case 'watt':
-			secId = el.sectionId
-			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
-			// console.log(222, v)
-			break
+		// case 'watt':
+		// secId = el.sectionId
+		// v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
+		// console.log(222, v)
+		// break
 		default:
 			break
 	}
@@ -132,13 +139,14 @@ function alarmLog(arr) {
  * @param {object[]} building Рама складов
  */
 function sensLog(total, building) {
+	if (!total) return
 	building.forEach((bld) => {
 		const val = total[bld._id]
 		;['hin', 'tprdL'].forEach((el) => {
-			const id = bld._id + '_' + el
-			if (!check(val[el], store.prev[id])) return
+			// const id = bld._id + '_' + el
+			// if (!check(val[el], store.prev[id])) return
 			// фиксируем состояние по изменению
-			store.prev[id] = val[el]
+			// store.prev[id] = val[el]
 			const m = el === 'hin' ? 'max' : 'min'
 			logger['sensor']({
 				message: {
@@ -152,4 +160,4 @@ function sensLog(total, building) {
 	})
 }
 
-module.exports = { pLog, alarmLog, sensLog }
+module.exports = { pLog, alarmLog, sensLog, pLogConst }

@@ -46,8 +46,8 @@
   "kindList": [
    "ozon",
    "co2",
-   "cooler",
    "wetting",
+   "cooler",
    "cold"
   ]
  }
