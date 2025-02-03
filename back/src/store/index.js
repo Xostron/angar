@@ -14,7 +14,7 @@ const data = {
 	// TCP период повторной проверки модуля, мин(sys.tcp)
 	tTCP: 10,
 	// Пауза при чтении очередного модуля, мс (sys.pauseplc)
-	tPause: 50,
+	tPause: 150,
 	// 10% от полного времени открытия клапана - время после которого клапан останавливается
 	hystV: 10,
 	// Антидребезг неисправности модуля ПЛК, 20сек (sys.debplc)
@@ -183,7 +183,9 @@ function delModule(buildingId, moduleId) {
 // Сброс аварий - установить/обнулить
 function reset(obj, type = true) {
 	// обнулить
-	if (!type) data.reset.clear()
+	if (!type) {
+		return data.reset.clear()
+	}
 	// установить
 	data.reset.add(obj.buildingId)
 }
@@ -317,10 +319,6 @@ function readAcc(buildingId, name, sectionId) {
 	data.acc[buildingId][name][sectionId] ??= {}
 	return data.acc[buildingId][name][sectionId]
 }
-function saveAcc(buildingId, name) {
-
-}
-
 
 // Команда управления
 function setACmd(type, sectionId, obj) {

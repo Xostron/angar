@@ -78,11 +78,11 @@
    "hysteresisIn": {
     "hysteresisIn": 0.3
    },
-   "hysteresisOut": {
-    "hysteresisOut": "1"
-   },
    "day": {
     "day": 30
+   },
+   "hysteresisOut": {
+    "hysteresisOut": "1"
    },
    "min": {
     "min": "0"
@@ -111,26 +111,6 @@
     "min": -10
    }
   },
-  "carrot": {
-   "differenceValue": {
-    "differenceValue": "3"
-   },
-   "differenceMin": {
-    "differenceMin": 1
-   },
-   "min": {
-    "min": "10"
-   },
-   "hysteresisIn": {
-    "hysteresisIn": 0.3
-   },
-   "differenceMax": {
-    "differenceMax": 25
-   },
-   "hysteresisOut": {
-    "hysteresisOut": "1"
-   }
-  },
   "potato": {
    "differenceMax": {
     "differenceMax": 25
@@ -146,6 +126,26 @@
    },
    "min": {
     "min": "10"
+   },
+   "hysteresisOut": {
+    "hysteresisOut": "1"
+   }
+  },
+  "carrot": {
+   "differenceValue": {
+    "differenceValue": "3"
+   },
+   "differenceMin": {
+    "differenceMin": 1
+   },
+   "min": {
+    "min": "10"
+   },
+   "hysteresisIn": {
+    "hysteresisIn": 0.3
+   },
+   "differenceMax": {
+    "differenceMax": 25
    },
    "hysteresisOut": {
     "hysteresisOut": "1"
@@ -262,17 +262,17 @@
  "heat": {
   "_prd": true,
   "onion": {
-   "max": {
-    "max": "1"
-   },
-   "hysteresis": {
-    "hysteresis": 0.3
-   },
    "outMax": {
     "outMax": "5"
    },
    "channel": {
     "channel": "2"
+   },
+   "max": {
+    "max": "1"
+   },
+   "hysteresis": {
+    "hysteresis": 0.3
    },
    "difference": {
     "difference": "3"
@@ -625,13 +625,13 @@
    "limit": {
     "limit": 1
    },
-   "out1": {
-    "temp": -5,
-    "k": 0.5
-   },
    "out2": {
     "temp": -8,
     "k": 0.3
+   },
+   "out1": {
+    "temp": -5,
+    "k": 0.5
    },
    "out3": {
     "temp": -10,
@@ -787,38 +787,6 @@
  },
  "cooler": {
   "_prd": true,
-  "carrot": {
-   "cold": {
-    "cold": 8
-   },
-   "defrostWait": {
-    "defrostWait": "10:00"
-   },
-   "defrostWork": {
-    "defrostWork": "00:30"
-   },
-   "stop": {
-    "stop": "03:00"
-   },
-   "blow": {
-    "blow": "00:30"
-   },
-   "defrostOn": {
-    "defrostOn": -10
-   },
-   "defrostOff": {
-    "defrostOff": 8
-   },
-   "water": {
-    "water": "00:02"
-   },
-   "deltaCold": {
-    "deltaCold": 6
-   },
-   "accel": {
-    "accel": "auto"
-   }
-  },
   "onion": {
    "defrostWait": {
     "defrostWait": "10:00"
@@ -884,6 +852,38 @@
    },
    "drain": {
     "drain": "auto"
+   }
+  },
+  "carrot": {
+   "cold": {
+    "cold": 8
+   },
+   "defrostWait": {
+    "defrostWait": "10:00"
+   },
+   "defrostWork": {
+    "defrostWork": "00:30"
+   },
+   "stop": {
+    "stop": "03:00"
+   },
+   "blow": {
+    "blow": "00:30"
+   },
+   "defrostOn": {
+    "defrostOn": -10
+   },
+   "defrostOff": {
+    "defrostOff": 8
+   },
+   "water": {
+    "water": "00:02"
+   },
+   "deltaCold": {
+    "deltaCold": 6
+   },
+   "accel": {
+    "accel": "auto"
    }
   },
   "cabbage": {

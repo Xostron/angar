@@ -6,21 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.4e6eb8495e1ae76b889fc160cd39d8675789634a-audit.json",
     "files": [
         {
-            "date": 1737727438009,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-24-17.log",
-            "hash": "1c2ce9d6d48857c44fb94b19723ff892147caf69e1d59dd40fc16c51f2d164fb"
-        },
-        {
-            "date": 1737960731494,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-27-09.log",
-            "hash": "16b4372b69465e6d4fcc8caaf054c74de4dc2344cd612b442b79525ca5395b50"
-        },
-        {
-            "date": 1737961632952,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-27-10.log",
-            "hash": "0cb52db20bf4551158241612a2b3d173f388c1dcccceeedeb3f07735039c3ba5"
-        },
-        {
             "date": 1738042617870,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-28-08.log",
             "hash": "5500f1b66720d1027102767dbc32175ba179e2623d36317754701f981c31806b"
@@ -159,6 +144,26 @@
             "date": 1738332017897,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-31-17.log",
             "hash": "53c1b6b5b61fdd070099737dbb8ba3987f9b435178b53a74bd7465f3152e7190"
+        },
+        {
+            "date": 1738559720117,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-02-03-08.log",
+            "hash": "95430946f0e28feeb21415f17fb4f004fa49a3299c8cb8796adf22cbe38414e3"
+        },
+        {
+            "date": 1738562706420,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-02-03-09.log",
+            "hash": "090d7dca568be4bcf9214fcc2d6a88a2f437427673dbae27432809c3695b0d86"
+        },
+        {
+            "date": 1738566098482,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-02-03-10.log",
+            "hash": "69fe47b70fd9b0899d8dce4e01bf0cfba3c76e3b2222f4ffe66a2b32835c842a"
+        },
+        {
+            "date": 1738570427868,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-02-03-11.log",
+            "hash": "fd64748d52fb4bf8fca290c89cd4f496f2cab845e224c8e381c241daacea23e0"
         }
     ],
     "hashType": "sha256"

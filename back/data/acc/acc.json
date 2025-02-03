@@ -5,7 +5,7 @@
     "67602254d9da5c2bcc25f6c9": {
      "hout1": {
       "id": 2,
-      "date": "2025-01-31T14:26:09.231Z",
+      "date": "2025-02-03T08:23:27.371Z",
       "code": "hout1",
       "type": "hout",
       "typeSignal": "sensor",
@@ -42,15 +42,14 @@
    }
   },
   "6760195ed9da5c2bcc25f682": {
-   "sensor": {},
    "67602254d9da5c2bcc25f6c9": {
-    "antibliz": {
-     "date": "2025-01-31T14:27:06.173Z",
-     "code": "antibliz",
-     "type": "antibliz",
+    "vlvCrash67602cb4d9da5c2bcc25f6d4": {
+     "date": "2025-02-03T07:29:02.954Z",
+     "count": true,
+     "code": "vlvCrash",
      "typeSignal": "valve",
-     "msg": "Сработал режим антивьюги",
-     "title": "Секция 1:",
+     "msg": "Авария двигателя",
+     "title": "Секция 1. Приточный клапан:",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }
    }
@@ -76,11 +75,19 @@
      "msg": "Модуль в сети",
      "title": "Секция 1:",
      "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "heating": {
+     "date": "2025-02-03T05:17:27.749Z",
+     "code": "heating",
+     "typeSignal": "info",
+     "msg": "Подогрев клапанов включен",
+     "title": "Секция 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
     }
    },
    "vent": {
     "off": {
-     "date": "2025-01-31T14:24:02.410Z",
+     "date": "2025-02-03T08:16:59.402Z",
      "code": "off",
      "typeSignal": "info",
      "msg": "Режим работы вентиляции: Выключен ",
@@ -96,7 +103,7 @@
     "cooling-2": {
      "order": 2,
      "code": "cooling-2",
-     "msg": "t задания канала = 2.0 °С, t задания продукта = 9.0 °С",
+     "msg": "t задания канала = 8.7 °С, t задания продукта = 9.0 °С",
      "title": "",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }

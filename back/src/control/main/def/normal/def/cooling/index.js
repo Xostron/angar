@@ -2,6 +2,7 @@ const alarm = require('./alarm')
 const { data: store, wrAchieve, delAchieve, readAcc } = require('@store')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
+const sm = require('@dict/submode')
 
 // Автоматический режим: Охлаждение
 const data = {
@@ -40,14 +41,16 @@ function middlew(building, section, s, se, seB, alr, acc) {
 	if (acc.tcnl < s.cooling.minChannel) acc.tcnl = s.cooling.minChannel
 
 	// Продукт достиг температуры задания*****************************************
-	if (seB.tprd <= acc.tgt && !acc.finish) {
+	// В режиме лечения - Продукт достиг не активен
+	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0]!==sm.cure[0]) {
 		acc.finish = true
 		wrAchieve(building._id, 'cooling', msgB(building, 15))
 	}
-	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt) {
+	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0]===sm.cure[0]) {
 		acc.finish = false
 		delAchieve(building._id, 'cooling', mes[15].code)
 	}
+
 	// ********************************************************
 
 	wrAchieve(building._id, 'cooling', {
@@ -74,7 +77,7 @@ function submode(s, se, seB, alr, acc) {
 	// Подрежимы
 	// Охлаждение 2
 	if (acc.tgt + s.mois.max <= seB.tprd) {
-		acc.state = sm.cooling2
+		acc.submode = sm.cooling2
 		acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois.differenceMin2 } }
 		return
 	}
@@ -82,12 +85,12 @@ function submode(s, se, seB, alr, acc) {
 	if (acc.tgt + s.mois.max - s.cooling.hysteresisIn > seB.tprd) {
 		// Лечение
 		if (seB.hin >= s.mois.humidity) {
-			acc.state = sm.cure
+			acc.submode = sm.cure
 			acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
 			return
 		}
 		// Охлаждение
-		if (seB.hin - s.mois.hysteresisRel < s.mois.humidity) acc.state = sm.cooling
+		if (seB.hin - s.mois.hysteresisRel < s.mois.humidity) acc.submode = sm.cooling
 		acc.setting = { cooling: s.cooling, mois: s.mois }
 	}
 }
@@ -149,12 +152,6 @@ module.exports = data
 // 	hysteresisAbs: 1,
 // 	prd: 'onion'
 //   }
-
-const sm = {
-	cooling: ['cooling', 'Охлаждение'],
-	cure: ['cure', 'Лечение'],
-	cooling2: ['cooling2', 'Охлаждение 2'],
-}
 
 // {
 // 	tout: -8.7,

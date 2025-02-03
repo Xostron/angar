@@ -5,8 +5,8 @@ function cmd(obj) {
 		// Вкл сброс аварий
 		reset(obj)
 		// Очистка аккумулятора аварий
-		store.alarm.auto[obj.buildingId] = {}
-		store.alarm.extralrm[obj.buildingId] = {}
+		// store.alarm.auto[obj.buildingId] = {}
+		// store.alarm.extralrm[obj.buildingId] = {}
 		resolve(true)
 	})
 }

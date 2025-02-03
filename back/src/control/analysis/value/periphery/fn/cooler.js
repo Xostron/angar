@@ -48,6 +48,7 @@ function cooler(equip, val, retain, result) {
 		// Состояние испарителя
 		const idB = getIdByClr(section, clr);
 		result[clr._id].state = state(result[clr._id]);
+		// Аккумулятор авторежима
 		if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add';
 		//Добавление читаемого названия состояния
 		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? '';

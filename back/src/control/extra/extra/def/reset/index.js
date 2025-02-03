@@ -1,5 +1,5 @@
 const { ctrlB } = require('@tool/command/fan')
-const { data: store } = require('@store')
+const { data: store, isReset } = require('@store')
 const { getSignal } = require('@tool/command/signal')
 
 // Нажата кнопка "Сброс аварии"
@@ -21,7 +21,7 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	const alrClosed = acSec.some((el) => !!el) || acBld
 
 	// Нажали на кнопку, выход сброса установится на 3сек
-	if (store.reset.has(building._id) || !acc.firstFlag || (!isErrm && se.tcnl > 0.5 && alrClosed)) {
+	if (isReset(building._id) || !acc.firstFlag || (!isErrm && se.tcnl > 0.5 && alrClosed)) {
 		acc.end = cur + 3000
 		acc.firstFlag = true
 	}
@@ -30,12 +30,12 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	connect(obj, building, m, acc, cur)
 
 	// Включить выход
-	if (acc.end && cur < acc.end) {
+	if (!!acc.end && cur < acc.end) {
 		fnReset(m.reset, building, 'on')
 	}
 
 	// Выключить выход
-	if (acc.end && cur >= acc.end) {
+	if (!!acc.end && cur >= acc.end) {
 		fnReset(m.reset, building, 'off')
 		delete acc.end
 	}
