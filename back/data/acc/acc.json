@@ -2,17 +2,45 @@
  "auto": {
   "6760195ed9da5c2bcc25f682": {
    "cooling": {
-    "67602254d9da5c2bcc25f6c9": {
-     "hout1": {
-      "id": 2,
-      "date": "2025-02-03T08:23:27.371Z",
-      "code": "hout1",
-      "type": "hout",
-      "typeSignal": "sensor",
-      "msg": "Влажность улицы ниже допустимой при охлаждении",
-      "title": "Секция 1:",
-      "buildingId": "6760195ed9da5c2bcc25f682"
-     }
+    "ahout1": {
+     "id": 0,
+     "date": "2025-02-03T11:21:01.489Z",
+     "code": "ahout1",
+     "type": "ahout",
+     "typeSignal": "sensor",
+     "msg": "Абсолютная влажность улицы ниже допустимой при охлаждении ",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "hout1": {
+     "id": 2,
+     "date": "2025-02-03T11:21:01.489Z",
+     "code": "hout1",
+     "type": "hout",
+     "typeSignal": "sensor",
+     "msg": "Влажность улицы ниже допустимой при охлаждении ",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "tout3": {
+     "id": 5,
+     "date": "2025-02-03T11:21:01.489Z",
+     "code": "tout3",
+     "type": "tout",
+     "typeSignal": "sensor",
+     "msg": "Температура улицы ниже допустимой при охлаждения (по продукту) ",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "tout2": {
+     "id": 6,
+     "date": "2025-02-03T11:21:01.489Z",
+     "code": "tout2",
+     "type": "tout",
+     "typeSignal": "sensor",
+     "msg": "Температура улицы ниже допустимой при охлаждения ",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
     }
    }
   }
@@ -40,19 +68,6 @@
      "buildingId": "67601974d9da5c2bcc25f689"
     }
    }
-  },
-  "6760195ed9da5c2bcc25f682": {
-   "67602254d9da5c2bcc25f6c9": {
-    "vlvCrash67602cb4d9da5c2bcc25f6d4": {
-     "date": "2025-02-03T07:29:02.954Z",
-     "count": true,
-     "code": "vlvCrash",
-     "typeSignal": "valve",
-     "msg": "Авария двигателя",
-     "title": "Секция 1. Приточный клапан:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    }
-   }
   }
  },
  "extra": {
@@ -77,7 +92,7 @@
      "buildingId": "6760195ed9da5c2bcc25f682"
     },
     "heating": {
-     "date": "2025-02-03T05:17:27.749Z",
+     "date": "2025-02-03T10:59:55.404Z",
      "code": "heating",
      "typeSignal": "info",
      "msg": "Подогрев клапанов включен",
@@ -87,7 +102,7 @@
    },
    "vent": {
     "off": {
-     "date": "2025-02-03T08:16:59.402Z",
+     "date": "2025-02-03T11:02:46.308Z",
      "code": "off",
      "typeSignal": "info",
      "msg": "Режим работы вентиляции: Выключен ",

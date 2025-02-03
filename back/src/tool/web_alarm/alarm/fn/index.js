@@ -11,16 +11,16 @@ function bar(r, bld, sect, am, start) {
 	}
 	// Боковая панель аварий для секции
 	// const d = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
-	const tout1 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.tout1 ?? null
-	const tout2 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.tout2 ?? null
-	const tout3 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.tout3 ?? null
-	const hout1 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.hout1 ?? null
-	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.hout2 ?? null
-	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.ahout1 ?? null
-	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]?.ahout2 ?? null
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed ?? null
-	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
+	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
+	const tout1 = store.alarm.auto?.[bld._id]?.[am]?.tout1 ?? null
+	const tout2 = store.alarm.auto?.[bld._id]?.[am]?.tout2 ?? null
+	const tout3 = store.alarm.auto?.[bld._id]?.[am]?.tout3 ?? null
+	const hout1 = store.alarm.auto?.[bld._id]?.[am]?.hout1 ?? null
+	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.hout2 ?? null
+	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.ahout1 ?? null
+	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}

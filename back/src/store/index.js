@@ -288,14 +288,14 @@ function delTimer(buildingId, key) {
  * @param {*} automode
  * @param {*} arr {id код аварии, set условие установки аварии, reset условие сброса аварии, msg текст аварии}
  */
-function rs(buildingId, sectionId, automode, arr) {
+function rs(buildingId, automode, arr) {
 	data.alarm.auto ??= {}
 	data.alarm.auto[buildingId] ??= {}
 	data.alarm.auto[buildingId][automode] ??= {}
-	data.alarm.auto[buildingId][automode][sectionId] ??= {}
+	// data.alarm.auto[buildingId][automode][sectionId] ??= {}
 	if (!arr?.length) return
 
-	const d = data?.alarm?.auto?.[buildingId]?.[automode]?.[sectionId]
+	const d = data?.alarm?.auto?.[buildingId]?.[automode]
 
 	arr.forEach((o, idx) => {
 		let r = null
@@ -304,8 +304,8 @@ function rs(buildingId, sectionId, automode, arr) {
 	})
 }
 // Наличие аварии
-function isAlr(buildingId, sectionId, automode) {
-	const d = data.alarm.auto?.[buildingId]?.[automode]?.[sectionId] ?? {}
+function isAlr(buildingId,  automode) {
+	const d = data.alarm.auto?.[buildingId]?.[automode] ?? {}
 	return Object.keys(d).length ? true : false
 }
 

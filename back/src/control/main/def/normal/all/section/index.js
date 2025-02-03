@@ -12,12 +12,14 @@ const { sensor } = require('@tool/command/section/sensor')
  * @param {*} am Авторежим склада
  * @param {*} accAuto Промежуточные вычислинения авторежимов
  * @param {*} resultFan Для управления напорными вентиляторыми секций
- * @param {*} alrB Аварии склада
+ * @param {boolean} alrBld Аварии склада extralrms
+ * @param {boolean} alrAm Аварии склада extralrms
  * @param {*} seB Датчики склада и усредненные значения по всем секциям
  */
-function section(start, building, obj, s, am, accAuto, resultFan, alrB, seB) {
+function section(start, building, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB) {
 	const { data } = obj
-	const alr = {}
+	let alrAlw
+	
 	// Секции склада
 	for (const sect of data.section) {
 		if (sect.buildingId != building._id) continue
@@ -26,11 +28,11 @@ function section(start, building, obj, s, am, accAuto, resultFan, alrB, seB) {
 		// Показания с датчиков секции
 		const se = sensor(building._id, sect._id, obj)
 		// Секция и склад в любом режиме
-		alr.always = always(building, sect, obj, s, se, m, am, accAuto, resultFan, alrB)
+		alrAlw = always(building, sect, obj, s, se, m, am, accAuto, resultFan, alrBld)
 		// Склад включен, секция в авто
-		on(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrB, alr.always)
+		on(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld, alrAm, alrAlw)
 		// Склад выключен, секция не в авто
-		off(building, sect, obj, s, se, m, am, accAuto, resultFan, start, alrB)
+		off(building, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
 	}
 }
 

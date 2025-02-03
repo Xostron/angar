@@ -8,9 +8,9 @@ function normal(building, obj, bdata) {
 	const { start, automode, s, se, m, accAuto, resultFan } = bdata
 	if (building?.type !== 'normal') return
 	// СКЛАД: доп.функции - extra, доп. аварии - extralrm
-	let alrB = build(start, building, obj, s, se, m, automode)
+	const {alrBld, alrAm} = build(start, building, obj, s, se, m, automode, accAuto)
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm
-	section(start, building, obj, s, automode, accAuto, resultFan, alrB, se)
+	section(start, building, obj, s, automode, accAuto, resultFan, alrBld, alrAm, se)
 	// Управление напорными вентиляторами
 	fan(building, resultFan, s, obj)
 }
