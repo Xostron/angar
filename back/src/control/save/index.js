@@ -27,15 +27,16 @@ async function save(obj) {
 	 *  */
 	if (store._first) {
 		obj.acc = await readOne('acc.json', accDir)
-		clear(obj.data, obj)
 		store.alarm.module = obj.acc?.module
 	}
 	// Сохранение текущих аварий в файл
+	clear(obj.data, obj)
 	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }
 
 module.exports = save
 
+// Очистка неактуальных аварий (модулей)
 function clear(data, obj){
 const {building, module} = data
 for (const bld of building) {

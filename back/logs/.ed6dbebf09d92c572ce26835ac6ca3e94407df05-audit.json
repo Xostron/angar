@@ -6,21 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.ed6dbebf09d92c572ce26835ac6ca3e94407df05-audit.json",
     "files": [
         {
-            "date": 1738042617881,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-08.log",
-            "hash": "2ca14ad3e12ca51aad987ac2a2539d11906c417e6e9e8ad5b2dfd17cf476b54d"
-        },
-        {
-            "date": 1738044123579,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-09.log",
-            "hash": "adb369e42ede81eda0fe993942d63d31c51fdd74e95bf75d60c760e73c63d098"
-        },
-        {
-            "date": 1738047904098,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-10.log",
-            "hash": "d7c53737ed97d799b1beb81acc9426fea8e4379411c588f680e529c737c98c1a"
-        },
-        {
             "date": 1738051318179,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-01-28-11.log",
             "hash": "bf7426e41f22b003c61f3decb24bb258bf3fbba160181a4875b5588ee33705de"
@@ -199,6 +184,11 @@
             "date": 1738646230887,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-04-08.log",
             "hash": "c3f2b6b18c9ffc99f8686b4441f3c26e44d242f71861c86feb27982651d0d6b9"
+        },
+        {
+            "date": 1738653789927,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-04-10.log",
+            "hash": "79563fdf3a25e90029eccfb612d88303054633d6a5fbeb1ccab6a2b7cfe92d5f"
         }
     ],
     "hashType": "sha256"

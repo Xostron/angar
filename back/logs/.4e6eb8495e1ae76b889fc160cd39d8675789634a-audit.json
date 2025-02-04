@@ -6,21 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.4e6eb8495e1ae76b889fc160cd39d8675789634a-audit.json",
     "files": [
         {
-            "date": 1738042617870,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-28-08.log",
-            "hash": "5500f1b66720d1027102767dbc32175ba179e2623d36317754701f981c31806b"
-        },
-        {
-            "date": 1738044123575,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-28-09.log",
-            "hash": "e76fd3ab7ecc8bcbb2a107f6f74813a864be953737b66baedb71e86e47b5c27d"
-        },
-        {
-            "date": 1738047904094,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-28-10.log",
-            "hash": "7c9021609146c473a131a4e36b0284c4d5a3402da7ea61282b2160e739aab503"
-        },
-        {
             "date": 1738051318176,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-01-28-11.log",
             "hash": "a55c4e68d8f5f78b90fe6b3478f4b0a8048be2a0f7c713da0af5b9423031ea95"
@@ -199,6 +184,11 @@
             "date": 1738646230878,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-02-04-08.log",
             "hash": "e801b0a656352875cfc3d8c1a7d8ee3982d3d3c6f0596920ae9e53c0a17455b2"
+        },
+        {
+            "date": 1738653789923,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\aggregate-2025-02-04-10.log",
+            "hash": "aba5dfe4ba85312ea50625bab59b6139a40e1ffce142e580ac9bb1c073272bb8"
         }
     ],
     "hashType": "sha256"

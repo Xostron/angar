@@ -6,16 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.5287b93337ef423906cacac4675cb66bbb7c7e81-audit.json",
     "files": [
         {
-            "date": 1738042617919,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-08.log",
-            "hash": "630353b16a1991da4d5c8226a3a29a8d05aba4697457aaeb4220c32abaf75e43"
-        },
-        {
-            "date": 1738044123589,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-09.log",
-            "hash": "e6fadb65108647582f27ac3519ec5895d2e94fd8b3be3df0fc85f36a577486d1"
-        },
-        {
             "date": 1738047904110,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-01-28-10.log",
             "hash": "46408b090ed30c8229e4f2035820de36ae5aa1e3c29d45396cad5a2ca3a91415"
@@ -224,6 +214,16 @@
             "date": 1738646230921,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-02-04-08.log",
             "hash": "471523f96c08b85936e5cb6e812a02a32b7ec5965a5d7e2ca52a4fb3a27e5e2a"
+        },
+        {
+            "date": 1738648804115,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-02-04-09.log",
+            "hash": "a8c79fc4ee43ad9719aa678afa945a59d71cdfaddaa2c3a8596aed01465ecd09"
+        },
+        {
+            "date": 1738652406927,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\watt-2025-02-04-10.log",
+            "hash": "9c0ed3dd07a5e2e695af320d692c374d6bde1e9c2ac07a1db70024e9a4c8ee1c"
         }
     ],
     "hashType": "sha256"
