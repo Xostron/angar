@@ -60,11 +60,11 @@ function barB(r, bld) {
 function signal(r, bld, sect, am) {
 	r.signal[bld._id] ??= []
 	// Сообщения: авторежимы, доп. аварии, доп. функции
-	const auto = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
+	// const auto = store.alarm.auto?.[bld._id]?.[am]
 	const extralrm = store.alarm.extralrm?.[bld._id]?.[sect?._id]
 	const extra = store.alarm?.extra?.[bld._id]?.[sect._id]
 
-	if (auto) r.signal[bld._id].push(...Object.values(auto))
+	// if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
 	if (extra) r.signal[bld._id].push(...Object.values(extra))
 }
@@ -90,6 +90,7 @@ function signalB(r, bld, am, data) {
 			})
 	})
 
+	const auto = store.alarm.auto?.[bld._id]?.[am]
 	const timer = Object.values(r.timer?.[bld._id] ?? {})
 	const module = Object.values(store.alarm.module?.[bld._id] ?? {})
 	const accel = Object.values(store.alarm.extra?.[bld._id]?.accel ?? {})
@@ -99,7 +100,7 @@ function signalB(r, bld, am, data) {
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
 	const smoking = store.alarm.extra?.[bld._id]?.smoking ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
-
+	// extralrm
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
 	const vlvLim = store.alarm?.extralrm?.[bld._id]?.vlvLim ?? null
 	const local = store.alarm?.extralrm?.[bld._id]?.local ?? null
@@ -108,10 +109,10 @@ function signalB(r, bld, am, data) {
 	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
 	const low = store.alarm?.extralrm?.[bld._id]?.low ?? null
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
-
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
+	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
 	if (module?.length) r.signal[bld._id].push(...module)
 	if (accel) r.signal[bld._id].push(...accel)

@@ -292,7 +292,6 @@ function rs(buildingId, automode, arr) {
 	data.alarm.auto ??= {}
 	data.alarm.auto[buildingId] ??= {}
 	data.alarm.auto[buildingId][automode] ??= {}
-	// data.alarm.auto[buildingId][automode][sectionId] ??= {}
 	if (!arr?.length) return
 
 	const d = data?.alarm?.auto?.[buildingId]?.[automode]

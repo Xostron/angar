@@ -137,6 +137,7 @@ function check(obj, build, result) {
 function cbAcc(obj, data) {
 	// Проход по ключам аккумулятора (extralrm, extra, timer ...)
 	for (const key in obj) {
+		if (key==='achieve') continue
 		// Запись пересечений obj c data
 		all(obj[key], data[key])
 	}
@@ -155,7 +156,6 @@ function cbAcc(obj, data) {
  */
 function all(obj={}, data={}, prev, key) {
 	const keys = Object.keys(obj)
-	// console.log(111, key, obj, keys)
 	for (const k of keys) {
 		// Ключ есть в файле (пересечение obj c data)
 		if (k in data) {

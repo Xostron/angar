@@ -45,10 +45,34 @@
     },
     "onion": {
      "decrease": {
-      "decrease": "3"
+      "decrease": "0.5"
      },
      "target": {
-      "target": "9"
+      "target": "1"
+     },
+     "max": {
+      "max": "2"
+     },
+     "differenceMin": {
+      "differenceMin": "3"
+     },
+     "differenceMax": {
+      "differenceMax": "4"
+     },
+     "differenceValue": {
+      "differenceValue": "5"
+     },
+     "minOut": {
+      "minOut": "6"
+     },
+     "minChannel": {
+      "minChannel": "7"
+     },
+     "hysteresisIn": {
+      "hysteresisIn": "0.8"
+     },
+     "hysteresisOut": {
+      "hysteresisOut": "0.9"
      }
     }
    },
@@ -78,6 +102,35 @@
     "onion": {
      "debounce": {
       "debounce": "00:02"
+     }
+    }
+   },
+   "cure": {
+    "onion": {
+     "differenceMin": {
+      "differenceMin": "10"
+     },
+     "differenceMax": {
+      "differenceMax": "11"
+     },
+     "differenceValue": {
+      "differenceValue": "12"
+     },
+     "min": {
+      "min": "13"
+     },
+     "hysteresisIn": {
+      "hysteresisIn": "0.14"
+     },
+     "hysteresisOut": {
+      "hysteresisOut": "0.15"
+     }
+    }
+   },
+   "mois": {
+    "onion": {
+     "max": {
+      "max": "2"
      }
     }
    }

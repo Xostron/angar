@@ -42,11 +42,11 @@ function middlew(building, section, s, se, seB, alr, acc) {
 
 	// Продукт достиг температуры задания*****************************************
 	// В режиме лечения - Продукт достиг не активен
-	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0]!==sm.cure[0]) {
+	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
 		acc.finish = true
 		wrAchieve(building._id, 'cooling', msgB(building, 15))
 	}
-	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0]===sm.cure[0]) {
+	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
 		acc.finish = false
 		delAchieve(building._id, 'cooling', mes[15].code)
 	}
@@ -75,24 +75,27 @@ function fan(s, se, alr, sectionId, acc) {
 function submode(s, se, seB, alr, acc) {
 	acc.setting = {}
 	// Подрежимы
-	// Охлаждение 2
-	if (acc.tgt + s.mois.max <= seB.tprd) {
-		acc.submode = sm.cooling2
-		acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois.differenceMin2 } }
-		return
-	}
-	// Другие подрежимы
-	if (acc.tgt + s.mois.max - s.cooling.hysteresisIn > seB.tprd) {
-		// Лечение
-		if (seB.hin >= s.mois.humidity) {
-			acc.submode = sm.cure
-			acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
+	// Доп. Охлаждение 2
+	if (acc.tgt + s.mois.max <= seB.tprd || acc?.submode?.[0] === sm?.cooling2?.[0]) {
+		// Сброс
+		if (acc.tgt + s.mois.max - s.cooling.hysteresisIn > seB.tprd) {
+			acc.submode = null
+			acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 } }
 			return
 		}
-		// Охлаждение
-		if (seB.hin - s.mois.hysteresisRel < s.mois.humidity) acc.submode = sm.cooling
-		acc.setting = { cooling: s.cooling, mois: s.mois }
+		acc.submode = sm.cooling2
+		acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 } }
+		return
 	}
+	// Лечение
+	if (seB.hin >= s.mois.humidity) {
+		acc.submode = sm.cure
+		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
+		return
+	}
+	// Охлаждение
+	if (seB.hin - s.mois.hysteresisRel < s.mois.humidity) acc.submode = sm.cooling
+	acc.setting = { cooling: s.cooling, mois: s.mois }
 }
 
 function target(s, se, seB, alr, acc) {

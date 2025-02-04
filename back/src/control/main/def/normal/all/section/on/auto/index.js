@@ -6,9 +6,6 @@ const extralrm = require('@control/extra/extralrm')
 function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, alrAlw) {
 	// Таймер запретов - закрываем клапана, выключаем вентиляторы
 	let ban = !!store.alarm.timer?.[building._id]?.[am]
-	// Аварии авторежима
-	// rs(building._id, sect._id, am, def[am].alarm(s, se, seB, building, sect, acc))
-	// const alrA = isAlr(building._id, sect._id, am)
 
 	// Для секции: дополнительные аварии авторежимов (section - on)
 	const toAlr = def[am]?.toAlrS(s, sect._id, acc)

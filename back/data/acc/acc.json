@@ -2,19 +2,9 @@
  "auto": {
   "6760195ed9da5c2bcc25f682": {
    "cooling": {
-    "ahout1": {
-     "id": 0,
-     "date": "2025-02-03T11:21:01.489Z",
-     "code": "ahout1",
-     "type": "ahout",
-     "typeSignal": "sensor",
-     "msg": "Абсолютная влажность улицы ниже допустимой при охлаждении ",
-     "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    },
     "hout1": {
      "id": 2,
-     "date": "2025-02-03T11:21:01.489Z",
+     "date": "2025-02-04T05:20:36.719Z",
      "code": "hout1",
      "type": "hout",
      "typeSignal": "sensor",
@@ -24,7 +14,7 @@
     },
     "tout3": {
      "id": 5,
-     "date": "2025-02-03T11:21:01.489Z",
+     "date": "2025-02-04T05:20:36.719Z",
      "code": "tout3",
      "type": "tout",
      "typeSignal": "sensor",
@@ -34,7 +24,7 @@
     },
     "tout2": {
      "id": 6,
-     "date": "2025-02-03T11:21:01.489Z",
+     "date": "2025-02-04T05:20:36.719Z",
      "code": "tout2",
      "type": "tout",
      "typeSignal": "sensor",
@@ -92,7 +82,7 @@
      "buildingId": "6760195ed9da5c2bcc25f682"
     },
     "heating": {
-     "date": "2025-02-03T10:59:55.404Z",
+     "date": "2025-02-04T05:19:22.810Z",
      "code": "heating",
      "typeSignal": "info",
      "msg": "Подогрев клапанов включен",
@@ -102,7 +92,7 @@
    },
    "vent": {
     "off": {
-     "date": "2025-02-03T11:02:46.308Z",
+     "date": "2025-02-04T05:19:24.336Z",
      "code": "off",
      "typeSignal": "info",
      "msg": "Режим работы вентиляции: Выключен ",
@@ -118,7 +108,7 @@
     "cooling-2": {
      "order": 2,
      "code": "cooling-2",
-     "msg": "t задания канала = 8.7 °С, t задания продукта = 9.0 °С",
+     "msg": "t задания канала = 7.0 °С, t задания продукта = 10.3 °С",
      "title": "",
      "buildingId": "6760195ed9da5c2bcc25f682"
     }
