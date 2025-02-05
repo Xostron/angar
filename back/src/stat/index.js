@@ -3,8 +3,12 @@ const { data: store } = require('@store')
 const { delay } = require('@tool/command/time')
 const { readTO } = require('@tool/json')
 
+/**
+ * Статистика непрерывных значений
+ */
 async function statOnTime() {
 	while (true) {
+		// Задержка
 		await delay(store.tStat)
 		const data = await readTO(['building', 'section', 'device'])
 		// Электросчетчики

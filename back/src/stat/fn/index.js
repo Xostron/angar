@@ -76,11 +76,11 @@ function message(data, el, level, value) {
 			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
 			v = value[el._id] ?? false
 			break
-		// case 'watt':
-		// secId = el.sectionId
-		// v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
-		// console.log(222, v)
-		// break
+		case 'watt':
+			secId = el.sectionId
+			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
+			// console.log(222, v)
+			break
 		default:
 			break
 	}

@@ -1,38 +1,7 @@
 {
  "auto": {
   "6760195ed9da5c2bcc25f682": {
-   "cooling": {
-    "hout1": {
-     "id": 2,
-     "date": "2025-02-04T07:44:20.257Z",
-     "code": "hout1",
-     "type": "hout",
-     "typeSignal": "sensor",
-     "msg": "Влажность улицы ниже допустимой при охлаждении ",
-     "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    },
-    "tout3": {
-     "id": 5,
-     "date": "2025-02-04T07:44:20.257Z",
-     "code": "tout3",
-     "type": "tout",
-     "typeSignal": "sensor",
-     "msg": "Температура улицы ниже допустимой при охлаждения (по продукту) ",
-     "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    },
-    "tout2": {
-     "id": 6,
-     "date": "2025-02-04T07:44:20.257Z",
-     "code": "tout2",
-     "type": "tout",
-     "typeSignal": "sensor",
-     "msg": "Температура улицы ниже допустимой при охлаждения ",
-     "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    }
-   }
+   "cooling": {}
   }
  },
  "timer": {
@@ -46,6 +15,77 @@
   }
  },
  "extralrm": {
+  "6760195ed9da5c2bcc25f682": {
+   "sensor": {
+    "67602233d9da5c2bcc25f6c8": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Влажность продукта:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "67602199d9da5c2bcc25f6c4": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Датчик улицы 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "6760221ad9da5c2bcc25f6c7": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Температура потолка:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "toutalarm": {
+     "date": "2025-02-05T06:37:58.960Z",
+     "count": true,
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Датчики температуры улицы неисправны",
+     "title": "",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
+   },
+   "67602254d9da5c2bcc25f6c9": {
+    "676022b3d9da5c2bcc25f6cc": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Секция 1. Темп. канала 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "676022c3d9da5c2bcc25f6cd": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Секция 1. Темп. канала 2:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "6760226dd9da5c2bcc25f6ca": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Секция 1. Темп. продукта 1:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    },
+    "67602292d9da5c2bcc25f6cb": {
+     "date": "2025-02-05T06:37:58.959Z",
+     "code": "sensor",
+     "typeSignal": "sensor",
+     "msg": "Неисправность датчика",
+     "title": "Секция 1. Темп. продукта 2:",
+     "buildingId": "6760195ed9da5c2bcc25f682"
+    }
+   }
+  },
   "67601974d9da5c2bcc25f689": {
    "sensor": {
     "tinalarm": {
@@ -80,44 +120,42 @@
      "msg": "Модуль в сети",
      "title": "Секция 1:",
      "buildingId": "6760195ed9da5c2bcc25f682"
-    },
-    "heating": {
-     "date": "2025-02-04T05:19:22.810Z",
-     "code": "heating",
-     "typeSignal": "info",
-     "msg": "Подогрев клапанов включен",
-     "title": "Секция 1:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    }
-   },
-   "vent": {
-    "off": {
-     "date": "2025-02-04T07:44:18.779Z",
-     "code": "off",
-     "typeSignal": "info",
-     "msg": "Режим работы вентиляции: Выключен ",
-     "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
     }
    }
   }
  },
- "achieve": {
-  "6760195ed9da5c2bcc25f682": {
-   "cooling": {
-    "cooling-2": {
-     "order": 2,
-     "code": "cooling-2",
-     "msg": "t задания канала = 7.0 °С, t задания продукта = 10.2 °С",
-     "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
-    }
-   }
-  }
- },
+ "achieve": {},
  "module": {
   "67601974d9da5c2bcc25f689": {},
-  "6760195ed9da5c2bcc25f682": {}
+  "6760195ed9da5c2bcc25f682": {
+   "67602160d9da5c2bcc25f6c2": {
+    "date": "2025-02-05T06:38:43.341Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МВ110-16К (COM3-4):",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "67602133d9da5c2bcc25f6bf": {
+    "date": "2025-02-05T06:38:43.474Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МВ110-8А (COM3-1):",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   },
+   "6760216cd9da5c2bcc25f6c3": {
+    "date": "2025-02-05T06:38:43.474Z",
+    "count": true,
+    "code": "module",
+    "typeSignal": "critical",
+    "msg": "Нет связи",
+    "title": "Модуль МВ110-32ДН (COM3-5):",
+    "buildingId": "6760195ed9da5c2bcc25f682"
+   }
+  }
  },
  "debounce": {}
 }

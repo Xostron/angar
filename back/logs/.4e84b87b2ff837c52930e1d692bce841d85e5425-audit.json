@@ -6,41 +6,6 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.4e84b87b2ff837c52930e1d692bce841d85e5425-audit.json",
     "files": [
         {
-            "date": 1738051318186,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-28-11.log",
-            "hash": "376fddef76dae3176827fb785c4d32d61a954b76c3f803895332297ba3e83f80"
-        },
-        {
-            "date": 1738054957077,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-28-12.log",
-            "hash": "aa3ee8ff668775c72f8ad2669f7ea06d7a9420efa64faa56f67b61d90fe8e4b3"
-        },
-        {
-            "date": 1738063746210,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-28-14.log",
-            "hash": "b74dcce4ab5cb040a625584e4d79b8c906d11e9877a704d22062d7dc7f0025a4"
-        },
-        {
-            "date": 1738065621546,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-28-15.log",
-            "hash": "39077475b98fa475af018ec398d6f64b2d0bce268221294291688b505d8ffb9e"
-        },
-        {
-            "date": 1738069637883,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-28-16.log",
-            "hash": "fca4b44942d992d8caae0bcec4666f6e738004a3c699b1cacafd5a0b38c91f3b"
-        },
-        {
-            "date": 1738072883102,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-28-17.log",
-            "hash": "82b18bb6148767bb4b09ecb8bac97f8b340a628deb767dc08ec234acb7ddec96"
-        },
-        {
-            "date": 1738130958267,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-29-09.log",
-            "hash": "defe4c8bd66fc50f6415eba70ff725972f915402109d2287104eb5d377c95cfd"
-        },
-        {
             "date": 1738134559074,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-01-29-10.log",
             "hash": "9596d6674249d0bdfb930dcb40069d47bb013b85c4aecb94bf31bdca316a2458"
@@ -209,6 +174,16 @@
             "date": 1738653789937,
             "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-02-04-10.log",
             "hash": "2eaf9d27df3b5298b5bddc82029fe5d5adbc3c5329355a1cf78c6e3953b7a483"
+        },
+        {
+            "date": 1738737476719,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-02-05-09.log",
+            "hash": "e5d2973401f019a07699d10ca52d5fcf8b730b7a41e2e845f97798979044cef8"
+        },
+        {
+            "date": 1738739149998,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\alarm-2025-02-05-10.log",
+            "hash": "41e487ee114590c7bc4a06a0136cde4637a03d44c5cd54f10d729ffcfd86ade7"
         }
     ],
     "hashType": "sha256"

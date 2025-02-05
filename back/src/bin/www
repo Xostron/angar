@@ -85,6 +85,8 @@ loop()
 	.catch(console.error)
 // Статистика непрерывных значений
 statOnTime()
+	.then(() => console.log('Статистика датчиков остановлена'))
+	.catch(console.error)
 /**
  * Normalize a port into a number, string, or false.
  */

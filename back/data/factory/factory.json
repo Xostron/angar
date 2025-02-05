@@ -262,12 +262,6 @@
  "heat": {
   "_prd": true,
   "onion": {
-   "difference": {
-    "difference": "3"
-   },
-   "outMin": {
-    "outMin": "4"
-   },
    "max": {
     "max": "1"
    },
@@ -279,6 +273,12 @@
    },
    "channel": {
     "channel": "2"
+   },
+   "difference": {
+    "difference": "3"
+   },
+   "outMin": {
+    "outMin": "4"
    }
   },
   "carrot": {
@@ -622,6 +622,10 @@
    }
   },
   "carrot": {
+   "out2": {
+    "temp": -8,
+    "k": 0.3
+   },
    "detection": {
     "detection": false
    },
@@ -643,10 +647,6 @@
    "out1": {
     "temp": -5,
     "k": 0.5
-   },
-   "out2": {
-    "temp": -8,
-    "k": 0.3
    },
    "out3": {
     "temp": -10,
@@ -821,11 +821,11 @@
    "defrostWork": {
     "defrostWork": "00:30"
    },
-   "defrostOn": {
-    "defrostOn": -10
-   },
    "defrostOff": {
     "defrostOff": 20
+   },
+   "defrostOn": {
+    "defrostOn": -10
    },
    "deltaCold": {
     "deltaCold": 6
