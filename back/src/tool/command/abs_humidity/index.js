@@ -1,4 +1,4 @@
-const data = require('./data')
+const data = require("./data")
 
 /**
  * Абсолютная влажность
@@ -7,8 +7,9 @@ const data = require('./data')
  * @returns
  */
 function calc(t, q) {
-	if (t === null || q === null || t === undefined || q === undefined) return null
-	if (t <= -30) return (q * data['-30']) / 100
+	if (t === null || q === null || t === undefined || q === undefined)
+		return null
+	if (t <= -30) return (q * data["-30"]) / 100
 	if (t >= 100) return (q * data[100]) / 100
 
 	let t1 = Math.trunc(t)
@@ -25,7 +26,8 @@ function lin(y, y1) {
 	if (y2 > 40) y2 = y2 + 5 - (y2 % 5)
 	const x1 = data[y1]
 	const x2 = data[y2]
-	return (x2 - x1) * (y - y1) + x1
+	const r = (x2 - x1) * (y - y1)
+	return y == 0 ? r + x1 : x1 - r
 }
 
 module.exports = calc
