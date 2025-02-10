@@ -97,5 +97,17 @@
    "step": 1,
    "type": "boolean"
   }
+ },
+ "678652a91461f037a47a017f": {
+  "name": "МЭ110-220",
+  "interface": "rtu",
+  "use": "r",
+  "re": {
+   "channel": 12,
+   "noreverse": true,
+   "start": 26,
+   "step": 2,
+   "type": "int"
+  }
  }
 }

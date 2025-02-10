@@ -12,10 +12,10 @@ export default function Building({}) {
 	const [getCurB, setCurB, sections] = useEquipStore(({ getCurB, setCurB, sections }) => [getCurB, setCurB, sections()])
 
 	// обновление страницы
-	useEffect(() => {
-		const b = getCurB(build)
-		setCurB(b)
-	}, [getCurB(build)])
+	// useEffect(() => {
+	// 	const b = getCurB(build)
+	// 	setCurB(b)
+	// }, [getCurB(build)])
 
 	return (
 		<>

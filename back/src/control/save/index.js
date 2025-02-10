@@ -28,6 +28,7 @@ async function save(obj) {
 	if (store._first) {
 		obj.acc = await readOne('acc.json', accDir)
 		store.alarm.module = obj.acc?.module
+		store.alarm.auto = obj.acc?.auto
 	}
 	// Сохранение текущих аварий в файл
 	clear(obj.data, obj)

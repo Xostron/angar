@@ -25,7 +25,8 @@ function lin(y, y1) {
 	if (y2 > 40) y2 = y2 + 5 - (y2 % 5)
 	const x1 = data[y1]
 	const x2 = data[y2]
-	return (x2 - x1) * (y - y1) + x1
+	const r = (x2 - x1) * (y - y1)
+    return y>=0 ? r + x1: x1 - r
 }
 
 module.exports = calc

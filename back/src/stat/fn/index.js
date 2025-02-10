@@ -1,6 +1,7 @@
 const logger = require('@tool/logger')
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/command/building')
+const { v4: uuidv4 } = require('uuid')
 /**
  * Логирование периферии
  * @param {string[]} section Рама секций
@@ -55,7 +56,7 @@ function fnPrev(id, val, level) {
  */
 function message(data, el, level, value) {
 	const { section, cooler } = data
-	let secId, bldId, clrId, v
+	let secId, bldId, clrId, v, state
 	//
 	switch (level) {
 		case 'fan':
@@ -81,6 +82,11 @@ function message(data, el, level, value) {
 			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
 			// console.log(222, v)
 			break
+		case 'sensor':
+			el.owner.type == 'section' ? (secId = el.owner.id) : (bldId = el.owner.id)
+			v = value[el._id].value
+			state = value[el._id].state
+			break
 		default:
 			break
 	}
@@ -94,6 +100,7 @@ function message(data, el, level, value) {
 		clrId, // только у heating?
 		id: el._id,
 		value: v !== undefined ? v : value[el._id]?.state,
+		state, // только у датчиков
 	}
 }
 
@@ -119,35 +126,23 @@ function check(val, prev, level) {
 }
 
 /**
- * Логирование неисправностей
- * @param {object[]} arr массив текущих неисправностей
- * @param {object} prev хранилище прошлого значения
- */
-function alarmLog(arr) {
-	arr.forEach((el) => {
-		const message = { bldId: el.buildingId, value: el.title + ' ' + el.msg }
-		if (el.date === store.prev[message.value]) return
-		// фиксируем состояние по изменению
-		store.prev[message.value] = el.date
-		logger['alarm']({ message })
-	})
-}
-
-/**
  * Логирование датчиков (по total)
+ * hin Влажность продукта max (обычный склад)
+ * tprdL Температура продукта (обычный склад)
+ * tin температура потолка (холодильный склад)
  * @param {object} total Расчетные данные с анализа (мин,макс датчиков)
  * @param {object[]} building Рама складов
  */
-function sensLog(total, building) {
+function sensTotalLog(total, building) {
 	if (!total) return
 	building.forEach((bld) => {
 		const val = total[bld._id]
-		;['hin', 'tprdL'].forEach((el) => {
-			// const id = bld._id + '_' + el
-			// if (!check(val[el], store.prev[id])) return
-			// фиксируем состояние по изменению
-			// store.prev[id] = val[el]
-			const m = el === 'hin' ? 'max' : 'min'
+		;['hin', 'tprdL', 'tin'].forEach((el) => {
+			let m
+			if (el === 'hin') m = 'max'
+			if (el === 'tprdL') m = 'min'
+			if (el === 'tin' && bld.type === 'cold') m = 'max'
+			else return
 			logger['sensor']({
 				message: {
 					bldId: bld._id,
@@ -160,4 +155,49 @@ function sensLog(total, building) {
 	})
 }
 
-module.exports = { pLog, alarmLog, sensLog, pLogConst }
+/**
+ *
+ */
+function sensLog(data) {
+	pLogConst(data, data.sensor, store.value, 'sensor')
+}
+
+/**
+ * Логирование критических неисправностей
+ * @param {object[]} arr массив текущих неисправностей
+ * @param {object} prev хранилище прошлого значения
+ */
+function alarmLog(arr) {
+	store.prev.critical ??= {}
+	// console.log(111, arr, store.prev.critical)
+	arr.forEach((el) => {
+		// Записывать uid в месте возникновения аварии
+		const uid = uuidv4()
+		const message = { uid, bldId: el.buildingId, title: el.title + ' ' + el.msg, value: true }
+		if (el.date === store.prev.critical[uid]) return
+		// фиксируем состояние по изменению
+		store.prev.critical[uid] = el.date
+		logger['alarm']({ message })
+		
+		console.log(message.value, r)
+	})
+}
+
+/**
+ * Логирование информационных сообщений
+ * @param {object[]} arr массив текущих сообщений
+ * @param {object} prev хранилище прошлого значения
+ */
+function eventLog(arr) {
+	arr.forEach((el) => {
+		const message = { bldId: el.buildingId, value: el.title + ' ' + el.msg }
+		if (el.date === store.prev[message.value]) return
+		// фиксируем состояние по изменению
+		store.prev[message.value] = el.date
+		// logger['alarm']({ message })
+	})
+}
+
+function activityLog() {}
+
+module.exports = { pLog, alarmLog, sensLog, sensTotalLog, pLogConst, eventLog, activityLog }

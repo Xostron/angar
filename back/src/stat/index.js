@@ -1,22 +1,21 @@
-const { pLogConst, pLog, alarmLog, sensLog } = require('./fn')
+const { pLogConst, pLog, alarmLog, eventLog, activityLog, sensTotalLog, sensLog } = require('./fn')
 const { data: store } = require('@store')
 const { delay } = require('@tool/command/time')
 const { readTO } = require('@tool/json')
 
 /**
- * Статистика непрерывных значений
+ * Статистика датчиков
  */
 async function statOnTime() {
 	while (true) {
 		// Задержка
 		await delay(store.tStat)
-		const data = await readTO(['building', 'section', 'device'])
-		// Электросчетчики
-		const pui = data.device.filter((el) => el.device.code === 'pui')
-		pLogConst(data, pui, store.value, 'watt')
-		// Датчики
-		sensLog(store?.value?.total, data.building)
-		console.log('\x1b[36m%s\x1b[0m', 'Статистика')
+		const data = await readTO(['building', 'section', 'sensor'])
+		// Датчики (Total после анализа)
+		sensTotalLog(store?.value?.total, data.building)
+		// Лог по всем датчикам
+		sensLog(data)
+		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
 	}
 }
 
@@ -27,6 +26,7 @@ async function statOnTime() {
  */
 function statOnChange(obj, alr) {
 	const { data, value } = obj
+	const { critical, event, activity } = alr
 	// Вентиляторы
 	pLog(data, data.fan, value, 'fan')
 	// Клапан
@@ -40,9 +40,27 @@ function statOnChange(obj, alr) {
 	// Устройства (состояние)
 	const dvc = data.device.filter((el) => el.device.code !== 'pui')
 	pLog(data, dvc, value, 'device')
-	// Критические Неисправности
-	alarmLog(alr)
-	// activity - действия пользователя
+	// alarm - Критические неисправности
+	alarmLog(critical)
+	// event - Сообщения авторежимов
+	// eventLog(event)
+	// activity - Действия пользователя
+	// activityLog()
 }
 
-module.exports = { statOnChange, statOnTime }
+/**
+ * Электросчетчик: насчитанные кВт за 10 мин
+ * Каждую сек аккумулируем значение кВт, на 10 минуте считаем результат и записываем в лог
+ */
+async function statOnTimePui() {
+	while (true) {
+		// Задержка
+		await delay(store.tStat)
+		const data = await readTO(['building', 'section', 'device'])
+		// Электросчетчики
+		const pui = data.device.filter((el) => el.device.code === 'pui')
+		pLogConst(data, pui, store.value, 'watt')
+	}
+}
+
+module.exports = { statOnChange, statOnTime, statOnTimePui }

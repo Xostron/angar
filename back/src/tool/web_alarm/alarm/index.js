@@ -19,10 +19,11 @@ function alarm(obj) {
 		count: {},
 		// Баннер - всплывающие окна
 		banner: {},
-		// Для мониторинга
+		// Для мониторинга (критические, аварийные, информационные)
 		monit: { critical: {} },
-		// statistic history
-		history: [],
+		// statistic history (critical:[] критические аварии,
+		// event:[] аварийные-информационные сообщения, activity:[] действия пользователей)
+		history: { critical: [], event: [], activity: [] },
 	}
 
 	// Таймер запретов (слабое клонирование)
@@ -71,7 +72,7 @@ function alarm(obj) {
 }
 
 function history(r) {
-	for (const bld in r.signal) r.history = r.history.concat(...r.signal[bld].filter((el) => el.count))
+	for (const bld in r.signal) r.history.critical = r.history.critical.concat(...r.signal[bld].filter((el) => el.count))
 }
 
 // Критические аварии

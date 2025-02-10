@@ -135,7 +135,7 @@ function check(obj, build, result) {
  * @returns
  */
 function cbAcc(obj, data) {
-	// Проход по ключам аккумулятора (extralrm, extra, timer ...)
+	// Проход по ключам аккумулятора (extralrm, extra, timer, auto ...)
 	for (const key in obj) {
 		if (key==='achieve') continue
 		// Запись пересечений obj c data

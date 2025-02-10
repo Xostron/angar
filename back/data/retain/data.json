@@ -1,31 +1,17 @@
 {
- "67601969d9da5c2bcc25f685": {
+ "67601974d9da5c2bcc25f689": {
   "supply": {
-   "off": null,
-   "on": "2025-01-09T07:07:38.064Z"
+   "off": "2025-02-10T11:52:07.959Z",
+   "on": null
   },
-  "smoking": {},
-  "automode": "cooling",
-  "product": {
-   "_id": "66d0886536e7e1b1ff9e0788",
-   "name": "Лук",
-   "code": "onion"
-  },
-  "setting": {
-   "cooler": {
-    "onion": {
-     "accel": {
-      "accel": "off"
-     }
-    }
-   }
-  }
+  "smoking": {}
  },
  "6760195ed9da5c2bcc25f682": {
   "valvePosition": {
-   "67602cfcd9da5c2bcc25f6d8": 0,
-   "67602cb4d9da5c2bcc25f6d4": 0
+   "67602cb4d9da5c2bcc25f6d4": 0,
+   "67602cfcd9da5c2bcc25f6d8": 0
   },
+  "start": true,
   "automode": "cooling",
   "product": {
    "_id": "66d0886536e7e1b1ff9e0788",
@@ -34,134 +20,6 @@
   },
   "mode": {
    "67602254d9da5c2bcc25f6c9": true
-  },
-  "start": true,
-  "setting": {
-   "cooling": {
-    "cabbage": {
-     "decrease": {
-      "decrease": "3"
-     }
-    },
-    "onion": {
-     "decrease": {
-      "decrease": "0.5"
-     },
-     "target": {
-      "target": "1"
-     },
-     "max": {
-      "max": "2"
-     },
-     "differenceMin": {
-      "differenceMin": "3"
-     },
-     "differenceMax": {
-      "differenceMax": "4"
-     },
-     "differenceValue": {
-      "differenceValue": "5"
-     },
-     "minOut": {
-      "minOut": "6"
-     },
-     "minChannel": {
-      "minChannel": "7"
-     },
-     "hysteresisIn": {
-      "hysteresisIn": "0.8"
-     },
-     "hysteresisOut": {
-      "hysteresisOut": "0.9"
-     }
-    }
-   },
-   "accel": {
-    "mode": {
-     "mode": "off"
-    }
-   },
-   "idle": {
-    "ozon": {
-     "end": "23:00",
-     "begin": "01:00"
-    },
-    "accel": {
-     "end": "00:00"
-    },
-    "cooling": {
-     "end": "00:00"
-    }
-   },
-   "heating": {
-    "on": {
-     "on": "3"
-    }
-   },
-   "sys": {
-    "onion": {
-     "debounce": {
-      "debounce": "00:02"
-     }
-    }
-   },
-   "cure": {
-    "onion": {
-     "differenceMin": {
-      "differenceMin": "10"
-     },
-     "differenceMax": {
-      "differenceMax": "11"
-     },
-     "differenceValue": {
-      "differenceValue": "12"
-     },
-     "min": {
-      "min": "13"
-     },
-     "hysteresisIn": {
-      "hysteresisIn": "0.14"
-     },
-     "hysteresisOut": {
-      "hysteresisOut": "0.15"
-     }
-    }
-   },
-   "mois": {
-    "onion": {
-     "max": {
-      "max": "2"
-     }
-    }
-   }
-  },
-  "fan": {
-   "67602254d9da5c2bcc25f6c9": {
-    "67602c35d9da5c2bcc25f6ce": false,
-    "67602c77d9da5c2bcc25f6d0": false,
-    "67602c8dd9da5c2bcc25f6d2": false
-   }
-  },
-  "676021e3d9da5c2bcc25f6c6": {
-   "on": true
-  },
-  "67602199d9da5c2bcc25f6c4": {
-   "on": true
-  },
-  "676022b3d9da5c2bcc25f6cc": {
-   "corr": ""
-  }
- },
- "67601974d9da5c2bcc25f689": {
-  "smoking": {},
-  "supply": {
-   "off": "2025-01-09T13:19:16.952Z",
-   "on": null
-  }
- },
- "undefined": {
-  "setting": {
-   "undefined": {}
   }
  }
 }
