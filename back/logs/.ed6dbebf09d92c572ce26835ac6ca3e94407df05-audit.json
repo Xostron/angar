@@ -6,39 +6,9 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.ed6dbebf09d92c572ce26835ac6ca3e94407df05-audit.json",
     "files": [
         {
-            "date": 1739173902318,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-10.log",
-            "hash": "079d5030e709fa8d4e24aeeeb89887f32fc64a51e3fde0948f3f20df0f30e519"
-        },
-        {
-            "date": 1739174889114,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-11.log",
-            "hash": "f8c0dbd3c391c54c0ad8e169a96558c07b2180f2407b0c6159304ffa0ef45129"
-        },
-        {
-            "date": 1739184559962,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-13.log",
-            "hash": "8cf29d04670ff670850cc536150b1b621cd72addf86d7cfc72c6519773d02156"
-        },
-        {
-            "date": 1739186492480,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-14.log",
-            "hash": "a54c2f4ed60250770589db6e83ba517e9b45bd49ca04d14600f7a4d58e402243"
-        },
-        {
-            "date": 1739188818177,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-15.log",
-            "hash": "244f615cb79ff0ec8ec9316bf2a003538156d6f7ab4ba23529f7df368b44bd59"
-        },
-        {
-            "date": 1739195904099,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-16.log",
-            "hash": "85d32309a36e308a7346d6ebd795e78fcca60e872a550ec618111dd2e6c09da7"
-        },
-        {
-            "date": 1739196423348,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-10-17.log",
-            "hash": "6878c79b335de08101607f1f8085a7b134cb4ae68a32601ae0986dfc9a16908a"
+            "date": 1739269216236,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\device-2025-02-11-13.log",
+            "hash": "7d7882b4b461ed7f8f5a28952d1fe76d0e1dedfd0c3834571fdf40fc38d30477"
         }
     ],
     "hashType": "sha256"

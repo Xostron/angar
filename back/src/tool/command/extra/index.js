@@ -12,7 +12,7 @@ function fnAlarm(building, arr, value) {
 // Формирование событий имеющих несколько вариантов
 function delUnused(arr, cur, building, codeMsg, code) {
 	arr.forEach((el) => {
-		if (el == cur) return wrExtra(building._id, null, code, { date: new Date(), ...msgB(building, codeMsg) }, cur ?? 'off')
+		if (el == cur) return wrExtra(building._id, null, code, msgB(building, codeMsg), cur ?? 'off')
 		delExtra(building._id, null, code, el ?? 'off')
 	})
 }

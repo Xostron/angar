@@ -1,4 +1,5 @@
 const mes = require('@dict/message')
+const { v4: uuidv4 } = require('uuid')
 
 // Сообщение для журнала событий
 
@@ -7,6 +8,8 @@ function msg(building, section, code) {
 	const o = { ...mes[code] }
 	o.title = `${section?.name ?? ''}:`
 	o.buildingId = building._id
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 // Склада
@@ -14,7 +17,9 @@ function msgB(building, code, msg = '') {
 	const o = { ...mes[code] }
 	o.title = ``
 	o.buildingId = building._id
-	o.msg += ' '+msg
+	o.msg += ' ' + msg
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 // Клапана
@@ -22,6 +27,8 @@ function msgV(building, section, typeV, code) {
 	const o = { ...mes[code] }
 	o.title = `${section.name ?? ''}. ${typeV ?? ''} клапан:`
 	o.buildingId = building._id
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 // Вентиляторы
@@ -29,6 +36,8 @@ function msgF(building, section, name, code) {
 	const o = { ...mes[code] }
 	o.title = `${section.name ?? ''}. ${name ?? ''}:`
 	o.buildingId = building._id
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 // Датчики
@@ -37,6 +46,8 @@ function msgBS(building, section, sensor, code) {
 	o.title = section == 'sensor' ? `${sensor?.name}:` : `${section?.name}. ${sensor?.name}:`
 	if (!sensor) o.title = section == 'sensor' ? '' : `${section?.name}.`
 	o.buildingId = building._id
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 // Модули
@@ -45,6 +56,8 @@ function msgM(buildingId, mdl, code) {
 	if (mdl.interface == 'tcp') o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}):`
 	else o.title = `Модуль ${mdl.name} (${mdl.ip ?? ''}-${mdl.port ?? ''}):`
 	o.buildingId = buildingId
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 
@@ -54,6 +67,8 @@ function msgBeep(building, beep, name = '', alarm = true) {
 	const o = { code: beep.code, typeSignal: alarm ? 'critical' : 'info', msg: beep.name }
 	o.title = name ? `${name}:` : ''
 	o.buildingId = building._id
+	o.uid = uuidv4()
+	o.date = new Date()+''
 	return o
 }
 

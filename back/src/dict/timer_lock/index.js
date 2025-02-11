@@ -12,11 +12,10 @@ module.exports = data = {
 
 	get(name, key) {
 		return {
-			date: new Date(),
+			date: new Date()+'',
 			type: key,
 			typeSignal: 'timer',
 			msg: this?.[key] ?? `Таймер: ${name}, ${key}`,
-			// msg:`${name}: ${this?.[key] ?? `Не определено: ${name}, ${key}`}`
 		}
 	},
 }

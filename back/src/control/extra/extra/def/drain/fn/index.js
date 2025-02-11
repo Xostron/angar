@@ -10,10 +10,7 @@ function on(building, arr, value, acc) {
 		acc.on = true
 		acc.off = false
 		delExtra(building._id, null, 'drainRun')
-		wrExtra(building._id, null, 'drainRun', {
-			date: new Date(),
-			...msgB(building, 71),
-		})
+		wrExtra(building._id, null, 'drainRun', msgB(building, 71))
 	}
 }
 
@@ -24,10 +21,7 @@ function off(building, arr, value, acc) {
 		acc.off = true
 		acc.on = false
 		delExtra(building._id, null, 'drainRun')
-		wrExtra(building._id, null, 'drainRun', {
-			date: new Date(),
-			...msgB(building, 72),
-		})
+		wrExtra(building._id, null, 'drainRun', msgB(building, 72))
 	}
 }
 

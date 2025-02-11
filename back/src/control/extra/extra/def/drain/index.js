@@ -1,6 +1,4 @@
 const def = require('./fn')
-const { data: store, delExtra, wrExtra } = require('@store')
-const { msgB } = require('@tool/message')
 const { fnAlarm, delUnused } = require('@tool/command/extra')
 
 // Оттайка слива воды

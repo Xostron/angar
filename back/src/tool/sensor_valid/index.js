@@ -71,10 +71,7 @@ function fnDetection(equip, result, retain) {
 		// Неисправные - взводим аварию
 		err.forEach((el) => {
 			if (!store.alarm?.extralrm?.[buildingId]?.[s._id]?.[el?._id]) {
-				wrExtralrm(buildingId, s._id, el._id, {
-					date: new Date(),
-					...msgBS(b, s, el, 99),
-				})
+				wrExtralrm(buildingId, s._id, el._id, msgBS(b, s, el, 99))
 			}
 			// Перезапись датчика как не валидного
 			result[el._id] ??= {}
@@ -157,14 +154,8 @@ function webAlarm(r, bld, sect, sens) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
 	if (r.state === 'alarm' && !store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id]) {
 		sect?.name
-			? wrExtralrm(bld._id, sect?._id, sens._id, {
-					date: new Date(),
-					...msgBS(bld, sect, sens, 100),
-			  })
-			: wrExtralrm(bld._id, 'sensor', sens._id, {
-					date: new Date(),
-					...msgBS(bld, 'sensor', sens, 100),
-			  })
+			? wrExtralrm(bld._id, sect?._id, sens._id, msgBS(bld, sect, sens, 100))
+			: wrExtralrm(bld._id, 'sensor', sens._id, msgBS(bld, 'sensor', sens, 100))
 	}
 	// Если валидный - удаляем аварию
 	if (r.state !== 'alarm') delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
@@ -188,7 +179,6 @@ function fnMsgs(building, val, type, bType) {
 	// Датчик ОК - удаление сообщений
 	if (val.state === 'on') {
 		bld.forEach((b) => {
-			// console.log(111, b._id, 'sensor', type + 'alarm')
 			delExtralrm(b._id, 'sensor', type + 'alarm')
 			delExtralrm(b._id, 'sensor', type + 'off')
 		})
@@ -197,10 +187,7 @@ function fnMsgs(building, val, type, bType) {
 	// Датчик выключен или в аварии - создание сообщения
 	bld.forEach((b) => {
 		val.state === 'off' ? delExtralrm(b._id, 'sensor', type + 'alarm') : delExtralrm(b._id, 'sensor', type + 'off')
-		wrExtralrm(b._id, 'sensor', type + val.state, {
-			date: new Date(),
-			...msgBS(b, 'sensor', null, code[type][val.state]),
-		})
+		wrExtralrm(b._id, 'sensor', type + val.state, msgBS(b, 'sensor', null, code[type][val.state]))
 	})
 }
 
@@ -213,10 +200,7 @@ function fnMsg(bld, val, type, bType) {
 			return
 		}
 		// Датчик выключен или в аварии - создание сообщения
-		wrExtralrm(bld._id, 'sensor', type + val.state, {
-			date: new Date(),
-			...msgBS(bld, 'sensor', null, code[type][val.state]),
-		})
+		wrExtralrm(bld._id, 'sensor', type + val.state, msgBS(bld, 'sensor', null, code[type][val.state]))
 	}
 }
 

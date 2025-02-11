@@ -1,4 +1,4 @@
-const data = require("./data")
+const data = require('./data')
 
 /**
  * Абсолютная влажность
@@ -7,9 +7,8 @@ const data = require("./data")
  * @returns
  */
 function calc(t, q) {
-	if (t === null || q === null || t === undefined || q === undefined)
-		return null
-	if (t <= -30) return (q * data["-30"]) / 100
+	if (t === null || q === null || t === undefined || q === undefined) return null
+	if (t <= -30) return (q * data['-30']) / 100
 	if (t >= 100) return (q * data[100]) / 100
 
 	let t1 = Math.trunc(t)

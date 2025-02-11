@@ -19,10 +19,7 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[v._id].alarm) {
-			wrExtralrm(building._id, section._id, 'vlvCrash' + v._id, {
-				date: new Date(),
-				...msgV(building, section, typeV, 34),
-			})
+			wrExtralrm(building._id, section._id, 'vlvCrash' + v._id, msgV(building, section, typeV, 34))
 			acc[v._id].alarm = true
 		}
 	}

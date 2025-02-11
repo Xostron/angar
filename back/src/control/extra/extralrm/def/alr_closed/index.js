@@ -1,7 +1,7 @@
 const { getSignal } = require('@tool/command/signal')
 const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msg } = require('@tool/message')
-const mes = require('@dict/message')
+
 
 // Аварийное закрытие клапанов - по низкой температуре
 function alrClosed(building, section, obj, s, se, m, automode, acc, data) {

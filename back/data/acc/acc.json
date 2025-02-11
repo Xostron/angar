@@ -4,33 +4,36 @@
    "cooling": {
     "hout1": {
      "id": 2,
-     "date": "2025-02-10T12:36:18.149Z",
      "code": "hout1",
      "type": "hout",
      "typeSignal": "sensor",
      "msg": "Влажность улицы ниже допустимой при охлаждении ",
      "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "d6a57e33-e5d7-4bcb-bc15-1053d2b373b6",
+     "date": "Tue Feb 11 2025 13:20:26 GMT+0300 (Москва, стандартное время)"
     },
     "tout3": {
      "id": 5,
-     "date": "2025-02-10T14:13:01.890Z",
      "code": "tout3",
      "type": "tout",
      "typeSignal": "sensor",
      "msg": "Температура улицы ниже допустимой при охлаждения (по продукту) ",
      "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "8c3f4b22-84cf-4b6c-a0de-b0d5eacf4c0b",
+     "date": "Tue Feb 11 2025 13:20:26 GMT+0300 (Москва, стандартное время)"
     },
     "tout2": {
      "id": 6,
-     "date": "2025-02-10T14:13:01.890Z",
      "code": "tout2",
      "type": "tout",
      "typeSignal": "sensor",
      "msg": "Температура улицы ниже допустимой при охлаждения ",
      "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "6e1153f2-1524-47ae-96a7-76df0169f62f",
+     "date": "Tue Feb 11 2025 13:20:26 GMT+0300 (Москва, стандартное время)"
     }
    }
   }
@@ -40,35 +43,27 @@
   "6760195ed9da5c2bcc25f682": {
    "67602254d9da5c2bcc25f6c9": {
     "676022c3d9da5c2bcc25f6cd": {
-     "date": "2025-02-10T14:13:05.213Z",
      "code": "sensor",
      "typeSignal": "sensor",
      "msg": "Неисправность датчика",
      "title": "Секция 1. Темп. канала 2:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "56c7f4fb-1c39-4995-be3c-dc74924b25b6",
+     "date": "Tue Feb 11 2025 13:20:17 GMT+0300 (Москва, стандартное время)"
     }
-   },
-   "alrClosed": {
-    "date": "2025-02-10T14:12:38.594Z",
-    "count": true,
-    "code": "alrClosed",
-    "type": "alr",
-    "typeSignal": "critical",
-    "msg": "Аварийное закрытие клапанов ",
-    "title": "",
-    "buildingId": "6760195ed9da5c2bcc25f682"
    }
   },
   "67601974d9da5c2bcc25f689": {
    "sensor": {
     "tinalarm": {
-     "date": "2025-01-28T09:19:25.355Z",
      "count": true,
      "code": "sensor",
      "typeSignal": "sensor",
      "msg": "Датчики температуры потолка неисправны",
-     "title": ":",
-     "buildingId": "67601974d9da5c2bcc25f689"
+     "title": "",
+     "buildingId": "67601974d9da5c2bcc25f689",
+     "uid": "f99924ac-393a-4c62-8925-fc78cc470bd1",
+     "date": "Tue Feb 11 2025 13:20:17 GMT+0300 (Москва, стандартное время)"
     }
    }
   }
@@ -77,40 +72,44 @@
   "6760195ed9da5c2bcc25f682": {
    "accel": {
     "off": {
-     "date": "2025-01-24T14:24:48.736Z",
      "code": "off",
      "typeSignal": "info",
-     "msg": "Режим работы разгонного вентилятора: Выключен",
+     "msg": "Режим работы разгонного вентилятора: Выключен ",
      "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "4e8d7080-0f8d-4630-abbb-d11c700eaa57",
+     "date": "Tue Feb 11 2025 13:20:17 GMT+0300 (Москва, стандартное время)"
     }
    },
    "67602254d9da5c2bcc25f6c9": {
     "connect": {
-     "date": "2025-01-24T11:33:51.384Z",
      "code": "",
      "typeSignal": "info",
      "msg": "Модуль в сети",
      "title": "Секция 1:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "098fd79b-0a72-49d3-9dd3-58fbb444154f",
+     "date": "Tue Feb 11 2025 13:20:17 GMT+0300 (Москва, стандартное время)"
     },
     "heating": {
-     "date": "2025-02-10T07:39:04.500Z",
+     "date": "Tue Feb 11 2025 13:20:17 GMT+0300 (Москва, стандартное время)",
      "code": "heating",
      "typeSignal": "info",
      "msg": "Подогрев клапанов включен",
      "title": "Секция 1:",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "11ae7b45-581e-4b53-bbc9-84b23b6b1fed"
     }
    },
    "vent": {
     "off": {
-     "date": "2025-02-10T13:59:00.004Z",
      "code": "off",
      "typeSignal": "info",
      "msg": "Режим работы вентиляции: Выключен ",
      "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "8d210559-ceb8-499a-ad98-e6795848edef",
+     "date": "Tue Feb 11 2025 13:20:17 GMT+0300 (Москва, стандартное время)"
     }
    }
   }
@@ -123,11 +122,12 @@
      "code": "cooling-2",
      "msg": "t задания канала = 8.8 °С, t задания продукта = 9.8 °С",
      "title": "",
-     "buildingId": "6760195ed9da5c2bcc25f682"
+     "buildingId": "6760195ed9da5c2bcc25f682",
+     "uid": "2884b0d1-ca6c-4b8a-a7fc-be121c47537d",
+     "date": "Tue Feb 11 2025 13:21:33 GMT+0300 (Москва, стандартное время)"
     }
    }
   }
  },
- "module": {},
  "debounce": {}
 }

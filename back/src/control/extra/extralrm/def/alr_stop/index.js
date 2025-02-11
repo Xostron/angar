@@ -6,13 +6,13 @@ const { msgB } = require('@tool/message')
 function alrStop(building, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(building?._id, obj, 'alarm')
 	// Сброс
-	if (sig===true || isReset(building._id)) {
+	if (sig === true || isReset(building._id)) {
 		delExtralrm(building._id, null, 'alarm')
 		acc.alarm = false
 	}
 	// Установка
-	if (sig===false && !acc.alarm) {
-		wrExtralrm(building._id, null, 'alarm', { date: new Date(), ...msgB(building, 36) })
+	if (sig === false && !acc.alarm) {
+		wrExtralrm(building._id, null, 'alarm', msgB(building, 36))
 		acc.alarm = true
 	}
 	return acc?.alarm ?? false

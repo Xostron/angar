@@ -12,7 +12,7 @@ function local(building, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (sig===false && !acc.alarm) {
-		wrExtralrm(building._id, section._id, 'local', { date: new Date(), ...msg(building, section,27) })
+		wrExtralrm(building._id, section._id, 'local', msg(building, section,27) )
 		acc.alarm = true
 	}
 }

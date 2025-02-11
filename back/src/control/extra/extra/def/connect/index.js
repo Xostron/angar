@@ -16,7 +16,7 @@ function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
 		// 	acc.flag[el._id] = false
 		// }
 		if (!acc.flag[el._id]) {
-			const mes = { date: new Date(), ...fnMsg(building, owner, obj.data.section) }
+			const mes = fnMsg(building, owner, obj.data.section)
 			wrExtra(building._id, owner, el.type, mes)
 			acc.flag[el._id] = true
 		}

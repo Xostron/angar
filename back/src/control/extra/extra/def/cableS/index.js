@@ -4,7 +4,6 @@ const { getSignal } = require('@tool/command/signal')
 
 // Перегрев вводного кабеля (секция)
 function cableS(building, section, obj, s, se, m, alarm, acc, data, ban) {
-
 	const sig = getSignal(section?._id, obj, 'cable')
 	if (!sig) {
 		delExtra(building._id, section._id, 'cable')
@@ -12,10 +11,7 @@ function cableS(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	}
 	// Установка
 	if (sig && !acc.alarm) {
-		wrExtra(building._id, section._id, 'cable', {
-			date: new Date(),
-			...msg(building, section, 60),
-		})
+		wrExtra(building._id, section._id, 'cable', msg(building, section, 60))
 		acc.alarm = true
 	}
 }

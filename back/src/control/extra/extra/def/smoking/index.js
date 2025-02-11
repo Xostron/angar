@@ -7,7 +7,6 @@ const { msgB } = require('@tool/message')
 const h = 3600000
 // Окуривание
 function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
-	
 	if (clear) return fnClear(building._id)
 
 	const state = s?.smoking
@@ -19,7 +18,7 @@ function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, result
 	// Выключено окуривание
 	if (!state || !state?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
-		if (s.cooler.accel !=='on') arrCtrl(building._id, arr, 'off')
+		if (s.cooler.accel !== 'on') arrCtrl(building._id, arr, 'off')
 		delete doc.work
 		delete doc.wait
 		delExtra(building._id, null, 'smoking')
@@ -31,7 +30,7 @@ function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, result
 	// Работаем - включаются вентиляторы
 	if (!doc.work) {
 		doc.work = new Date()
-		wrExtra(building._id, null, 'smoking', { date: new Date(), ...msgB(building, 82, ' работа') })
+		wrExtra(building._id, null, 'smoking', msgB(building, 82, ' работа'))
 	}
 	if (!compareTime(doc.work, state.work * h)) {
 		arrCtrl(building._id, arr, 'on')
@@ -41,7 +40,7 @@ function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, result
 	// Выключаем вентиляторы и ждем
 	if (!doc.wait) {
 		doc.wait = new Date()
-		wrExtra(building._id, null, 'smoking', { date: new Date(), ...msgB(building, 82, ' ожидание') })
+		wrExtra(building._id, null, 'smoking', msgB(building, 82, ' ожидание'))
 	}
 	if (!compareTime(doc.wait, state.wait * h)) {
 		arrCtrl(building._id, arr, 'off')

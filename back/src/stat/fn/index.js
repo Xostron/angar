@@ -1,7 +1,7 @@
 const logger = require('@tool/logger')
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/command/building')
-const { v4: uuidv4 } = require('uuid')
+
 /**
  * Логирование периферии
  * @param {string[]} section Рама секций
@@ -164,23 +164,36 @@ function sensLog(data) {
 
 /**
  * Логирование критических неисправностей
- * @param {object[]} arr массив текущих неисправностей
- * @param {object} prev хранилище прошлого значения
+ * @param {object[]} arr массив актуальных аварий
+ * @param {object} prev Аккумулятор: аварии которые уже залогированы
  */
 function alarmLog(arr) {
 	store.prev.critical ??= {}
-	// console.log(111, arr, store.prev.critical)
+	// Логирование новых аварий (value: true)
 	arr.forEach((el) => {
-		// Записывать uid в месте возникновения аварии
-		const uid = uuidv4()
-		const message = { uid, bldId: el.buildingId, title: el.title + ' ' + el.msg, value: true }
-		if (el.date === store.prev.critical[uid]) return
-		// фиксируем состояние по изменению
-		store.prev.critical[uid] = el.date
+		const message = { uid: el.uid, bldId: el.buildingId, title: el.title + ' ' + el.msg, value: true }
+		// авария уже была залогирована - выход
+		if (el.date === store.prev.critical[el.uid]?.date) return
+		// фиксируем аварию как залогированную
+		store.prev.critical[el.uid] = el
+		console.log(333, el)
 		logger['alarm']({ message })
-		
-		console.log(message.value, r)
 	})
+
+	// Логирование ухода аварий (value: false)
+	for (const key in store.prev.critical) {
+		const r = arr.find((el) => el.uid == key)
+		// авария найдена в списке актуальных - выход
+		if (r) continue
+		// Авария не найдена в актуальных - авария сброшена
+		// (логируем уход аварии, и удаляем из аккумулятора запись об аварии)
+		const o = store.prev.critical[key]
+		const message = { uid: o.uid, bldId: o.buildingId, title: o.title + ' ' + o.msg, value: false }
+		logger['alarm']({ message })
+		delete store.prev.critical[key]
+	}
+
+	console.log(111, arr.length, store.prev.critical)
 }
 
 /**

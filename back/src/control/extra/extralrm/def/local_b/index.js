@@ -6,13 +6,13 @@ const { msgB } = require('@tool/message')
 function localB(building, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(building?._id, obj, 'local')
 	// Сброс
-	if (sig===true || isReset(building._id)) {
+	if (sig === true || isReset(building._id)) {
 		delExtralrm(building._id, null, 'local')
 		acc.alarm = false
 	}
 	// Установка
-	if (sig===false && !acc.alarm) {
-		wrExtralrm(building._id, null, 'local', { date: new Date(), ...msgB(building, 27) })
+	if (sig === false && !acc.alarm) {
+		wrExtralrm(building._id, null, 'local', msgB(building, 27))
 		acc.alarm = true
 	}
 	return acc?.alarm ?? false
@@ -25,4 +25,3 @@ module.exports = localB
  * Все выключается (клапаны остаются в том состоянии, в котором были)
  * сервер не обрабатывает команды управления (web функционирует, в режиме просмотра)
  */
-

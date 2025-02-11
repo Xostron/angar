@@ -18,10 +18,7 @@ function fanCrash(building, section, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[f._id].alarm) {
-			wrExtralrm(building._id, section._id, 'fanCrash' + f._id, {
-				date: new Date(),
-				...msgF(building, section, f.name, 35),
-			})
+			wrExtralrm(building._id, section._id, 'fanCrash' + f._id, msgF(building, section, f.name, 35))
 			acc[f._id].alarm = true
 		}
 		sumAlarm.push(acc?.[f._id]?.alarm)

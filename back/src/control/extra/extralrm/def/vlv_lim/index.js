@@ -13,7 +13,7 @@ function vlvLim(building, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (sig && !acc.alarm) {
-		wrExtralrm(building._id, section._id, 'vlvLim', { date: new Date(), ...msg(building, section, 33) })
+		wrExtralrm(building._id, section._id, 'vlvLim', msg(building, section, 33) )
 		acc.alarm = true
 	}
 }

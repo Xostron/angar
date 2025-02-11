@@ -111,7 +111,7 @@ function signalB(r, bld, am, data) {
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
-
+	
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
 	if (module?.length) r.signal[bld._id].push(...module)

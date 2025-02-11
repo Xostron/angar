@@ -11,10 +11,7 @@ function cableB(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	}
 	// Установка
 	if (sig && !acc.alarm) {
-		wrExtra(building._id, null, 'cable', {
-			date: new Date(),
-			...msgB(building, 60),
-		})
+		wrExtra(building._id, null, 'cable', msgB(building, 60))
 		acc.alarm = true
 	}
 }

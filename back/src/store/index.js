@@ -142,7 +142,7 @@ function isDebMdl(buildingId, mdlId, opt) {
 	const cur = new Date().getTime()
 	// Время прошло: авария осталась
 	if (cur >= time) {
-		wrModule(buildingId, mdlId, { date: new Date(), ...msgM(buildingId, opt, 110) })
+		wrModule(buildingId, mdlId, msgM(buildingId, opt, 110))
 		// delDebMdl(mdlId)
 		return false
 	}
@@ -298,12 +298,12 @@ function rs(buildingId, automode, arr) {
 
 	arr.forEach((o, idx) => {
 		let r = null
-		if (o.set && !d?.[o.msg.code]) d[o.msg.code] = { id: idx, date: new Date(), ...o.msg }
+		if (o.set && !d?.[o.msg.code]) d[o.msg.code] = { id: idx, ...o.msg }
 		if (o.reset) delete d[o.msg.code]
 	})
 }
 // Наличие аварии
-function isAlr(buildingId,  automode) {
+function isAlr(buildingId, automode) {
 	const d = data.alarm.auto?.[buildingId]?.[automode] ?? {}
 	return Object.keys(d).length ? true : false
 }

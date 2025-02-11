@@ -2,7 +2,6 @@ const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
 const { rhr } = require('../fn')
 const { data: store, delModule, wrDebMdl, delDebMdl } = require('@store')
-// const { msgM } = require('@tool/message')
 
 // Чтение данных RTU модуля
 function readRTU(path, position, opt) {

@@ -52,7 +52,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 			acc.alarm = true
 			acc.beginWait = +new Date().getTime()
 			acc.endWait = acc.beginWait + s.antibliz.wait
-			wrExtralrm(building._id, section._id, 'antibliz', { date: new Date(), ...msg(building, section, 13) })
+			wrExtralrm(building._id, section._id, 'antibliz', msg(building, section, 13) )
 		}
 	}
 	// Обновление состояния клапана после проверки в каждой итерации

@@ -3,8 +3,8 @@ const debounce = require('@tool/debounce_sensor')
 const { getS, getSA } = require('@tool/command/sensor')
 const { getBS } = require('@tool/command/building')
 const calc = require('@tool/command/abs_humidity')
-const { data: store, wrExtralrm, delExtralrm } = require('@store')
-const { msgBS } = require('@tool/message')
+const { data: store } = require('@store')
+
 /**
  * Аналоговые датчики
  * Преобразование с учетом точности и коррекции

@@ -6,39 +6,9 @@
     "auditLog": "C:\\_Project\\All\\angar_v2\\back\\logs\\.c044ae9075a5430d76cdc0191d5716b1394b5540-audit.json",
     "files": [
         {
-            "date": 1739173902306,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-10.log",
-            "hash": "099e8fd1f3debeb9280dc2e4b37e075c054a56fc1adbb43c86da2589125b8685"
-        },
-        {
-            "date": 1739174889103,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-11.log",
-            "hash": "b5f2b4d597d46b648072f2dfc671d6274448d080643eba430a969d6f55fd660f"
-        },
-        {
-            "date": 1739184559951,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-13.log",
-            "hash": "598446376fdc0a8b1301032440e69521c9afa175d0aeefdaa97e7e478d864165"
-        },
-        {
-            "date": 1739186492453,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-14.log",
-            "hash": "7b5cceec863542ecbfc6e14226b3e3486781a67820e3fc4efb37381ccd6b28d9"
-        },
-        {
-            "date": 1739188818166,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-15.log",
-            "hash": "7e3fb1cf973309362d5699d38b64a3229fd085a79599510198a694f220135792"
-        },
-        {
-            "date": 1739195904089,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-16.log",
-            "hash": "ebf5d2da47086ecc7c694673820039af9e44a9ca2988d4882769a1fd14265743"
-        },
-        {
-            "date": 1739196423339,
-            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-10-17.log",
-            "hash": "c99d43d2050edc7127961d82d7336a6fbde5291042ba5b94003c9af7786a5b30"
+            "date": 1739269216226,
+            "name": "C:\\_Project\\All\\angar_v2\\back\\logs\\heating-2025-02-11-13.log",
+            "hash": "60bf099146f17ab602a0b8674550f2d6bb21b4c8011258d19cb4dba14d56bda9"
         }
     ],
     "hashType": "sha256"

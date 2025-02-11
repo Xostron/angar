@@ -13,7 +13,7 @@ function genS(building, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (sig===false && !acc[section._id].alarm) {
-		wrExtralrm(building._id, section._id, 'gen', { date: new Date(), ...msg(building, section,29) })
+		wrExtralrm(building._id, section._id, 'gen', msg(building, section,29))
 		acc[section._id].alarm = true
 	}
 	return acc[section._id]?.alarm ?? false 

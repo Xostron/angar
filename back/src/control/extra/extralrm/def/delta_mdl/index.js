@@ -13,7 +13,7 @@ function deltaMdl(building, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (val === true && !acc.alarm) {
-		wrExtralrm(building._id, null, 'deltaMdl', { date: new Date(), ...msgB(building, 111, comment) })
+		wrExtralrm(building._id, null, 'deltaMdl', msgB(building, 111, comment))
 		acc.alarm = true
 	}
 	return acc?.alarm ?? false

@@ -16,10 +16,7 @@ function beepD(devc, arr, obj, building, acc, codeMsg) {
 		}
 		// Установить аварию
 		if (be && !acc.beep[el.code]) {
-			wrExtralrm(building._id, devc._id, el.code, {
-				date: new Date(),
-				...msgBeep(building, el, name),
-			})
+			wrExtralrm(building._id, devc._id, el.code, msgBeep(building, el, name))
 			acc.beep[el.code] = true
 		}
 	})
@@ -44,7 +41,7 @@ function beepA(agg, cl, arr, obj, building, acc, codeMsg) {
 		// Установить аварию
 		if (be && !acc.beep[cl._id][el.code]) {
 			const name = `Агрегат №${agg?.order}. Компрессор №${cl?.order}`
-			wrExtralrm(building._id, owner, el.code, { date: new Date(), ...msgBeep(building, el, name) })
+			wrExtralrm(building._id, owner, el.code, msgBeep(building, el, name))
 			acc.beep[cl._id][el.code] = true
 		}
 	})
