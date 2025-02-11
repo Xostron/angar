@@ -5,9 +5,9 @@
 
 # Dist
 node_modules
-/baсk/data
-/back/logs
-front/build
+data
+
+
 
 
 

@@ -94,9 +94,11 @@ function signalB(r, bld, am, data) {
 	const timer = Object.values(r.timer?.[bld._id] ?? {})
 	const module = Object.values(store.alarm.module?.[bld._id] ?? {})
 	const accel = Object.values(store.alarm.extra?.[bld._id]?.accel ?? {})
+	const co2 = Object.values(store.alarm.extra?.[bld._id]?.co2 ?? {})
+	// const co2 = store.alarm.extra?.[bld._id]?.co2 ?? null
+	const drain = Object.values(store.alarm.extra?.[bld._id]?.drain ?? {})
+	// const drain = store.alarm.extra?.[bld._id]?.drain ?? null
 	const cable = store.alarm.extra?.[bld._id]?.cable ?? null
-	const co2 = store.alarm.extra?.[bld._id]?.co2 ?? null
-	const drain = store.alarm.extra?.[bld._id]?.drain ?? null
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
 	const smoking = store.alarm.extra?.[bld._id]?.smoking ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
