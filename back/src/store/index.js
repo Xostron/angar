@@ -110,13 +110,9 @@ const data = {
 }
 // Разрешить true/заблокировать false опрос модуля
 function timeout(buildingId, moduleId, ip, opt) {
-	// console.log(3333, opt.name, data.alarm.module?.[buildingId]?.[moduleId], data.debMdl?.[moduleId])
 	if (!buildingId || !moduleId) return true
 	// Проверка debounce модуля: true - модуль ОК
-	if (isDebMdl(buildingId, moduleId, opt)) {
-		// console.log(opt.name, 'в debounce')
-		return true
-	}
+	if (isDebMdl(buildingId, moduleId, opt)) return true
 	// Модуль исправен - разрешить опрос
 	if (!isErrM(buildingId, moduleId)) return true
 

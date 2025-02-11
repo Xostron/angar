@@ -176,7 +176,6 @@ function alarmLog(arr) {
 		if (el.date === store.prev.critical[el.uid]?.date) return
 		// фиксируем аварию как залогированную
 		store.prev.critical[el.uid] = el
-		console.log(333, el)
 		logger['alarm']({ message })
 	})
 
@@ -192,8 +191,6 @@ function alarmLog(arr) {
 		logger['alarm']({ message })
 		delete store.prev.critical[key]
 	}
-
-	console.log(111, arr.length, store.prev.critical)
 }
 
 /**

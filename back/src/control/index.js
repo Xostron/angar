@@ -39,7 +39,6 @@ async function control() {
 		reset(null, false)
 		if (store._cycle_ms_ < 50) await delay(2000)
 		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`)
-		await delay(5000)
 		return true
 	} catch (error) {
 		await delay(2000)
