@@ -113,18 +113,18 @@ function signalB(r, bld, am, data) {
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
-	
+
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
 	if (module?.length) r.signal[bld._id].push(...module)
 	if (accel) r.signal[bld._id].push(...accel)
+	if (co2) r.signal[bld._id].push(...co2)
+	if (drain) r.signal[bld._id].push(...drain)
 	if (gen) r.signal[bld._id].push(gen)
 	if (cable) r.signal[bld._id].push(cable)
 	if (vlvLim) r.signal[bld._id].push(vlvLim)
 	if (alrClosed) r.signal[bld._id].push(alrClosed)
 	if (local) r.signal[bld._id].push(local)
-	if (co2) r.signal[bld._id].push(co2)
-	if (drain) r.signal[bld._id].push(drain)
 	if (drainRun) r.signal[bld._id].push(drainRun)
 	if (smoking) r.signal[bld._id].push(smoking)
 	if (connect) r.signal[bld._id].push(connect)
