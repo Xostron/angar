@@ -42,7 +42,7 @@ function transform(data, building) {
 				})
 				.filter((el) => !!el),			
 		}
-console.log(1111, obj)
+
 		obj.alarm.push(...timer)
 		// GVM Данные для холодильника
 		if(type === 'cold') {
