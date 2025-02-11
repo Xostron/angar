@@ -5,6 +5,9 @@
 
 # Dist
 node_modules
+baсk/data
+back/logs
+front/build
 
 
 
@@ -13,5 +16,3 @@ node_modules
 !.vscode/extensions.json
 .idea
 
-baсk/data
-back/logs
