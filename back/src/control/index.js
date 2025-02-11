@@ -37,6 +37,7 @@ async function control() {
 		statOnChange(obj, alr.history)
 		// Обнулить команду reset (кнопка сброса аварии)
 		reset(null, false)
+		console.log(222, store.value?.building)
 		if (store._cycle_ms_ < 50) await delay(2000)
 		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`)
 		return true

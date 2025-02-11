@@ -1,4 +1,5 @@
 const { checkS } = require('@tool/command/sensor')
+const {data:store} = require('@store')
 
 // Данные по pc
 function transform(data, building) {
@@ -25,6 +26,7 @@ function transform(data, building) {
 		const obj = {
 			product: retain?.[idB]?.product?.code ?? null,
 			mode: retain?.[idB]?.automode ?? null,
+			submode: store.value?.building?.[idB]?.submode[1],
 			on: retain?.[idB]?.start ?? null,
 			// Влажность продукта (hin)
 			rh: { value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined, state: data?.total?.[idB]?.hin?.state },
@@ -40,7 +42,7 @@ function transform(data, building) {
 				})
 				.filter((el) => !!el),			
 		}
-
+console.log(1111, obj)
 		obj.alarm.push(...timer)
 		// GVM Данные для холодильника
 		if(type === 'cold') {
