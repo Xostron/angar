@@ -196,7 +196,7 @@ function historyLog(arr, prev, level) {
 		loggerEvent[level]({ message })
 		delete prev[key]
 	}
-	if (level === 'event') console.log(111, level, Object.keys(prev).length, Object.keys(store.prev.event).length, prev, 2222, arr)
+	// if (level === 'event') console.log(111, level, Object.keys(prev).length, Object.keys(store.prev.event).length, prev, 2222, arr)
 }
 
 function activityLog() {}
