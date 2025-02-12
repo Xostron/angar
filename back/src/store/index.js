@@ -71,6 +71,7 @@ const data = {
 		module: {},
 		// Антидребезг аварий - аварии, которые ожидают (неактивны) заданное время (store.tMdl)
 		debounce: {},
+		activity:{}
 	},
 	// Выход: сброс аварии (реле безопасности)
 	reset: new Set(),
@@ -276,6 +277,9 @@ function wrTimer(buildingId, key, name) {
 function delTimer(buildingId, key) {
 	delete data.alarm.timer?.[buildingId]?.[key]
 }
+
+// Записать в действия пользователя и системы
+function wrActivity(){}
 
 /**
  * rs-триггер (приоритет на сброс)

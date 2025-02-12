@@ -148,12 +148,12 @@ const data = {
 		{ count: true, code: 'stator', typeSignal: 'critical', msg: 'Перегрев обмотки двигателя' },
 	],
 	// ======== Неисправность датчика ========
-	93: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры потолка выключены' },
-	94: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры потолка неисправны' },
-	95: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики влажности улицы выключены' },
-	96: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики влажности улицы неисправны' },
-	97: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры улицы выключены' },
-	98: { count:true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры улицы неисправны' },
+	93: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры потолка выключены' },
+	94: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры потолка неисправны' },
+	95: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики влажности улицы выключены' },
+	96: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики влажности улицы неисправны' },
+	97: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры улицы выключены' },
+	98: { count: true, code: 'sensor', typeSignal: 'sensor', msg: 'Датчики температуры улицы неисправны' },
 	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
 	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
 	// ======== Неисправность модуля ========
@@ -204,8 +204,42 @@ const data = {
 		msg: 'Окуривание',
 	},
 
-	// ======== 400 ========
-	400: { code: 400, typeSignal: 'info', msg: 'Описание аварии не найдено' },
+	// ======== 399 ========
+	399: { code: 399, typeSignal: 'info', msg: 'Описание аварии не найдено' },
+
+	// ======== События системы (POS) =======
+	400: { msg: 'Система запущена' },
+
+	// ======== Действия пользователя =======
+	500: { msg: 'Склад включен' },
+	500: { msg: 'Склад выключен' },
+	500: { msg: 'Режим склада изменен' },
+	500: { msg: 'Продукт изменен' },
+	500: { msg: 'Датчик выведен из работы' },
+	500: { msg: 'Датчик введен в работу' },
+	500: { msg: 'Датчик скоррект' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
+	500: { msg: '' },
 }
 
 module.exports = data

@@ -39,7 +39,7 @@ function fnMsg(building, acc, s) {
 				code = 83
 				break
 			default:
-				code = 400
+				code = 399
 				break
 		}
 		const arr = [null, 'off', 'on', 'auto']

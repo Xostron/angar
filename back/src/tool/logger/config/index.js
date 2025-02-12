@@ -3,6 +3,7 @@ const DailyRotateFile = require('winston-daily-rotate-file')
 const path = require('path')
 const { combine, timestamp, json } = format
 
+
 /**
  * Фильтр, пропускающий только указанный уровень
  * (иначе запись отбрасывается).

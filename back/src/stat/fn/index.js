@@ -113,6 +113,7 @@ function message(data, el, level, value) {
 		id: el._id,
 		value: v !== undefined ? v : value[el._id]?.state,
 		state, // только у датчиков
+		type:el?.type
 	}
 }
 
@@ -150,11 +151,8 @@ function sensTotalLog(total, building) {
 	building.forEach((bld) => {
 		const val = total[bld._id]
 		;['hin', 'tprdL', 'tin'].forEach((el) => {
-			let m
-			if (el === 'hin') m = 'max'
-			if (el === 'tprdL') m = 'min'
-			if (el === 'tin' && bld.type === 'cold') m = 'max'
-			else return
+			const m = checkTyp(el, bld)
+			if (!m) return
 			loggerSens['sensor']({
 				message: {
 					bldId: bld._id,
@@ -165,6 +163,13 @@ function sensTotalLog(total, building) {
 			})
 		})
 	})
+}
+
+function checkTyp(el, bld) {
+	if (el === 'hin') return 'max'
+	if (el === 'tprdL') return 'min'
+	if (el === 'tin' && bld.type === 'cold') return 'max'
+	return null
 }
 
 /**
