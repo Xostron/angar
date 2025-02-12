@@ -9,7 +9,7 @@ function msg(building, section, code) {
 	o.title = `${section?.name ?? ''}:`
 	o.buildingId = building._id
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 // Склада
@@ -19,7 +19,7 @@ function msgB(building, code, msg = '') {
 	o.buildingId = building._id
 	o.msg += ' ' + msg
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 // Клапана
@@ -28,7 +28,7 @@ function msgV(building, section, typeV, code) {
 	o.title = `${section.name ?? ''}. ${typeV ?? ''} клапан:`
 	o.buildingId = building._id
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 // Вентиляторы
@@ -37,7 +37,7 @@ function msgF(building, section, name, code) {
 	o.title = `${section.name ?? ''}. ${name ?? ''}:`
 	o.buildingId = building._id
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 // Датчики
@@ -47,7 +47,7 @@ function msgBS(building, section, sensor, code) {
 	if (!sensor) o.title = section == 'sensor' ? '' : `${section?.name}.`
 	o.buildingId = building._id
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 // Модули
@@ -57,7 +57,7 @@ function msgM(buildingId, mdl, code) {
 	else o.title = `Модуль ${mdl.name} (${mdl.ip ?? ''}-${mdl.port ?? ''}):`
 	o.buildingId = buildingId
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 
@@ -68,7 +68,7 @@ function msgBeep(building, beep, name = '', alarm = true) {
 	o.title = name ? `${name}:` : ''
 	o.buildingId = building._id
 	o.uid = uuidv4()
-	o.date = new Date()+''
+	o.date = new Date().toLocaleString('ru')
 	return o
 }
 

@@ -9,7 +9,7 @@ export default function Row({ data, i }) {
 			<Text
 				cls='list-row list-row-date'
 				data={{
-					value: new Date(data.date).toLocaleString(),
+					value: data.date
 				}}
 			/>
 			<IconText
