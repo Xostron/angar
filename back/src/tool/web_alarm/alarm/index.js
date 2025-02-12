@@ -22,7 +22,7 @@ function alarm(obj) {
 		// Для мониторинга (критические, аварийные, информационные)
 		monit: { critical: {} },
 		// statistic history (critical:[] критические аварии,
-		// event:[] аварийные-информационные сообщения, activity:[] действия пользователей)
+		// event:[] информационные сообщения, activity:[] действия пользователей)
 		history: { critical: [], event: [], activity: [] },
 	}
 
@@ -71,11 +71,17 @@ function alarm(obj) {
 	return r
 }
 
+// Данные отправляемые в логирование
 function history(r) {
-	for (const bld in r.signal) r.history.critical = r.history.critical.concat(...r.signal[bld].filter((el) => el.count))
+	for (const bld in r.signal) {
+		// Критические аварии
+		r.history.critical = r.history.critical.concat(...r.signal[bld].filter((el) => el.count))
+		// Инофрмационные сообщения
+		r.history.event = r.history.event.concat(...r.signal[bld].filter((el) => !el.count))
+	}
 }
 
-// Критические аварии
+// Данные отправляемы в мониторинг: критические аварии
 function critical(r) {
 	for (const bld in r.signal) {
 		// Критические аварии кроме module (Модуль не в сети)

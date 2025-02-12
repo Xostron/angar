@@ -1,8 +1,9 @@
-const { createLogger } = require('winston');
-const { customLevels, hourlyT } = require('./config');
+const { createLogger } = require('winston')
+const { customLevels, hourlyT } = require('./config')
 
 const logger = createLogger({
 	levels: customLevels,
+	// handleExceptions: false,
 	// Ставим 'silly', чтобы при желании логировать всё подряд
 	// level: 'silly',
 	transports: [
@@ -14,20 +15,49 @@ const logger = createLogger({
 		// hourlyT('debug'),
 		// hourlyT('silly'),
 
+		// hourlyT('solenoid'),
+		// hourlyT('compressor'),
+		// hourlyT('condenser'),
 		hourlyT('fan'),
 		hourlyT('valve'),
 		hourlyT('heating'),
 		hourlyT('cooler'),
-		// hourlyT('solenoid'),
 		hourlyT('aggregate'),
-		// hourlyT('compressor'),
-		// hourlyT('condenser'),
 		hourlyT('device'),
-		hourlyT('sensor'),
-		hourlyT('activity'),
-		hourlyT('alarm'),
-		hourlyT('watt'),
 	],
-});
+})
 
-module.exports = logger;
+const loggerEvent = createLogger({
+	levels: customLevels,
+	handleExceptions: false,
+	// Ставим 'silly', чтобы при желании логировать всё подряд
+	// level: 'silly',
+	transports: [
+		hourlyT('alarm'),
+		hourlyT('event'),
+		hourlyT('activity'),
+	],
+})
+
+const loggerSens = createLogger({
+	levels: customLevels,
+	// handleExceptions: false,
+	transports: [hourlyT('sensor')],
+})
+
+const loggerWatt = createLogger({
+	levels: customLevels,
+	// handleExceptions: false,
+	// Ставим 'silly', чтобы при желании логировать всё подряд
+	// level: 'silly',
+	transports: [hourlyT('watt')],
+})
+
+module.exports = { logger, loggerSens, loggerWatt, loggerEvent }
+
+/**
+ * Вышло предупреждение при превышении в логере кол-во регистраторов
+ * MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added to [DerivedLogger]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
+(Use `node --trace-warnings ...` to show where the warning was created)
+Разбил на несколько логеров, предупреждение исчезло
+ */

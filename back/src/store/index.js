@@ -99,7 +99,7 @@ const data = {
 	timeout: {},
 	debMdl: {},
 	// Прошлые состояния
-	prev: {},
+	prev: { critical: {}, event: {} },
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
 	pubDir: path.join(process.env.PATH_PUB),

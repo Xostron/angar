@@ -3,7 +3,6 @@ const DailyRotateFile = require('winston-daily-rotate-file')
 const path = require('path')
 const { combine, timestamp, json } = format
 
-
 /**
  * Фильтр, пропускающий только указанный уровень
  * (иначе запись отбрасывается).
@@ -41,7 +40,8 @@ const customLevels = {
 	activity: 17, // Действия пользователя
 	sensor: 18,
 	alarm: 19, // Неисправности
-	watt:20 // Электросчетчик
+	watt: 20, // Электросчетчик
+	event: 21, // События о работе склада
 }
 
 /**

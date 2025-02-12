@@ -1,7 +1,8 @@
-const { pLogConst, pLog, alarmLog, eventLog, activityLog, sensTotalLog, sensLog } = require('./fn')
+const { pLogConst, pLog, historyLog, sensTotalLog } = require('./fn')
 const { data: store } = require('@store')
 const { delay } = require('@tool/command/time')
 const { readTO } = require('@tool/json')
+const { loggerSens, logger, loggerWatt, loggerEvent } = require('../tool/logger')
 
 /**
  * Статистика датчиков
@@ -10,15 +11,15 @@ async function statOnTime() {
 	while (true) {
 		// Задержка
 		await delay(store.tStat)
+		// await delay(5000)
 		const data = await readTO(['building', 'section', 'sensor'])
 		// Датчики (Total после анализа)
 		sensTotalLog(store?.value?.total, data.building)
 		// Лог по всем датчикам
-		sensLog(data)
+		pLogConst(data, data.sensor, store.value, 'sensor')
 		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
 	}
 }
-
 /**
  * Статистика - сбор данных по изменению
  * @param {object} obj глобальный объект склада (рама, значения с модулей, аварии)
@@ -41,9 +42,9 @@ function statOnChange(obj, alr) {
 	const dvc = data.device.filter((el) => el.device.code !== 'pui')
 	pLog(data, dvc, value, 'device')
 	// alarm - Критические неисправности
-	alarmLog(critical)
-	// event - Сообщения авторежимов
-	// eventLog(event)
+	historyLog(critical, store.prev.critical, 'alarm')
+	// event - Сообщения о работе склада
+	historyLog(event, store.prev.event, 'event')
 	// activity - Действия пользователя
 	// activityLog()
 }

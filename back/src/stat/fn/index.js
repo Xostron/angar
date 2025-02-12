@@ -1,4 +1,4 @@
-const logger = require('@tool/logger')
+const { logger, loggerSens, loggerWatt, loggerEvent } = require('@tool/logger')
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/command/building')
 
@@ -28,7 +28,19 @@ function pLog(data, arr, value, level) {
 // Лог непрерывных значений
 function pLogConst(data, arr, value, level) {
 	if (!arr?.length) return
-	arr.forEach((el) => logger[level]({ message: message(data, el, level, value) }))
+	arr.forEach((el) => {
+		switch (level) {
+			case 'sensor':
+				loggerSens[level]({ message: message(data, el, level, value) })
+				break
+			case 'watt':
+				loggerWatt['watt']({ message: message(data, el, level, value) })
+				break
+			default:
+				logger['watt']({ message: message(data, el, level, value) })
+				break
+		}
+	})
 }
 
 /**
@@ -143,7 +155,7 @@ function sensTotalLog(total, building) {
 			if (el === 'tprdL') m = 'min'
 			if (el === 'tin' && bld.type === 'cold') m = 'max'
 			else return
-			logger['sensor']({
+			loggerSens['sensor']({
 				message: {
 					bldId: bld._id,
 					type: el,
@@ -156,58 +168,37 @@ function sensTotalLog(total, building) {
 }
 
 /**
- *
+ * Логирование информационных сообщений
+ * @param {object[]} arr массив текущих сообщений
+ * @param {object} prev хранилище прошлого значения
  */
-function sensLog(data) {
-	pLogConst(data, data.sensor, store.value, 'sensor')
-}
-
-/**
- * Логирование критических неисправностей
- * @param {object[]} arr массив актуальных аварий
- * @param {object} prev Аккумулятор: аварии которые уже залогированы
- */
-function alarmLog(arr) {
-	store.prev.critical ??= {}
-	// Логирование новых аварий (value: true)
+function historyLog(arr, prev, level) {
+	if (!level) return
+	// Логирование новых событий (value: true)
 	arr.forEach((el) => {
 		const message = { uid: el.uid, bldId: el.buildingId, title: el.title + ' ' + el.msg, value: true }
-		// авария уже была залогирована - выход
-		if (el.date === store.prev.critical[el.uid]?.date) return
-		// фиксируем аварию как залогированную
-		store.prev.critical[el.uid] = el
-		logger['alarm']({ message })
+		// Событие было залогировано - выход
+		if (el.date === prev[el.uid]?.date) return
+		// фиксируем событие как залогированную
+		prev[el.uid] = el
+		loggerEvent[level]({ message })
 	})
 
 	// Логирование ухода аварий (value: false)
-	for (const key in store.prev.critical) {
+	for (const key in prev) {
 		const r = arr.find((el) => el.uid == key)
 		// авария найдена в списке актуальных - выход
 		if (r) continue
 		// Авария не найдена в актуальных - авария сброшена
 		// (логируем уход аварии, и удаляем из аккумулятора запись об аварии)
-		const o = store.prev.critical[key]
+		const o = prev[key]
 		const message = { uid: o.uid, bldId: o.buildingId, title: o.title + ' ' + o.msg, value: false }
-		logger['alarm']({ message })
-		delete store.prev.critical[key]
+		loggerEvent[level]({ message })
+		delete prev[key]
 	}
-}
-
-/**
- * Логирование информационных сообщений
- * @param {object[]} arr массив текущих сообщений
- * @param {object} prev хранилище прошлого значения
- */
-function eventLog(arr) {
-	arr.forEach((el) => {
-		const message = { bldId: el.buildingId, value: el.title + ' ' + el.msg }
-		if (el.date === store.prev[message.value]) return
-		// фиксируем состояние по изменению
-		store.prev[message.value] = el.date
-		// logger['alarm']({ message })
-	})
+	if (level === 'event') console.log(111, level, Object.keys(prev).length, Object.keys(store.prev.event).length, prev, 2222, arr)
 }
 
 function activityLog() {}
 
-module.exports = { pLog, alarmLog, sensLog, sensTotalLog, pLogConst, eventLog, activityLog }
+module.exports = { pLog, sensTotalLog, pLogConst, activityLog, historyLog }
