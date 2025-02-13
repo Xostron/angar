@@ -6,6 +6,7 @@ const s_mode = require('./s_mode')
 const s_product = require('./s_product')
 const s_sens = require('./s_sens')
 const s_setting_au = require('./s_setting_au')
+const activityLog = require('@root/stat/activity')
 
 const cb = {
 	s_auto_mode,
@@ -21,6 +22,7 @@ function fn(code) {
         socket.on(code, (obj, callback) => {
 			// Создать или сохранить изменения в json
 			createAndModifySync(obj, 'data', retainDir, cb[code])
+			activityLog(code, obj)
 		})
 	}
 }

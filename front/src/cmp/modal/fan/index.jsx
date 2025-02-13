@@ -34,8 +34,8 @@ export default function Entry({ data = {}, setData, close }) {
 	// Ок
 	function set() {
 		const cmd = sel === 'run' ? 1 : 0
-		if (sel === 'off' && state !== 'off') setFan({ buildingId, sectionId, fanId: _id, value: true })
-		else setFan({ buildingId, sectionId, fanId: _id, value: false })
+		if (sel === 'off' && state !== 'off') setFan({ buildingId, sectionId, fanId: _id, action:sel, value: true })
+		else setFan({ buildingId, sectionId, fanId: _id, action:sel, value: false })
 		setO({ idB: buildingId, idM: module.id, value: cmd, channel: ch })
 		close()
 	}

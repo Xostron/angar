@@ -22,8 +22,8 @@ function alarm(obj) {
 		// Для мониторинга (критические, аварийные, информационные)
 		monit: { critical: {} },
 		// statistic history (critical:[] критические аварии,
-		// event:[] информационные сообщения, activity:[] действия пользователей)
-		history: { critical: [], event: [], activity: [] },
+		// event:[] информационные сообщения)
+		history: { critical: [], event: [] },
 	}
 
 	// Таймер запретов (слабое клонирование)

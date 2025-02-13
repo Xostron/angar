@@ -1,11 +1,10 @@
-const { pLogConst, pLog, historyLog, sensTotalLog } = require('./fn')
+const { pLogConst, pLog, historyLog, sensTotalLog} = require('./fn')
 const { data: store } = require('@store')
 const { delay } = require('@tool/command/time')
 const { readTO } = require('@tool/json')
-const { loggerSens, logger, loggerWatt, loggerEvent } = require('../tool/logger')
 
 /**
- * Статистика датчиков
+ * Статистика датчиков - отдельный цикл
  */
 async function statOnTime() {
 	while (true) {
@@ -22,13 +21,13 @@ async function statOnTime() {
 }
 
 /**
- * Статистика - сбор данных по изменению
+ * Статистика - сбор данных по изменению в главном цикле
  * @param {object} obj глобальный объект склада (рама, значения с модулей, аварии)
  * @param {object[]} alr данные для логирования неисправностей
  */
 function statOnChange(obj, alr) {
 	const { data, value } = obj
-	const { critical, event, activity } = alr
+	const { critical, event} = alr
 	// Вентиляторы
 	pLog(data, data.fan, value, 'fan')
 	// Клапан
@@ -47,10 +46,11 @@ function statOnChange(obj, alr) {
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event')
 	// activity - Действия пользователя
-	// activityLog()
+	// activityLog(store.alarm.activity)
 }
 
 /**
+ * Отдельный цикл
  * Электросчетчик: насчитанные кВт за 10 мин
  * Каждую сек аккумулируем значение кВт, на 10 минуте считаем результат и записываем в лог
  */

@@ -1,6 +1,7 @@
 const { logger, loggerSens, loggerWatt, loggerEvent } = require('@tool/logger')
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/command/building')
+const mes = require('@dict/message')
 
 /**
  * Логирование периферии
@@ -113,7 +114,7 @@ function message(data, el, level, value) {
 		id: el._id,
 		value: v !== undefined ? v : value[el._id]?.state,
 		state, // только у датчиков
-		type:el?.type
+		type: el?.type,
 	}
 }
 
@@ -204,6 +205,4 @@ function historyLog(arr, prev, level) {
 	// if (level === 'event') console.log(111, level, Object.keys(prev).length, Object.keys(store.prev.event).length, prev, 2222, arr)
 }
 
-function activityLog() {}
-
-module.exports = { pLog, sensTotalLog, pLogConst, activityLog, historyLog }
+module.exports = { pLog, sensTotalLog, pLogConst, historyLog }
