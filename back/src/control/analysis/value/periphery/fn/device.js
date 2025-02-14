@@ -26,16 +26,16 @@ function pui(doc, result, val) {
 	if (!doc.module.id || !val?.[doc.module.id]) return
 	// Напряжение
 	result[doc._id].Ua = val[doc.module.id][0]
-	result[doc._id].Ub = val[doc.module.id][1]
-	result[doc._id].Uc = val[doc.module.id][2]
+	result[doc._id].Ub = val[doc.module.id][2]
+	result[doc._id].Uc = val[doc.module.id][4]
 	// Ток
-	result[doc._id].Ia = val[doc.module.id][3]
-	result[doc._id].Ib = val[doc.module.id][4]
-	result[doc._id].Ic = val[doc.module.id][5]
+	result[doc._id].Ia = val[doc.module.id][6]
+	result[doc._id].Ib = val[doc.module.id][8]
+	result[doc._id].Ic = val[doc.module.id][10]
 	// активная мощность
-	result[doc._id].Pa = val[doc.module.id][9]
-	result[doc._id].Pb = val[doc.module.id][10]
-	result[doc._id].Pc = val[doc.module.id][11]
+	result[doc._id].Pa = val[doc.module.id][12]
+	result[doc._id].Pb = val[doc.module.id][14]
+	result[doc._id].Pc = val[doc.module.id][16]
 }
 
 function other(doc, signal, result) {

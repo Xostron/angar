@@ -58,6 +58,7 @@ function msgM(buildingId, mdl, code) {
 	o.buildingId = buildingId
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
+	
 	return o
 }
 

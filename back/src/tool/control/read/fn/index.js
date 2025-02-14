@@ -26,7 +26,6 @@ function count(opt, options) {
 		case 'int':
 		case 'int10':
 			return countMB101(opt, options)
-			return opt.channel
 	}
 	return 1
 }
@@ -110,7 +109,7 @@ function countMB101(opt, options) {
 	const { name, interface, use } = options
 	// Другие модули
 	if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8) {
-		return opt.channel
+		return opt.channel*opt.step
 	}
 	// Модуль МВ210-101 Int/10
 	return opt.channel * 2

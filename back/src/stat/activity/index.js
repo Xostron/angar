@@ -11,7 +11,6 @@ function activityLog(code, obj = {}, reobj = {}, level = 'activity') {
 	readJson(files)
 		.then(([fan, valve, sensor, section, factory]) => {
 			const r = { fan, valve, sensor, section, factory }
-			console.log(111, 'activity', code, obj)
 			const { title, value, bId, sId, sensId, type } = oMessage(code, obj, reobj, r)
 			loggerEvent[level]({
 				message: {
@@ -110,7 +109,7 @@ function oMessage(code, obj, reobj, oData) {
 				title: `Изменение настройки \"${nameStg}\", продукт \"${namePrd}\": ` + (title.length > 1 ? title.join('; ') : title.join('')),
 			}
 		}
-		
+
 		default:
 			return { title: `code: ${code}` }
 	}

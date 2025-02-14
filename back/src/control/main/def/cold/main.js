@@ -10,20 +10,20 @@ function main(bld, obj, bdata, alr) {
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
-		console.log(`\nСклад: ${bld?.name} Секция: ${sect?.name} [${sect?.buildingId}, ${sect?._id}] `)
+		// console.log(`\nСклад: ${bld?.name} Секция: ${sect?.name} [${sect?.buildingId}, ${sect?._id}] `)
 		const stateCooler = obj.value?.[m?.cold?.cooler?.[0]?._id]
 		const supplySt = checkSupply(supply, bld._id, retain)
 		const aggr = isRunAgg(obj.value, bld._id)
-		console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
+		// console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
 
 		// Работа склада запрещена
 		store.denied[bld._id] = !start || alr || !aggr || !supplySt
 		if (store.denied[bld._id]) {
-			console.log('\tОстановка из-за ошибок:')
-			console.log('\t\tСклад остановлен:', !start)
-			console.log('\t\tАвария:', alr)
-			console.log('\t\tАгрегат готов к работ', !aggr)
-			console.log('\t\tОжидание после включения питания', !supplySt)
+			// console.log('\tОстановка из-за ошибок:')
+			// console.log('\t\tСклад остановлен:', !start)
+			// console.log('\t\tАвария:', alr)
+			// console.log('\t\tАгрегат готов к работ', !aggr)
+			// console.log('\t\tОжидание после включения питания', !supplySt)
 
 			delete accAuto?.state?.off
 			delete accAuto.target
@@ -50,7 +50,7 @@ function main(bld, obj, bdata, alr) {
 			accAuto.state ??= {}
 		}
 
-		console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
+		// console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
 
 		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) def?.[stateCooler.state](fnChange, accAuto, se, s, bld)
 	}

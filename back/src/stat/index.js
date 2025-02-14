@@ -45,8 +45,6 @@ function statOnChange(obj, alr) {
 	historyLog(critical, store.prev.critical, 'alarm')
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event')
-	// activity - Действия пользователя
-	// activityLog(store.alarm.activity)
 }
 
 /**

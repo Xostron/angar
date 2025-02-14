@@ -46,6 +46,7 @@ function middlew(building, section, s, se, seB, alr, acc) {
 		acc.finish = true
 		wrAchieve(building._id, 'cooling', msgB(building, 15))
 	}
+	// Сброс: 1)   2)если перещли в подрежим лечения
 	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
 		acc.finish = false
 		delAchieve(building._id, 'cooling', mes[15].code)
