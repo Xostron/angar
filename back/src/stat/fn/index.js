@@ -1,7 +1,6 @@
 const { logger, loggerSens, loggerWatt, loggerEvent } = require('@tool/logger')
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/command/building')
-const mes = require('@dict/message')
 
 /**
  * Логирование периферии
@@ -182,7 +181,7 @@ function historyLog(arr, prev, level) {
 	if (!level) return
 	// Логирование новых событий (value: true)
 	arr.forEach((el) => {
-		const message = { uid: el.uid, bldId: el.buildingId, title: el.title + ' ' + el.msg, value: true }
+		const message = { uid: el.uid, bldId: el.buildingId, title: (el.title + ' ' + el.msg).trim(), value: true }
 		// Событие было залогировано - выход
 		if (el.date === prev[el.uid]?.date) return
 		// фиксируем событие как залогированную
@@ -198,7 +197,7 @@ function historyLog(arr, prev, level) {
 		// Авария не найдена в актуальных - авария сброшена
 		// (логируем уход аварии, и удаляем из аккумулятора запись об аварии)
 		const o = prev[key]
-		const message = { uid: o.uid, bldId: o.buildingId, title: o.title + ' ' + o.msg, value: false }
+		const message = { uid: o.uid, bldId: o.buildingId, title: (o.title + ' ' + o.msg).trim(), value: false }
 		loggerEvent[level]({ message })
 		delete prev[key]
 	}

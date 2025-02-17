@@ -29,7 +29,7 @@ const useOutputStore = create((set, get) => ({
 		set({ prd })
 	},
 	// Установить: команды управления (пуск-стоп)
-	setO(out1, out2) {
+	setO(out1, out2, type, vlvId) {
 		const output = {}
 		output[out1.idB] = {
 			...output[out1.idB],
@@ -41,9 +41,9 @@ const useOutputStore = create((set, get) => ({
 				[out2.idM]: { ...output?.[out2.idB]?.[out2.idM], [out2.channel]: out2.value },
 			}
 		set({ output })
-		console.log('@@@ setO', output)
+		console.log('@@@ setO', { output, type })
 		// отправить на сервер
-		sOutput(output)
+		sOutput({ ...output, type, sel: out1?.sel, vlvId })
 	},
 	// Команды управления: с таймером
 	setT(out1) {

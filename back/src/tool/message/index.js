@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid')
 // Секции
 function msg(building, section, code) {
 	const o = { ...mes[code] }
-	o.title = `${section?.name ?? ''}:`
+	o.title = section?.name ? `${section?.name}:` : ''
 	o.buildingId = building._id
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
@@ -17,7 +17,7 @@ function msgB(building, code, msg = '') {
 	const o = { ...mes[code] }
 	o.title = ``
 	o.buildingId = building._id
-	o.msg += ' ' + msg
+	o.msg = msg ? o.msg + ' ' + msg : o.msg
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
 	return o
@@ -25,7 +25,8 @@ function msgB(building, code, msg = '') {
 // Клапана
 function msgV(building, section, typeV, code) {
 	const o = { ...mes[code] }
-	o.title = `${section.name ?? ''}. ${typeV ?? ''} клапан:`
+	o.title = section?.name ? `${section?.name}. ` : ''
+	o.title += typeV ? `${typeV} клапан:` : ''
 	o.buildingId = building._id
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
@@ -58,7 +59,7 @@ function msgM(buildingId, mdl, code) {
 	o.buildingId = buildingId
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
-	
+
 	return o
 }
 

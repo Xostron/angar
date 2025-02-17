@@ -44,20 +44,20 @@ export default function Entry({ data = {}, setData, close }) {
 		if (sel === 'tune') setTune({ ...vlv, _stage: 'begin', _build: build })
 		else setTune({ ...vlv, _stage: null })
 		if (sel === 'stop') {
-			off = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff }
-			cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn }
+			off = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff, sel }
+			cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn, sel }
 		}
 		if (sel === 'iopn') {
-			off = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff }
-			cmd = { idB: build, idM: vlv.module.on.id, value: 1, channel: chOn }
+			off = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff, sel }
+			cmd = { idB: build, idM: vlv.module.on.id, value: 1, channel: chOn, sel }
 		}
 		if (sel === 'icls') {
-			cmd = { idB: build, idM: vlv.module.off.id, value: 1, channel: chOff }
-			off = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn }
+			cmd = { idB: build, idM: vlv.module.off.id, value: 1, channel: chOff, sel }
+			off = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn, sel }
 		}
 		if (sel === 'popn') {
 			if (spO > sp) {
-				cmd = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff }
+				cmd = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff, sel }
 				tCmd = {
 					idB: build,
 					idM: vlv.module.on.id,
@@ -65,11 +65,11 @@ export default function Entry({ data = {}, setData, close }) {
 					channel: chOn,
 					time: timeSP,
 					_id: vlv._id,
-					type: 'on',
+					type: 'on', sel
 				}
 			}
 			if (spO < sp) {
-				cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn }
+				cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn, sel }
 				tCmd = {
 					idB: build,
 					idM: vlv.module.off.id,
@@ -77,12 +77,12 @@ export default function Entry({ data = {}, setData, close }) {
 					channel: chOff,
 					time: timeSP,
 					_id: vlv._id,
-					type: 'off',
+					type: 'off', sel
 				}
 			}
 		}
 
-		if (cmd) setO(cmd, off)
+		if (cmd) setO(cmd, off, 'valve', vlv._id)
 		if (tCmd) setT(tCmd)
 		sendTune()
 		close()
