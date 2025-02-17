@@ -134,7 +134,16 @@ function signalB(r, bld, am, data) {
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
-	r.signal[bld._id].sort((a, b) => new Date(a.date) - new Date(b.date))
+
+
+
+	r.signal[bld._id].sort((a, b) => {
+		const [d1, m1, o1] = a.date.split('.')
+		const aa = [m1,d1,o1].join('.')
+		const [d2, m2, o2] = b.date.split('.')
+		const bb = [m2,d2,o2].join('.')
+		return new Date(aa) - new Date(bb)
+	})
 }
 
 // Счетчик аварий на карточке склада (стр. Склады)

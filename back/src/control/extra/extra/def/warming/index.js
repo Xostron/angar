@@ -7,16 +7,13 @@ const { msg } = require('@tool/message')
 function warming(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const cur = +new Date().getTime()
 	const cmd = store?.warming?.[building._id]?.[section._id]
-	const reset = m.reset.filter((el) => el.owner.id == section._id)?.[0]
-
+	const reset = m.reset.filter((el) => el.owner.id == section._id || el.owner.id == building._id)?.[0]
 	if (!reset) return
+	// Отрабатывает только в авторежиме
 	// Нажали на кнопку, Вкл выход сброс аварии и напорные вентиляторы секции на 1 мин.
 	if (cmd && !acc.end) {
 		acc.end = cur + store.tWarming * 1000
-		wrExtra(building._id, section._id, 'warming', {
-			date: new Date(),
-			...msg(building, section, 59),
-		})
+		wrExtra(building._id, section._id, 'warming', msg(building, section, 59))
 	}
 	// Включить выход
 	if (!!acc.end && cur < acc.end) {

@@ -1,5 +1,5 @@
 // Исполнительные механизмы секции
-function mech(data, sId) {
+function mech(data, sId, bldId) {
 	const { valve, fan, heating, signal } = data
 	// Периферия секции: клапаны, вентиляторы, обогрев клапанов
 	const vlvS = valve.filter((el) => el.sectionId.includes(sId))
@@ -11,7 +11,9 @@ function mech(data, sId) {
 	// const heatCo = heating.filter((el) => el?.owner?.id === sId)
 	// Выход "Модуль в работе" для реле безопасности
 	const connect = signal.filter((el) => el.owner.id == sId && el.type == 'connect')
-	const reset = signal.filter((el) => el.owner.id == sId && el.type == 'reset')
+	// Выход сигнала Сброс аварии (создается как в секции, так и для склада)
+	const reset = signal.filter((el) => (el.owner.id == sId || el.owner.id==bldId) && el.type == 'reset')
+	
 	return { vlvS, fanS, fanAux, heatS, connect, reset }
 }
 
