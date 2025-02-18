@@ -43,7 +43,7 @@ const useOutputStore = create((set, get) => ({
 		set({ output })
 		console.log('@@@ setO', { output, type })
 		// отправить на сервер
-		sOutput({ ...output, type, sel: out1?.sel, vlvId })
+		sOutput({ ...output, type, sel: out1?.sel, vlvId, setpoint: out1?.setpoint })
 	},
 	// Команды управления: с таймером
 	setT(out1) {

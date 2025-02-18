@@ -11,8 +11,8 @@ function activityLog(code, obj = {}, reobj = {}, level = 'activity') {
 	readJson(files)
 		.then(([fan, valve, sensor, section, factory, building]) => {
 			const oData = { fan, valve, sensor, section, factory, building }
-			const { title, value, bId, sId, sensId, type, noLog } = def[code] ? def[code](code, obj, reobj, oData) : { title: `code: ${code}` }
-			
+			const { title, value, bId, sId, sensId, type, noLog } = def[code] ? def[code](code, obj, reobj, oData) : { noLog:true }
+			console.log(1111, code, title)
 			if (noLog) return
 			loggerEvent[level]({
 				message: {

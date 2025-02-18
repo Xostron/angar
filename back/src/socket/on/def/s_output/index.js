@@ -4,7 +4,7 @@ const { data, setCmd } = require('@store')
 module.exports = function sOutput(io, socket) {
 	socket.on('s_output', (obj, callback) => {
 		setCmd(obj)
-		console.log(555,'s_output', obj)
+		console.log(99,'s_output', obj)
 	})
 }
 

@@ -57,7 +57,7 @@ export default function Entry({ data = {}, setData, close }) {
 		}
 		if (sel === 'popn') {
 			if (spO > sp) {
-				cmd = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff, sel }
+				cmd = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff, sel, setpoint:spO }
 				tCmd = {
 					idB: build,
 					idM: vlv.module.on.id,
@@ -69,7 +69,7 @@ export default function Entry({ data = {}, setData, close }) {
 				}
 			}
 			if (spO < sp) {
-				cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn, sel }
+				cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn, sel, setpoint:spO }
 				tCmd = {
 					idB: build,
 					idM: vlv.module.off.id,

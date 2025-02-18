@@ -126,25 +126,27 @@ module.exports = {
 	},
 	s_output: (code, obj, reobj, oData) => {
 		const { valve, building, section } = oData
-		const { type, sel } = obj
+		const { type, sel, vlvId, setpoint } = obj
 		if (type !== 'valve') return {}
 		let bld, sec, vlv
+
 		for (const key in obj) {
-			if (['type', 'sel'].includes(key)) continue
+			if (['type', 'sel', 'vlvId', 'setpoint'].includes(key)) continue
 			bld = building.find((el) => el._id == key)
 			if (!bld) continue
-			console.log(888,bld,sec,vlv, Object.keys(obj[key])?.[0])
-			vlv = valve.find((el) => el._id == Object.keys(obj[key])?.[0])
+			vlv = valve.find((el) => el._id == vlvId)
 			if (!vlv) continue
-			sec = section.find((el) => el._id == vlv.sectionId)
+			sec = section.find((el) => vlv.sectionId.includes(el._id))
 			if (!sec) continue
 		}
+
 		if (!bld || !sec || !vlv) return { noLog: true }
 		let title = `${bld.name} ${bld.code}. ${sec.name}. ${vlv.type == 'in' ? 'Приточный клапан: ' : 'Выпускной клапан: '}`
-		if (sel == 'stop') title += 'Остановлен'
-		if (sel == 'iopn') title += 'Открывается'
-		if (sel == 'icls') title += 'Закрывается'
-		if (sel == 'popn') title += 'Открывается на'
-		return {bId: bld._id, sId: sec._id, type: code, title, value:sel}
+		if (sel == 'stop') title += 'ручное управление - Стоп'
+		if (sel == 'iopn') title += 'ручное управление - Открыть'
+		if (sel == 'icls') title += 'ручное управление - Закрыть'
+		if (sel == 'popn') title += `ручное управление - Открыть на ${setpoint}%`
+
+		return { bId: bld._id, sId: sec._id, type: code, title, value: sel }
 	},
 }

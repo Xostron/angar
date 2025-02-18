@@ -16,12 +16,12 @@ module.exports = function middleware(io, socket) {
 		next()
 	})
 	io.use((socket, next) => {
-		console.log(555, 'middleware')
+		// console.log(555, 'middleware')
 		next()
 	})
 	io.use((socket, next) => {
 		const token = socket.handshake.auth.token
-		console.log(555, 'token', token)
+		// console.log(555, 'token', token)
 		next()
 	})
 }
