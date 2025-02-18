@@ -90,6 +90,7 @@ module.exports = {
 			title: `Изменение настройки \"${nameStg}\", продукт \"${namePrd}\": ` + (title.length > 1 ? title.join('; ') : title.join('')),
 		}
 	},
+	// Сброс аварии
 	s_reset: (code, obj, reobj, oData) => {
 		const { building } = oData
 		const bId = obj?.buildingId
@@ -114,6 +115,7 @@ module.exports = {
 		}
 		return title ? { bId, title, type: code } : { noLog: true }
 	},
+	// Прогрев клапанов
 	s_warming: (code, obj, reobj, oData) => {
 		const { buildingId, sectionId, cmd } = obj
 		const { section, building } = oData
@@ -124,6 +126,7 @@ module.exports = {
 			: `${bld.name} ${bld.code}. ${sec.name}: Прогрев клапанов выключен`
 		return { bId: bld._id, sId: sec._id, type: code, title, value: cmd }
 	},
+	// Управление клапаном
 	s_output: (code, obj, reobj, oData) => {
 		const { valve, building, section } = oData
 		const { type, sel, vlvId, setpoint } = obj

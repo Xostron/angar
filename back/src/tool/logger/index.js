@@ -32,11 +32,7 @@ const loggerEvent = createLogger({
 	handleExceptions: false,
 	// Ставим 'silly', чтобы при желании логировать всё подряд
 	// level: 'silly',
-	transports: [
-		hourlyT('alarm'),
-		hourlyT('event'),
-		hourlyT('activity'),
-	],
+	transports: [hourlyT('alarm'), hourlyT('event'), hourlyT('activity')],
 })
 
 const loggerSens = createLogger({
@@ -56,8 +52,9 @@ const loggerWatt = createLogger({
 module.exports = { logger, loggerSens, loggerWatt, loggerEvent }
 
 /**
- * Вышло предупреждение при превышении в логере кол-во регистраторов
- * MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added to [DerivedLogger]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
-(Use `node --trace-warnings ...` to show where the warning was created)
-Разбил на несколько логеров, предупреждение исчезло
+ * Вышло предупреждение превышение в логе кол-во регистраторов
+ * MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
+ * 11 end listeners added to [DerivedLogger]. MaxListeners is 10.
+ * Use emitter.setMaxListeners() to increase limit
+ * Разбил на несколько логеров, предупреждение исчезло
  */

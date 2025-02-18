@@ -1,47 +1,5 @@
-const { logger, loggerSens, loggerWatt, loggerEvent } = require('@tool/logger')
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/command/building')
-
-/**
- * Логирование периферии
- * @param {string[]} section Рама секций
- * @param {object[]} arr данные рамы текущего механизма
- * @param {object} value данные с модулей
- * @param {object} prev хранилище прошлого значения
- * @param {string} level приоритет логирования
- * @returns
- */
-function pLog(data, arr, value, level) {
-	if (!arr?.length) return
-	arr.forEach((el) => {
-		const { _id } = el
-		// Проверка изменения были?
-		if (!check(value?.[_id], store.prev[_id], level)) return
-		// фиксируем состояние по изменению
-		fnPrev(_id, value[_id], level)
-		// Лог
-		// if (level === 'heating') console.log(111)
-		logger[level]({ message: message(data, el, level, value) })
-	})
-}
-
-// Лог непрерывных значений
-function pLogConst(data, arr, value, level) {
-	if (!arr?.length) return
-	arr.forEach((el) => {
-		switch (level) {
-			case 'sensor':
-				loggerSens[level]({ message: message(data, el, level, value) })
-				break
-			case 'watt':
-				loggerWatt['watt']({ message: message(data, el, level, value) })
-				break
-			default:
-				logger['watt']({ message: message(data, el, level, value) })
-				break
-		}
-	})
-}
 
 /**
  * Сохранение изменений
@@ -59,7 +17,7 @@ function fnPrev(id, val, level) {
 	}
 }
 /**
- * Данные для записи в логи
+ * Подготовка данных для записи в логи
  * @param {object} data Рама
  * @param {object} el Элемент рамы
  * @param {string} level Уровень лога (Имя лог файла)
@@ -138,32 +96,7 @@ function check(val, prev, level) {
 	return true
 }
 
-/**
- * Логирование датчиков (по total)
- * hin Влажность продукта max (обычный склад)
- * tprdL Температура продукта (обычный склад)
- * tin температура потолка (холодильный склад)
- * @param {object} total Расчетные данные с анализа (мин,макс датчиков)
- * @param {object[]} building Рама складов
- */
-function sensTotalLog(total, building) {
-	if (!total) return
-	building.forEach((bld) => {
-		const val = total[bld._id]
-		;['hin', 'tprdL', 'tin'].forEach((el) => {
-			const m = checkTyp(el, bld)
-			if (!m) return
-			loggerSens['sensor']({
-				message: {
-					bldId: bld._id,
-					type: el,
-					state: val[el]?.state,
-					value: val[el]?.[m],
-				},
-			})
-		})
-	})
-}
+
 
 function checkTyp(el, bld) {
 	if (el === 'hin') return 'max'
@@ -172,36 +105,6 @@ function checkTyp(el, bld) {
 	return null
 }
 
-/**
- * Логирование информационных сообщений
- * @param {object[]} arr массив текущих сообщений
- * @param {object} prev хранилище прошлого значения
- */
-function historyLog(arr, prev, level) {
-	if (!level) return
-	// Логирование новых событий (value: true)
-	arr.forEach((el) => {
-		const message = { uid: el.uid, bldId: el.buildingId, title: (el.title + ' ' + el.msg).trim(), value: true }
-		// Событие было залогировано - выход
-		if (el.date === prev[el.uid]?.date) return
-		// фиксируем событие как залогированную
-		prev[el.uid] = el
-		loggerEvent[level]({ message })
-	})
 
-	// Логирование ухода аварий (value: false)
-	for (const key in prev) {
-		const r = arr.find((el) => el.uid == key)
-		// авария найдена в списке актуальных - выход
-		if (r) continue
-		// Авария не найдена в актуальных - авария сброшена
-		// (логируем уход аварии, и удаляем из аккумулятора запись об аварии)
-		const o = prev[key]
-		const message = { uid: o.uid, bldId: o.buildingId, title: (o.title + ' ' + o.msg).trim(), value: false }
-		loggerEvent[level]({ message })
-		delete prev[key]
-	}
-	// if (level === 'event') console.log(111, level, Object.keys(prev).length, Object.keys(store.prev.event).length, prev, 2222, arr)
-}
 
-module.exports = { pLog, sensTotalLog, pLogConst, historyLog }
+module.exports = { fnPrev, message, check, checkTyp}

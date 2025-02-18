@@ -1,24 +1,10 @@
-const { pLogConst, pLog, historyLog, sensTotalLog} = require('./fn')
-const { data: store } = require('@store')
+const {sensTotalLog, pLogConst} = require('./sensor')
+const historyLog = require('./history')
+const pLog = require('./periph')
 const { delay } = require('@tool/command/time')
+const { data: store } = require('@store')
 const { readTO } = require('@tool/json')
 
-/**
- * Статистика датчиков - отдельный цикл
- */
-async function statOnTime() {
-	while (true) {
-		// Задержка
-		await delay(store.tStat)
-		// await delay(5000)
-		const data = await readTO(['building', 'section', 'sensor'])
-		// Датчики (Total после анализа)
-		sensTotalLog(store?.value?.total, data.building)
-		// Лог по всем датчикам
-		pLogConst(data, data.sensor, store.value, 'sensor')
-		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
-	}
-}
 
 /**
  * Статистика - сбор данных по изменению в главном цикле
@@ -45,6 +31,23 @@ function statOnChange(obj, alr) {
 	historyLog(critical, store.prev.critical, 'alarm')
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event')
+}
+
+/**
+ * Статистика датчиков - отдельный цикл
+ */
+async function statOnTime() {
+	while (true) {
+		// Задержка
+		await delay(store.tStat)
+		// await delay(5000)
+		const data = await readTO(['building', 'section', 'sensor'])
+		// Датчики (Total после анализа)
+		sensTotalLog(store?.value?.total, data.building)
+		// Лог по всем датчикам
+		pLogConst(data, data.sensor, store.value, 'sensor')
+		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
+	}
 }
 
 /**
