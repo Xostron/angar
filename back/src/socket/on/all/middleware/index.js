@@ -1,4 +1,4 @@
-const activityLog = require('@root/stat/activity')
+const {webLog} = require('@root/stat/activity')
 
 /**
  * Middleware - это функция, которая выполняется при каждом соединении и обращении клиента
@@ -11,7 +11,7 @@ module.exports = function middleware(io, socket) {
 	// Логирование действий пользователя
 	socket.use((data, next) => {
 		const [code, obj] = data
-		activityLog(code, obj)
+		webLog(code, obj)
 		next()
 	})
 	// При подключении нового клиента

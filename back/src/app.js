@@ -7,7 +7,7 @@ var logger = require('morgan');
 const cors = require('cors');
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
-
+const activityMiddlew = require('./middleware/activity')
 const passport = require('passport');
 const passportJwt = require('passport-jwt');
 const JwtStrategy = passportJwt.Strategy;
@@ -50,6 +50,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use(activityMiddlew)
 app.use('/api', apiRouter());
 
 // catch 404 and forward to error handler

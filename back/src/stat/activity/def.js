@@ -1,15 +1,19 @@
 const mes = require('@dict/message')
-const { conv } = require('@tool/conv')
+const reset = require('./reset')
+const start = require('./start')
+const automode = require('./automode')
+const product = require('./product')
 
 module.exports = {
+	// Web клиент
 	// Пуск склада
-	s_start: (code, obj, reobj, oData) => ({ title: obj.val ? mes[500].msg : mes[501].msg, value: obj.val, type: code }),
+	s_start: start,
 	// Смена авторежима
-	s_auto_mode: (code, obj, reobj, oData) => ({ title: mes[502].msg + ` (${conv('automode', obj.val, 0)})`, value: obj.val, type: code }),
+	s_auto_mode: automode,
 	// Смена продукта
-	s_product: (code, obj, reobj, oData) => ({ title: mes[503].msg + ` (${obj.name})`, value: obj.code, type: code }),
+	s_product: product,
 	// Управление вентилятором
-	s_fan: (code, obj, reobj, oData) => {
+	s_fan: (code, obj, oData) => {
 		const { fan } = oData
 		const f = fan.find((el) => el._id == obj.fanId)
 		if (obj.action === 'run') return { title: mes[510](f.name), value: obj.action, type: code }
@@ -18,7 +22,7 @@ module.exports = {
 		return { title: `obj.action ${obj.action}` }
 	},
 	// Смена режимов секции
-	s_mode: (code, obj, reobj, oData) => {
+	s_mode: (code, obj, oData) => {
 		const { section } = oData
 		const bId = Object.keys(obj)[0]
 		const sId = Object.keys(obj[bId])[0]
@@ -38,7 +42,7 @@ module.exports = {
 		}
 	},
 	// Настройки датчиков
-	s_sens: (code, obj, reobj, oData) => {
+	s_sens: (code, obj, oData) => {
 		const { sensor } = oData
 		const bId = Object.keys(obj)[0]
 		let title = []
@@ -67,7 +71,7 @@ module.exports = {
 		}
 	},
 	// Настройки авторежимов
-	s_setting_au: (code, obj, reobj, oData) => {
+	s_setting_au: (code, obj, oData) => {
 		const { factory } = oData
 		stgCode = obj.code
 		prdCode = obj.prdCode
@@ -91,15 +95,9 @@ module.exports = {
 		}
 	},
 	// Сброс аварии
-	s_reset: (code, obj, reobj, oData) => {
-		const { building } = oData
-		const bId = obj?.buildingId
-		const bld = building.find((el) => el._id == bId)
-		// console.log(111, { bId, type: 'reset', title: `${bld.name} ${bld.code}: Сброс аварии` })
-		return { bId, type: code, title: `${bld.name} ${bld.code}: Сброс аварии` }
-	},
+	s_reset: reset,
 	// Калибровка клапанов
-	s_tune: (code, obj, reobj, oData) => {
+	s_tune: (code, obj, oData) => {
 		const { section, building } = oData
 		let title, bId
 		for (const vId in obj) {
@@ -116,7 +114,7 @@ module.exports = {
 		return title ? { bId, title, type: code } : { noLog: true }
 	},
 	// Прогрев клапанов
-	s_warming: (code, obj, reobj, oData) => {
+	s_warming: (code, obj, oData) => {
 		const { buildingId, sectionId, cmd } = obj
 		const { section, building } = oData
 		const bld = building.find((el) => el._id == buildingId)
@@ -127,10 +125,10 @@ module.exports = {
 		return { bId: bld._id, sId: sec._id, type: code, title, value: cmd }
 	},
 	// Управление клапаном
-	s_output: (code, obj, reobj, oData) => {
+	s_output: (code, obj, oData) => {
 		const { valve, building, section } = oData
 		const { type, sel, vlvId, setpoint } = obj
-		if (type !== 'valve') return {}
+		if (type !== 'valve') return { noLog: true }
 		let bld, sec, vlv
 
 		for (const key in obj) {
@@ -152,4 +150,10 @@ module.exports = {
 
 		return { bId: bld._id, sId: sec._id, type: code, title, value: sel }
 	},
+
+	// Мобильный клиент
+	reset,
+	start,
+	automode,
+	product,
 }
