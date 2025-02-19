@@ -1,17 +1,56 @@
 const { loggerEvent } = require('@tool/logger')
 const readJson = require('@tool/json').read
 const def = require('./def')
+const path = require('path')
 
-function activity(code, obj) {
+
+/**
+ * Логирование действий пользователя: web
+ * @param {*} code код события websocket
+ * @param {*} o данные от клиента
+ * @returns
+ */
+function webLog(code, o = {}) {
+	// Если нет данных от клиента - выход
+	if (!Object.keys(o).length || !code) return
+	activity(code, o)
+}
+
+/**
+ * Логирование действий пользователя: mobile
+ * @param {*} req
+ * @returns
+ */
+function mobileLog(req) {
+	const code = req.headers?.code
 	if (!def[code]) return
-	const { _id, buildingId, sectionId, clientId, cliName, fanId } = obj
+	const o = {
+		val: req.body?.value,
+		buildingId: req.body?.buildingId,
+		sectionId: req.body?.sectionId,
+		fanId: req.body?.fanId,
+		cliName: req.headers?.cliname,
+		clientId: req.headers?.clientid,
+		obj: req.body?.obj,
+		code: req.body?.code,
+		product: req.body?.product,
+		vlvId: req.body?.valveId,
+		setpoint: req.body?.sp,
+	}
+	activity(code, o)
+}
 
-	readJson(['fan', 'valve', 'sensor', 'section', 'factory', 'building'])
-		.then(([fan, valve, sensor, section, factory, building]) => {
+
+function activity(code, o) {
+	if (!def[code]) return
+	const { _id, buildingId, sectionId, clientId, cliName, fanId } = o
+	const _retain = path.join('retain', 'data.json')
+	readJson(['fan', 'valve', 'sensor', 'section', 'factory', 'building', _retain])
+		.then(([fan, valve, sensor, section, factory, building, retain]) => {
 			// Рама pc
-			const oData = { fan, valve, sensor, section, factory, building }
+			const oData = { fan, valve, sensor, section, factory, building, retain }
 			// Подготовка данных для лога
-			const { title, value, bId, sId, sensId, type, noLog } = def[code](code, obj, oData)
+			const { title, value, bId, sId, sensId, type, noLog } = def[code](code, o, oData)
 			// Блокировка лога
 			if (noLog) return
 			loggerEvent['activity']({
@@ -28,36 +67,6 @@ function activity(code, obj) {
 			})
 		})
 		.catch(console.log)
-}
-
-/**
- * Логирование действий пользователя: web
- * @param {*} code код события websocket
- * @param {*} obj данные от клиента
- * @returns
- */
-function webLog(code, obj = {}) {
-	// Если нет данных от клиента - выход
-	if (!Object.keys(obj).length || !code) return
-	activity(code, obj)
-}
-
-/**
- * Логирование действий пользователя: mobile
- * @param {*} req
- * @returns
- */
-function mobileLog(req) {
-	const code = req.headers?.code
-	console.log(111, code, req.body)
-	if (!def[code]) return
-	const obj = {
-		val: req.body?.value,
-		buildingId: req.body?.buildingId,
-		cliName: req.headers?.cliname,
-		clientId: req.headers?.clientid,
-	}
-	activity(code, obj)
 }
 
 module.exports = { webLog, mobileLog }

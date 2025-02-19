@@ -2,7 +2,6 @@ const mes = require('@dict/message')
 
 module.exports = (code, obj, oData) => {
 	const { building } = oData
-	console.log(222, obj)
 	const bId = obj.buildingId
 	const bld = building.find((el) => el._id == bId)
 	// web
