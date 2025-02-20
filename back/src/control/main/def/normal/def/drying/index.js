@@ -16,20 +16,16 @@ const data = {
 	middlew,
 }
 
-function middlew(building, section, s, se, seB, alr, acc) {
+function middlew(building, section, obj, s, se, seB, alr, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = se
 
 	// TODO: Как реагировать при обвале датчиков? Отключено
-	// if (
-	// 	typeof tprd !== 'number' ||
-	// 	typeof tcnl !== 'number' ||
-	// 	typeof tout !== 'number' ||
-	// 	typeof hout !== 'number' ||
-	// 	typeof hAbsOut !== 'number' ||
-	// 	typeof hAbsIn !== 'number'
-	// ) {
+	// if (tout === null || hout === null) {
+	// 	acc.alarm = true
 	// 	return
 	// }
+	// acc.alarm = false
+
 
 	// ************************************************
 	if (tout < s.drying.channelMin) {

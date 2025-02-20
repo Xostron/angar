@@ -19,7 +19,7 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 
 	//********** Логика авто **********
 	// Пользовательские расчеты
-	if (def[am]?.middlew) def[am]?.middlew(building, sect, s, se, seB, alr, acc)
+	if (def[am]?.middlew) def[am]?.middlew(building, sect, obj, s, se, seB, alr, acc)
 
 	// Клапан
 	const v = def[am].valve(s, se, sect._id, acc)

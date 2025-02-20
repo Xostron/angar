@@ -20,7 +20,7 @@ const data = {
 	middlew,
 }
 
-function middlew(building, section, s, se, seB, alr, acc) {
+function middlew(building, section, obj, s, se, seB, alr, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = se
 	// TODO: Как реагировать при обвале датчиков?
 	if (tout === null || hout === null) {
@@ -28,36 +28,14 @@ function middlew(building, section, s, se, seB, alr, acc) {
 		return
 	}
 	acc.alarm = false
-
+	// console.log(1111, section.name, Object.keys(acc.setting ?? {}))
 	// Вычисление подрежима
-	target(s, se, seB, alr, acc)
-	// Вычисление подрежима
-	submode(s, se, seB, alr, acc)
+	submode(building, section, obj, s, se, seB, alr, acc)
+	// Вычисления
 
-	// Настройки авто в зависимости от подрежима
-
-	// Температура задания канала
-	acc.tcnl = seB.tprd - s.cooling.differenceValue
-	if (acc.tcnl < s.cooling.minChannel) acc.tcnl = s.cooling.minChannel
-
-	// Продукт достиг температуры задания*****************************************
-	// В режиме лечения - Продукт достиг не активен
-	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
-		acc.finish = true
-		wrAchieve(building._id, 'cooling', msgB(building, 15))
-	}
-	// Сброс: 1)   2)если перещли в подрежим лечения
-	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
-		acc.finish = false
-		delAchieve(building._id, 'cooling', mes[15].code)
-	}
-
-	// ********************************************************
-
-	wrAchieve(building._id, 'cooling', {
-		...msgB(building, 150),
-		msg: `t задания канала = ${acc.tcnl.toFixed(1)} °С, t задания продукта = ${acc.tgt.toFixed(1)} °С`,
-	})
+	target(building, section, obj, s, se, seB, alr, acc)
+	// Сообщения
+	message(building, section, obj, s, se, seB, alr, acc)
 }
 
 function valve(s, se, sectionId, acc) {
@@ -73,98 +51,97 @@ function fan(s, se, alr, sectionId, acc) {
 }
 
 // Определение подрежима
-function submode(s, se, seB, alr, acc) {
-	acc.setting = {}
-	// Подрежимы
-	// Доп. Охлаждение 2
-	if (acc.tgt + s.mois.max <= seB.tprd || acc?.submode?.[0] === sm?.cooling2?.[0]) {
-		// Сброс
-		if (acc.tgt + s.mois.max - s.cooling.hysteresisIn > seB.tprd) {
-			acc.submode = null
-			acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 } }
-			return
-		}
+function submode(building, section, obj, s, se, seB, alr, acc) {
+	// ========= Доп. Охлаждение 2 =========
+	// Минимальная температура продукта (ограничение по температуре задания)
+	acc.tprdMin = obj.retain?.[building._id]?.cooling?.tprdMin ?? null
+
+	// acc.setting = {}
+	console.log(11, acc.tprdMin, s.mois.max)
+	console.log(22, s.cooling.hysteresisIn, seB.tprd)
+	console.log(33, s.mois.humidity, s.cure.hysteresisJump)
+	console.log(44, seB.hin, acc.setting?.cooling?.differenceValue)
+	// console.log(55, acc.setting)
+	const x2 = acc.tprdMin + s.mois.max
+	// set
+	if (x2 <= seB.tprd && acc?.submode?.[0] === sm?.cooling?.[0]) {
 		acc.submode = sm.cooling2
 		acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 } }
-		return
 	}
-	// Лечение
-	if (seB.hin >= s.mois.humidity) {
+	// reset
+	if (x2 - s.cooling.hysteresisIn > seB.tprd && acc?.submode?.[0] === sm?.cooling2?.[0]) {
+		acc.submode = sm.cooling
+	}
+	// check
+	if (acc?.submode?.[0] === sm?.cooling2?.[0]) return
+
+	// ========= Лечение =========
+	// set
+	if (s.mois.humidity + s.cure.hysteresisJump < seB.hin && acc?.submode?.[0] === sm?.cooling?.[0]) {
 		acc.submode = sm.cure
 		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
-		return
 	}
-	// Охлаждение
-	if (seB.hin - s.mois.hysteresisRel < s.mois.humidity) acc.submode = sm.cooling
+	// reset
+	if (s.mois.humidity > seB.hin && acc?.submode?.[0] === sm?.cure?.[0]) {
+		acc.submode = sm.cooling
+	}
+	// Дополнительно
+	if (seB.tprd + 0.2 <= acc.tgt && acc?.submode?.[0] === sm?.cure?.[0]) acc.setting.cooling.differenceValue = 0
+	else if (seB.tprd > acc.tgt && acc?.submode?.[0] === sm?.cure?.[0]) acc.setting.cooling.differenceValue = s.cure.differenceValue
+	// check
+	if (acc?.submode?.[0] === sm?.cure?.[0]) return
+
+	// =========Охлаждение - по умолчанию =========
+	acc.submode = sm.cooling
 	acc.setting = { cooling: s.cooling, mois: s.mois }
+	console.log(1111, acc.submode)
 }
 
-function target(s, se, seB, alr, acc) {
+function target(building, section, obj, s, se, seB, alr, acc) {
+	// Температура задания канала
+	acc.tcnl = seB.tprd - acc.setting.cooling.differenceValue
+	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
+
 	// Задание на сутки
 	// Момент запуска режима - Температура задания продукта
-	if (!acc?.tgt) {
-		acc.tgt = seB.tprd - s.cooling.decrease
-		if (acc.tgt < s.cooling.target) acc.tgt = s.cooling.target
+	if (acc?.tgt === undefined) {
+		acc.tgt = seB.tprd - acc.setting.cooling.decrease
+		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 	}
 	// Пересчет в полночь
 	if (new Date().getHours() == 0 && !acc.mdnt) {
 		acc.mdnt = true
-		acc.tgt = acc.tgt - s.cooling.decrease
-		if (seB.tprd - s.cooling.max > acc.tgt) acc.tgt = seB.tprd - s.cooling.max
-		if (acc.tgt < s.cooling.target) acc.tgt = s.cooling.target
+		acc.tgt = acc.tgt - acc.setting.cooling.decrease
+		if (seB.tprd - acc.setting.cooling.max > acc.tgt) acc.tgt = seB.tprd - acc.setting.cooling.max
+		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 	}
 	if (new Date().getHours() != 0) acc.mdnt = false
+
+	// Фиксация минимальной температуры продукта (ограничение по температуре задания)
+	acc.tprdMin = seB.tprd < acc.tprdMin ? seB.tprd : acc.tprdMin
+	acc.tprdMin = acc.tprdMin < acc.tgt ? acc.tgt : acc.tprdMin
+
+	// console.log(2222, acc.tprdMin)
+}
+
+function message(building, section, obj, s, se, seB, alr, acc) {
+	// Продукт достиг температуры задания*****************************************
+	// В режиме лечения - Продукт достиг не активен
+	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
+		acc.finish = true
+		wrAchieve(building._id, 'cooling', msgB(building, 15))
+	}
+
+	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
+	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
+		acc.finish = false
+		delAchieve(building._id, 'cooling', mes[15].code)
+	}
+
+	wrAchieve(building._id, 'cooling', {
+		...msgB(building, 150),
+		msg: `t задания канала = ${acc.tcnl.toFixed(1)} °С, t задания продукта = ${acc.tgt.toFixed(1)} °С`,
+	})
 }
 
 module.exports = data
-
-// cure
-// {
-// 	differenceMin: 1,
-// 	differenceValue: 3,
-// 	hysteresisOut: 1,
-// 	hysteresisIn: 0.3,
-// 	differenceMax: 25,
-// 	min: -10,
-// 	prd: 'onion'
-//   }
-
-// cooling
-// {
-// 	decrease: 3,
-// 	target: 9,
-// 	differenceMin: 2,
-// 	minChannel: 2,
-// 	differenceMax: 25,
-// 	max: 2,
-// 	differenceValue: 2,
-// 	hysteresisIn: 0.3,
-// 	minOut: -10,
-// 	hysteresisOut: 1,
-// 	prd: 'onion'
-//   }
-
-// mois
-// {
-// 	outMax: 80,
-// 	outMin: 10,
-// 	humidity: 80,
-// 	differenceMin: 0,
-// 	differenceMax: 10,
-// 	max: 1,
-// 	hysteresisRel: 2.5,
-// 	hysteresisAbs: 1,
-// 	prd: 'onion'
-//   }
-
-// {
-// 	tout: -8.7,
-// 	hout: 0,
-// 	hAbsOut: 0,
-// 	tin: 13,
-// 	hin: 11.5,
-// 	hAbsIn: 5.1,
-// 	tprd: 10.7,
-// 	tcnl: 11.3,
-// 	cooler: { tprd: 10.7, co2: null, clr: null }
-//   }

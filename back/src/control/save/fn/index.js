@@ -1,5 +1,5 @@
-const { data: store, setPos, setTuneTime, setTick } = require("@store")
-const { stateV } = require("@tool/command/valve")
+const { data: store, setPos, setTuneTime, setTick } = require('@store')
+const { stateV } = require('@tool/command/valve')
 
 // Прогресс открытия/закрытия клапана (сохранение в retain)
 function positionVlv(obj) {
@@ -10,12 +10,7 @@ function positionVlv(obj) {
 		const buildingId = output[idOn].buildingId
 		const section = data.section.find((s) => vlv.sectionId.includes(s._id))
 		const total = retain?.[section?.buildingId]?.valve?.[vlv._id]
-		const state = stateV(
-			vlv._id,
-			value,
-			section?.buildingId,
-			vlv.sectionId[0]
-		)
+		const state = stateV(vlv._id, value, section?.buildingId, vlv.sectionId[0])
 		// Текущее положение клапана из retain
 		let vlvPos
 		for (const build in retain) {
@@ -24,7 +19,7 @@ function positionVlv(obj) {
 		}
 
 		// открывается
-		if (state === "iopn") {
+		if (state === 'iopn') {
 			const cur = vlvPos?.[buildingId][vlv._id] + store._cycle_ms_
 			// ограничение диапазона хода
 			const value = cur > total ? total : cur
@@ -33,7 +28,7 @@ function positionVlv(obj) {
 		}
 
 		// закрывается
-		if (state === "icls") {
+		if (state === 'icls') {
 			const cur = vlvPos?.[buildingId]?.[vlv?._id] - store._cycle_ms_
 			// ограничение диапазона хода
 			const value = cur < 0 ? 0 : cur
@@ -41,11 +36,9 @@ function positionVlv(obj) {
 		}
 
 		// Открыт
-		if (state === "opn")
-			setPos({ _id: vlv._id, _build: buildingId, value: total })
+		if (state === 'opn') setPos({ _id: vlv._id, _build: buildingId, value: total })
 		// Закрыт
-		if (state === "cls")
-			setPos({ _id: vlv._id, _build: buildingId, value: 0 })
+		if (state === 'cls') setPos({ _id: vlv._id, _build: buildingId, value: 0 })
 	})
 }
 
@@ -75,7 +68,7 @@ function cbTune(obj, data) {
 	for (const build in obj) {
 		result[build] = {
 			...result[build],
-			valve: { ...result?.[build]?.["valve"], ...obj[build] },
+			valve: { ...result?.[build]?.['valve'], ...obj[build] },
 		}
 	}
 	setTuneTime(null)
@@ -92,7 +85,7 @@ function cbSupply(obj, data) {
 	for (const build in obj) {
 		result[build] = {
 			...result[build],
-			supply: { ...result?.[build]?.["supply"], ...obj[build] },
+			supply: { ...result?.[build]?.['supply'], ...obj[build] },
 		}
 	}
 	return result
@@ -136,11 +129,11 @@ function check(obj, build, result) {
 function cbAcc(obj, data) {
 	// Проход по ключам аккумулятора (extralrm, extra, timer, auto ...)
 	for (const key in obj) {
-		if (key==='achieve') continue
+		if (key === 'achieve') continue
 		// Запись пересечений obj c data
 		all(obj[key], data[key])
 	}
-	const newO = {...obj}
+	const newO = { ...obj }
 	delete newO?.achieve
 	// delete obj?.achieve
 	return newO
@@ -156,12 +149,12 @@ function cbAcc(obj, data) {
  * @param {*} key предыдущий ключ
  * @returns
  */
-function all(obj={}, data={}, prev, key) {
+function all(obj = {}, data = {}, prev, key) {
 	const keys = Object.keys(obj)
 	for (const k of keys) {
 		// Ключ есть в файле (пересечение obj c data)
 		if (k in data) {
-			if (typeof obj[k] !== "object") {
+			if (typeof obj[k] !== 'object') {
 				// console.log(555, key, prev, data)
 				prev[key] = data
 				return
@@ -172,5 +165,21 @@ function all(obj={}, data={}, prev, key) {
 	}
 }
 
+/**
+ * Мин температура продукта в режиме хранения
+ * Сброс в null, если авторежим != хранению
+ * @param {*} acc данные на сохранение
+ * @param {*} data данные из файла
+ * @returns
+ */
+function cbTprd(acc, data) {
+	const result = data ? data : {}
+	for (const bldId in acc) {
+		result[bldId].cooling ??= {}
+		result[bldId].cooling.tprdMin = result[bldId].automode === 'cooling' ? acc?.[bldId]?.cooling?.tprdMin ?? null : null
+	}
+	// setPos(null)
+	return result
+}
 
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc }
+module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbTprd }

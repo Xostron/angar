@@ -1,6 +1,5 @@
 const { logger, loggerSens, loggerWatt } = require('@tool/logger')
-const {message, checkTyp} = require('../fn')
-
+const { message, checkTyp } = require('../fn')
 
 /**
  * Логирование датчиков (по total)
@@ -17,10 +16,11 @@ function sensTotalLog(total, building) {
 		;['hin', 'tprdL', 'tin'].forEach((el) => {
 			const m = checkTyp(el, bld)
 			if (!m) return
+			const type = ['hin', 'tin'].includes(el) ? el+'L' : el
 			loggerSens['sensor']({
 				message: {
 					bldId: bld._id,
-					type: el,
+					type,
 					state: val[el]?.state,
 					value: val[el]?.[m],
 				},
