@@ -12,17 +12,7 @@
 	grid-area: 1 / 7 / 1 / 7;
 	justify-content: flex-end;
 }
-/* .list-signal {
-	display: grid;
-	grid-area: 2/2/2/7;
-	height: calc(100vh - clamp(13.75rem, 4.5036rem + 10.8303vw, 17.5rem));
-	grid-template-columns: 30% calc(70% - var(--fsz24));
-	grid-column-gap: var(--fsz10);
-	grid-row-gap: var(--fsz10);
-	overflow: scroll;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-} */
+
 
 .s-reset {
 	grid-area: 3/4/3/5;
@@ -35,7 +25,6 @@
 	font-family: Q-Medium;
 }
 .s-reset > span {
-	/* background-color: aqua; */
 	white-space: nowrap;
 }
 .s-reset img {
