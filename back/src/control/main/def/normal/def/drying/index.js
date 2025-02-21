@@ -80,9 +80,9 @@ function fan(s, se, alr) {
 	// сообщение: "Температура канала "
 	const start = s.drying.ventilation || forceRun || !alr
 	// console.log(
-	// 	2222, 'roma',
-	//	`Вентиляторы в работе = ${start} |`,
-	//	`Нет аварий ${!alr}, force ${force}, Вент всегда в работе) ${s.drying.ventilation}`
+	// 	2222,
+	// 	`Вентиляторы в работе = ${start} |`,
+	// 	`Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе) ${s.drying.ventilation}`
 	// )
 	return { start }
 }

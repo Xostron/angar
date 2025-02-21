@@ -31,6 +31,10 @@ export default function Other({ data = {}, buildId, sect, cls }) {
 	if (!valve) cl.push('vf-evenly')
 	cl = cl.join(' ')
 
+	let clFan = [cls]
+	stateF === 'run' ? clFan.push('a-run') : null
+	clFan = clFan.join(' ')
+
 	return (
 		<div className={cl}>
 			{imgH && <img className={cls} src={imgH} alt='' />}
@@ -40,7 +44,7 @@ export default function Other({ data = {}, buildId, sect, cls }) {
 					<span>{spVin} %</span>
 				</>
 			)}
-			{imgF && <img className={cls} src={imgF} alt='' />}
+			{imgF && <img className={clFan} src={imgF} alt='' />}
 			{imgVout && (
 				<>
 					<span>{spVout} %</span>
