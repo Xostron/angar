@@ -30,7 +30,9 @@ export function sensList(build, section, sections, sect) {
 			bldSens.forEach((el) => (build?.[el]?.length ? data.push(...build?.[el]) : null))
 			break
 		case 'pui':
-			data = sections.flatMap((el) => el.device?.filter((d) => d?.device?.code === 'pui').map((d) => ({ _id: d._id, sectName: el.name }))).filter(el=>el)
+			data = sections
+				.flatMap((el) => el.device?.filter((d) => d?.device?.code === 'pui').map((d) => ({ _id: d._id, sectName: el.name })))
+				.filter((el) => el)
 			break
 		default:
 			sectSens.forEach((el) => (section?.[el]?.length ? data.push(...section?.[el]) : null))
