@@ -54,13 +54,14 @@ function fan(s, se, alr, sectionId, acc) {
 function submode(building, section, obj, s, se, seB, alr, acc) {
 	// ========= Доп. Охлаждение 2 =========
 	// Минимальная температура продукта (ограничение по температуре задания)
+	// console.log(2222,'submode', acc.tprdMin)
 	acc.tprdMin = obj.retain?.[building._id]?.cooling?.tprdMin ?? null
 
 	// acc.setting = {}
 	console.log(11, acc.tprdMin, s.mois.max)
-	console.log(22, s.cooling.hysteresisIn, seB.tprd)
-	console.log(33, s.mois.humidity, s.cure.hysteresisJump)
-	console.log(44, seB.hin, acc.setting?.cooling?.differenceValue)
+	// console.log(22, s.cooling.hysteresisIn, seB.tprd)
+	// console.log(33, s.mois.humidity, s.cure.hysteresisJump)
+	// console.log(44, seB.hin, acc.setting?.cooling?.differenceValue)
 	// console.log(55, acc.setting)
 	const x2 = acc.tprdMin + s.mois.max
 	// set
@@ -94,7 +95,7 @@ function submode(building, section, obj, s, se, seB, alr, acc) {
 	// =========Охлаждение - по умолчанию =========
 	acc.submode = sm.cooling
 	acc.setting = { cooling: s.cooling, mois: s.mois }
-	console.log(1111, acc.submode)
+	// console.log(1111, acc.submode)
 }
 
 function target(building, section, obj, s, se, seB, alr, acc) {
@@ -118,10 +119,13 @@ function target(building, section, obj, s, se, seB, alr, acc) {
 	if (new Date().getHours() != 0) acc.mdnt = false
 
 	// Фиксация минимальной температуры продукта (ограничение по температуре задания)
+	// console.log(2223,'target', acc.tprdMin)
+	acc.tprdMin = acc.tprdMin === null ? seB.tprd : acc.tprdMin
+	// console.log(2223, acc.tprdMin)
 	acc.tprdMin = seB.tprd < acc.tprdMin ? seB.tprd : acc.tprdMin
+	// console.log(2223, acc.tprdMin)
 	acc.tprdMin = acc.tprdMin < acc.tgt ? acc.tgt : acc.tprdMin
-
-	// console.log(2222, acc.tprdMin)
+	console.log(2222, acc.tprdMin)
 }
 
 function message(building, section, obj, s, se, seB, alr, acc) {
