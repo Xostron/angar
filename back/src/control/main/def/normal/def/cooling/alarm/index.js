@@ -4,7 +4,7 @@ const { data: store } = require('@store')
 function alarm(s, seB, building, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
 	// console.log(444, acc?.setting)
-	if (!Object.keys(acc?.setting??{}).length) return null
+	if (!Object.keys(acc?.setting ?? {}).length) return null
 	return [
 		// Абсолютная влажность улицы ниже допустимой при охлаждении
 		{

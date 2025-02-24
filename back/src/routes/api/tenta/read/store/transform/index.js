@@ -30,11 +30,11 @@ async function transform(idB, secId) {
 		]
 		const [sensor, fan, heating, valve, section, building] = await Promise.all(p)
 		// Тип склада
-		const type = building?.find(el=>el._id === idB)?.type
+		const type = building?.find((el) => el._id === idB)?.type
 		// Поиск разгонного вентилятора, принадлежащего зданию
 		let idsS = getId(section, idB)
 		let f = fan.filter((el) => idsS.includes(el.owner.id) && el.type === 'accel')
-		f = f.some((el) => data?.[el?._id]?.state === 'run') ?'run' : 'stop'
+		f = f.some((el) => data?.[el?._id]?.state === 'run') ? 'run' : 'stop'
 		// Формируем объект с результатами для склада
 		let result = {
 			// Погода
@@ -45,14 +45,14 @@ async function transform(idB, secId) {
 			// Продукт, хранящийся в складе
 			product: bldData?.product?.code ?? null,
 			// Режим склада
-			mode: bldData?.automode ?? null,
+			mode: store.value?.building?.[idB]?.submode?.[0] ?? bldData?.automode ?? null,
 			// Сообщение авторежима
 			note: data.alarm?.achieve?.[idB] ?? null,
-			crash:data.alarm?.count?.[idB] ?? 0,
-			alarm: alarm(idB, null, data)?? null, 
-			banner: banner(idB, data)?? null,
+			crash: data.alarm?.count?.[idB] ?? 0,
+			alarm: alarm(idB, null, data) ?? null,
+			banner: banner(idB, data) ?? null,
 			//Краткая информация по секциям
-			sections: sections(idB, section, data, {heating, valve, fan}) ?? null,
+			sections: sections(idB, section, data, { heating, valve, fan }) ?? null,
 			value: {
 				// Разгонный вентилятор склада
 				fan: f,
@@ -71,29 +71,28 @@ async function transform(idB, secId) {
 					value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined,
 					state: data?.total?.[idB]?.hin?.state,
 				},
-			}
+			},
 		}
-		if(type !== 'cold') {
+		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы
-			result.value.ah = { value: data?.humAbs?.out, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }	
+			result.value.ah = { value: data?.humAbs?.out, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
 			// Температура улицы (мин)
 			result.value.temp = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
 			// Влажность улицы (макс)
 			result.value.rh = { value: data?.total?.hout?.max?.toFixed(1) ?? undefined, state: data?.total?.hout?.state }
 		}
-		
+
 		// Если указан secId, обрабатываем полную информацию по секции
 		if (secId && secId !== 'undefined') {
 			// Объединяем результаты с полными данными по секции
-			const o = {data, heating, sensor, fan, valve}
-			if(secDef[type]) await secDef[type](result, secId, idB, o)
+			const o = { data, heating, sensor, fan, valve }
+			if (secDef[type]) await secDef[type](result, secId, idB, o)
 		}
 		// Возвращаем результаты трансформации для Виктора
 		return result
-
 	} catch (error) {
 		// В случае ошибки возвращаем её
-		console.log(error);
+		console.log(error)
 		return error
 	}
 }

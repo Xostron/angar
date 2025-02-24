@@ -1,5 +1,5 @@
 const { checkS } = require('@tool/command/sensor')
-const {data:store} = require('@store')
+const { data: store } = require('@store')
 
 // Данные по pc
 function transform(data, building) {
@@ -15,18 +15,17 @@ function transform(data, building) {
 		ah: { value: data?.humAbs?.out, state: checkS(tout?.state, hout?.state) },
 	}
 	const retain = data.retain
-	if(!retain || !Object?.keys(retain).length) return result
+	if (!retain || !Object?.keys(retain).length) return result
 	// По складам
 	Object?.keys(retain).forEach((idB) => {
 		// TODO:rrp  Надо проверить почему undefined записан как строка
-		if(!idB || idB === 'undefined') return
+		if (!idB || idB === 'undefined') return
 		// Тип склада
-		const type = building?.find(el=>el._id === idB)?.type
+		const type = building?.find((el) => el._id === idB)?.type
 		const timer = Object.values(data?.alarm?.timer?.[idB] ?? {}).map((el) => ({ code: el?.type, msg: el?.msg }))
 		const obj = {
 			product: retain?.[idB]?.product?.code ?? null,
-			mode: retain?.[idB]?.automode ?? null,
-			submode: store.value?.building?.[idB]?.submode[1],
+			mode: store.value?.building?.[idB]?.submode?.[0] ?? retain?.[idB]?.automode ?? null,
 			on: retain?.[idB]?.start ?? null,
 			// Влажность продукта (hin)
 			rh: { value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined, state: data?.total?.[idB]?.hin?.state },
@@ -40,12 +39,12 @@ function transform(data, building) {
 					const alr = data?.alarm?.barB?.[idB]?.[k]?.[0]
 					return alr ? { code: k, msg: alr?.msg } : null
 				})
-				.filter((el) => !!el),			
+				.filter((el) => !!el),
 		}
 
 		obj.alarm.push(...timer)
 		// GVM Данные для холодильника
-		if(type === 'cold') {
+		if (type === 'cold') {
 			// Удаляем не нужные ключи для Холодильника
 			delete result.temp
 			delete result.rh

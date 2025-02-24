@@ -12,8 +12,8 @@ function bar(r, bld, sect, am, start) {
 	// Боковая панель аварий для секции
 	// const d = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed ?? null
-	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
 	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
+	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
 	const tout1 = store.alarm.auto?.[bld._id]?.[am]?.tout1 ?? null
 	const tout2 = store.alarm.auto?.[bld._id]?.[am]?.tout2 ?? null
 	const tout3 = store.alarm.auto?.[bld._id]?.[am]?.tout3 ?? null
@@ -135,13 +135,11 @@ function signalB(r, bld, am, data) {
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
 
-
-
 	r.signal[bld._id].sort((a, b) => {
 		const [d1, m1, o1] = a.date.split('.')
-		const aa = [m1,d1,o1].join('.')
+		const aa = [m1, d1, o1].join('.')
 		const [d2, m2, o2] = b.date.split('.')
-		const bb = [m2,d2,o2].join('.')
+		const bb = [m2, d2, o2].join('.')
 		return new Date(aa) - new Date(bb)
 	})
 }
