@@ -19,7 +19,7 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 		})
 
 	const alrClosed = acSec.some((el) => !!el) || acBld
-	
+
 	// Нажали на кнопку, выход сброса установится на 3сек
 	console.log(1111,'Сброс аварии при tcnl 0.5', se.tcnl, alrClosed, !isErrm && se.tcnl > 0.5 && alrClosed)
 	if (isReset(building._id) || !acc.firstFlag || (!isErrm && se.tcnl > 0.5 && alrClosed)) {
