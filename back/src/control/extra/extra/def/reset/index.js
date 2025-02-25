@@ -21,7 +21,17 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	const alrClosed = acSec.some((el) => !!el) || acBld
 
 	// Нажали на кнопку, выход сброса установится на 3сек
-	console.log(1111,'Сброс аварии при tcnl 0.5', se.tcnl, alrClosed, !isErrm && se.tcnl > 0.5 && alrClosed)
+	console.log(1111, 'acSec = ', acSec, 'acBld = ', acBld)
+	console.log(
+		2222,
+		'Сброс аварии при tcnl =',
+		se.tcnl,
+		' > 0.5',
+		'alrClosed = ',
+		alrClosed,
+		'Условие включения = ',
+		!isErrm && se.tcnl > 0.5 && alrClosed
+	)
 	if (isReset(building._id) || !acc.firstFlag || (!isErrm && se.tcnl > 0.5 && alrClosed)) {
 		acc.end = cur + 3000
 		acc.firstFlag = true
@@ -32,6 +42,7 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 
 	// Включить выход
 	if (!!acc.end && cur < acc.end) {
+		console.log('Выхода сброса аварии включен')
 		fnReset(m.reset, building, 'on')
 	}
 
