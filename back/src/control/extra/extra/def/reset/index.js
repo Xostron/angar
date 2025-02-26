@@ -8,30 +8,21 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	// Неисправность модулей
 	const isErrm = Object.keys(store.alarm?.module?.[building._id] ?? {}).length ? true : false
 	// Аварийное закрытие клапанов (сигнал Склада)
-	acBld = getSignal(building?._id, obj, 'low')
+	const acBld = getSignal(building?._id, obj, 'low')
 	// Аварийное закрытие клапанов (сигналы секций)
-	const acSec = []
-	obj.data.section
+	const acSec = obj.data.section
 		.filter((el) => el.buildingId === building._id)
-		.map((el) => el._id)
-		.forEach((el) => {
-			acSec.push(getSignal(el?._id, obj, 'low'))
-		})
+		.reduce((acc, el) => {
+			acc.push(getSignal(el._id, obj, 'low'))
+			return acc
+		}, [])
+		.some((el) => !!el)
 
-	const alrClosed = acSec.some((el) => !!el) || acBld
+	const alrClosed = acSec || acBld
 
 	// Нажали на кнопку, выход сброса установится на 3сек
-	console.log(1111, 'acSec = ', acSec, 'acBld = ', acBld)
-	console.log(
-		2222,
-		'Сброс аварии при tcnl =',
-		se.tcnl,
-		' > 0.5',
-		'alrClosed = ',
-		alrClosed,
-		'Условие включения = ',
-		!isErrm && se.tcnl > 0.5 && alrClosed
-	)
+	console.log(1111, 'acSec = ', acSec, 'acBld = ', acBld, 'alrClosed = ', alrClosed)
+	console.log(2222, 'Сброс аварии при tcnl =', se.tcnl, ' > 0.5', 'Условие включения = ', !isErrm && se.tcnl > 0.5 && alrClosed)
 	if (isReset(building._id) || !acc.firstFlag || (!isErrm && se.tcnl > 0.5 && alrClosed)) {
 		acc.end = cur + 3000
 		acc.firstFlag = true
@@ -42,7 +33,7 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 
 	// Включить выход
 	if (!!acc.end && cur < acc.end) {
-		console.log('Выхода сброса аварии включен')
+		console.log(3333, 'Выход сброса аварии включен')
 		fnReset(m.reset, building, 'on')
 	}
 
