@@ -13,9 +13,12 @@ function setting(bld, obj) {
 		const isPrd = factory[key]?._prd
 		fill(r, retain?.[bld._id]?.setting?.[key], factory?.[key], cb, key, codeP, isPrd)
 	}
-	r.sys??={}
+	// Системные настройки: Коэффициенты клапанов
+	r.sys ??= {}
 	r.sys.cf = coef(r.sys, bld, obj)
-
+	// Настройки влажности: гистерезис абс. влажности
+	r.mois ??= {}
+	r.mois.hysteresisAbs = coefMois(r.mois, bld, obj)
 	// Готовые настройки на сервере (для проверки)
 	// debugJson({ newnew: r }, ph.resolve(__dirname))
 
@@ -24,23 +27,54 @@ function setting(bld, obj) {
 
 module.exports = setting
 
-// Коэффициенты системных настроек
+/**
+ * Системные настройки: коэффициенты клапанов
+ * @param {object} stg Системные настройки
+ * @param {object} bld склад
+ * @param {object} obj глобальные данные
+ * @returns {object}
+ */
 function coef(stg, bld, obj) {
 	const { value, data } = obj
 	// Температура улицы (мин)
 	const tout = value?.total?.tout?.min
+	// Температура продукта
+	const tprd = value?.total?.[bld._id]?.tprd?.min
 
-	// Множитель открытия в % для выпускного клапана: %Out = %In(приточ. клап.) * kOut
+	// Выпускной клапан: Множитель открытия в %: %Out = %In(приточ. клап.) * kOut
 	const hyst = 1
 	let kOut = stg?.outDefault
-	if (tout < stg?.out1?.temp || tout - hyst < stg?.out1?.temp) kOut = stg?.out1?.k
-	if (tout < stg?.out2?.temp || tout - hyst < stg?.out2?.temp) kOut = stg?.out2?.k
-	if (tout < stg?.out3?.temp || tout - hyst < stg?.out3?.temp) kOut = stg?.out3?.k
+	// от меньшего к большему
+	if (tout < tprd - stg?.out1?.temp || tout - hyst < tprd - stg?.out1?.temp) kOut = stg?.out1?.k
+	if (tout < tprd - stg?.out2?.temp || tout - hyst < tprd - stg?.out2?.temp) kOut = stg?.out2?.k
+	if (tout < tprd - stg?.out3?.temp || tout - hyst < tprd - stg?.out3?.temp) kOut = stg?.out3?.k
 
-	// Множитель импульсов для приточного клапана 5сек * kIn = 15сек откр/закр
+	// Приточный клапан: Множитель импульсов 5сек * kIn = 15сек откр/закр
 	let kIn = 3
 	if (tout >= 4) kIn = 3
 	if (tout + hyst < 4) kIn = 1
 
 	return { kOut, kIn }
+}
+
+/**
+ * Настройки влажности: гистерезис абсолютной влажности в зависимости от темп. продукта
+ * @param {object} stg настройки влажности
+ * @param {object} bld склад
+ * @param {object} obj глобальные данные
+ * @returns {number} абс влажность
+ */
+function coefMois(stg, bld, obj) {
+	const { value, data } = obj
+	// Температура продукта
+	const tprd = value?.total?.[bld._id]?.tprd?.min
+	const hyst = 0.2
+
+	let habs = stg?.hysteresisAbs
+	// от большего к меньшему
+	if (tprd < stg?.abs3?.temp || tprd - hyst < stg?.abs3?.t) habs = stg?.abs3?.h
+	if (tprd < stg?.abs2?.temp || tprd - hyst < stg?.abs2?.t) habs = stg?.abs2?.h
+	if (tprd < stg?.abs1?.temp || tprd - hyst < stg?.abs1?.t) habs = stg?.abs1?.h
+	console.log(3333, 'Температура продукта', tprd, 'Влажность: гистерезис абс. влажности', habs)
+	return habs
 }
