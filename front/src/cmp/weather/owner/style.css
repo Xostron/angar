@@ -6,6 +6,7 @@
 
 .w-owner {
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	color: var(--background);
 	padding: var(--w-owner-pad32) var(--w-owner-pad20);
@@ -18,12 +19,16 @@
 }
 .w-owner-head span > p {
 	margin: 0px;
-	
 }
 
 .w-owner > span {
 	display: block;
 	font-size: var(--fsz20);
 	padding-top: var(--w-owner-pad20);
-    line-height: 1.5;
+	line-height: 1.5;
+}
+
+#w-owner-status {
+	position: absolute;
+	bottom: 0px;
 }

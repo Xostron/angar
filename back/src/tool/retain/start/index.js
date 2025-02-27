@@ -12,7 +12,7 @@ async function retainStart(obj) {
  */
 function cb(obj, data) {
 	let result = data ? data : {}
-	result = { ...result, [obj._id]: { ...result[obj._id], start: obj.val } }
+	result = { ...result, [obj._id]: { ...result[obj._id], start: obj.val, datestart:obj.datestart,datestop:obj.datestop } }
 	return result
 }
 
