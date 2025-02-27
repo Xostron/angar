@@ -75,6 +75,6 @@ function coefMois(stg, bld, obj) {
 	if (tprd < stg?.abs3?.temp || tprd - hyst < stg?.abs3?.t) habs = stg?.abs3?.h
 	if (tprd < stg?.abs2?.temp || tprd - hyst < stg?.abs2?.t) habs = stg?.abs2?.h
 	if (tprd < stg?.abs1?.temp || tprd - hyst < stg?.abs1?.t) habs = stg?.abs1?.h
-	console.log(3333, 'Температура продукта', tprd, 'Влажность: гистерезис абс. влажности', habs)
+	console.log(3333, 'Температура продукта', tprd,'< X;','Влажность: гистерезис абс. влажности', habs)
 	return habs
 }

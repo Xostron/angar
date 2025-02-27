@@ -264,7 +264,13 @@ function wrAchieve(buildingId, name, o) {
 function delAchieve(buildingId, name, code) {
 	delete data?.alarm?.achieve?.[buildingId]?.[name]?.[code]
 }
+function updAchieve(buildingId, name, code, set){
+	if (!data.alarm.achieve?.[buildingId]?.[name]?.[code]) return
+	for (const key in set) {
+		data.alarm.achieve[buildingId][name][code][key] = set[key]
+	}
 
+}
 // Записать в Таймеры запретов
 function wrTimer(buildingId, key, name) {
 	// data.alarm ??= {}
@@ -457,6 +463,7 @@ module.exports = {
 
 	wrAchieve,
 	delAchieve,
+	updAchieve,
 
 	isExtralrm,
 	reset,

@@ -166,20 +166,21 @@ function all(obj = {}, data = {}, prev, key) {
 }
 
 /**
- * Мин температура продукта в режиме хранения
+ * 1 Мин температура продукта в режиме хранения
  * Сброс в null, если авторежим != хранению
+ * 2 Созранение даты возникновения продукт достиг задания
  * @param {*} acc данные на сохранение
  * @param {*} data данные из файла
  * @returns
  */
-function cbTprd(acc, data) {
+function cbCooling(acc, data) {
 	const result = data ? data : {}
 	for (const bldId in acc) {
 		result[bldId].cooling ??= {}
 		result[bldId].cooling.tprdMin = result[bldId].automode === 'cooling' ? acc?.[bldId]?.cooling?.tprdMin ?? null : null
+		result[bldId].cooling.finish = acc?.[bldId]?.cooling?.finish
 	}
-	// setPos(null)
 	return result
 }
 
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbTprd }
+module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling }

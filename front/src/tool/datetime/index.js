@@ -1,5 +1,5 @@
 /**
- * Посчитать истекшее время
+ * Получить истекшее время
  * @param {*} date Дата отсчета
  * @returns 'HH:mm'
  */
@@ -13,7 +13,6 @@ function elapsedTime(date) {
 	const hh = +(r / 60).toFixed(0) < 10 ? '0' + (r / 60).toFixed(0) : (r / 60).toFixed(0)
 	// мин
 	const mm = +(r % 60).toFixed(0) < 10 ? '0' + (r % 60).toFixed(0) : (r % 60).toFixed(0)
-	// console.log(111, `${hh}:${mm}`)
 	return `${hh}ч ${mm}м`
 }
 

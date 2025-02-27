@@ -7,7 +7,7 @@ import './style.css'
 export default function Owner({ data = {}, cls }) {
 	const { company, code } = data
 	const { build } = useParams()
-	const [start, datestop] = useInputStore(useShallow(({ input }) => [input?.retain?.[build]?.start, input?.retain?.[build]?.datestop]))
+	const [datestop] = useInputStore(useShallow(({ input }) => [input?.retain?.[build]?.datestop]))
 	let cl = ['w-owner', cls]
 	cl = cl.join(' ')
 	const elapsed = elapsedTime(datestop)

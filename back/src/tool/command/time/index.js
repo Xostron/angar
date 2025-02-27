@@ -46,33 +46,29 @@ function range(o) {
  */
 function compareTime(t, d) {
 	try {
-		if(typeof t === 'string') t = new Date(t)
+		if (typeof t === 'string') t = new Date(t)
 		const now = new Date()
 		return now - t >= d
-
 	} catch (error) {
 		console.log('compareTime', error)
-	 	return true	
+		return true
 	}
 }
 
-
 /**
  * Читаемая разница между переданным временем и текущим в минутах и секундах
- * @param {String||DateTime} doc время 
+ * @param {String||DateTime} doc время
  * @returns {String}
  */
-function runTime(doc){
+function runTime(doc) {
 	try {
-		if(typeof doc === 'string') doc = new Date(doc)
-		const t = (new Date() - doc) / 1000;
-		let m = Math.trunc(t / 60);
-		return `Продолжительность: ${m ? m + ' мин ' : ''}${
-				(t % 60).toFixed(0) + ' сек'
-			} `
+		if (typeof doc === 'string') doc = new Date(doc)
+		const t = (new Date() - doc) / 1000
+		let m = Math.trunc(t / 60)
+		return `Продолжительность: ${m ? m + ' мин ' : ''}${(t % 60).toFixed(0) + ' сек'} `
 	} catch (error) {
 		console.log('runTime', error)
-	 return ''	
+		return ''
 	}
 }
 
@@ -105,4 +101,22 @@ function engineHour(el, state, ehour) {
 	}
 }
 
-module.exports = { ms, delay, range, compareTime, runTime, engineTime, engineHour }
+/**
+ * Получить истекшее время
+ * @param {*} date Дата отсчета
+ * @returns {string}'HH:mm' 
+ */
+function elapsedTime(date) {
+	if (!date) return null
+	const cur = new Date().getTime()
+	const d = new Date(date).getTime()
+	// время в минутах
+	const r = (cur - d) / 60000
+	// часы
+	const hh = +(r / 60).toFixed(0) < 10 ? '0' + (r / 60).toFixed(0) : (r / 60).toFixed(0)
+	// мин
+	const mm = +(r % 60).toFixed(0) < 10 ? '0' + (r % 60).toFixed(0) : (r % 60).toFixed(0)
+	return `${hh}ч ${mm}м`
+}
+
+module.exports = { ms, delay, range, compareTime, runTime, engineTime, engineHour, elapsedTime }

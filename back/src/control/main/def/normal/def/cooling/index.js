@@ -1,9 +1,10 @@
 const alarm = require('./alarm')
-const { data: store, wrAchieve, delAchieve, readAcc } = require('@store')
+const { data: store, wrAchieve, delAchieve, updAchieve, readAcc } = require('@store')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
-
+const dict = require('@dict/message')
+const { elapsedTime } = require('@tool/command/time')
 // Автоматический режим: Охлаждение
 const data = {
 	// Аварии режима
@@ -117,13 +118,18 @@ function message(building, section, obj, s, se, seB, alr, acc) {
 	// Продукт достиг температуры задания*****************************************
 	// В режиме лечения - Продукт достиг не активен
 	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
-		acc.finish = true
+		// Истекшее время "Продукт достиг задания"
+		const elapsed = elapsedTime(obj.retain?.[building._id]?.cooling?.finish ?? null)
+		// Защита против потери счетчика при перезагрузке pos
+		if (elapsed) acc.finish = obj.retain?.[building._id]?.cooling?.finish
+		else acc.finish = new Date()
+
 		wrAchieve(building._id, 'cooling', msgB(building, 15))
 	}
 
 	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
 	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
-		acc.finish = false
+		acc.finish = null
 		delAchieve(building._id, 'cooling', mes[15].code)
 	}
 
@@ -131,6 +137,15 @@ function message(building, section, obj, s, se, seB, alr, acc) {
 		...msgB(building, 150),
 		msg: `t задания канала = ${acc.tcnl.toFixed(1)} °С, t задания продукта = ${acc.tgt.toFixed(1)} °С`,
 	})
+
+	// Обновление времени в сообщении "Продукт достиг температуры"
+	if (acc.finish) {
+		// Истекшее время "Продукт достиг задания"
+		const elapsed = elapsedTime(obj.retain?.[building._id]?.cooling?.finish ?? null)
+		const msg = elapsed ? dict[15].msg + ' ' + elapsed + ' назад' : null
+		if (!msg) return
+		updAchieve(building._id, 'cooling', 'cooling-1', { msg })
+	}
 }
 
 module.exports = data
