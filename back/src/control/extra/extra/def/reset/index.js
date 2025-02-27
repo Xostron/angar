@@ -33,7 +33,7 @@ function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
 
 	// Включить выход
 	if (!!acc.end && cur < acc.end) {
-		console.log(3333, 'Выход сброса аварии включен')
+		console.log(2233, 'Выход сброса аварии включен')
 		fnReset(m.reset, building, 'on')
 	}
 

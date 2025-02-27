@@ -12,17 +12,15 @@
 	display: -webkit-box;
 	-webkit-box-orient: vertical;	
 	padding-inline: 30px;
-    /* width:clamp(18.125rem, -21.9427rem + 46.9314vw, 34.375rem); */
-    /* width: 100%; */
+
+	min-width: 40%;
+	width: 100%;
 }
 
 .text {
-    /* text-align: left; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    /* width:clamp(18.125rem, -21.9427rem + 50.9314vw, 34.375rem); */
-    /* max-width: clamp(18.125rem, -21.9427rem + 46.9314vw, 34.375rem); */
 }
 
 .act {
@@ -36,7 +34,7 @@
     position: relative;
 	align-items: center;
     display: flex;
-    /* width: 50%; */
+    min-width: 40%;
 }
 
 .all {

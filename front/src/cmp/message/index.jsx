@@ -8,7 +8,7 @@ export default function Message() {
 	const { build } = useParams()
 	const [hid, setHid] = useState(true)
 	const [achieve] = useInputStore(({ alarm }) => [alarm.achieve])
-	
+
 	// Подсветка "синим" - продукт достиг задания
 	let cl = ['mes']
 	useEffect(
@@ -30,10 +30,10 @@ export default function Message() {
 	cl = cl.join(' ')
 
 	// если нет сообщений - для каждого режима своя инфа
-	
+
 	if (arr.length == 1)
 		return (
-			<div className={cl}>
+			<div className={cl} style={{ width: '40%' }}>
 				<p className='text'>{arr[0]?.msg}</p>
 			</div>
 		)

@@ -40,6 +40,9 @@ function alarm(obj) {
 			bld.type == 'cold'
 				? Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
 				: Object.values(store.alarm?.achieve?.[bld._id]?.[am] ?? {})
+		// Для всех складов: сообщение Склад выключен
+		if (store.alarm?.achieve?.[bld._id]?.building?.datestop) r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.datestop)
+
 		r.achieve[bld._id].sort((a, b) => a.order - b.order)
 		// Режимы работы секций
 		const sumMode = []

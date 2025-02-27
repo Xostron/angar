@@ -3,7 +3,6 @@ const { data: store, wrAchieve, delAchieve, updAchieve, readAcc } = require('@st
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
-const dict = require('@dict/message')
 const { elapsedTime } = require('@tool/command/time')
 // Автоматический режим: Охлаждение
 const data = {
@@ -29,7 +28,6 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 		return
 	}
 	acc.alarm = false
-	// console.log(1111, section.name, Object.keys(acc.setting ?? {}))
 	// Вычисление подрежима
 	submode(building, section, obj, s, se, seB, alr, acc)
 	// Вычисления
@@ -142,7 +140,7 @@ function message(building, section, obj, s, se, seB, alr, acc) {
 	if (acc.finish) {
 		// Истекшее время "Продукт достиг задания"
 		const elapsed = elapsedTime(obj.retain?.[building._id]?.cooling?.finish ?? null)
-		const msg = elapsed ? dict[15].msg + ' ' + elapsed + ' назад' : null
+		const msg = elapsed ? mes[15].msg + ' ' + elapsed : null
 		if (!msg) return
 		updAchieve(building._id, 'cooling', 'cooling-1', { msg })
 	}
