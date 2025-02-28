@@ -24,7 +24,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	if (!s.antibliz.count || !s.antibliz.time || !s.antibliz.wait || !s?.antibliz?.mode || s.antibliz.mode === 'off') return null
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
-	const state = stateV(vlvIn._id, value, building._id, vlvIn.sectionId[0])
+	const state = stateV(vlvIn?._id, value, building._id, vlvIn?.sectionId?.[0])
 	
 	// Логика
 	// Текущее время

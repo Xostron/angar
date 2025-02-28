@@ -9,15 +9,15 @@ import Item from './item'
 export default function Banner({ type = 'building' }) {
 	let { build, sect } = useParams()
 	const { refBanner, open } = useBanner()
-	const [bannerB, bannerS] = useInputStore(({ bannerB, bannerS }) => [bannerB, bannerS])
-
+	const [b, s, banner] = useInputStore(({ bannerB, bannerS, alarm }) => [bannerB(build), bannerS(build, sect), alarm?.banner])
 	useEffect(() => {
 		open()
 	}, [])
-
-	const b = bannerB(build)
-	const s = bannerS(build, sect)
-
+	
+	// const b = bannerB(build)
+	// const s = bannerS(build, sect)
+	
+	console.log(111, b, s, banner)
 	const ws = `banner-${s?.length}`
 	const wb = `banner-${b?.length}`
 

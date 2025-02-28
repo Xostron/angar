@@ -139,6 +139,7 @@ const useInputStore = create((set, get) => ({
 		const connect = get()?.alarm?.banner?.connect?.[idB];
 		const local = get()?.alarm?.banner?.local?.[idB]?.[idS] ?? get()?.alarm?.banner?.local?.[idB]?.[idB];
 		const smoking = get()?.alarm?.banner?.smoking?.[idB];
+		console.log(222, local)
 		connect ? arr.push(connect) : null
 		local ? arr.push(local):null
 		smoking ? arr.push(smoking):null

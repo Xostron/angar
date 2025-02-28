@@ -30,7 +30,7 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
-	const state = stateV(vlvIn._id, value, building._id, vlvIn.sectionId[0])
+	const state = stateV(vlvIn?._id, value, building._id, vlvIn?.sectionId?.[0])
 	// Хотя бы один вентилятор запущен
 	const run = fanS.some((f) => stateEq(f._id, value))
 

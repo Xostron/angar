@@ -19,7 +19,8 @@ const { sensor } = require('@tool/command/section/sensor')
 function section(start, building, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB) {
 	const { data } = obj
 	let alrAlw
-	
+	// Склад
+
 	// Секции склада
 	for (const sect of data.section) {
 		if (sect.buildingId != building._id) continue

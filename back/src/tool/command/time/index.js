@@ -104,18 +104,22 @@ function engineHour(el, state, ehour) {
 /**
  * Получить истекшее время
  * @param {*} date Дата отсчета
- * @returns {string}'HH:mm' 
+ * @returns {string}'HH:mm'
  */
 function elapsedTime(date) {
 	if (!date) return null
-	const cur = new Date().getTime()
-	const d = new Date(date).getTime()
+	const cur = new Date()
+	const d = new Date(date)
 	// время в минутах
 	const r = (cur - d) / 60000
+	// console.log(9999, r, r / 60, Math.trunc(r / 60), Math.trunc(r % 60))
+
 	// часы
-	const hh = +(r / 60).toFixed(0) < 10 ? '0' + (r / 60).toFixed(0) : (r / 60).toFixed(0)
+	const hh = Math.trunc(r / 60) < 10 ? '0' + Math.trunc(r / 60) : Math.trunc(r / 60)
+
 	// мин
-	const mm = +(r % 60).toFixed(0) < 10 ? '0' + (r % 60).toFixed(0) : (r % 60).toFixed(0)
+	const mm = Math.trunc(r % 60) < 10 ? '0' + Math.trunc(r % 60) : Math.trunc(r % 60) >= 60 ? '00' : Math.trunc(r % 60)
+
 	return `${hh}ч ${mm}м`
 }
 

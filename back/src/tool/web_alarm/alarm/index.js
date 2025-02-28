@@ -71,6 +71,7 @@ function alarm(obj) {
 	history(r)
 	// Мониторинг: критические аварии
 	critical(r)
+	// console.log(888,Object.keys(r), r.banner)
 	return r
 }
 
