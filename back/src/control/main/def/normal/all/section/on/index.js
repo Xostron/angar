@@ -1,5 +1,5 @@
 const def = require('@control/main/def/normal/def')
-const check = require('@tool/command/section/check')
+const check = require('@tool/command/section')
 const {extra} = require('@control/extra/extra')
 const { valve } = require('./fn')
 const auto = require('./auto')

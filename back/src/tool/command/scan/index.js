@@ -1,4 +1,4 @@
-const { sensorBuilding } = require('@tool/command/section/sensor')
+const { sensorBuilding } = require('@tool/command/sensor')
 const { data: store, readAcc, wrAchieve, delAchieve, updAchieve } = require('@store')
 const { elapsedTime } = require('@tool/command/time')
 const setting = require('@control/extra/setting')

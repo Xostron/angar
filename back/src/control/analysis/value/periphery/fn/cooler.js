@@ -1,6 +1,6 @@
 const { stateF } = require('@tool/command/fan');
 const { data: store } = require('@store');
-const { getIdByClr } = require('@tool/command/building');
+const { getIdByClr } = require('@tool/get/building');
 
 // Испаритель
 function cooler(equip, val, retain, result) {

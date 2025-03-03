@@ -1,5 +1,5 @@
 const { setACmd, data: store, isExtralrm } = require('@store')
-const { getIdB } = require('@tool/command/building')
+const { getIdB } = require('@tool/get/building')
 // Блокировки задвижки (клапана)
 function vlv(obj) {
 	const { value, data, retain, output } = obj

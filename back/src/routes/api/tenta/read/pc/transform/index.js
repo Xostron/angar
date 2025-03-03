@@ -1,4 +1,4 @@
-const { checkS } = require('@tool/command/sensor')
+const { checkS } = require('@tool/get/sensor')
 const { data: store } = require('@store')
 
 // Данные по pc

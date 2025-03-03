@@ -1,4 +1,4 @@
-const { checkS } = require('@tool/command/sensor')
+const { checkS } = require('@tool/get/sensor')
 const { readOne } = require('@tool/json')
 const { data: store } = require('@store')
 const { getId } = require('@tool/command/mech')

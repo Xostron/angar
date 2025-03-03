@@ -1,4 +1,3 @@
-const { getSensor } = require('@tool/command/sensor')
 const { fill, cb } = require('./fn')
 const { debugJson } = require('@tool/json')
 const { data: store } = require('@store')

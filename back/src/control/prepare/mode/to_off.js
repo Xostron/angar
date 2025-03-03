@@ -1,6 +1,6 @@
 const { data: store, setToOffSection } = require('@store')
 const { controlAO, controlM, offEq } = require('./fn')
-const {getB} = require('@tool/command/building')
+const {getB} = require('@tool/get/building')
 
 /* Переход секции в выкл
 Остановка клапанов, все остальное продолжает работать

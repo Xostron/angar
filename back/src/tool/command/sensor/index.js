@@ -1,97 +1,73 @@
-/**
- * для авто
- * Собираются датчики конкретной секции и возврщается
- * значение датчика с наименьшим значением
- * @param {*} value
- * @param {*} sensors
- * @param {*} ownerId
- * @param {*} type	тип датчика (p: давление, tin:темп потолка,
- * 					tout: темп улицы, tcnl:темп канала, tprd: темп продукта,
- * 					hin:влажность продукта, hout:влажность улицы)
- * @param {*} max true - результат максимальное значение, false - минимальное
- * @return
- */
+// Показания датчиков секции
+function sensor(idB, idS, obj) {
+	const { value, data } = obj
+	// Показания с датчиков
+	const o = {
+		// Температура улицы - min
+		tout: value?.total?.tout?.min,
+		// Влажность улицы - max
+		hout: value?.total?.hout?.min,
+		// Абс влажность улицы
+		hAbsOut: +value?.humAbs?.out,
+		// Температура потолка
+		tin: value?.total?.[idB]?.tin?.min,
+		// Влажность продукта - max
+		hin: value?.total?.[idB]?.hin?.min,
+		// Абсолютная влажность проукта
+		hAbsIn: +value?.humAbs?.[idB],
+		// Минимальная температура продукта по секции
+		tprd: value?.total?.[idS]?.tprd?.min,
+		// Температура канала - мин
+		tcnl: value?.total?.[idS]?.tcnl?.min,
+		// Давление - макс
+		p: value?.total?.[idS]?.p?.max,
+	}
 
-function getSensor(value, sensors, ownerId, type, max = false) {
-	const sens = sensors
-		.filter((el) => el.type === type && el.owner.id === ownerId && value?.[el._id]?.on !== false)
-		.map((el) => value?.[el._id]?.value)
-	const idx = max ? arr.length - 1 : 0
-	return sens.sort((a, b) => a - b)[idx] ?? null
+	return o
 }
 
-/**
- * для авто
- * Собираются датчики по всем секциям одного склада (секции в авто),
- * и возвращается значение датичка с наибольшим значением
- * @param {*} obj
- * @param {*} ownerId
- * @param {*} type
- */
-function getSensBuild(obj, idB, type) {
-	const { value, data, retain } = obj
-	const sect = data.section.filter((el) => el.buildingId === idB).map((o) => o._id)
-	return (
-		data.sensor
-			.filter((el) => el?.type === type && sect.includes(el?.owner?.id) && value?.[el._id]?.on !== false)
-			.map((o) => value?.[o._id]?.value)
-			.sort((a, b) => b - a)[0] ?? null
-	)
+// Показания датчиков склада
+function sensorBuilding(idB, obj) {
+	const { value, data } = obj
+
+	const o = {
+		// Температура улицы - min
+		tout: value?.total?.tout?.min,
+		// Влажность улицы - max
+		hout: value?.total?.hout?.max,
+		// Абс влажность улицы
+		hAbsOut: +value?.humAbs?.out,
+		// Температура потолка - min
+		tin: value?.total?.[idB]?.tin?.min,
+		// Влажность продукта - max
+		hin: value?.total?.[idB]?.hin?.max,
+		//  Абс. влажность продукта
+		hAbsIn: +value?.humAbs?.[idB],
+		// Максимальная температура продукта по складу (по всем секция в авто режиме)
+		tprd: value?.total?.[idB]?.tprd?.min,
+		tcnl:value?.total?.[idB]?.tcnl?.min,
+		// Датчики по камере и испарителю
+		cooler: cooler(idB, obj),
+		// Погода: температура, влажность 
+		tw:'',
+		hw:''
+	}
+	// console.log(333, value.total, o)
+	return o
 }
 
-// Получить массив датчиков секции
-function getListSens(sectionId, sensor, value, type) {
-	let sens = sensor.filter((s) => s.owner.id == sectionId && s.type == type)
-	sens = sens
-		.map((s) => ({ ...s, value: value?.[s._id]?.value }))
-		.filter((s) => s.value != null)
-		.sort((a, b) => a?.value - b?.value)
-	return sens
+// Датчики по камере и испарителю
+function cooler(idB, obj) {
+	const { value, data } = obj
+	const idS = data.section.find((el) => el.buildingId === idB)?._id
+	return {
+		// Температура продукта
+		tprd: value?.total?.[idS]?.tprd?.min,
+		// Датчик СО2
+		co2: value?.total?.[idS]?.co2?.max,
+		// Температура всасывания
+		clr: value?.total?.[idS]?.cooler?.max,
+	}
 }
 
-/**
- * Список датчиков по родителю и его типу
- * @param {String} code Тип датчика
- * @param {String} id ссылка на родителя
- * @param {String} type Тип родителя
- * @returns {Array} Список датчиков удовлетворяющих запросу
- */
-function get(code, id, type, sensor) {
-	if (!id || !type || !sensor) return
-	if (!code)
-		return sensor.filter((el) => {
-			return el.owner.id == id && el.owner.type == type
-		})
-	return sensor.filter((el) => {
-		return el.owner.id == id && el.owner.type == type && el.type == code
-	})
-}
-
-/**
- * 
- * @param {*} arr массив датчиков
- * @param {*} data объект значений датчиков
- * @param {*} flt фильтр
- * @returns
- */
-function getS(arr, data, flt) {
-	return arr
-		.filter((el) => flt(el))
-		.map((el) => data[el._id].value)
-		.filter((el) => el !== null)
-}
-
-function getSA(arr, data, flt) {
-	return arr
-		.filter((el) => flt(el))
-		.map((el) => data?.[el._id]?.state)
-}
-
-function checkS(state1, state2) {
-	if ([state1, state2].includes('off')) return 'off'
-	if ([state1, state2].includes('alarm')) return 'alarm'
-	return 'on'
-}
-
-
-module.exports = { getSensor, getSensBuild, getListSens, get, getS, getSA,checkS }
+module.exports = { sensor, sensorBuilding }

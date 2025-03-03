@@ -1,8 +1,8 @@
 const tSens = require('@dict/sensor')
 const { msgBS } = require('@tool/message')
 const { data: store, wrExtralrm, delExtralrm } = require('@store')
-const { getListSens } = require('@tool/command/sensor')
-const { getB, getBS } = require('@tool/command/building')
+const { getListSens } = require('@tool/get/sensor')
+const { getB, getBS } = require('@tool/get/building')
 
 // Неисправность датчика
 function isValid(sens, val, equip, retain) {

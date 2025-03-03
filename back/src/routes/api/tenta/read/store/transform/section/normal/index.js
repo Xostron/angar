@@ -1,4 +1,4 @@
-const { get, checkS } = require('@tool/command/sensor')
+const { get } = require('@tool/get/sensor')
 const alarm = require('../../alarm')
 
 function normal(result, idS, idB, obj) {

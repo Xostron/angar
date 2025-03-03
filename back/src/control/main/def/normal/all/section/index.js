@@ -2,7 +2,7 @@ const on = require('./on')
 const off = require('./off')
 const always = require('./always')
 const { mech } = require('@tool/command/mech')
-const { sensor } = require('@tool/command/section/sensor')
+const { sensor } = require('@tool/command/sensor')
 /**
  *
  * @param {*} start Вкл/выкл склад

@@ -1,5 +1,5 @@
 const { data: store } = require('@store')
-const { getIdSB, getOwnerClr } = require('@tool/command/building')
+const { getIdSB, getOwnerClr } = require('@tool/get/building')
 
 /**
  * Сохранение изменений

@@ -1,6 +1,6 @@
 const { data: store, setToAuto } = require('@store')
 const { controlAO, controlM } = require('./fn')
-const {getB} = require('@tool/command/building')
+const {getB} = require('@tool/get/building')
 
 /* Переход в авто режим - подготовка:
     Отключение выходов секции,

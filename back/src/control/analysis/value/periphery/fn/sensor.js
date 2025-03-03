@@ -1,7 +1,7 @@
 const { isValid, fnDetection, fnMsg, fnMsgs } = require('@tool/sensor_valid')
 const debounce = require('@tool/debounce_sensor')
-const { getS, getSA } = require('@tool/command/sensor')
-const { getBS } = require('@tool/command/building')
+const { getS, getSA } = require('@tool/get/sensor')
+const { getBS } = require('@tool/get/building')
 const calc = require('@tool/command/abs_humidity')
 const { data: store } = require('@store')
 

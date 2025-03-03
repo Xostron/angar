@@ -1,4 +1,4 @@
-const { get } = require('@tool/command/sensor')
+const { get } = require('@tool/get/sensor')
 const { readOne } = require('@tool/json')
 
 // Данные для холодильника
