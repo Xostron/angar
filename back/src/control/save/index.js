@@ -1,6 +1,6 @@
 const { data: store, retainDir, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
-const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling } = require('./fn')
+const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop } = require('./fn')
 const retainStart = require('@tool/retain/start')
 const { readOne } = require('@tool/json')
 
@@ -13,6 +13,8 @@ async function save(obj) {
 		// Сохранение минимальной температуры продукта режима хранения (обычный склад)
 		// Сохранение даты отсчета достижения продукт достиг задания
 		await createAndModifySync(store.acc, 'data', retainDir, cbCooling)
+		// Время вкл/выкл склада
+		await createAndModifySync(build._id, 'data', retainDir, cbDatestop)
 	}
 
 	// Обновление положения клапана

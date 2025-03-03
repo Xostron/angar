@@ -5,12 +5,17 @@ import useWarn from '@store/warn'
 
 //Элемент меню
 export default function Item({ data }) {
+	const navigate = useNavigate()
+	const href = useHref()
 	const { link, setLink } = useWarn()
 	const { title, icon, path, active } = data
-	// const [list] = useEquipStore(({list})=>[list])
-	const href = useHref()
+	// const [list] = useEquipStore(({ list }) => [list])
 	const cur = href.split('/').at(3) ?? null
-	const navigate = useNavigate()
+
+	let cls = null
+	if (active.includes(cur)) cls = 'active'
+
+	return <Btn onClick={onClick} cls={cls} title={title} icon={icon} />
 
 	function onClick() {
 		if (link?.hasChanged) {
@@ -18,10 +23,7 @@ export default function Item({ data }) {
 			return
 		}
 		setLink(null)
+		// if (list.length == 1 && path == '/') return
 		navigate(path)
 	}
-
-	let cls = null
-	if (active.includes(cur)) cls = 'active'
-	return <Btn onClick={onClick} cls={cls} title={title} icon={icon} />
 }

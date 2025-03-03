@@ -26,7 +26,7 @@ function alarm(obj) {
 		history: { critical: [], event: [] },
 	}
 
-	// Таймер запретов (слабое клонирование)
+	// Таймер запретов
 	r.timer = { ...store.alarm.timer }
 	for (const bld of data.building) {
 		// Склад запущен
@@ -71,7 +71,6 @@ function alarm(obj) {
 	history(r)
 	// Мониторинг: критические аварии
 	critical(r)
-	// console.log(888,Object.keys(r), r.banner)
 	return r
 }
 

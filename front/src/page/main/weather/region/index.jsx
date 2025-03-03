@@ -5,22 +5,20 @@ import './style.css'
 export default function Region() {
 	const [list, weather] = useEquipStore(useShallow(({ list, weather }) => [list, weather]))
 	const address = list?.[0]?.pc?.address?.value ?? '--'
-	const img = weather.code?<img src={`/img/weather/${weather.code}.svg`} alt='' />: null
+	const img = weather.code ? <img src={`/img/weather/${weather.code}.svg`} alt='' /> : null
 	const dt = new Date(weather.time).toLocaleString()
 	return (
 		<div className='mw-region'>
 			<div className='mwr-left'>
-				<span>{address?? '--'}</span>
+				<span>{address ?? '--'}</span>
 				<div className='mwrl-info'>
 					<div>
-						<span>Влажность: {weather.humidity?? '--'} % </span>
+						<span>Влажность: {weather.humidity ?? '--'} % </span>
 					</div>
 					<span title={dt}>{weather.temp ?? '--'}°C</span>
 				</div>
 			</div>
-			<div className='mwr-right'>
-				{img}
-			</div>
+			<div className='mwr-right'>{img}</div>
 		</div>
 	)
 }

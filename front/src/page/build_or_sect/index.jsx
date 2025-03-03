@@ -12,16 +12,10 @@ export default function BuildOrSect({}) {
 	let { sect, build } = useParams()
 	const navigate = useNavigate()
 	const location = useLocation()
-	const [getCurB, setCurB, sections] = useEquipStore(({ getCurB, setCurB, sections }) => [getCurB, setCurB, sections])
+	const [sects] = useEquipStore(({ sections }) => [sections()])
+	const type = sect ? 'section' : 'building'
 
 	useEffect(() => {
-		const b = getCurB(build)
-		setCurB(b)
-	}, [])
-
-	// обновление страницы
-	useEffect(() => {
-		const sects = sections()
 		if (sects?.length === 1 && !sect) {
 			const path = `${location.pathname}/section/${sects?.[0]?._id}`.replace('//', '/')
 			navigate(path)
@@ -33,7 +27,7 @@ export default function BuildOrSect({}) {
 			<SubHeader />
 			<Outdoor />
 			<Outlet />
-			<Banner />
+			<Banner type={type} />
 		</main>
 	)
 }

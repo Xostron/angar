@@ -161,7 +161,6 @@ function banner(r, bld, sect, am) {
 	// Управление переведено на переключатели на щите
 	r.banner.local ??= {}
 	r.banner.local[bld._id] ??= {}
-	console.log(777,store.alarm?.extralrm?.[bld._id]?.[sect._id]?.local)
 	r.banner.local[bld._id][sect._id] = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.local ?? null
 }
 function bannerB(r, bld) {

@@ -13,14 +13,7 @@ async function retainStart(obj) {
 function cb(obj, data) {
 	let result = data ? data : {}
 	// Создать или сохранить изменения в json
-	if (obj.val === false) {
-		obj.datestop = new Date()
-		obj.datestart = null
-	} else {
-		obj.datestop = null
-		obj.datestart = new Date()
-	}
-	result = { ...result, [obj._id]: { ...result[obj._id], start: obj.val, datestart:obj.datestart,datestop:obj.datestop } }
+	result = { ...result, [obj._id]: { ...result[obj._id], start: obj.val } }
 	return result
 }
 

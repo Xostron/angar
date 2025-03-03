@@ -10,7 +10,7 @@ const mes = require('@dict/message')
 function scan(bld, obj) {
 	const { data, retain } = obj
 	// Запущен ли склад (сброс доп. аварий авторежима)
-	const start = retain?.[bld._id]?.start
+	const start = retain?.[bld._id]?.start ?? false
 	// Режим работы склада (сушка, лечение и т.д.)
 	const automode = retain?.[bld._id]?.automode
 	// Все настройки склада
@@ -44,8 +44,7 @@ function scan(bld, obj) {
 	if (accAuto.datestop) {
 		const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
 		const msg = elapsed ? mes[151].msg + ' ' + elapsed : null
-		if (!msg) return
-		updAchieve(bld._id, 'building', 'datestop', { msg })
+		if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
 	}
 	return { start, automode, s, se, m, accAuto, resultFan, supply }
 }

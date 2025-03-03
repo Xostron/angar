@@ -166,8 +166,7 @@ function all(obj = {}, data = {}, prev, key) {
 }
 
 /**
- * 1 Мин температура продукта в режиме хранения
- * Сброс в null, если авторежим != хранению
+ * 1 Мин температура продукта в режиме хранения (Сброс в null, если авторежим != хранению)
  * 2 Соxранение даты возникновения продукт достиг задания
  * @param {*} acc данные на сохранение
  * @param {*} data данные из файла
@@ -183,4 +182,23 @@ function cbCooling(acc, data) {
 	return result
 }
 
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling }
+/**
+ * Зафиксировать время вкд/выкл склада
+ * @param {*} o данные триггер
+ * @param {*} data данные из файла
+ */
+function cbDatestop(bldId, data) {
+	let result = data ? data : {}
+	result[bldId] ??= {}
+
+	if (result?.[bldId]?.start && !result[bldId]?.datestart) {
+		result[bldId].datestop = null
+		result[bldId].datestart = new Date()
+	} else if (!result?.[bldId]?.start && !result[bldId]?.datestop) {
+		result[bldId].datestop = new Date()
+		result[bldId].datestart = null
+	}
+	return result
+}
+
+module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop }
