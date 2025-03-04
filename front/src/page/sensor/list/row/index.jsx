@@ -17,22 +17,27 @@ export default function Row({ data }) {
 	// сохранить настройки на сервере ангара
 	const [setSens, sens] = useOutputStore(({ setSens, sens }) => [setSens, sens])
 	// настройка датчика
-	const [getRaw, setting, input] = useInputStore(({ getRaw, input }) => [
-		getRaw,
-		input?.retain?.[build]?.[data?._id],
-		input,
-	])
-
-	const value = input?.[data._id]?.raw
-	const r = getRaw(data._id)
-
-	// Значение коррекции
-	const [corr, setCorr] = useState(setting?.corr ?? 0)
-	// Значение датчика с коррекцией
-	const result = input?.[data._id]?.value
-	// датчик вкл/выкл
-	const onn = setting?.on === undefined ? true : setting?.on ? true : false
+	const [getRaw, setting, input] = useInputStore(({ getRaw, input }) => [getRaw, input?.retain?.[build], input])
+	const el = ['tweather', 'hweather'].includes(data?.type) ? data?.type : data?._id
+	// Датчик вкл/выкл
+	const onn = setting?.[el]?.on === undefined ? true : setting?.[el]?.on ? true : false
 	const [on, setOn] = useState(onn)
+
+	// Коррекция датчика
+	const [corr, setCorr] = useState(setting?.[el]?.corr ?? 0)
+
+	// Истинное значение датчика
+	const raw = input?.[el]?.raw
+	const r = getRaw(el)
+
+	// Значение датчика с коррекцией
+	const result = input?.[el]?.value
+
+	// Обработка коррекции и вкл/выкл датчика
+	useEffect(() => {
+		setCorr(setting?.[el]?.corr ?? 0)
+		setOn(onn)
+	}, [el])
 
 	// Ед. измерения, иконка
 	let unit = defUn['p']
@@ -46,13 +51,8 @@ export default function Row({ data }) {
 		ico = defImg['mois'].on
 	}
 
-	useEffect(() => {
-		setCorr(setting?.corr ?? 0)
-		setOn(onn)
-	}, [data._id])
-
 	//Подсветка - Измененные данные
-	const chg = !!sens?.[build]?.[data?._id]?.corr
+	const chg = !!sens?.[build]?.[el]?.corr
 	let clCorr = ['cell-w']
 	if (chg) clCorr.push('changed')
 
@@ -73,17 +73,8 @@ export default function Row({ data }) {
 		<>
 			<IconText cls={cl} data={{ value: data.name, icon: ico }} />
 			<Switch cls={cl} value={on} setValue={actOn} style={{ border: 'none' }} />
-			<Input
-				cls={clCorr}
-				type='number'
-				min={-1000}
-				max={1000}
-				step={0.1}
-				value={corr}
-				setValue={actCorr}
-				placeholder={0}
-			/>
-			<Text cls={cls} data={{ value: value }} />
+			<Input cls={clCorr} type='number' min={-1000} max={1000} step={0.1} value={corr} setValue={actCorr} placeholder={0} />
+			<Text cls={cls} data={{ value: raw }} />
 			<Text cls={cls} data={{ value: result }} />
 			<Text cls={cl} data={{ value: unit }} />
 		</>
@@ -91,11 +82,11 @@ export default function Row({ data }) {
 	// Вкл/выкл датчик
 	function actOn(val) {
 		setOn(val)
-		setSens({ build, _id: data._id, on: val })
+		setSens({ build, _id: el, on: val })
 	}
 	// Поле "Коррекция"
 	function actCorr(val) {
 		setCorr(val)
-		setSens({ build, _id: data._id, corr: val })
+		setSens({ build, _id: el, corr: val })
 	}
 }
