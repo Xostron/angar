@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
-const tSens = require('@dict/sensor')
 const { getDef } = require('@tool/retain/setting')
+
 /**
  * Антидребезг аналоговых датчиков
  * @param {*} idSens
@@ -14,12 +14,6 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 	// - состояние датчика выкл или в аварии
 	// - новое показание датчика !== 0 (т.е. нормальное)
 	// - новое показание датчика = старому
-
-	// if (!hold || v.state !== 'on' || v.raw !== 0 || (v.raw === hold?.raw && v.raw !== 0)) {
-	// 	store.debounce[idSens] = {}
-	// 	return null
-	// }
-
 	// Очищаем время слежения за датчиком и обновляем аккумулятор hold:
 	if (!hold || v.state !== 'alarm') {
 		store.debounce[idSens] = {}

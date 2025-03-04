@@ -11,7 +11,9 @@ function building(doc, data) {
 	const inTemp = correct(sensor.filter((t) => t.owner.id === doc._id && ['tin'].includes(t.type)))
 	// Температура Внешняя
 	const outTemp = correct(sensor.filter((t) => t.owner.id === doc._id && ['tout'].includes(t.type)))
-
+	// Прогноз погоды
+	const tweather = { _id: 1, type: 'tweather', name: 'Прогноз погоды: Температура улицы ' }
+	const hweather = { _id: 2, type: 'hweather', name: 'Прогноз погоды: Влажность улицы' }
 	// Влажность Внутренняя
 	const inMois = correct(sensor.filter((m) => m.owner.id === doc._id && ['hin'].includes(m.type)))
 	// Влажность Внешняя
@@ -44,6 +46,8 @@ function building(doc, data) {
 		pout,
 		inMois,
 		outMois,
+		tweather,
+		hweather,
 		// Расчетная влажность
 		// Внутренняя
 		inCalcMois: { type: 'calcMois' },

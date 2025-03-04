@@ -9,8 +9,8 @@ import useOutputStore from '@store/output'
 import defUn from '@tool/unit'
 import defImg from '@tool/icon'
 
-const t = ['tout', 'tin', 'tprd', 'tcnl']
-const m = ['hin', 'hout']
+const t = ['tout', 'tin', 'tprd', 'tcnl', 'tweather']
+const m = ['hin', 'hout', 'hweather']
 
 export default function Row({ data }) {
 	const { build } = useParams()

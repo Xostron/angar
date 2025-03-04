@@ -2,52 +2,22 @@ const tSens = require('@dict/sensor')
 const { msgBS } = require('@tool/message')
 const { data: store, wrExtralrm, delExtralrm } = require('@store')
 const { getListSens } = require('@tool/get/sensor')
-const { getB, getBS } = require('@tool/get/building')
-
-// Неисправность датчика
-function isValid(sens, val, equip, retain) {
-	// Владельцы датчика (склад и секция)
-	const { building, section } = getBS(sens, equip)
-
-	// Настройки датчика: on - вкл датчик, corr - коррекция
-	const stg = retain?.[building._id]?.[sens._id]
-	const on = stg?.on ?? true
-	// Истинное значение датчика
-	const v = val?.[sens?.module?.id]?.[sens.module?.channel - 1] ?? null
-	let raw = ruleModule(equip, sens, v)
-
-	// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
-	if (String(raw).length > 8) raw = null
-	// Модуль в ошибке
-	if (val?.[sens?.module?.id]?.error) raw = null
-	// isNaN
-	if (isNaN(raw)) raw = null
-
-	// Значение датчика (используется в алгоритмах)
-	const value = raw !== null ? +(raw + +(stg?.corr || 0)).toFixed(sens?.accuracy || 1) : null
-	const r = { raw, value, state: state(raw, on) }
-
-	// Проверка диапазонов
-	range(r, sens)
-
-	// Аварийные сообщения
-	webAlarm(r, building, section, sens)
-	return r
-}
+const { getB } = require('@tool/get/building')
 
 // Правила обработки датчиков для разных аналоговых модулей
-function ruleModule(equip, sens, v) {
-	const { module, equipment } = equip
+function getRaw(sens, v) {
+	// const { module, equipment } = equip
 	// Датчик не объявлен в админке
 	if (!sens.module.id || typeof sens.module.channel !== 'number') return null
+	// Тип модуля
+	// const idEq = module.find((el) => el._id == sens.module.id)?.equipmentId
+	// const int10 = equipment?.[idEq]?.re?.type == 'int10'
 
-	const idEq = module.find((el) => el._id == sens.module.id)?.equipmentId
-	const int10 = equipment?.[idEq]?.re?.type == 'int10'
-
-	// Для модулей с типом int10
-	if (int10) return +v?.toFixed(sens?.accuracy || 1) ?? null
-	// Для модулей с типом float
-	else return v ? +v.toFixed(sens?.accuracy || 1) : null
+	// // Для модулей с типом int10
+	// if (int10) return +v?.toFixed(sens?.accuracy || 1) ?? null
+	// // Для модулей с типом float
+	return +v?.toFixed(sens?.accuracy || 1) ?? null
+	// return v ? +v.toFixed(sens?.accuracy || 1) : null
 }
 
 // Автообнаружжение неисправностей датчиков температуры продукта (посекционно)
@@ -161,12 +131,6 @@ function webAlarm(r, bld, sect, sens) {
 	if (r.state !== 'alarm') delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
 }
 
-// Коды сообщений
-const code = {
-	tout: { off: 97, alarm: 98 },
-	hout: { off: 95, alarm: 96 },
-	tin: { off: 93, alarm: 94 },
-}
 /**
  * Сообщение об общей аварии по датчику для складов
  * @param {object[]} building склады
@@ -204,4 +168,11 @@ function fnMsg(bld, val, type, bType) {
 	}
 }
 
-module.exports = { isValid, fnDetection, detection, fnMsgs, fnMsg }
+module.exports = { getRaw, fnDetection, detection, state, range,webAlarm, fnMsgs, fnMsg }
+
+// Коды сообщений
+const code = {
+	tout: { off: 97, alarm: 98 },
+	hout: { off: 95, alarm: 96 },
+	tin: { off: 93, alarm: 94 },
+}

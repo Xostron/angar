@@ -9,7 +9,7 @@ const puiSens = ['Ua', 'Ub', 'Uc', 'Ia', 'Ib', 'Ic', 'Pa', 'Pb', 'Pc']
  */
 export function navList(sections = []) {
 	const r = [{ _id: 'all', name: 'Общие' }, ...sections]
-	// Список устройств со всех секций
+	// Список устройств pui со всех секций
 	const pui = sections.flatMap((el) => el.device?.filter((d) => d?.device?.code === 'pui'))
 	if (pui.length) r.splice(1, 0, { _id: 'pui', name: 'Сеть' })
 	return r
@@ -27,6 +27,8 @@ export function sensList(build, section, sections, sect) {
 	let data = []
 	switch (sect) {
 		case 'all':
+			// Прогноз погоды
+			build?.tweather ? data.push(build.tweather) : null
 			bldSens.forEach((el) => (build?.[el]?.length ? data.push(...build?.[el]) : null))
 			break
 		case 'pui':

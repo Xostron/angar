@@ -1,9 +1,8 @@
-const { isValid, fnDetection, fnMsg, fnMsgs } = require('@tool/sensor_valid')
-const debounce = require('@tool/debounce_sensor')
+const { fnDetection, fnMsg, fnMsgs } = require('@tool/sensor/fn')
+const  vSensor  = require('@tool/sensor')
 const { getS, getSA } = require('@tool/get/sensor')
-const { getBS } = require('@tool/get/building')
 const calc = require('@tool/command/abs_humidity')
-const { data: store } = require('@store')
+
 
 /**
  * Аналоговые датчики
@@ -11,33 +10,24 @@ const { data: store } = require('@store')
  * @param {*} equip данные json по оборудованию
  * @param {*} val данные опроса модулей
  * @param {*} retain сохраненные данные склада (настройки и т.д.)
- * @param {*} result результат
+ * @param {*} result результат (отображение)
  *
  */
 function sensor(equip, val, retain, result) {
-	const { sensor, section, building } = equip
-	// Проверка каждого датчика на неисправность показаний
-	for (const s of sensor) {
-		const r = isValid(s, val, equip, retain)
-		// Владелец датчика
-		const owner = getBS(s, equip)
-		const hold = debounce(owner?.building?._id, s._id, r, store.holdSensor?.[s._id], retain, s)
-		result[s._id] = hold ? hold : r
-		store.holdSensor[s._id] = result?.[s._id]
-	}
-
+	// Анализ датчика (result[s._id] - датчики отображаются на экране настроек датчиков,
+	// result.total - значения датчиков для расчетов алгоритма и отображения на мнемосхемах )
+	vSensor(equip, val, retain, result)
 	// Проверка по секционно датчиков температуры продукта
 	fnDetection(equip, result, retain)
-
-	// Абсолютная влажность склада
+	// Готовые результаты по датчикам
 	total(equip, result, retain)
 }
 
 module.exports = sensor
 
-// Готовые результаты по датчикам
+// Значения датчиков для расчетов алгоритма и отображения на мнемосхемах
 function total(equip, result, retain) {
-	const { sensor, section, building, cooler } = equip
+	const { sensor, section, building, cooler, weather } = equip
 
 	const idsB = building.map((el) => el._id)
 	// Температура улицы (мин) среди всех складов данной pc
@@ -108,7 +98,13 @@ function total(equip, result, retain) {
 		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd'
 		const tprdL = state(sensor, result, flt, fltA)
 
-		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl }
+		// Прогноз погоды (температура улицы)
+		const tweather = result[bld._id].tweather
+		// Прогноз погоды (влажность улицы)
+		const hweather = result[bld._id].hweather
+
+		// Результат (данные с датчиков для алгоритма)
+		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather }
 		// Абсолютная влажность продукта
 		result.humAbs[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max)?.toFixed(1)
 	}
@@ -130,6 +126,8 @@ function total(equip, result, retain) {
 
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
+
+	console.log(888, result.total['6760195ed9da5c2bcc25f682'])
 }
 
 // мин, макс, состояние по датчикам
@@ -139,8 +137,6 @@ function state(sensor, result, flt, fltA) {
 
 	let on = getSA(sensor, result, fltA).some((el) => el === 'on')
 	let off = getSA(sensor, result, fltA).some((el) => el === 'off')
-
-	// if (!values.length && !on && !off) return undefined
 
 	const stt = off ? 'off' : 'alarm'
 	const st = on ? 'on' : stt
@@ -154,4 +150,16 @@ function fnState(sensor, result, idB, type) {
 	const flt = (el) => el.owner.id === idB && el.type === type && result?.[el._id]?.state === 'on'
 	const fltA = (el) => el.owner.id === idB && el.type === type
 	return state(sensor, result, flt, fltA)
+}
+
+/**
+ * Замена датчика улицы на прогноз погоды
+ * @param {*} tout
+ * @param {*} tw
+ * @returns
+ */
+function toutVsWeather(tout, tw) {
+	if (tw === null) return tout
+	if (tout > 0 && tout > tw && tw < 1) return tw
+	return tout
 }

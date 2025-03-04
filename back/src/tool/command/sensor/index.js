@@ -1,4 +1,4 @@
-// Показания датчиков секции
+// Показания датчиков секции для расчетов авторежимов
 function sensor(idB, idS, obj) {
 	const { value, data } = obj
 	// Показания с датчиков
@@ -26,11 +26,14 @@ function sensor(idB, idS, obj) {
 	return o
 }
 
-// Показания датчиков склада
+// Показания датчиков склада для расчетов авторежимов
 function sensorBuilding(idB, obj) {
 	const { value, data } = obj
 
 	const o = {
+		// Погода: температура, влажность
+		tw: value?.total?.tweather ?? null,
+		hw: value?.total?.hweather ?? null,
 		// Температура улицы - min
 		tout: value?.total?.tout?.min,
 		// Влажность улицы - max
@@ -45,18 +48,15 @@ function sensorBuilding(idB, obj) {
 		hAbsIn: +value?.humAbs?.[idB],
 		// Максимальная температура продукта по складу (по всем секция в авто режиме)
 		tprd: value?.total?.[idB]?.tprd?.min,
-		tcnl:value?.total?.[idB]?.tcnl?.min,
+		tcnl: value?.total?.[idB]?.tcnl?.min,
 		// Датчики по камере и испарителю
 		cooler: cooler(idB, obj),
-		// Погода: температура, влажность 
-		tw:'',
-		hw:''
 	}
 	// console.log(333, value.total, o)
 	return o
 }
 
-// Датчики по камере и испарителю
+// Датчики по камере и испарителю для расчетов авторежимов
 function cooler(idB, obj) {
 	const { value, data } = obj
 	const idS = data.section.find((el) => el.buildingId === idB)?._id

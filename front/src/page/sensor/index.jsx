@@ -46,10 +46,13 @@ export default function Sensor({}) {
 			this.default()
 		},
 	}
+
 	// Обработчик вызова окна
 	function onDialog(path) {
 		warn({ ...obj, path })
 	}
+
+	// Окно подтверждения
 	useEffect(() => {
 		setLink({ action: onDialog, hasChanged: hasChangedSens(buildId) })
 		return () => setLink(null)
