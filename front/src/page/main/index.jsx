@@ -18,7 +18,7 @@ const Main = () => {
 		const path = `/building/${list?.[0]?._id}`.replace('//', '/')
 		navigate(path)
 	}, [list?.length])
-console.log(0,list.length )
+	console.log(123, list.length)
 	return (
 		<>
 			<Header>{name && <span className='header-cmp'>{name ?? ''} </span>}</Header>
