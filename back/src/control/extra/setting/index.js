@@ -11,7 +11,7 @@ function setting(bld, obj) {
 	const r = {}
 	// по настройкам склада
 	for (const key of kind) {
-		const isPrd = factory[key]?._prd
+		const isPrd = factory?.[key]?._prd
 		fill(r, retain?.[bld._id]?.setting?.[key], factory?.[key], cb, key, codeP, isPrd)
 	}
 	// Системные настройки: Коэффициенты клапанов

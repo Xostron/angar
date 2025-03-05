@@ -14,11 +14,13 @@ const Main = () => {
 
 	// Автоматический переход на склад (список секций)(если складов меньше 1)
 	useEffect(() => {
-		if (list?.length > 1) return
+        // Складов больше одного
+		if (list?.length > 1 || list?.length===0) return
+        // Складов == 1 
 		const path = `/building/${list?.[0]?._id}`.replace('//', '/')
 		navigate(path)
 	}, [list?.length])
-	console.log(123, list.length)
+
 	return (
 		<>
 			<Header>{name && <span className='header-cmp'>{name ?? ''} </span>}</Header>

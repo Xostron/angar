@@ -87,7 +87,7 @@ function stateWeather(bId, weather, retain, key, fld) {
 	state = isValidWeather(weather) ? state : 'alarm'
 	// Истинное значение
 	// const raw = state == 'alarm' ? null : +weather?.[fld].toFixed(1)
-	const raw = +weather?.[fld].toFixed(1)
+	const raw = +weather?.[fld]?.toFixed(1)
 	// Значение с коррекцией
 	const value = typeof raw == 'number' ? +(raw + (+retain?.[bId]?.[key]?.corr || 0)).toFixed(1) : null
 	return { raw, value, state }

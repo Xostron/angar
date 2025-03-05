@@ -8,7 +8,9 @@ const useEquipStore = create((set, get) => ({
 	curS: null,
 	// сохранить в стейт list[]
 	initE: (r) => {
+        console.log('initE', r)
 		if (!r) return
+        console.log('initE, r = ', r)
 		set({ factory: r?.factory })
 		set({ list: r?.building })
 		set({ weather: r?.weather ?? {} })
