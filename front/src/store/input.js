@@ -33,7 +33,7 @@ const useInputStore = create((set, get) => ({
 		const input = get().input
 		return input?.[sensorId]?.value ?? null
 	},
-	getVal(sensorId) {
+	getSens(sensorId) {
 		const input = get().input
 		return input?.[sensorId]
 	},

@@ -1,7 +1,7 @@
 const { data: store } = require('@store')
 const { getBS } = require('@tool/get/building')
 const debounce = require('./debounce')
-const { getRaw, range, webAlarm, state } = require('./fn')
+const { getRaw, range, webAlarm, state, isValidWeather } = require('./fn')
 /**
  * Анализ датчиков
  * result[s._id] - отображение на экране настроек датчиков,
@@ -26,8 +26,8 @@ function vSensor(equip, val, retain, result) {
 	// Добавление прогноза погоды на экран настроек датчиков
 	for (const bld of building) {
 		result[bld._id] ??= {}
-		result[bld._id].tweather = stateWeather(bld._id, weather, retain, 'temp')
-		result[bld._id].hweather = stateWeather(bld._id, weather, retain, 'humidity')
+		result[bld._id].tweather = stateWeather(bld._id, weather, retain, 'tweather', 'temp')
+		result[bld._id].hweather = stateWeather(bld._id, weather, retain, 'hweather', 'humidity')
 	}
 }
 
@@ -77,16 +77,20 @@ function valid(sens, val, equip, retain) {
  * @param {string} key temp | humidity
  * @return {object} {value:1, state: 'on' | 'off'}
  */
-function stateWeather(bId, weather, retain, key) {
-	// Состояние: вкл/выкл на экране датчиков
-	let state = !retain?.[bId]?.weather?.[key]?.on || retain?.[bId]?.weather?.[key]?.on === true ? 'on' : 'off'
-	// Если данные о параметре нет, то alarm
-	state = typeof weather?.[key] == 'number' ? state : 'alarm'
+function stateWeather(bId, weather, retain, key, fld) {
+	// Состояние: вкл/выкл на экране датчиков (on|off)
+	let state = retain?.[bId]?.[key]?.on === undefined || retain?.[bId]?.[key]?.on === true ? 'on' : 'off'
+	// Авария - alarm
+	// Если нет показания или времени обновления
+	if (typeof weather?.[fld] != 'number') state = 'alarm'
+	// Проверка последнего обновления (срок 2 часа)
+	state = isValidWeather(weather) ? state : 'alarm'
 	// Истинное значение
-	const raw = state != 'alarm' ? +weather?.[key].toFixed(1) : null
+	// const raw = state == 'alarm' ? null : +weather?.[fld].toFixed(1)
+	const raw = +weather?.[fld].toFixed(1)
 	// Значение с коррекцией
-	const value = typeof raw == 'number' ? +(raw + (retain?.[bId]?.weather?.[key]?.corr || 0)).toFixed(1) : null
+	const value = typeof raw == 'number' ? +(raw + (+retain?.[bId]?.[key]?.corr || 0)).toFixed(1) : null
 	return { raw, value, state }
 }
 
-module.exports =  vSensor 
+module.exports = vSensor

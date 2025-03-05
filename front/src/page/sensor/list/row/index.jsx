@@ -17,21 +17,23 @@ export default function Row({ data }) {
 	// сохранить настройки на сервере ангара
 	const [setSens, sens] = useOutputStore(({ setSens, sens }) => [setSens, sens])
 	// настройка датчика
-	const [getRaw, setting, input] = useInputStore(({ getRaw, input }) => [getRaw, input?.retain?.[build], input])
+	const [getSens, setting, input] = useInputStore(({ getSens, input }) => [getSens, input?.retain?.[build], input])
 	const el = ['tweather', 'hweather'].includes(data?.type) ? data?.type : data?._id
 	// Датчик вкл/выкл
 	const onn = setting?.[el]?.on === undefined ? true : setting?.[el]?.on ? true : false
 	const [on, setOn] = useState(onn)
-
 	// Коррекция датчика
 	const [corr, setCorr] = useState(setting?.[el]?.corr ?? 0)
-
 	// Истинное значение датчика
-	const raw = input?.[el]?.raw
-	const r = getRaw(el)
-
 	// Значение датчика с коррекцией
-	const result = input?.[el]?.value
+	let raw, result
+	if (['tweather', 'hweather'].includes(data?.type)) {
+		raw = input?.[build]?.[el]?.raw
+		result = input?.[build]?.[el]?.value
+	} else {
+		raw = getSens(el)?.raw
+		result = getSens(el)?.value
+	}
 
 	// Обработка коррекции и вкл/выкл датчика
 	useEffect(() => {
@@ -39,36 +41,9 @@ export default function Row({ data }) {
 		setOn(onn)
 	}, [el])
 
-	// Ед. измерения, иконка
-	let unit = defUn['p']
-	let ico = defImg['pressure'].on
-	if (t.includes(data.type)) {
-		unit = defUn['temp']
-		ico = defImg['temp'].on
-	}
-	if (m.includes(data.type)) {
-		unit = defUn['mois']
-		ico = defImg['mois'].on
-	}
-
-	//Подсветка - Измененные данные
-	const chg = !!sens?.[build]?.[el]?.corr
-	let clCorr = ['cell-w']
-	if (chg) clCorr.push('changed')
-
-	// ошибка датчика
-	let cls = ['cell-w']
-	if (r === null) cls.push('error')
-	cls = cls.join(' ')
-	// датчик выключен
-	let cl = ['cell-w']
-	if (!on) {
-		cl.push('error')
-		clCorr.push('error')
-	}
-	cl = cl.join(' ')
-	clCorr = clCorr.join(' ')
-
+	const { unit, ico } = fnUnit(data)
+	const { cl, cls, clCorr } = fnStyle(sens?.[build]?.[el]?.corr, raw, on)
+	// if (data.type === 'tweather') console.log(111, input?.[build]?.[el])
 	return (
 		<>
 			<IconText cls={cl} data={{ value: data.name, icon: ico }} />
@@ -89,4 +64,50 @@ export default function Row({ data }) {
 		setCorr(val)
 		setSens({ build, _id: el, corr: val })
 	}
+}
+
+/**
+ * Стиль строки
+ * @param {number} corr коррекция датчика (из state на отправление формы)
+ * @param {number} raw Истинное значение датчика
+ * @param {boolean} on вкл/выкл датчик
+ * @returns {object} { cl, cls, clCorr } стили
+ */
+function fnStyle(corr, raw, on) {
+	//Подсветка - Измененные данные
+	let clCorr = ['cell-w']
+	if (!!corr) clCorr.push('changed')
+	// ошибка датчика
+	let cls = ['cell-w']
+	if (raw === null) cls.push('error')
+	// датчик выключен
+	let cl = ['cell-w']
+	if (!on) {
+		cl.push('error')
+		clCorr.push('error')
+	}
+	cl = cl.join(' ')
+	cls = cls.join(' ')
+	clCorr = clCorr.join(' ')
+	return { cl, cls, clCorr }
+}
+
+/**
+ * Иконки
+ * @param {object} data скелет датчика
+ * @returns {object} {unit, ico} иконки
+ */
+function fnUnit(data) {
+	// Ед. измерения, иконка
+	let unit = defUn['p']
+	let ico = defImg['pressure'].on
+	if (t.includes(data.type)) {
+		unit = defUn['temp']
+		ico = defImg['temp'].on
+	}
+	if (m.includes(data.type)) {
+		unit = defUn['mois']
+		ico = defImg['mois'].on
+	}
+	return { unit, ico }
 }

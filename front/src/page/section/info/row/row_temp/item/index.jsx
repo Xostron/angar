@@ -2,10 +2,10 @@ import useInputStore from '@store/input'
 import defUn from '@tool/unit'
 
 export default function ItemTemp({ sensId, type, cls }) {
-	const [getVal] = useInputStore(({ getVal }) => [getVal])
+	const [getSens] = useInputStore(({ getSens }) => [getSens])
 	const unit = defUn[type]
 	let cl = ['sir-item', cls]
-	const v= getVal(sensId)
+	const v= getSens(sensId)
 
 	// ошибка датчика
 	if (v?.state === 'alarm') cl.push('error')

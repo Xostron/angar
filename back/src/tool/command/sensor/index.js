@@ -4,7 +4,7 @@ function sensor(idB, idS, obj) {
 	// Показания с датчиков
 	const o = {
 		// Температура улицы - min
-		tout: value?.total?.tout?.min,
+		tout: value?.total?.[idB]?.tout?.min,
 		// Влажность улицы - max
 		hout: value?.total?.hout?.min,
 		// Абс влажность улицы
@@ -35,7 +35,7 @@ function sensorBuilding(idB, obj) {
 		tw: value?.total?.tweather ?? null,
 		hw: value?.total?.hweather ?? null,
 		// Температура улицы - min
-		tout: value?.total?.tout?.min,
+		tout: value?.total?.[idB]?.tout?.min,
 		// Влажность улицы - max
 		hout: value?.total?.hout?.max,
 		// Абс влажность улицы

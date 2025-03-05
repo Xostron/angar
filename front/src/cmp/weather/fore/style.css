@@ -1,8 +1,8 @@
 .weather-fore {
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	padding: 20px 0px;
-
 	gap: 20px;
 }
 
@@ -42,4 +42,13 @@
 .weather-fore .wthr img {
 	width: 100px;
 	height: 100px;
+}
+
+.wthr-update {
+	position: absolute;
+	right: 6%;
+	bottom: 2%;
+	font-size: var(--fsz20);
+	color: var(--background);
+	/* transform: translateY(0%); */
 }

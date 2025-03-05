@@ -1,8 +1,7 @@
 const { fnDetection, fnMsg, fnMsgs } = require('@tool/sensor/fn')
-const  vSensor  = require('@tool/sensor')
+const vSensor = require('@tool/sensor')
 const { getS, getSA } = require('@tool/get/sensor')
 const calc = require('@tool/command/abs_humidity')
-
 
 /**
  * Аналоговые датчики
@@ -25,7 +24,7 @@ function sensor(equip, val, retain, result) {
 
 module.exports = sensor
 
-// Значения датчиков для расчетов алгоритма и отображения на мнемосхемах
+// Значения датчиков для расчетов алгоритма и отображения на панели с погодой
 function total(equip, result, retain) {
 	const { sensor, section, building, cooler, weather } = equip
 
@@ -102,11 +101,14 @@ function total(equip, result, retain) {
 		const tweather = result[bld._id].tweather
 		// Прогноз погоды (влажность улицы)
 		const hweather = result[bld._id].hweather
-
+		const tout = {...result?.total?.tout} ?? {}
+		// const hout =
+		tout.min = toutVsWeather(tout.min, tweather)
 		// Результат (данные с датчиков для алгоритма)
-		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather }
+		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather, tout }
 		// Абсолютная влажность продукта
 		result.humAbs[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max)?.toFixed(1)
+		// console.log(888, bld.name, result.total[bld._id])
 	}
 
 	//  по секциям
@@ -126,8 +128,6 @@ function total(equip, result, retain) {
 
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
-
-	console.log(888, result.total['6760195ed9da5c2bcc25f682'])
 }
 
 // мин, макс, состояние по датчикам
@@ -154,12 +154,15 @@ function fnState(sensor, result, idB, type) {
 
 /**
  * Замена датчика улицы на прогноз погоды
- * @param {*} tout
- * @param {*} tw
- * @returns
+ * @param {number} tout min температура улицы по датчику
+ * @param {object} tw температура улицы по прогнозу
+ * @returns {number} температура улицы min
  */
 function toutVsWeather(tout, tw) {
-	if (tw === null) return tout
-	if (tout > 0 && tout > tw && tw < 1) return tw
+	// Прогноз погоды выкл или не валиден
+	if (tw.state != 'on') return tout
+	// Условие переключения температуры на прогноз погоды
+	if (tout > 0 && tout > tw.value && tw.value < 1) return tw.value
+	// по-умолчанию: работа по датчику
 	return tout
 }

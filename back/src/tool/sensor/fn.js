@@ -168,7 +168,20 @@ function fnMsg(bld, val, type, bType) {
 	}
 }
 
-module.exports = { getRaw, fnDetection, detection, state, range,webAlarm, fnMsgs, fnMsg }
+/**
+ * 
+ * @param {object} weather данные погоды 
+ * @returns {boolean} true - ok, false - alarm
+ */
+function isValidWeather(weather){
+	// 2 часа
+	const expire = 2 * 60 * 60 * 1000
+	const now = new Date()
+	const updateTime = weather?.update ? new Date(weather?.update) : null
+	if (!updateTime) return false
+	return now - updateTime >= expire ? false : true
+}
+module.exports = { getRaw, fnDetection, detection, state, range,webAlarm, fnMsgs, fnMsg, isValidWeather }
 
 // Коды сообщений
 const code = {

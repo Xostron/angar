@@ -37,7 +37,7 @@ module.exports = setting
 function coef(stg, bld, obj) {
 	const { value, data } = obj
 	// Температура улицы (мин)
-	const tout = value?.total?.tout?.min
+	const tout = value?.total?.[bld._id]?.tout?.min
 	// Температура продукта
 	const tprd = value?.total?.[bld._id]?.tprd?.min
 	const hyst = 1

@@ -10,17 +10,13 @@ import Banner from '@cmp/banner'
 //Секции склада / Секция
 export default function BuildOrSect({}) {
 	let { sect, build } = useParams()
-	const navigate = useNavigate()
-	const location = useLocation()
+
 	const [sects] = useEquipStore(({ sections }) => [sections()])
 	const type = sect ? 'section' : 'building'
 
-	useEffect(() => {
-		if (sects?.length === 1 && !sect) {
-			const path = `${location.pathname}/section/${sects?.[0]?._id}`.replace('//', '/')
-			navigate(path)
-		}
-	}, [])
+
+
+	console.log(111,build, sect, sects)
 
 	return (
 		<main className='build'>

@@ -14,8 +14,11 @@ function web(code, obj, oData) {
 	const { sensor } = oData
 	const bId = Object.keys(obj)[0]
 	let title = []
+	console.log(777, obj)
 	for (const sensId in obj[bId]) {
-		const sens = sensor.find((el) => el._id === sensId)
+		let sens = {}
+		if (['tweather', 'hweather'].includes(sensId)) sens.name = 'Прогноз погоды: Температура улицы'
+		else sens = sensor.find((el) => el._id === sensId)
 		const on = obj[bId][sensId].on
 		const corr = obj[bId][sensId].corr
 
@@ -41,7 +44,9 @@ function mobile(code, o, oData) {
 	let title = []
 
 	for (const sensId in obj) {
-		const sens = sensor.find((el) => el._id === sensId)
+		let sens = {}
+		if (['tweather', 'hweather'].includes(sensId)) sens.name = 'Прогноз погоды: Температура улицы'
+		else sens = sensor.find((el) => el._id === sensId)
 		let on, corr
 		// Выявляем различия нового значение от retain
 		if (obj[sensId].on != retain?.[buildingId]?.[sensId]?.on) on = obj[sensId].on
