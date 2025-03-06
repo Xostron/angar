@@ -2,6 +2,7 @@ const { fnDetection, fnMsg, fnMsgs } = require('@tool/sensor/fn')
 const vSensor = require('@tool/sensor')
 const { getS, getSA } = require('@tool/get/sensor')
 const calc = require('@tool/command/abs_humidity')
+const dewpoint = require('@tool/sensor/dewpoint')
 
 /**
  * Аналоговые датчики
@@ -54,7 +55,7 @@ function total(equip, result, retain) {
 	result.humAbs = {
 		out: calc(tout?.min, hout?.max)?.toFixed(1),
 	}
-
+	// По складу
 	for (const bld of building) {
 		let idsS = []
 		let idsAll = []
@@ -101,17 +102,21 @@ function total(equip, result, retain) {
 		const tweather = result[bld._id].tweather
 		// Прогноз погоды (влажность улицы)
 		const hweather = result[bld._id].hweather
-		const tout = {...result?.total?.tout} ?? {}
+		const tout = { ...result?.total?.tout } ?? {}
 		// const hout =
 		tout.min = toutVsWeather(tout.min, tweather)
+
 		// Результат (данные с датчиков для алгоритма)
 		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather, tout }
 		// Абсолютная влажность продукта
 		result.humAbs[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max)?.toFixed(1)
-		// console.log(888, bld.name, result.total[bld._id])
+		// Точка росы
+		result.total[bld._id].point = dewpoint(result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
+		
+		console.log(888, bld.name, result.total[bld._id], result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
 	}
 
-	//  по секциям
+	//  По секциям
 	for (const sec of section) {
 		// Температура продукта
 		const tprd = fnState(sensor, result, sec._id, 'tprd')

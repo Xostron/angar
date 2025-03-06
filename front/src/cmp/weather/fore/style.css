@@ -45,6 +45,10 @@
 }
 
 .wthr-update {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	padding-left: 20px;
 	position: absolute;
 	right: 6%;
 	bottom: 2%;

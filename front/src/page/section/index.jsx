@@ -21,7 +21,7 @@ export default function Sect({}) {
 	}, [sect, getCurB(build)])
 
 	if (!section) return null
-// console.log(333)
+
 	const nhs = { gridTemplateRows: `repeat(${sections.length}, var(--fsz65))` }
 	const type = getType(build)
 	return (

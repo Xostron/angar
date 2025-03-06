@@ -34,7 +34,7 @@ function stateEq(id, value) {
 
 // Состояние вентилятора
 function stateF(fan, equip, result, retain) {
-	const idB = getIdB(fan.module.id, equip.module)
+	const idB = getIdB(fan.module?.id, equip.module)
 	// Выведен из работы
 	const off = retain?.[idB]?.fan?.[fan.owner.id]?.[fan._id]
 	// Состояние выхода
