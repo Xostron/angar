@@ -51,7 +51,7 @@ function total(equip, result, retain) {
 		hout,
 	}
 
-	// Абсолютная влажность улицы
+	// Абсолютная влажность
 	result.humAbs = {
 		// внешняя
 		out: {
@@ -76,6 +76,7 @@ function total(equip, result, retain) {
 		} else idsS = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
 
 		// Температура продукта (макс) по всем секциям склада
+        // если секция не в авто режиме, то абсолютная влажность продукта = null
 		flt = (el) => idsS.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
 		fltA = (el) => idsS.includes(el.owner.id) && el.type === 'tprd'
 		const tprd = state(sensor, result, flt, fltA)
