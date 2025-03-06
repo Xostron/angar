@@ -21,7 +21,6 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = se
 	// TODO: Как реагировать при обвале датчиков?
 	if (tout === null || hout === null) {
-		console.log(7777, ' ============================')
 		acc.alarm = true
 		return
 	}
