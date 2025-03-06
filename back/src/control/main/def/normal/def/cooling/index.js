@@ -43,7 +43,7 @@ function valve(s, se, sectionId, acc) {
 
 function fan(s, se, alr, sectionId, acc) {
 	const start = !alr && !acc.finish && !acc.alarm
-	console.log(777, 'fan ===============',sectionId, start, '=', !alr, !acc.finish, !acc.alarm)
+	// console.log(777, 'fan ===============',sectionId, start, '=', !alr, !acc.finish, !acc.alarm)
 	return { start }
 }
 

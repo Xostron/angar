@@ -8,13 +8,13 @@ function sensor(idB, idS, obj) {
 		// Влажность улицы - max
 		hout: value?.total?.hout?.min,
 		// Абс влажность улицы
-		hAbsOut: +value?.humAbs?.out,
+		hAbsOut: +value?.humAbs?.out?.com ?? +value?.humAbs?.out?.[idB],
 		// Температура потолка
 		tin: value?.total?.[idB]?.tin?.min,
 		// Влажность продукта - max
 		hin: value?.total?.[idB]?.hin?.min,
 		// Абсолютная влажность проукта
-		hAbsIn: +value?.humAbs?.[idB],
+		hAbsIn: +value?.humAbs?.in?.[idB],
 		// Минимальная температура продукта по секции
 		tprd: value?.total?.[idS]?.tprd?.min,
 		// Температура канала - мин
@@ -39,13 +39,13 @@ function sensorBuilding(idB, obj) {
 		// Влажность улицы - max
 		hout: value?.total?.hout?.max,
 		// Абс влажность улицы
-		hAbsOut: +value?.humAbs?.out,
+		hAbsOut: +value?.humAbs?.out?.com ?? +value?.humAbs?.out?.[idB],
 		// Температура потолка - min
 		tin: value?.total?.[idB]?.tin?.min,
 		// Влажность продукта - max
 		hin: value?.total?.[idB]?.hin?.max,
 		//  Абс. влажность продукта
-		hAbsIn: +value?.humAbs?.[idB],
+		hAbsIn: +value?.humAbs?.in?.[idB],
 		// Максимальная температура продукта по складу (по всем секция в авто режиме)
 		tprd: value?.total?.[idB]?.tprd?.min,
 		tcnl: value?.total?.[idB]?.tcnl?.min,

@@ -61,7 +61,7 @@ function coef(stg, bld, obj) {
 		kIn = 1
 	}
 
-	console.log(5555, 'Коэффициенты клапана', 'tout', tout, '<', stg.outOn, { kOut, kIn })
+	// console.log(5555, 'Коэффициенты клапана', 'tout', tout, '<', stg.outOn, { kOut, kIn })
 	return { kOut, kIn }
 }
 
@@ -153,6 +153,6 @@ function coefMois(stg, bld, obj) {
 		habs = stg?.abs2?.h
 	}
 
-	console.log(3333, 'Коэффициенты влажности', 'tprd', tprd, '< X;', 'Влажность: habs', habs)
+	// console.log(3333, 'Коэффициенты влажности', 'tprd', tprd, '< X;', 'Влажность: habs', habs)
 	return habs
 }

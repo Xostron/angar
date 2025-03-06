@@ -29,7 +29,7 @@ export default function Outdoor() {
 		sens.push({type: 'co2', ... getTotalBy('co2', 'min', section?._id)})
 	// Абс влажность продукта
 	else 
-		sens.push({ type: 'calcMois', value: humAbs?.[build?._id] })
+		sens.push({ type: 'calcMois', value: humAbs?.in?.[build?._id]  })
 	
 	return (
 		<section className='outdoor'>

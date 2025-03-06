@@ -58,7 +58,7 @@ async function transform(idB, secId) {
 				fan: f,
 				// Абсолютная влажность продукта
 				ahb: {
-					value: data?.humAbs?.[idB],
+					value: data?.humAbs?.in?.[idB],
 					state: checkS(data?.total?.[idB]?.hin?.state, data?.total?.[idB]?.tprd?.state),
 				},
 				// Температура потолка (мин)
@@ -75,7 +75,7 @@ async function transform(idB, secId) {
 		}
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы
-			result.value.ah = { value: data?.humAbs?.out, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
+			result.value.ah = { value: data?.humAbs?.out?.com, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
 			// Температура улицы (мин)
 			result.value.temp = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
 			// Влажность улицы (макс)

@@ -19,7 +19,7 @@ export default function Weather({}) {
 		// Влажность улицы - max
 		{ type: 'hout', ...getTotal('hout', 'max') },
 		// Абсолютная влажность улицы
-		{ type: 'calcMois', value: humAbs?.out },
+		{ type: 'calcMois', value: humAbs?.out?.com ?? humAbs?.out?.[build._id] },
 	]
 	sens[2].state = checkS(sens?.[0]?.state, sens?.[1]?.state)
 

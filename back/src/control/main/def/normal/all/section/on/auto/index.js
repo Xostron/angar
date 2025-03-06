@@ -16,7 +16,7 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада, авария по низкой темпаературе
 	const alr = alrS || alrAm || ban || alrBld  || alrAlw || alrSe //|| !!alrClosed
-	console.log(666, sect?.name, 'alr = ' + alr + ' = ', alrS, '||', alrAm, '||', ban, '||', alrBld, '||', '||', alrAlw, '||', alrSe)
+	// console.log(666, sect?.name, 'alr = ' + alr + ' = ', alrS, '||', alrAm, '||', ban, '||', alrBld, '||', '||', alrAlw, '||', alrSe)
 	//********** Логика авто **********
 	// Пользовательские расчеты
 	if (def[am]?.middlew) def[am]?.middlew(building, sect, obj, s, se, seB, alr, acc)
