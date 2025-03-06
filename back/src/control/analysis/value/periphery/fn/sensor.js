@@ -113,7 +113,7 @@ function total(equip, result, retain) {
 		// Точка росы
 		result.total[bld._id].point = dewpoint(result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
 		
-		console.log(888, bld.name, result.total[bld._id], result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
+		console.log(888, bld.name, 'point',result.total[bld._id].point, 'tout', result.total?.[bld._id]?.tout?.min, 'hout', result?.total?.hout?.max)
 	}
 
 	//  По секциям

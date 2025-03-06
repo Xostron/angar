@@ -21,6 +21,7 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = se
 	// TODO: Как реагировать при обвале датчиков?
 	if (tout === null || hout === null) {
+		console.log(7777, ' ============================')
 		acc.alarm = true
 		return
 	}
@@ -43,6 +44,7 @@ function valve(s, se, sectionId, acc) {
 
 function fan(s, se, alr, sectionId, acc) {
 	const start = !alr && !acc.finish && !acc.alarm
+	console.log(777, 'fan ===============',sectionId, start, '=', !alr, !acc.finish, !acc.alarm)
 	return { start }
 }
 

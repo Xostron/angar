@@ -5,7 +5,7 @@ const { data: store } = require('@store')
 function setting(bld, obj) {
 	const { retain, factory } = obj
 	const codeP = retain?.[bld._id]?.product?.code
-	console.log(999, 'Аккумулятор гистерезисов', store.heap)
+	// console.log(999, 'Аккумулятор гистерезисов', store.heap)
 	// список настроек склада
 	const kind = bld?.kindList
 	const r = {}

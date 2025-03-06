@@ -11,12 +11,12 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 	const toAlr = def[am]?.toAlrS(s, sect._id, acc)
 	const alrS = extralrm(building, sect, obj, s, se, m, am, toAlr)
 
-	const alrClosed = store.alarm?.extralrm?.[building._id]?.[sect._id]?.alrClosed
+	// const alrClosed = store.alarm?.extralrm?.[building._id]?.[sect._id]?.alrClosed
 	const alrSe = alrSens(se)
 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада, авария по низкой темпаературе
-	const alr = alrS || alrAm || ban || alrBld || !!alrClosed || alrAlw || alrSe
-
+	const alr = alrS || alrAm || ban || alrBld  || alrAlw || alrSe //|| !!alrClosed
+	console.log(666, sect?.name, 'alr = ' + alr + ' = ', alrS, '||', alrAm, '||', ban, '||', alrBld, '||', '||', alrAlw, '||', alrSe)
 	//********** Логика авто **********
 	// Пользовательские расчеты
 	if (def[am]?.middlew) def[am]?.middlew(building, sect, obj, s, se, seB, alr, acc)

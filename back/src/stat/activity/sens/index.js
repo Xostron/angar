@@ -14,7 +14,6 @@ function web(code, obj, oData) {
 	const { sensor } = oData
 	const bId = Object.keys(obj)[0]
 	let title = []
-	console.log(777, obj)
 	for (const sensId in obj[bId]) {
 		let sens = {}
 		if (['tweather', 'hweather'].includes(sensId)) sens.name = 'Прогноз погоды: Температура улицы'

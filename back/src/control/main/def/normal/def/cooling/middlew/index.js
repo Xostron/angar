@@ -25,15 +25,15 @@ function submode(building, section, obj, s, se, seB, alr, acc) {
 
 	// ========= Лечение =========
 	// set
-	console.log(11, 'check лечение', s.mois.humidity + s.cure.hysteresisJump, '<', seB.hin, '&&', seB.tprd, '<=', acc.tgt, '&&', acc?.submode?.[0])
+	// console.log(11, 'check лечение', s.mois.humidity + s.cure.hysteresisJump, '<', seB.hin, '&&', seB.tprd, '<=', acc.tgt, '&&', acc?.submode?.[0])
 	if (s.mois.humidity + s.cure.hysteresisJump < seB.hin && seB.tprd <= acc.tgt && acc?.submode?.[0] === sm?.cooling?.[0]) {
 		acc.submode = sm.cure
-		console.log(12, 'set лечение')
+		// console.log(12, 'set лечение')
 	}
 	// reset
 	if ((s.mois.humidity > seB.hin || seB.tprd > acc.tgt + s.cooling.hysteresisIn) && acc?.submode?.[0] === sm?.cure?.[0]) {
 		acc.submode = sm.cooling
-		console.log(22, 'reset лечение')
+		// console.log(22, 'reset лечение')
 	}
 	// Уменьшение разницы продукт-канал
 	if (seB.tprd + 0.2 <= acc.tgt && acc?.submode?.[0] === sm?.cure?.[0]) acc.setting.cooling.differenceValue = 0
