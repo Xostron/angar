@@ -8,13 +8,13 @@ function sensor(idB, idS, obj) {
 		// Влажность улицы - max
 		hout: value?.total?.hout?.min,
 		// Абс влажность улицы
-		hAbsOut: +value?.humAbs?.out?.com ?? +value?.humAbs?.out?.[idB],
+		hAbsOut: isNaN(+value?.humAbs?.out?.com) ? +value?.humAbs?.out?.[idB] : +value?.humAbs?.out?.com,
 		// Температура потолка
 		tin: value?.total?.[idB]?.tin?.min,
 		// Влажность продукта - max
 		hin: value?.total?.[idB]?.hin?.min,
 		// Абсолютная влажность проукта
-		hAbsIn: +value?.humAbs?.in?.[idB],
+		hAbsIn: isNaN(+value?.humAbs?.in?.[idB]) ? null : +value?.humAbs?.in?.[idB],
 		// Минимальная температура продукта по секции
 		tprd: value?.total?.[idS]?.tprd?.min,
 		// Температура канала - мин
@@ -29,7 +29,7 @@ function sensor(idB, idS, obj) {
 // Показания датчиков склада для расчетов авторежимов
 function sensorBuilding(idB, obj) {
 	const { value, data } = obj
-
+	console.log(666,value?.humAbs?.in?.[idB], +value?.humAbs?.in?.[idB] , isNaN(+value?.humAbs?.in?.[idB]))
 	const o = {
 		// Погода: температура, влажность
 		tw: value?.total?.tweather ?? null,
@@ -39,13 +39,13 @@ function sensorBuilding(idB, obj) {
 		// Влажность улицы - max
 		hout: value?.total?.hout?.max,
 		// Абс влажность улицы
-		hAbsOut: +value?.humAbs?.out?.com ?? +value?.humAbs?.out?.[idB],
+		hAbsOut: isNaN(+value?.humAbs?.out?.com) ? +value?.humAbs?.out?.[idB] : +value?.humAbs?.out?.com,
 		// Температура потолка - min
 		tin: value?.total?.[idB]?.tin?.min,
 		// Влажность продукта - max
 		hin: value?.total?.[idB]?.hin?.max,
 		//  Абс. влажность продукта
-		hAbsIn: +value?.humAbs?.in?.[idB],
+		hAbsIn: isNaN(+value?.humAbs?.in?.[idB]) ? null : +value?.humAbs?.in?.[idB],
 		// Максимальная температура продукта по складу (по всем секция в авто режиме)
 		tprd: value?.total?.[idB]?.tprd?.min,
 		tcnl: value?.total?.[idB]?.tcnl?.min,
