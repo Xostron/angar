@@ -7,7 +7,7 @@ export default function Forecast({ address, weather, cls }) {
 	const [tweather, point] = useInputStore(({ input }) => [input?.[build]?.tweather?.value, input?.total?.[build]?.point])
 	let cl = ['w-fore', cls]
 	cl = cl.join(' ')
-	const img = weather.code ? <img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} /> : null
+	const img = typeof weather.code == 'number' ? <img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} /> : null
 	const dt = new Date(weather.time).toLocaleString()
 	const updateTime = new Date(weather.update).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })
 
