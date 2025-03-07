@@ -6,8 +6,12 @@ const data = require('./data')
  * @param {*} q относительная влажность
  * @returns
  */
-function calc(t, q) {
-	if (t === null || q === null || t === undefined || q === undefined) return null
+function calc(t, q, name) {
+	// console.log(111, name, t, q)
+	if (t === null || q === null || t === undefined || q === undefined) {
+		
+		return null
+	}
 	if (t <= -30) return (q * data['-30']) / 100
 	if (t >= 100) return (q * data[100]) / 100
 
@@ -26,7 +30,7 @@ function lin(y, y1) {
 	const x1 = data[y1]
 	const x2 = data[y2]
 	const r = (x2 - x1) * (y - y1)
-    return y>=0 ? r + x1: x1 - r
+	return y >= 0 ? r + x1 : x1 - r
 }
 
 module.exports = calc

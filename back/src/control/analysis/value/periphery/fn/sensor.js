@@ -55,7 +55,7 @@ function total(equip, result, retain) {
 	result.humAbs = {
 		// внешняя
 		out: {
-			com: calc(tout?.min, hout?.max)?.toFixed(1),
+			com: calc(tout?.min, hout?.max, 'Внешняя абс влажность'),
 			// [bld._id] от погоды
 		},
 		// продукт
@@ -77,8 +77,8 @@ function total(equip, result, retain) {
 
 		// Температура продукта (макс) по всем секциям склада
         // если секция не в авто режиме, то абсолютная влажность продукта = null
-		flt = (el) => idsS.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
-		fltA = (el) => idsS.includes(el.owner.id) && el.type === 'tprd'
+		flt = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
+		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd'
 		const tprd = state(sensor, result, flt, fltA)
 
 		// Темп. канала (мин) по всем секциям
@@ -115,18 +115,16 @@ function total(equip, result, retain) {
 		// Температура улицы склада
 		const tout = { ...result?.total?.tout } ?? {}
 		tout.min = toutVsWeather(tout.min, tweather)
-		// Абс влажность склада
-		result.humAbs.out[bld._id] = calc(tout?.min, result.total?.hout?.max)?.toFixed(1)
+		// Абс влажность улицы
+		result.humAbs.out[bld._id] = calc(tout?.min, result.total?.hout?.max, `${bld.name}:Абс.влажность улицы`)
 		// const hout =
 
 		// Результат (данные с датчиков для алгоритма)
 		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather, tout }
 		// Абсолютная влажность продукта
-		result.humAbs.in[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max)?.toFixed(1)
+		result.humAbs.in[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max, `${bld.name}:Абс.влажность продукта`)
 		// Точка росы
 		result.total[bld._id].point = dewpoint(result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
-
-		console.log(888, bld.name, 'point', result.total[bld._id].point, 'tout', result.total?.[bld._id]?.tout?.min, 'hout', result?.total?.hout?.max)
 	}
 
 	//  По секциям
