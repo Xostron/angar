@@ -71,6 +71,8 @@ async function transform(idB, secId) {
 					value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined,
 					state: data?.total?.[idB]?.hin?.state,
 				},
+				// Точка росы
+				point: { value: data?.total?.[idB]?.point },
 			},
 		}
 		if (type !== 'cold') {
