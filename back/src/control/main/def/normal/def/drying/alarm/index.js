@@ -1,6 +1,6 @@
 const { msg } = require('@tool/message')
 
-function alarm(s, se, seB, building, section) {
+function alarm(s, seB, building, section) {
 	const { tout, hout, hAbsOut, hAbsIn } = seB
 	// console.log(
 	// 	1111,
@@ -34,7 +34,7 @@ function alarm(s, se, seB, building, section) {
 	// 	s.mois.hysteresisAbs,
 	// 	hAbsIn - s.mois.differenceMax
 	// )
-
+	// console.log(3333, s.drying.channelMax, tout, 'set', s.drying.channelMax < tout, 'reset', s.drying.channelMax > tout + s.drying.hysteresisOut)
 	return [
 		{
 			set: s.drying.channelMax < tout,

@@ -29,15 +29,21 @@ const data = {
 module.exports = data
 
 function fn(code) {
-	return function (obj) {
-		return new Promise((resolve, reject) => {
-			try {
-				createAndModifySync(obj, 'data', retainDir, cb[code])
-				resolve()
-			} catch (error) {
-				reject(error)
-			}
-		})
+	return async function (obj) {
+		// return new Promise(async (resolve, reject) => {
+		// 	try {
+		// 		await createAndModifySync(obj, 'data', retainDir, cb[code])
+		// 		resolve()
+		// 	} catch (error) {
+		// 		reject(error)
+		// 	}
+		// })
+		try {
+			await createAndModifySync(obj, 'data', retainDir, cb[code])
+			return true
+		} catch (error) {
+			throw new Error('Мобильный клиент: Запись данных не успешна!')
+		}
 	}
 }
 const cb = {

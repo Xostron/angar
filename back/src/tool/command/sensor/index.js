@@ -53,7 +53,7 @@ function sensorBuilding(idB, obj) {
 		// Датчики по камере и испарителю
 		cooler: cooler(idB, obj),
 	}
-	console.log(333, 'склад', idB, 'абс вл. улицы', o.hAbsOut, 'абс влажность продукта', o.hAbsIn)
+	// console.log(333, 'склад', idB, 'абс вл. улицы', o.hAbsOut, 'абс влажность продукта', o.hAbsIn)
 	return o
 }
 

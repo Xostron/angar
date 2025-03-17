@@ -26,7 +26,6 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	// }
 	// acc.alarm = false
 
-
 	// ************************************************
 	if (tout < s.drying.channelMin) {
 		wrAchieve(building._id, 'drying', {
@@ -79,11 +78,7 @@ function fan(s, se, alr) {
 	// TODO если клапана закрыты при работающих вентиляторах более Х мин. , нужно ли выключать вентиляторы?
 	// сообщение: "Температура канала "
 	const start = s.drying.ventilation || forceRun || !alr
-	// console.log(
-	// 	2222,
-	// 	`Вентиляторы в работе = ${start} |`,
-	// 	`Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе) ${s.drying.ventilation}`
-	// )
+	// console.log(2222, `Вентиляторы в работе = ${start} |`, `Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе ${s.drying.ventilation}`)
 	return { start }
 }
 module.exports = data
