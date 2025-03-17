@@ -9,12 +9,12 @@ async function cmd(obj) {
 		// Вывести из работы
 		if (value === "off") {
 			const o = { buildingId, sectionId, fanId, value: true }
-			createAndModifySync(o, "data", retainDir, cb)
+			await createAndModifySync(o, "data", retainDir, cb)
 			return true
 		}
 		// Пуск/стоп (+ ввод в работу)
 		const o = { buildingId, sectionId, fanId, value: false }
-		createAndModifySync(o, "data", retainDir, cb)
+		await createAndModifySync(o, "data", retainDir, cb)
 		const moduleId = fan.module.id
 		const channel = fan.module.channel - 1
 		const val =

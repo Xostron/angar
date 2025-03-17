@@ -13,14 +13,15 @@ const cb = {
 	s_mode,
 	s_product,
 	s_sens,
-	s_setting_au
+	s_setting_au,
 }
 
 function fn(code) {
-    return function (io, socket) {
-        socket.on(code, (obj, callback) => {
+	return function (io, socket) {
+		socket.on(code, async (obj, callback) => {
 			// Создать или сохранить изменения в json
-			createAndModifySync(obj, 'data', retainDir, cb[code])
+			await createAndModifySync(obj, 'data', retainDir, cb[code])
+			console.log('web: Настройки сохранены', code)
 		})
 	}
 }

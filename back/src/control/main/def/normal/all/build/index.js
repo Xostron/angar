@@ -4,8 +4,6 @@ const tuneup = require('@tool/service/tune')
 const { data: store, rs, isAlr, readAcc } = require('@store')
 const def = require('@control/main/def/normal/def')
 
-
-
 function build(start, building, obj, s, se, m, am, accAuto) {
 	let alrBld = false,
 		alrAm = false

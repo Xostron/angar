@@ -2,7 +2,7 @@ const { retainDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
 
 async function retainStart(obj) {
-	createAndModifySync(obj, 'data', retainDir, cb)
+	await createAndModifySync(obj, 'data', retainDir, cb)
 }
 
 /**
