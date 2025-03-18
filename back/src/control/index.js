@@ -1,9 +1,9 @@
 const writeVal = require('@tool/control/write/index')
 const { cValue, cAlarm } = require('@socket/emit')
-const { data: store, reset } = require('@store')
+const { data: store, reset, zero } = require('@store')
 const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
-const {statOnChange} = require('../stat')
+const { statOnChange } = require('../stat')
 const analysis = require('./analysis')
 const hrtime = process.hrtime.bigint
 const writeLock = require('./lock')
@@ -37,6 +37,7 @@ async function control() {
 		statOnChange(obj, alr.history)
 		// Обнулить команду reset (кнопка сброса аварии)
 		reset(null, false)
+		zero(null, false)
 		if (store._cycle_ms_ < 50) await delay(2000)
 		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`)
 		return true

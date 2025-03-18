@@ -103,7 +103,7 @@ const data = {
 	// Прошлые состояния
 	prev: { critical: {}, event: {} },
 	// Обнулить счетчик сушки
-	zero: false,
+	zero: new Set(),
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
@@ -189,6 +189,18 @@ function reset(obj, type = true) {
 	}
 	// установить
 	data.reset.add(obj.buildingId)
+}
+// Обнулить счетчик сушки
+function zero(obj, type = true) {
+	// обнулить
+	if (!type) {
+		return data.zero.clear()
+	}
+	// установить
+	data.zero.add(obj.buildingId)
+}
+function isZero(buildingId) {
+	return data.zero.has(buildingId)
 }
 // Наличие: Сброс аварии на данном складе
 function isReset(buildingId) {
@@ -474,6 +486,8 @@ module.exports = {
 	isReset,
 	wrExtra,
 	delExtra,
+	zero,
+	isZero,
 
 	wrModule,
 	delModule,

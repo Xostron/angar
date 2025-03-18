@@ -1,4 +1,4 @@
-const { data: store, setPos, setTuneTime, setTick } = require('@store')
+const { data: store, setPos, setTuneTime, setTick, isZero } = require('@store')
 const { stateV } = require('@tool/command/valve')
 
 // Прогресс открытия/закрытия клапана (сохранение в retain)
@@ -227,8 +227,7 @@ function cbDryingCount(bldId, data) {
 	const dt = result?.[bldId]?.drying?.date
 
 	// Нажата кнопка обнулить
-	if (store?.zero) {
-		store.zero = false
+	if (isZero(bldId)) {
 		result[bldId].drying = { acc: 0 }
 	}
 

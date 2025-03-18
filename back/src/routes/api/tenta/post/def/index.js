@@ -11,6 +11,7 @@ const sensor = require('./sensor')
 const setting = require('./setting')
 const tune = require('./tune')
 const warming = require('./warming')
+const zero = require('./zero')
 
 const data = {
 	section: fn('section'),
@@ -24,6 +25,7 @@ const data = {
 	reset,
 	tune,
 	warming,
+	zero,
 }
 
 module.exports = data

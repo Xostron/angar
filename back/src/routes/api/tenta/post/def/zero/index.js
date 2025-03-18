@@ -1,9 +1,9 @@
-const { data: store, reset } = require("@store")
+const { data: store, zero } = require("@store")
 
 // Обнулить дни сушки
 function cmd(obj) {
 	return new Promise((resolve, reject) => {
-		store.zero = true
+		zero(obj)
 		resolve(true)
 	})
 }
