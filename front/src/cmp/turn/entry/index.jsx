@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import useEquipStore from '@store/equipment'
 import useOutputStore from '@store/output'
 import useInputStore from '@store/input'
-import { sProduct } from '@socket/emit'
+import { sProduct, sZero } from '@socket/emit'
 import defImg from '@tool/icon'
 import Data from './data'
 import Line from './line'
@@ -14,13 +14,13 @@ import './style.css'
 // Модальное окно: вкл/выкл склад
 export default function Entry({ close }) {
 	const { build } = useParams()
-	const { setStart, setAutomode } = useOutputStore()
+	const [prdList] = useEquipStore(({ prdList }) => [prdList(build)])
 	const [automode, start, product] = useInputStore(({ input }) => [
 		input?.retain?.[build]?.automode,
 		input?.retain?.[build]?.start,
 		input?.retain?.[build]?.product,
 	])
-	const [prdList] = useEquipStore(({ prdList }) => [prdList(build)])
+	const { setStart, setAutomode } = useOutputStore()
 
 	const bStart = start ? 'Выкл.' : 'Вкл.'
 	// Текущий режим
@@ -52,7 +52,7 @@ export default function Entry({ close }) {
 				<Line name='' type='product' data={pr} setData={actProduct} list={aProd} />
 			</span>
 			<Data />
-			<Footer name={bStart} act1={action} act2={cancel} act3={cancel} />
+			<Footer name={bStart} act1={action} act2={cancel} act3={zero} />
 		</div>
 	)
 
@@ -61,7 +61,6 @@ export default function Entry({ close }) {
 		setStart({ _id: build, val: !start })
 		close()
 	}
-
 	// Кнопка выбрать product
 	function actProduct(val) {
 		const prod = prdList?.find((el) => el.code === val)
@@ -76,5 +75,10 @@ export default function Entry({ close }) {
 	// Кнопка Отмена
 	function cancel() {
 		close()
+	}
+	// Кнопка Обнулить
+	function zero() {
+		sZero()
+		// close()
 	}
 }

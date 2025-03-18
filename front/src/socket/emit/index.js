@@ -72,9 +72,16 @@ function sWarming(data, callback) {
 		console.log(res)
 	})
 }
+// Изменить продукт
 function sProduct(data,callback){
 	socket.emit('s_product', data, (res) => {
 		console.log(res)
 	})
 }
-export { sEquip, sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sReset, sWarming, sProduct }
+// Обнулить счетчик сушки
+function sZero(data,callback){
+	socket.emit('s_zero', data, (res) => {
+		console.log(res)
+	})
+}
+export { sEquip, sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sReset, sWarming, sProduct, sZero }

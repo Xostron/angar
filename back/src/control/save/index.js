@@ -1,6 +1,6 @@
 const { data: store, retainDir, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
-const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop } = require('./fn')
+const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop,cbDryingCount } = require('./fn')
 const retainStart = require('@tool/retain/start')
 const { readOne } = require('@tool/json')
 
@@ -15,6 +15,8 @@ async function save(obj) {
 		await createAndModifySync(store.acc, 'data', retainDir, cbCooling)
 		// Время вкл/выкл склада
 		await createAndModifySync(build._id, 'data', retainDir, cbDatestop)
+		// Счетчик дней в авторежиме сушки
+		await createAndModifySync(build._id, 'data', retainDir, cbDryingCount)
 	}
 
 	// Обновление положения клапана

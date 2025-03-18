@@ -185,9 +185,9 @@ function cbCooling(acc, data) {
 }
 
 /**
- * Зафиксировать время вкд/выкл склада
- * @param {*} o данные триггер
- * @param {*} data данные из файла
+ * @description Зафиксировать время вкл/выкл склада
+ * @param {*} bldId id склада
+ * @param {*} data данные из retain файла
  */
 function cbDatestop(bldId, data) {
 	let result = data ? data : {}
@@ -203,4 +203,42 @@ function cbDatestop(bldId, data) {
 	return result
 }
 
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop }
+/**
+ * @description Счетчик сушки в днях
+ * @param {*} bldId id склада
+ * @param {*} data данные из retain файла
+ */
+function cbDryingCount(bldId, data) {
+	let result = data ? data : {}
+	result[bldId] ??= {}
+	result[bldId].drying ??= {}
+	result[bldId].drying.acc ??= 0
+	// Фиксируем точку отсчета работы сушки
+	if (result?.[bldId]?.start && result[bldId]?.automode == 'drying' && !result[bldId]?.drying?.date) {
+		result[bldId].drying.date = new Date()
+	}
+	// Сушка выключена / склад выключен - сохраняем в аккумулятор
+	if ((!result?.[bldId]?.start || result[bldId]?.automode !== 'drying') && result?.[bldId]?.drying?.date) {
+		result[bldId].drying.acc = result[bldId].drying.count
+		delete result?.[bldId]?.drying?.date
+		delete result?.[bldId]?.drying?.count
+	}
+
+	const dt = result?.[bldId]?.drying?.date
+
+	// Нажата кнопка обнулить
+	if (store?.zero) {
+		store.zero = false
+		result[bldId].drying = { acc: 0 }
+	}
+
+	// Подсчет дней
+	if (dt) {
+		const dd = typeof dt == 'string' ? new Date(dt) : dt
+		result[bldId].drying.count = result[bldId].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
+	}
+
+	return result
+}
+
+module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop, cbDryingCount }

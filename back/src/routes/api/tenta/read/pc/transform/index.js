@@ -26,6 +26,7 @@ function transform(data, building) {
 		const obj = {
 			product: retain?.[idB]?.product?.code ?? null,
 			mode: store.value?.building?.[idB]?.submode?.[0] ?? retain?.[idB]?.automode ?? null,
+			count: retain?.[idB]?.drying?.count ?? retain?.[idB]?.drying?.acc ?? 0,
 			on: retain?.[idB]?.start ?? null,
 			// Влажность продукта (hin)
 			rh: { value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined, state: data?.total?.[idB]?.hin?.state },

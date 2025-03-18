@@ -54,7 +54,7 @@ const data = {
 	// Промежуточные данные - расчеты (Авторежим, Доп. функции, Доп. аварии)
 	acc: {},
 	// Аккумулятор (куча) для расчетов
-	heap:{},
+	heap: {},
 	// Аварии клапанов
 	alarmV: {},
 	// Аварии для логики
@@ -102,6 +102,9 @@ const data = {
 	debMdl: {},
 	// Прошлые состояния
 	prev: { critical: {}, event: {} },
+	// Обнулить счетчик сушки
+	zero: false,
+	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
 	pubDir: path.join(process.env.PATH_PUB),
@@ -266,12 +269,11 @@ function wrAchieve(buildingId, name, o) {
 function delAchieve(buildingId, name, code) {
 	delete data?.alarm?.achieve?.[buildingId]?.[name]?.[code]
 }
-function updAchieve(buildingId, name, code, set){
+function updAchieve(buildingId, name, code, set) {
 	if (!data.alarm.achieve?.[buildingId]?.[name]?.[code]) return
 	for (const key in set) {
 		data.alarm.achieve[buildingId][name][code][key] = set[key]
 	}
-
 }
 // Записать в Таймеры запретов
 function wrTimer(buildingId, key, name) {

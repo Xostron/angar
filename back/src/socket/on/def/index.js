@@ -9,6 +9,7 @@ const sStart = require('./s_start')
 const sOutputT = require('./s_output_t')
 
 const sReset = require('./s_reset')
+const sZero = require('./s_zero')
 const sWarming = require('./s_warming')
 const fn = require('./def.js')
 
@@ -33,6 +34,7 @@ module.exports = function onConnection(io, socket) {
 	sTune(io, socket)
 	sStart(io, socket)
 	sReset(io, socket)
+	sZero(io, socket)
 	fn('s_auto_mode')(io, socket)
 	fn('s_product')(io, socket)
 	fn('s_mode')(io, socket)

@@ -10,9 +10,11 @@ const path = require('path')
  * @param {*} o данные от клиента
  * @returns
  */
-function webLog(code, o = {}) {
+function webLog(code, o) {
 	// Если нет данных от клиента - выход
-	if (!Object.keys(o).length || !code) return
+	o = o ?? {}
+	console.log(555, o)
+	if (!Object.keys(o)?.length || !code) return
 	activity(code, o)
 }
 
