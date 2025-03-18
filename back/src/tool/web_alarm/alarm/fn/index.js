@@ -111,6 +111,7 @@ function signalB(r, bld, am, data) {
 	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
 	const low = store.alarm?.extralrm?.[bld._id]?.low ?? null
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
+	const openVin = store.alarm?.extralrm?.[bld._id]?.openVin ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
@@ -130,6 +131,7 @@ function signalB(r, bld, am, data) {
 	if (connect) r.signal[bld._id].push(connect)
 	if (low) r.signal[bld._id].push(low)
 	if (deltaMdl) r.signal[bld._id].push(deltaMdl)
+	if (openVin) r.signal[bld._id].push(openVin)
 
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
 	if (alrStop) r.signal[bld._id].push(alrStop)

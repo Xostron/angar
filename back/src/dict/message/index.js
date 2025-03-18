@@ -138,6 +138,14 @@ const data = {
 		typeSignal: 'critical',
 		msg: 'Питание отключено',
 	},
+	// Приточный клапан открыт, темп канала > темп продукта
+	39: {
+		count: true,
+		code: 'openVin',
+		type: '',
+		typeSignal: 'valve',
+		msg: 'Температура канала выше температуры продукта',
+	},
 	// beep alarm
 	65: [{ count: true, code: 'off', typeSignal: 'critical', msg: 'Выбит автоматический выключатель' }],
 	// ======== Компрессоры агрегата ========

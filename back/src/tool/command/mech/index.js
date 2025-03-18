@@ -12,25 +12,28 @@ function mech(data, sId, bldId) {
 	// Выход "Модуль в работе" для реле безопасности
 	const connect = signal.filter((el) => el.owner.id == sId && el.type == 'connect')
 	// Выход сигнала Сброс аварии (создается как в секции, так и для склада)
-	const reset = signal.filter((el) => (el.owner.id == sId || el.owner.id==bldId) && el.type == 'reset')
-	
+	const reset = signal.filter((el) => (el.owner.id == sId || el.owner.id == bldId) && el.type == 'reset')
+
 	return { vlvS, fanS, fanAux, heatS, connect, reset }
 }
 
 // Исполнительные механизмы склада
-function mechB(bId, obj) {
+function mechB(bId, type, obj) {
 	const { data } = obj
 	//ID склада и секций
 	let idS = getId(data?.section, bId)
 	// Разгонные вентиляторы
-	const fanA = data.fan.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
+	const fanA = data?.fan?.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
 	// Выход "Модуль в работе" для реле безопасности
-	const connect = data.signal.filter((el) => idS.includes(el.owner.id) && el.type == 'connect') ?? []
+	const connect = data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'connect') ?? []
 	// Выход Сброс аварии для реле безопасности
-	const reset = data.signal.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
-
-	const cold = fnCold(bId, obj)
-	return { fanA, connect, reset, cold }
+	const reset = data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
+	// Притотчные клапаны склада
+	const vlvIn = data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
+	// Оборудование холодильника
+	let cold
+	if (type === 'cold') cold = fnCold(bId, obj)
+	return { fanA, connect, reset,vlvIn, cold }
 }
 
 function getId(section, bId) {

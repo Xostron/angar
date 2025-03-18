@@ -3,7 +3,7 @@ const { wrExtralrm, delExtralrm, data: store, isReset } = require('@store')
 const { msg } = require('@tool/message')
 
 /**
- * если за время time, концевик закрыто приточного клапана хлопнул (сработал)
+ * @description если за время time, концевик закрыто приточного клапана хлопнул (сработал)
  *  count раз, тогда генерируем аварию (Сработал режим антивьюги) и останов всей секции
  * Сброс аварии по кнопке и после времени ожидания wait
  * @param {*} buildingId

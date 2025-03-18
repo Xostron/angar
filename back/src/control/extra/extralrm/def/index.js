@@ -18,8 +18,10 @@ const co2 = require('./co2')
 const aggregate = require('./aggregate')
 const idle = require('./idle')
 const deltaMdl = require('./delta_mdl')
+const openVin = require('./open_vin')
 
 const def = {
+	// Доп. аварии обычного склада
 	section: {
 		on: {
 			overVlv,
@@ -40,6 +42,7 @@ const def = {
 		on: {
 			idle,
 			genB,
+			openVin
 		},
 		off: {},
 		always: {
@@ -47,9 +50,10 @@ const def = {
 			vlvLimB,
 			alrClosedB,
 			localB,
-			deltaMdl
+			deltaMdl,
 		},
 	},
+	// Доп. аварии холодильника
 	cold: {
 		on: { idle, genB,  },
 		off: {},
