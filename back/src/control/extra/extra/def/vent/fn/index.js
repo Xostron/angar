@@ -61,7 +61,7 @@ function mAutoByDura(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 		resultFan.start = [false]
 		acc.byDura.finish = true
 	}
-	console.log(222, 'Время отключения подхвата', new Date(acc?.byDura?.end), fanOff, alarm)
+	// console.log(222, 'Время отключения подхвата', new Date(acc?.byDura?.end), fanOff, alarm)
 }
 
 // Режим вентиляции: Авто - по времени

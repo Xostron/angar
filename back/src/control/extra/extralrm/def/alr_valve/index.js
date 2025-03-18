@@ -15,7 +15,6 @@ function alarmV(building, section, obj, s, se, m, automode, acc, data) {
 
 		// Состояние и текущее положение клапана
 		const { state, val } = value?.[v._id]
-		// if (v.type === 'in') console.log(1111, 'roma', acc[v._id])
 
 		// Автосброс аварии клапана
 		if (acc[v._id]?.finish) {

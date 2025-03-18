@@ -145,7 +145,7 @@ function total(equip, result, retain) {
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
 
-	console.log(8888, result.total, result.humAbs)
+	// console.log(8888, result.total, result.humAbs)
 }
 
 // мин, макс, состояние по датчикам

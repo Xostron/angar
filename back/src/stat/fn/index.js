@@ -50,7 +50,6 @@ function message(data, el, level, value) {
 		case 'watt':
 			secId = el.sectionId
 			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
-			// console.log(222, v)
 			break
 		case 'sensor':
 			el.owner.type == 'section' ? (secId = el.owner.id) : (bldId = el.owner.id)

@@ -18,7 +18,8 @@ function scan(bld, obj) {
 	// Показания с датчиков по складу (без учета секций)
 	const se = sensorBuilding(bld._id, obj)
 	// Исполнительные механизмы по складу (без учета секций)
-	const m = mechB(bld._id, obj)
+	const m = mechB(bld?._id, bld?.type, obj)
+	// console.log(333,m)
 	// Аккумулятор для хранения промежуточных вычислений (авторежим)
 	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 	const accAuto = readAcc(bld._id, t)

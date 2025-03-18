@@ -26,7 +26,8 @@ async function save(obj) {
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
 
 	/**
-	 * При первом запуске читаем аварии из файла
+	 * Сохраняемые аварии 
+	 * При первом запуске читаем аварии (Неисправность модулей и аварии авторежима) из файла
 	 *  */
 	if (store._first) {
 		obj.acc = await readOne('acc.json', accDir)
