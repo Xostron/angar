@@ -68,7 +68,7 @@ function total(equip, result, retain) {
 	for (const bld of building) {
 		let idsS = []
 		let idsAll = []
-		if (bld.type === 'normal') {
+		if (bld.type !== 'cold') {
 			// Найти секции которые в авто
 			idsS = section.filter((el) => el.buildingId === bld._id && retain?.[bld?._id]?.mode?.[el?._id]).map((el) => el._id)
 			// Все секции
@@ -171,7 +171,7 @@ function fnState(sensor, result, idB, type) {
 }
 
 /**
- * Замена датчика улицы на прогноз погоды
+ * @description Замена датчика улицы на прогноз погоды
  * @param {number} tout min температура улицы по датчику
  * @param {object} tw температура улицы по прогнозу
  * @returns {number} температура улицы min
