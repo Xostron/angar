@@ -7,8 +7,8 @@ function toOffBuild(obj) {
 	const { data, value, retain } = obj
 	// Склад
 	for (const el of data.building) {
-		// Только для "Обычных" складов
-		if (el?.type !== 'normal') continue
+		// Тип склада холодильник пропускается
+		if (el?.type === 'cold') continue
 		// Склад вкл/выкл
 		const start = retain?.[el._id]?.start
 		// Подготовка к выкл. склада уже выполнена

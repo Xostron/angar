@@ -12,7 +12,8 @@ function toAuto(obj) {
 	for (const el of data.section) {
 		const idB = el?.buildingId
 		const type = getB(data.building, idB)?.type
-		if (type!=='normal') continue 
+		// Тип склада холодильник пропускается
+		if (type === 'cold') continue
 		// Секция в авто
 		const isAuto = retain?.[idB]?.mode?.[el._id]
 		// Подготовка уже выполнена
