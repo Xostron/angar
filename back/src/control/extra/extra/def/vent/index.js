@@ -1,7 +1,7 @@
 const { mAutoByTime, mAutoByDura, mOn } = require('./fn')
-const { data: store, isExtralrm, isReset } = require('@store')
 const { delUnused } = require('@tool/command/extra')
-
+const { isExtralrm } = require('@tool/message/extralrm')
+const { isReset } = require('@tool/reset')
 // Вентиляторы секции
 function vent(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj

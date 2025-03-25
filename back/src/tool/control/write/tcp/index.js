@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const net = require('net')
-const {  delModule, wrDebMdl, delDebMdl } = require('@store')
 const { regist } = require('./fn')
+const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
 
 // Запись данных для TCP/IP модуля
 function writeTCP(host, port, opt) {

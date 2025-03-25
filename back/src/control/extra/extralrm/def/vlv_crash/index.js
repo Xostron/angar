@@ -1,6 +1,7 @@
-const { getSignal } = require('@tool/command/signal')
-const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msgV } = require('@tool/message')
+const { isReset } = require('@tool/reset')
+const { getSignal } = require('@tool/command/signal')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Нет питания электродвигателя клапана
 function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {

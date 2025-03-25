@@ -1,6 +1,6 @@
 const writeRTU = require('./rtu')
 const writeTCP = require('./tcp')
-const { data: store, timeout, isErrM } = require('@store')
+const { timeout } = require('@tool/message/plc_module')
 
 /**
  * Записать данные в модули

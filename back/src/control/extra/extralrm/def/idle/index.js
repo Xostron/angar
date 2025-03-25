@@ -1,4 +1,4 @@
-const { wrTimer, delTimer } = require('@store')
+const { wrTimer, delTimer } = require('@tool/message/ban_timer')
 
 // Авторежимы склада
 const am = ['drying', 'cure', 'cooling', 'heat']

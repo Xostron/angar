@@ -1,4 +1,5 @@
-const { setACmd, data: store, isExtralrm } = require('@store')
+const { isExtralrm } = require('@tool/message/extralrm')
+const { setACmd, data: store } = require('@store')
 const { ctrlB } = require('@tool/command/fan')
 
 /**

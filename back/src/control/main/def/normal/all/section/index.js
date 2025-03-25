@@ -3,7 +3,7 @@ const off = require('./off')
 const always = require('./always')
 const { mech } = require('@tool/command/mech')
 const { sensor } = require('@tool/command/sensor')
-const sumExtralrmSection = require('@tool/extralrm')
+const { sumExtralrmSection } = require('@tool/message/extralrm')
 /**
  *
  * @param {*} start Вкл/выкл склад

@@ -1,6 +1,7 @@
-const { getSignal } = require('@tool/command/signal')
-const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msgB } = require('@tool/message')
+const { isReset } = require('@tool/reset')
+const { getSignal } = require('@tool/command/signal')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Аварийное закрытие клапанов - по низкой температуре (склад)
 function alrClosedB(building, section, obj, s, se, m, automode, acc, data) {
@@ -13,7 +14,7 @@ function alrClosedB(building, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (sig && !acc.alarm) {
-		wrExtralrm(building._id, null, 'alrClosed', msgB(building, 26) )
+		wrExtralrm(building._id, null, 'alrClosed', msgB(building, 26))
 		acc.alarm = true
 	}
 	return acc.alarm ?? null

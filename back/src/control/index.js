@@ -1,9 +1,10 @@
 const writeVal = require('@tool/control/write/index')
 const { cValue, cAlarm } = require('@socket/emit')
-const { data: store, reset, zero } = require('@store')
+const { data: store, zero } = require('@store')
 const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
 const { statOnChange } = require('../stat')
+const { reset } = require('@tool/reset')
 const analysis = require('./analysis')
 const hrtime = process.hrtime.bigint
 const writeLock = require('./lock')

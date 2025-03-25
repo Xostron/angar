@@ -1,7 +1,7 @@
-const { ctrlV, stateV } = require('@tool/command/valve')
-const { data: store, wrExtralrm } = require('@store')
 const { msgV } = require('@tool/message')
+const { wrExtralrm } = require('@tool/message/extralrm')
 
+// Авария долгое открытие/закрытие клапанов
 function longOpn(building, section, val, v, hyst, hystPos, typeV, curTime, acc) {
 	// Расчет: Время ожидания - после того как положение клапана стало 100% - hystPos,
 	// а концевик открыто не сработал, через данное "время ожидания" будет отключен двигатель клапана

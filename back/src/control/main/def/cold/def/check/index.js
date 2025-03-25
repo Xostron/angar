@@ -1,7 +1,7 @@
 const onTime = require('../on_time');
-const { data: store, wrAchieve, delAchieve } = require('@store')
-const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
+const { msgB } = require('@tool/message')
+const { wrAchieve, delAchieve} = require('@tool/message/achieve')
 
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, acc, se, s, bld) {

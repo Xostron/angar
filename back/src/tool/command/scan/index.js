@@ -1,6 +1,7 @@
+const { wrAchieve, delAchieve, updAchieve } = require('@tool/message/achieve')
 const { sensorBuilding } = require('@tool/command/sensor')
-const { data: store, readAcc, wrAchieve, delAchieve, updAchieve } = require('@store')
 const { elapsedTime } = require('@tool/command/time')
+const { data: store, readAcc } = require('@store')
 const setting = require('@control/extra/setting')
 const { mechB } = require('@tool/command/mech')
 const { msgB } = require('@tool/message')

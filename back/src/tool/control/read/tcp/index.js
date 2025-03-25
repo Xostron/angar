@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const net = require('net')
 const { rhr } = require('../fn')
-const { data: store, delModule, wrDebMdl, delDebMdl } = require('@store')
+const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
 
 function readTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {

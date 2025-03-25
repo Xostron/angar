@@ -1,6 +1,6 @@
-const { data: store, delExtra, wrExtra } = require('@store')
 const { msgB } = require('@tool/message')
 const { getSignal } = require('@tool/command/signal')
+const {delExtra, wrExtra} = require('@tool/message/extra')
 
 // Перегрев вводного кабеля (склад)
 function cableB(building, section, obj, s, se, m, alarm, acc, data, ban) {

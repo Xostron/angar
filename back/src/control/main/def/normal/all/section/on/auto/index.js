@@ -1,7 +1,7 @@
-const { fnValve } = require('@tool/command/valve/auto')
-const { data: store, rs, isAlr, readAcc } = require('@store')
+const { data: store } = require('@store')
 const def = require('@control/main/def/normal/def')
 const extralrm = require('@control/extra/extralrm')
+const { fnValve } = require('@tool/command/valve/auto')
 
 function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, alrAlw) {
 	// Таймер запретов - закрываем клапана, выключаем вентиляторы
@@ -15,7 +15,7 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 	const alrSe = alrSens(se)
 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада, авария по низкой темпаературе
-	const alr = alrS || alrAm || ban || alrBld  || alrAlw || alrSe //|| !!alrClosed
+	const alr = alrS || alrAm || ban || alrBld || alrAlw || alrSe //|| !!alrClosed
 	// console.log(666, sect?.name, 'alr = ' + alr + ' = ', alrS, '||', alrAm, '||', ban, '||', alrBld, '||', '||', alrAlw, '||', alrSe)
 	//********** Логика авто **********
 	// Пользовательские расчеты

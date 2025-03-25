@@ -1,6 +1,5 @@
+const {delExtra, wrExtra} = require('@tool/message/extra')
 const { arrCtrl } = require('@tool/command/fan')
-const { compareTime } = require('@tool/command/time')
-const { data: store, delExtra, wrExtra } = require('@store')
 const { msgB } = require('@tool/message')
 
 // Оттайка слива воды: Вкл

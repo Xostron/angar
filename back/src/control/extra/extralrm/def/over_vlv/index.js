@@ -1,8 +1,8 @@
+const { msg } = require('@tool/message')
+const { isReset } = require('@tool/reset')
 const { stateV } = require('@tool/command/valve')
 const { stateEq } = require('@tool/command/fan')
-const { wrExtralrm, delExtralrm, isReset } = require('@store')
-const { msg } = require('@tool/message')
-
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 /**
  * Превышено время работы с закрытыми клапанами
  * @param {*} building Рама склада
@@ -27,7 +27,6 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 	// Настроек нет - функцию не выполняем
 	if (!s.overVlv.time || !s.overVlv.wait || exclude) return null
 
-
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	const state = stateV(vlvIn?._id, value, building._id, vlvIn?.sectionId?.[0])
@@ -51,7 +50,7 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 		acc.alarm = true
 		acc.beginWait = +new Date().getTime()
 		acc.endWait = acc.beginWait + s.overVlv.wait
-		wrExtralrm(building._id, section._id, 'over_vlv', msg(building, section,14) )
+		wrExtralrm(building._id, section._id, 'over_vlv', msg(building, section, 14))
 	}
 
 	// Сброс
@@ -63,9 +62,7 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 		delete acc.endWait
 		delExtralrm(building._id, section._id, 'over_vlv')
 	}
-	return acc?.alarm ?? false 
+	return acc?.alarm ?? false
 }
 
 module.exports = overVlv
-
-

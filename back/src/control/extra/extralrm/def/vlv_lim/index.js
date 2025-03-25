@@ -1,6 +1,7 @@
-const { getSignal } = require('@tool/command/signal')
-const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msg } = require('@tool/message')
+const { isReset } = require('@tool/reset')
+const { getSignal } = require('@tool/command/signal')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Нет питания концевиков клапана (секция)
 function vlvLim(building, section, obj, s, se, m, automode, acc, data) {
@@ -13,7 +14,7 @@ function vlvLim(building, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (sig && !acc.alarm) {
-		wrExtralrm(building._id, section._id, 'vlvLim', msg(building, section, 33) )
+		wrExtralrm(building._id, section._id, 'vlvLim', msg(building, section, 33))
 		acc.alarm = true
 	}
 }

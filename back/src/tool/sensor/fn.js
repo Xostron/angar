@@ -1,8 +1,9 @@
 const tSens = require('@dict/sensor')
+const { data: store } = require('@store')
 const { msgBS } = require('@tool/message')
-const { data: store, wrExtralrm, delExtralrm } = require('@store')
-const { getListSens } = require('@tool/get/sensor')
 const { getB } = require('@tool/get/building')
+const { getListSens } = require('@tool/get/sensor')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Правила обработки датчиков для разных аналоговых модулей
 function getRaw(sens, v) {
@@ -169,11 +170,11 @@ function fnMsg(bld, val, type, bType) {
 }
 
 /**
- * 
- * @param {object} weather данные погоды 
+ *
+ * @param {object} weather данные погоды
  * @returns {boolean} true - ok, false - alarm
  */
-function isValidWeather(weather){
+function isValidWeather(weather) {
 	// 2 часа
 	const expire = 2 * 60 * 60 * 1000
 	const now = new Date()
@@ -181,7 +182,7 @@ function isValidWeather(weather){
 	if (!updateTime) return false
 	return now - updateTime >= expire ? false : true
 }
-module.exports = { getRaw, fnDetection, detection, state, range,webAlarm, fnMsgs, fnMsg, isValidWeather }
+module.exports = { getRaw, fnDetection, detection, state, range, webAlarm, fnMsgs, fnMsg, isValidWeather }
 
 // Коды сообщений
 const code = {

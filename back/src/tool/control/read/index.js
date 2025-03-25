@@ -1,6 +1,7 @@
 const readRTU = require('./rtu')
 const readTCP = require('./tcp')
-const { data: store, timeout, isErrM } = require('@store')
+const { data: store } = require('@store')
+const { timeout } = require('@tool/message/plc_module')
 
 // Чтение модулей
 async function read(arr, obj) {

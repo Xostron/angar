@@ -1,5 +1,5 @@
-const { data: store, wrExtralrm, delExtralrm } = require('@store')
 const { msgBeep } = require('@tool/message')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // beep Устройств
 function beepD(devc, arr, obj, building, acc, codeMsg) {

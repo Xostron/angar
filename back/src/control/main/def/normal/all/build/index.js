@@ -1,7 +1,8 @@
-const extralrm = require('@control/extra/extralrm')
-const { extra } = require('@control/extra/extra')
+const { isAlr } = require('@store')
+const rs = require('@tool/message/auto')
 const tuneup = require('@tool/service/tune')
-const { data: store, rs, isAlr, readAcc } = require('@store')
+const { extra } = require('@control/extra/extra')
+const extralrm = require('@control/extra/extralrm')
 const def = require('@control/main/def/normal/def')
 
 function build(start, building, obj, s, se, m, am, accAuto) {

@@ -1,5 +1,5 @@
-const { data: store, delExtralrm } = require('@store')
-const { mech } = require('@tool/command/mech')
+const { data: store } = require('@store')
+const { delExtralrm } = require('@tool/message/extralrm')
 
 // Секция не в авто или выключен склад
 function sectionOff(building, sect, obj, s, se, m, am, accAuto, resultFan, start, alrB) {

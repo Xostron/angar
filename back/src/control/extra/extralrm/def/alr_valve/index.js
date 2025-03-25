@@ -1,6 +1,6 @@
-const { data: store, delExtralrm } = require('@store')
+const { data: store } = require('@store')
 const { longOpn, longCls } = require('./fn')
-
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 /**
  * Авария клапана: долгое открытие/закрытие
  * @param {*} vlvS Клапаны

@@ -34,13 +34,12 @@ function statOnChange(obj, alr) {
 }
 
 /**
- * Статистика датчиков - отдельный цикл
+ * Статистика датчиков - с заданным периодом
  */
 async function statOnTime() {
 	while (true) {
 		// Задержка
 		await delay(store.tStat)
-		// await delay(5000)
 		const data = await readTO(['building', 'section', 'sensor'])
 		// Датчики (Total после анализа)
 		sensTotalLog(store?.value?.total, data.building)
@@ -51,10 +50,9 @@ async function statOnTime() {
 }
 
 /**
- * Отдельный цикл
  * Электросчетчик: насчитанные кВт за 10 мин
- * Каждую сек аккумулируем значение кВт, на 10 минуте считаем результат и записываем в лог
- */
+*/
+// TODO Каждую сек аккумулируем значение кВт, на 10 минуте считаем результат и записываем в лог
 async function statOnTimePui() {
 	while (true) {
 		// Задержка

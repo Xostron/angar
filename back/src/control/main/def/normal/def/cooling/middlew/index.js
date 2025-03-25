@@ -1,8 +1,8 @@
-const { data: store, wrAchieve, delAchieve, updAchieve } = require('@store')
+const { wrAchieve, delAchieve, updAchieve } = require('@tool/message/achieve')
+const { elapsedTime } = require('@tool/command/time')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
-const { elapsedTime } = require('@tool/command/time')
 
 /**
  * Определение подрежима

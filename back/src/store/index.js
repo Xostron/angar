@@ -97,7 +97,6 @@ const data = {
 	// Запрет работы холодильника
 	denied: {},
 	// Неисправные модули
-	// errMdl: {},
 	timeout: {},
 	debMdl: {},
 	// Прошлые состояния
@@ -113,83 +112,7 @@ const data = {
 	factoryDir: path.join(process.env.PATH_FACTORY),
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
 }
-// Разрешить true/заблокировать false опрос модуля
-function timeout(buildingId, moduleId, ip, opt) {
-	if (!buildingId || !moduleId) return true
-	// Проверка debounce модуля: true - модуль ОК
-	if (isDebMdl(buildingId, moduleId, opt)) return true
-	// Модуль исправен - разрешить опрос
-	if (!isErrM(buildingId, moduleId)) return true
 
-	// Поставить неисправный модуль в ожидание
-	// Время ожидания опроса
-	const _TIME = data.tTCP * 60 * 1000
-	const now = new Date().getTime()
-	if (!data.timeout?.[moduleId]) data.timeout[moduleId] = now + _TIME
-	// Время не прошло - блокировать опрос модуля
-	if (now <= data.timeout?.[moduleId]) {
-		console.log('Блокировать модуль', opt?.name, opt?.use, ip)
-		return false
-	}
-	data.timeout[moduleId] = new Date().getTime() + _TIME
-	console.log('Разрешить опрос', opt?.name, opt?.use, ip)
-	// Время прошло - разрешить опрос
-	return true
-}
-// Проверка внесен ли модуль в список антидребезга
-function isDebMdl(buildingId, mdlId, opt) {
-	if (!data.debMdl[mdlId]) return true
-	const time = data.debMdl[mdlId].getTime() + (data.tDebPlc ?? 20000)
-	const cur = new Date().getTime()
-	// Время прошло: авария осталась
-	if (cur >= time) {
-		wrModule(buildingId, mdlId, msgM(buildingId, opt, 110))
-		// delDebMdl(mdlId)
-		return false
-	}
-	// Опрашиваем модуль
-	return true
-}
-// Сохранить неисправный модуль сначала в антидребезг
-function wrDebMdl(mdlId) {
-	if (!data.debMdl?.[mdlId]) data.debMdl[mdlId] = new Date()
-}
-// Удалить модуль из антидребезга
-function delDebMdl(mdlId = '') {
-	if (!mdlId) data.debMdl = {}
-	delete data.debMdl?.[mdlId]
-}
-
-// Проверка внесен ли модуль в список неисправных
-function isErrM(buildingId, moduleId) {
-	return !!data.alarm.module?.[buildingId]?.[moduleId]
-}
-
-// Сохранить неисправный модуль в список аварий
-function wrModule(buildingId, moduleId, o) {
-	data.alarm.module ??= {}
-	data.alarm.module[buildingId] ??= {}
-	if (!data.alarm.module[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
-}
-
-// Удалить модуль из списка аварий
-function delModule(buildingId, moduleId) {
-	if (!moduleId) {
-		delete data.alarm.module?.[buildingId]
-		return
-	}
-	delete data.alarm.module?.[buildingId]?.[moduleId]
-}
-
-// Сброс аварий - установить/обнулить
-function reset(obj, type = true) {
-	// обнулить
-	if (!type) {
-		return data.reset.clear()
-	}
-	// установить
-	data.reset.add(obj.buildingId)
-}
 // Обнулить счетчик сушки
 function zero(obj, type = true) {
 	// обнулить
@@ -199,127 +122,11 @@ function zero(obj, type = true) {
 	// установить
 	data.zero.add(obj.buildingId)
 }
+
 function isZero(buildingId) {
 	return data.zero.has(buildingId)
 }
-// Наличие: Сброс аварии на данном складе
-function isReset(buildingId) {
-	return data.reset.has(buildingId)
-}
-// Записать в extra событие
-function wrExtra(buildingId, sectionId, name, o, type) {
-	data.alarm.extra ??= {}
-	data.alarm.extra[buildingId] ??= {}
-	if (!type) {
-		if (!sectionId) {
-			data.alarm.extra[buildingId][name] = o
-			return
-		}
-		data.alarm.extra[buildingId][sectionId] ??= {}
-		data.alarm.extra[buildingId][sectionId][name] = o
-	} else {
-		if (!sectionId) {
-			data.alarm.extra[buildingId][name] ??= {}
-			data.alarm.extra[buildingId][name][type] = o
-			return
-		}
-		data.alarm.extra[buildingId][sectionId] ??= {}
-		data.alarm.extra[buildingId][sectionId][name] ??= {}
-		data.alarm.extra[buildingId][sectionId][name][type] = o
-	}
-}
-// Записать в extra событие
-function delExtra(buildingId, sectionId, name, type) {
-	if (!type) {
-		if (!sectionId) {
-			delete data.alarm?.extra?.[buildingId]?.[name]
-			return
-		}
-		delete data.alarm?.extra?.[buildingId]?.[sectionId]?.[name]
-	} else {
-		if (!sectionId) {
-			delete data.alarm?.extra?.[buildingId]?.[name]?.[type]
-			return
-		}
-		delete data.alarm?.extra?.[buildingId]?.[sectionId]?.[name]?.[type]
-	}
-}
 
-// Получить extralrm аварию
-function isExtralrm(bldId, secId, name) {
-	return secId ? !!data.alarm?.extralrm?.[bldId]?.[secId]?.[name] : !!data.alarm?.extralrm?.[bldId]?.[name]
-}
-
-// Записать в extralrm (доп. аварии)
-function wrExtralrm(buildingId, sectionId, name, o) {
-	data.alarm.extralrm ??= {}
-	data.alarm.extralrm[buildingId] ??= {}
-	if (!sectionId) {
-		data.alarm.extralrm[buildingId][name] = o
-		return
-	}
-	data.alarm.extralrm[buildingId][sectionId] ??= {}
-	data.alarm.extralrm[buildingId][sectionId][name] = o
-}
-// Удалить из extralrm (доп. аварии)
-function delExtralrm(buildingId, sectionId, name) {
-	if (!sectionId) {
-		delete data.alarm?.extralrm?.[buildingId]?.[name]
-		return
-	}
-	delete data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
-}
-
-// Записать в achieve (доп. функции)
-function wrAchieve(buildingId, name, o) {
-	data.alarm.achieve ??= {}
-	data.alarm.achieve[buildingId] ??= {}
-	data.alarm.achieve[buildingId][name] ??= {}
-	data.alarm.achieve[buildingId][name][o.code] = o
-}
-// Удалить из extralrm (доп. аварии)
-function delAchieve(buildingId, name, code) {
-	delete data?.alarm?.achieve?.[buildingId]?.[name]?.[code]
-}
-function updAchieve(buildingId, name, code, set) {
-	if (!data.alarm.achieve?.[buildingId]?.[name]?.[code]) return
-	for (const key in set) {
-		data.alarm.achieve[buildingId][name][code][key] = set[key]
-	}
-}
-// Записать в Таймеры запретов
-function wrTimer(buildingId, key, name) {
-	// data.alarm ??= {}
-	data.alarm.timer ??= {}
-	data.alarm.timer[buildingId] ??= {}
-	data.alarm.timer[buildingId][key] = mesTimer.get(name, key)
-}
-// Удалить из Таймеров запретов
-function delTimer(buildingId, key) {
-	delete data.alarm.timer?.[buildingId]?.[key]
-}
-
-/**
- * rs-триггер (приоритет на сброс)
- * @param {*} buildingId
- * @param {*} sectionId
- * @param {*} automode
- * @param {*} arr {id код аварии, set условие установки аварии, reset условие сброса аварии, msg текст аварии}
- */
-function rs(buildingId, automode, arr) {
-	data.alarm.auto ??= {}
-	data.alarm.auto[buildingId] ??= {}
-	data.alarm.auto[buildingId][automode] ??= {}
-	if (!arr?.length) return
-
-	const d = data?.alarm?.auto?.[buildingId]?.[automode]
-
-	arr.forEach((o, idx) => {
-		let r = null
-		if (o.set && !d?.[o.msg.code]) d[o.msg.code] = { id: idx, ...o.msg }
-		if (o.reset) delete d[o.msg.code]
-	})
-}
 // Наличие аварии
 function isAlr(buildingId, automode) {
 	const d = data.alarm.auto?.[buildingId]?.[automode] ?? {}
@@ -467,33 +274,8 @@ module.exports = {
 	setToOffBuild,
 	setTuneTime,
 	setACmd,
-	rs,
 	isAlr,
 	readAcc,
-
-	wrTimer,
-	delTimer,
-
-	wrExtralrm,
-	delExtralrm,
-
-	wrAchieve,
-	delAchieve,
-	updAchieve,
-
-	isExtralrm,
-	reset,
-	isReset,
-	wrExtra,
-	delExtra,
 	zero,
 	isZero,
-
-	wrModule,
-	delModule,
-	isErrM,
-	timeout,
-	isDebMdl,
-	wrDebMdl,
-	delDebMdl,
 }

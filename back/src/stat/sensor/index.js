@@ -2,7 +2,7 @@ const { logger, loggerSens, loggerWatt } = require('@tool/logger')
 const { message, checkTyp } = require('../fn')
 
 /**
- * Логирование датчиков (по total)
+ * Логирование датчиков (total) с заданным периодом store.tStat
  * hin Влажность продукта max (обычный склад)
  * tprdL Температура продукта (обычный склад)
  * tin температура потолка (холодильный склад)
@@ -30,7 +30,7 @@ function sensTotalLog(total, building) {
 }
 
 /**
- * Логирование датчиков
+ * Логирование датчиков с заданным периодом store.tStat
  * @param {*} data
  * @param {*} arr
  * @param {*} value

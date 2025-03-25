@@ -1,6 +1,7 @@
-const { getSignal } = require('@tool/command/signal')
-const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msgB } = require('@tool/message')
+const { isReset } = require('@tool/reset')
+const { getSignal } = require('@tool/command/signal')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Работа от генератора - выкл склада
 function genB(building, section, obj, s, se, m, automode, acc, data) {

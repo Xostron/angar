@@ -1,5 +1,5 @@
 const alarm = require('./alarm')
-const { data: store, wrAchieve, delAchieve } = require('@store')
+const { wrAchieve, delAchieve } = require('@tool/message/achieve')
 
 // Автоматический режим: Сушка
 const data = {
@@ -25,7 +25,6 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	// 	return
 	// }
 	// acc.alarm = false
-
 
 	// ************************************************
 	if (tout < s.drying.channelMin) {

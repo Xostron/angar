@@ -1,4 +1,4 @@
-const { data: store, reset } = require("@store")
+const { reset } = require('@tool/reset')
 
 function cmd(obj) {
 	return new Promise((resolve, reject) => {

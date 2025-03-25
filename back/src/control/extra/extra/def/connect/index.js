@@ -1,6 +1,6 @@
 const { ctrlB } = require('@tool/command/fan')
-const { data: store, delExtra, wrExtra } = require('@store')
 const { msg, msgB } = require('@tool/message')
+const { wrExtra } = require('@tool/message/extra')
 
 // Модуль в сети (сигнал склада/секции)
 function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -9,12 +9,7 @@ function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	m.connect.forEach((el) => {
 		// Включение выхода - Модуль в сети
 		ctrlB(el, building._id, 'on')
-		const sig = obj.value?.[el._id]
 		const owner = el.owner.type === 'section' ? el.owner.id : null
-		// if (!sig) {
-		// 	delExtra(building._id, owner, el.type)
-		// 	acc.flag[el._id] = false
-		// }
 		if (!acc.flag[el._id]) {
 			const mes = fnMsg(building, owner, obj.data.section)
 			wrExtra(building._id, owner, el.type, mes)

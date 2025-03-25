@@ -1,6 +1,6 @@
-const { getSignal } = require('@tool/command/signal')
-const { data: store, wrExtralrm, delExtralrm, isReset } = require('@store')
 const { msgB } = require('@tool/message')
+const { getSignal } = require('@tool/command/signal')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Питание в норме
 function supply(building, section, obj, s, se, m, automode, acc, data) {
@@ -8,13 +8,13 @@ function supply(building, section, obj, s, se, m, automode, acc, data) {
 	// Питание в норме
 	if (sig === false && !acc.on) {
 		delExtralrm(building._id, null, 'supply')
-		acc.on=true
+		acc.on = true
 		acc.alarm = false
 	}
 	// Питания нет
 	if (sig === true && !acc.alarm) {
 		wrExtralrm(building._id, null, 'supply', { date: new Date(), ...msgB(building, 38) })
-		acc.on=false
+		acc.on = false
 		acc.alarm = true
 	}
 	// return acc?.alarm ?? false

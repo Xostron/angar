@@ -1,5 +1,6 @@
 const { ctrlB } = require('@tool/command/fan')
-const { data: store, isReset } = require('@store')
+const { data: store } = require('@store')
+const { isReset } = require('@tool/reset')
 const { getSignal } = require('@tool/command/signal')
 
 // Нажата кнопка "Сброс аварии"

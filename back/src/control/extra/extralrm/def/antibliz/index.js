@@ -1,6 +1,7 @@
-const { stateV } = require('@tool/command/valve')
-const { wrExtralrm, delExtralrm, data: store, isReset } = require('@store')
 const { msg } = require('@tool/message')
+const { isReset } = require('@tool/reset')
+const { stateV } = require('@tool/command/valve')
+const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 /**
  * @description если за время time, концевик закрыто приточного клапана хлопнул (сработал)

@@ -1,5 +1,6 @@
-const { data: store, delExtra, wrExtra } = require('@store')
+const {delExtra, wrExtra} = require('@tool/message/extra')
 const { ctrlB } = require('@tool/command/fan')
+const { data: store } = require('@store')
 const { cWarm } = require('@socket/emit')
 const { msg } = require('@tool/message')
 

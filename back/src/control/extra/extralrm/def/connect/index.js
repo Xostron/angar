@@ -1,5 +1,6 @@
-const { data: store, isReset, delModule, delDebMdl } = require('@store')
-
+const { data: store } = require('@store')
+const { isReset } = require('@tool/reset')
+const { delDebMdl } = require('@tool/message/plc_module')
 // Авария "Модуль не в сети" для склада
 function connect(building, section, obj, s, se, m, automode, acc, data) {
 	const isErrM = !!Object.keys(store.alarm?.module?.[building._id] ?? {}).length
@@ -13,7 +14,6 @@ function connect(building, section, obj, s, se, m, automode, acc, data) {
 	// Нет неисправностей модулей или сброс аварии - выкл аварии
 	if (!isErrM || isReset(building._id)) {
 		acc.alarm = false
-		// delModule(building._id)
 	}
 
 	return acc?.alarm ?? false

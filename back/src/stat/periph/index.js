@@ -1,8 +1,9 @@
 const { logger } = require('@tool/logger')
 const { data: store } = require('@store')
 const {check, fnPrev, message} = require('../fn')
+
 /**
- * Логирование периферии
+ * Логирование периферии (запись в лог по изменению состояния)
  * @param {object} data Рама pc
  * @param {object[]} arr данные рамы текущего механизма
  * @param {object} value данные с модулей

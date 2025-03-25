@@ -1,6 +1,6 @@
-const { data: store, delExtra, wrExtra } = require('@store')
-const { msgB } = require('@tool/message')
+const {delExtra, wrExtra} = require('@tool/message/extra')
 const { ctrlB } = require('@tool/command/fan')
+const { msgB } = require('@tool/message')
 
 // Выключение
 function fnAlarm(building, arr, value) {
