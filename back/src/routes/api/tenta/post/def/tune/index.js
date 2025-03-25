@@ -1,4 +1,4 @@
-const { data: store, setTune } = require("@store")
+const { setTune } = require('@tool/command/set')
 
 function cmd(obj) {
 	return new Promise((resolve, reject) => {

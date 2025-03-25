@@ -1,24 +1,24 @@
-const { createAndModifySync, readOne, findOne } = require("@tool/json")
-const { data: store, setCmd, retainDir } = require("@store")
+const { createAndModifySync, findOne } = require('@tool/json')
+const { setCmd } = require('@tool/command/set')
+const { retainDir } = require('@store')
 
 async function cmd(obj) {
 	try {
 		const { buildingId, fanId, value } = obj
-		const fan = await findOne("fan", { key: "_id", v: fanId })
+		const fan = await findOne('fan', { key: '_id', v: fanId })
 		const sectionId = fan?.owner.id
 		// Вывести из работы
-		if (value === "off") {
+		if (value === 'off') {
 			const o = { buildingId, sectionId, fanId, value: true }
-			await createAndModifySync(o, "data", retainDir, cb)
+			await createAndModifySync(o, 'data', retainDir, cb)
 			return true
 		}
 		// Пуск/стоп (+ ввод в работу)
 		const o = { buildingId, sectionId, fanId, value: false }
-		await createAndModifySync(o, "data", retainDir, cb)
+		await createAndModifySync(o, 'data', retainDir, cb)
 		const moduleId = fan.module.id
 		const channel = fan.module.channel - 1
-		const val =
-			value === "run" ? { [channel]: 1 } : { [channel]: 0 }
+		const val = value === 'run' ? { [channel]: 1 } : { [channel]: 0 }
 		const s = { [buildingId]: { [moduleId]: val } }
 		setCmd(s)
 		return true

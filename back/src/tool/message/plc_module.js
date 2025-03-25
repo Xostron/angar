@@ -1,3 +1,4 @@
+const { msgM } = require('@tool/message')
 const { data } = require('@store')
 
 // Разрешить true/заблокировать false опрос модуля

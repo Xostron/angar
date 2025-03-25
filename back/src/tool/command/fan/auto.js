@@ -1,7 +1,7 @@
 const { isExtralrm } = require('@tool/message/extralrm')
-const { setACmd, data: store } = require('@store')
+const { setACmd } = require('@tool/command/set')
 const { ctrlB } = require('@tool/command/fan')
-
+const { data: store } = require('@store')
 /**
  * Для секций в авторежиме: если у одной секции формируется сигнал на включение вент (2я секция в авторежиме - вент остановлены),
  * включается вентиляторы на всех секциях в авторежиме
@@ -78,12 +78,10 @@ function fnFan(start, resultFan, s, idB, obj) {
 // Команда на вкл/выкл напорных вентиляторов
 function fnACmd(start, resultFan, s, idB) {
 	resultFan.list.forEach((idS) => {
-		if (!isExtralrm(idB, idS, 'local') && !isExtralrm(idB, null, 'local'))
-			setACmd('fan', idS, { delay: s.sys.fan, type: start ? 'on' : 'off' })
+		if (!isExtralrm(idB, idS, 'local') && !isExtralrm(idB, null, 'local')) setACmd('fan', idS, { delay: s.sys.fan, type: start ? 'on' : 'off' })
 		else setACmd('fan', idS, { delay: s.sys.fan, type: 'off' })
 	})
 }
-
 
 function fnFanWarm(resultFan, s) {
 	const group = Object.values(resultFan.warming)
@@ -108,5 +106,4 @@ function offSection(resultFan, s, idB, obj) {
 	fnACmd(false, resultFan, s, idB)
 }
 
-module.exports =  fan 
-
+module.exports = fan

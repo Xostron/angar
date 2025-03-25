@@ -1,4 +1,5 @@
-const { data: store, setCmd, setCmdT } = require('@store')
+const { setCmd, setCmdT } = require('@tool/command/set')
+const { data: store } = require('@store')
 
 function fnVlv(vlv, obj) {
 	// value = open, close, stop

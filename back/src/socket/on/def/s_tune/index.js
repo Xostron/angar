@@ -1,4 +1,4 @@
-const { data, setTune } = require('@store')
+const { setTune } = require('@tool/command/set')
 
 // Данные от web: калибровка клапанов
 module.exports = function sTune(io, socket) {

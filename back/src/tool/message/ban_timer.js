@@ -1,3 +1,4 @@
+const mesTimer = require('@dict/timer_lock')
 const { data } = require('@store')
 
 // Записать в Таймеры запретов

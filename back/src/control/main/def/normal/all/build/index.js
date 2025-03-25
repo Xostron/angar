@@ -1,5 +1,4 @@
-const { isAlr } = require('@store')
-const rs = require('@tool/message/auto')
+const {rs, isAlr} = require('@tool/message/auto')
 const tuneup = require('@tool/service/tune')
 const { extra } = require('@control/extra/extra')
 const extralrm = require('@control/extra/extralrm')

@@ -1,6 +1,6 @@
-const { setCmd, setACmd, data: store } = require("@store")
-const { ctrlV } = require("@tool/command/valve")
-
+const { setACmd } = require('@tool/command/set')
+const { ctrlV } = require('@tool/command/valve')
+const { data: store } = require('@store')
 /**
  * АВТО: Формирование команды управления клапаном
  * @param {*} open условие на открытие
@@ -17,9 +17,9 @@ function fnValve(data, sectionId, s) {
 		delay: s.sys.wait,
 		kIn: s.sys.cf.kIn,
 		kOut: s.sys.cf.kOut,
-		type: open ? "open" : "close",
+		type: open ? 'open' : 'close',
 	}
-	setACmd("vlv", sectionId, o)
+	setACmd('vlv', sectionId, o)
 }
 
 /**
@@ -38,9 +38,9 @@ function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
 		store.aCmd[sectionId] ??= {}
 		store.aCmd[sectionId].vlv = null
 		for (const vlv of vlvS) {
-			store.watchdog??={}
+			store.watchdog ??= {}
 			store.watchdog[vlv._id] = null
-			ctrlV(vlv, buildingId, "close")
+			ctrlV(vlv, buildingId, 'close')
 		}
 		return
 	}
@@ -50,9 +50,9 @@ function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
 		store.aCmd[sectionId] ??= {}
 		store.aCmd[sectionId].vlv = null
 		for (const vlv of vlvS) {
-			store.watchdog??={}
+			store.watchdog ??= {}
 			store.watchdog[vlv._id] = null
-			ctrlV(vlv, buildingId, "open")
+			ctrlV(vlv, buildingId, 'open')
 		}
 		return
 	}
@@ -64,7 +64,7 @@ function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
 	if (!retain.valve || !retain.valvePosition) return
 
 	// Приточный клапан
-	const vlvIn = vlvS.find((vlv) => vlv.type === "in")
+	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 
 	if (!vlvIn) return
 
@@ -80,7 +80,7 @@ function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
 	}
 	// Время шага истекло - останавливаем клапан
 	if (+new Date().getTime() > store.watchdog?.[vlvIn._id]?.endStep) {
-		ctrlV(vlvIn, buildingId, "stop")
+		ctrlV(vlvIn, buildingId, 'stop')
 	}
 
 	// Проверка времени простоя - очистка задания и расчетов
@@ -104,22 +104,20 @@ function calcSoft(vlvIn, aCmd, retain) {
 	// Момент времени включения клапана
 	const begin = +new Date().getTime()
 	// Момент времени отключения клапана (шаг)
-	store.watchdog[vlvIn._id].endStep = begin + aCmd.step*1000 * aCmd.kIn
+	store.watchdog[vlvIn._id].endStep = begin + aCmd.step * 1000 * aCmd.kIn
 	// Момент времени завершения простоя клапана
-	store.watchdog[vlvIn._id].endDelay =
-		store.watchdog[vlvIn._id].endStep + aCmd.delay*1000
+	store.watchdog[vlvIn._id].endDelay = store.watchdog[vlvIn._id].endStep + aCmd.delay * 1000
 	// Шаг клапана, %
-	store.watchdog[vlvIn._id].stepPer =
-		(aCmd.step * 100) / +retain.valve[vlvIn._id]
+	store.watchdog[vlvIn._id].stepPer = (aCmd.step * 100) / +retain.valve[vlvIn._id]
 }
 
 // Выпускной клапан секции
 function flyingVlv(buildingId, sectionId, obj, acc, vlvS, s, forceOff) {
 	const { data, value, retain } = obj
 	// Поиск приточного и выпускных клапанов
-	const vIn = vlvS.find((el) => el.type === "in")
+	const vIn = vlvS.find((el) => el.type === 'in')
 	// выпускные клапаны
-	const arrOut = vlvS.filter((el) => el.type === "out")
+	const arrOut = vlvS.filter((el) => el.type === 'out')
 	// ********** Параметры приточного клапана **********
 	const oIn = {
 		// Позиция, %
@@ -148,9 +146,9 @@ function flyingVlv(buildingId, sectionId, obj, acc, vlvS, s, forceOff) {
 		// Направление клапана открыть/закрыть/стоп
 		const open = acc.vOut[v._id].target > pos + store.tDeadzone
 		const close = acc.vOut[v._id].target < pos - store.tDeadzone
-		let type = open ? "open" : "close"
-		if (!open && !close) type = "stop"
-		if (forceOff) type = "close"
+		let type = open ? 'open' : 'close'
+		if (!open && !close) type = 'stop'
+		if (forceOff) type = 'close'
 		ctrlV(v, buildingId, type)
 	}
 }
@@ -190,10 +188,7 @@ function multiTgt(vlv, acc, o, sectionId, arrOut, buildingId, obj) {
 // Положение клапана в %
 function vlvPercent(vlvId, retainB) {
 	if (!vlvId) return null
-	return +(
-		(+retainB.valvePosition?.[vlvId] * 100) /
-		+retainB.valve?.[vlvId]
-	).toFixed(1)
+	return +((+retainB.valvePosition?.[vlvId] * 100) / +retainB.valve?.[vlvId]).toFixed(1)
 }
 
 // Количество выпускных клапанов, которые принадлежат только одной секции

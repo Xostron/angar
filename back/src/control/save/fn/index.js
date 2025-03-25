@@ -1,5 +1,7 @@
-const { data: store, setPos, setTuneTime, setTick, isZero } = require('@store')
+const { setTuneTime, setPos } = require('@tool/command/set')
 const { stateV } = require('@tool/command/valve')
+const { data: store } = require('@store')
+const { isZero } = require('@tool/zero')
 
 // Прогресс открытия/закрытия клапана (сохранение в retain)
 function positionVlv(obj) {

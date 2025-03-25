@@ -1,4 +1,4 @@
-const { data: store,zero } = require('@store')
+const {zero} = require('@tool/zero')
 
 // Данные от web: Обнуление счетчика сушки
 module.exports = function sZero(io, socket) {

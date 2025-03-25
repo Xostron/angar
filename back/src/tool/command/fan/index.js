@@ -1,6 +1,5 @@
-const { setCmd, data: store } = require('@store')
 const { getIdB } = require('@tool/get/building')
-
+const { setCmd } = require('@tool/command/set')
 /**
  * Команда управления периферией (вкл/выкл)
  * @param {*} obj Вентилятор и т.д.

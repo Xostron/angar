@@ -1,4 +1,4 @@
-const { data: store, setTune } = require('@store')
+const { setTune } = require('@tool/command/set')
 const { findOne } = require('@tool/json')
 const fnVlv = require('./fn')
 

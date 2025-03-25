@@ -1,4 +1,4 @@
-const {data} = require('@store')
+const { data } = require('@store')
 
 /**
  * Аварии автоматического режима (темп улицы не подходит и т.д.)
@@ -23,4 +23,10 @@ function rs(buildingId, automode, arr) {
 	})
 }
 
-module.exports = rs
+// Наличие аварии
+function isAlr(buildingId, automode) {
+	const d = data.alarm.auto?.[buildingId]?.[automode] ?? {}
+	return Object.keys(d).length ? true : false
+}
+
+module.exports = { rs, isAlr }

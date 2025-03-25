@@ -1,5 +1,5 @@
 const { isExtralrm } = require('@tool/message/extralrm')
-const { setCmd } = require('@store')
+const { setCmd } = require('@tool/command/set')
 /**
  * Управление клапаном открыть/закрыть/стоп
  * @param {*} vlv Клапан

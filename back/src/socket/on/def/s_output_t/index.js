@@ -1,4 +1,4 @@
-const { data:store, setCmdT } = require('@store')
+const { setCmdT } = require('@tool/command/set')
 
 // Данные от web: команды управления
 module.exports = function sOutputT(io, socket) {

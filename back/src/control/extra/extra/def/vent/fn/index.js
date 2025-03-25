@@ -1,4 +1,4 @@
-const { setACmd } = require('@store')
+const { setACmd } = require('@tool/command/set')
 const { stateEq } = require('@tool/command/fan')
 const { stateV } = require('@tool/command/valve')
 
@@ -6,7 +6,6 @@ const { stateV } = require('@tool/command/valve')
 function mOn(s, section) {
 	// вентиляторы пуск
 	setACmd('fan', section._id, { type: 'on', delay: s.sys.fan })
-	
 }
 
 // Режим вентиляции: Авто - доп вентиляция (подхват)
@@ -15,7 +14,7 @@ function mAutoByDura(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
 	// Отключение
-	if (typeof s.vent.add!=='number' || typeof s.vent.max_add !=='number' || !vlvIn) {
+	if (typeof s.vent.add !== 'number' || typeof s.vent.max_add !== 'number' || !vlvIn) {
 		acc.byDura = {}
 		return
 	}
@@ -70,7 +69,7 @@ function mAutoByTime(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 	acc.byTime ??= {}
 
 	// Отключение: нет настройки, аварии, бит завершения по времени, не был закончен подхват
-	if (typeof s.vent.work !=='number' || (!alarm && !acc.byTime?.finish) || !acc?.byDura?.finish) {
+	if (typeof s.vent.work !== 'number' || (!alarm && !acc.byTime?.finish) || !acc?.byDura?.finish) {
 		acc.byTime = {}
 		return
 	}
@@ -96,5 +95,3 @@ function mAutoByTime(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 }
 
 module.exports = { mAutoByTime, mAutoByDura, mOn }
-
-

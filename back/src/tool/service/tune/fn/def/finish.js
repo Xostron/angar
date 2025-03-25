@@ -1,4 +1,4 @@
-const { setTuneTime } = require('@store')
+const { setTuneTime } = require('@tool/command/set')
 
 function finish(vlv, state) {
 	vlv._stage = null

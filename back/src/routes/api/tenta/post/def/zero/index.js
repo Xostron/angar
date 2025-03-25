@@ -1,6 +1,6 @@
-const { data: store, zero } = require("@store")
+const {zero} = require('@tool/zero')
 
-// Обнулить дни сушки
+// Команада: Обнулить дни сушки
 function cmd(obj) {
 	return new Promise((resolve, reject) => {
 		zero(obj)

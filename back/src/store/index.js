@@ -1,6 +1,4 @@
 const path = require('path')
-const mesTimer = require('@dict/timer_lock')
-const { msgM } = require('@tool/message')
 
 const data = {
 	// Флаг первого цикла
@@ -113,26 +111,6 @@ const data = {
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
 }
 
-// Обнулить счетчик сушки
-function zero(obj, type = true) {
-	// обнулить
-	if (!type) {
-		return data.zero.clear()
-	}
-	// установить
-	data.zero.add(obj.buildingId)
-}
-
-function isZero(buildingId) {
-	return data.zero.has(buildingId)
-}
-
-// Наличие аварии
-function isAlr(buildingId, automode) {
-	const d = data.alarm.auto?.[buildingId]?.[automode] ?? {}
-	return Object.keys(d).length ? true : false
-}
-
 // Сссылка на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
 function readAcc(buildingId, name, sectionId) {
 	data.acc ??= {}
@@ -142,37 +120,6 @@ function readAcc(buildingId, name, sectionId) {
 
 	data.acc[buildingId][name][sectionId] ??= {}
 	return data.acc[buildingId][name][sectionId]
-}
-
-// Команда управления
-function setACmd(type, sectionId, obj) {
-	data.aCmd ??= {}
-	data.aCmd[sectionId] ??= {}
-	data.aCmd[sectionId][type] ??= {}
-	data.aCmd[sectionId][type] = { ...data.aCmd?.[sectionId]?.[type], ...obj }
-}
-// Калибровочное время клапана
-function setTuneTime(obj) {
-	if (obj === null) {
-		data.tuneTime = null
-		return
-	}
-	data.tuneTime ??= {}
-	data.tuneTime[obj._build] ??= {}
-	data.tuneTime[obj._build][obj._id] = obj._time
-}
-
-// Установить флаг готовности склада - Пуск-true/стоп-false
-function setToOffBuild(obj) {
-	// Очистить флаг готовности у склада
-	if (obj?.type === 'del') {
-		delete data.toOffBuild?.[obj._build]
-		return
-	}
-	// Установить флаг готовности
-	data.toOffBuild ??= {}
-	data.toOffBuild[obj._build] = obj.value
-	// data.toOffBuild = { ...data.toOffBuild, [obj._build]: obj.value }
 }
 
 // Установить флаг готовности секции - авто/руч/выкл
@@ -190,60 +137,22 @@ function toggleMode(key) {
 	}
 }
 
-// Установить позиции клапанов
-function setPos(obj) {
-	if (obj === null) {
-		data.vlvPos = null
+// Установить флаг готовности склада - Пуск-true/стоп-false
+function setToOffBuild(obj) {
+	// Очистить флаг готовности у склада
+	if (obj?.type === 'del') {
+		delete data.toOffBuild?.[obj._build]
 		return
 	}
-	data.vlvPos ??= {}
-	data.vlvPos[obj._build] ??= {}
-	data.vlvPos[obj._build][obj._id] = obj.value
+	// Установить флаг готовности
+	data.toOffBuild ??= {}
+	data.toOffBuild[obj._build] = obj.value
+	// data.toOffBuild = { ...data.toOffBuild, [obj._build]: obj.value }
 }
 
 // Начало цикла главной программы
 function setTick() {
 	data.tick = +new Date().getTime()
-}
-
-// Установить команды управления
-function setCmd(obj) {
-	if (!obj) {
-		data.command = null
-		return
-	}
-	data.command ??= {}
-	for (const build in obj) {
-		data.command[build] ??= {}
-		for (const mdl in obj[build]) {
-			data.command[build][mdl] ??= {}
-			for (const channel in obj[build][mdl]) {
-				const val = obj[build][mdl][channel]
-				data.command[build][mdl][channel] = val
-			}
-		}
-	}
-}
-
-// Установить команды управления (включение по времени)
-function setCmdT(obj) {
-	if (!obj) return
-	data.commandT ??= {}
-	for (const build in obj) {
-		data.commandT[build] ??= {}
-		for (const mdl in obj[build]) {
-			data.commandT[build][mdl] ??= {}
-			for (const channel in obj[build][mdl]) {
-				const o = obj[build][mdl][channel]
-				data.commandT[build][mdl][channel] = o
-			}
-		}
-	}
-}
-
-// Установить команды на калибровку клапанов
-function setTune(obj) {
-	data.tune = { ...data.tune, ...obj }
 }
 
 // Базовая директория проекта
@@ -263,19 +172,10 @@ module.exports = {
 	retainDir,
 	factoryDir,
 	accDir,
-	setCmd,
-	setTune,
-	setCmdT,
 	setTick,
-	setPos,
 	setToMan: toggleMode('toMan'),
 	setToAuto: toggleMode('toAuto'),
 	setToOffSection: toggleMode('toOffSection'),
 	setToOffBuild,
-	setTuneTime,
-	setACmd,
-	isAlr,
 	readAcc,
-	zero,
-	isZero,
 }
