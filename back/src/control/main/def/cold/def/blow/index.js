@@ -15,6 +15,7 @@ function blow(fnChange, acc, se, s, bld) {
 	const off = acc.state.off ?? 0
 	const bf = Math.max(acc.state.frost ?? 0, acc.state.cooling ?? 0)
 	// Время обдува (после остановки)
+	// TODO Комбинированный - возможно убрать обдув после остановки?
 	if (off > bf) {
 		// Время обдува не закончилось
 		const time = compareTime(acc.state.blow, s.cooler?.blow);

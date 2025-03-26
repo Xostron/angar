@@ -58,10 +58,14 @@ function check(fnChange, code, acc, se, s, bld) {
 	// условия включения солененоида
 	if (se.tin > s.cold.room + s.cold.deltaRoom) sol = 1;
 	if (se.tin <= s.cold.room) sol = 0;
+	// TODO Комбинированный откр/закр соленоид
+	// const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
+	// const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
 
 	// Условия включения вентилятора
 	if (se.cooler.clr <= s.cooler.cold) ven = 1;
 	if (se.cooler.clr > s.cooler.cold + s.cooler.deltaCold) ven = 0;
+	
 	// console.log(sol, ven);
 	// console.log('(!sol && !ven )||(sol && !ven)', (!sol && !ven ), (sol && !ven), (!sol && !ven )||(sol && !ven));
 	// console.log('!sol && ven', !sol && ven);

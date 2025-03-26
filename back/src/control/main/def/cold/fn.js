@@ -17,7 +17,7 @@ function checkDefrost(fnChange, acc, se, s, stateCooler) {
 	
 	const tmp = se.cooler.clr <= s?.cooler?.defrostOn
 	const time =  compareTime(acc.targetDT, s.cooler.defrostWait)
-	// Запуск оттайки по температре и времени
+	// Запуск оттайки по температуре и времени
 	if ( tmp || time) {
 		acc.state.defrostCount += 1
 		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания': 'времени между интервалами' );

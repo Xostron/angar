@@ -1,13 +1,14 @@
 const extralrm = require('@control/extra/extralrm')
-const {extra, extraClear} = require('@control/extra/extra')
+const { extra, extraClear } = require('@control/extra/extra')
 const main = require('./main')
 
 // Склад холодильник
 function cold(building, obj, bdata) {
-	if (building?.type !== 'cold') return
+	// if (building?.type !== 'cold') return
 	// Доп функции
 	const alr = runExtra(building, obj, bdata)
 	// Алгоритм управления камерой
+	// main[building?.type](building, obj, bdata, alr)
 	main(building, obj, bdata, alr)
 }
 

@@ -15,6 +15,8 @@ const def = {
 		check(fnChange, 'cooling', acc, se, s, bld),
 	// Обдув
 	'off-on-off': blow,
+
+	// TODO Комбинированный - что оттайка и стекание блокирует полностью склад?
 	// Оттайка
 	'off-off-on': defrost,
 	// Стекание воды

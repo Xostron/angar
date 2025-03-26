@@ -1,8 +1,9 @@
-const def = require('./def')
-const checkSupply = require('./supply')
-const { change, checkDefrost } = require('./fn')
+const def = require('../../def')
+const checkSupply = require('../../supply')
+const { change, checkDefrost } = require('../../fn')
 const { data: store } = require('@store')
 
+// Склад холодильник
 function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply } = bdata
@@ -36,12 +37,14 @@ function main(bld, obj, bdata, alr) {
 			delete accAuto?.state?.off
 			continue
 		}
+		// Работа склада разрешена
 		// Вычисление Т target
 		if (!accAuto.targetDT || accAuto.targetDT.getDate() !== new Date().getDate() || accAuto?.isChange(s.cold.decrease, s.cold.target)) {
-			// Замыкание на изменение настроек
+			// Били ли изменены указанные настройки
 			accAuto.isChange = isChange(s.cold.decrease, s.cold.target)
 
 			// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
+			// TODO Комбинированный имеет свое задание темп продукта
 			const t = se.cooler.tprd - s.cold.decrease
 			accAuto.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t).toFixed(1)
 
@@ -51,7 +54,7 @@ function main(bld, obj, bdata, alr) {
 		}
 
 		// console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
-
+		// Выключена ли оттайка
 		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) def?.[stateCooler.state](fnChange, accAuto, se, s, bld)
 	}
 }
