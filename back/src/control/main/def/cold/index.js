@@ -4,6 +4,8 @@ const main = require('./main')
 
 // Склад холодильник
 function cold(building, obj, bdata) {
+	if (!['cold','combi'].includes(building?.type)) return
+	console.log(111, 'Работа холодильника')
 	// if (building?.type !== 'cold') return
 	// Доп функции
 	const alr = runExtra(building, obj, bdata)
@@ -32,4 +34,10 @@ function runExtra(building, obj, bdata) {
 	extra(building, null, obj, s, se, m, null, null, null, 'cold', 'on')
 	alr = alr || extralrm(building, null, obj, s, se, m, null, null, 'cold', 'on')
 	return alr
+}
+
+function check(building){
+	if (building?.type==='cold') return true
+	if (building?.type=='combi') return true
+	
 }
