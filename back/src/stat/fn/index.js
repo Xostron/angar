@@ -77,7 +77,7 @@ function message(data, el, level, value) {
 /**
  * Разрешение на запись в логи
  * @param {object} val состояние
- * @returns {boolean}
+ * @returns {boolean} false - состояние не изменилось,  true - изменилось
  */
 function check(val, prev, level) {
 	// Значение состояния
@@ -92,6 +92,7 @@ function check(val, prev, level) {
 	}
 	// Состояние не изменилось
 	if (JSON.stringify(v) === JSON.stringify(prev)) return false
+	// Состояние изменилось
 	return true
 }
 

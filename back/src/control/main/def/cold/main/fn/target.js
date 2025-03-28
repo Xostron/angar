@@ -2,6 +2,7 @@ const { data: store, readAcc } = require('@store')
 
 // Расчет задания
 // Для холодильника
+// accAuto - аккумулятор холодильника
 function coldTarget(bld, obj, bdata, alr) {
 	const { start, s, se, m, accAuto, supply } = bdata
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
@@ -20,14 +21,20 @@ function coldTarget(bld, obj, bdata, alr) {
 	}
 }
 
+// Аккумулятор комбинированного склада accTotal = {...данные_нормального_склада, cold:{...данные холодильника}}
 // Для комбинированного
-// TODO accAuto
 function combiTarget(bld, obj, bdata, alr) {
-	const { start, s, se, m, accAuto, supply } = bdata
+	const { start, s, se, m, accAuto: a, supply } = bdata
+	const accCold = a.cold
+	const accTotal = a
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
-	if (!accAuto.targetDT || accAuto.targetDT.getDate() !== new Date().getDate() || accAuto?.isChange(s.cold.decrease, s.cold.target)) {
+	if (
+		!accCold.targetDT ||
+		accCold.targetDT.getDate() !== new Date().getDate() ||
+		accCold?.isChange(s.cold.decrease, s.cold.target)
+	) {
 		// Указанные настройки изменились?
-		accAuto.isChange = isChange(s.cold.decrease, s.cold.target)
+		accCold.isChange = isChange(s.cold.decrease, s.cold.target)
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
 		// TODO Комбинированный имеет свое задание темп продукта
 		// Режим работы склада (сушка, лечение и т.д.)
@@ -35,10 +42,10 @@ function combiTarget(bld, obj, bdata, alr) {
 		// Аккумулятор для хранения промежуточных вычислений (авторежим)
 		const name = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 		const t = readAcc(bld._id, name)?.target
-		accAuto.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t).toFixed(1)
+		accCold.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t).toFixed(1)
 		// Время создания задания
-		accAuto.targetDT = new Date()
-		accAuto.state ??= {}
+		accCold.targetDT = new Date()
+		accCold.state ??= {}
 	}
 }
 

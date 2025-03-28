@@ -9,14 +9,15 @@ const {check, fnPrev, message} = require('../fn')
  * @param {object} value данные с модулей
  * @param {object} prev хранилище прошлого значения
  * @param {string} level приоритет логирования
+ * @param {boolean} force принудительное логирование
  * @returns
  */
-function pLog(data, arr, value, level) {
+function pLog(data, arr, value, level, force) {
 	if (!arr?.length) return
 	arr.forEach((el) => {
 		const { _id } = el
-		// Проверка изменения были?
-		if (!check(value?.[_id], store.prev[_id], level)) return
+		// Проверка изменений не было? && принудит. логирования нет - выходим
+		if (!check(value?.[_id], store.prev[_id], level) && !force) return
 		// фиксируем состояние по изменению
 		fnPrev(_id, value[_id], level)
 		// Лог

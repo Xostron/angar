@@ -8,9 +8,9 @@ function combi(building, obj, bdata) {
 	console.log(111, 'Комбинированный холодильный склад', seB)
 	// console.log(se)
 	// Простой склад
-	normal(building, obj, bdata)
+	// normal(building, obj, bdata)
 	// Холодильник (включение при аварии авторежима)
-	cold(building, obj, bdata)
+	// cold(building, obj, bdata)
 }
 
 module.exports = combi

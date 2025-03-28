@@ -8,14 +8,15 @@ const { message, checkTyp } = require('../fn')
  * tin температура потолка (холодильный склад)
  * @param {object} total Расчетные данные с анализа (мин,макс датчиков)
  * @param {object[]} building Рама складов
+ * @param {boolean} force принудительное логирование
  */
-function sensTotalLog(total, building) {
+function sensTotalLog(total, building, force) {
 	if (!total) return
 	building.forEach((bld) => {
 		const val = total[bld._id]
 		;['hin', 'tprdL', 'tin'].forEach((el) => {
 			const m = checkTyp(el, bld)
-			if (!m) return
+			if (!m && !force) return
 			const type = ['hin', 'tin'].includes(el) ? el+'L' : el
 			loggerSens['sensor']({
 				message: {
@@ -35,6 +36,7 @@ function sensTotalLog(total, building) {
  * @param {*} arr
  * @param {*} value
  * @param {*} level
+ * @param {boolean} force принудительное логирование
  * @returns
  */
 function pLogConst(data, arr, value, level) {
