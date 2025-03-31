@@ -1,12 +1,13 @@
 const { change, checkDefrost } = require('../fn')
 const cooler = require('../def_cooler')
-const denied = require('./def/denied')
 const target = require('./def/target')
+const denied = require('./def/denied')
 
 // Обычный / комбинированный
 function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply } = bdata
+	// Аккумулятор: комбинированный склад
 	if (bld?.type === 'combi') accAuto.cold ??= {}
 
 	const fnChange = (sl, f, h, add, code) => change(bdata, bld._id, sl, f, h, add, code)
@@ -27,6 +28,8 @@ function main(bld, obj, bdata, alr) {
 		// console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
 		// Выключена ли оттайка
 		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) cooler?.[stateCooler.state](fnChange, accAuto, se, s, bld)
+
+		// TODO Функции комбинированного склада
 	}
 }
 

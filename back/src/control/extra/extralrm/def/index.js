@@ -42,7 +42,7 @@ const def = {
 		on: {
 			idle,
 			genB,
-			openVin
+			openVin,
 		},
 		off: {},
 		always: {

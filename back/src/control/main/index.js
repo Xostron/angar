@@ -1,13 +1,12 @@
+const scan = require('@tool/command/scan')
 const prepare = require('../prepare')
-const  scan  = require('@tool/command/scan')
 const def = require('./def')
 
-// Автоматическое управление
+// Автоматическое управление складами(cold, combi, normal)
 function main(obj) {
 	const { data } = obj
-	// Подготовка обычного склада: (переключение режимов работы секции, вкл/выкл склада)
+	// Подготовка обычного склада: (combi, normal) (переключение режимов работы секции, вкл/выкл склада)
 	prepare(obj)
-	// TODO Узнать требуется ли подготовка для холодильника (вкл/выкл склада)
 
 	// Обработка складов
 	for (const bld of data.building) {

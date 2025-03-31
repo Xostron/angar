@@ -4,13 +4,10 @@ const main = require('./main')
 
 // Склад холодильник
 function cold(building, obj, bdata) {
-	if (!['cold','combi'].includes(building?.type)) return
-	console.log(111, 'Работа холодильника')
-	// if (building?.type !== 'cold') return
+	console.log(222, '\tРабота холодильника', building?.type)
 	// Доп функции
 	const alr = runExtra(building, obj, bdata)
 	// Алгоритм управления камерой
-	// main[building?.type](building, obj, bdata, alr)
 	main(building, obj, bdata, alr)
 }
 

@@ -1,5 +1,5 @@
 const { data: store } = require('@store')
-const checkSupply = require('../../supply')
+const checkSupply = require('./supply')
 
 /**
  * Запрет работы склада
