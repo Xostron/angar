@@ -60,9 +60,14 @@ const data = {
 			drainOn, 
 		},
 	},
-
-	combi: {},
-	// TODO vent - отладить
+	combi: {
+		on:{},
+		off:{},
+		always:{
+			reset,
+			connect,
+		}
+	},
 }
 
 module.exports = data

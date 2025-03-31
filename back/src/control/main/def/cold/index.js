@@ -16,25 +16,22 @@ module.exports = cold
 function runExtra(building, obj, bdata) {
 	const { start, s, se, m, accAuto } = bdata
 	let alr = false
+	// Тип склада cold - холодильник, combi - комбинированный
+	const type = building?.type
 	// Всегда
-	alr = alr || extralrm(building, null, obj, s, se, m, null, null, 'cold', 'always')
+	alr = alr || extralrm(building, null, obj, s, se, m, null, null, type, 'always')
 
-	extra(building, null, obj, s, se, m, null, null, null, 'cold', 'always')
+	extra(building, null, obj, s, se, m, null, null, null, type, 'always')
 
 	// Склад выключен
 	if (!start) {
-		extra(building, null, obj, s, se, m, null, null, null, 'cold', 'off')
+		extra(building, null, obj, s, se, m, null, null, null, type, 'off')
 		return alr
-	} else extraClear(building, null, obj, s, se, m, null, null, null, 'cold', 'off')
+	} else extraClear(building, null, obj, s, se, m, null, null, null, type, 'off')
 
 	// Склад включен
-	extra(building, null, obj, s, se, m, null, null, null, 'cold', 'on')
-	alr = alr || extralrm(building, null, obj, s, se, m, null, null, 'cold', 'on')
+	extra(building, null, obj, s, se, m, null, null, null, type, 'on')
+	alr = alr || extralrm(building, null, obj, s, se, m, null, null, type, 'on')
 	return alr
 }
 
-function check(building){
-	if (building?.type==='cold') return true
-	if (building?.type=='combi') return true
-	
-}

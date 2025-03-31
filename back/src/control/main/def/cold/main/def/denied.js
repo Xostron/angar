@@ -8,18 +8,18 @@ const checkSupply = require('./supply')
  * @param {boolean} alr Аварии extralrm
  * @param {string} stateCooler Состояние испарителя
  * @param {function} fnChange Замыкание - функция для изменения состояния испарителя
- * @returns {boolean} true - запрещено работать, false - разрешено работать
+ * @returns {boolean} true - запрет работы, false - разрешено
  */
 function denied(bld, bdata, alr, stateCooler, fnChange) {
 	const { start, s, se, m, accAuto: a, supply } = bdata
-	// Аккумулятор вычислений: Холодильник : Комбинированный
+	// ATTENTION!: Аккумулятор вычислений: Холодильник : Комбинированный
 	const accAuto = bld?.type === 'cold' ? a : a.cold
 
 	const supplySt = checkSupply(supply, bld._id, retain)
 	const aggr = isRunAgg(obj.value, bld._id)
-
-	// Работа склада запрещена
-	store.denied[bld._id] = !start || alr || !aggr || !supplySt
+	store.denied[bld._id] = !start || alr || !aggr || !supplySt || !enCombi(bld, automode)
+	
+	// Работа холодильника запрещена
 	if (store.denied[bld._id]) {
 		// console.log('\tОстановка из-за ошибок:')
 		// console.log('\t\tСклад остановлен:', !start)
@@ -43,6 +43,36 @@ function denied(bld, bdata, alr, stateCooler, fnChange) {
 
 module.exports = denied
 
+/**
+ * @description Агрегат (группа компрессоров) готов?
+ * @param {*} value Глобальные данные состояние и датчики
+ * @param {*} idB id склада
+ * @returns {boolean} true Агрегат готов
+ */
 function isRunAgg(value, idB) {
 	return value.total[idB].aggregate.state !== 'alarm' ? true : false
+}
+
+/**
+ * @description Разрешение на работу для комбинированного склада
+ * У комбинированного склада: 2 состояния: работа как обычный склад или как холодильник.
+ * В качестве холодильника разрешено работать, только в режиме хранения (cooling),
+ * и при наличии аварии авторежима.
+ * @param {string} bld Склад
+ * @param {string} automode Авторежим
+ * @returns {boolean} true разрешить работу
+ */
+function enCombi(bld, automode) {
+	switch (bld?.type) {
+		case 'cold':
+			// Разрешить работу: склад холодильник
+			return true
+		case 'combi':
+			// Разрешить работу: комбинир. склад && режим хранения && наличие аварий авторежима хранения
+			const isAutoAlr = Object.keys(store.alarm.auto?.[building._id]?.cooling ?? {}).length
+			return automode === 'cooling' && isAutoAlr ? true : false
+		default:
+			// Для всего остального - запрет
+			return false
+	}
 }

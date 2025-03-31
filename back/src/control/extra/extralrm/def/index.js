@@ -55,9 +55,15 @@ const def = {
 	},
 	// Доп. аварии холодильника
 	cold: {
-		on: { idle, genB,  },
+		on: { idle, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply , co2, aggregate},
+		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate },
+	},
+	// Комбинированный склад (холодильник)
+	combi: {
+		on: { idle, genB },
+		off: {},
+		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate },
 	},
 }
 

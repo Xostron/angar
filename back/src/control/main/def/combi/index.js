@@ -3,10 +3,11 @@ const cold = require('../cold')
 
 // Комбинированный склад (простой склад+холодильник с некоторыми особенностями)
 function combi(building, obj, bdata) {
-	if (building?.type !== 'combi') return
 	const { start, automode, s, se: seB, m, accAuto, resultFan } = bdata
-	console.log(111, 'Комбинированный холодильный склад', seB)
-	// console.log(se)
+	console.log(111, 'Комбинированный холодильный склад', building?.type)
+	console.log('\tЗапущен', start)
+	console.log('\tАвторежим', automode)
+	console.log('\Аккумулятор', accAuto)
 	// Простой склад
 	normal(building, obj, bdata)
 	// Холодильник (включение при аварии авторежима)
