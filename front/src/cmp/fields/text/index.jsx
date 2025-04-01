@@ -1,5 +1,6 @@
 //Просто текст
 export default function Text({ data, style, cls }) {
+	if (isNaN(data)) return
 	let cl = ['cell', cls]
 	cl = cl.join(' ')
 

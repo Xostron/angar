@@ -6,16 +6,16 @@ function Version() {
 	const [title, setTitle] = useState('')
 	const list = useEquipStore(useShallow(({ list }) => list))
 
-	const {name, code} = list?.[0]?.company ?? {}
+	const { name, code } = list?.[0]?.company ?? {}
 
 	useEffect(() => {
-		if(name && code) setTitle(`${code} ${name} `)
+		if (name && code) setTitle(`${code} ${name} `)
 	}, [name, code])
 
 	return (
 		<div style={{ position: 'absolute', bottom: '15px', right: '15px', color: 'darkgray' }}>
-			<Helmet  title={title}/>
-			<p>server v2.0.4: {process.env.PUBLIC_SOCKET_URI}</p>
+			<Helmet title={title} />
+			<p>server 4.0.0: {process.env.PUBLIC_SOCKET_URI}</p>
 		</div>
 	)
 }
