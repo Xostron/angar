@@ -122,7 +122,7 @@ function total(equip, result, retain) {
 		// Результат (данные с датчиков для алгоритма)
 		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather, tout }
 		// Абсолютная влажность продукта
-		result.humAbs.in[bld._id] = calc(result.total[bld._id].tprd.max, result.total[bld._id].hin.max, `${bld.name}:Абс.влажность продукта`)
+		result.humAbs.in[bld._id] = calc(result.total[bld._id].tprd.min, result.total[bld._id].hin.max, `${bld.name}:Абс.влажность продукта`)
 		// Точка росы
 		result.total[bld._id].point = dewpoint(result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
 	}
