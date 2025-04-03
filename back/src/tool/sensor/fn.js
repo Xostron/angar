@@ -9,7 +9,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 function getRaw(sens, v) {
 	// const { module, equipment } = equip
 	// Датчик не объявлен в админке
-	if (!sens.module.id || typeof sens.module.channel !== 'number') return null
+	if (!sens.module?.id || typeof sens.module.channel !== 'number') return null
 	// Тип модуля
 	// const idEq = module.find((el) => el._id == sens.module.id)?.equipmentId
 	// const int10 = equipment?.[idEq]?.re?.type == 'int10'
