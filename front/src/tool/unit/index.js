@@ -9,7 +9,8 @@ const data = {
 	// абсолютная влажность
 	calcMois: 'гр.',
 	// Давление
-	p: 'bar',
-};
+	p: 'Па',
+	bar: 'bar',
+}
 
-export default data;
+export default data

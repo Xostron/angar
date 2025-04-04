@@ -5,14 +5,17 @@ const { data: store } = require('@store')
 /**
  * Для секций в авторежиме: если у одной секции формируется сигнал на включение вент (2я секция в авторежиме - вент остановлены),
  * включается вентиляторы на всех секциях в авторежиме
- * @param {*} bld склад
- * @param {*} resultFan задание на включение напор.вент.
- * @param {*} s настройки склада
+ * @param {string} bld склад
+ * @param {object} resultFan задание на включение ВНО
+ * @param {object} s настройки склада
+ * @param {object} obj глобальные данные склада
  */
-function fan(bld, resultFan, s, retain) {
-	fnFan(resultFan.start.includes(true), resultFan, s, bld._id, retain)
+function fan(bld, resultFan, s, obj) {
+	// console.log(333, resultFan)
+	const start = resultFan.start.includes(true)
+	fnFan(bld._id, resultFan, s, start)
 	// Прогрев клапанов
-	if (!resultFan.start.includes(true)) fnFanWarm(resultFan, s)
+	if (!start) fnFanWarm(resultFan, s)
 
 	// Непосредственное включение вентиляторов (ступенчато)
 	ctrlFSoft(resultFan, bld._id)
@@ -58,13 +61,13 @@ function main(listId, fan, buildingId) {
 }
 
 /**
- * Команда на вкл/выкл напорных вентиляторов
+ * Формирование команд на вкл/выкл напорных вентиляторов
  * @param {*} start Условие пуска вентиляторов on - вкл, off - выкл
  * @param {*} sectionId
  * @param {*} s Настройки склада
  * @returns
  */
-function fnFan(start, resultFan, s, idB, obj) {
+function fnFan(idB, resultFan, s, start) {
 	// Задания от автомата нет
 	if (!resultFan?.list?.length) {
 		// Проверка секцию выключили? и пошаговое отключение
@@ -85,7 +88,6 @@ function fnACmd(start, resultFan, s, idB) {
 
 function fnFanWarm(resultFan, s) {
 	const group = Object.values(resultFan.warming)
-
 	for (const o of group) {
 		setACmd('fan', o.sectionId, { delay: s.sys.fan, type: 'on' })
 	}

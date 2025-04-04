@@ -52,7 +52,7 @@ function message(data, el, level, value) {
 			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
 			break
 		case 'sensor':
-			el.owner.type == 'section' ? (secId = el.owner.id) : (bldId = el.owner.id)
+			el.owner.type == 'section' ? (secId = el.owner.id) : el.owner.type == 'cooler' ? (clrId = el.owner.id) : (bldId = el.owner.id)
 			v = value[el._id].value
 			state = value[el._id].state
 			break
@@ -62,7 +62,6 @@ function message(data, el, level, value) {
 
 	if (secId && !bldId) bldId = getIdSB(section, secId)
 	const o = clrId ? getOwnerClr(section, cooler, clrId) : {}
-
 	return {
 		bldId: bldId ?? o.bldId,
 		secId: secId ?? o.secId,
@@ -96,8 +95,6 @@ function check(val, prev, level) {
 	return true
 }
 
-
-
 function checkTyp(el, bld) {
 	if (el === 'hin') return 'max'
 	if (el === 'tprdL') return 'min'
@@ -105,6 +102,4 @@ function checkTyp(el, bld) {
 	return null
 }
 
-
-
-module.exports = { fnPrev, message, check, checkTyp}
+module.exports = { fnPrev, message, check, checkTyp }

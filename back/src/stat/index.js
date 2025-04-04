@@ -46,7 +46,8 @@ async function statOnTime() {
 	while (true) {
 		// Задержка
 		await delay(store.tStat)
-		const data = await readTO(['building', 'section', 'sensor'])
+		// await delay(5000)
+		const data = await readTO(['building', 'section', 'sensor','cooler'])
 		// Датчики (Total после анализа)
 		sensTotalLog(store?.value?.total, data.building)
 		// Лог по всем датчикам
