@@ -31,6 +31,7 @@ function message(data, el, level, value) {
 	switch (level) {
 		case 'fan':
 			el.owner.type == 'section' ? (secId = el.owner.id) : (bldId = el.owner.id)
+			v = value[el._id]?.state === 'run' ? 1 : 0
 			break
 		case 'device':
 		case 'cooler':
@@ -41,11 +42,11 @@ function message(data, el, level, value) {
 			break
 		case 'valve':
 			secId = el.sectionId?.[0]
-			v = value[el._id]?.close ? 'cls' : 'opn'
+			v = value[el._id]?.close ? 0 : 1
 			break
 		case 'heating':
 			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
-			v = value[el._id] ?? false
+			v = +value[el._id] ?? 0
 			break
 		case 'watt':
 			secId = el.sectionId
