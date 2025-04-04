@@ -10,12 +10,12 @@ const checkSupply = require('./supply')
  * @param {function} fnChange Замыкание - функция для изменения состояния испарителя
  * @returns {boolean} true - запрет работы, false - разрешено
  */
-function denied(bld, bdata, alr, stateCooler, fnChange) {
+function denied(bld, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto: a, supply } = bdata
 	// ATTENTION!: Аккумулятор вычислений: Холодильник : Комбинированный
 	const accAuto = bld?.type === 'cold' ? a : a.cold
 
-	const supplySt = checkSupply(supply, bld._id, retain)
+	const supplySt = checkSupply(supply, bld._id, obj.retain)
 	const aggr = isRunAgg(obj.value, bld._id)
 	store.denied[bld._id] = !start || alr || !aggr || !supplySt || !enCombi(bld, automode)
 	
@@ -50,7 +50,7 @@ module.exports = denied
  * @returns {boolean} true Агрегат готов
  */
 function isRunAgg(value, idB) {
-	return value.total[idB].aggregate.state !== 'alarm' ? true : false
+	return value.total[idB].aggregate?.state !== 'alarm' ? true : false
 }
 
 /**

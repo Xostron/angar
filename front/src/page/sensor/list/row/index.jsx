@@ -98,13 +98,11 @@ function fnStyle(corr, raw, on) {
  * @returns {object} {unit, ico} иконки
  */
 function fnUnit(data) {
-	// console.log(111,data)
 	// Ед. измерения, иконка
 	let unit = defUn['p']
 	let ico = defImg['pressure'].on
 	if (['pin','pout'].includes(data.type)){
 		unit = defUn['bar']
-		// ico = defImg['temp'].on
 	}
 	if (t.includes(data.type)) {
 		unit = defUn['temp']

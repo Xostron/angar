@@ -73,10 +73,13 @@ function total(equip, result, retain) {
 			idsS = section.filter((el) => el.buildingId === bld._id && retain?.[bld?._id]?.mode?.[el?._id]).map((el) => el._id)
 			// Все секции
 			idsAll = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
-		} else idsS = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
+		} else {
+			idsS = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
+			idsAll = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
+		}
 
 		// Температура продукта (макс) по всем секциям склада
-        // если секция не в авто режиме, то абсолютная влажность продукта = null
+		// если секция не в авто режиме, то абсолютная влажность продукта = null
 		flt = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
 		fltA = (el) => idsAll.includes(el.owner.id) && el.type === 'tprd'
 		const tprd = state(sensor, result, flt, fltA)

@@ -19,7 +19,7 @@ function main(bld, obj, bdata, alr) {
 		const stateCooler = obj.value?.[m?.cold?.cooler?.[0]?._id]
 		// console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
 		// Работа склада запрещена
-		if (denied(bld, bdata, alr, stateCooler, fnChange)) continue
+		if (denied(bld, bdata, alr, stateCooler, fnChange, obj)) continue
 
 		// Работа склада разрешена
 		// Вычисление Т target
