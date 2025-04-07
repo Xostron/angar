@@ -1,13 +1,13 @@
 const writeVal = require('@tool/control/write/index')
 const { cValue, cAlarm } = require('@socket/emit')
-const { data: store, } = require('@store')
+const { data: store } = require('@store')
 const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
 const { statOnChange } = require('../stat')
 const { reset } = require('@tool/reset')
 const analysis = require('./analysis')
 const hrtime = process.hrtime.bigint
-const {zero} = require('@tool/zero')
+const { zero } = require('@tool/zero')
 const writeLock = require('./lock')
 const convCmd = require('./output')
 const main = require('./main')
@@ -17,8 +17,6 @@ const data = require('./data')
 // Контроль работы склада
 async function control() {
 	try {
-		// TODO
-		console.log('\x1b[36m%s\x1b[0m', '\n-------------------Начало-------------------')
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
@@ -31,7 +29,7 @@ async function control() {
 		writeLock(obj)
 		// Выхода: Запись в модули
 		await writeVal(obj.output)
-		// Запись в retain файл json
+		// Сохранение пользовательских настроек склада retain/data.json
 		await save(obj)
 		// Аварии для web
 		const alr = await webAlarm(obj)
@@ -41,8 +39,7 @@ async function control() {
 		reset(null, false)
 		// обнулить счетчик сушки
 		zero(null, false)
-		if (store._cycle_ms_ < 50) await delay(2000)
-		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`)
+		if (store._cycle_ms_ < 50) await delay(1000)
 		return true
 	} catch (error) {
 		await delay(2000)
@@ -52,12 +49,17 @@ async function control() {
 
 // Главный цикл управления
 async function loop() {
-	while (true) {
+	while (!store.shutdown) {
+		// Точка отсчета цикла
 		const bgn = hrtime()
+		console.log('\x1b[36m%s\x1b[0m', `\n-------------------Начало Process ID: ${process.pid}-------------------`)
 		await control()
-		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
 		store._first = false
+		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
+		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`)
 	}
+	// Graceful Shutdown
+	store.end = true
 }
 
 // Обработка ошибок сервера

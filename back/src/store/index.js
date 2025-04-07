@@ -1,6 +1,9 @@
 const path = require('path')
 
 const data = {
+	// graceful shutdown
+	shutdown: false,
+	end: false,
 	// Флаг первого цикла
 	_first: true,
 	// Расчетное время цикла, сек

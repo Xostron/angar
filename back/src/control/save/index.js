@@ -1,15 +1,12 @@
 const { data: store, retainDir, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
 const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop,cbDryingCount } = require('./fn')
-const retainStart = require('@tool/retain/start')
 const { readOne } = require('@tool/json')
 
 // Сохранение в файл retain (Настройки, режимы работы и т.д.)
 async function save(obj) {
 	// По складам
 	for (const build of obj.data.building) {
-		// Выключение склада из админки:
-		if (!build.on && obj.retain?.[build._id]?.start) await retainStart({ _id: build._id, val: build.on })
 		// Сохранение минимальной температуры продукта режима хранения (обычный склад)
 		// Сохранение даты отсчета достижения продукт достиг задания
 		await createAndModifySync(store.acc, 'data', retainDir, cbCooling)
@@ -26,7 +23,6 @@ async function save(obj) {
 	if (store.tuneTime) await createAndModifySync(store.tuneTime, 'data', retainDir, cbTune)
 	if (store.supply) await createAndModifySync(store.supply, 'data', retainDir, cbSupply)
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
-
 	/**
 	 * Сохраняемые аварии 
 	 * При первом запуске читаем аварии (Неисправность модулей и аварии авторежима) из файла

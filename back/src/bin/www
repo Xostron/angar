@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('module-alias/register');
+require('module-alias/register')
 /**
  * Module dependencies.
  */
@@ -8,7 +8,7 @@ var debug = require('debug')('angar:server')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { server, io } = require('@tool/server')
-const { retainDir, factoryDir, accDir, dataDir } = require('@store')
+const { data: store, retainDir, factoryDir, accDir, dataDir } = require('@store')
 // Получение настроек от сервера с переодичностью
 const init = require('@root/client/init')
 // Выполненине основных алгоритмов
@@ -16,6 +16,7 @@ const loop = require('@root/control')
 const { statOnTime } = require('@root/stat')
 // const passport = require('passport');
 const onConnection = require('../socket/on/def')
+const { delay } = require('@tool/command/time')
 
 if (process.env.NODE_ENV === 'development') {
 	console.log('Подключение .env ', path.join(__dirname, '../../.env'))
@@ -81,7 +82,7 @@ if (!fs.existsSync(accDir)) {
 init()
 // Главный цикл управления
 loop()
-	.then(() => console.log('Основной цикл остановлен'))
+	.then(() => console.log('Главный цикл остановлен'))
 	.catch(console.error)
 // Статистика непрерывных значений
 statOnTime()
@@ -146,7 +147,20 @@ function onListening() {
 /**
  * Graceful Shutdown
  */
-process.on('SIGINT', function () {
-	console.log('Graceful Shutdown')
+process.on('SIGINT', async function () {
+	console.log('\x1b[32m%s\x1b[0m', `Запуск останова системы (max ${process.env.COUNT} сек)...`)
+	store.shutdown = true
+	let count = 20
+	while (!store.end) {
+		console.log('\x1b[32m%s\x1b[0m', `Ожидание ${count} сек...`)
+		await delay(1000)
+		if (++count >= process.env.COUNT ?? 30) {
+			console.log('\x1b[35m%s\x1b[0m', 'Превышено время ожидания...')
+			break
+		}
+	}
+	count >= process.env.COUNT
+		? console.log('\x1b[35m%s\x1b[0m', 'Сервер принудительно остановлен')
+		: console.log('\x1b[32m%s\x1b[0m', 'Сервер успешно остановлен')
 	process.exit(0)
 })
