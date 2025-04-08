@@ -11,15 +11,15 @@ const ctrlFSoftV2 = require('./soft')
  * @param {object} s настройки склада
  * @param {object} obj глобальные данные склада
  */
-function fan(bld, obj, s, se, m, resultFan) {
+function fan(bld, obj, s, seB, m, resultFan) {
 	const start = resultFan.start.includes(true)
-	fnFan(bld._id, resultFan, s, se, m, start)
+	fnFan(bld._id, resultFan, s, seB, m, start)
 	// Прогрев клапанов
 	if (!start) fnFanWarm(resultFan, s)
 
 	// Непосредственное включение вентиляторов (ступенчато)
 	// ctrlFSoft(resultFan, bld._id)
-	ctrlFSoftV2(bld._id, obj, s, se, m, resultFan)
+	ctrlFSoftV2(bld._id, obj, s, seB, m, resultFan)
 }
 
 /**
@@ -29,7 +29,7 @@ function fan(bld, obj, s, se, m, resultFan) {
  * @param {*} s Настройки склада
  * @returns
  */
-function fnFan(idB, resultFan, s, se, m, start) {
+function fnFan(idB, resultFan, s, seB, m, start) {
 	// Задания от автомата нет
 	if (!resultFan?.list?.length) {
 		// Проверка секцию выключили? и пошаговое отключение

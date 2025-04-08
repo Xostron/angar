@@ -12,8 +12,8 @@ function calc(t, q, name) {
 		
 		return null
 	}
-	if (t <= -30) return (q * data['-30']) / 100
-	if (t >= 100) return (q * data[100]) / 100
+	if (t <= -30) return +((q * data['-30']) / 100).toFixed(1)
+	if (t >= 100) return +( (q * data[100]) / 100).toFixed(1)
 
 	let t1 = Math.trunc(t)
 	if (t1 > 40) {
