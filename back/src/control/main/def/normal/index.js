@@ -13,7 +13,7 @@ function normal(building, obj, bdata) {
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm
 	section(start, building, obj, s, automode, accAuto, resultFan, alrBld, alrAm, se)
 	// Управление напорными вентиляторами
-	fan(building, resultFan, s, obj)
+	fan(building, obj, s, se, m, resultFan)
 }
 
 module.exports = normal

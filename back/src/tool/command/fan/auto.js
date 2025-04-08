@@ -2,6 +2,7 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { setACmd } = require('@tool/command/set')
 const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
+const ctrlFSoftV2 = require('./soft')
 /**
  * Для секций в авторежиме: если у одной секции формируется сигнал на включение вент (2я секция в авторежиме - вент остановлены),
  * включается вентиляторы на всех секциях в авторежиме
@@ -10,54 +11,15 @@ const { data: store } = require('@store')
  * @param {object} s настройки склада
  * @param {object} obj глобальные данные склада
  */
-function fan(bld, resultFan, s, obj) {
-	// console.log(333, resultFan)
+function fan(bld, obj, s, se, m, resultFan) {
 	const start = resultFan.start.includes(true)
-	fnFan(bld._id, resultFan, s, start)
+	fnFan(bld._id, resultFan, s, se, m, start)
 	// Прогрев клапанов
 	if (!start) fnFanWarm(resultFan, s)
 
 	// Непосредственное включение вентиляторов (ступенчато)
-	ctrlFSoft(resultFan, bld._id)
-}
-
-// Плавный пуск/стоп вентиляторов на всех секция по цепочке
-function ctrlFSoft(resultFan, buildingId) {
-	const warm = Object.values(resultFan.warming)
-	const warmId = warm.map((o) => o.sectionId)
-	const warmFan = warm.map((o) => o.fan)
-	// Штатное управление
-	main(resultFan.list, resultFan.fan, buildingId)
-	// Прогрев клапанов
-	// main(warmId, warmFan, buildingId, store.accWarm)
-}
-
-function main(listId, fan, buildingId) {
-	if (!listId?.length) return
-	listId.forEach((sectionId) => {
-		const aCmd = store.aCmd?.[sectionId]?.fan
-
-		if (!aCmd) return
-		// Расчет задержек вкл/выкл вентиляторов
-		if ((aCmd.type === 'on' && aCmd.status != 'readyOn') || (aCmd.type === 'off' && aCmd.status != 'readyOff')) {
-			fan.forEach((fan, i) => {
-				store.watchdog ??= {}
-				store.watchdog[fan._id] ??= {}
-				store.watchdog[fan._id].endDelay = +new Date().getTime() + i * aCmd.delay * 1000
-			})
-			if (aCmd.type === 'on') aCmd.status = 'readyOn'
-			if (aCmd.type === 'off') aCmd.status = 'readyOff'
-		}
-		// Вкл/выкл вентилятора (aCmd.end - флаг о плавном останове насосов)
-		aCmd.end = fan.length
-		for (const f of fan) {
-			if (store.watchdog?.[f._id]?.endDelay <= +new Date().getTime()) {
-				ctrlB(f, buildingId, aCmd.type)
-				--aCmd.end
-			}
-		}
-		// console.log(333, aCmd, store.watchdog)
-	})
+	// ctrlFSoft(resultFan, bld._id)
+	ctrlFSoftV2(bld._id, obj, s, se, m, resultFan)
 }
 
 /**
@@ -67,7 +29,7 @@ function main(listId, fan, buildingId) {
  * @param {*} s Настройки склада
  * @returns
  */
-function fnFan(idB, resultFan, s, start) {
+function fnFan(idB, resultFan, s, se, m, start) {
 	// Задания от автомата нет
 	if (!resultFan?.list?.length) {
 		// Проверка секцию выключили? и пошаговое отключение
@@ -75,14 +37,14 @@ function fnFan(idB, resultFan, s, start) {
 		return
 	}
 	// Команда на вкл/выкл напорных вентиляторов
-	fnACmd(start, resultFan, s, idB)
+	fnACmd(idB, resultFan, s, start)
 }
 
-// Команда на вкл/выкл напорных вентиляторов
-function fnACmd(start, resultFan, s, idB) {
+// Формирование команд на вкл/выкл напорных вентиляторов ()
+function fnACmd(idB, resultFan, s, start) {
 	resultFan.list.forEach((idS) => {
-		if (!isExtralrm(idB, idS, 'local') && !isExtralrm(idB, null, 'local')) setACmd('fan', idS, { delay: s.sys.fan, type: start ? 'on' : 'off' })
-		else setACmd('fan', idS, { delay: s.sys.fan, type: 'off' })
+		if (!isExtralrm(idB, idS, 'local') && !isExtralrm(idB, null, 'local')) setACmd('fan', idS, { delay: s.fan.delay, type: start ? 'on' : 'off' })
+		else setACmd('fan', idS, { delay: s.fan.delay, type: 'off' })
 	})
 }
 
@@ -105,7 +67,44 @@ function offSection(resultFan, s, idB, obj) {
 	resultFan.list = offList
 	resultFan.fan = fan
 	// Пошаговое выключение
-	fnACmd(false, resultFan, s, idB)
+	fnACmd(idB, resultFan, s, false)
 }
 
 module.exports = fan
+
+
+// Устаревшее управление
+// // Плавный пуск/стоп вентиляторов на всех секция по цепочке
+// function ctrlFSoft(resultFan, buildingId) {
+// 	// Плавный пуск (все вентиляторы на контакторах)
+// 	main(resultFan.list, resultFan.fan, buildingId)
+// 	// Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
+// }
+
+// function main(listId, fan, buildingId) {
+// 	if (!listId?.length) return
+// 	listId.forEach((sectionId) => {
+// 		const aCmd = store.aCmd?.[sectionId]?.fan
+// 		if (!aCmd) return
+
+// 		// Расчет задержек вкл/выкл вентиляторов
+// 		if ((aCmd.type === 'on' && aCmd.status != 'readyOn') || (aCmd.type === 'off' && aCmd.status != 'readyOff')) {
+// 			fan.forEach((fan, i) => {
+// 				store.watchdog ??= {}
+// 				store.watchdog[fan._id] ??= {}
+// 				store.watchdog[fan._id].endDelay = +new Date().getTime() + i * aCmd.delay
+// 			})
+// 			if (aCmd.type === 'on') aCmd.status = 'readyOn'
+// 			if (aCmd.type === 'off') aCmd.status = 'readyOff'
+// 		}
+// 		// Вкл/выкл вентилятора (aCmd.end - флаг о плавном останове насосов)
+// 		aCmd.end = fan.length
+// 		for (const f of fan) {
+// 			if (store.watchdog?.[f._id]?.endDelay <= +new Date().getTime()) {
+// 				ctrlB(f, buildingId, aCmd.type)
+// 				--aCmd.end
+// 			}
+// 		}
+// 		// console.log(333, aCmd, store.watchdog)
+// 	})
+// }

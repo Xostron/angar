@@ -48,7 +48,7 @@ export default function Cell({ data, i, j }) {
 		case 'text':
 			return <Text cls='cell-w' data={data} style={st} />
 		case 'iconText':
-			return <IconText cls='cell-w' data={data} style={st} />
+			return <IconText cls='cell-w' data={data} style={st} title={data.code}/>
 		case 'input':
 			return (
 				<Input
@@ -63,6 +63,7 @@ export default function Cell({ data, i, j }) {
 						data.setValue(val)
 					}}
 					style={st}
+					title={data.code}
 				/>
 			)
 		case 'switch':

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('module-alias/register')
+require('module-alias/register');
 /**
  * Module dependencies.
  */
@@ -8,7 +8,7 @@ var debug = require('debug')('angar:server')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { server, io } = require('@tool/server')
-const { data: store, retainDir, factoryDir, accDir, dataDir } = require('@store')
+const { data:store, retainDir, factoryDir, accDir, dataDir } = require('@store')
 // Получение настроек от сервера с переодичностью
 const init = require('@root/client/init')
 // Выполненине основных алгоритмов
@@ -150,7 +150,7 @@ function onListening() {
 process.on('SIGINT', async function () {
 	console.log('\x1b[32m%s\x1b[0m', `Запуск останова системы (max ${process.env.COUNT} сек)...`)
 	store.shutdown = true
-	let count = 20
+	let count = 0
 	while (!store.end) {
 		console.log('\x1b[32m%s\x1b[0m', `Ожидание ${count} сек...`)
 		await delay(1000)
