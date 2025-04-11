@@ -56,8 +56,10 @@ function hourlyT(level) {
 		// Ротация по часу: "YYYY-MM-DD-HH"
 		datePattern: 'YYYY-MM-DD-HH',
 		// Сколько файлов хранить (пример: 24 часа)
-		// Если хотите хранить дольше, можно ставить '7d' и т.п.
-		maxFiles: '7d',
+		// delete maxFiles - очистка журнала отключена
+		// maxFiles:100 - хранит последние 100 файлов журнала, 
+		// maxFiles: '1001d' - Хранит файлы созданные за последние 1001 день
+		maxFiles: '1001d',
 		// Формат лога
 		format: combine(
 			filterOnly(level), // пропускаем только нужный level

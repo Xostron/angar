@@ -16,7 +16,7 @@ function build(start, building, obj, s, se, m, am, accAuto) {
 		// Склад включен
 		// Доп аварии склада
 		alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'on')
-		console.log(111, 'Авария склада', building._id, alrBld)
+		// console.log(111, 'Авария склада', building._id, alrBld)
 		// Доп функции склада
 		extra(building, null, obj, s, se, m, null, null, null, 'building', 'on')
 		// Аварии авторежима

@@ -50,7 +50,7 @@ export default function Input({ value, setValue, style, placeholder, icon, sti, 
 		if ((v || v === 0) && maxi < +v) return setVal(maxi)
 
 		if (type === 'number') v = decimal(v, 2)
-
+		
 		setVal(v)
 		setValue(v)
 	}

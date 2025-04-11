@@ -1,63 +1,134 @@
-const { isExtralrm } = require('@tool/message/extralrm')
+const { compareTime } = require('@tool/command/time')
 const { sensor } = require('@tool/command/sensor')
 const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
 
-// Плавный пуск/стоп вентиляторов на всех секция по цепочке
-function ctrlFSoft(bldId, obj, s, seB, m, resultFan) {
+/**
+ * Плавный пуск/стоп ВНО склада
+ * @param {*} bldId Id склада
+ * @param {*} obj Глобальные данные склада
+ * @param {*} s Настройки склада
+ * @param {*} seB Датчики склада
+ * @param {*} m Доп. устройства склада
+ * @param {*} resultFan Данные о ВНО всего склада
+ */
+function soft(bldId, obj, s, seB, m, resultFan) {
 	// Плавный пуск (все вентиляторы на контакторах)
-	main(bldId, obj, s, seB, m, resultFan)
-	// Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
-}
-
-function main(bldId, obj, s, seB, m, resultFan) {
 	if (!resultFan.list?.length) return
+	// По секциям
 	resultFan.list.forEach((secId) => {
 		const aCmd = store.aCmd?.[secId]?.fan
 		const fans = resultFan.fan.filter((el) => el.owner.id === secId)
 		if (!aCmd) return
-		softStartSec(obj, bldId, secId, aCmd, fans, s, seB)
+		// Плавный пуск (все вентиляторы на контакторах)
+		relay(bldId, secId, obj, aCmd, fans, s, seB)
+		// Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
 	})
 }
 
-module.exports = ctrlFSoft
+module.exports = soft
 
-function softStartSec(obj, bldId, secId, aCmd, fans, s, seB) {
-	// TODO
-	// 1. Включить 1 вентилятор на секциях
-	// 2. Подождать s.fan.delay
-	// 3. Измерить давление канала
-	// 4. Если давление от вентилятора/ов больше, отключить вентилятор на секции (если из больше 1)
-	// 4. Если давление меньше, подключить следующий
-	// 5. Повтор со 2 по 4
-	const se = sensor(bldId, secId, obj)
-	console.log(444, bldId, secId, aCmd, se)
-	if (aCmd.type != 'on') return
+/**
+ * Плавный пуск ВНО в секции
+ * @param {*} bldId Id склада
+ * @param {*} secId Id секции
+ * @param {*} obj Глобальные данные склада
+ * @param {*} aCmd Команда авторежима на вкл/выкл ВНО
+ * @param {*} fans Информация по ВНО
+ * @param {*} s Настройки склада
+ * @param {*} seB Датчики склада (на всякий случай)
+ * @returns
+ */
+function relay(bldId, secId, obj, aCmd, fans, s, seB) {
+	const { p } = sensor(bldId, secId, obj)
+	// acc.count - Кол-во включенных вентиляторов (всегда один вентилятор в работе, независимо от давления в канале)
+	// Изменяя данное число, регулируем порядком вкл/выкл вентиляторов для поддержания давления в канале
+	const acc = store.watchdog.softFan
+	acc.count ??= 1
+	acc.delay ??= new Date(new Date().getTime() + aCmd.delay * 1000)
+	console.log(
+		444,
+		// bldId,
+		// secId,
+		'Авторежим: вкл/выкл ВНО',
+		aCmd.type,
+		', ',
+		'Давление в канале =',
+		p,
+		'Задание по давлению',
+		s.fan.pressure - s.fan.hysteresisP,
+		'...',
+		s.fan.pressure,
+		'...',
+		s.fan.pressure + s.fan.hysteresisP
+	)
 
-
-
-	// Запуск цепочки
-	if (!store.watchdog?.[fans[0]._id]?.on) {
-		store.watchdog ??= {}
-		store.watchdog[fans[0]._id] ??= {}
-		store.watchdog[fans[0]._id].on = new Date(new Date().getTime() + aCmd.delay * 1000)
+	// ****************** Авто: команда выкл ВНО секции ******************
+	if (aCmd.type === 'off') {
+		fans.forEach((f, i) => {
+			ctrlB(f, bldId, 'off')
+			// Сброс аккумулятора
+			store.watchdog.softFan = {}
+		})
+		return
 	}
-	// Проверка условий и подключение/отключение вентилятора
-	const queue = []
+
+	// ****************** Авто: команда вкл ВНО секции ******************
+	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
+	let on = p < s.fan.pressure - s.fan.hysteresisP
+	let off = p > s.fan.pressure + s.fan.hysteresisP
+	// Прогрев клапанов
+	if (aCmd.warming) (on = true), (off = false)
+
+	// Управление очередью вкл|выкл вентиляторов
+	checkOn(on, acc, aCmd, fans.length)
+	checkOff(off, acc, aCmd)
+
+	// Непосредственное включение
 	fans.forEach((f, i) => {
-		if (!store.watchdog?.[f._id]?.on) return
-		if (compareTime(store.watchdog[f._id].on, aCmd.delay)) return
-		// if (se.p < s.fan.pressure)
+		i < acc.count ? ctrlB(f, bldId, 'on') : ctrlB(f, bldId, 'off')
 	})
-	// // Проверка истекло ли время с момента запуска
-	if (compareTime(store.watchdog[fanSec[0]._id].on, aCmd.delay)) {
+}
+
+/**
+ * Управление очередью вкл ВНО
+ * @param {boolean} on Давление в канала меньше задания
+ * @param {object} acc {count-кол-во вентиляторов в работе, delay - время на выравнивание давления, после вкл/выкл ВНО}
+ * @param {object} aCmd Команда авторежима на вкл/выкл ВНО
+ * @param {number} length Кол-во вентиляторов в секции
+ * @returns
+ */
+function checkOn(on, acc, aCmd, length) {
+	if (!on) return
+	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
+	if (!compareTime(acc.delay, aCmd.delay)) {
+		console.log(11, `Ожидайте пока выровнится давление после вкл ВНО`)
+		return
 	}
-	for (let i = 1; i < fanSec.length; i++) {
-		const prev = fanSec[i - 1]
-		if (store.watchdog[prev._id].next) {
-			ctrlB(fanSec[i], buildingId, aCmd.type)
-			// store.watchdog[fanSec[i]._id] ??= {}
-			// store.watchdog[fanSec[i]._id].on = new Date()
-		}
+	if (++acc.count > length) {
+		acc.count = length
+		return
 	}
+	acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
+}
+
+/**
+ * Управление очередью выкл ВНО
+ * @param {boolean} off Давление в канале выше задания
+ * @param {object} acc {count-кол-во вентиляторов в работе, delay - время на выравнивание давления, после вкл/выкл ВНО}
+ * @param {object} aCmd Авто - команда на вкл/выкл ВНО
+ * @returns
+ */
+function checkOff(off, acc, aCmd) {
+	if (!off) return
+	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
+	if (!compareTime(acc.delay, aCmd.delay)) {
+		console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
+		return
+	}
+	if (--acc.count < 1) {
+		acc.count = 1
+		return
+	}
+	acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
 }

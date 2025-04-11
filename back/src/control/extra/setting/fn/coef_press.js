@@ -39,7 +39,7 @@ function coefPress(stg, bld, obj) {
 		pressure = stg?.pressure2?.p
 	}
 
-	console.log(3333, 'Коэффициенты давления', 'hin', hin, '< X;', 'Работа по давление: pressure', pressure)
+	// console.log(3333, 'Коэффициенты давления', 'hin', hin, '< X;', 'Работа по давление: pressure', pressure)
 	return pressure
 }
 
