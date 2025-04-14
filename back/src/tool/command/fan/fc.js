@@ -44,17 +44,12 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	const { p } = sensor(bldId, secId, obj)
 	// acc.count - Кол-во включенных вентиляторов (всегда один вентилятор в работе, независимо от давления в канале)
 	// Изменяя данное число, регулируем порядком вкл/выкл вентиляторов для поддержания давления в канале
-	store.watchdog.softFan[secId] ??= {}
-	const acc = store.watchdog.softFan[secId]
+	const acc = store.watchdog.softFan
 	acc.count ??= 1
-	// acc.delay ??= new Date(new Date().getTime() + aCmd.delay * 1000)
-	if (!acc.first) {
-		acc.delay = new Date()
-		acc.first = true
-	}
+	acc.delay ??= new Date(new Date().getTime() + aCmd.delay * 1000)
 	console.log(
 		444,
-		`КМ: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
 		`Авто = "${aCmd.type}",`,
 		'Давление в канале =',
 		p,
@@ -63,9 +58,7 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 		'...',
 		s.fan.pressure,
 		'...',
-		s.fan.pressure + s.fan.hysteresisP,
-		acc.delay,
-		aCmd.delay
+		s.fan.pressure + s.fan.hysteresisP
 	)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
@@ -82,7 +75,6 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let on = p < s.fan.pressure - s.fan.hysteresisP
 	let off = p > s.fan.pressure + s.fan.hysteresisP
-	// if (!on && !off) acc.delay = null
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
 
@@ -116,7 +108,6 @@ function checkOn(on, acc, aCmd, length) {
 		return
 	}
 	acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
-	console.log(111, 'Вкл ВНО и фиксирую новое время', acc.delay)
 }
 
 /**
@@ -138,5 +129,4 @@ function checkOff(off, acc, aCmd) {
 		return
 	}
 	acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
-	console.log(222, 'Выкл ВНО и фиксирую новое время', acc.delay)
 }

@@ -2,6 +2,7 @@ const { mAutoByTime, mAutoByDura, mOn } = require('./fn')
 const { delUnused } = require('@tool/command/extra')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { isReset } = require('@tool/reset')
+
 // Вентиляторы секции
 function vent(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
@@ -18,6 +19,7 @@ function vent(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	if (ban || isExtralrm(building._id, section._id, 'alrClosed') || isExtralrm(building._id, section._id, 'local')) {
 		if (s.vent.mode === 'on') {
 			if (!acc?.firstCycle) resultFan.start = [false]
+			resultFan.force = false
 		}
 		if (acc?.byDura?.end) resultFan.start = [false]
 		acc.byDura = {}
@@ -28,7 +30,7 @@ function vent(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 
 	// Режим вентиляции: Вкл
 	if (s.vent.mode === 'on' || alwaysFan) {
-		mOn(s, section._id)
+		mOn(s, section._id, resultFan)
 		return
 	}
 	// Режим вентиляции: Авто

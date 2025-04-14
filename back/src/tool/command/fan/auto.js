@@ -31,9 +31,11 @@ module.exports = fan
  */
 function fnACmd(bldId, resultFan, s, start) {
 	resultFan.list.forEach((idS) => {
-		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local'))
-			setACmd('fan', idS, { delay: s.fan.delay, type: start ? 'on' : 'off' })
-		else setACmd('fan', idS, { delay: s.fan.delay, type: 'off' })
+		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local')) {
+			!resultFan?.force
+				? setACmd('fan', idS, { delay: s.fan.delay, type: start ? 'on' : 'off' })
+				: setACmd('fan', idS, { delay: s.fan.delay, type: 'on' })
+		} else setACmd('fan', idS, { delay: s.fan.delay, type: 'off' })
 	})
 }
 

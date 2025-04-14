@@ -1,11 +1,9 @@
-const { setACmd } = require('@tool/command/set')
 const { stateEq } = require('@tool/command/fan')
 const { stateV } = require('@tool/command/valve')
 
-// Режим вентиляции: Вкл
-function mOn(s, section) {
-	// вентиляторы пуск
-	setACmd('fan', section._id, { type: 'on', delay: s.sys.fan })
+// Режим вентиляции: Вкл - принудительное включение
+function mOn(s, section, resultFan) {
+	if (resultFan) resultFan.force = true
 }
 
 // Режим вентиляции: Авто - доп вентиляция (подхват)
@@ -60,7 +58,7 @@ function mAutoByDura(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 		resultFan.start = [false]
 		acc.byDura.finish = true
 	}
-	// console.log(222, 'Время отключения подхвата', new Date(acc?.byDura?.end), fanOff, alarm)
+	console.log(222, 'Время отключения подхвата', new Date(acc?.byDura?.end), fanOff, alarm)
 }
 
 // Режим вентиляции: Авто - по времени
@@ -91,7 +89,7 @@ function mAutoByTime(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 		resultFan.start = [false]
 		acc.byTime.finish = true
 	}
-	// console.log(333, 'Время отключения по таймеру', new Date(acc?.byTime?.endWork), fanOff, alarm)
+	console.log(333, 'Время отключения по таймеру', new Date(acc?.byTime?.endWork), fanOff, alarm)
 }
 
 module.exports = { mAutoByTime, mAutoByDura, mOn }
