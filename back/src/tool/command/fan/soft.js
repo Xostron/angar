@@ -47,11 +47,12 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	store.watchdog.softFan[secId] ??= {}
 	const acc = store.watchdog.softFan[secId]
 	acc.count ??= 1
+	acc.delay ??= new Date()
 	// acc.delay ??= new Date(new Date().getTime() + aCmd.delay * 1000)
-	if (!acc.first) {
-		acc.delay = new Date()
-		acc.first = true
-	}
+	// if (!acc.first) {
+	// 	acc.delay = new Date()
+	// 	acc.first = true
+	// }
 	console.log(
 		444,
 		`КМ: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
@@ -82,9 +83,11 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let on = p < s.fan.pressure - s.fan.hysteresisP
 	let off = p > s.fan.pressure + s.fan.hysteresisP
-	// if (!on && !off) acc.delay = null
+	
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
+	// Антидребезг ВНО
+	if (acc.stable) (on = false), (off = false)
 
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, aCmd, fans.length)
@@ -115,7 +118,8 @@ function checkOn(on, acc, aCmd, length) {
 		acc.count = length
 		return
 	}
-	acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
+	// acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
+	acc.delay = new Date()
 	console.log(111, 'Вкл ВНО и фиксирую новое время', acc.delay)
 }
 
@@ -137,6 +141,7 @@ function checkOff(off, acc, aCmd) {
 		acc.count = 1
 		return
 	}
-	acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
+	// acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
+	acc.delay = new Date()
 	console.log(222, 'Выкл ВНО и фиксирую новое время', acc.delay)
 }

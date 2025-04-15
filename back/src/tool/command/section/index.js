@@ -24,7 +24,6 @@ function check(buildingId, section, obj, automode, start) {
 function cb(buildingId, sectionId) {
 	// stAlarmS.clear(buildingId, sectionId)
 	// TODO плавное отключение вентиляторов при выкл склада/секции
-	// setACmd('fan', sectionId, { type: 'off', delay: s.sysDelayFan })
 	return false
 }
 

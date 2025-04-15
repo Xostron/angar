@@ -80,12 +80,10 @@ function mAutoByTime(s, m, building, section, value, fanS, vlvS, alarm, acc, fan
 	}
 	// Вкл вентиляции, когда истечет время ожидания
 	if (curTime >= acc.byTime?.endWait) {
-		// setACmd('fan', sectionId, { type: 'on', delay: s.sys.fan })
 		resultFan.start = [true]
 	}
 	// Выкл вентиляцию, когда истечет время работы вентиляции
 	if (curTime >= acc.byTime?.endWork) {
-		// setACmd('fan', sectionId, { type: 'off', delay: s.sys.fan })
 		resultFan.start = [false]
 		acc.byTime.finish = true
 	}

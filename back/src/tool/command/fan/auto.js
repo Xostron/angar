@@ -30,12 +30,11 @@ module.exports = fan
  * @param {*} start авторежим: вкл/выкл ВНО
  */
 function fnACmd(bldId, resultFan, s, start) {
+	const delay = s.fan.delay * 1000
 	resultFan.list.forEach((idS) => {
 		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local')) {
-			!resultFan?.force
-				? setACmd('fan', idS, { delay: s.fan.delay, type: start ? 'on' : 'off' })
-				: setACmd('fan', idS, { delay: s.fan.delay, type: 'on' })
-		} else setACmd('fan', idS, { delay: s.fan.delay, type: 'off' })
+			!resultFan?.force ? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' }) : setACmd('fan', idS, { delay, type: 'on' })
+		} else setACmd('fan', idS, { delay, type: 'off' })
 	})
 }
 

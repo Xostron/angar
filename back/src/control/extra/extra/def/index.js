@@ -10,7 +10,6 @@ const { coOn, coAuto } = require('./co2')
 const { drainAuto, drainOn } = require('./drain')
 const smoking = require('./smoking')
 const { accelCOn, accelCAuto } = require('./accel_cold')
-const bounceVno = require('./bounce_vno')
 
 const data = {
 	// Доп функции для секции
@@ -18,7 +17,6 @@ const data = {
 		// Секция - АВТО
 		on: {
 			vent,
-			bounceVno
 		},
 		// Секция - ВЫКЛ
 		off: {},
@@ -52,23 +50,23 @@ const data = {
 			drainAuto,
 		},
 		off: {
-			smoking
+			smoking,
 		},
 		always: {
 			accelCOn,
 			connect,
 			reset,
 			coOn,
-			drainOn, 
+			drainOn,
 		},
 	},
 	combi: {
-		on:{},
-		off:{},
-		always:{
+		on: {},
+		off: {},
+		always: {
 			reset,
 			connect,
-		}
+		},
 	},
 }
 

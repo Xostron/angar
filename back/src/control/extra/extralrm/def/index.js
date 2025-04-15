@@ -19,6 +19,7 @@ const aggregate = require('./aggregate')
 const idle = require('./idle')
 const deltaMdl = require('./delta_mdl')
 const openVin = require('./open_vin')
+const stableVno = require('./stable_vno')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -27,6 +28,7 @@ const def = {
 			overVlv,
 			antibliz,
 			genS,
+			stableVno,
 		},
 		off: {},
 		always: {
