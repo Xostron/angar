@@ -4,31 +4,6 @@ const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
 
 /**
- * Плавный пуск/стоп ВНО склада
- * @param {*} bldId Id склада
- * @param {*} obj Глобальные данные склада
- * @param {*} s Настройки склада
- * @param {*} seB Датчики склада
- * @param {*} m Доп. устройства склада
- * @param {*} resultFan Данные о ВНО всего склада
- */
-function soft(bldId, obj, s, seB, m, resultFan) {
-	// Плавный пуск (все вентиляторы на контакторах)
-	if (!resultFan.list?.length) return
-	// По секциям
-	resultFan.list.forEach((secId, idx) => {
-		const aCmd = store.aCmd?.[secId]?.fan
-		const fans = resultFan.fan.filter((el) => el.owner.id === secId)
-		if (!aCmd) return
-		// Плавный пуск (все вентиляторы на контакторах)
-		relay(bldId, secId, obj, aCmd, fans, s, seB, idx)
-		// Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
-	})
-}
-
-module.exports = soft
-
-/**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
  * @param {string} secId Id секции
@@ -48,11 +23,7 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	const acc = store.watchdog.softFan[secId]
 	acc.count ??= 1
 	acc.delay ??= new Date()
-	// acc.delay ??= new Date(new Date().getTime() + aCmd.delay * 1000)
-	// if (!acc.first) {
-	// 	acc.delay = new Date()
-	// 	acc.first = true
-	// }
+
 	console.log(
 		444,
 		`КМ: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
@@ -70,20 +41,13 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (aCmd.type === 'off') {
-		fans.forEach((f, i) => {
-			ctrlB(f, bldId, 'off')
-			// Сброс аккумулятора
-			store.watchdog.softFan = {}
-		})
-		return
-	}
+	turnOff(fans, bldId, aCmd)
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let on = p < s.fan.pressure - s.fan.hysteresisP
 	let off = p > s.fan.pressure + s.fan.hysteresisP
-	
+
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
@@ -97,6 +61,24 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	fans.forEach((f, i) => {
 		i < acc.count ? ctrlB(f, bldId, 'on') : ctrlB(f, bldId, 'off')
 	})
+}
+
+module.exports = relay
+
+/**
+ * Выключить вентиляторы
+ * @param {*} fans Ветиляторы
+ * @param {*} bldId Склад Id
+ * @param {*} aCmd Команда авто
+ * @returns
+ */
+function turnOff(fans, bldId, aCmd) {
+	if (aCmd.type === 'off') {
+		// Сброс аккумулятора
+		store.watchdog.softFan = {}
+		fans.forEach((f, i) => ctrlB(f, bldId, 'off'))
+		return
+	}
 }
 
 /**
