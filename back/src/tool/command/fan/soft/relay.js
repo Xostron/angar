@@ -1,6 +1,5 @@
-const { compareTime } = require('@tool/command/time')
+const {checkOn, checkOff, regul, turnOn, turnOff} = require('./fn')
 const { sensor } = require('@tool/command/sensor')
-const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
 
 /**
@@ -58,72 +57,7 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	checkOff(off, acc, aCmd)
 
 	// Непосредственное включение
-	fans.forEach((f, i) => {
-		i < acc.count ? ctrlB(f, bldId, 'on') : ctrlB(f, bldId, 'off')
-	})
+	turnOn(fans, bldId, acc)
 }
 
 module.exports = relay
-
-/**
- * Выключить вентиляторы
- * @param {*} fans Ветиляторы
- * @param {*} bldId Склад Id
- * @param {*} aCmd Команда авто
- * @returns
- */
-function turnOff(fans, bldId, aCmd) {
-	if (aCmd.type === 'off') {
-		// Сброс аккумулятора
-		store.watchdog.softFan = {}
-		fans.forEach((f, i) => ctrlB(f, bldId, 'off'))
-		return
-	}
-}
-
-/**
- * Управление очередью вкл ВНО
- * @param {boolean} on Давление в канала меньше задания
- * @param {object} acc {count-кол-во вентиляторов в работе, delay - время на выравнивание давления, после вкл/выкл ВНО}
- * @param {object} aCmd Команда авторежима на вкл/выкл ВНО
- * @param {number} length Кол-во вентиляторов в секции
- * @returns
- */
-function checkOn(on, acc, aCmd, length) {
-	if (!on) return
-	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	if (!compareTime(acc.delay, aCmd.delay)) {
-		console.log(11, `Ожидайте пока выровнится давление после вкл ВНО`)
-		return
-	}
-	if (++acc.count > length) {
-		acc.count = length
-		return
-	}
-	// acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
-	acc.delay = new Date()
-	console.log(111, 'Вкл ВНО и фиксирую новое время', acc.delay)
-}
-
-/**
- * Управление очередью выкл ВНО
- * @param {boolean} off Давление в канале выше задания
- * @param {object} acc {count-кол-во вентиляторов в работе, delay - время на выравнивание давления, после вкл/выкл ВНО}
- * @param {object} aCmd Авто - команда на вкл/выкл ВНО
- * @returns
- */
-function checkOff(off, acc, aCmd) {
-	if (!off) return
-	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	if (!compareTime(acc.delay, aCmd.delay)) {
-		console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
-		return
-	}
-	if (--acc.count < 1) {
-		acc.count = 1
-		return
-	}
-	// acc.delay = new Date(new Date().getTime() + aCmd.delay * 1000)
-	acc.delay = new Date()
-	console.log(222, 'Выкл ВНО и фиксирую новое время', acc.delay)
-}
