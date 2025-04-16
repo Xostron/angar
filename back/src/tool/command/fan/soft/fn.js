@@ -62,13 +62,14 @@ function checkOff(off, acc, aCmd) {
  * @param {object} s настройки
  * @returns {boolean} Флаг регулирование частоты (true: запрет на вкл/выкл соседних ВНО)
  */
-function regul(acc, aCmd, on, off, s) {
+function regul(acc, on, off, s) {
 	if (acc.fc.value > 100) {
 		acc.fc.value = 100
 		return false
 	}
+	// Антидребезг ВНО
 	if (acc.stable) return false
-	console.log(666, on, off)
+
 	// Время ожидания следующего шага
 	const time = s.fan.next * 1000
 	// Пошагово увеличиваем
@@ -125,16 +126,17 @@ function regul(acc, aCmd, on, off, s) {
  * @param {*} fans Ветиляторы
  * @param {*} bldId Склад Id
  * @param {*} aCmd Команда авто
- * @returns
+ * @returns {boolean} true - выкл ВНО, false - разрешить вкл ВНО
  */
 function turnOff(fans, bldId, aCmd) {
-	if (aCmd.type !== 'off' || !aCmd.type) return
+	if (aCmd.type !== 'off' || !aCmd.type) return false
 	// Сброс аккумулятора
 	store.watchdog.softFan = {}
 	fans.forEach((f, i) => {
 		f?.ao?.id ? ctrlAO(f, bldId, 0) : null
 		ctrlB(f, bldId, 'off')
 	})
+	return true
 }
 
 /**

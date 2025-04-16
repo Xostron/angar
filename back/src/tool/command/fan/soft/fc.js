@@ -26,7 +26,7 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	acc.fc.value ??= 100
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	turnOff(fans, bldId, aCmd)
+	if (turnOff(fans, bldId, aCmd)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
@@ -38,7 +38,7 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	acc.busy = regul(acc, aCmd, on, off, s)
+	acc.busy = regul(acc, on, off, s)
 	if (acc.busy) (on = false), (off = false)
 
 	// Управление очередью вкл|выкл вентиляторов
@@ -67,7 +67,7 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 		on,
 		`off = `,
 		off,
-		acc,
+		// acc,
 		aCmd
 	)
 }

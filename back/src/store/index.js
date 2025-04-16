@@ -4,6 +4,7 @@ const data = {
 	// graceful shutdown
 	shutdown: false,
 	end: false,
+	_stableVno:60_000,
 	// Флаг первого цикла
 	_first: true,
 	// Расчетное время цикла, сек
