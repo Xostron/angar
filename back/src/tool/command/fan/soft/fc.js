@@ -1,4 +1,4 @@
-const {checkOn, checkOff, regul, turnOn, turnOff} = require('./fn')
+const { checkOn, checkOff, regul, turnOn, turnOff } = require('./fn')
 const { sensor } = require('@tool/command/sensor')
 const { data: store } = require('@store')
 /**
@@ -25,22 +25,6 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	acc.fc ??= {}
 	acc.fc.value ??= 100
 
-	console.log(
-		444,
-		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-		`Авто = "${aCmd.type}",`,
-		'Давление в канале =',
-		p,
-		'Задание по давлению',
-		s.fan.pressure - s.fan.hysteresisP,
-		'...',
-		s.fan.pressure,
-		'...',
-		s.fan.pressure + s.fan.hysteresisP,
-		acc.delay,
-		aCmd.delay
-	)
-
 	// ****************** Авто: команда выкл ВНО секции ******************
 	turnOff(fans, bldId, aCmd)
 
@@ -54,7 +38,7 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	acc.busy = regul(acc, on, off)
+	acc.busy = regul(acc, aCmd, on, off, s)
 	if (acc.busy) (on = false), (off = false)
 
 	// Управление очередью вкл|выкл вентиляторов
@@ -63,16 +47,29 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 
 	// Непосредственное включение
 	turnOn(fans, bldId, acc)
+
+	console.log(
+		444,
+		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+		`Авто = "${aCmd.type}",`,
+		'Давление в канале =',
+		p,
+		'Задание по давлению',
+		s.fan.pressure - s.fan.hysteresisP,
+		'...',
+		s.fan.pressure,
+		'...',
+		s.fan.pressure + s.fan.hysteresisP,
+		`ВНО = ${acc.count},`,
+		`ПЧ busy = `,
+		acc.busy,
+		`on = `,
+		on,
+		`off = `,
+		off,
+		acc,
+		aCmd
+	)
 }
 
 module.exports = fc
-
-
-
-// Записть в аналоговый выход
-function ctrlAO() {
-	o, buildingId, value
-	console.log(999, o.name, `Аналоговый выходв ${value} %`)
-}
-
-

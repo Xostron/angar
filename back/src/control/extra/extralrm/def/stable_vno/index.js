@@ -69,7 +69,7 @@ function stableVno(building, section, obj, s, se, m, automode, acc, data) {
 		acc.start = new Date()
 		acc.bounce = 0
 	}
-	console.log(555, soft, acc)
+	// console.log(555, soft, acc)
 }
 
 module.exports = stableVno

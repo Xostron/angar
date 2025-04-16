@@ -15,9 +15,9 @@ const _MAX = 100
 function checkOn(on, acc, aCmd, length) {
 	if (!on) return
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	const delay = acc.count !== 1 ? aCmd.delay : aCmd.delay + _RAMP
-	if (!compareTime(acc.delay, delay)) {
-		console.log(11, `Ожидайте пока выровнится давление после вкл ВНО`)
+	const time = acc.count === 1 ? aCmd.delay : aCmd.delay + _RAMP
+	if (!compareTime(acc.delay, time)) {
+		console.log(11, `Ожидайте пока выровнится давление после вкл ВНО`, time)
 		return
 	}
 	// Включаем следующий ВНО
@@ -26,7 +26,7 @@ function checkOn(on, acc, aCmd, length) {
 		return
 	}
 	// Новая точка отсчета
-	acc.delayFC = new Date()
+	acc.delay = new Date()
 	console.log(111, 'Вкл ВНО и фиксирую новое время', acc.delay)
 }
 
@@ -39,8 +39,9 @@ function checkOn(on, acc, aCmd, length) {
  */
 function checkOff(off, acc, aCmd) {
 	if (!off) return
+	const time = acc.count === 1 ? aCmd.delay : aCmd.delay + _RAMP
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	if (!compareTime(acc.delay, aCmd.delay)) {
+	if (!compareTime(acc.delay, time)) {
 		console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
 		return
 	}
@@ -62,11 +63,14 @@ function checkOff(off, acc, aCmd) {
  * @returns {boolean} Флаг регулирование частоты (true: запрет на вкл/выкл соседних ВНО)
  */
 function regul(acc, aCmd, on, off, s) {
-	if (acc.fc.value >= 100) {
+	if (acc.fc.value > 100) {
 		acc.fc.value = 100
 		return false
 	}
 	if (acc.stable) return false
+	console.log(666, on, off)
+	// Время ожидания следующего шага
+	const time = s.fan.next * 1000
 	// Пошагово увеличиваем
 	if (on) {
 		if (!acc.fc.delay) {
@@ -82,7 +86,7 @@ function regul(acc, aCmd, on, off, s) {
 			}
 		}
 		// Ждем стабилизации
-		if (!compareTime(acc.fc.delay, aCmd.delay)) {
+		if (!compareTime(acc.fc.delay, time)) {
 			return true
 		}
 		// Время стабилизации прошло
@@ -107,7 +111,7 @@ function regul(acc, aCmd, on, off, s) {
 			}
 		}
 		// Ждем стабилизации
-		if (!compareTime(acc.fc.delay, aCmd.delay)) {
+		if (!compareTime(acc.fc.delay, time)) {
 			return true
 		}
 		// Время стабилизации прошло
@@ -144,6 +148,11 @@ function turnOn(fans, bldId, acc) {
 		f?.ao?.id ? ctrlAO(f, bldId, acc.fc.value) : null
 		i < acc.count ? ctrlB(f, bldId, 'on') : ctrlB(f, bldId, 'off')
 	})
+}
+
+// Записть в аналоговый выход
+function ctrlAO(o, buildingId, value) {
+	console.log(999, o.name, `Аналоговый выходв ${value} %`)
 }
 
 module.exports = { checkOn, checkOff, regul, turnOn, turnOff }

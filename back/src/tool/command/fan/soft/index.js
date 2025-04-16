@@ -1,5 +1,6 @@
 const { data: store } = require('@store')
 const relay = require('./relay')
+const fc = require('./fc')
 
 /**
  * Плавный пуск/стоп ВНО склада
@@ -18,10 +19,16 @@ function soft(bldId, obj, s, seB, m, resultFan) {
 		const aCmd = store.aCmd?.[secId]?.fan
 		const fans = resultFan.fan.filter((el) => el.owner.id === secId).sort((a, b) => a?.order - b?.order)
 		if (!aCmd) return
-		// Плавный пуск (все вентиляторы на контакторах)
-		relay(bldId, secId, obj, aCmd, fans, s, seB, idx)
-		// Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
+		const type = fans[0]?.ao?.id ? 'fc' : 'relay'
+		data[type](bldId, secId, obj, aCmd, fans, s, seB, idx)
 	})
 }
 
 module.exports = soft
+
+const data = {
+	// Плавный пуск (все вентиляторы на контакторах)
+	relay,
+	// Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
+	fc,
+}

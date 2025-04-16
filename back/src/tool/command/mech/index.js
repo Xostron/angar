@@ -1,9 +1,15 @@
 // Исполнительные механизмы секции
 function mech(data, sId, bldId) {
-	const { valve, fan, heating, signal } = data
+	const { valve, fan, heating, signal, binding } = data
 	// Периферия секции: клапаны, вентиляторы, обогрев клапанов
 	const vlvS = valve.filter((el) => el.sectionId.includes(sId))
-	const fanS = fan.filter((el) => el.owner.id === sId && el.type === 'fan')
+	const fanS = fan
+		.filter((el) => el.owner.id === sId && el.type === 'fan')
+		.map((el) => {
+			const ao = binding.find((b) => b.owner.id === el._id)
+			if (!ao) return el
+			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+		})
 	const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
 	// Обогрев клапанов
 	const heatS = heating.filter((el) => el?.owner?.id === sId)
@@ -33,7 +39,7 @@ function mechB(bId, type, obj) {
 	// Оборудование холодильника
 	let cold
 	if (type === 'cold') cold = fnCold(bId, obj)
-	return { fanA, connect, reset,vlvIn, cold }
+	return { fanA, connect, reset, vlvIn, cold }
 }
 
 function getId(section, bId) {
