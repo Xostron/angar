@@ -17,6 +17,7 @@ function pLog(data, arr, value, level, force) {
 	arr.forEach((el) => {
 		const { _id } = el
 		// Проверка изменений не было? && принудит. логирования нет - выходим
+		// if (level==='valve') console.log(7771, el.type, value?.[_id], store.prev[_id])
 		if (!check(value?.[_id], store.prev[_id], level) && !force) return
 		// фиксируем состояние по изменению
 		fnPrev(_id, value[_id], level)

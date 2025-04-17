@@ -82,16 +82,22 @@ function message(data, el, level, value) {
 function check(val, prev, level) {
 	// Значение состояния
 	if (val === undefined) return false
-	let v
+	let v, vprev
 	switch (level) {
 		case 'watt':
 			v = [val.Pa, val.Pb, val.Pc]
 			break
+		case 'valve':
+			v = [val?.open, val?.close]
+			vprev = [prev?.open, prev?.close]
+			break
 		default:
 			v = val
+			vprev = prev
 	}
 	// Состояние не изменилось
-	if (JSON.stringify(v) === JSON.stringify(prev)) return false
+	// if (level === 'valve') console.log(7772, JSON.stringify(v) === JSON.stringify(vprev), v, vprev)
+	if (JSON.stringify(v) === JSON.stringify(vprev)) return false
 	// Состояние изменилось
 	return true
 }

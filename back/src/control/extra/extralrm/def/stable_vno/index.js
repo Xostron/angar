@@ -48,11 +48,13 @@ function byChangeCount(building, section, acc, soft) {
 	// Фиксируем число вентиляторов, когда начался дребезг
 	if (acc.pre < soft?.count) acc.count = soft?.count
 	if (acc.pre > soft?.count) acc.count = acc.pre
+	acc.delta = acc.pre - soft.count
 	// Произошло изменение кол-ва работающих ВНО
+
 	if (acc.pre !== soft?.count) {
-		acc.pre = soft?.count
 		// Счетчик дребезгов
-		acc.bounce++
+		if (acc.delta !== acc.pre - soft?.value && acc.delta !== 0) acc.bounce++
+		acc.pre = soft?.count
 		// Инициализация времени при первом включении
 		if (!acc.start) {
 			acc.start = new Date()
@@ -93,7 +95,7 @@ function byChangeFC(building, section, acc, soft, s) {
 		console.log(888, acc.fc.delta, acc.fc.pre - soft?.fc?.value)
 		if (soft?.fc?.value > 100 || soft?.fc?.value < 0) return
 
-		if (acc.fc.delta !== acc.fc.pre - soft?.fc?.value) acc.fc.bounce++
+		if (acc.fc.delta !== acc.fc.pre - soft?.fc?.value && acc.fc.delta !== 0) acc.fc.bounce++
 
 		acc.fc.delta = acc.fc.pre - soft?.fc?.value
 		acc.fc.pre = soft?.fc?.value

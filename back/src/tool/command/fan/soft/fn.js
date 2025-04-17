@@ -60,7 +60,7 @@ function checkOff(off, acc, aCmd) {
  * @param {boolean} on сигнал на повышение давления
  * @param {boolean} off сигнал на понижение давления
  * @param {object} s настройки
- * @returns {boolean} Флаг регулирование частоты (true: запрет на вкл/выкл соседних ВНО)
+ * @returns {boolean} acc.busy - Флаг регулирование частоты (true: запрет на вкл/выкл соседних ВНО)
  */
 function regul(acc, on, off, s) {
 	if (acc.fc.value > 100) {
@@ -73,6 +73,7 @@ function regul(acc, on, off, s) {
 	// Время ожидания следующего шага
 	const time = s.fan.next * 1000
 	// Пошагово увеличиваем
+	// TODO возможно сравнивать давление задания и давление от одного ВНО, чтобы выбирать увеличение по числу ВНО или по заданию ПЧ
 	if (on) {
 		if (!acc.fc.delay) {
 			acc.fc.delay = new Date()
