@@ -6,7 +6,7 @@ const { aFind } = require('@tool/obj')
 /**
  * @param {object} obj Глобальные данные
  * @return {} массив модулей с информацией оборудования + значение выхода (массив) для групповой записи выходов
- */
+*/
 function convCmd(obj) {
 	const { data, value, output, retain } = obj
 	const cmd = store.command
@@ -44,7 +44,7 @@ function convCmd(obj) {
 				}
 			}
 		}
-	//TODO  console.log('\x1b[32m%s\x1b[0m', 'Выхода: ', JSON.stringify(out))
+	// console.log('\x1b[32m%s\x1b[0m', 'Выхода: ', JSON.stringify(out))
 
 	// Команды управления с таймером
 	tracking(out, retain)
@@ -56,6 +56,7 @@ function convCmd(obj) {
 	for (const o of m) {
 		if (out[o._id]) output[o._id] = { ...o, value: out[o._id] }
 	}
+	// console.log(333, out['6800b8dc56c6a01c90ecbc63'])
 }
 
 module.exports = convCmd

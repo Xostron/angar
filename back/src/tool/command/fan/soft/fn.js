@@ -1,3 +1,4 @@
+const { ctrlAO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
@@ -151,11 +152,6 @@ function turnOn(fans, bldId, acc) {
 		f?.ao?.id ? ctrlAO(f, bldId, acc.fc.value) : null
 		i < acc.count ? ctrlB(f, bldId, 'on') : ctrlB(f, bldId, 'off')
 	})
-}
-
-// Записть в аналоговый выход
-function ctrlAO(o, buildingId, value) {
-	console.log(999, o.name, `Аналоговый выходв ${value} %`)
 }
 
 module.exports = { checkOn, checkOff, regul, turnOn, turnOff }

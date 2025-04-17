@@ -5,7 +5,7 @@ const { wrExtra } = require('@tool/message/extra')
 // Модуль в сети (сигнал склада/секции)
 function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	acc.flag ??= {}
-
+	console.log(111, building.name)
 	m.connect.forEach((el) => {
 		// Включение выхода - Модуль в сети
 		ctrlB(el, building._id, 'on')
