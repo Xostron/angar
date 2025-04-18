@@ -23,7 +23,7 @@ async function write(obj) {
 		return ok
 	} catch (error) {
 		console.log(error)
-		throw Error('Запись: связь RTU/TCP потеряна', error)
+		throw new Error('Запись: связь RTU/TCP потеряна', error)
 	}
 }
 

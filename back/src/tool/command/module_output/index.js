@@ -1,8 +1,13 @@
 const { setCmd } = require('@tool/command/set')
 
 // Записть в аналоговый выход
-function ctrlAO(o, buildingId, value) {
+function ctrlAO(o, bldId, value) {
+	if (typeof value != 'number' || Number.isNaN(value)) return
 	console.log(999, o.name, `Аналоговый выходв ${value} %`)
+	const mdlId = o?.ao?.id
+	const ch = o?.ao?.channel - 1
+	const r = { [bldId]: { [mdlId]: { [ch]: value } } }
+	setCmd(r)
 }
 
 /**

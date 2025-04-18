@@ -1,13 +1,25 @@
 const { int } = require('@tool/control/read/fn')
 
 function regist(opt) {
+	let vv
 	// Для TCP Модуля DO opt.wr.type==boolean
 	// Стартовый адрес
 	const i = opt.wr.start
 	// Регистры
+	// if (opt?.name?.endsWith('AO')){console.log(555, opt.value)}
 	// const v = opt.value.map((v) => v * (opt.wr.on ?? 1)).reverse()
 	const v = opt.value.map((v) => v * (opt.wr.on ?? 1))
-	const vv = mBitTomInt(v)
+
+	// TODO, добавить в админке тип type:"ao" Аналоговый модуль
+	// Аналоговый вывод - модуль у которого имя окончивается на "AO" и Назначение use:'w' - запись
+	if (opt?.name?.endsWith('AO')) {
+		vv = v
+		// console.log(666, opt.value, vv)
+	} else {
+		// Остальные модули
+		vv = mBitTomInt(v)
+	}
+	// if (opt._id === '6800b92e56c6a01c90ecbc67') console.log(888, opt, i, v, vv)
 	return { i, v: vv }
 }
 

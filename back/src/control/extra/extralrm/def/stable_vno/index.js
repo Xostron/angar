@@ -34,7 +34,7 @@ function stableVno(building, section, obj, s, se, m, automode, acc, data) {
 		delete acc.fc
 	}
 	// console.log(555, 'Задание', soft)
-	console.log(555, 'Антидребезг', acc)
+	// console.log(555, 'Антидребезг', acc)
 }
 
 module.exports = stableVno
@@ -92,7 +92,7 @@ function byChangeFC(building, section, acc, soft, s) {
 	// TODO следить за изменением задания в -и+
 	if (acc.fc.pre !== soft?.fc?.value) {
 		// Счетчик дребезгов
-		console.log(888, acc.fc.delta, acc.fc.pre - soft?.fc?.value)
+		// console.log(888, acc.fc.delta, acc.fc.pre - soft?.fc?.value)
 		if (soft?.fc?.value > 100 || soft?.fc?.value < 0) return
 
 		if (acc.fc.delta !== acc.fc.pre - soft?.fc?.value && acc.fc.delta !== 0) acc.fc.bounce++

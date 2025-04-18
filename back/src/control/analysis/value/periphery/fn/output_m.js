@@ -1,6 +1,6 @@
 const signaltype = require('@dict/signal')
 /**
- * Формирование маски модуля дискретных выходов (DO) 
+ * Формирование маски модуля дискретных выходов (DO)
  * @param {*} equip данные json по оборудованию
  * @param {*} val данные опроса модулей
  * @returns moduleId: [0,0,0...] - значения DO
@@ -20,6 +20,8 @@ function outputM(equip, val) {
 	fan(equip.cooler, val, r)
 	// Выходные сигналы
 	sig(equip.signal, val, r)
+	// Вентилятор - аналоговый выход (находится в binding)
+	binding(equip.binding, val, r)
 	return r
 }
 
@@ -47,6 +49,14 @@ function sig(data, val, r) {
 		pull(val, o.module.id, r)
 	}
 }
+// 
+function binding(data, val, r) {
+	if (!data) return
+	for (const o of data) {
+		if (Object.hasOwn(r, o?.moduleId) || !o?.moduleId) continue
+		pull(val, o.moduleId, r)
+	}
+}
 
 // Формирование маски модуля
 function pull(val, moduleId, r) {
@@ -54,7 +64,7 @@ function pull(val, moduleId, r) {
 	if (val?.[moduleId]?.error) return null
 	// Сдвоенный модуль (DI/DO)
 	if (val?.[moduleId]?.output) return (r[moduleId] = val?.[moduleId]?.output?.map((el) => (el === 0 ? 0 : 1)))
-	// Модуль DO
+	// Модуль DO|AO
 	return (r[moduleId] = val?.[moduleId]?.map((el) => (el === 0 ? 0 : 1)))
 }
 
