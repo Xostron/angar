@@ -1,15 +1,15 @@
-const { ctrlB } = require('@tool/command/fan')
+const { ctrlDO } = require('@tool/command/module_output')
 
 // Разгонные вентиляторы: Вкл
 function on(building, fanA) {
 	fanA.forEach((f) => {
-		ctrlB(f, building._id, 'on')
+		ctrlDO(f, building._id, 'on')
 	})
 }
 // Разгонные вентиляторы: Выкл
 function off(building, fanA) {
 	fanA.forEach((f) => {
-		ctrlB(f, building._id, 'off')
+		ctrlDO(f, building._id, 'off')
 	})
 }
 // Разгонные вентиляторы: По времени

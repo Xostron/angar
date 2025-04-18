@@ -1,26 +1,6 @@
+const { ctrlDO } = require('@tool/command/module_output')
 const { getIdB } = require('@tool/get/building')
 const { setCmd } = require('@tool/command/set')
-/**
- * Команда управления периферией (вкл/выкл)
- * @param {*} obj Вентилятор и т.д.
- * @param {*} buildingId Ссылка на склад
- * @param {*} type Тип команды включить/выключить (on, off)
- * @returns
- */
-function ctrlB(obj, buildingId, type) {
-	if (!type) return null
-	const bldId = obj?._build ?? buildingId
-	const mdlId = obj?.module?.id
-	const ch = obj?.module?.channel - 1
-	const r = {}
-	if (type === 'on') {
-		r[bldId] = { [mdlId]: { [ch]: 1 } }
-	}
-	if (type === 'off') {
-		r[bldId] = { [mdlId]: { [ch]: 0 } }
-	}
-	setCmd(r)
-}
 
 /**
  * Состояние устройств (вентиляторы, обогреватель и т.д.)
@@ -45,12 +25,11 @@ function stateF(fan, equip, result, retain) {
 }
 
 function arrCtrl(idB, arr, type) {
-	arr?.forEach((el) => ctrlB(el, idB, type))
+	arr?.forEach((el) => ctrlDO(el, idB, type))
 }
 
 module.exports = {
 	stateEq,
-	ctrlB,
 	stateF,
 	arrCtrl,
 }

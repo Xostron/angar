@@ -1,4 +1,4 @@
-const { ctrlV } = require('@tool/command/valve')
+const { ctrlV } = require('@tool/command/module_output')
 
 function error(stage, state, output, cmd) {
 	ctrlV(vlv, vlv._build, 'stop')

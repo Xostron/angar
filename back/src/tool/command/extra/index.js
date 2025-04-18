@@ -1,11 +1,11 @@
 const {delExtra, wrExtra} = require('@tool/message/extra')
-const { ctrlB } = require('@tool/command/fan')
+const { ctrlDO } = require('@tool/command/module_output')
 const { msgB } = require('@tool/message')
 
 // Выключение
 function fnAlarm(building, arr, value) {
 	arr?.forEach((el) => {
-		if (value?.[el._id]?.state === 'alarm') return ctrlB(el, building._id, 'off')
+		if (value?.[el._id]?.state === 'alarm') return ctrlDO(el, building._id, 'off')
 	})
 }
 

@@ -1,4 +1,4 @@
-const { ctrlB } = require('@tool/command/fan')
+const { ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 
 const skip = ['off-off-on', 'off-off-off-add']
@@ -35,9 +35,9 @@ function change(bdata, idB, sl, f, h, add, code) {
 	if (!m?.cold?.cooler?.[0]) return
 	const { solenoid, fan, heating } = m?.cold?.cooler?.[0]
 	// TODO Управление механизмами
-	solenoid.forEach((el) => ctrlB(el, idB, sl ? 'on' : 'off'))
-	fan.forEach((el) => ctrlB(el, idB, f ? 'on' : 'off'))
-	heating.forEach((el) => ctrlB(el, idB, h ? 'on' : 'off'))
+	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
+	fan.forEach((el) => ctrlDO(el, idB, f ? 'on' : 'off'))
+	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
 	// Доп состояние слива воды
 	accAuto.state ??= {}
 	accAuto.state.add = add ? new Date() : false

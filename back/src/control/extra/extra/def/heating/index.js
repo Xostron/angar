@@ -1,5 +1,5 @@
 const {delExtra, wrExtra} = require('@tool/message/extra')
-const { ctrlB } = require('@tool/command/fan')
+const { ctrlDO } = require('@tool/command/module_output')
 const { msg } = require('@tool/message')
 
 // Обогрев клапанов
@@ -11,13 +11,13 @@ function heating(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	const hyst = s.heating.hysteresis
 	// Обогрев выкл
 	if (typeof tout !== 'number' || typeof t !== 'number' || typeof hyst !== 'number' || !heatS?.length) {
-		heatS.forEach((h) => ctrlB(h, building._id, 'off'))
+		heatS.forEach((h) => ctrlDO(h, building._id, 'off'))
 		delExtra(building._id, section._id, 'heating')
 		return
 	}
 	// Включить подогрев
 	if (tout <= t) {
-		heatS.forEach((h) => ctrlB(h, building._id, 'on'))
+		heatS.forEach((h) => ctrlDO(h, building._id, 'on'))
 		if (!acc.flag) {
 			acc.flag = true
 			wrExtra(building._id, section._id, 'heating', {
@@ -28,7 +28,7 @@ function heating(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	}
 	// Выключить подогрев
 	if (tout >= t + hyst) {
-		heatS.forEach((h) => ctrlB(h, building._id, 'off'))
+		heatS.forEach((h) => ctrlDO(h, building._id, 'off'))
 		delExtra(building._id, section._id, 'heating')
 	}
 }

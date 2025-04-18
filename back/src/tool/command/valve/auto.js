@@ -1,5 +1,5 @@
+const { ctrlV } = require('@tool/command/module_output')
 const { setACmd } = require('@tool/command/set')
-const { ctrlV } = require('@tool/command/valve')
 const { data: store } = require('@store')
 /**
  * АВТО: Формирование команды управления клапаном

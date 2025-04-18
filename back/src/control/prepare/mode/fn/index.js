@@ -1,6 +1,7 @@
 const { data: store, setToAuto, setToMan, setToOffSection } = require('@store')
-const { ctrlV, stateV } = require('@tool/command/valve')
-const { stateEq, ctrlB } = require('@tool/command/fan')
+const { ctrlV, ctrlDO } = require('@tool/command/module_output')
+const { stateEq} = require('@tool/command/fan')
+const { stateV } = require('@tool/command/valve')
 
 /**
  * При переходе в авто, выкл, останов склада:
@@ -98,7 +99,7 @@ function offEq(eqS, value, buildId) {
 	let count = eqS.length
 	for (const o of eqS) {
 		const running = stateEq(o._id, value)
-		if (running) ctrlB(o, buildId, 'off')
+		if (running) ctrlDO(o, buildId, 'off')
 		else --count
 	}
 	// Группа выключена - true

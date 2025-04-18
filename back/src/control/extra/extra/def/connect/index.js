@@ -1,6 +1,6 @@
-const { ctrlB } = require('@tool/command/fan')
-const { msg, msgB } = require('@tool/message')
+const { ctrlDO } = require('@tool/command/module_output')
 const { wrExtra } = require('@tool/message/extra')
+const { msg, msgB } = require('@tool/message')
 
 // Модуль в сети (сигнал склада/секции)
 function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -8,7 +8,7 @@ function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	console.log(111, building.name)
 	m.connect.forEach((el) => {
 		// Включение выхода - Модуль в сети
-		ctrlB(el, building._id, 'on')
+		ctrlDO(el, building._id, 'on')
 		const owner = el.owner.type === 'section' ? el.owner.id : null
 		if (!acc.flag[el._id]) {
 			const mes = fnMsg(building, owner, obj.data.section)
@@ -18,7 +18,7 @@ function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
 		// TODO (всегда включен выход "модуль в работе" - раскомментировать по запросу)
 		// У склада неисправный модуль отключаем везде выход connect
 		// if (isErrM) {
-		// 	ctrlB(el, building._id, 'off')
+		// 	ctrlDO(el, building._id, 'off')
 		// 	delExtra(building._id, el.owner.id, el.type)
 		// }
 	})

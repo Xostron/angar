@@ -1,6 +1,5 @@
-const { ctrlAO } = require('@tool/command/module_output')
+const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
-const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
 const _RAMP = 5000
 const _MAX = 100
@@ -136,7 +135,7 @@ function turnOff(fans, bldId, aCmd) {
 	store.watchdog.softFan = {}
 	fans.forEach((f, i) => {
 		f?.ao?.id ? ctrlAO(f, bldId, 0) : null
-		ctrlB(f, bldId, 'off')
+		ctrlDO(f, bldId, 'off')
 	})
 	return true
 }
@@ -149,8 +148,8 @@ function turnOff(fans, bldId, aCmd) {
  */
 function turnOn(fans, bldId, acc) {
 	fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, bldId, acc.fc.value) : null
-		i < acc.count ? ctrlB(f, bldId, 'on') : ctrlB(f, bldId, 'off')
+		f?.ao?.id ? ctrlAO(f, bldId, acc?.fc?.value) : null
+		i < acc.count ? ctrlDO(f, bldId, 'on') : ctrlDO(f, bldId, 'off')
 	})
 }
 

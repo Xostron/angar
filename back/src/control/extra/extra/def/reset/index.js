@@ -1,7 +1,7 @@
-const { ctrlB } = require('@tool/command/fan')
+const { ctrlDO } = require('@tool/command/module_output')
+const { getSignal } = require('@tool/command/signal')
 const { data: store } = require('@store')
 const { isReset } = require('@tool/reset')
-const { getSignal } = require('@tool/command/signal')
 
 // Нажата кнопка "Сброс аварии"
 function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -49,7 +49,7 @@ module.exports = reset
 // Включение выходов (сброс аварии)
 function fnReset(arr, building, type) {
 	arr.forEach((el) => {
-		ctrlB(el, building._id, type)
+		ctrlDO(el, building._id, type)
 	})
 }
 

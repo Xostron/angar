@@ -1,6 +1,6 @@
-const { controlB } = require('./fn')
-const { ctrlB } = require('@tool/command/fan')
+const { ctrlDO } = require('@tool/command/module_output')
 const { data: store, setToOffBuild } = require('@store')
+const { controlB } = require('./fn')
 
 // Подготовка: Выключение склада влияет только на автоматические режимы секций, разгонного вентилятора и обогревателей
 function toOffBuild(obj) {
@@ -40,7 +40,7 @@ function toOffBuild(obj) {
 		}
 		// Выключение разгонных вентиляторов, если они в авто режиме
 		for (const f of fan) {
-			ctrlB(f, el._id, 'off')
+			ctrlDO(f, el._id, 'off')
 			--count
 		}
 		// Все узлы выключены - установили флаг что склад выключен

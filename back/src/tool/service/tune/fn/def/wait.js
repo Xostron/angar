@@ -1,4 +1,4 @@
-const { ctrlV } = require('@tool/command/valve')
+const { ctrlV } = require('@tool/command/module_output')
 const start = require('./start')
 
 function wait(vlv, state) {

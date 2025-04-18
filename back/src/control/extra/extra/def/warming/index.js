@@ -1,6 +1,6 @@
 const {delExtra, wrExtra} = require('@tool/message/extra')
+const { ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
-const { ctrlB } = require('@tool/command/fan')
 const { data: store } = require('@store')
 const { cWarm } = require('@socket/emit')
 const { msg } = require('@tool/message')
@@ -22,12 +22,12 @@ function warming(building, section, obj, s, se, m, alarm, acc, data, ban, result
 
 	// Включить Сброс аварии
 	if (!!acc.end && !elapsed) {
-		ctrlB(reset, building._id, 'on')
+		ctrlDO(reset, building._id, 'on')
 		resultFan.warming[section._id] = { fan: m.fanS, sectionId: section._id }
 	}
 	// Выключить Сброс аварии
 	if ((!!acc.end && elapsed) || cmd === false) {
-		ctrlB(reset, building._id, 'off')
+		ctrlDO(reset, building._id, 'off')
 		delete acc.end
 		// очистить задание на прогрев
 		store.warming ??= {}
