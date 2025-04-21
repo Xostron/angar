@@ -12,7 +12,7 @@ const checkSupply = require('./supply')
  */
 function denied(bld, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto: a, supply } = bdata
-	// ATTENTION!: Аккумулятор вычислений: Холодильник : Комбинированный
+	// ATTENTION!: Аккумулятор вычислений cold ? Холодильник : Комбинированный
 	const accAuto = bld?.type === 'cold' ? a : a.cold
 
 	const supplySt = checkSupply(supply, bld._id, obj.retain)

@@ -26,13 +26,8 @@ function coldTarget(bld, obj, bdata, alr) {
 function combiTarget(bld, obj, bdata, alr) {
 	const { start, s, se, m, accAuto: a, supply } = bdata
 	const accCold = a.cold
-	const accTotal = a
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
-	if (
-		!accCold.targetDT ||
-		accCold.targetDT.getDate() !== new Date().getDate() ||
-		accCold?.isChange(s.cold.decrease, s.cold.target)
-	) {
+	if (!accCold.targetDT || accCold.targetDT.getDate() !== new Date().getDate() || accCold?.isChange(s.cold.decrease, s.cold.target)) {
 		// Указанные настройки изменились?
 		accCold.isChange = isChange(s.cold.decrease, s.cold.target)
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
@@ -55,11 +50,12 @@ module.exports = {
 }
 
 /**
- *
- * @param  {...(number | string)} hold Значения настроек исходные (замыкание)
- * @returns
- * @param  {...(number | string)} cur Значения настроек в цикле (текущие)
- * @returns {boolean}
+ * Внешняя функция
+ * @param  {number | string} hold Значения настроек исходные (замыкание)
+ * @returns Внутрення функция
+ * Внутрення функция
+ * @param  {number | string} cur Значения настроек в цикле (текущие)
+ * @returns {boolean} true - настройки изменены, false - настройки идентичны
  */
 function isChange(...hold) {
 	return (...cur) => {
