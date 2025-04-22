@@ -1,9 +1,9 @@
-function on() {
+function ping() {
 	return function (req, res, next) {
 		console.log('STATE: ping')
-		res.json({ result: 'ping ok' })
+		res.send({ result: 'ping ok' })
 
 	}
 }
 
-module.exports = on
+module.exports = ping

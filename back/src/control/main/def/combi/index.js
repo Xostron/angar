@@ -7,8 +7,8 @@ function combi(building, obj, bdata) {
 	console.log(111, 'Комбинированный холодильный склад', building?.type)
 	console.log('\tЗапущен', start)
 	console.log('\tАвторежим', automode)
-	console.log('\Аккумулятор', accAuto)
-	// Простой склад
+	console.log('Аккумулятор', accAuto)
+	// Простой склад (см. папку normal)
 	normal(building, obj, bdata)
 	// Холодильник (включение при аварии авторежима)
 	cold(building, obj, bdata)

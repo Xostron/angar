@@ -1,8 +1,8 @@
 const { data: store } = require('@store')
-const checkSupply = require('./supply')
+const checkSupply = require('../supply')
 
 /**
- * Запрет работы склада
+ * @description Запрет работы склада
  * @param {object} bld Склад
  * @param {object} bdata Данные для конкретного склада
  * @param {boolean} alr Аварии extralrm
@@ -18,7 +18,7 @@ function denied(bld, bdata, alr, stateCooler, fnChange, obj) {
 	const supplySt = checkSupply(supply, bld._id, obj.retain)
 	const aggr = isRunAgg(obj.value, bld._id)
 	store.denied[bld._id] = !start || alr || !aggr || !supplySt || !enCombi(bld, automode)
-	
+
 	// Работа холодильника запрещена
 	if (store.denied[bld._id]) {
 		// console.log('\tОстановка из-за ошибок:')

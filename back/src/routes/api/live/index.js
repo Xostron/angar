@@ -3,18 +3,21 @@ const on = require('./on')
 const off = require('./off')
 const battery = require('./battery')
 const stop = require('./stop')
+const express = require('express')
 
 function live(router) {
+	const liveRouter = express.Router()
+	router.use('/live', liveRouter)
 	// Пинг - рестарт сервера ангара
-	router.get('/live/ping', ping())
+	liveRouter.get('/ping', ping())
 	// Сеть вкл
-	router.get('/live/on', on())
+	liveRouter.get('/on', on())
 	// Сеть выкл
-	router.get('/live/off', off())
+	liveRouter.get('/off', off())
 	// От аккумулятора
-	router.get('/live/battery', battery())
+	liveRouter.get('/battery', battery())
 	// Выключение
-	router.get('/live/stop', stop())
+	liveRouter.get('/stop', stop())
 }
 
 module.exports = live

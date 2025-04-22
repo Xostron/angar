@@ -1,7 +1,7 @@
-const { change, checkDefrost } = require('../fn')
-const cooler = require('./def_cooler')
-const target = require('./fn/target')
-const denied = require('./fn/denied')
+const { change, checkDefrost } = require('../../fn/check')
+const cooler = require('../../def_cooler')
+const target = require('../../fn/target')
+const denied = require('../../fn/denied')
 
 // Холодильник / комбинированный
 function main(bld, obj, bdata, alr) {
@@ -11,21 +11,22 @@ function main(bld, obj, bdata, alr) {
 	if (bld?.type === 'combi') accAuto.cold ??= {}
 
 	const fnChange = (sl, f, h, add, code) => change(bdata, bld._id, sl, f, h, add, code)
-console.log(obj.value['6800c4ae05912407c0b68c0f'])
+
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
 		// console.log(`\nСклад: ${bld?.name} Секция: ${sect?.name} [${sect?.buildingId}, ${sect?._id}] `)
 		const stateCooler = obj.value?.[m?.cold?.cooler?.[0]?._id]
 		console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
+
 		// Работа склада запрещена
 		if (denied(bld, bdata, alr, stateCooler, fnChange, obj)) continue
 
 		// Работа склада разрешена
 		// Вычисление Т target
-		target[bld?.type](bld, obj, bdata, alr)
-
+		target.combi(bld, obj, bdata, alr)
 		console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
+
 		// Выключена ли оттайка
 		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) cooler?.[stateCooler.state](fnChange, accAuto, se, s, bld)
 
