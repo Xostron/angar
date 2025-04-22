@@ -1,8 +1,9 @@
 // Исполнительные механизмы секции
 function mech(data, sId, bldId) {
 	const { valve, fan, heating, signal, binding } = data
-	// Периферия секции: клапаны, вентиляторы, обогрев клапанов
+	// Клапаны
 	const vlvS = valve.filter((el) => el.sectionId.includes(sId))
+	// Напорные ВНО
 	const fanS = fan
 		.filter((el) => el.owner.id === sId && el.type === 'fan')
 		.map((el) => {
@@ -10,6 +11,7 @@ function mech(data, sId, bldId) {
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
+	// Дополнительные вентиляторы (пока нигде не применяются)
 	const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
 	// Обогрев клапанов
 	const heatS = heating.filter((el) => el?.owner?.id === sId)
@@ -25,6 +27,7 @@ function mech(data, sId, bldId) {
 
 // Исполнительные механизмы склада
 function mechB(bId, type, obj) {
+	// (поиск по складу и секциям)
 	const { data } = obj
 	//ID склада и секций
 	let idS = getId(data?.section, bId)
@@ -37,11 +40,11 @@ function mechB(bId, type, obj) {
 	// Притотчные клапаны склада
 	const vlvIn = data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
 	// Оборудование холодильника
-	let cold
-	if (type === 'cold') cold = fnCold(bId, obj)
+	let cold = type == 'cold' || type == 'combi' ? fnCold(bId, obj) : undefined
 	return { fanA, connect, reset, vlvIn, cold }
 }
 
+// Получить массив ID склада и его секций
 function getId(section, bId) {
 	const ids = section?.filter((el) => el.buildingId === bId)?.map((el) => el._id) ?? []
 	ids.push(bId)
@@ -54,7 +57,6 @@ function fnCold(idB, obj) {
 	const idS = getId(obj.data?.section, idB)
 	// Id камер
 	const idSec = idS.filter((el) => el !== idB)
-
 	// Сигналы склада и камер
 	const sigB = obj.data.signal.filter((el) => idS.includes(el.owner.id))
 	// Агрегаты склада
@@ -71,7 +73,13 @@ function fnCold(idB, obj) {
 
 		const clr = {
 			...doc,
-			fan: obj.data.fan.filter((el) => el.owner.id === doc._id),
+			fan: obj.data.fan
+				.filter((el) => el.owner.id === doc._id)
+				.map((el) => {
+					const ao = obj?.data?.binding.find((b) => b.owner.id === el._id)
+					if (!ao) return el
+					return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+				}),
 			heating: obj.data.heating.filter((el) => el.owner.id === doc._id),
 		}
 
@@ -88,7 +96,6 @@ function fnCold(idB, obj) {
 		device[code] ??= []
 		device[code].push(el)
 	})
-
 	return { signal: sigB, aggregate: aggr, cooler, heating, device }
 }
 
