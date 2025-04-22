@@ -10,7 +10,6 @@ function regist(opt) {
 	// const v = opt.value.map((v) => v * (opt.wr.on ?? 1)).reverse()
 	const v = opt.value.map((v) => v * (opt.wr.on ?? 1))
 
-	// TODO, добавить в админке тип type:"ao" Аналоговый модуль
 	// Аналоговый вывод - модуль у которого имя окончивается на "AO" и Назначение use:'w' - запись
 	if (opt?.name?.endsWith('AO')) {
 		vv = v
