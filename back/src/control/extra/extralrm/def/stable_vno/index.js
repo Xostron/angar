@@ -1,9 +1,8 @@
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
-const { compareTime } = require('@tool/command/time')
 const { isReset } = require('@tool/reset')
 const { data: store } = require('@store')
 const { msg } = require('@tool/message')
-const _LIMIT = 3
+const _LIMIT = 4
 /**
  * По секциям
  * Дребезг вентиляторов ВНО
@@ -18,107 +17,80 @@ const _LIMIT = 3
  * @returns
  */
 function stableVno(building, section, obj, s, se, m, automode, acc, data) {
-	// Данные о ходе плавного пуска
+	// Данные о ходе плавного пуска ВНО
 	const soft = store.watchdog.softFan[section._id]
 	if (!soft) return
 
-	byChangeCount(building, section, acc, soft)
-	byChangeFC(building, section, acc, soft, s)
+	const alrCount = byChangeCount(building, section, acc, soft)
+	const alrFC = byChangeFC(building, section, acc, soft, s)
 
-	// Сброс системы и сообщений
+	// Авария
+	if (alrCount || alrFC) {
+		wrExtralrm(building._id, section._id, 'stableVno', msg(building, section, 40))
+		// Антидребезг: вкл ВНО и флаг дребезга (soft.stable)
+		soft.count = acc?.count
+		soft.fc.value = 100
+		soft.stable = true
+	}
+
+	// Сброс аварии
 	if (isReset(building._id)) {
 		delExtralrm(building._id, section._id, 'stableVno')
 		soft.stable = null
-		acc.start = new Date()
-		acc.bounce = 0
-		delete acc.fc
+		acc.queue = []
+		acc.fcQueue = []
 	}
 	// console.log(555, 'Задание', soft)
-	// console.log(555, 'Антидребезг', acc)
+	console.log(555, 'Антидребезг', acc, alrCount, alrFC)
 }
 
 module.exports = stableVno
 
+/**
+ * Дребезг ВНО (изменение кол-ва включенных ВНО)
+ * такт - 1 итерация главного цикла
+ *
+ * Задача: Определить вкл/откл ВНО, например, 1 такт Работает ВНО1, 2 такт ВНО1+ВНО2, 3 такт ВНО1, 4 такт ВНО1+ВНО2
+ * т.е. ВНО2 то включается то выключается - произошел дребезг =>  оставить в работе ВНО1+ВНО2 и вывести сообщение в "Сигналах"
+ *
+ * Алгоритм:
+ * Фиксируем в массиве acc.queue кол-во включенных ВНО, и сравниваем пары друг с другом
+ *
+ * Пример 1: acc.queue = [1,2,1,2]: 1 такт Работает ВНО1, 2 такт ВНО1+ВНО2, 3 такт ВНО1, 4 такт ВНО1+ВНО2
+ * Сравниваем пары из массива друг с другом (queue[0]===queue[2] && queue[1]===queue[3]), пары равны => обнаружен дребезг
+ *
+ * Пример2: [1,2,1,1]: 1такт ВНО1, 2такт ВНО1+ВНО2, 3такт ВНО1, 4такт ВНО1
+ * Сравниваем пары из массива друг с другом (queue[0]=1 ===queue[2]=1 && queue[1]=2 != queue[3]=1), пары не равны - Все Ок
+ * @param {*} building Склад
+ * @param {*} section Секция
+ * @param {*} acc Аккумулятор
+ * @param {*} soft Данные о ходе плавного пуска ВНО
+ * @return {boolean} true - дребезг!, false - все ОК
+ */
 function byChangeCount(building, section, acc, soft) {
-	// Инициализация
-	if (acc.pre === undefined) {
-		acc.pre = 1
-		acc.bounce = 0
-	}
-	// Фиксируем число вентиляторов, когда начался дребезг
-	if (acc.pre < soft?.count) acc.count = soft?.count
-	if (acc.pre > soft?.count) acc.count = acc.pre
-	acc.delta = acc.pre - soft.count
-	// Произошло изменение кол-ва работающих ВНО
-
-	if (acc.pre !== soft?.count) {
-		// Счетчик дребезгов
-		if (acc.delta !== acc.pre - soft?.value && acc.delta !== 0) acc.bounce++
-		acc.pre = soft?.count
-		// Инициализация времени при первом включении
-		if (!acc.start) {
-			acc.start = new Date()
-			acc.bounce = 0
-		}
-	}
-	// Слежение, если за время t, вентилятор вкд/выкл более 3 раз то,
-	// переключаем управление ВНО в особый режим
-	// (пока действует данная блокировка у нас работает acc.count число ВНО)
-	// Сброс означает переход ВНО в нормальный режим поддержания давления
-	if (!compareTime(acc.start, store._stableVno)) {
-		if (acc.bounce < 2) return
-		// Сообщение
-		wrExtralrm(building._id, section._id, 'stableVno', msg(building, section, 40))
-		// ВНО особый режим
-		soft.count = acc?.count
-		soft.fc.value = 100
-		soft.stable = true
-	} else {
-		// Обновление периода слежения
-		acc.start = new Date()
-		acc.bounce = 0
-	}
+	// Формируем и контролируем очередь (сохранение последних 4 тактов)
+	acc.queue ??= []
+	acc.queue.push(soft?.count)
+	if (acc.queue.length > _LIMIT) acc.queue.shift()
+	acc.count = Math.max(...acc.queue)
+	if (acc.queue[0] === acc.queue[2] && acc.queue[1] === acc.queue[3] && acc.queue[0] !== acc.queue[1]) return true
+	return false
 }
 
-function byChangeFC(building, section, acc, soft, s) {
-	acc.fc ??= {}
-	// Инициализация
-	if (acc.fc.pre === undefined) {
-		acc.fc.pre = 100
-		acc.fc.bounce = 0
-		acc.fc.delta = 0
-	}
-	// Произошло изменение задание ПЧ
-	// TODO следить за изменением задания в -и+
-	if (acc.fc.pre !== soft?.fc?.value) {
-		// Счетчик дребезгов
-		// console.log(888, acc.fc.delta, acc.fc.pre - soft?.fc?.value)
-		if (soft?.fc?.value > 100 || soft?.fc?.value < 0) return
-
-		if (acc.fc.delta !== acc.fc.pre - soft?.fc?.value && acc.fc.delta !== 0) acc.fc.bounce++
-
-		acc.fc.delta = acc.fc.pre - soft?.fc?.value
-		acc.fc.pre = soft?.fc?.value
-
-		// Инициализация времени при первом включении
-		if (!acc.fc.start) {
-			acc.fc.start = new Date()
-			acc.fc.bounce = 0
-		}
-	}
-	// Слежение
-	const time = _LIMIT * s.fan.step * 1000
-	if (!compareTime(acc.fc?.start, time)) {
-		if (acc.fc.bounce < 2) return
-		// Сообщение
-		wrExtralrm(building._id, section._id, 'stableVno', msg(building, section, 40))
-		// ВНО особый режим
-		soft.count = acc?.count
-		soft.fc.value = 100
-		soft.stable = true
-	} else {
-		// Обновление периода слежения
-		acc.fc.start = new Date()
-		acc.fc.bounce = 0
-	}
+/**
+ * Дребезг ВНО (частое изменение частоты ПЧ)
+ * Принцип такоже как и function byChangeCount
+ * @param {*} building Склад
+ * @param {*} section Секция
+ * @param {*} acc Аккумулятор
+ * @param {*} soft Данные о ходе плавного пуска ВНО
+ * @return {boolean} true - дребезг!, false - все ОК
+ */
+function byChangeFC(building, section, acc, soft) {
+	// Формируем и контролируем очередь (сохранение последних 4 тактов)
+	acc.fcQueue ??= []
+	acc.fcQueue.push(soft?.fc?.value)
+	if (acc.fcQueue.length > _LIMIT) acc.fcQueue.shift()
+	if (acc.fcQueue[0] === acc.fcQueue[2] && acc.fcQueue[1] === acc.fcQueue[3] && acc.fcQueue[0] !== acc.fcQueue[1]) return true
+	return false
 }

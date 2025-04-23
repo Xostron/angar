@@ -68,7 +68,8 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 		`off = `,
 		off,
 		// acc,
-		aCmd
+		// aCmd
+		acc.count
 	)
 }
 

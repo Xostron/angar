@@ -15,9 +15,9 @@ const _MAX = 100
 function checkOn(on, acc, aCmd, length) {
 	if (!on) return
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	const time = acc.count === 1 ? aCmd.delay : aCmd.delay + _RAMP
+	const time = acc.count !== 1 ? aCmd.delay : aCmd.delay + _RAMP
 	if (!compareTime(acc.delay, time)) {
-		console.log(11, `Ожидайте пока выровнится давление после вкл ВНО`, time)
+		console.log(555, `Ожидайте пока выровнится давление после вкл ВНО`, time)
 		return
 	}
 	// Включаем следующий ВНО
@@ -39,7 +39,7 @@ function checkOn(on, acc, aCmd, length) {
  */
 function checkOff(off, acc, aCmd) {
 	if (!off) return
-	const time = acc.count === 1 ? aCmd.delay : aCmd.delay + _RAMP
+	const time = aCmd.delay
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	if (!compareTime(acc.delay, time)) {
 		console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
@@ -63,25 +63,33 @@ function checkOff(off, acc, aCmd) {
  * @returns {boolean} acc.busy - Флаг регулирование частоты (true: запрет на вкл/выкл соседних ВНО)
  */
 function regul(acc, on, off, s) {
-	if (acc.fc.value > 100) {
+	// Когда задание ПЧ увеличивается до 100 - инициализируем новое время для подключения следующего ВНО
+	if (acc.fc.value >= 100 && on) {
 		acc.fc.value = 100
+		acc.delay = !acc.first ? new Date() : acc.delay
+		acc.first = true
 		return false
 	}
-	// Антидребезг ВНО
+	acc.first = false
+
+	// Авария Антидребезг ВНО - выходим из регулирования
 	if (acc.stable) return false
 
 	// Время ожидания следующего шага
 	const time = s.fan.next * 1000
+
 	// Пошагово увеличиваем
-	// TODO возможно сравнивать давление задания и давление от одного ВНО, чтобы выбирать увеличение по числу ВНО или по заданию ПЧ
 	if (on) {
 		if (!acc.fc.delay) {
 			acc.fc.delay = new Date()
-			acc.fc.value += s.fan.step
+			// acc.fc.value += s.fan.step
 			// Достигли макс задания
-			if (acc.fc.value > _MAX) {
+			if (acc.fc.value >= _MAX) {
 				// При работе одного ВНО
-				if (acc.count === 1) acc.fc.value = _MAX
+				if (acc.count === 1) {
+					acc.fc.value = _MAX
+					// acc.delay = new Date()
+				}
 				// При работе больше одного ВНО => задание на 100 и
 				// выходим с разрешением на вкл/выкл следующего ВНО
 				return false
@@ -92,15 +100,17 @@ function regul(acc, on, off, s) {
 			return true
 		}
 		// Время стабилизации прошло
+		acc.fc.value += s.fan.step
+		acc.fc.value = acc.fc.value > _MAX ? _MAX : acc.fc.value
 		delete acc.fc.delay
 	}
+
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
 		if (!acc.fc.delay) {
 			acc.fc.delay = new Date()
-			acc.fc.value -= s.fan.step
 			// Достигли минимального задания
-			if (acc.fc.value < s.fan.min) {
+			if (acc.fc.value <= s.fan.min) {
 				if (acc.count === 1) {
 					// При работе одного ВНО
 					acc.fc.value = s.fan.min
@@ -108,7 +118,7 @@ function regul(acc, on, off, s) {
 				}
 				// При работе больше одного ВНО => задание на 100 и
 				// выходим с разрешением на вкл/выкл следующего ВНО
-				acc.fc.value = 100
+				acc.fc.value = _MAX
 				return false
 			}
 		}
@@ -117,6 +127,9 @@ function regul(acc, on, off, s) {
 			return true
 		}
 		// Время стабилизации прошло
+		acc.fc.value -= s.fan.step
+		acc.fc.value = acc.fc.value < s.fan.min ? s.fan.min : acc.fc.value
+
 		delete acc.fc.delay
 	}
 	return true
