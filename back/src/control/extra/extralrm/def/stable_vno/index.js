@@ -2,7 +2,8 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { isReset } = require('@tool/reset')
 const { data: store } = require('@store')
 const { msg } = require('@tool/message')
-const _LIMIT = 4
+const _LIMIT = 4 // размер очереди, хватает для выявления скачков ВНО,
+const _LIMIT_TIME = 2 * 60 * 1000 //Если в течении 2 мин, кол-во ВНО прыгало 1-2-1-2, то Авария Дребезг
 /**
  * По секциям
  * Дребезг вентиляторов ВНО
@@ -48,16 +49,21 @@ module.exports = stableVno
 
 /**
  * Дребезг ВНО (изменение кол-ва включенных ВНО)
- * такт - 1 итерация главного цикла
+ * такт - момент изменения кол-ва включенных вентиляторов
  *
  * Задача: Определить вкл/откл ВНО, например, 1 такт Работает ВНО1, 2 такт ВНО1+ВНО2, 3 такт ВНО1, 4 такт ВНО1+ВНО2
  * т.е. ВНО2 то включается то выключается - произошел дребезг =>  оставить в работе ВНО1+ВНО2 и вывести сообщение в "Сигналах"
  *
  * Алгоритм:
- * Фиксируем в массиве acc.queue кол-во включенных ВНО, и сравниваем пары друг с другом
+ * Фиксируем в массиве acc.queue {кол-во включенных ВНО, время изменения} - данное изменение добавляем в массив
+ *  при условии, что оно не равно последней записи в массиве.
+ * В образовавшемся массиве из 4 записей, сравниваем пары и проверяем что разница между первой и последней записью была не более
+ * _LIMIT_TIME минут (2мин), т.е. если в течении 2х минут ВНО то вкл, то выкл - это дребезг
  *
  * Пример 1: acc.queue = [1,2,1,2]: 1 такт Работает ВНО1, 2 такт ВНО1+ВНО2, 3 такт ВНО1, 4 такт ВНО1+ВНО2
- * Сравниваем пары из массива друг с другом (queue[0]===queue[2] && queue[1]===queue[3]), пары равны => обнаружен дребезг
+ * Сравниваем пары из массива друг с другом (queue[0]===queue[2] && queue[1]===queue[3]), пары равны  
+ * и время записей укладывается в 2 мин=> обнаружен дребезг
+ * Если они время между первой и последней записью больше 2 мин, то это считаем нормой
  *
  * Пример2: [1,2,1,1]: 1такт ВНО1, 2такт ВНО1+ВНО2, 3такт ВНО1, 4такт ВНО1
  * Сравниваем пары из массива друг с другом (queue[0]=1 ===queue[2]=1 && queue[1]=2 != queue[3]=1), пары не равны - Все Ок
@@ -68,12 +74,15 @@ module.exports = stableVno
  * @return {boolean} true - дребезг!, false - все ОК
  */
 function byChangeCount(building, section, acc, soft) {
-	// Формируем и контролируем очередь (сохранение последних 4 тактов)
+	// Формируем и контролируем очередь (сохранение последних 4 изменений кол-ва включенных ВНО)
 	acc.queue ??= []
-	acc.queue.push(soft?.count)
+	if (acc.queue[0]?.count !== soft?.count) acc.queue.push({ count: soft?.count, date: new Date() })
+	// Размер очереди превышен удаляем первого из очереди
 	if (acc.queue.length > _LIMIT) acc.queue.shift()
-	acc.count = Math.max(...acc.queue)
-	if (acc.queue[0] === acc.queue[2] && acc.queue[1] === acc.queue[3] && acc.queue[0] !== acc.queue[1]) return true
+	acc.count = Math.max(...acc.queue.map((el) => el.count))
+	// Первое и последнее изменение находится в диапазоне 2 мин? false - все ОК, true - подозрение на дребезг
+	const isTime = acc[0]?.date - acc?.[3]?.date < _LIMIT_TIME
+	if (acc.queue[0] === acc.queue[2] && acc.queue[1] === acc.queue[3] && acc.queue[0] !== acc.queue[1] && isTime) return true
 	return false
 }
 
@@ -87,10 +96,13 @@ function byChangeCount(building, section, acc, soft) {
  * @return {boolean} true - дребезг!, false - все ОК
  */
 function byChangeFC(building, section, acc, soft) {
-	// Формируем и контролируем очередь (сохранение последних 4 тактов)
+	// Формируем и контролируем очередь (сохранение последних 4 изменений кол-ва включенных ВНО)
 	acc.fcQueue ??= []
-	acc.fcQueue.push(soft?.fc?.value)
+	if (acc.fcQueue[0]?.value !== soft?.fc?.value) acc.fcQueue.push({ value: soft?.fc?.value, date: new Date() })
+	// Размер очереди превышен удаляем первого из очереди
 	if (acc.fcQueue.length > _LIMIT) acc.fcQueue.shift()
-	if (acc.fcQueue[0] === acc.fcQueue[2] && acc.fcQueue[1] === acc.fcQueue[3] && acc.fcQueue[0] !== acc.fcQueue[1]) return true
+	// Первое и последнее изменение находится в диапазоне 2 мин? false - все ОК, true - подозрение на дребезг
+	const isTime = acc[0]?.date - acc?.[3]?.date < _LIMIT_TIME
+	if (acc.fcQueue[0] === acc.fcQueue[2] && acc.fcQueue[1] === acc.fcQueue[3] && acc.fcQueue[0] !== acc.fcQueue[1] && isTime) return true
 	return false
 }
