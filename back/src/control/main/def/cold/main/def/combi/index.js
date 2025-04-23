@@ -3,7 +3,7 @@ const cooler = require('../../def_cooler')
 const target = require('../../fn/target')
 const denied = require('../../fn/denied')
 
-// Холодильник / комбинированный
+// Комбинированный
 function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply } = bdata
