@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom'
 import useEquipStore from '@store/equipment'
 import Sidebar from './sidebar'
 import Nav from '@cmp/nav'
-import Info from './info'
-import Cold from './cold'
+import DefSection from './def'
 import './style.css'
 
 //Подробная информация по секции
@@ -28,7 +27,9 @@ export default function Sect({}) {
 		<>
 			<Nav cls='nav-h-section' cur={sect} data={sections} ph='section' stl={nhs} />
 			<Sidebar />
-			{type === 'cold' ? <Cold /> : <Info />}
+			<DefSection type={type} />
+			{/* <DefSection type={'normal'} /> */}
+			{/* <DefSection type={'cold'} /> */}
 		</>
 	)
 }

@@ -28,7 +28,7 @@ function main(bld, obj, bdata, alr) {
 		console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
 
 		// Выключена ли оттайка
-		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) cooler?.[stateCooler.state](fnChange, accAuto, se, s, bld)
+		if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) cooler.combi?.[stateCooler.state](fnChange, accAuto, se, s, bld)
 
 		// TODO Функции комбинированного склада
 	}

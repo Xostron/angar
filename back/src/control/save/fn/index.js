@@ -9,6 +9,7 @@ function positionVlv(obj) {
 	data.valve?.forEach((vlv) => {
 		const idOn = vlv?.module?.on?.id
 		if (!idOn) return
+		// console.log(333, output, idOn)
 		const buildingId = output[idOn].buildingId
 		const section = data.section.find((s) => vlv.sectionId.includes(s._id))
 		const total = retain?.[section?.buildingId]?.valve?.[vlv._id]
