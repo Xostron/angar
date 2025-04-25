@@ -17,17 +17,25 @@
 	background-position: center center;
 	position: relative;
 	border-radius: 20px;
-
 	max-width: 123px;
 	height: 75px;
 }
 
+.combi .page-section-cold-aggregate {
+	max-width: 123px;
+	/* height: 50px; */
+}
+
 .page-section-cold-aggregate img {
-	width: 33px;
-	height: 33px;
+	width: calc(100% / 2.3);
+	height: calc(100% / 2.3);
 	position: absolute;
-	top: 14px;
-	left: 31px;
+	top: calc(100% / 5);
+	left: calc(100% / 5.5);
+	/* width: 33px; */
+	/* height: 33px; */
+	/* top: 14px; */
+	/* left: 31px; */
 }
 
 .page-section-cold-aggregate img.someAlr {
