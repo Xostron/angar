@@ -1,16 +1,17 @@
-.page-section-cold-cooler {
+.cmp-sec-cooler-item {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-self: center;
-	gap: 5px
+	gap: 5px;
 }
-.page-section-cold-cooler img {
+.cmp-sec-cooler-item img {
 	width: 130px;
 	height: 75px;
 }
 
-.page-section-cold-cooler span {
+.cmp-sec-cooler-item span {
 	text-align: center;
 	min-height: 19px;
 }
+

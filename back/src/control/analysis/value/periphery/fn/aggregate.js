@@ -7,12 +7,12 @@ function fnAggregate(equip, val, retain, result) {
 		const agg = aggregate.filter((el) => el.buildingId === doc._id)
 		// Нет агрегатов или склад "Вентиляционный"
 		if (!agg.length || doc.type === 'normal') return
-		if (doc.type === 'combi') {
-			//  TODO обработка агрегатов для склада "Комбинированный"
-			aggCombi(doc, agg, equip, val, retain, result)
-			return
-		}
-		// Агрегаты склада "Холодильник"
+		// if (doc.type === 'combi') {
+		// 	//  TODO обработка агрегатов для склада "Комбинированный"
+		// 	aggCombi(doc, agg, equip, val, retain, result)
+		// 	return
+		// }
+		// Агрегаты склада "Холодильник" и "Комбинированный"
 		aggCold(doc, agg, equip, val, retain, result)
 	})
 }

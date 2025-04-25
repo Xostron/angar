@@ -10,12 +10,12 @@ import useDialog from '@cmp/dialog/use_dialog'
 import '../style.css'
 
 export default function Row({ active, data = [], cls }) {
-	const { refDialog, open, close } = useDialog()
 	const { build, sect } = useParams()
+	const { refDialog, open, close } = useDialog()
 	const { isAuth } = useAuthStore(({ isAuth, name }) => ({ isAuth, name }))
-	const [getFan] = useInputStore(({ getFan }) => [ getFan])
+	const [getFan] = useInputStore(({ getFan }) => [getFan])
+	// Данные для модального окна
 	const [fdata, setFdata] = useState(null)
-	// Данные для children модального окна
 	useEffect((_) => setFdata(fdata), [fdata])
 
 	// Режим работы секции
@@ -32,13 +32,13 @@ export default function Row({ active, data = [], cls }) {
 					data.map((el, idx) => {
 						// Состояние вентилятора
 						const state = getFan(el)?.state
-						// Данные для children модального окна
+						// Данные для модального окна
 						const action = () => {
 							if (locked) return
 							setFdata({ ...el, buildingId: build, sectionId: sect, active })
 							open()
 						}
-						return <ItemFan key={idx} state={state}  action={action} locked={locked} />
+						return <ItemFan key={idx} state={state} action={action} locked={locked} />
 					})}
 			</div>
 			<Dialog href={refDialog}>{fdata && <Entry data={fdata} setData={setFdata} close={close} />}</Dialog>

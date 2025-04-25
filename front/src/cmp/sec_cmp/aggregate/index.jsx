@@ -1,10 +1,10 @@
 import useEquipStore from '@store/equipment'
 import useInputStore from '@store/input'
-import Agregat from './item'
+import Agregat from './agregat'
 import Pressure from '../pressure'
 import Condens from '../condens'
 
-export default function Aggregate({}) {
+export default function Aggregate({ cl }) {
 	const [build] = useEquipStore(({ build }) => [build()])
 	const input = useInputStore(({ input }) => input)
 
@@ -13,7 +13,7 @@ export default function Aggregate({}) {
 	let condenser = aggregates.map((el) => el.condenser).flat()
 
 	return (
-		<div className='row1'>
+		<div className={cl}>
 			<Pressure data={pin} state={build?.pin} />
 			{aggregates.length ? aggregates.map((el, i) => <Agregat key={i} state={el} data={input?.[el?._id]} />) : null}
 			<Pressure data={pout} state={build?.pout} />

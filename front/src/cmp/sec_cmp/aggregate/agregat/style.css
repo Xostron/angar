@@ -7,11 +7,11 @@
 	}
 }
 
-.cold .page-section-cold-aggregate img.run {
+.page-section-cold-aggregate img.run {
 	animation: rotate 2s linear infinite; /* вращение каждые 2 секунды */
 }
 
-.cold .page-section-cold-aggregate {
+.page-section-cold-aggregate {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -22,7 +22,7 @@
 	height: 75px;
 }
 
-.cold .page-section-cold-aggregate img {
+.page-section-cold-aggregate img {
 	width: 33px;
 	height: 33px;
 	position: absolute;
@@ -30,7 +30,7 @@
 	left: 31px;
 }
 
-.cold .page-section-cold-aggregate img.someAlr {
+.page-section-cold-aggregate img.someAlr {
 	/* margin: 2px; */
 	width: 25px;
 	height: 25px;
