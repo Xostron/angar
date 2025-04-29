@@ -11,7 +11,13 @@ function section(doc, data) {
 	// Датчики влажности секции
 	const mois = correct(data.sensor.filter((el) => el.owner.id === doc._id && ['hin'].includes(el.type)))
 	// Напорные вентиляторы
-	const fan = data.fan.filter((el) => el.owner.id === doc._id && el.type === 'fan')
+	const fan = data.fan
+		.filter((el) => el.owner.id === doc._id && el.type === 'fan')
+		.map((el) => {
+			const ao = data.binding.find((b) => b.owner.id === el._id)
+			if (!ao) return el
+			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+		})
 	// Дополнительные вентиляторы
 	const fanAux = data.fan.filter((el) => el.owner.id === doc._id && el.type === 'aux')
 	// Клапаны

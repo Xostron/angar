@@ -1,7 +1,8 @@
 .cold {
 	height: calc(100% - 30px);
 	align-items: center;
-	padding: 20px;
+	/* padding: 10px; */
+	/* row-gap: 20px; */
 	box-sizing: border-box;
 	display: flex;
 }
@@ -61,7 +62,7 @@
 	justify-content: center;
 	flex-wrap: wrap;
 }
-.combi-brd,
+.combi .brd,
 .row1 .brd,
 .row2 .brd,
 .page-section-cold-condens .brd {
@@ -90,31 +91,12 @@
 }
 
 /* Для комбинированного */
-.combi-row-cooler {
-	display: flex;
-	align-items: flex-end;
-	height: 74px;
-}
-.combi-cooler {
-	height: 50px;
-	align-self: auto;
-}
-.combi-brd {
+/* Испаритель */
+
+/* Border */
+.combi .brd {
 	border-radius: 10px;
 	height: 50px;
-	width: var(--fsz110);
-	height: var(--fsz50);
+	width: 110px;
 	font-size: var(--fsz22);
 }
-
-/* .combi .brd{
-	font-size: var(--fsz22);
-	height: 50px;
-	border-radius: 10px;
-} */
-
-/* .combi .page-section-cold-aggregate {
-	max-width: 100px;
-	height: 50px;
-} */
-

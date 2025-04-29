@@ -1,16 +1,16 @@
 import Sensor from './sensor'
 import './style.css'
 
-// Отображение Испарителя
-export default function Cooler({ state, data, start, cl = '', clSensor = '' }) {
+// Отображение Испарителя type=cold Холодильник, = combi - Комбинированный
+export default function Cooler({ state, data, start }) {
 	if (!state || !data) return null
 	// console.log('Cooler',state, data)
-	let cls = [cl, 'cmp-sec-cooler-item']
+	let cls = ['cmp-sec-cooler-item']
 	cls = cls.join(' ')
 	const img = `/img/cold/cooler/cooler-${data.state}.svg` ?? ''
 	const sen = state.sensor ?? []
 	const title = start ? data.name : ''
-	const sensor = sen.length ? sen.map((el, i) => <Sensor key={i} cl={clSensor} state={el} data={data?.sensor[el._id]} />) : null
+	const sensor = sen.length ? sen.map((el, i) => <Sensor key={i} state={el} data={data?.sensor[el._id]} />) : null
 
 	return (
 		<>

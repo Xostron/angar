@@ -4,7 +4,7 @@ import defUn from '@tool/unit'
 export default function ItemTemp({ sensId, type, cls }) {
 	const [getSens] = useInputStore(({ getSens }) => [getSens])
 	const unit = defUn[type]
-	let cl = ['sir-item', cls]
+	let cl = ['cmp-sec-row-item', cls]
 	const v= getSens(sensId)
 
 	// ошибка датчика

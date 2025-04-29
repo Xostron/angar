@@ -2,7 +2,7 @@ import ItemTemp from './item'
 import '../style.css'
 
 export default function RowTemp({  data = [], cls }) {
-	let cl = ['section-info-row', cls]
+	let cl = ['cmp-sec-row', cls]
 	cl = cl.join(' ')
 
 	return (

@@ -11,6 +11,7 @@ function mech(data, sId, bldId) {
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
+		
 	// Дополнительные вентиляторы (пока нигде не применяются)
 	const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
 	// Обогрев клапанов

@@ -1,25 +1,32 @@
 const def = require('./fn')
 const { fnAlarm, delUnused } = require('@tool/command/extra')
+const { delExtra } = require('@tool/message/extra')
 
 // Оттайка слива воды
 // Холодильник вкл/выкл - ручной режим
 function drainOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
-	if (['auto', 'temp'].includes(s?.cooler?.drain)) return
-	if (!s?.cooler?.drain || !def?.[s?.cooler?.drain]) return
 	// Сообщение о выбранном режиме
 	fnMsg(building, acc, s)
-	def[s?.cooler?.drain](building, m.cold.heating, obj?.value, acc, se, s)
 	fnAlarm(building, m.cold.heating, obj.value)
+	if (['auto', 'temp'].includes(s?.cooler?.drain)) return
+	if (!def?.[s?.cooler?.drain]) return
+	// Обработка по режиму
+	def[s?.cooler?.drain](building, m.cold.heating, obj?.value, acc, se, s)
 }
 
 // Холодильник включен - авторежим
 function drainAuto(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (!['auto', 'temp'].includes(s?.cooler?.drain)) return
-	if (!s?.cooler?.drain || !def?.[s?.cooler?.drain]) return
+	if (!def?.[s?.cooler?.drain]) return
 	// Сообщение о выбранном режиме
 	fnMsg(building, acc, s)
 	def[s?.cooler?.drain](building, m.cold.heating, obj?.value, acc, se, s, m)
 	fnAlarm(building, m.cold.heating, obj.value)
+}
+
+// Очистка сообщения "Оттайка слива воды: вкл(выкл)"
+function drainOff(building, section, obj, s, se, m, alarm, acc, data, ban) {
+	if (['auto', 'temp'].includes(s?.cooler?.drain)) delExtra(building._id, null, 'drainRun')
 }
 
 function fnMsg(building, acc, s) {
@@ -48,4 +55,4 @@ function fnMsg(building, acc, s) {
 	}
 }
 
-module.exports = { drainAuto, drainOn }
+module.exports = { drainAuto, drainOn, drainOff }

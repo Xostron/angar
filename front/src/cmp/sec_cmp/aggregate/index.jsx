@@ -4,7 +4,7 @@ import Agregat from './agregat'
 import Pressure from '../pressure'
 import Condens from '../condens'
 
-export default function Aggregate({ cl }) {
+export default function Aggregate({}) {
 	const [build] = useEquipStore(({ build }) => [build()])
 	const input = useInputStore(({ input }) => input)
 
@@ -13,11 +13,10 @@ export default function Aggregate({ cl }) {
 	let condenser = aggregates.map((el) => el.condenser).flat()
 
 	return (
-		<div className={cl}>
+		<div className='row1'>
 			<Pressure data={pin} state={build?.pin} />
 			{aggregates.length ? aggregates.map((el, i) => <Agregat key={i} state={el} data={input?.[el?._id]} />) : null}
 			<Pressure data={pout} state={build?.pout} />
-
 			{condenser.length ? condenser.map((el, i) => <Condens key={i} state={el} data={input?.[el?.aggregateListId]} />) : null}
 		</div>
 	)

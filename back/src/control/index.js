@@ -21,6 +21,7 @@ async function control() {
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
 		await analysis(obj)
+		// console.log(obj.data.fan)
 		// Логика
 		main(obj)
 		// Выхода: Команды управления

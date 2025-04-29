@@ -19,7 +19,7 @@ function periphery(val, obj) {
 	const { data: equip, retain } = obj
 	let result = {}
 
-	// Маска выходных модулей DO
+	// Маска выходных модулей DO, AO
 	result.outputM = outputM(equip, val)
 	// Исполнительные механизмы: значение выхода
 	result.outputEq = outputEq(equip, val)

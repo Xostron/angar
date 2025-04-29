@@ -7,7 +7,7 @@ const warming = require('./warming')
 const cableB = require('./cableB')
 const cableS = require('./cableS')
 const { coOn, coAuto } = require('./co2')
-const { drainAuto, drainOn } = require('./drain')
+const { drainAuto, drainOn, drainOff } = require('./drain')
 const smoking = require('./smoking')
 const { accelCOn, accelCAuto } = require('./accel_cold')
 
@@ -51,6 +51,7 @@ const data = {
 		},
 		off: {
 			smoking,
+			drainOff,
 		},
 		always: {
 			accelCOn,

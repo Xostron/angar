@@ -109,11 +109,9 @@ img {
 .sect {
 	grid-area: 3 / 2 / 4 / 3;
 	display: flex;
+	padding: 20px;
 	flex-direction: column;
-	gap: var(--fsz16);
-	/* width: 100%; */
-	/* background-color: #39c571; */
-	/* height: clamp(17.125rem, 3.5417rem + 18.4444vw, 25.875rem); */
+	gap: 20px;
 }
 
 /* Секция */
@@ -240,14 +238,7 @@ a {
 .alarm > img {
 	filter: opacity(50%) !important;
 }
-/* .sir-item-run img, */
-/* .gr-sens-fan-img, */
-/* .run {
-	animation-name: rotation;
-	animation-duration: 5s;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
-} */
+
 .sir-item-run img,
 .a-run {
 	animation-name: rotation;

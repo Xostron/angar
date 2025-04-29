@@ -1,16 +1,16 @@
-.section-info-row {
+.cmp-sec-row {
 	display: flex;
 	flex-wrap: wrap;
-	font-size: var(--fsz28);
-	gap: var(--fsz16);
+	gap: 1.25rem;
 	justify-content: center;
+	/* margin: 10px; */
 }
 
 /* Кнопка с картинкой */
-.sir-item {
+.cmp-sec-row-item {
 	display: flex;
-	width: var(--fsz130);
-	height: var(--fsz65);
+	width: 110px;
+	height: 50px;
 	box-sizing: border-box;
 	align-items: center;
 	justify-content: center;
@@ -19,16 +19,44 @@
 	background-color: transparent;
 }
 
-.sir-item > span {
+.cmp-sec-row-item > span {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	color: var(--primary);
 }
 
-.sir-item-act > img {
-	height: var(--fsz50) !important;
+.cmp-sec-row-item > img {
+	height: 40px;
 }
 
-.sir-item-off{
+.cmp-sec-row-item .off {
 	background-color: var(--surface);
+}
+.fc {
+	padding: 10px;
+	width: 130px;
+	font-size: 22px!important;
+}
+/* Испаритель - комбинированный склад - кнопка */
+.btn-cooler {
+	position: relative;
+	width: 210px !important;
+	color: var(--primary);
+	padding-inline: 10px;
+	font-size: var(--fsz22) !important;
+}
+.btn-cooler div {
+	position: relative;
+}
+.btn-cooler .up {
+	position: absolute;
+	font-size: var(--fsz18);
+	top: -2rem;
+}
+.btn-cooler img {
+	position: relative;
+	top: 0.6rem;
+	height: 40px;
+	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg) brightness(92%) contrast(95%);
 }

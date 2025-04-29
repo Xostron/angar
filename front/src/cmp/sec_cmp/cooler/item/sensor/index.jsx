@@ -2,10 +2,10 @@
 import defUn from '@src/tool/unit'
 
 // Отображение Испарителя
-export default function Sensor({state, data, cl=''}) {
+export default function Sensor({state, data}) {
 	if(!state || !data)  return null
 	
-	let cls = [cl, data?.state ?? '' ]
+	let cls = ['brd', data?.state ?? '' ]
 	cls = cls.join(' ')
 	
 	const unit = defUn?.temp

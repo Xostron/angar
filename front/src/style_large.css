@@ -1,18 +1,14 @@
 /* Стиль для больших экранов (больше 1300px) */
 @media screen and (min-width: 1600px) {
 	/* header */
-	.logo {
-		/* height: var(--fsz50); */
-		/* background-color: rgb(114, 239, 201); */
-	}
 	.btn {
 		/* line-height: var(--fsz30); */
 		font-size: var(--fsz24);
 		padding-block: 2px;
 	}
-	.btn > img {
+	/* .btn > img {
 		height: var(--fsz24);
-	}
+	} */
 	/* subheader */
 	.control {
 		font-size: var(--fsz28);
@@ -91,19 +87,19 @@
 		font-size: var(--fsz28);
 	}
 	/* page section - rowTemp / rowFan - item */
-	.sir-item {
+	/* .sir-item {
 		width: var(--fsz110);
 		height: var(--fsz50);
-	}
-	.section-info-row {
+	} */
+	.cmp-sec-row{
 		font-size: var(--fsz22);
 	}
 	.section-info-other {
 		font-size: var(--fsz22);
 	}
-	.sir-item-act > img {
+	/* .sir-item-act > img {
 		height: var(--fsz40) !important;
-	}
+	} */
 
 	.sio-btn > img {
 		height: var(--fsz70) !important;

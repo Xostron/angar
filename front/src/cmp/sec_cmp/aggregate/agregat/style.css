@@ -6,7 +6,7 @@
 		transform: rotate(360deg);
 	}
 }
-
+/* Для склада холодильник */
 .page-section-cold-aggregate img.run {
 	animation: rotate 2s linear infinite; /* вращение каждые 2 секунды */
 }
@@ -21,25 +21,15 @@
 	height: 75px;
 }
 
-.combi .page-section-cold-aggregate {
-	max-width: 123px;
-	/* height: 50px; */
-}
-
 .page-section-cold-aggregate img {
-	width: calc(100% / 2.3);
-	height: calc(100% / 2.3);
 	position: absolute;
-	top: calc(100% / 5);
-	left: calc(100% / 5.5);
-	/* width: 33px; */
-	/* height: 33px; */
-	/* top: 14px; */
-	/* left: 31px; */
+	width: 33px;
+	height: 33px;
+	top: 14px;
+	left: 31px;
 }
 
 .page-section-cold-aggregate img.someAlr {
-	/* margin: 2px; */
 	width: 25px;
 	height: 25px;
 	position: absolute;
@@ -49,4 +39,25 @@
 	background-color: white;
 	border-radius: 50%;
 	border: 1.5px solid red;
+}
+
+/* Для комбинированного склада*/
+.combi .page-section-cold-aggregate {
+	max-width: 123px;
+	height: 50px;
+	border-radius: 10px;
+}
+
+.combi .page-section-cold-aggregate img {
+	width: 19px;
+	height: 19px;
+	top: 10px;
+	left: 42px;
+}
+
+.combi .page-section-cold-aggregate img.someAlr {
+	width: 19px;
+	height: 19px;
+	top: 20px;
+	left: 66px;
 }

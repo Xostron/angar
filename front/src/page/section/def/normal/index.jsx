@@ -16,7 +16,7 @@ export default function Normal() {
 			{/* Температура продукта */}
 			<RowTemp data={tprd} />
 			{/* Напорные вентиляторы */}
-			<RowFan active={isMan} data={fan} />
+			<RowFan active={isMan} fan={fan} />
 			{/* Температура канала (смешения) */}
 			<RowTemp data={r3} />
 			{p?.length > 2 && <RowTemp data={p} />}

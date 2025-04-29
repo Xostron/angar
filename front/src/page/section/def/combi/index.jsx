@@ -5,7 +5,6 @@ import RowFan from '@cmp/sec_cmp/row/row_fan'
 import useEquipStore from '@store/equipment'
 import running from '@tool/status/build_section'
 import Aggregate from '@cmp/sec_cmp/aggregate'
-import ListCooler from '@cmp/sec_cmp/cooler'
 import '../style.css'
 
 //Подробная информация по секции - Комбинированный склад
@@ -17,13 +16,11 @@ export default function Combi() {
 	return (
 		<section className='sect cold combi'>
 			{/* Агрегаты и давление */}
-			<Aggregate cl='row1' />
-			{/* Испарители + датчик температуры всасывания */}
-			<ListCooler cooler={cooler} cl='combi-row-cooler' clCooler='combi-cooler' clSensor='combi-brd' />
+			<Aggregate />
 			{/* Температура продукта */}
 			<RowTemp data={tprd} />
 			{/* Напорные вентиляторы */}
-			<RowFan active={isMan} data={fan} />
+			<RowFan active={isMan} fan={fan} cooler={cooler} />
 			{/* Температура канала (смешения) */}
 			<RowTemp data={r3} />
 			{/* Клапан, обогреватель */}
