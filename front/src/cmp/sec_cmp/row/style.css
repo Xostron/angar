@@ -43,15 +43,18 @@
 	position: relative;
 	width: 210px !important;
 	color: var(--primary);
-	padding-inline: 10px;
+	padding-inline: 0px;
 	font-size: var(--fsz22) !important;
 }
 .btn-cooler div {
 	position: relative;
+
 }
 .btn-cooler .up {
 	position: absolute;
 	font-size: var(--fsz18);
+	transform: translateX(50%);
+	right: 50%;
 	top: -2rem;
 }
 .btn-cooler img {

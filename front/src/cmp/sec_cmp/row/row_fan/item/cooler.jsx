@@ -48,7 +48,7 @@ function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', cls, style 
 		<button onClick={onClick} className={cl} style={style}>
 			<span>{ltxt}</span>
 			<div>
-				<span className='up'>{utxt}</span>
+				<span className='up'>{'Разморозка'}</span>
 				<img src={icon} />
 			</div>
 			<span>{rtxt}</span>
