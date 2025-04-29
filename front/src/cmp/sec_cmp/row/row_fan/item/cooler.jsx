@@ -10,8 +10,8 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 
 	// Испаритель
-	const cooler = input?.[data._id]
-	console.log(cooler)
+	const cooler = input?.[data?._id]
+	// console.log(cooler)
 	let state = cooler?.state?.split('-')?.[0] ?? 'off'
 	// Вкл
 	if (state == 'on') cl.push('sir-item-run')
