@@ -41,7 +41,7 @@
 /* Испаритель - комбинированный склад - кнопка */
 .btn-cooler {
 	position: relative;
-	width: 210px !important;
+	min-width: 210px !important;
 	color: var(--primary);
 	padding-inline: 0px;
 	font-size: var(--fsz22) !important;

@@ -9,8 +9,9 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	const start = input?.retain?.[build]?.start
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 
-	// Состояние ВНО испарителя (вкл Run/выкл Stop/выведен из работы Off)
+	// Испаритель
 	const cooler = input?.[data._id]
+	console.log(cooler)
 	let state = cooler?.state?.split('-')?.[0] ?? 'off'
 	// Вкл
 	if (state == 'on') cl.push('sir-item-run')
@@ -19,9 +20,9 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	// Выведен из работы
 	if (state == 'off2') cl.push('off')
 	// Иконка испарителя с ПЧ
-	// const img = `/img/cold/cooler/cooler-${cooler.state}.svg` ?? ''
+	const img = `/img/cold/cooler/cooler-${cooler.state}.svg` ?? ''
 	// const img = `/img/cold/cooler/cooler-on-off-off.svg` ?? ''
-	const img = `/img/cold/cooler/cooler-on-on-off.svg` ?? ''
+	// const img = `/img/cold/cooler/cooler-on-on-off.svg` ?? ''
 	// Разблокирован доступ
 	if (!locked) cl.push('auth-sir')
 	cl = cl.join(' ')
@@ -29,7 +30,12 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	// Стадия испарителя - режим
 	const utxt = start ? cooler.name : ''
 	// Задание ПЧ
-	const ltxt = '100%'
+	let ltxt = Object.values(cooler?.fan ?? {})
+	ltxt = ltxt?.[0]?.value
+	if (ltxt !== undefined) {
+		if (isNaN(ltxt)) ltxt = '-- %'
+		else ltxt = Math.trunc(ltxt / 10) + '%'
+	} else ltxt = '-- %'
 	// Температура всасывания
 	let t = Object.values(cooler?.sensor ?? {})
 	t = t?.[0]?.value ?? '-'
@@ -48,7 +54,7 @@ function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', cls, style 
 		<button onClick={onClick} className={cl} style={style}>
 			<span>{ltxt}</span>
 			<div>
-				<span className='up'>{'Разморозка'}</span>
+				<span className='up'>{utxt}</span>
 				<img src={icon} />
 			</div>
 			<span>{rtxt}</span>

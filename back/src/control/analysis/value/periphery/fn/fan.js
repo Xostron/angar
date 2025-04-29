@@ -2,7 +2,7 @@ const { stateF } = require('@tool/command/fan')
 
 // Состояние вентиляторов
 function fan(equip, val, retain, result) {
-	const { fan, binding, module } = equip
+	const { fan, binding } = equip
 	fan.forEach((el) => {
 		result[el._id] ??= {}
 		// Состояние ВНО: run,stop
