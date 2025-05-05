@@ -11,9 +11,9 @@ const def = {
 		// Выключен
 		'off-off-off': off,
 		// Набор холода
-		'on-off-off': (fnChange, acc, se, s, bld) => check(fnChange, 'frost', acc, se, s, bld),
+		'on-off-off': (fnChange, acc, se, s, bld, clrId) => check(fnChange, 'frost', acc, se, s, bld, clrId),
 		// Охлаждение
-		'on-on-off': (fnChange, acc, se, s, bld) => check(fnChange, 'cooling', acc, se, s, bld),
+		'on-on-off': (fnChange, acc, se, s, bld, clrId) => check(fnChange, 'cooling', acc, se, s, bld, clrId),
 		// Обдув
 		'off-on-off': blow,
 

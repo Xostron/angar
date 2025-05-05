@@ -18,6 +18,7 @@ function scan(bld, obj) {
 	const s = setting(bld, obj)
 	// Показания с датчиков по складу (без учета секций)
 	const se = sensorBuilding(bld._id, obj)
+
 	// Исполнительные механизмы по складу (без учета секций)
 	const m = mechB(bld?._id, bld?.type, obj)
 	// console.log(333,m)

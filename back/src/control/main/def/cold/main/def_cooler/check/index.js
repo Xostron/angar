@@ -4,9 +4,9 @@ const { msgB } = require('@tool/message')
 const { wrAchieve, delAchieve} = require('@tool/message/achieve')
 
 // Проверка включения выход/охлаждение/обдув/набор холода
-function check(fnChange, code, acc, se, s, bld) {
+function check(fnChange, code, acc, se, s, bld, clrId) {
 	onTime(code, acc);
-	console.log('\n\tПроверка условий принятия решений');
+	console.log('\n\tПроверка условий принятия решений', clrId, se.cooler);
 	// Выключение (Температура задания достигнута)
 	if (se.cooler.tprd <= acc.target) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${acc.target} °C`));
@@ -43,16 +43,16 @@ function check(fnChange, code, acc, se, s, bld) {
 	console.log(
 		'\tУсловие',
 		3,
-		`Вентилятор 1. Тмп. дт. всасывания ${se.cooler.clr} < ${s.cooler.cold} Целевой тмп. дт.`,
-		se.cooler.clr <= s.cooler.cold
+		`Вентилятор 1. Тмп. дт. всасывания ${se.cooler[clrId].tmpCooler} < ${s.cooler.cold} Целевой тмп. дт.`,
+		se.cooler[clrId].tmpCooler <= s.cooler.cold
 	);
 	console.log(
 		'\tУсловие',
 		4,
-		`Вентилятор 0. Тмп. дт. всасывания ${se.cooler.clr} > ${
+		`Вентилятор 0. Тмп. дт. всасывания ${se.cooler[clrId].tmpCooler} > ${
 			s.cooler.cold + s.cooler.deltaCold
 		} Целевой тмп. дт. + delta(${s.cooler.deltaCold})`,
-		se.cooler.clr > s.cooler.cold + s.cooler.deltaCold
+		se.cooler[clrId].tmpCooler > s.cooler.cold + s.cooler.deltaCold
 	);
 
 	// условия включения солененоида
@@ -63,8 +63,8 @@ function check(fnChange, code, acc, se, s, bld) {
 	// const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
 
 	// Условия включения вентилятора
-	if (se.cooler.clr <= s.cooler.cold) ven = 1;
-	if (se.cooler.clr > s.cooler.cold + s.cooler.deltaCold) ven = 0;
+	if (se.cooler[clrId].tmpCooler <= s.cooler.cold) ven = 1;
+	if (se.cooler[clrId].tmpCooler > s.cooler.cold + s.cooler.deltaCold) ven = 0;
 	
 	// console.log(sol, ven);
 	// console.log('(!sol && !ven )||(sol && !ven)', (!sol && !ven ), (sol && !ven), (!sol && !ven )||(sol && !ven));

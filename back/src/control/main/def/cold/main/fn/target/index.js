@@ -3,16 +3,21 @@ const { data: store, readAcc } = require('@store')
 // Расчет задания
 // Для холодильника
 // accAuto - аккумулятор холодильника
-function coldTarget(bld, obj, bdata, alr) {
-	const { start, s, se, m, accAuto, supply } = bdata
+function coldTarget(bld, sect, obj, bdata, se, alr) {
+	const { start, s, se:seB, m, accAuto, supply } = bdata
+	
+	const clr = m.cold.cooler[0]
+	const { tprd, co2 } = se.cooler
+	const { tmpCooler } = se.cooler[clr._id]
+	// console.log(tprd, co2, tmpCooler )
+
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
 	if (!accAuto.targetDT || accAuto.targetDT.getDate() !== new Date().getDate() || accAuto?.isChange(s.cold.decrease, s.cold.target)) {
 		// Указанные настройки изменились?
 		accAuto.isChange = isChange(s.cold.decrease, s.cold.target)
-
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
 		// TODO Комбинированный имеет свое задание темп продукта
-		const t = se.cooler.tprd - s.cold.decrease
+		const t = tprd - s.cold.decrease
 		accAuto.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t).toFixed(1)
 
 		// Время создания задания
@@ -23,7 +28,7 @@ function coldTarget(bld, obj, bdata, alr) {
 
 // Аккумулятор комбинированного склада accTotal = {...данные_нормального_склада, cold:{...данные холодильника}}
 // Для комбинированного
-function combiTarget(bld, obj, bdata, alr) {
+function combiTarget(bld, sect, obj, bdata, alr) {
 	const { start, s, se, m, accAuto: a, supply } = bdata
 	const accCold = a.cold
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
