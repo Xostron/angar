@@ -9,6 +9,7 @@
 
 .row1 {
 	display: flex;
+	flex-direction: row;
 	align-items: stretch;
 	gap: 1.25rem;
 	width: 100%;
@@ -34,10 +35,6 @@
 	gap: 10px;
 	flex-wrap: wrap;
 	align-items: center;
-}
-
-.row1 div {
-	width: 100%;
 }
 
 .row2 .brd img {

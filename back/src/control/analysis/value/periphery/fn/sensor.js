@@ -100,9 +100,9 @@ function total(equip, result, retain) {
 		const hin = state(sensor, result, flt, fltA)
 		// Когда склад с одним агрегатом (датччики давления могут быть привязаны к складу)
 		// Давление всасывания
-		const pin = fnState(sensor, result, bld._id, 'pin')
+		// const pin = fnState(sensor, result, bld._id, 'pin')
 		// Давление нагнетания
-		const pout = fnState(sensor, result, bld._id, 'pout')
+		// const pout = fnState(sensor, result, bld._id, 'pout')
 
 		// Для логирования
 		// Температура продукта
@@ -122,7 +122,7 @@ function total(equip, result, retain) {
 		// const hout =
 
 		// Результат (данные с датчиков для алгоритма)
-		result.total[bld._id] = { tin, tprd, hin, pin, pout, tprdL, tcnl, tweather, hweather, tout }
+		result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, tout }
 		// Абсолютная влажность продукта
 		result.humAbs.in[bld._id] = calc(result.total[bld._id].tprd.min, result.total[bld._id].hin.max, `${bld.name}:Абс.влажность продукта`)
 		// Точка росы
@@ -140,18 +140,29 @@ function total(equip, result, retain) {
 		// Датчик СО2
 		const co2 = fnState(sensor, result, sec._id, 'co2')
 
+		// Датчики группы 1испаритель+1агрегат
 		// Температура всасывания
-		const idClr = cooler.find((el) => el.sectionId === sec._id)?._id
-		const clr = fnState(sensor, result, idClr, 'cooler')
+		const clr = cooler
+			.reduce((acc, el) => {
+				if (el.sectionId != sec._id) return acc
+				acc[el._id] = {
+					tmpCooler: fnState(sensor, result, el._id, 'cooler'),
+					pin: fnState(sensor, result, el._id, 'pin'),
+					pout: fnState(sensor, result, el._id, 'pout'),
+				}
+				return acc
+			}, {})
 
-		// Когда склад с несколькими агрегатами (датчики давления привязаны к испарителю, 
+		// const clr = fnState(sensor, result, idClr, 'cooler')
+
+		// Когда склад с несколькими агрегатами (датчики давления привязаны к испарителю,
 		// также как и агрегат привязан к испарителю)
 		// Давление всасывания
-		const pin = fnState(sensor, result, idClr, 'pin')
+		// const pin = fnState(sensor, result, idClr, 'pin')
 		// Давление нагнетания
-		const pout = fnState(sensor, result, idClr, 'pout')
+		// const pout = fnState(sensor, result, idClr, 'pout')
 
-		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr, pin, pout }
+		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
 
 	// console.log(8888, result.total)

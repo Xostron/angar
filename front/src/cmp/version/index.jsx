@@ -15,7 +15,7 @@ function Version() {
 	return (
 		<div style={{ position: 'absolute', bottom: '15px', right: '15px', color: 'darkgray' }}>
 			<Helmet title={title} />
-			<p>server 4.0.0: {process.env.PUBLIC_SOCKET_URI}</p>
+			<p>server 4.2.0: {process.env.PUBLIC_SOCKET_URI}</p>
 		</div>
 	)
 }

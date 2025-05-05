@@ -13,11 +13,11 @@ export default function Cold() {
 	const input = useInputStore(({ input }) => input)
 
 	const { co2, wetting, ozon } = input?.total?.[section?._id]?.device ?? {}
-	const { tprd } = section
+	const { tprd, cooler } = section
 
 	return (
 		<section className='sect cold'>
-			<Aggregate />
+			<Aggregate data={cooler}/>
 			<div className='row2'>
 				<div className='top'>
 					<ListCooler />

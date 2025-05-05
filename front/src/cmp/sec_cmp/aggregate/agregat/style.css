@@ -6,6 +6,21 @@
 		transform: rotate(360deg);
 	}
 }
+
+/* Списо агрегатов */
+.cmp-sec-aggregate {
+	display: flex;
+	gap: 1.25rem;
+}
+
+.cmp-sec-aggregate:nth-child(1) {
+	border-right: 1px solid var(--onSurface);
+	padding-right: 1.25rem;
+}
+.cmp-sec-aggregate:last-child {
+	border: none;
+}
+
 /* Для склада холодильник */
 .page-section-cold-aggregate img.run {
 	animation: rotate 2s linear infinite; /* вращение каждые 2 секунды */
@@ -17,8 +32,9 @@
 	background-position: center center;
 	position: relative;
 	border-radius: 20px;
-	max-width: 123px;
+	min-width: 123px;
 	height: 75px;
+	/* width: 100%; */
 }
 
 .page-section-cold-aggregate img {
@@ -41,18 +57,20 @@
 	border: 1.5px solid red;
 }
 
+
+
 /* Для комбинированного склада*/
 .combi .page-section-cold-aggregate {
-	max-width: 123px;
+	min-width: 110px;
 	height: 50px;
 	border-radius: 10px;
 }
 
 .combi .page-section-cold-aggregate img {
-	width: 19px;
-	height: 19px;
-	top: 10px;
-	left: 42px;
+	width: 20px;
+	height: 20px;
+	top: 11px;
+	left: 36px;
 }
 
 .combi .page-section-cold-aggregate img.someAlr {

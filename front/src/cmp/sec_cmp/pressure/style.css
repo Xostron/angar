@@ -1,5 +1,5 @@
 .cold .page-section-cold-pressure {
-	max-width: 185px;
+	min-width: 185px;
 }
 .combi .page-section-cold-pressure {
 	max-width: 110px;

@@ -33,7 +33,9 @@ function section(doc, data) {
 	// Испаритель: сленоиды, датчики, aggregateListId
 	cooler?.forEach((el) => {
 		el.sensor = data.sensor.filter((e) => e.owner.id === el._id)
+		el.aggregate = data.aggregate?.find(a=> a._id==el.aggregateListId)
 	})
+	// console.log(555,data.aggregate, data.cooler)
 	// Давление всасывания агрегата
 	const coolerIds = cooler?.map((el) => el._id) ?? []
 	const pin = data.sensor.filter((el) => coolerIds.includes(el.owner.id) && el.type === 'pin')
