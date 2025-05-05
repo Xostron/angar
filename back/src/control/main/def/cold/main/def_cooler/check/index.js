@@ -6,7 +6,7 @@ const { wrAchieve, delAchieve} = require('@tool/message/achieve')
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, acc, se, s, bld, clrId) {
 	onTime(code, acc);
-	console.log('\n\tПроверка условий принятия решений', clrId, se.cooler);
+	console.log('\n\tПроверка условий принятия решений');
 	// Выключение (Температура задания достигнута)
 	if (se.cooler.tprd <= acc.target) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${acc.target} °C`));

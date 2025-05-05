@@ -3,10 +3,10 @@ const { delUnused } = require('@tool/command/extra')
 
 // Разгонные вентиляторы
 function accelCOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
+	console.log(111, s)
 	if (s?.cooler?.accel === 'auto') return
 	if (!s?.cooler?.accel || !def?.[s?.cooler?.accel]) return
 	def[s?.cooler?.accel](building, m.fanA, acc, se, s)
-
 	// Сообщение о выбранном режиме
 	fnMsg(building, acc, s)
 }
