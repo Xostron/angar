@@ -58,6 +58,7 @@ function building(doc, data) {
 		binding,
 		section: sect,
 	}
+	
 	return obj
 }
 

@@ -98,12 +98,11 @@ function total(equip, result, retain) {
 		flt = (el) => el.owner.id === bld._id && el.type === 'hin' && result?.[el._id]?.state !== 'alarm'
 		fltA = (el) => el.owner.id === bld._id && el.type === 'hin'
 		const hin = state(sensor, result, flt, fltA)
+		// Когда склад с одним агрегатом (датччики давления могут быть привязаны к складу)
 		// Давление всасывания
 		const pin = fnState(sensor, result, bld._id, 'pin')
 		// Давление нагнетания
 		const pout = fnState(sensor, result, bld._id, 'pout')
-		// Температура всасывания
-		// const tina = fnState(sensor, result, bld._id, 'cooler')
 
 		// Для логирования
 		// Температура продукта
@@ -145,10 +144,17 @@ function total(equip, result, retain) {
 		const idClr = cooler.find((el) => el.sectionId === sec._id)?._id
 		const clr = fnState(sensor, result, idClr, 'cooler')
 
-		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
+		// Когда склад с несколькими агрегатами (датчики давления привязаны к испарителю, 
+		// также как и агрегат привязан к испарителю)
+		// Давление всасывания
+		const pin = fnState(sensor, result, idClr, 'pin')
+		// Давление нагнетания
+		const pout = fnState(sensor, result, idClr, 'pout')
+
+		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr, pin, pout }
 	}
 
-	// console.log(8888, result.total, result.humAbs)
+	// console.log(8888, result.total)
 }
 
 // мин, макс, состояние по датчикам

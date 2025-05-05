@@ -30,11 +30,15 @@ function section(doc, data) {
 	const heating = correct(data.heating.filter((el) => el?.owner?.id === doc._id))
 	// Испаритель
 	const cooler = correct(data?.cooler.filter((el) => el.sectionId === doc._id))
-	// Датчик испарителя (датчик температуры всасывания)
+	// Испаритель: сленоиды, датчики, aggregateListId
 	cooler?.forEach((el) => {
 		el.sensor = data.sensor.filter((e) => e.owner.id === el._id)
 	})
-
+	// Давление всасывания агрегата
+	const coolerIds = cooler?.map((el) => el._id) ?? []
+	const pin = data.sensor.filter((el) => coolerIds.includes(el.owner.id) && el.type === 'pin')
+	// Давление нагнетания агрегата
+	const pout = data.sensor.filter((el) => coolerIds.includes(el.owner.id) && el.type === 'pout')
 	// Устройства
 	const device = correct(data?.device.filter((el) => el.sectionId === doc._id))
 
@@ -52,8 +56,10 @@ function section(doc, data) {
 		heating,
 		cooler,
 		device,
+		pin,
+		pout,
 	}
-
+	// console.log(333, obj)
 	return obj
 }
 

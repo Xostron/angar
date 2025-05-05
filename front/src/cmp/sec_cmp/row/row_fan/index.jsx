@@ -43,7 +43,7 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 						return <ItemFan key={el._id} data={d} action={action} locked={locked} />
 					})}
 				{/* Испарители + датчик температуры всасывания */}
-				{!!cooler.length &&
+				{!!cooler?.length &&
 					cooler.map((el) => {
 						// Данные для модального окна
 						const action = () => {
