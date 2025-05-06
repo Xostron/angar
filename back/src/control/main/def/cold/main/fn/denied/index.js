@@ -10,14 +10,15 @@ const checkSupply = require('../supply')
  * @param {function} fnChange Замыкание - функция для изменения состояния испарителя
  * @returns {boolean} true - запрет работы, false - разрешено
  */
-function denied(bld, bdata, alr, stateCooler, fnChange, obj) {
+function denied(bld, sectM, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto: a, supply } = bdata
 	// ATTENTION!: Аккумулятор вычислений cold ? Холодильник : Комбинированный
 	const accAuto = bld?.type === 'cold' ? a : a.cold
 
 	const supplySt = checkSupply(supply, bld._id, obj.retain)
 	const aggr = isRunAgg(obj.value, bld._id)
-	store.denied[bld._id] = !start || alr || !aggr || !supplySt || !enCombi(bld, automode)
+	store.denied[bld._id] = !start || alr || !aggr || !supplySt || !enCombi(bld, sectM, automode)
+	console.log(777, 'работа запрещена', store.denied[bld._id])
 
 	// Работа холодильника запрещена
 	if (store.denied[bld._id]) {
@@ -34,6 +35,7 @@ function denied(bld, bdata, alr, stateCooler, fnChange, obj) {
 		// Пропуск: Испаритель выключен или окуривание запущено
 		if (stateCooler?.state === 'off-off-off' || store.smoking[bld._id]?.work) return true
 		// Выключение всех узлов испарителя
+
 		fnChange(0, 0, 0, 0)
 		delete accAuto?.state?.off
 		return true
@@ -62,15 +64,15 @@ function isRunAgg(value, idB) {
  * @param {string} automode Авторежим
  * @returns {boolean} true разрешить работу
  */
-function enCombi(bld, automode) {
+function enCombi(bld, sectM, automode) {
 	switch (bld?.type) {
 		case 'cold':
 			// Разрешить работу: склад холодильник
 			return true
 		case 'combi':
-			// Разрешить работу: комбинир. склад && режим хранения && наличие аварий авторежима хранения
+			// Разрешить работу: комбинир. склад && режим хранения && наличие аварий авторежима хранения && секция в авто
 			const isAutoAlr = Object.keys(store.alarm.auto?.[building._id]?.cooling ?? {}).length
-			return automode === 'cooling' && isAutoAlr ? true : false
+			return automode === 'cooling' && isAutoAlr && sectM ? true : false
 		default:
 			// Для всего остального - запрет
 			return false

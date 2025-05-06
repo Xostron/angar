@@ -15,13 +15,18 @@ function main(bld, obj, bdata, alr) {
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
+		console.log(444, sect.name)
 		// console.log(`\nСклад: ${bld?.name} Секция: ${sect?.name} [${sect?.buildingId}, ${sect?._id}] `)
 		const stateCooler = obj.value?.[m?.cold?.cooler?.[0]?._id]
 		console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
 
-		// Работа склада запрещена
-		if (denied(bld, bdata, alr, stateCooler, fnChange, obj)) continue
+		// Работа Испарителей
 
+
+
+		// Режим секции true-Авто
+		const sectM = retain[bld._id].mode[sect._id]
+		if (denied(bld, sectM, bdata, alr, stateCooler, fnChange, obj)) continue
 		// Работа склада разрешена
 		// Вычисление Т target
 		target.combi(bld, obj, bdata, alr)
@@ -35,3 +40,13 @@ function main(bld, obj, bdata, alr) {
 }
 
 module.exports = main
+
+function cooler(bld, sect, obj, bdata, alr){
+	const { data, retain } = obj
+
+	for (const clr of data.cooler) {
+		
+	}
+	// if (sect.buildingId != bld._id) continue
+
+}
