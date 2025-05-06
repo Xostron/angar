@@ -14,7 +14,7 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	// console.log(cooler)
 	let state = cooler?.state?.split('-')?.[0] ?? 'off'
 	// Вкл
-	if (state == 'on') cl.push('sir-item-run')
+	// if (state == 'on') cl.push('sir-item-run')
 	// Выкл
 	if (state == 'off') state = 'stop'
 	// Выведен из работы

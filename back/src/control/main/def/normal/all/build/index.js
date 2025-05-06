@@ -7,24 +7,21 @@ const def = require('@control/main/def/normal/def')
 function build(start, building, obj, s, se, m, am, accAuto) {
 	let alrBld = false,
 		alrAm = false
-	// Доп. аварии (всегда выполняются)
+	// Доп. аварии и доп. функции (always - всегда выполняются)
 	alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'always')
-	// Доп. функции (всегда выполняются)
 	extra(building, null, obj, s, se, m, null, null, null, 'building', 'always')
 
 	if (start) {
 		// Склад включен
-		// Доп аварии склада
+		// Доп. аварии и доп. функции (on - выполнение при включенном складе)
 		alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'on')
-		// console.log(111, 'Авария склада', building._id, alrBld)
-		// Доп функции склада
 		extra(building, null, obj, s, se, m, null, null, null, 'building', 'on')
-		// Аварии авторежима
+		// Аварии авторежима (Склад включен, )
 		rs(building._id, am, def[am].alarm(s, se, building, accAuto))
 		alrAm = isAlr(building._id, am)
 	} else {
 		// Склад выключен
-		// Доп функции склада
+		// Доп функции склада (off - выполнение при выключенном складе)
 		extra(building, null, obj, s, se, m, null, null, null, 'building', 'off')
 	}
 

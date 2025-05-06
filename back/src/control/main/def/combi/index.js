@@ -5,7 +5,7 @@ const cold = require('../cold')
 function combi(building, obj, bdata) {
 	const { start, automode, s, se: seB, m, accAuto, resultFan } = bdata
 	console.log(111, 'Комбинированный холодильный склад', building?.type)
-	console.log('\tЗапущен', start)
+	console.log('\tСклад включен', start)
 	console.log('\tАвторежим', automode)
 	console.log('\tАккумулятор', accAuto)
 	// Простой склад (см. папку normal)

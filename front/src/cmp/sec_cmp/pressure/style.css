@@ -2,11 +2,9 @@
 	min-width: 185px;
 }
 .combi .page-section-cold-pressure {
-	max-width: 110px;
-	max-height: 50px;
+	min-width: 120px;
 }
 
 .combi .page-section-cold-pressure img {
-	/* display: none; */
 	max-width:28px;
 }

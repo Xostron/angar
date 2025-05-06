@@ -12,7 +12,6 @@ function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, s
 	const { alr, v } = auto(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, alrBld, alrAm, alrAlw)
 	// Секция: Дополнительные функции авторежимов
 	extra(building, sect, obj, s, se, m, alr, resultFan, def[am].toExtra(s, alr, sect._id, accAuto))
-
 	// Приточный клапан (шаговое управление)
 	valve(building, sect, m.vlvS, m.fanS, obj, alr, v, accAuto, s)
 }
