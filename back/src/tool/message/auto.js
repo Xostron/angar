@@ -23,7 +23,7 @@ function rs(buildingId, automode, arr) {
 	})
 }
 
-// Наличие аварии
+// Наличие аварии авторежима
 function isAlr(buildingId, automode) {
 	const d = data.alarm.auto?.[buildingId]?.[automode] ?? {}
 	return Object.keys(d).length ? true : false

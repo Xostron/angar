@@ -4,11 +4,12 @@ const target = require('../../fn/target')
 const denied = require('../../fn/denied')
 const { mech } = require('@tool/command/mech')
 const { sensor } = require('@tool/command/sensor')
+const {checkCold} = require('@tool/command/section')
 
 // Комбинированный
 function main(bld, obj, bdata, alr) {
 	const { data } = obj
-	const { accAuto } = bdata
+	const { start, automode, s, se: seB, m, accAuto, resultFan } = bdata
 	// Аккумулятор: комбинированный склад
 	// accAuto.cold ??= {}
 	// Управление испарителем
@@ -17,6 +18,9 @@ function main(bld, obj, bdata, alr) {
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
+		// Проверка секции (Если условия для авто не подходят, то ничего не делаем)
+		if (!checkCold(bld._id, sect, obj, automode, start)) return // clear(accAuto)
+		console.log(777777, 'Работа камеры холодильника', sect.name)
 		// Исполнительные механизмы камеры
 		const mS = mech(obj.data, sect._id, sect.buildingId)
 		// Показания с датчиков секции
@@ -45,7 +49,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 
 	for (const clr of data.cooler) {
 		if (clr.sectionId != sect._id) continue
-		console.log(`\n***** Склад: ${bld?.name} Секция: ${sect?.name} [${sect?.buildingId}, ${sect?._id}] `)
+		console.log(`\t ${clr.name}: Склад: ${bld?.name} Секция: ${sect?.name} [${sect?.buildingId}, ${sect?._id}] `)
 		// accAuto.cold[clr._id] ??= {}
 		// console.log(8888, accAuto)
 		// const stateCooler = obj.value?.[m?.cold?.cooler?.[0]?._id]

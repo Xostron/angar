@@ -4,6 +4,18 @@ const { extra } = require('@control/extra/extra')
 const extralrm = require('@control/extra/extralrm')
 const def = require('@control/main/def/normal/def')
 
+/**
+ * СКЛАД: доп.функции - extra, доп. аварии - extralrm
+ * @param {*} start 
+ * @param {*} building 
+ * @param {*} obj 
+ * @param {*} s 
+ * @param {*} se 
+ * @param {*} m 
+ * @param {*} am 
+ * @param {*} accAuto 
+ * @returns 
+ */
 function build(start, building, obj, s, se, m, am, accAuto) {
 	let alrBld = false,
 		alrAm = false

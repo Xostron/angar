@@ -23,7 +23,7 @@ function building(doc, data) {
 	// Давление нагнетания
 	const pout = correct(sensor.filter((el) => el.owner.id === doc._id && el.type === 'pout'))
 	// Разгонные вентиляторы
-	let idS = correct(data.section.filter((el) => el.buildingId === doc._id).map((el) => el._id))
+	let idS = correct(data.section?.filter((el) => el.buildingId === doc._id).map((el) => el._id))
 	idS ??= []
 	idS.push(doc._id)
 	const fan = correct(data.fan.filter((f) => idS.includes(f.owner.id) && f.type === 'accel'))
