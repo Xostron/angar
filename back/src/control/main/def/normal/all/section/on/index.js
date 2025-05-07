@@ -7,7 +7,7 @@ const auto = require('./auto')
 // Обработка секции в авторежиме
 function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld, alrAm, alrAlw) {
 	// Проверка секции (Если условия для авто не подходят, то ничего не делаем и очищаем аккумулятор авто)
-	if (!check(building._id, sect, obj, am, start)) return clear(accAuto)
+	if (!check(building._id, sect, obj, am, start)) return // clear(accAuto)
 	// Логика авторежима {Суммарная авария, команды клапана}
 	const { alr, v } = auto(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, alrBld, alrAm, alrAlw)
 	// Секция: Дополнительные функции авторежимов
@@ -18,10 +18,4 @@ function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, s
 
 module.exports = sectionOn
 
-// Очистка объекта (удаление по ключам, чтобы не терять ссылку на объект)
-function clear(obj) {
-	if (!Object.keys(obj).length) return
-	for (const key in obj) {
-		delete obj[key]
-	}
-}
+

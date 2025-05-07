@@ -23,21 +23,21 @@ function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	acc.count ??= 1
 	acc.delay ??= new Date()
 
-	console.log(
-		444,
-		`КМ: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-		`Авто = "${aCmd.type}",`,
-		'Давление в канале =',
-		p,
-		'Задание по давлению',
-		s.fan.pressure - s.fan.hysteresisP,
-		'...',
-		s.fan.pressure,
-		'...',
-		s.fan.pressure + s.fan.hysteresisP,
-		acc.delay,
-		aCmd.delay
-	)
+	// console.log(
+	// 	444,
+	// 	`КМ: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+	// 	`Авто = "${aCmd.type}",`,
+	// 	'Давление в канале =',
+	// 	p,
+	// 	'Задание по давлению',
+	// 	s.fan.pressure - s.fan.hysteresisP,
+	// 	'...',
+	// 	s.fan.pressure,
+	// 	'...',
+	// 	s.fan.pressure + s.fan.hysteresisP,
+	// 	acc.delay,
+	// 	aCmd.delay
+	// )
 
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fans, bldId, aCmd)) return

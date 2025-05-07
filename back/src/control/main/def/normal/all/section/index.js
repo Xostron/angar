@@ -7,7 +7,7 @@ const { sumExtralrmSection } = require('@tool/message/extralrm')
 /**
  *
  * @param {*} start Вкл/выкл склад
- * @param {*} building Склад
+ * @param {*} bld Склад
  * @param {*} obj Данные по складу
  * @param {*} s Настройки
  * @param {*} am Авторежим склада
@@ -17,26 +17,40 @@ const { sumExtralrmSection } = require('@tool/message/extralrm')
  * @param {boolean} alrAm Аварии склада extralrms
  * @param {*} seB Датчики склада и усредненные значения по всем секциям
  */
-function section(start, building, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB) {
-	const { data } = obj
+function section(start, bld, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB) {
+	const { data, retain } = obj
 	let alrAlw
-	// Склад
+
+	const sections = data.section.filter((el) => (el.buildingId = bld._id))
 	// Секции склада
-	for (const sect of data.section) {
-		if (sect.buildingId != building._id) continue
+	for (const sect of sections) {
+		if (sect.buildingId != bld._id) continue
 		// Исполнительные механизмы секции
 		const m = mech(obj.data, sect._id, sect.buildingId)
 		// Показания с датчиков секции
-		const se = sensor(building._id, sect._id, obj)
-		// Секция и склад в любом режиме
-		alrAlw = always(building, sect, obj, s, se, m, am, accAuto, resultFan, alrBld)
+		const se = sensor(bld._id, sect._id, obj)
+		// Секция в любом режиме
+		alrAlw = always(bld, sect, obj, s, se, m, am, accAuto, resultFan, alrBld)
 		// sumExtralrmSection(building, section) - Аварии возникающие в секции, но останавливающие работу всего склада
-		sumAlrS = sumExtralrmSection(building, obj)
+		sumAlrS = sumExtralrmSection(bld, obj)
 		// Склад включен, секция в авто
-		on(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)
+		on(bld, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)
 		// Склад выключен, секция не в авто
-		off(building, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
+		off(bld, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
 	}
+	// Если все секции не в авто - очистка аккумулятора
+	sections.every((el) => !retain?.[bld._id]?.mode?.[el._id]) ? clear(accAuto) : null
 }
 
 module.exports = section
+
+// Очистка объекта (удаление по ключам, чтобы не терять ссылку на объект)
+function clear(obj) {
+	if (!Object.keys(obj).length) return
+	console.log(99, 'clear acc', obj)
+	for (const key in obj) {
+		if (key === 'cold') continue
+		delete obj[key]
+	}
+	console.log(999, 'clear acc - done', obj)
+}

@@ -12,6 +12,7 @@ function main(obj) {
 	for (const bld of data.building) {
 		// Данные по складу
 		const bdata = scan(bld, obj)
+		console.log(555, bdata.accAuto)
 		if (def?.[bld?.type]) def[bld?.type](bld, obj, bdata)
 	}
 }

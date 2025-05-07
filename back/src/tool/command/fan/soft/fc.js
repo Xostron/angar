@@ -48,29 +48,28 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Непосредственное включение
 	turnOn(fans, bldId, acc)
 
-	console.log(
-		444,
-		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-		`Авто = "${aCmd.type}",`,
-		'Давление в канале =',
-		p,
-		'Задание по давлению',
-		s.fan.pressure - s.fan.hysteresisP,
-		'...',
-		s.fan.pressure,
-		'...',
-		s.fan.pressure + s.fan.hysteresisP,
-		`ВНО = ${acc.count},`,
-		`ПЧ busy = `,
-		acc.busy,
-		`on = `,
-		on,
-		`off = `,
-		off,
-		// acc,
-		// aCmd
-		acc.count
-	)
+	// console.log(444,
+	// 	`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+	// 	`Авто = "${aCmd.type}",`,
+	// 	'Давление в канале =',
+	// 	p,
+	// 	'Задание по давлению',
+	// 	s.fan.pressure - s.fan.hysteresisP,
+	// 	'...',
+	// 	s.fan.pressure,
+	// 	'...',
+	// 	s.fan.pressure + s.fan.hysteresisP,
+	// 	`ВНО = ${acc.count},`,
+	// 	`ПЧ busy = `,
+	// 	acc.busy,
+	// 	`on = `,
+	// 	on,
+	// 	`off = `,
+	// 	off,
+	// 	// acc,
+	// 	// aCmd
+	// 	acc.count
+	// )
 }
 
 module.exports = fc

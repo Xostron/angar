@@ -25,7 +25,8 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	// 	return
 	// }
 	// acc.alarm = false
-
+	acc.f5 ??= 0
+	acc.f5++
 	// ************************************************
 	if (tout < s.drying.channelMin) {
 		wrAchieve(building._id, 'drying', {

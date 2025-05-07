@@ -10,8 +10,13 @@ function combi(building, obj, bdata) {
 	console.log('\tАккумулятор', accAuto)
 	// Простой склад (см. папку normal)
 	normal(building, obj, bdata)
+	accAuto.cold ??= { test: 0 }
+	// accAuto.cold.test ??= 0
+	accAuto.cold.test++
+	console.log(5555, accAuto)
 	// Холодильник (включение при аварии авторежима)
 	cold(building, obj, bdata)
+	console.log(55555, accAuto)
 }
 
 module.exports = combi

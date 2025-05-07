@@ -17,7 +17,7 @@ function checkOn(on, acc, aCmd, length) {
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	const time = acc.count !== 1 ? aCmd.delay : aCmd.delay + _RAMP
 	if (!compareTime(acc.delay, time)) {
-		console.log(555, `Ожидайте пока выровнится давление после вкл ВНО`, time)
+		// console.log(555, `Ожидайте пока выровнится давление после вкл ВНО`, time)
 		return
 	}
 	// Включаем следующий ВНО
@@ -42,7 +42,7 @@ function checkOff(off, acc, aCmd) {
 	const time = aCmd.delay
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	if (!compareTime(acc.delay, time)) {
-		console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
+		// console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
 		return
 	}
 	if (--acc.count < 1) {

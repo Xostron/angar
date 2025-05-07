@@ -42,7 +42,7 @@ function stableVno(building, section, obj, s, se, m, automode, acc, data) {
 		acc.fcQueue = []
 	}
 	// console.log(555, 'Задание', soft)
-	console.log(555, 'Антидребезг', acc, alrCount, alrFC)
+	// console.log(555, 'Антидребезг', acc, alrCount, alrFC)
 }
 
 module.exports = stableVno
