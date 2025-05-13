@@ -1,14 +1,17 @@
 const def = require('@control/main/def/normal/def')
-const {check} = require('@tool/command/section')
-const {extra} = require('@control/extra/extra')
+const { check } = require('@tool/command/section')
+const { extra } = require('@control/extra/extra')
 const { valve } = require('./fn')
 const auto = require('./auto')
 
 // Обработка секции в авторежиме
 function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld, alrAm, alrAlw) {
 	// Проверка секции (Если условия для авто не подходят, то ничего не делаем)
-	if (!check(building._id, sect, obj, am, start)) return // clear(accAuto)
-	console.log(66666666, 'Работа секции обычного склада', sect.name)
+	if (!check(building._id, sect, obj, am, start)) {
+		console.log(22, 'Секция не в работе', sect.name)
+		return
+	} // clear(accAuto)
+	console.log(22, 'Секция в работе', sect.name)
 	// Логика авторежима {Суммарная авария, команды клапана}
 	const { alr, v } = auto(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, alrBld, alrAm, alrAlw)
 	// Секция: Дополнительные функции авторежимов
@@ -18,5 +21,3 @@ function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, s
 }
 
 module.exports = sectionOn
-
-

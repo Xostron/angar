@@ -1,6 +1,5 @@
 const normal = require('../normal')
 const cold = require('../cold')
-const { isAlr } = require('@tool/message/auto')
 
 // Комбинированный склад (простой склад+холодильник с некоторыми особенностями)
 function combi(building, obj, bdata) {
@@ -9,17 +8,15 @@ function combi(building, obj, bdata) {
 	console.log('\tСклад включен', start)
 	console.log('\tАвторежим', automode)
 	console.log('\tАккумулятор', accAuto)
+	// Аккумулятор комбинированного склада (холодильник)
+	accAuto.cold ??= { test: 0 }
+	accAuto.cold.test++
+	
 	// Простой склад (см. папку normal)
 	normal(building, obj, bdata)
-	accAuto.cold ??= { test: 0 }
-	// accAuto.cold.test ??= 0
-	accAuto.cold.test++
-	console.log(5555, accAuto)
-	// Холодильник (включение при аварии авторежима)
-	console.log(888, 'Аварии авторежимов', isAlr(building._id, automode))
-	isAlr(building._id, automode) ? cold(building, obj, bdata) : null
 
-	console.log(55555, accAuto)
+	// Холодильник (включение при аварии авторежима)
+	cold(building, obj, bdata)
 }
 
 module.exports = combi

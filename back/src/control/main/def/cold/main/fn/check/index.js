@@ -47,4 +47,22 @@ function change(bdata, idB, sl, f, h, add, code) {
 	console.log('\tСмена режима ', code, ' : ', sl, f, h, add)
 }
 
-module.exports = { change, checkDefrost }
+function oneChange(bdata, idB, clrId,sl, f, h, add, code) {
+	const { start, s, se, m, accAuto } = bdata
+	const clr = m?.cold?.cooler?.find(el=>el._id==clrId)
+	if (!clr) return
+	const { solenoid, fan, heating } = clr
+	// TODO Управление механизмами
+	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
+	fan.forEach((el) => ctrlDO(el, idB, f ? 'on' : 'off'))
+	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
+	// Доп состояние слива воды
+	accAuto.state ??= {}
+	accAuto.state.add = add ? new Date() : false
+	// Обновление времени включения состояния
+	if (code) accAuto.state[code] = new Date()
+
+	console.log('\tСмена режима ', code, ' : ', sl, f, h, add)
+}
+
+module.exports = { change, checkDefrost,oneChange }

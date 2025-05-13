@@ -1,29 +1,38 @@
 // Исполнительные механизмы секции
 function mech(data, sId, bldId) {
-	const { valve, fan, heating, signal, binding } = data
-	// Клапаны
+	const { valve, fan, heating, signal, binding, cooler } = data
+	// Клапаны и обогрев (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(sId))
-	// Напорные ВНО
-	const fanS = fan
+	const heatS = heating.filter((el) => el?.owner?.id === sId)
+
+	// Испарители (соленоид + ВНО + оттайка)
+	const coolerS = []
+	cooler.forEach((el) => {
+		if (el.sectionId != sId) return
+		coolerS.push(transformClr(el, data))
+	})
+	const fanClr = coolerS.flatMap((el) => el.fan)
+
+	// Напорные ВНО камеры для режима холодильник
+	const fanSS = fan
 		.filter((el) => el.owner.id === sId && el.type === 'fan')
 		.map((el) => {
 			const ao = binding.find((b) => b.owner.id === el._id)
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
-		
+	// Напорные ВНО камеры + ВНО испарителей для обычного склада
+	const fanS = [...fan, ...fanClr]
+
 	// Дополнительные вентиляторы (пока нигде не применяются)
-	const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
-	// Обогрев клапанов
-	const heatS = heating.filter((el) => el?.owner?.id === sId)
-	// TODO Обогрев у холодильника
-	// const heatCo = heating.filter((el) => el?.owner?.id === sId)
+	// const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
+
 	// Выход "Модуль в работе" для реле безопасности
 	const connect = signal.filter((el) => el.owner.id == sId && el.type == 'connect')
 	// Выход сигнала Сброс аварии (создается как в секции, так и для склада)
 	const reset = signal.filter((el) => (el.owner.id == sId || el.owner.id == bldId) && el.type == 'reset')
 
-	return { vlvS, fanS, fanAux, heatS, connect, reset }
+	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS }
 }
 
 // Исполнительные механизмы склада
@@ -66,25 +75,7 @@ function fnCold(idB, obj) {
 	const cooler = []
 	obj.data.cooler.forEach((doc) => {
 		if (!idSec.includes(doc.sectionId)) return
-
-		doc.solenoid = doc.solenoid.map((el) => {
-			const b = obj.data.binding.find((e) => e.owner.id === el._id)
-			return { ...el, module: { id: b.moduleId, channel: b.channel } }
-		})
-
-		const clr = {
-			...doc,
-			fan: obj.data.fan
-				.filter((el) => el.owner.id === doc._id)
-				.map((el) => {
-					const ao = obj?.data?.binding.find((b) => b.owner.id === el._id)
-					if (!ao) return el
-					return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
-				}),
-			heating: obj.data.heating.filter((el) => el.owner.id === doc._id),
-		}
-
-		cooler.push(clr)
+		cooler.push(transformClr(doc, obj.data))
 	})
 
 	// Подогрев (клапаны, слив воды)
@@ -98,6 +89,23 @@ function fnCold(idB, obj) {
 		device[code].push(el)
 	})
 	return { signal: sigB, aggregate: aggr, cooler, heating, device }
+}
+
+function transformClr(doc, data) {
+	return {
+		...doc,
+		solenoid: doc.solenoid.map((el) => {
+			const b = data.binding.find((e) => e.owner.id === el._id)
+			return { ...el, module: { id: b.moduleId, channel: b.channel } }
+		}),
+		fan: data.fan
+			.filter((el) => el.owner.id === doc._id)
+			.map((el) => {
+				const ao = data?.binding.find((b) => b.owner.id === el._id)
+				return !ao ? el : { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+			}),
+		heating: data.heating.filter((el) => el.owner.id === doc._id),
+	}
 }
 
 module.exports = { mech, mechB, getId }

@@ -1,5 +1,6 @@
 const def = require('@control/main/def/normal/def')
 const { data: store } = require('@store')
+const { isAlr } = require('@tool/message/auto')
 
 /**
  * Разрешение на работу секции обычного склада
@@ -21,13 +22,17 @@ function check(buildingId, section, obj, automode, start) {
 }
 
 // Разрешение на работу камеры холодильника/комбинированного склада
-function checkCold(buildingId, section, obj, automode, start) {
+function checkCombiCold(buildingId, section, obj, automode, start) {
 	// Склад не включен
 	if (!start) return false
 	// Секция не в авторежиме
 	if (!obj.retain?.[buildingId]?.mode?.[section._id]) return cb()
 	// Не пройдена подготовка секции к авторежиму
 	if (!store.toAuto?.[buildingId]?.[section._id]) return cb()
+	// Нет Аварии авторежима -> запрет работы холодильника
+	if (!isAlr(buildingId, automode)) return false
+	// Авторежим Хранение не выбран
+	if (automode!='cooling') return false
 	// Все ок!
 	return true
 }
@@ -39,4 +44,4 @@ function cb(buildingId, sectionId) {
 	return false
 }
 
-module.exports = { check, checkCold }
+module.exports = { check, checkCombiCold }

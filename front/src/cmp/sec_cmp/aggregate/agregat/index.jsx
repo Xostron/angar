@@ -5,6 +5,7 @@ export default function Agregat({ state, data, cl='' }) {
 	// console.log('Aggregate',data, state)
 	if (!state || !data) return null
 	const aggregate = data?.state
+
 	let cls = [cl, 'page-section-cold-aggregate', aggregate ?? '']
 	cls = cls.join(' ')
 

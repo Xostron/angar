@@ -40,12 +40,14 @@ function enCombi(bld, sectM, automode) {
  * @param {*} stateCooler
  * @param {*} store
  */
-function clear(bldId, accAuto, fnChange, stateCooler, store) {
+function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	delete accAuto?.state?.off
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 	// Выключение всех узлов испарителя
-	fnChange(0, 0, 0, 0)
+	if (!accAuto.cold[clr._id].once) fnChange(clr._id, 0, 0, 0, 0)
+	accAuto.cold[clr._id].once = true
+
 	delete accAuto?.state?.off
 }
 

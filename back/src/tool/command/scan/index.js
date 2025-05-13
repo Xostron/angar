@@ -21,11 +21,10 @@ function scan(bld, obj) {
 
 	// Исполнительные механизмы по складу (без учета секций)
 	const m = mechB(bld?._id, bld?.type, obj)
-	// console.log(333,m)
+
 	// Аккумулятор для хранения промежуточных вычислений (авторежим)
 	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 	const accAuto = readAcc(bld._id, t)
-	console.log(444, accAuto)
 	const supply = store?.acc[bld._id]?.building?.supply
 	// Напорные вентиляторы всех секций
 	const resultFan = {

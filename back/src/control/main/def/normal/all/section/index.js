@@ -47,10 +47,8 @@ module.exports = section
 // Очистка объекта (удаление по ключам, чтобы не терять ссылку на объект)
 function clear(obj) {
 	if (!Object.keys(obj).length) return
-	console.log(99, 'clear acc', obj)
 	for (const key in obj) {
 		if (key === 'cold') continue
 		delete obj[key]
 	}
-	console.log(999, 'clear acc - done', obj)
 }

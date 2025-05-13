@@ -4,7 +4,7 @@ const main = require('./main/def')
 
 // Склад холодильник
 function cold(building, obj, bdata) {
-	console.log(1111, `\t${building?.type==='combi'? 'Комбинированный холод':'Холодильный'} склад - процесс`, building?.type)
+	// console.log(1111, `\t${building?.type==='combi'? 'Комбинированный холод':'Холодильный'} склад - процесс`, building?.type)
 	// Доп функции
 	const alr = runExtra(building, obj, bdata)
 	// Алгоритм управления камерой

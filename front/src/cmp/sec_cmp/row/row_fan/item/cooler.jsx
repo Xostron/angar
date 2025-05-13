@@ -11,8 +11,9 @@ export default function ItemCooler({ data, action, locked, cls }) {
 
 	// Испаритель
 	const cooler = input?.[data?._id]
-	// console.log(cooler)
+
 	let state = cooler?.state?.split('-')?.[0] ?? 'off'
+
 	// Вкл
 	// if (state == 'on') cl.push('sir-item-run')
 	// Выкл
@@ -20,7 +21,7 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	// Выведен из работы
 	if (state == 'off2') cl.push('off')
 	// Иконка испарителя с ПЧ
-	const img = `/img/cold/cooler/cooler-${cooler.state}.svg` ?? ''
+	const img = `/img/cold/cooler/cooler-${cooler?.state}.svg` ?? ''
 	// const img = `/img/cold/cooler/cooler-on-off-off.svg` ?? ''
 	// const img = `/img/cold/cooler/cooler-on-on-off.svg` ?? ''
 	// Разблокирован доступ
@@ -29,6 +30,7 @@ export default function ItemCooler({ data, action, locked, cls }) {
 
 	// Стадия испарителя - режим
 	const utxt = start ? cooler.name : ''
+
 	// Задание ПЧ
 	let ltxt = Object.values(cooler?.fan ?? {})
 	ltxt = ltxt?.[0]?.value
@@ -36,6 +38,7 @@ export default function ItemCooler({ data, action, locked, cls }) {
 		if (isNaN(ltxt)) ltxt = '-- %'
 		else ltxt = Math.trunc(ltxt / 10) + '%'
 	} else ltxt = '-- %'
+
 	// Температура всасывания
 	let t = Object.values(cooler?.sensor ?? {})
 	t = t?.[0]?.value ?? '-'

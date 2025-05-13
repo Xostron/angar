@@ -18,13 +18,15 @@ export default function Aggregate({ data = null }) {
 		<div className='row1'>
 			{!!coolers.length &&
 				coolers.map((el, i) => {
-					const { pin, pout } = input.total[el.sectionId].cooler[el._id]
+					const pin = input?.total?.[el?.sectionId]?.cooler?.[el?._id]?.pin
+					const pout = input?.total?.[el?.sectionId]?.cooler?.[el?._id]?.pout
 					return (
-						<div className='cmp-sec-aggregate'>
+						<div className='cmp-sec-aggregate' key={el._id}>
 							<Pressure data={pin} state={build?.pin || section?.pin} />
 							<Agregat key={i} state={el} data={input?.[el?._id]} />
 							<Pressure data={pout} state={build?.pout || section?.pout} />
-							{!!el.aggregate.condenser.length && el.aggregate.condenser.map((cn, i) => <Condens key={i} state={cn} data={input?.[el?.aggregateListId]} />)}
+							{!!el.aggregate.condenser.length &&
+								el.aggregate.condenser.map((cn, i) => <Condens key={i} state={cn} data={input?.[el?.aggregateListId]} />)}
 						</div>
 					)
 				})}
@@ -32,13 +34,13 @@ export default function Aggregate({ data = null }) {
 	)
 }
 
-function sensorP(aggSect, dataB, dataS, input) {
-	// Если агрегат не привязан к секции, то датчики давления от склада
-	if (!aggSect) {
-		const { pin, pout } = input?.total?.[build?._id] ?? {}
-		return { pin, pout }
-	}
-	// Агрегат привязан к секции датчики давления от испарителя (секции)
+// function sensorP(aggSect, dataB, dataS, input) {
+// 	// Если агрегат не привязан к секции, то датчики давления от склада
+// 	if (!aggSect) {
+// 		const { pin, pout } = input?.total?.[build?._id] ?? {}
+// 		return { pin, pout }
+// 	}
+// 	// Агрегат привязан к секции датчики давления от испарителя (секции)
 
-	return { pin, pout }
-}
+// 	return { pin, pout }
+// }
