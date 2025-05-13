@@ -6,7 +6,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 function supply(building, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(building?._id, obj, 'supply')
 	// Питание в норме
-	if (sig === false && !acc.on) {
+	if (!sig && !acc.on) {
 		delExtralrm(building._id, null, 'supply')
 		acc.on = true
 		acc.alarm = false

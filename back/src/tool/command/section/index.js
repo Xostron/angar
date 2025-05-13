@@ -22,20 +22,20 @@ function check(buildingId, section, obj, automode, start) {
 }
 
 // Разрешение на работу камеры холодильника/комбинированного склада
-function checkCombiCold(buildingId, section, obj, automode, start) {
-	// Склад не включен
-	if (!start) return false
-	// Секция не в авторежиме
-	if (!obj.retain?.[buildingId]?.mode?.[section._id]) return cb()
-	// Не пройдена подготовка секции к авторежиму
-	if (!store.toAuto?.[buildingId]?.[section._id]) return cb()
-	// Нет Аварии авторежима -> запрет работы холодильника
-	if (!isAlr(buildingId, automode)) return false
-	// Авторежим Хранение не выбран
-	if (automode!='cooling') return false
-	// Все ок!
-	return true
-}
+// function checkCombiCold(buildingId, section, obj, automode, start) {
+// 	// Склад не включен
+// 	if (!start) return false
+// 	// Секция не в авторежиме
+// 	if (!obj.retain?.[buildingId]?.mode?.[section._id]) return cb()
+// 	// Не пройдена подготовка секции к авторежиму
+// 	if (!store.toAuto?.[buildingId]?.[section._id]) return cb()
+// 	// Нет Аварии авторежима -> запрет работы холодильника
+// 	if (!isAlr(buildingId, automode)) return false
+// 	// Авторежим Хранение не выбран
+// 	if (automode!='cooling') return false
+// 	// Все ок!
+// 	return true
+// }
 
 // сброс аварий
 function cb(buildingId, sectionId) {
@@ -44,4 +44,4 @@ function cb(buildingId, sectionId) {
 	return false
 }
 
-module.exports = { check, checkCombiCold }
+module.exports = { check }

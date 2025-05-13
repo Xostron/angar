@@ -25,6 +25,7 @@ function scan(bld, obj) {
 	// Аккумулятор для хранения промежуточных вычислений (авторежим)
 	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 	const accAuto = readAcc(bld._id, t)
+
 	const supply = store?.acc[bld._id]?.building?.supply
 	// Напорные вентиляторы всех секций
 	const resultFan = {

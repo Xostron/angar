@@ -28,7 +28,6 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	// Вычисление подрежима
 	submode(building, section, obj, s, se, seB, alr, acc)
 	// Вычисления
-
 	target(building, section, obj, s, se, seB, alr, acc)
 	// Сообщения
 	message(building, section, obj, s, se, seB, alr, acc)

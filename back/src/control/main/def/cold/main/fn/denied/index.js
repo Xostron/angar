@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 const checkSupply = require('../supply')
-const { isRunAgg, enCombi, clear } = require('./fn')
+const { isRunAgg, clear, clearCombi } = require('./fn')
 const { isAlr } = require('@tool/message/auto')
 
 /**
@@ -12,10 +12,10 @@ const { isAlr } = require('@tool/message/auto')
  * @param {function} fnChange Замыкание - функция для изменения состояния испарителя
  * @returns {boolean} true - запрет работы, false - разрешено
  */
-function deniedCold(bld, bdata, alr, stateCooler, fnChange, obj) {
+function deniedCold(bld, clrId, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto, supply } = bdata
 
-	const supplySt = checkSupply(supply, bld._id, obj.retain)
+	const supplySt = checkSupply(supply, bld._id, clrId, obj.retain)
 	const aggr = isRunAgg(obj.value, bld._id)
 
 	store.denied[bld._id] = !start || alr || !aggr || !supplySt
@@ -26,8 +26,7 @@ function deniedCold(bld, bdata, alr, stateCooler, fnChange, obj) {
 	if (!store.denied[bld._id]) return false
 	// Да
 	clear(bld._id, accAuto, fnChange, stateCooler, store)
-	delete accAuto.target
-	delete accAuto.targetDT
+	
 	console.log('\tОстановка из-за ошибок:')
 	console.log('\t\tСклад остановлен:', !start)
 	console.log('\t\tАвария:', alr)
@@ -42,7 +41,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 	store.denied[bld._id] ??= {}
 
-	const supplySt = checkSupply(supply, bld._id, obj.retain)
+	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
 	const aggr = isRunAgg(obj.value, bld._id, clr._id)
 
 	store.denied[bld._id][clr._id] =
@@ -51,21 +50,23 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 
 	// Работа испарителя запрещена?
 	// Нет
-	if (!store.denied[bld._id]) {
+	if (!store.denied[bld._id][clr._id]) {
 		console.log(55, clr.name, 'в работе', sect.name)
 		return false
 	}
 	// Да
-	clear(bld._id, clr._id, accAuto.cold, fnChange, stateCooler, store)
-	console.log('\tОстановка из-за ошибок:')
-	console.log('\t\tСклад в работе:', start)
-	console.log('\t\tНет аварий комбинированного склада:', !alr)
-	console.log('\t\tАгрегат готов к работе', aggr)
-	console.log('\t\tОжидание после включения питания пройдено', supplySt)
-	console.log('\t\tСекция в Авто', sectMode)
-	console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
-	console.log('\t\tАвария авторежима активна, можно работать', isAlr(bld._id, automode))
-	console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
+	clearCombi(bld._id, clr._id, accAuto.cold, fnChange, stateCooler, store)
+	if (sectMode){
+		console.log('\tОстановка из-за ошибок:')
+		console.log('\t\tСклад в работе:', start)
+		console.log('\t\tНет аварий комбинированного склада:', !alr)
+		console.log('\t\tАгрегат готов к работе', aggr)
+		console.log('\t\tОжидание после включения питания пройдено', supplySt)
+		console.log('\t\tСекция в Авто', sectMode)
+		console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
+		console.log('\t\tАвария авторежима активна, можно работать', isAlr(bld._id, automode))
+		console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
+	}
 	return true
 }
 

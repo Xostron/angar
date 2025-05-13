@@ -80,7 +80,7 @@ function cbTune(obj, data) {
 
 /**
  * Потеря питания
- * @param {*} obj результат калибровки
+ * @param {*} obj данные на запись
  * @param {*} data данные из файла json
  */
 function cbSupply(obj, data) {

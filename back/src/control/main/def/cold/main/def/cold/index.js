@@ -22,7 +22,7 @@ function main(bld, obj, bdata, alr) {
 		console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
 
 		// Работа склада запрещена
-		if (denied.cold(bld, bdata, alr, stateCooler, fnChange, obj)) continue
+		if (denied.cold(bld, clrId, bdata, alr, stateCooler, fnChange, obj)) continue
 
 		// Работа склада разрешена -> Вычисление Т target
 		target.cold(bld, sect, obj, bdata, se, alr)

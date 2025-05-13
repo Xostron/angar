@@ -1,12 +1,14 @@
+const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
 const { oneChange } = require('../../fn/check')
 const { mech } = require('@tool/command/mech')
+const target = require('../../fn/target')
 const coolers = require('./coolers')
 
 // Комбинированный - холодильник
 function main(bld, obj, bdata, alr) {
 	const { data } = obj
-	// const { start, automode, s, se: seB, m, accAuto, resultFan } = bdata
+	const { start, automode, s, se, m, accAuto, resultFan } = bdata
 
 	// Управление испарителем
 	const fnChange = (clrId, sl, f, h, add, code) => oneChange(bdata, bld._id, clrId, sl, f, h, add, code)
@@ -22,6 +24,11 @@ function main(bld, obj, bdata, alr) {
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		// Работа ВНО
+	}
+	if (clearBuild(bld._id, bdata.accAuto)) {
+		// Работа склада разрешена -> Вычисление Т target
+		target.combi(bld, obj, bdata, alr)
+		console.log('\tТмп. задания на сутки', se.tprd, '-', s.cold.decrease, '=', accAuto.cold.target, 'от', accAuto.cold.targetDT.toLocaleString())
 	}
 }
 
