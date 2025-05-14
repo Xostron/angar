@@ -17,12 +17,40 @@ async function analysis(obj) {
 	// Анализ - данные для клиента и работы алгоритма
 	v = await value(v, obj)
 	// Настройки складов (обработанные для расчетов)
-	calcSetting(obj)
+	calcSetting(obj, v)
 	// Передача мяса по Socket.io на web-клиент
-	// console.log(2222, v)
+	console.log(2222, v.coef)
 	await cValue(v)
 }
 
 module.exports = analysis
 
-const calcSetting = (obj) => obj.data.building.forEach((bld) => (store.calcSetting[bld._id] = setting(bld, obj)))
+// Настройки в которых имеются "Коэффициент в зависимости от"
+const _STG = [
+	['sys', 'cf', 'kOut'],
+	['fan', 'pressure'],
+	['mois', 'abs'],
+]
+/**
+ * На клиенте в настройках "Коэффициент в зависимости от" -
+ * должен показываться коэффициент по которому работает алгоритм)
+ * данная функция формирует "готовые" настройки для алгоритма (store.calcSetting) +
+ * данные для клиента с активными коэффициентами (v.coef[bldId][key],
+ * где bldId - id склада, key - код настройки ('sys', 'fan', 'mois')
+ * @param {*} obj Глобальные данные склада
+ * @param {*} v Глобальные данные склада для клиента Web
+ * @returns
+ */
+const calcSetting = (obj, v) =>
+	obj.data.building.forEach((bld) => {
+		store.calcSetting[bld._id] = setting(bld, obj)
+		v.coef ??= {}
+		v.coef[bld._id] ??= {}
+		for (const key in store.calcSetting[bld._id]) {
+			const s = _STG.find((el) => el[0] == key)
+			if (!s) continue
+			const [_, field1, field2] = s
+			// console.log(77, key, field1, field2)
+			v.coef[bld._id][key] = !field2 ? store.calcSetting[bld._id][key][field1] : store.calcSetting[bld._id][key][field1][field2]
+		}
+	})

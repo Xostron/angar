@@ -16,7 +16,7 @@ function scan(bld, obj) {
 	const automode = retain?.[bld._id]?.automode
 	// Все настройки склада
 	const s = store.calcSetting[bld._id]
-	console.log(111,s)
+	// console.log(111,s)
 	// Показания с датчиков по складу (без учета секций)
 	const se = sensorBuilding(bld._id, obj)
 
