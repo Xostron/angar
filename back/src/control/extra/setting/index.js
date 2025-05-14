@@ -22,7 +22,7 @@ function setting(bld, obj) {
 	r.sys.cf = coefVlv(r.sys, bld, obj)
 	// Настройки влажности: Гистерезис абсолютной влажности в зависимости от температуры продукта
 	r.mois ??= {}
-	r.mois.hysteresisAbs = coefAbs(r.mois, bld, obj)
+	r.mois.abs = coefAbs(r.mois, bld, obj)
 	// Настройки вентиляторов: Давление в канале в зависимости от влажности продукта
 	r.fan ??= {}
 	r.fan.pressure = coefPress(r.fan, bld, obj)

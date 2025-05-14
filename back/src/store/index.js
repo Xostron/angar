@@ -105,6 +105,8 @@ const data = {
 	prev: { critical: {}, event: {} },
 	// Обнулить счетчик сушки
 	zero: new Set(),
+	// Готовые настройки для алгоритма
+	calcSetting:{},
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),

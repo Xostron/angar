@@ -9,11 +9,11 @@ function alarm(s, seB, building, section) {
 	// 	'set: ',
 	// 	hAbsOut >= hAbsIn - s.mois.differenceMin,
 	// 	'reset: ',
-	// 	hAbsOut + s.mois.hysteresisAbs < hAbsIn - s.mois.differenceMin,
+	// 	hAbsOut + s.mois.abs < hAbsIn - s.mois.differenceMin,
 	// 	hAbsOut,
 	// 	hAbsIn - s.mois.differenceMax,
 	// 	'***',
-	// 	hAbsOut + s.mois.hysteresisAbs,
+	// 	hAbsOut + s.mois.abs,
 	// 	hAbsIn - s.mois.differenceMin
 	// )
 	// console.log(3333, s.drying.channelMax, tout, 'set', s.drying.channelMax < tout, 'reset', s.drying.channelMax > tout + s.drying.hysteresisOut)
@@ -45,13 +45,13 @@ function alarm(s, seB, building, section) {
 		// Абсолютная влажность улицы ниже допустимой при сушке
 		{
 			set: hAbsOut < hAbsIn - s.mois.differenceMax,
-			reset: hAbsOut - s.mois.hysteresisAbs > hAbsIn - s.mois.differenceMax,
+			reset: hAbsOut - s.mois.abs > hAbsIn - s.mois.differenceMax,
 			msg: msg(building, section, 5),
 		},
 		// Абсолютная влажность улицы выше допустимой при сушке
 		{
 			set: hAbsOut >= hAbsIn - s.mois.differenceMin,
-			reset: hAbsOut + s.mois.hysteresisAbs < hAbsIn - s.mois.differenceMin,
+			reset: hAbsOut + s.mois.abs < hAbsIn - s.mois.differenceMin,
 			msg: msg(building, section, 6),
 		},
 	]

@@ -30,8 +30,8 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
-	let on = p < s.fan.pressure - s.fan.hysteresisP
-	let off = p > s.fan.pressure + s.fan.hysteresisP
+	let on = p < s.fan.pressure.p - s.fan.hysteresisP
+	let off = p > s.fan.pressure.p + s.fan.hysteresisP
 
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
@@ -54,11 +54,11 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// 	'Давление в канале =',
 	// 	p,
 	// 	'Задание по давлению',
-	// 	s.fan.pressure - s.fan.hysteresisP,
+	// 	s.fan.pressure.p - s.fan.hysteresisP,
 	// 	'...',
-	// 	s.fan.pressure,
+	// 	s.fan.pressure.p,
 	// 	'...',
-	// 	s.fan.pressure + s.fan.hysteresisP,
+	// 	s.fan.pressure.p + s.fan.hysteresisP,
 	// 	`ВНО = ${acc.count},`,
 	// 	`ПЧ busy = `,
 	// 	acc.busy,

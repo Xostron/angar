@@ -17,26 +17,26 @@ function coefPress(stg, bld, obj) {
 	const hyst = 5
 
 	// Значение давления по-умолчанию
-	let pressure = stg?.pressure3?.p
+	let pressure = stg?.pressure3
 	// от большего к меньшему
 	// *************************** 
 	if (hin < stg?.pressure2?.h || heap.press.p2) {
 		heap.press.p2 = true
-		pressure = stg?.pressure2?.p
+		pressure = stg?.pressure2
 	}
 	if (heap.press.p2 && hin - hyst > stg?.pressure2?.h) {
 		heap.press.p2 = false
-		pressure = stg?.pressure3?.p
+		pressure = stg?.pressure3
 	}
 
 	// ***************************
 	if (hin < stg?.pressure1?.h || heap.press.pressure1) {
 		heap.press.pressure1 = true
-		pressure = stg?.pressure1?.p
+		pressure = stg?.pressure1
 	}
 	if (heap.press.pressure1 && hin - hyst > stg?.pressure1?.p) {
 		heap.press.pressure1 = false
-		pressure = stg?.pressure2?.p
+		pressure = stg?.pressure2
 	}
 
 	// console.log(3333, 'Коэффициенты давления', 'hin', hin, '< X;', 'Работа по давление: pressure', pressure)

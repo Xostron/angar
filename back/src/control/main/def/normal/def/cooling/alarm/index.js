@@ -9,13 +9,13 @@ function alarm(s, seB, building, acc) {
 		// Абсолютная влажность улицы ниже допустимой при охлаждении
 		{
 			set: hAbsOut < hAbsIn - acc.setting.mois.differenceMax,
-			reset: hAbsOut - acc.setting.mois.hysteresisAbs > hAbsIn - acc.setting.mois.differenceMax,
+			reset: hAbsOut - acc.setting.mois.abs > hAbsIn - acc.setting.mois.differenceMax,
 			msg: msgB(building, 7),
 		},
 		// Абсолютная влажность улицы выше допустимой при охлаждении
 		{
 			set: hAbsOut > hAbsIn - acc.setting.mois.differenceMin,
-			reset: hAbsOut + acc.setting.mois.hysteresisAbs < hAbsIn - acc.setting.mois.differenceMin,
+			reset: hAbsOut + acc.setting.mois.abs < hAbsIn - acc.setting.mois.differenceMin,
 			msg: msgB(building, 8),
 		},
 		// Влажность улицы ниже допустимой при охлаждении

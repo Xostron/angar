@@ -16,7 +16,7 @@ function fnValve(data, sectionId, s) {
 		step: s.sys.step,
 		delay: s.sys.wait,
 		kIn: s.sys.cf.kIn,
-		kOut: s.sys.cf.kOut,
+		kOut: s.sys.cf.kOut.k,
 		type: open ? 'open' : 'close',
 	}
 	setACmd('vlv', sectionId, o)

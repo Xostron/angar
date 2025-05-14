@@ -44,7 +44,7 @@ function outOn(bld, stg, tout, tprd, hyst) {
 	const heap = store.heap[bld._id]
 	heap.coef ??= {}
 
-	let kOut = stg?.outDefault
+	let kOut = {k:stg?.outDefault}
 
 	// подключение к коэффициентам
 	if (tout < stg.outOn || heap.coef.onOut) {
@@ -52,37 +52,37 @@ function outOn(bld, stg, tout, tprd, hyst) {
 		// ***************************
 		if (tout < tprd - stg?.out1?.temp || heap.coef.out1) {
 			heap.coef.out1 = true
-			kOut = stg?.out1?.k
+			kOut = stg?.out1
 		}
 		if (heap.coef.out1 && tout - hyst > tprd - stg?.out1?.temp) {
 			heap.coef.out1 = false
-			kOut = stg?.outDefault
+			kOut = {k:stg?.outDefault}
 		}
 
 		// ***************************
 		if (tout < tprd - stg?.out2?.temp || heap.coef.out2) {
 			heap.coef.out2 = true
-			kOut = stg?.out2?.k
+			kOut = stg?.out2
 		}
 		if (heap.coef.out2 && tout - hyst > tprd - stg?.out2?.temp) {
 			heap.coef.out2 = false
-			kOut = stg?.out1?.k
+			kOut = stg?.out1
 		}
 		// ***************************
 		if (tout < tprd - stg?.out3?.temp || heap.coef.out3) {
 			heap.coef.out3 = true
-			kOut = stg?.out3?.k
+			kOut = stg?.out3
 		}
 		if (heap.coef.out3 && tout - hyst > tprd - stg?.out3?.temp) {
 			heap.coef.out3 = false
-			kOut = stg?.out2?.k
+			kOut = stg?.out2
 		}
 		// ***************************
 	}
 	// откл от коэффициентов
 	if (heap.coef.onOut && tout > stg.outOn + hyst) {
 		heap.coef.onOut = false
-		kOut = stg?.outDefault
+		kOut = {k:stg?.outDefault}
 	}
 
 	return kOut
