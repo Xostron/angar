@@ -11,7 +11,7 @@ function main(bld, obj, bdata, alr) {
 	const { start, automode, s, se, m, accAuto, resultFan } = bdata
 
 	// Управление испарителем
-	const fnChange = (clrId, sl, f, h, add, code) => oneChange(bdata, bld._id, clrId, sl, f, h, add, code)
+	const fnChange = (sl, f, h, add, code, clrId) => oneChange(bdata, bld._id, clrId, sl, f, h, add, code)
 
 	// По камере
 	for (sect of data.section) {
@@ -21,6 +21,7 @@ function main(bld, obj, bdata, alr) {
 		// console.log(555, mS)
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, sect._id, obj)
+		// console.log(seS)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		// Работа ВНО

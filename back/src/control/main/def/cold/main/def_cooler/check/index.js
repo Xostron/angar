@@ -43,16 +43,16 @@ function check(fnChange, code, acc, se, s, bld, clrId) {
 	console.log(
 		'\tУсловие',
 		3,
-		`Вентилятор 1. Тмп. дт. всасывания ${se.cooler[clrId].tmpCooler} < ${s.cooler.cold} Целевой тмп. дт.`,
-		se.cooler[clrId].tmpCooler <= s.cooler.cold
+		`Вентилятор 1. Тмп. дт. всасывания ${se.cooler.tmpCooler} < ${s.cooler.cold} Целевой тмп. дт.`,
+		se.cooler.tmpCooler <= s.cooler.cold
 	);
 	console.log(
 		'\tУсловие',
 		4,
-		`Вентилятор 0. Тмп. дт. всасывания ${se.cooler[clrId].tmpCooler} > ${
+		`Вентилятор 0. Тмп. дт. всасывания ${se.cooler.tmpCooler} > ${
 			s.cooler.cold + s.cooler.deltaCold
 		} Целевой тмп. дт. + delta(${s.cooler.deltaCold})`,
-		se.cooler[clrId].tmpCooler > s.cooler.cold + s.cooler.deltaCold
+		se.cooler.tmpCooler > s.cooler.cold + s.cooler.deltaCold
 	);
 
 	// условия включения солененоида
@@ -61,10 +61,10 @@ function check(fnChange, code, acc, se, s, bld, clrId) {
 	// TODO Комбинированный откр/закр соленоид
 	// const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	// const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
-
+console.log(88,se.cooler)
 	// Условия включения вентилятора
-	if (se.cooler[clrId].tmpCooler <= s.cooler.cold) ven = 1;
-	if (se.cooler[clrId].tmpCooler > s.cooler.cold + s.cooler.deltaCold) ven = 0;
+	if (se.cooler.tmpCooler <= s.cooler.cold) ven = 1;
+	if (se.cooler.tmpCooler > s.cooler.cold + s.cooler.deltaCold) ven = 0;
 	
 	// console.log(sol, ven);
 	// console.log('(!sol && !ven )||(sol && !ven)', (!sol && !ven ), (sol && !ven), (!sol && !ven )||(sol && !ven));

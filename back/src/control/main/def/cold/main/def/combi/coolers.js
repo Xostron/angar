@@ -22,6 +22,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	for (const clr of mS.coolerS) {
 		console.log('------------------------------------------------------------------------------')
 		accAuto.cold[clr._id] ??= {}
+		accAuto.cold[clr._id].state ??= {}
 
 		const stateCooler = obj.value?.[clr._id]
 		console.log('\tРежим:', clr.name, sect.name, stateCooler?.state, stateCooler?.name)
@@ -30,15 +31,15 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		const sectM = retain[bld._id].mode[sect._id]
 		if (denied.combi(bld, sect, clr, sectM, bdata, alr, stateCooler, fnChange, obj)) continue
 
-		
-
+		const seClr = { ...seS, cooler: {} }
+		seClr.cooler = seS.cooler[clr._id]
+		// console.log(66, accAuto)
 		// Выключена ли оттайка
-		// if (!checkDefrost(fnChange, accAuto, se, s, stateCooler.state, stateCooler)) cooler.combi?.[stateCooler.state](fnChange, accAuto, se, s, bld)
+		if (!checkDefrost(fnChange, accAuto.cold[clr._id], seClr, s, stateCooler.state, stateCooler))
+			cooler.combi?.[stateCooler.state](fnChange, accAuto.cold[clr._id], seClr, s, bld)
 
 		// TODO Функции комбинированного склада
-	}	
+	}
 }
 
 module.exports = coolers
-
-

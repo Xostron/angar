@@ -4,11 +4,11 @@ function regist(opt) {
 	let vv
 	// Для TCP Модуля DO opt.wr.type==boolean
 	// Стартовый адрес
-	const i = opt.wr.start
+	const i = opt.wr?.start
 	// Регистры
 	// if (opt?.name?.endsWith('AO')){console.log(555, opt.value)}
 	// const v = opt.value.map((v) => v * (opt.wr.on ?? 1)).reverse()
-	const v = opt.value.map((v) => v * (opt.wr.on ?? 1))
+	const v = opt.value.map((v) => v * (opt.wr?.on ?? 1))
 
 	// Аналоговый вывод - модуль у которого имя окончивается на "AO" и Назначение use:'w' - запись
 	if (opt?.name?.endsWith('AO')) {

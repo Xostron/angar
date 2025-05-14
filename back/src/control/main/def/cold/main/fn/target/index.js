@@ -31,7 +31,7 @@ function coldTarget(bld, sect, obj, bdata, se, alr) {
 function combiTarget(bld, obj, bdata, alr) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
-	console.log(66,accAuto.cold)
+	console.log(999999,accAuto.cold)
 	const accCold = accAuto.cold ?? {}
 
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
@@ -45,7 +45,7 @@ function combiTarget(bld, obj, bdata, alr) {
 		accCold.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t)?.toFixed(1)
 		// Время создания задания
 		accCold.targetDT = new Date()
-		accCold.state ??= {}
+		// accCold.state ??= {} перенесен в испаритель
 	}
 }
 

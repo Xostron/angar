@@ -71,7 +71,7 @@ function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 	// Выключение всех узлов испарителя
 
-	fnChange(clr._id, 0, 0, 0, 0)
+	fnChange(0, 0, 0, 0, undefined, clr._id)
 
 	delete accAuto?.cold?.[clr._id]?.state?.off
 }

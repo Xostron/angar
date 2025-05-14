@@ -4,7 +4,7 @@ const { compareTime } = require('@tool/command/time')
 const skip = ['off-off-on', 'off-off-off-add']
 const max = 2
 // Проверка на включение оттайки
-function checkDefrost(fnChange, acc, se, seB, s, stateCooler) {
+function checkDefrost(fnChange, acc, se, s, stateCooler) {
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
 	if (skip.includes(stateCooler)){
 		// Инициализация счетчика
@@ -14,7 +14,7 @@ function checkDefrost(fnChange, acc, se, seB, s, stateCooler) {
 			console.log(`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`);
 		return false
 	}
-	// console.log(555,se)
+
 	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn
 	const time =  compareTime(acc.targetDT, s.cooler.defrostWait)
 	// Запуск оттайки по температуре и времени
@@ -26,7 +26,7 @@ function checkDefrost(fnChange, acc, se, seB, s, stateCooler) {
 		return true
 	}
 	// Очистка флага
-	if (acc.state.defrostCount) delete acc.state.defrostCount
+	if (acc?.state?.defrostCount) delete acc?.state?.defrostCount
 	return false
 }
 

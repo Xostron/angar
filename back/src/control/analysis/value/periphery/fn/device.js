@@ -1,7 +1,7 @@
 function dnDevice(equip, val, retain, result) {
 	const { device, signal, section } = equip
 	// Состояние отдельного устройства
-	single(device, signal, result, val)
+	single(equip, result, val)
 
 	// Суммарное состояние по устройствам одного типа и одного владельца
 	sum(section, device, result, 'co2')
@@ -12,9 +12,12 @@ function dnDevice(equip, val, retain, result) {
 module.exports = dnDevice
 
 // Состояние отдельного устройства
-function single(device, signal, result, val) {
+function single(equip, result, val) {
+	const { device, signal, module, equipment } = equip
 	// По устройствам deviceList
 	device.forEach((doc) => {
+		const equipId = module.find((el) => el._id == doc.module.id).equipmentId
+		doc.module.name = equipment[equipId].name
 		if (doc.device.code === 'pui') pui(doc, result, val)
 		other(doc, signal, result)
 	})
@@ -24,18 +27,38 @@ function single(device, signal, result, val) {
 function pui(doc, result, val) {
 	result[doc._id] ??= {}
 	if (!doc.module.id || !val?.[doc.module.id]) return
+	// console.log(777,doc,val[doc.module.id])
+	if (doc.module.name == 'МЭ210-701') puiTCP(doc, result, val)
+	else puiRTU(doc, result, val)
+}
+
+const puiRTU = (doc, result, val) => {
 	// Напряжение
-	result[doc._id].Ua = val[doc.module.id][0]
-	result[doc._id].Ub = val[doc.module.id][2]
-	result[doc._id].Uc = val[doc.module.id][4]
+	result[doc._id].Ua = +val[doc.module.id][0]?.toFixed(1)
+	result[doc._id].Ub = +val[doc.module.id][2]?.toFixed(1)
+	result[doc._id].Uc = +val[doc.module.id][4]?.toFixed(1)
 	// Ток
-	result[doc._id].Ia = val[doc.module.id][6]
-	result[doc._id].Ib = val[doc.module.id][8]
-	result[doc._id].Ic = val[doc.module.id][10]
+	result[doc._id].Ia = +val[doc.module.id][6]?.toFixed(1)
+	result[doc._id].Ib = +val[doc.module.id][8]?.toFixed(1)
+	result[doc._id].Ic = +val[doc.module.id][10]?.toFixed(1)
 	// активная мощность
-	result[doc._id].Pa = val[doc.module.id][12]
-	result[doc._id].Pb = val[doc.module.id][14]
-	result[doc._id].Pc = val[doc.module.id][16]
+	result[doc._id].Pa = +val[doc.module.id][12]?.toFixed(1)
+	result[doc._id].Pb = +val[doc.module.id][14]?.toFixed(1)
+	result[doc._id].Pc = +val[doc.module.id][16]?.toFixed(1)
+}
+const puiTCP = (doc, result, val) => {
+	// Напряжение
+	result[doc._id].Ua = +val[doc.module.id][0]?.toFixed(1)
+	result[doc._id].Ub = +val[doc.module.id][1]?.toFixed(1)
+	result[doc._id].Uc = +val[doc.module.id][2]?.toFixed(1)
+	// Ток
+	// result[doc._id].Ia = +val[doc.module.id][6]?.toFixed(1)
+	// result[doc._id].Ib = +val[doc.module.id][7]?.toFixed(1)
+	// result[doc._id].Ic = +val[doc.module.id][8]?.toFixed(1)
+	// активная мощность
+	// result[doc._id].Pa = +val[doc.module.id][6]?.toFixed(1)
+	// result[doc._id].Pb = +val[doc.module.id][7]?.toFixed(1)
+	// result[doc._id].Pc = +val[doc.module.id][8]?.toFixed(1)
 }
 
 function other(doc, signal, result) {

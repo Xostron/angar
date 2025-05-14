@@ -23,8 +23,8 @@ function writeRTU(path, position, opt) {
 			resolve({ error: e, info: opt })
 		})
 		socket.on('open', (_) => {
-			const i = opt.wr.start
-			const v = opt.value.map((v) => v * (opt.wr.on ?? 1))
+			const i = opt.wr?.start
+			const v = opt.value.map((v) => v * (opt.wr?.on ?? 1))
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)

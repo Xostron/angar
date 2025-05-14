@@ -16,7 +16,7 @@ function sensor(idB, idS, obj) {
 		// Абсолютная влажность проукта
 		hAbsIn: isNaN(+value?.humAbs?.in?.[idB]) ? null : +value?.humAbs?.in?.[idB],
 		// Минимальная температура продукта по секции
-		tprd: value?.total?.[idS]?.tprd?.min,
+		tprd: value?.total?.[idB]?.tprd?.min,
 		// Температура канала - мин
 		tcnl: value?.total?.[idS]?.tcnl?.min,
 		// Давление - макс
@@ -91,6 +91,7 @@ function sensorBuilding(idB, obj) {
 // }
 
 // Секция: Датчики по камере и испарителю для расчетов авторежимов
+
 function coolerS(idB, idS, obj) {
 	const { value, data } = obj
 	const r = data.cooler.reduce((acc, clr) => {
@@ -106,7 +107,7 @@ function coolerS(idB, idS, obj) {
 		return acc
 	}, {})
 	// Температура продукта
-	r.tprd = value?.total?.[idS]?.tprd?.min
+	r.tprd = value?.total?.[idB]?.tprd?.min,
 	// Датчик СО2
 	r.co2 = value?.total?.[idS]?.co2?.max
 	return r
