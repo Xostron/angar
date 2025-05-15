@@ -1,5 +1,5 @@
-const check = require('../check');
-const onTime = require('../on_time');
+const check = require('../../check');
+const onTime = require('../../on_time');
 const { compareTime } = require('@tool/command/time');
 
 // Слив конденсата

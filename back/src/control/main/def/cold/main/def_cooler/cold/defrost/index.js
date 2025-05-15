@@ -1,4 +1,4 @@
-const onTime = require('../on_time');
+const onTime = require('../../on_time');
 const { compareTime } = require('@tool/command/time');
 
 // Оттайка

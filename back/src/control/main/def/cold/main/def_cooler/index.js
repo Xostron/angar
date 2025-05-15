@@ -1,7 +1,12 @@
-const off = require('./off')
-const blow = require('./blow')
-const defrost = require('./defrost')
-const drain = require('./drain')
+const off = require('./cold/off')
+const blow = require('./cold/blow')
+const defrost = require('./cold/defrost')
+const drain = require('./cold/drain')
+
+const offCombi = require('./combi/off')
+const blowCombi = require('./combi/blow')
+const defrostCombi = require('./combi/defrost')
+const drainCombi = require('./combi/drain')
 const check = require('./check')
 
 // Алгоритм работы испарителя
@@ -16,8 +21,6 @@ const def = {
 		'on-on-off': (fnChange, acc, se, s, bld, clrId) => check(fnChange, 'cooling', acc, se, s, bld, clrId),
 		// Обдув
 		'off-on-off': blow,
-
-		// TODO Комбинированный - что оттайка и стекание блокирует полностью склад?
 		// Оттайка
 		'off-off-on': defrost,
 		// Стекание воды
@@ -26,19 +29,19 @@ const def = {
 	// Комбинированный
 	combi: {
 		// Выключен
-		'off-off-off': off,
+		'off-off-off': offCombi,
 		// Набор холода
 		'on-off-off': (fnChange, acc, se, s, bld, clrId) => check(fnChange, 'frost', acc, se, s, bld, clrId),
 		// Охлаждение
 		'on-on-off': (fnChange, acc, se, s, bld, clrId) => check(fnChange, 'cooling', acc, se, s, bld, clrId),
 		// Обдув
-		'off-on-off': blow,
+		'off-on-off': blowCombi,
 
 		// TODO Комбинированный - что оттайка и стекание блокирует полностью склад?
 		// Оттайка
-		'off-off-on': defrost,
+		'off-off-on': defrostCombi,
 		// Стекание воды
-		'off-off-off-add': drain,
+		'off-off-off-add': drainCombi,
 	},
 }
 

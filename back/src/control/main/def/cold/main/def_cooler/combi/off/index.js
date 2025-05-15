@@ -1,6 +1,6 @@
 const { compareTime } = require('@tool/command/time')
-const check = require('../../cold/check')
-const onTime = require('../../cold/on_time')
+const check = require('../../check')
+const onTime = require('../../on_time')
 
 // Испаритель выключен
 function off(fnChange, acc, se, s, bld, clrId) {

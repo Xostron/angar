@@ -1,6 +1,6 @@
 const { compareTime } = require('@tool/command/time')
-const onTime = require('../on_time')
-const check = require('../check')
+const onTime = require('../../on_time')
+const check = require('../../check')
 
 // Обдув
 function blow(fnChange, acc, se, s, bld, clrId) {
