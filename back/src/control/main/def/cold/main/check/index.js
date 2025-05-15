@@ -1,4 +1,4 @@
-const onTime = require('../on_time');
+const { onTime } = require('@tool/command/time');
 const mes = require('@dict/message')
 const { msgB } = require('@tool/message')
 const { wrAchieve, delAchieve} = require('@tool/message/achieve')

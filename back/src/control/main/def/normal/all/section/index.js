@@ -4,6 +4,7 @@ const always = require('./always')
 const { mech } = require('@tool/command/mech')
 const { sensor } = require('@tool/command/sensor')
 const { sumExtralrmSection } = require('@tool/message/extralrm')
+const clear = require('@tool/clear')
 /**
  *
  * @param {*} start Вкл/выкл склад
@@ -39,16 +40,10 @@ function section(start, bld, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB)
 		off(bld, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
 	}
 	// Если все секции не в авто - очистка аккумулятора
-	sections.every((el) => !retain?.[bld._id]?.mode?.[el._id]) ? clear(accAuto) : null
+	const isAllSectOff = sections.every((el) => !retain?.[bld._id]?.mode?.[el._id])
+	clear(bld,obj, accAuto, isAllSectOff, start)
+	// Если склад выключен - очистка аккумулятора
+	console.log(12345, 'ВВВЫКЛЮЧЕН!', accAuto)
 }
 
 module.exports = section
-
-// Очистка объекта (удаление по ключам, чтобы не терять ссылку на объект)
-function clear(obj) {
-	if (!Object.keys(obj).length) return
-	for (const key in obj) {
-		if (key === 'cold') continue
-		delete obj[key]
-	}
-}

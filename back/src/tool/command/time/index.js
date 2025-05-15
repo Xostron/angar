@@ -123,4 +123,10 @@ function elapsedTime(date) {
 	return `${hh}ч ${mm}м`
 }
 
-module.exports = { ms, delay, range, compareTime, runTime, engineTime, engineHour, elapsedTime }
+// Вычисляет сколько в минут работает в указанном режиме и выводит в консоль
+function onTime(code, acc) {
+	if (!acc.state[code]) acc.state[code] = new Date();
+	console.log('\t'+code, runTime(acc.state[code]));
+}
+
+module.exports = { ms, delay, range, compareTime, runTime, engineTime, engineHour, elapsedTime, onTime }

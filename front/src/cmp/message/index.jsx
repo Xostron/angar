@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import './style.css'
 import useInputStore from '@store/input'
+import './style.css'
 
 //Отображение сообщений: Продукт достиг температрцы задания, и т.д.
 export default function Message() {
@@ -28,15 +28,16 @@ export default function Message() {
 	const act = arr.find((el) => el?.order === 1)
 	if (act) cl.push('act')
 	cl = cl.join(' ')
-
+	// arr.push({order:1, msg:'hello'})
+	// console.log(cl)
 	// если нет сообщений - для каждого режима своя инфа
 
-	if (arr.length == 1)
-		return (
-			<div className={cl} style={{ width: '40%' }}>
-				<p className='text'>{arr[0]?.msg}</p>
-			</div>
-		)
+	// if (arr.length == 1)
+	// 	return (
+	// 		<div className={cl}>
+	// 			<p className='text'>{arr[0]?.msg}</p>
+	// 		</div>
+	// 	)
 	return (
 		<div className='mes-container'>
 			<div className='all' hidden={hid}>

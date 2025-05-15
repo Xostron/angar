@@ -1,5 +1,5 @@
-const onTime = require('../../on_time');
-const { compareTime } = require('@tool/command/time');
+const { compareTime, onTime } = require('@tool/command/time');
+
 
 // Оттайка
 function defrost(fnChange, acc, se, s, bld, clrId) {

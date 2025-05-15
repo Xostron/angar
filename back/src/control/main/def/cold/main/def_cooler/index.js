@@ -7,7 +7,7 @@ const offCombi = require('./combi/off')
 const blowCombi = require('./combi/blow')
 const defrostCombi = require('./combi/defrost')
 const drainCombi = require('./combi/drain')
-const check = require('./check')
+const check = require('../check')
 
 // Алгоритм работы испарителя
 const def = {

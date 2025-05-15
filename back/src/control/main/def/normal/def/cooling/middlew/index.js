@@ -60,6 +60,7 @@ function target(building, section, obj, s, se, seB, alr, acc) {
 	// Задание на сутки
 	// Момент запуска режима - Температура задания продукта
 	if (acc?.tgt === undefined) {
+		console.log(333,seB.tprd)
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 	}

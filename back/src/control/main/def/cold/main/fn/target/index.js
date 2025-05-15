@@ -16,7 +16,6 @@ function coldTarget(bld, sect, obj, bdata, se, alr) {
 		// Указанные настройки изменились?
 		accAuto.isChange = isChange(s.cold.decrease, s.cold.target)
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
-		// TODO Комбинированный имеет свое задание темп продукта
 		const t = tprd - s.cold.decrease
 		accAuto.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t).toFixed(1)
 
@@ -31,21 +30,23 @@ function coldTarget(bld, sect, obj, bdata, se, alr) {
 function combiTarget(bld, obj, bdata, alr) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
-	console.log(999999,accAuto.cold)
-	const accCold = accAuto.cold ?? {}
+	console.log(999,accAuto.cold)
 
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
-	if (!accCold.targetDT || accCold.targetDT.getDate() !== new Date().getDate() || accCold?.isChange(s.cold.decrease, s.cold.target)) {
+	if (!accAuto.cold.targetDT || accAuto.cold.targetDT.getDate() !== new Date().getDate() || accAuto.cold?.isChange(s.cooling.target, s.cooling.decrease)) {
 		// Указанные настройки изменились?
-		accCold.isChange = isChange(s.cold.decrease, s.cold.target)
+		accAuto.cold.isChange = isChange(s.cold.decrease, s.cold.target)
 		const name = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
-		// Температура задания с нормального склада
-		const t = readAcc(bld._id, name)?.tgt
+		// Температура задания продукта с нормального склада
+		const r = readAcc(bld._id, name)
+		const tgtTprd = readAcc(bld._id, name)?.tgt
+		const tgtTcnl = readAcc(bld._id, name)?.tcnl
+		// console.log(888, r)
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
-		accCold.target = +(t <= s.cold.target || s.cold.decrease === 0 ? s.cold.target : t)?.toFixed(1)
+		accAuto.cold.tgtTprd = tgtTprd
+		accAuto.cold.tgtTcnl = tgtTcnl
 		// Время создания задания
-		accCold.targetDT = new Date()
-		// accCold.state ??= {} перенесен в испаритель
+		accAuto.cold.targetDT = new Date()
 	}
 }
 

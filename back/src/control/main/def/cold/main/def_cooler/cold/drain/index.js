@@ -1,6 +1,5 @@
-const check = require('../../check');
-const onTime = require('../../on_time');
-const { compareTime } = require('@tool/command/time');
+const { compareTime, onTime } = require('@tool/command/time');
+const check = require('../../../check');
 
 // Слив конденсата
 function drain(fnChange, acc, se, s, bld, clrId) {

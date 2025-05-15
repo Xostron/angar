@@ -1,6 +1,6 @@
 const { barB, bar, bannerB, banner, signalB, signal, count } = require('./fn')
 const { data: store } = require('@store')
-const defClear = require('./clear')
+const defClear = require('../../clear')
 
 function alarm(obj) {
 	const { data, retain, value } = obj
@@ -36,33 +36,26 @@ function alarm(obj) {
 		// События достижения задания в авторежиме
 		r.achieve ??= {}
 		r.achieve[bld._id] ??= {}
+		console.log(7777, store.alarm?.achieve)
 		r.achieve[bld._id] =
 			bld.type == 'cold'
 				? Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
 				: Object.values(store.alarm?.achieve?.[bld._id]?.[am] ?? {})
 		// Для всех складов: сообщение Склад выключен
 		if (store.alarm?.achieve?.[bld._id]?.building?.datestop) r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.datestop)
-
 		r.achieve[bld._id].sort((a, b) => a.order - b.order)
-		// Режимы работы секций
-		const sumMode = []
+
 		// аварии по секции
 		for (const section of data.section) {
 			if (section.buildingId != bld._id) continue
 			signal(r, bld, section, am)
 			bar(r, bld, section, am, start)
 			banner(r, bld, section, am)
-			sumMode.push(retain?.[bld._id]?.mode?.[section._id])
 		}
 		// аварии общие склада
 		signalB(r, bld, am, data)
 		barB(r, bld, am)
 		bannerB(r, bld)
-		// Наличие хотя бы одной секции в авто
-		const sumAuto = sumMode.some((el) => el === true)
-
-		// Очистка событий и таймеров запрета склада
-		defClear[bld.type](bld, r, { am, start, sumAuto })
 	}
 	// Счетчик текущих аварий (карточка склада)
 	count(r, value.total, data.building)

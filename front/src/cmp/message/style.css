@@ -14,7 +14,7 @@
 	padding-inline: 30px;
 
 	min-width: 40%;
-	width: 100%;
+	/* max-width: fit-content; */
 }
 
 .text {

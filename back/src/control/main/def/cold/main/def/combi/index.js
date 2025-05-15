@@ -29,7 +29,6 @@ function main(bld, obj, bdata, alr) {
 	if (clearBuild(bld._id, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.combi(bld, obj, bdata, alr)
-		console.log('\tТмп. задания на сутки', se.tprd, '-', s.cold.decrease, '=', accAuto.cold.target, 'от', accAuto.cold.targetDT.toLocaleString())
 	}
 }
 

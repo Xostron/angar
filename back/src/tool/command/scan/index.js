@@ -1,11 +1,8 @@
-const { wrAchieve, delAchieve, updAchieve } = require('@tool/message/achieve')
 const { sensorBuilding } = require('@tool/command/sensor')
-const { elapsedTime } = require('@tool/command/time')
 const { data: store, readAcc } = require('@store')
-const setting = require('@control/extra/setting')
 const { mechB } = require('@tool/command/mech')
-const { msgB } = require('@tool/message')
-const mes = require('@dict/message')
+
+
 
 // Собрать первичные данные по складу
 function scan(bld, obj) {
@@ -37,20 +34,22 @@ function scan(bld, obj) {
 	}
 	// Для всех складов (Нормальный, холодильник, комби)
 	// Событие Выключен 00ч 00м назад
+	console.log(77771, 'SCAAAAN', accAuto)
+	// if (!start && accAuto.clearAchieve && !accAuto.datestop) {
+	// 	accAuto.datestop = true
+	// 	wrAchieve(bld._id, 'building', msgB(bld, 151))
+	// }
+	// if (start) {
+	// 	accAuto.datestop = null
+	// 	delAchieve(bld._id, 'building', mes[151].code)
+	// }
+	// if (accAuto.datestop) {
+	// 	const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
+	// 	const msg = elapsed ? mes[151].msg + ' ' + elapsed : null
+	// 	if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
+	// }
 
-	if (!start && !accAuto.datestop) {
-		accAuto.datestop = true
-		wrAchieve(bld._id, 'building', msgB(bld, 151))
-	}
-	if (start) {
-		accAuto.datestop = null
-		delAchieve(bld._id, 'building', mes[151].code)
-	}
-	if (accAuto.datestop) {
-		const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
-		const msg = elapsed ? mes[151].msg + ' ' + elapsed : null
-		if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
-	}
+	console.log(77772, 'SCAAAAN', accAuto)
 	return { start, automode, s, se, m, accAuto, resultFan, supply }
 }
 
