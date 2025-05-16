@@ -36,7 +36,6 @@ function alarm(obj) {
 		// События достижения задания в авторежиме
 		r.achieve ??= {}
 		r.achieve[bld._id] ??= {}
-		console.log(7777, store.alarm?.achieve)
 		r.achieve[bld._id] =
 			bld.type == 'cold'
 				? Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})

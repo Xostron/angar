@@ -25,7 +25,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		accAuto.cold[clr._id].state ??= {}
 
 		const stateCooler = obj.value?.[clr._id]
-		console.log('\tРежим:', clr.name, sect.name, stateCooler?.state, stateCooler?.name)
+		// console.log('\tРежим:', clr.name, sect.name, stateCooler?.state, stateCooler?.name)
 
 		// Режим секции true-Авто
 		const sectM = retain[bld._id].mode[sect._id]
@@ -35,8 +35,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		seClr.cooler = seS.cooler[clr._id]
 		// console.log(66, accAuto)
 		// Выключена ли оттайка
-		if (!checkDefrost(fnChange, accAuto.cold[clr._id], seClr, s, stateCooler.state, stateCooler))
-			cooler.combi?.[stateCooler.state](fnChange, accAuto.cold[clr._id], seClr, s, bld)
+		if (!checkDefrost(fnChange, accAuto.cold[clr._id], seClr, s, stateCooler.state, clr))
+			cooler.combi?.[stateCooler.state](fnChange, accAuto.cold[clr._id], seClr, s, bld, clr)
 
 		// TODO Функции комбинированного склада
 	}

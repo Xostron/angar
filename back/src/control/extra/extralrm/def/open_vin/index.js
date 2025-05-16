@@ -47,7 +47,7 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 	const hasReset = compareTime(acc?.reset, _RESET)
 	if (hasReset && acc?.alarm) fnReset(building, acc)
 
-	console.log(333, 'openVin', building._id, acc)
+	// console.log(333, 'openVin', building._id, acc)
 
 	return acc?.alarm ?? false
 }

@@ -13,6 +13,8 @@ const { msgB } = require('@tool/message')
  * @param {boolean} start Склад включен
  */
 function clearAchieve(bld, obj, accAuto, isAllSectOff, start) {
+	console.log('clearAchieveclearAchieveclearAchieveclearAchieve', isAllSectOff)
+
 	if (!start || isAllSectOff) fnClear()
 	add()
 
@@ -22,6 +24,7 @@ function clearAchieve(bld, obj, accAuto, isAllSectOff, start) {
 			delete store.alarm.achieve?.[bld._id]
 			accAuto.clearAchieve = true
 		}
+		if (start || !isAllSectOff) delete accAuto?.clearAchieve
 	}
 	// Добавление события "Склад выключен"
 	function add() {

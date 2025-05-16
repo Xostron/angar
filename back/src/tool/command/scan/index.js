@@ -32,24 +32,7 @@ function scan(bld, obj) {
 		fan: [],
 		warming: {},
 	}
-	// Для всех складов (Нормальный, холодильник, комби)
-	// Событие Выключен 00ч 00м назад
-	console.log(77771, 'SCAAAAN', accAuto)
-	// if (!start && accAuto.clearAchieve && !accAuto.datestop) {
-	// 	accAuto.datestop = true
-	// 	wrAchieve(bld._id, 'building', msgB(bld, 151))
-	// }
-	// if (start) {
-	// 	accAuto.datestop = null
-	// 	delAchieve(bld._id, 'building', mes[151].code)
-	// }
-	// if (accAuto.datestop) {
-	// 	const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
-	// 	const msg = elapsed ? mes[151].msg + ' ' + elapsed : null
-	// 	if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
-	// }
 
-	console.log(77772, 'SCAAAAN', accAuto)
 	return { start, automode, s, se, m, accAuto, resultFan, supply }
 }
 

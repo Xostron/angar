@@ -11,30 +11,6 @@ function isRunAgg(value, idB) {
 }
 
 /**
- * @description Разрешение на работу для комбинированного склада
- * У комбинированного склада: 2 состояния: работа как обычный склад или как холодильник.
- * В качестве холодильника разрешено работать, только в режиме хранения (cooling),
- * и при наличии аварии авторежима.
- * @param {string} bld Склад
- * @param {string} automode Авторежим
- * @returns {boolean} true разрешить работу
- */
-// function enCombi(bld, sectM, automode) {
-// 	switch (bld?.type) {
-// 		case 'cold':
-// 			// Разрешить работу: склад холодильник
-// 			return true
-// 		case 'combi':
-// 			// Разрешить работу: комбинир. склад && режим хранения && наличие аварий авторежима хранения && секция в авто
-// 			const isAutoAlr = Object.keys(store.alarm.auto?.[building._id]?.cooling ?? {}).length
-// 			return automode === 'cooling' && isAutoAlr && sectM ? true : false
-// 		default:
-// 			// Для всего остального - запрет
-// 			return false
-// 	}
-// }
-
-/**
  * Очистка по испарителю (Холодильник)
  * @param {*} bldId
  * @param {*} accAuto
@@ -49,7 +25,7 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 	// Выключение всех узлов испарителя
-	fnChange(clr._id, 0, 0, 0, 0)
+	fnChange(0, 0, 0, 0, null, clr)
 
 	delete accAuto?.state?.off
 }
@@ -71,7 +47,7 @@ function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 	// Выключение всех узлов испарителя
 
-	fnChange(0, 0, 0, 0, undefined, clr._id)
+	fnChange(0, 0, 0, 0, null, clr)
 
 	delete accAuto?.cold?.[clr._id]?.state?.off
 }
@@ -82,7 +58,8 @@ function clearBuild(bldId, accAuto) {
 	// Если хотя бы 1 испаритель разрешен к работе -> выход без очистки
 	if (!denied.every((el) => el)) return true
 	// Все испарители запрещены к работе -> очистка
-	delete accAuto.cold.target
+	delete accAuto.cold.tgtTprd
+	delete accAuto.cold.tgtTcnl
 	delete accAuto.cold.targetDT
 	console.log(555, 'Все испарители запрещены')
 	return false

@@ -21,6 +21,6 @@ function blow(fnChange, acc, se, s, bld, clrId) {
 		console.log('\tblow', 'Время обдува (после остановки)', time)
 		if (!time) return
 	}
-	return check(fnChange, 'blow', acc, se, s, bld, clrId)
+	return check.combi(fnChange, 'blow', acc, se, s, bld, clrId)
 }
 module.exports = blow

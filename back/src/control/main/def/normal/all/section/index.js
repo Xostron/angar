@@ -43,7 +43,6 @@ function section(start, bld, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB)
 	const isAllSectOff = sections.every((el) => !retain?.[bld._id]?.mode?.[el._id])
 	clear(bld,obj, accAuto, isAllSectOff, start)
 	// Если склад выключен - очистка аккумулятора
-	console.log(12345, 'ВВВЫКЛЮЧЕН!', accAuto)
 }
 
 module.exports = section

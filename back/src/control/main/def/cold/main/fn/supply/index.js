@@ -54,7 +54,7 @@ function supply(state, idB, clrId, retain) {
 	const doc = retain?.[idB]?.supply?.[clrId] ?? {}
 	store.supply[idB] ??= {}
 	store.supply[idB][clrId] = doc
-	console.log('\tПитание: state', state, 'doc', doc)
+	// console.log('\tПитание: state', state, 'doc', doc)
 	if (!state) return false
 
 	// Питание отключено

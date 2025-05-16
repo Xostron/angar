@@ -11,7 +11,7 @@ function main(bld, obj, bdata, alr) {
 	const { start, automode, s, se, m, accAuto, resultFan } = bdata
 
 	// Управление испарителем
-	const fnChange = (sl, f, h, add, code, clrId) => oneChange(bdata, bld._id, clrId, sl, f, h, add, code)
+	const fnChange = (sl, f, h, add, code, clr) => oneChange(bdata, bld._id, sl, f, h, add, code, clr)
 
 	// По камере
 	for (sect of data.section) {

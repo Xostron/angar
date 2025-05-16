@@ -4,25 +4,24 @@ const { compareTime } = require('@tool/command/time')
 const skip = ['off-off-on', 'off-off-off-add']
 const max = 2
 // Проверка на включение оттайки
-function checkDefrost(fnChange, acc, se, s, stateCooler) {
+function checkDefrost(fnChange, acc, se, s, stateCooler, clr) {
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
-	if (skip.includes(stateCooler)){
+	if (skip.includes(stateCooler)) {
 		// Инициализация счетчика
-		if(!acc.state.defrostCount) acc.state.defrostCount = 1
+		if (!acc.state.defrostCount) acc.state.defrostCount = 1
 		// TODO Авария при достижение максимума
-		if(acc.state.defrostCount > max) 
-			console.log(`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`);
+		if (acc.state.defrostCount > max) console.log(`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`)
 		return false
 	}
 
 	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn
-	const time =  compareTime(acc.targetDT, s.cooler.defrostWait)
+	const time = compareTime(acc.targetDT, s.cooler.defrostWait)
 	// Запуск оттайки по температуре и времени
-	if ( tmp || time) {
+	if (tmp || time) {
 		acc.state.defrostCount += 1
-		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания': 'времени между интервалами' );
+		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')
 		// acc.targetDT = new Date()
-		fnChange(0, 0, 1, 0, 'defrost')
+		fnChange(0, 0, 1, 0, 'defrost', clr._id)
 		return true
 	}
 	// Очистка флага
@@ -47,11 +46,10 @@ function change(bdata, idB, sl, f, h, add, code) {
 	console.log('\tСмена режима ', code, ' : ', sl, f, h, add)
 }
 
-function oneChange(bdata, idB, clrId,sl, f, h, add, code) {
+function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	const { start, s, se, m, accAuto } = bdata
-	const clr = m?.cold?.cooler?.find(el=>el._id==clrId)
-	if (!clr) return
 	const { solenoid, fan, heating } = clr
+
 	// TODO Управление механизмами
 	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	fan.forEach((el) => ctrlDO(el, idB, f ? 'on' : 'off'))
@@ -62,7 +60,7 @@ function oneChange(bdata, idB, clrId,sl, f, h, add, code) {
 	// Обновление времени включения состояния
 	if (code) accAuto.state[code] = new Date()
 
-	console.log('\tСмена режима ', code, ' : ', sl, f, h, add)
+	console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
 }
 
-module.exports = { change, checkDefrost,oneChange }
+module.exports = { change, checkDefrost, oneChange }
