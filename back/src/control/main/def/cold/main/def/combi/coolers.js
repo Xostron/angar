@@ -1,4 +1,5 @@
-const { change, checkDefrost } = require('../../fn/check')
+const { change } = require('../../fn/change')
+const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
 
 const denied = require('../../fn/denied')
@@ -35,7 +36,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		seClr.cooler = seS.cooler[clr._id]
 		// console.log(66, accAuto)
 		// Выключена ли оттайка
-		if (!checkDefrost(fnChange, accAuto.cold[clr._id], seClr, s, stateCooler.state, clr))
+		if (!checkDefrost.combi(fnChange, accAuto.cold[clr._id], seClr, s, stateCooler.state, clr))
 			cooler.combi?.[stateCooler.state](fnChange, accAuto.cold[clr._id], seClr, s, bld, clr)
 
 		// TODO Функции комбинированного склада

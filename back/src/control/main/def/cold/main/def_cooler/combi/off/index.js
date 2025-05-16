@@ -14,7 +14,7 @@ function off(fnChange, acc, se, s, bld, clr) {
 	//Выключен по достижению задания
 	// TODO Ожидание Только для холодильника, а для комбинированного работа по acc.finish (True достиг задания - выкл испаритель)
 	// false - вкл холодильник
-	const time = compareTime(acc?.state?.off, s?.cooler?.stop)
+	const time = compareTime(acc?.state?.off, s?.coolerCombi?.stop)
 	console.log(777,'\toff', 'Выключен по достижению задания', time)
 	// вкл обдув: напорный вентилятор - 1, соленоид - 0, обогрев - 0
 	if (time) return fnChange(0, 1, 0, 0, 'blow', clr)

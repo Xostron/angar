@@ -38,13 +38,13 @@ const data = [
 		icon: '/img/menu/settings.svg',
 		active: ['settings']
 	},
-	{
-		id:6,
-		title: 'Отчеты',
-		path: 'report',
-		icon: '/img/menu/report.svg',
-		active: ['report']
-	},
+	// {
+	// 	id:6,
+	// 	title: 'Отчеты',
+	// 	path: 'report',
+	// 	icon: '/img/menu/report.svg',
+	// 	active: ['report']
+	// },
 ]
 
 
