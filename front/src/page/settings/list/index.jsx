@@ -3,7 +3,6 @@ import Row from './row'
 
 //Тело таблицы
 export default function List({data, st}) {
-	
 	if (!data || !data.list.length) return null
 	return (
 		<section style={st} className='set-list'>

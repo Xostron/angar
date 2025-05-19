@@ -255,3 +255,21 @@ button {
 .btn > img {
   height: var(--fsz30);
 }
+
+.btn-chc{
+  border-radius: var(--fsz10);
+  border: 1px solid var(--secondary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: var(--fsz45);
+  height: var(--fsz45);
+  background: var(--background);
+  color: var(--secondary);
+  font-size: var(--fsz35);
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Q-Medium';
+  margin-top: 7%;  
+}
