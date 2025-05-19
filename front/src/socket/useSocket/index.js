@@ -3,7 +3,7 @@ import { socket } from '@socket/index';
 import useSocketStore from '@store/socket';
 
 /**
- * Запуск сокета и событий
+ * Хук: Запуск сокета и событий
  * @returns
  */
 export default function useSocket() {

@@ -1,5 +1,5 @@
 import { socket } from '@socket/index'
-// Сообщения на сервер
+// Сообщения клиент -> сервер
 
 // Запрос оборудования
 function sEquip(callback) {
