@@ -92,33 +92,10 @@ function checkCombi(fnChange, code, acc, se, s, bld, clr) {
 	let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
 
-	// console.log(
-	// 	'\tУсловие',
-	// 	1,
-	// 	`Соленоид 1. Тмп. помещения ${se.tin} > ${s.cold.room + s.cold.deltaRoom} Целевая тмп. помещения + deltaR(${s.cold.deltaRoom}), r =`,
-	// 	se.tin > s.cold.room + s.cold.deltaRoom
-	// )
-	// console.log('\tУсловие', 2, `Соленоид 0, Тмп. помещения ${se.tin} =< ${s.cold.room} Целевая тмп. помещения, r =`, se.tin <= s.cold.room)
-	// console.log(
-	// 	'\tУсловие',
-	// 	3,
-	// 	`Вентилятор 1. Тмп. дт. всасывания ${se.cooler.tmpCooler} < ${s.cooler.cold} Целевой тмп. дт.`,
-	// 	se.cooler.tmpCooler <= s.cooler.cold
-	// )
-	// console.log(
-	// 	'\tУсловие',
-	// 	4,
-	// 	`Вентилятор 0. Тмп. дт. всасывания ${se.cooler.tmpCooler} > ${s.cooler.cold + s.cooler.deltaCold} Целевой тмп. дт. + delta(${
-	// 		s.cooler.deltaCold
-	// 	})`,
-	// 	se.cooler.tmpCooler > s.cooler.cold + s.cooler.deltaCold
-	// )
 
 	// условия включения соленоноида
 	if (se.cooler.tprd > acc.tgtTprd + s.cooling.hysteresisIn) sol=1
 	if (se.cooler.tprd <= acc.tgtTprd) sol=0
-	// if (se.tin > s.cold.room + s.cold.deltaRoom) sol = 1
-	// if (se.tin <= s.cold.room) sol = 0
 
 	// Условия включения вентилятора испарителя
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1

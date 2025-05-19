@@ -29,7 +29,7 @@ function checkDefrost(fnChange, acc, se, s, stateCooler, clr) {
 	return false
 }
 
-function checkDefrostCombi(fnChange, acc, se, s, stateCooler, clr) {
+function checkDefrostCombi(fnChange, isDD, acc, se, s, stateCooler, clr ) {
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
 	if (skip.includes(stateCooler)) {
 		// Инициализация счетчика
@@ -43,10 +43,10 @@ function checkDefrostCombi(fnChange, acc, se, s, stateCooler, clr) {
 	const tmp = se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
 	// Время между циклами разморозками
 	const time = compareTime(acc.targetDT, s.coolerCombi.defrostWait)
-	console.log('JJJJJJJJJJJJJJJJJJJJ', tmp, time)
+	
 	// Запуск оттайки по температуре и времени
 	// TODO Combi: 
-	if (tmp || time) {
+	if (tmp || time || isDD) {
 		acc.state.defrostCount += 1
 		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')
 		// acc.targetDT = new Date()

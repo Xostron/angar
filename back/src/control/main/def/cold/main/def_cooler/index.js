@@ -9,7 +9,7 @@ const defrostCombi = require('./combi/defrost')
 const drainCombi = require('./combi/drain')
 const check = require('../check')
 
-// Алгоритм работы испарителя
+// Алгоритм работы испарителя соленоид-вентилятор-оттайка
 const def = {
 	// Холодильник
 	cold: {
@@ -35,7 +35,7 @@ const def = {
 		// Охлаждение
 		'on-on-off': (fnChange, acc, se, s, bld, clr) => check.combi(fnChange, 'cooling', acc, se, s, bld, clr),
 		// Обдув
-		'off-on-off': blowCombi,
+		'off-on-off': (fnChange, acc, se, s, bld, clr) => check.combi(fnChange, 'blow', acc, se, s, bld, clr),
 
 		// TODO Комбинированный - что оттайка и стекание блокирует полностью склад?
 		// Оттайка

@@ -1,7 +1,7 @@
 function ping() {
 	return function (req, res, next) {
 		console.log('STATE: ping')
-		res.send({ result: 'ping ok' })
+		res.json({ result: 'ping ok' })
 
 	}
 }

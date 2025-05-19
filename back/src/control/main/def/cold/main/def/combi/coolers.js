@@ -20,6 +20,10 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
+	// Проверка секции: на наличие хоть одного испарителя в
+	// состоянии оттайки или стекания воды
+	const isDD = mS.coolerS.some((el) => ['off-off-on', 'off-off-off-add'].includes(obj.value[el._id]))
+	console.log(666, sect.name, 'есть испарители в оттайке/сливе воды', isDD)
 	for (const clr of mS.coolerS) {
 		console.log('------------------------------------------------------------------------------')
 		accAuto.cold[clr._id] ??= {}
@@ -36,7 +40,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		seClr.cooler = seS.cooler[clr._id]
 		// console.log(66, accAuto)
 		// Выключена ли оттайка
-		if (!checkDefrost.combi(fnChange, accAuto.cold[clr._id], seClr, s, stateCooler.state, clr))
+		if (!checkDefrost.combi(fnChange, isDD, accAuto.cold[clr._id], seClr, s, stateCooler.state, clr))
 			cooler.combi?.[stateCooler.state](fnChange, accAuto.cold[clr._id], seClr, s, bld, clr)
 
 		// TODO Функции комбинированного склада

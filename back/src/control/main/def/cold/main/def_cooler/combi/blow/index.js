@@ -8,7 +8,7 @@ function blow(fnChange, acc, se, s, bld, clr) {
 	if (!acc.state.blow) {
 		console.log('\tblow', 'Отсутсвует время включения обдува')
 		// переход на набор холода
-		return check(fnChange, 'blow', acc, se, s, bld, clr)
+		return check.combi(fnChange, 'blow', acc, se, s, bld, clr)
 	}
 
 	const off = acc.state.off ?? 0
@@ -21,6 +21,7 @@ function blow(fnChange, acc, se, s, bld, clr) {
 		console.log('\tblow', 'Время обдува (после остановки)', time)
 		if (!time) return
 	}
+	console.log(666, )
 	return check.combi(fnChange, 'blow', acc, se, s, bld, clr)
 }
 module.exports = blow
