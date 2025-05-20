@@ -40,11 +40,11 @@ export default function ItemCooler({ data, action, locked, cls }) {
 	} else ltxt = '-- %'
 
 	// Температура всасывания
-	let t = Object.values(cooler?.sensor ?? {})
-	t = t?.[0]?.value ?? '-'
+	let t = cooler?.sensor?.cooler?.value ?? '-'
+	// console.log(111,cooler)
+	// t = t?.[0]?.value ?? '-'
 	const unit = defUn?.temp
 	const rtxt = t != '-' ? t + ' ' + unit : t
-
 	return <BtnCooler onClick={action} icon={img} ltxt={ltxt} rtxt={rtxt} utxt={utxt} cls={cl} />
 }
 

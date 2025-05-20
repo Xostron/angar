@@ -21,7 +21,6 @@ function main(bld, obj, bdata, alr) {
 		// console.log(555, mS)
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, sect._id, obj)
-		// console.log(seS)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		// Работа ВНО

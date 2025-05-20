@@ -91,9 +91,10 @@ function checkCombi(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
 	// let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
-	let sol = 1
-
+	
 	// условия включения соленоноида
+	let sol = 1
+	
 	// if (se.tprd > accAuto.tgtTprd + s.cooling.hysteresisIn) sol=1
 	// if (se.tprd <= accAuto.tgtTprd) sol=0
 	// Условия включения вентилятора испарителя
