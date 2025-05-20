@@ -19,7 +19,7 @@ export default function Settings({}) {
   const [curB, kindList] = useEquipStore(({ getCurB, getKindList }) => [getCurB(build), getKindList(build)]);
 
   // ***************** Калибровка клапанов *****************
-  const [bldType, equipSect] = useEquipStore(({ bldType, list }) => [list?.[curB]?.type, list?.[curB]?.section]);
+  const [bldType, equipSect] = useEquipStore(({ list }) => [list?.[curB]?.type, list?.[curB]?.section]);
 
   // Изменение и запись настроек
   const [setTune, tune, sendTune, setSettingAu, sendSettingAu, hasChangedSettingAu, prd, hid] = useOutputStore(
@@ -34,31 +34,20 @@ export default function Settings({}) {
       hid?.[`${type}.text-collapse`]?.hid ?? true,
     ]
   );
-  const [retainTune, coef, factory, retain] = useInputStore(({ input }) => [
+
+  const [retainTune, coef, factory, retain, curPrd] = useInputStore(({ input }) => [
     input?.retain?.[build]?.valve,
     input.coef?.[build]?.[type],
     input?.factory,
     input?.retain?.[build]?.setting?.[type]?.[prd?.code],
+    input?.retain?.[build]?.product?.code,
   ]);
-
-  // Сбор данных для неактивных настроек
-  let fctry = prd?.code ? factory?.[type]?.[prd?.code] : null;
-  let cf = coef ? Object.keys(coef) : null;
-  fctry =
-    coef && fctry
-      ? Object?.entries(fctry).reduce((acc, [code, val]) => {
-          const nv = retain?.[code] ?? {};
-          let o = {};
-          if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
-            o = { ...val, ...nv };
-            if (o[cf?.[0]] != coef[cf?.[0]] && o[cf?.[1]] != coef[cf?.[1]]) acc.push(code);
-          }
-          return acc;
-        }, [])
-      : null;
-
+  //   console.log(222, Object.keys(retain))
+  // Спрятанные настройки
+  const skip = fnSkip(prd, factory?.[type], coef, retain);
+  const show = fnAct(prd, factory?.[type], coef, retain);
   // Заводские настройки - рама
-  const [fct] = useEquipStore(({ getFactory }) => [getFactory(type)]);
+  const [fct] = useEquipStore(({ getFactory }) => [getFactory(type, hid, skip, prd?.code, curPrd)]);
 
   // Окно подтверждения сохранения
   const navigate = useNavigate();
@@ -93,7 +82,9 @@ export default function Settings({}) {
   if (type === "menu") return <Menu />;
 
   // ***************** Экраны - Настроек *****************
-  const data = rack(fct, bldType, type, build, setSettingAu, sendSettingAu, equipSect, retainTune, tune, sendTune, onSwitch, prd, coef, fctry, hid);
+  const o = { fct, bldType, type, build, equipSect, retainTune, tune, hid, prd: prd?.code, curPrd, show };
+  let data = rack(o, setSettingAu, sendSettingAu, sendTune, onSwitch);
+
   // ***************** Стили *****************
   const sumStg = kindList.length + def.length;
   const { st, stl, sth, stn } = sty(data, sumStg);
@@ -118,4 +109,38 @@ export default function Settings({}) {
     }
     setTune({ ...vlv, _stage: "begin", _build: build });
   }
+}
+
+// Спрятанные настройки
+function fnSkip(prd, factory, coef, retain) {
+  let o = prd?.code ? factory?.[prd?.code] : null;
+  let cf = coef ? Object.keys(coef) : null;
+  return coef && o
+    ? Object?.entries(o).reduce((acc, [code, val]) => {
+        const nv = retain?.[code] ?? {};
+        let o = {};
+        if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
+          o = { ...val, ...nv };
+          if (o[cf?.[0]] != coef[cf?.[0]] && o[cf?.[1]] != coef[cf?.[1]]) acc.push(code);
+        }
+        return acc;
+      }, [])
+    : null;
+}
+
+// Активная настройка
+function fnAct(prd, factory, coef, retain) {
+  let o = prd?.code ? factory?.[prd?.code] : null;
+  let cf = coef ? Object.keys(coef) : null;
+  return coef && o
+    ? Object.entries(o).reduce((acc, [code, val]) => {
+        const nv = retain?.[code] ?? {};
+        let o = {};
+        if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
+			o = { ...val, ...nv };
+			if (o[cf?.[0]] == coef[cf?.[0]] && o[cf?.[1]] == coef[cf?.[1]]) acc.push(code);
+        }
+        return acc;
+      }, [])
+    : null;
 }

@@ -31,11 +31,11 @@ const def = {
 		// Выключен
 		'off-off-off': offCombi,
 		// Набор холода
-		'on-off-off': (fnChange, acc, se, s, bld, clr) => check.combi(fnChange, 'frost', acc, se, s, bld, clr),
+		'on-off-off': (fnChange, accAuto,acc, se, s, bld, clr) => check.combi(fnChange, 'frost', accAuto, acc, se, s, bld, clr),
 		// Охлаждение
-		'on-on-off': (fnChange, acc, se, s, bld, clr) => check.combi(fnChange, 'cooling', acc, se, s, bld, clr),
+		'on-on-off': (fnChange, accAuto,acc, se, s, bld, clr) => check.combi(fnChange, 'cooling', accAuto, acc, se, s, bld, clr),
 		// Обдув
-		'off-on-off': (fnChange, acc, se, s, bld, clr) => check.combi(fnChange, 'blow', acc, se, s, bld, clr),
+		'off-on-off': (fnChange, accAuto,acc, se, s, bld, clr) => check.combi(fnChange, 'blow', accAuto, acc, se, s, bld, clr),
 
 		// TODO Комбинированный - что оттайка и стекание блокирует полностью склад?
 		// Оттайка

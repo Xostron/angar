@@ -1,4 +1,3 @@
-
 import Row from './row'
 
 //Тело таблицы

@@ -12,7 +12,7 @@ import BtnHid from "./btn_hid";
 //Ячейка таблицы настроек
 export default function Cell({ data, i, j }) {
   const { type, build } = useParams();
-  const { settingAu, prd, hid} = useOutputStore();
+  const { settingAu, prd, hid } = useOutputStore();
   const val = {};
   // Код ячейки = mark._code + '.' + ml._code
   const code = data?.code?.split(".");
@@ -44,12 +44,14 @@ export default function Cell({ data, i, j }) {
   cl = cl.join(" ");
   const st = { gridArea: `${1 + i}/${1 + j}/${2 + i}/${2 + j}` };
   const field = data.field;
+
   switch (field) {
     case "text":
       return <Text cls="cell-w" data={data} style={st} />;
     case "iconText":
       return <IconText cls="cell-w" data={data} style={st} title={data.code} />;
     case "input":
+      const disabled = (hid?.[`${type}.text-collapse`]?.hid ?? true) && data._acv;
       return (
         <Input
           cls={cl}
@@ -58,6 +60,7 @@ export default function Cell({ data, i, j }) {
           max={data.max}
           step={data.step}
           value={value}
+          disabled={disabled}
           setValue={(val) => {
             setValue(val);
             data.setValue(val);
@@ -95,16 +98,9 @@ export default function Cell({ data, i, j }) {
         </div>
       );
     case "b":
-      const dH = hid?.[`${type}.text-collapse`]
-      const  x = dH ? dH?.hid : data.hid
-      return (
-        <BtnHid
-          style={st}
-          cls={cl}
-          value = {data.value}
-          hid = {x}
-        />
-      );
+      const dH = hid?.[`${type}.text-collapse`];
+      const x = dH ? dH?.hid : data.hid;
+      return <BtnHid style={st} cls={cl} value={data.value} hid={x} />;
     default:
       return <Text cls="cell-w" data={data} style={st} />;
   }

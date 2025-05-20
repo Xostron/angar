@@ -1,7 +1,7 @@
 const { compareTime, onTime } = require('@tool/command/time')
 
 // Оттайка
-function defrost(fnChange, acc, se, s, bld, clr) {
+function defrost(fnChange, accAuto,acc, se, s, bld, clr) {
 	onTime('defrost', acc)
 	const time = compareTime(acc.state.defrost, s.coolerCombi.defrostWork)
 	const t = se.cooler[clr._id].tmpCooler >= s.coolerCombi.defrostOff

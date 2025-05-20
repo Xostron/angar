@@ -2,12 +2,12 @@ const { compareTime, onTime } = require('@tool/command/time')
 const check = require('../../../check')
 
 // Испаритель выключен
-function off(fnChange, acc, se, s, bld, clr) {
+function off(fnChange, accAuto, acc, se, s, bld, clr) {
 	// Не выключался
 	if (!acc?.state?.off) {
 		acc.state.off = new Date()
 		console.log('\toff', 'Не выключался, решаем что делать дальше')
-		return check.combi(fnChange, 'off', acc, se, s, bld, clr)
+		return check.combi(fnChange, 'off', accAuto,acc, se, s, bld, clr)
 	}
 	// Время работы в текущем режиме
 	onTime('off', acc)

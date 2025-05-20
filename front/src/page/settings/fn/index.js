@@ -1,8 +1,5 @@
-import def from '../def/index'
-import listVlv from '../def/tuneup/fn'
-
-
-
+import def from "../def/index";
+import listVlv from "../def/tuneup/fn";
 
 /**
  *
@@ -55,7 +52,8 @@ function sty(data, sum) {
  * @param {*} prd
  * @returns
  */
-function rack(fct, bldType, code, buildingId, setSettingAu, sendSettingAu, equipSect, retainTune, tune, sendTune, onSwitch, prd, coef, fctry, hid) {
+function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
+  const { fct, bldType, type: code, build: buildingId, equipSect, retainTune, tune, hid, prd, curPrd, show } = obj;
   const data = { head: [], list: [] };
   // Калибровка клапанов
   if (code === "tuneup" && bldType !== "cold") {
@@ -66,16 +64,15 @@ function rack(fct, bldType, code, buildingId, setSettingAu, sendSettingAu, equip
   }
   // Настройки из БД
   // Заголовок страницы
+
   data.title = {
-    name: fct?._name,
+    name: fct?.name,
     bName: code === "tuneup" ? "Запустить" : "Сохранить",
   };
 
   // Строки с настройками
-  data.list = fct?._prd
-    ? setting(fct?.[prd?.code], code, buildingId, setSettingAu, coef, fctry, hid)
-    : setting(fct?.list, code, buildingId, setSettingAu, coef, fctry, hid);
-  data.list = data.list.filter((el) => el.length);
+  data.list = setting(fct?.list, code, buildingId, setSettingAu, hid, prd, curPrd, show);
+
   // Максимальное кол-во ячеек в строке (для правильной css отрисовки)
   const max = Math.max(...data.list.map((el) => el?.length));
   // Заголовок таблицы настроек
@@ -88,37 +85,39 @@ function rack(fct, bldType, code, buildingId, setSettingAu, sendSettingAu, equip
   data.warn =
     code === "tuneup"
       ? { type: "warn", title: `Калибровка клапанов`, text: `Начать калибровку?`, action: sendTune }
-      : { type: "warn", title: `${fct?._name}`, text: `Сохранить настройки?`, action: sendSettingAu };
+      : { type: "warn", title: `${fct?.name}`, text: `Сохранить настройки?`, action: sendSettingAu };
 
   return data;
 }
 
 // Форматирование строк
-function setting(list, code, buildingId, setSettingAu, coef, fctry, hid) {
-  return !list ? [] : list.map((el) => row(el, code, buildingId, setSettingAu, coef, fctry, hid));
+function setting(list, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
+  return !list ? [] : list.map((el) => row(el, code, buildingId, setSettingAu, hid, prd, curPrd, show));
 }
+
 // Формирование строки
-function row(mark, code, buildingId, setSettingAu, coef, fctry, hid) {
+function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
   let result = [];
   // Добавление в строку кнопки "скрыть\показать неактивные настройки"
-  if (mark._code === "text-collapse") {
+  if (mark._code === "text-collapse" && prd == curPrd) {
     const name = `${code}.${mark._code}`;
     const dataHid = hid?.name?.hid;
     mark.list.length = 2;
     mark.list.push({ _code: name, type: "b", hid: dataHid ?? true });
   }
 
-  // Скрытие строки если настройка не активна
-  if (!!fctry && fctry.includes(mark._code) && hid) return result;
+  if (!!show && show.includes(mark?._code)) {
+    mark.list.map((el) => {
+      el['_acv'] = true
+    })
+  }
 
   if (mark._type === "txt") result = [{ field: "title", icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : "", value: mark._name }];
   else result = [{ field: "iconText", icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : "", value: mark._name }];
   column(code, result, mark, buildingId, setSettingAu);
-
-  //  console.log(mark)
-
   return result;
 }
+
 // Колонки строки
 function column(code, result, mark, buildingId, setSettingAu) {
   mark.list.forEach((ml) => {
@@ -134,6 +133,7 @@ function column(code, result, mark, buildingId, setSettingAu) {
           step: 0.1,
           min: ml.min,
           max: ml.max,
+          _acv: ml._acv ?? false,
           setValue,
           factory: ml.value ?? "",
         });

@@ -73,35 +73,34 @@ function check(fnChange, code, acc, se, s, bld, clr) {
 	}
 }
 
-function checkCombi(fnChange, code, acc, se, s, bld, clr) {
+function checkCombi(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)
 	console.log('\n\tПроверка условий принятия решений')
 	// Выключение (Температура задания достигнута)
-	if (se.cooler.tprd <= acc.tgtTprd) {
-		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${acc.tgtTprd} °C`))
+	if (se.tprd <= accAuto.tgtTprd) {
+		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.tgtTprd} °C`))
 		delAchieve(bld._id, bld.type, mes[81].code)
 		if (code === 'off') return
-		console.log(code, `Выключение - тмп. продукта ${se.cooler.tprd}<=${acc.tgtTprd} тмп. задания`)
+		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accAuto.tgtTprd} тмп. задания`)
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	} else {
 		delAchieve(bld._id, bld.type, mes[80].code)
-		const txt = `Температура задания ${acc.tgtTprd} °C, продукта ${se.cooler.tprd} °C`
+		const txt = `Температура задания ${accAuto.tgtTprd} °C, продукта ${se.tprd} °C`
 		wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	}
 
-	let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
-
+	// let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
+	let sol = 1
 
 	// условия включения соленоноида
-	if (se.cooler.tprd > acc.tgtTprd + s.cooling.hysteresisIn) sol=1
-	if (se.cooler.tprd <= acc.tgtTprd) sol=0
-
+	// if (se.tprd > accAuto.tgtTprd + s.cooling.hysteresisIn) sol=1
+	// if (se.tprd <= accAuto.tgtTprd) sol=0
 	// Условия включения вентилятора испарителя
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
 	if (se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
 
-	// console.log(sol, ven);
+	// console.log(666,se.tprd, accAuto,acc, s.cooling.hysteresisIn , sol, ven);
 	// console.log('(!sol && !ven )||(sol && !ven)', (!sol && !ven ), (sol && !ven), (!sol && !ven )||(sol && !ven));
 	// console.log('!sol && ven', !sol && ven);
 

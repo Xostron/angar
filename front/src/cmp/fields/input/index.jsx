@@ -4,7 +4,7 @@ import { validNumber, decimal } from '@tool/number'
 import '../style.css'
 
 //Поле ввода
-export default function Input({ value, setValue, style, placeholder, icon, sti, type = 'text', min, max, step, cls, disabled = null, title }) {
+export default function Input({ value, setValue, style, placeholder, icon, sti, type = 'text', min, max, step, cls, disabled = false, title }) {
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
 	const [val, setVal] = useState(value)
 
@@ -16,7 +16,7 @@ export default function Input({ value, setValue, style, placeholder, icon, sti, 
 	}, [value, val])
 
 	let cl = ['cell input', cls]
-	if (isAuth) cl.push('auth-input')
+	if (isAuth && !disabled) cl.push('auth-input')
 	cl = cl.join(' ')
 
 	const mini = min ?? -12000
@@ -34,7 +34,7 @@ export default function Input({ value, setValue, style, placeholder, icon, sti, 
 				placeholder={placeholder}
 				value={val}
 				onChange={onChange}
-				disabled={disabled === null ? !isAuth : disabled}
+				disabled={!disabled ? !isAuth : disabled}
 				title={title}
 			/>
 		</div>
