@@ -39,7 +39,7 @@ function cooler(equip, val, retain, result) {
 		sensor
 			.filter((el) => el.owner.id === clr._id)
 			.forEach((s) => {
-				result[clr._id].sensor[s.type] = result[s._id]
+				result[clr._id].sensor[s._id] = result[s._id]
 			})
 
 		// Состояние испарителя

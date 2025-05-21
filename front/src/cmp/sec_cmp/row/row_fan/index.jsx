@@ -22,8 +22,7 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 
 	// Режим работы секции
 	// const { isOff } = running(build, sect)
-	// Заблокированна кнопка (Не авторизован, секция выключена)
-	const locked = !isAuth
+
 
 	let cl = ['cmp-sec-row', cls]
 	cl = cl.join(' ')
@@ -36,22 +35,22 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 						const d = getFan(el)
 						// Данные для модального окна
 						const action = () => {
-							if (locked) return
+							if (!isAuth) return
 							setFdata({ ...el, buildingId: build, sectionId: sect, active })
 							open()
 						}
-						return <ItemFan key={el._id} data={d} action={action} locked={locked} />
+						return <ItemFan key={el._id} data={d} action={action} isAuth={isAuth} />
 					})}
 				{/* Испарители + датчик температуры всасывания */}
 				{!!cooler?.length &&
 					cooler.map((el) => {
 						// Данные для модального окна
 						const action = () => {
-							if (locked) return
+							if (!isAuth) return
 							setFdata({ ...el, buildingId: build, sectionId: sect, active })
 							open()
 						}
-						return <ItemCooler key={el._id} data={el} action={action} locked={locked} />
+						return <ItemCooler key={el._id} data={el} action={action} isAuth={isAuth} />
 					})}
 			</div>
 			<Dialog href={refDialog}>{fdata && <Entry data={fdata} setData={setFdata} close={close} />}</Dialog>

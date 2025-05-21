@@ -1,50 +1,37 @@
-import defImg from '@tool/icon'
 import defUn from '@src/tool/unit'
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
 
-export default function ItemCooler({ data, action, locked, cls }) {
+/**
+ *
+ * @param {object} data Рама испарителя
+ * @returns
+ */
+export default function ItemCooler({ data, action, isAuth, cls }) {
 	const { build } = useParams()
-	const [input] = useInputStore(({ input }) => [input])
-	const start = input?.retain?.[build]?.start
-	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
-
-	// Испаритель
-	const cooler = input?.[data?._id]
-
-	let state = cooler?.state?.split('-')?.[0] ?? 'off'
-
-	// Вкл
-	// if (state == 'on') cl.push('sir-item-run')
-	// Выкл
-	if (state == 'off') state = 'stop'
-	// Выведен из работы
-	if (state == 'off2') cl.push('off')
-	// Иконка испарителя с ПЧ
-	const img = `/img/cold/cooler/cooler-${cooler?.state}.svg` ?? ''
-	// const img = `/img/cold/cooler/cooler-on-off-off.svg` ?? ''
-	// const img = `/img/cold/cooler/cooler-on-on-off.svg` ?? ''
-	// Разблокирован доступ
-	if (!locked) cl.push('auth-sir')
-	cl = cl.join(' ')
-
+	// [Состояния и показания испарителя], [склад вкл/выкл]
+	const [cooler, start] = useInputStore(({ input }) => [input?.[data?._id], input?.retain?.[build]?.start])
+	// Состояние испарителя
+	const state = cooler?.state
 	// Стадия испарителя - режим
 	const utxt = start ? cooler.name : ''
-
 	// Задание ПЧ
-	let ltxt = Object.values(cooler?.fan ?? {})
-	ltxt = ltxt?.[0]?.value
-	if (ltxt !== undefined) {
-		if (isNaN(ltxt)) ltxt = '-- %'
-		else ltxt = Math.trunc(ltxt / 10) + '%'
-	} else ltxt = '-- %'
-
+	let ltxt = Object.values(cooler?.fan ?? {})?.[0]?.value
+	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : Math.trunc(ltxt / 10) + '%'
+	else ltxt = '-- %'
 	// Температура всасывания
-	let t = cooler?.sensor?.cooler?.value ?? '-'
-	// console.log(111,cooler)
-	// t = t?.[0]?.value ?? '-'
-	const unit = defUn?.temp
-	const rtxt = t != '-' ? t + ' ' + unit : t
+	const idT = data.sensor?.find(el=>el.type==='cooler')?._id
+	let t = cooler?.sensor?.[idT]?.value ?? '-'
+	const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
+
+	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
+	// Иконка состояния испарителя с ПЧ
+	const img = `/img/cold/cooler/cooler-${state}.svg` ?? ''
+	// Доступ разрешен
+	if (isAuth) cl.push('auth-sir')
+
+	cl = cl.join(' ')
+
 	return <BtnCooler onClick={action} icon={img} ltxt={ltxt} rtxt={rtxt} utxt={utxt} cls={cl} />
 }
 

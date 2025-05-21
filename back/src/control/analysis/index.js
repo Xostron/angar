@@ -19,7 +19,8 @@ async function analysis(obj) {
 	// Настройки складов (обработанные для расчетов)
 	calcSetting(obj, v)
 	// Передача мяса по Socket.io на web-клиент
-	console.log(33, v.coef)
+	// console.log(33, JSON.stringify({...v, factory:null, retain:null}, null, ' '))
+	console.log(333, v.coef)
 	await cValue(v)
 }
 

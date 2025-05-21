@@ -42,7 +42,6 @@ export default function Settings({}) {
     input?.retain?.[build]?.setting?.[type]?.[prd?.code],
     input?.retain?.[build]?.product?.code,
   ]);
-  //   console.log(222, Object.keys(retain))
   // Спрятанные настройки
   const skip = fnSkip(prd, factory?.[type], coef, retain);
   const show = fnAct(prd, factory?.[type], coef, retain);
@@ -121,7 +120,9 @@ function fnSkip(prd, factory, coef, retain) {
         let o = {};
         if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
           o = { ...val, ...nv };
-          if (o[cf?.[0]] != coef[cf?.[0]] && o[cf?.[1]] != coef[cf?.[1]]) acc.push(code);
+          const one = o[cf?.[0]] != coef[cf?.[0]]
+		  const two = o[cf?.[1]] != coef[cf?.[1]]
+          if ((one && two) || (one != two)) acc.push(code);
         }
         return acc;
       }, [])
@@ -137,8 +138,8 @@ function fnAct(prd, factory, coef, retain) {
         const nv = retain?.[code] ?? {};
         let o = {};
         if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
-			o = { ...val, ...nv };
-			if (o[cf?.[0]] == coef[cf?.[0]] && o[cf?.[1]] == coef[cf?.[1]]) acc.push(code);
+          o = { ...val, ...nv };
+          if (o[cf?.[0]] == coef[cf?.[0]] && o[cf?.[1]] == coef[cf?.[1]]) acc.push(code);
         }
         return acc;
       }, [])

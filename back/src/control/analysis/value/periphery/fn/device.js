@@ -16,7 +16,8 @@ function single(equip, result, val) {
 	const { device, signal, module, equipment } = equip
 	// По устройствам deviceList
 	device.forEach((doc) => {
-		const equipId = module.find((el) => el._id == doc.module.id).equipmentId
+		const equipId = module.find((el) => el._id == doc.module.id)?.equipmentId
+		if (!equipId) return
 		doc.module.name = equipment[equipId].name
 		if (doc.device.code === 'pui') pui(doc, result, val)
 		other(doc, signal, result)
