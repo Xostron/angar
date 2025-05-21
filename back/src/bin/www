@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('module-alias/register');
+require('module-alias/register')
 /**
  * Module dependencies.
  */
@@ -8,7 +8,7 @@ var debug = require('debug')('angar:server')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { server, io } = require('@tool/server')
-const { data:store, retainDir, factoryDir, accDir, dataDir } = require('@store')
+const { data: store, retainDir, factoryDir, accDir, dataDir } = require('@store')
 // Получение настроек от сервера с переодичностью
 const init = require('@root/client/init')
 // Выполненине основных алгоритмов
@@ -79,7 +79,9 @@ if (!fs.existsSync(accDir)) {
 	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}')
 }
 // Запрос конфигурации у админ-сервера
-init()
+loopInit()
+	.then(() => console.log('Запрос конфигурации у админ-сервера'))
+	.catch(console.error)
 // Главный цикл управления
 loop()
 	.then(() => console.log('Главный цикл остановлен'))

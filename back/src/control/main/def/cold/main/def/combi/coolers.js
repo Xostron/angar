@@ -1,10 +1,7 @@
-const { change } = require('../../fn/change')
 const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
-
 const denied = require('../../fn/denied')
-const { mech } = require('@tool/command/mech')
-const { sensor } = require('@tool/command/sensor')
+
 
 /**
  * Работа каждого из испарителей в секции

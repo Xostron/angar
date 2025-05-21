@@ -1,12 +1,12 @@
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
 const { factoryDir, dataDir } = require('@store')
-const { writeSync } = require('@tool/json')
+const { delay } = require('@tool/command/time')
 const equipment = require('@tool/equipment')
+const { writeSync } = require('@tool/json')
 const { cEquip } = require('@socket/emit')
 const transformF = require('./fn')
 const api = require('@tool/api')
-
 /**
  * Запрос конфигурации склада у админ-сервера
  * Сохранение в json
@@ -36,13 +36,21 @@ function init() {
 		// отправка рамы на клиент
 		.then((data) => cEquip(data))
 		.catch(console.log)
-		// обновление конфигурации склада каждые 7 минут
-		.finally((_) => {
-			setTimeout(() => init(), process.env?.PERIOD ?? 420001)
-		})
+	// обновление конфигурации склада каждые 7 минут
+	// .finally((_) => {
+	// 	setTimeout(() => init(), process.env?.PERIOD ?? 420001)
+	// })
 }
 
-module.exports = init
+async function loopInit() {
+	while (true) {
+		init()
+		// обновление конфигурации склада каждые 7 минут
+		await delay(process.env?.PERIOD ?? 420001)
+	}
+}
+
+module.exports = loopInit
 
 const t = [
 	'building',

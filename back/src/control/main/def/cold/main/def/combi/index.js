@@ -1,10 +1,10 @@
+const defrostAll = require('@tool/combi/defrost_drain')
 const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
 const { oneChange } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
 const target = require('../../fn/target')
 const coolers = require('./coolers')
-const skip = ['off-off-on', 'off-off-off-add']
 
 // Комбинированный - холодильник
 function main(bld, obj, bdata, alr) {
@@ -13,11 +13,9 @@ function main(bld, obj, bdata, alr) {
 
 	// Управление испарителем
 	const fnChange = (sl, f, h, add, code, clr) => oneChange(bdata, bld._id, sl, f, h, add, code, clr)
-	// Проверка секции: на наличие хоть одного испарителя в
-	// состоянии оттайки или стекания воды
-	accAuto.cold.defrostAll = m.cold.cooler.some((el) => {
-		return skip.includes(obj.value[el._id]?.state)
-	})
+
+	// Синхронизация оттайки-слива_воды испарителей
+	defrostAll(accAuto.cold, m.cold.cooler, obj)
 
 	// По камере
 	for (sect of data.section) {
