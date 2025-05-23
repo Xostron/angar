@@ -1,7 +1,8 @@
-const { data: store, dataDir, stateDir } = require('@store')
+const { data: store, dataDir, stateDir, retainDir } = require('@store')
 const { delay } = require('@tool/command/time')
 const { readTO, readOne } = require('@tool/json')
 const fsp = require('fs').promises
+const transformPC = require('@routes/api/tenta/read/pc/transform')
 
 async function state() {
 	try {
@@ -10,10 +11,12 @@ async function state() {
 
 		// Формирования delta для каждого склада
 		// delta изменений - передается на сервер Админки и сохраняется в ref
-		const delta = {}
-		for (const bld of o.data.building) def[bld.type](o, bld, delta)
+		// for (const bld of o.data.building) {
+		// console.log(66, bld.type)
+		const delta = def.cold(o, null)
+		// }
 
-		console.log(66, delta)
+		console.log(661, delta)
 		// Данные переданы
 		return true
 	} catch (error) {
@@ -27,37 +30,23 @@ const def = {
 		const { retain, alarm, total } = value
 		const { section } = data
 	},
-	cold(o, bld, delta) {
+	cold(o, bld, ) {
 		const { data, value, ref, last } = o
 		const { section } = data
-
-		// console.log(551, value)
+		return transformPC(data, data.building)
 	},
 	combi(o, bld, delta) {
 		const { data, value, ref, last } = o
 	},
 }
 
-async function loopState() {
-	while (true) {
-		state()
-			.then((ok) =>
-				ok
-					? console.log('\x1b[33m%s\x1b[0m', 'Режим опроса: Poll - данные POS переданы на сервер ')
-					: console.log('\x1b[33m%s\x1b[0m', 'Режим опроса: Poll отключен')
-			)
-			.catch((err) => {
-				// TODO Фиксировать не переданный state
-			})
-		// отправка состояния каждые 5 минут
-		await delay(process.env?.PERIOD_STATE ?? 30000)
-	}
-}
-
 async function collect() {
 	// Рама
-	const files = await fsp.readdir(dataDir)
+	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
+	const retain = await readOne('data.json', retainDir)
 	const data = await readTO(files)
+	data.retain = retain
+	// console.log(data)
 	let ref
 
 	// Режим опроса POS-AdminServer активен - true?
@@ -76,6 +65,22 @@ async function collect() {
 	// Последний опрос: true - успешен, false - Не успешен(сервер был перезапущен, ошибка сервера pos)
 	let last = store?.poll?.last
 	return { data, value, ref, last }
+}
+
+async function loopState() {
+	while (true) {
+		state()
+			.then((ok) =>
+				ok
+					? console.log('\x1b[33m%s\x1b[0m', 'Режим опроса: Poll - данные POS переданы на сервер ')
+					: console.log('\x1b[33m%s\x1b[0m', 'Режим опроса: Poll отключен')
+			)
+			.catch((err) => {
+				// TODO Фиксировать не переданный state
+			})
+		// отправка состояния каждые 5 минут
+		await delay(process.env?.PERIOD_STATE ?? 10000)
+	}
 }
 
 module.exports = loopState

@@ -15,6 +15,7 @@ function transform(data, building) {
 		ah: { value: data?.humAbs?.out?.com, state: checkS(tout?.state, hout?.state) },
 	}
 	const retain = data.retain
+
 	if (!retain || !Object?.keys(retain).length) return result
 	// По складам
 	Object?.keys(retain).forEach((idB) => {
