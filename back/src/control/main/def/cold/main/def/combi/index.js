@@ -22,14 +22,13 @@ function main(bld, obj, bdata, alr) {
 		if (sect.buildingId != bld._id) continue
 		// Исполнительные механизмы камеры
 		const mS = mech(obj.data, sect._id, sect.buildingId)
-		// console.log(555, mS)
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		// Работа ВНО
 	}
-	if (clearBuild(bld._id, bdata.accAuto)) {
+	if (clearBuild(bld, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.combi(bld, obj, bdata, alr)
 	}

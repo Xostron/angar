@@ -1,37 +1,34 @@
-const { change, checkDefrost } = require('../../fn/check')
-const cooler = require('../../def_cooler')
-const target = require('../../fn/target')
-const denied = require('../../fn/denied')
+const defrostAll = require('@tool/combi/defrost_drain')
+const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
+const { oneChange } = require('../../fn/change')
+const { mech } = require('@tool/command/mech')
+const target = require('../../fn/target')
+const coolers = require('./coolers')
 
 // Холодильник - алгоритм управления
 function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj
 	const { start, s, se: seB, m, accAuto, supply } = bdata
 
-	const fnChange = (sl, f, h, add, code) => change(bdata, bld._id, sl, f, h, add, code)
-
+	const fnChange = (sl, f, h, add, code, clr) => oneChange(bdata, bld._id, sl, f, h, add, code, clr)
+	// Синхронизация оттайки-слива_воды испарителей
+	defrostAll(accAuto, m.cold.cooler, obj)
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
-		const se = sensor(bld._id, sect._id, obj)
-		const clrId = data.cooler.find((el) => el.sectionId == sect._id)?._id
-
-		// Состояние испарителя
-		const stateCooler = obj.value?.[m?.cold?.cooler?.[0]?._id]
-		console.log('\tРежим:', stateCooler?.state, stateCooler?.name)
-
-		// Работа склада запрещена
-		if (denied.cold(bld, clrId, bdata, alr, stateCooler, fnChange, obj)) continue
-
-		// Работа склада разрешена -> Вычисление Т target
-		target.cold(bld, sect, obj, bdata, se, alr)
-		console.log('\tТмп. задания на сутки', se.cooler.tprd, '-', s.cold.decrease, '=', accAuto.target, 'от', accAuto.targetDT.toLocaleString())
-
-		// Выключена ли оттайка
-		if (!checkDefrost(fnChange, accAuto, se, seB, s, stateCooler.state, stateCooler))
-			cooler.cold?.[stateCooler.state](fnChange, accAuto, se, s, bld, clrId)
+		const seS = sensor(bld._id, sect._id, obj)
+		// Исполнительные механизмы камеры
+		const mS = mech(obj.data, sect._id, sect.buildingId)
+		// console.log(1111, seS, 11112, seB)
+		// Работа испарителей
+		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 	}
+	if (clearBuild(bld, bdata.accAuto)) {
+		// Работа склада разрешена -> Вычисление Т target
+		target.cold(bld, obj, bdata, alr)
+	}
+	console.log(999, accAuto)
 }
 
 module.exports = main

@@ -125,7 +125,6 @@ function elapsedTime(date) {
 
 // Вычисляет сколько в минут работает в указанном режиме и выводит в консоль
 function onTime(code, acc) {
-	console.log(999,acc)
 	if (!acc.state[code]) acc.state[code] = new Date();
 	console.log('\t'+code, runTime(acc.state[code]));
 }

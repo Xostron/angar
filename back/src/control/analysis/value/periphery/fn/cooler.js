@@ -1,10 +1,10 @@
 const { stateF } = require('@tool/command/fan')
-const { data: store } = require('@store')
-const { getIdByClr } = require('@tool/get/building')
+const { data: store, readAcc } = require('@store')
+const { getIdByClr, getB } = require('@tool/get/building')
 
 // Испаритель
 function cooler(equip, val, retain, result) {
-	const { cooler, sensor, fan, heating, binding, section, signal } = equip
+	const { building, cooler, sensor, fan, heating, binding, section, signal } = equip
 	cooler.forEach((clr) => {
 		// fan
 		result[clr._id] ??= {}
@@ -43,22 +43,27 @@ function cooler(equip, val, retain, result) {
 			})
 
 		// Состояние испарителя
-		const idB = getIdByClr(section, clr)
-		result[clr._id].state = state(result[clr._id])
+		result[clr._id].state = state(result[clr._id], clr, building, section)
 		// Аккумулятор авторежима
-		if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add'
+		// if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add'
 		//Добавление читаемого названия состояния
 		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? ''
 	})
 }
 module.exports = cooler
 
-function state(o) {
+function state(o, clr, building, section) {
 	const { solenoid, fan, heating } = o
+	const idB = getIdByClr(section, clr)
+	const typeB = getB(building, idB)?.type
+
 	const s = Object.values(solenoid ?? {}).some((el) => !!el) ?? false
 	const f = Object.values(fan ?? {}).some((el) => el?.state === 'run') ?? false
 	const h = Object.values(heating ?? {}).some((el) => !!el) ?? false
 	const state = [s, f, h].map((el) => (el ? 'on' : 'off'))
+	// Слив воды
+	const accAuto = readAcc(idB, typeB)
+	if (accAuto?.[clr._id]?.state?.add) state.push('add')
 	return state.join('-')
 }
 

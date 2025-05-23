@@ -10,7 +10,7 @@ require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { server, io } = require('@tool/server')
 const { data: store, retainDir, factoryDir, accDir, dataDir } = require('@store')
 // Получение настроек от сервера с переодичностью
-const init = require('@root/client/init')
+const loopInit = require('@root/client/init')
 // Выполненине основных алгоритмов
 const loop = require('@root/control')
 const { statOnTime } = require('@root/stat')

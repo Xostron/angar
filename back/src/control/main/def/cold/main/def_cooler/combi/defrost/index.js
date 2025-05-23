@@ -4,7 +4,7 @@ const { compareTime, onTime } = require('@tool/command/time')
 function defrost(fnChange, accCold, acc, se, s, bld, clr) {
 	onTime('defrost', acc)
 	const time = compareTime(acc.state.defrost, s.coolerCombi.defrostWork)
-	const t = se.cooler?.tmpCooler >= s.coolerCombi.defrostOff
+	const t = se.cooler.tmpCooler >= s.coolerCombi.defrostOff
 	if (!acc.state.defrost) acc.state.defrost = new Date()	
 	if (time || t) {
 		if (time) console.log('defrost', 'Истекло отведенное время')

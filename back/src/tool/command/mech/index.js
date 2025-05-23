@@ -22,7 +22,7 @@ function mech(data, sId, bldId) {
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
 	// Напорные ВНО камеры + ВНО испарителей для обычного склада
-	const fanS = [...fan, ...fanClr]
+	const fanS = [...fanSS, ...fanClr]
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
 	// const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')

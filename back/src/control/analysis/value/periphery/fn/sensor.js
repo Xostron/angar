@@ -89,7 +89,6 @@ function total(equip, result, retain) {
 		flt = (el) => ids.includes(el.owner.id) && el.type === 'tcnl' && result?.[el._id]?.state === 'on'
 		fltA = (el) => ids.includes(el.owner.id) && el.type === 'tcnl'
 		const tcnl = state(sensor, result, flt, fltA)
-	console.log(222, tprd, tcnl)
 
 		// Температура потолка (Температура помещения)
 		const tin = fnState(sensor, result, bld._id, 'tin')
