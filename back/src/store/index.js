@@ -4,7 +4,7 @@ const data = {
 	// graceful shutdown
 	shutdown: false,
 	end: false,
-	_stableVno:60_000,
+	_stableVno: 60_000,
 	// Флаг первого цикла
 	_first: true,
 	// Расчетное время цикла, сек
@@ -106,7 +106,9 @@ const data = {
 	// Обнулить счетчик сушки
 	zero: new Set(),
 	// Готовые настройки для алгоритма
-	calcSetting:{},
+	calcSetting: {},
+	// Режим опроса POS-AdminServer
+	poll: { init: false, last: false },
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
@@ -115,6 +117,7 @@ const data = {
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
+	stateDir: path.join(process.env.PATH_STATE),
 }
 
 // Сссылка на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
@@ -169,6 +172,7 @@ const retainDir = data.retainDir
 const factoryDir = data.factoryDir
 const rootDir = data.rootDir
 const accDir = data.accDir
+const stateDir = data.stateDir
 
 module.exports = {
 	data,
@@ -178,6 +182,7 @@ module.exports = {
 	retainDir,
 	factoryDir,
 	accDir,
+	stateDir,
 	setTick,
 	setToMan: toggleMode('toMan'),
 	setToAuto: toggleMode('toAuto'),

@@ -7,14 +7,17 @@ const fs = require('fs')
 var debug = require('debug')('angar:server')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-const { server, io } = require('@tool/server')
-const { data: store, retainDir, factoryDir, accDir, dataDir } = require('@store')
-// Получение настроек от сервера с переодичностью
+const { data: store, retainDir, accDir, dataDir, stateDir } = require('@store')
+// Получение конфигурации от сервера
 const loopInit = require('@root/client/init')
-// Выполненине основных алгоритмов
+// Отправка состояния складов на админ-сервер
+const loopState = require('@root/client/state')
+// Выполнение основного цикла программы
 const loop = require('@root/control')
+// Запись логов с периодом
 const { statOnTime } = require('@root/stat')
 // const passport = require('passport');
+const { server, io } = require('@tool/server')
 const onConnection = require('../socket/on/def')
 const { delay } = require('@tool/command/time')
 
@@ -68,7 +71,8 @@ io.on('connection', (socket) => {
 	onConnection(io, socket)
 })
 
-// Создание папки data, data/retain и retain/data.json
+// Создание папки data, data/retain, retain/data.json, data/acc, data/acc/acc.json
+// data/state, data/state/state.json
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir)
 if (!fs.existsSync(retainDir)) {
 	fs.mkdirSync(retainDir)
@@ -78,18 +82,23 @@ if (!fs.existsSync(accDir)) {
 	fs.mkdirSync(accDir)
 	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}')
 }
+if (!fs.existsSync(stateDir)) {
+	fs.mkdirSync(stateDir)
+	fs.writeFileSync(path.join(stateDir, 'state.json'), '{}')
+}
+
 // Запрос конфигурации у админ-сервера
-loopInit()
-	.then(() => console.log('Запрос конфигурации у админ-сервера'))
-	.catch(console.error)
+loopInit().then().catch(console.error)
+// Отправка состояния складов на админ-сервер
+loopState().then().catch(console.error)
+// Статистика непрерывных значений
+statOnTime().then().catch(console.error)
 // Главный цикл управления
 loop()
 	.then(() => console.log('Главный цикл остановлен'))
 	.catch(console.error)
-// Статистика непрерывных значений
-statOnTime()
-	.then(() => console.log('Статистика датчиков остановлена'))
-	.catch(console.error)
+
+	
 /**
  * Normalize a port into a number, string, or false.
  */
