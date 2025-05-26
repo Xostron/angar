@@ -13,16 +13,16 @@ async function state() {
 		// Карточки PC
 		let resPC = transformPC(value, data.building)
 		// resBld Карточки секций  || resSec секция
-		let resBld = {}
+		// let resBld = {}
 		// resSec Полное содержимое секция
 		let resSec = {}
 
-		for (const bld of data.building) {
-			resBld[bld._id] = await transformStore(bld._id)
-			for (const sec of data.section) {
-				resSec[sec._id] = await transformStore(bld._id, sec._id)
-			}
+		// for (const bld of data.building) {
+		// resBld[bld._id] = await transformStore(bld._id)
+		for (const sec of data.section) {
+			resSec[sec._id] = await transformStore(sec.buildingId, sec._id)
 		}
+		// }
 
 		// Преобразуем ключи объекта
 		// resPC = convertPC(resPC)
@@ -56,13 +56,13 @@ async function loopState() {
 
 module.exports = loopState
 
-
 // PC  =  карточки складов
 function convertPC(obj) {
 	let r = {}
 	const buildings = Object.keys(obj.list)
 	if (!buildings.length) return
 	r.buildings = buildings
+	// console.log(666, r)
 	for (const bldId in obj.list) r = { ...r, ...convert(obj.list[bldId], bldId) }
 	return r
 }
@@ -94,8 +94,10 @@ function convertBld(obj) {
 // Секция = Полное описание секции + карточки секций + некоторая инфа по складу
 function convertSec(obj) {
 	let r = { buildings: new Set() }
+	// console.log(6661, Object.keys(obj))
 	for (const secId in obj) {
 		const bldId = obj[secId]._id
+		// console.log(6662, secId, bldId)
 		// Поля склада
 		if (!r.buildings.has(bldId)) {
 			r.buildings.add(bldId)
@@ -114,6 +116,7 @@ function convertSec(obj) {
 		r = { ...r, ...convert(obj[secId].value, `${bldId}.${secId}.value`) }
 	}
 	r.buildings = [...r.buildings]
+	// console.log(6666, r.buildings)
 	return r
 }
 

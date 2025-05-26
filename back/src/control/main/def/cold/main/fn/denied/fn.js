@@ -53,7 +53,7 @@ function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store) {
 
 // Очистка аккумулятора холодильника
 function clearBuild(bld, accAuto) {
-	const denied = Object.values(store.denied[bld._id])
+	const denied = Object.values(store.denied[bld._id] ?? {})
 	// Если хотя бы 1 испаритель разрешен к работе -> выход без очистки
 	if (!denied.every((el) => el)) return true
 	// Все испарители запрещены к работе -> очистка
