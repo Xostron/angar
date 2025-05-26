@@ -29,7 +29,7 @@ async function cold(result, idS, idB, obj) {
     value.wetting= data?.total?.[idS]?.device?.wetting, 
     // дт. состояния Озонатора 
     value.ozon= data?.total?.[idS]?.device?.ozon,
-    value.point ={ value: data?.total?.[idB]?.point }    
+ 
      // Температура продукта
     get('tprd', idS, 'section', sensor).forEach((el) => fe(el, result.value, data))
     // СО2 датчик
