@@ -1,70 +1,41 @@
-const { data: store, dataDir, stateDir, retainDir } = require('@store')
-const { delay } = require('@tool/command/time')
-const { readTO, readOne } = require('@tool/json')
-const fsp = require('fs').promises
 const transformPC = require('@routes/api/tenta/read/pc/transform')
+const transformStore = require('../../routes/api/tenta/read/store/transform')
+const { delay } = require('@tool/command/time')
+const { preparing } = require('./fn')
 
 async function state() {
 	try {
-		const o = await collect()
+		const o = await preparing()
 		if (!o) return
+		const { data, value, ref, last } = o
+		// const { retain, alarm, total } = value
 
-		// Формирования delta для каждого склада
-		// delta изменений - передается на сервер Админки и сохраняется в ref
-		// for (const bld of o.data.building) {
-		// console.log(66, bld.type)
-		const delta = def.cold(o, null)
-		// }
+		// Карточки PC
+		let resPC = transformPC(value, data.building)
+		// resBld Карточки секций  || resSec секция
+		let resBld = {}
+		// resSec Полное содержимое секция
+		let resSec = {}
 
-		console.log(661, delta)
+		for (const bld of data.building) {
+			resBld[bld._id] = await transformStore(bld._id)
+			for (const sec of data.section) {
+				resSec[sec._id] = await transformStore(bld._id, sec._id)
+			}
+		}
+
+		// Преобразуем ключи объекта
+		// resPC = convertPC(resPC)
+		// resBld = convertBld(resBld)
+		resSec = { ...convertPC(resPC), ...convertSec(resSec) }
+		// console.log(661, 'resPC', resPC)
+		// console.log(662, 'resBld', resBld)
+		console.log(663, 'resSec', JSON.stringify(resSec, null, ' '))
 		// Данные переданы
 		return true
 	} catch (error) {
 		console.error(666666, error)
 	}
-}
-
-const def = {
-	normal(o, bld, delta) {
-		const { data, value, ref, last } = o
-		const { retain, alarm, total } = value
-		const { section } = data
-	},
-	cold(o, bld, ) {
-		const { data, value, ref, last } = o
-		const { section } = data
-		return transformPC(data, data.building)
-	},
-	combi(o, bld, delta) {
-		const { data, value, ref, last } = o
-	},
-}
-
-async function collect() {
-	// Рама
-	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
-	const retain = await readOne('data.json', retainDir)
-	const data = await readTO(files)
-	data.retain = retain
-	// console.log(data)
-	let ref
-
-	// Режим опроса POS-AdminServer активен - true?
-	const isPoll = data?.pc?.poll || true
-	if (!isPoll) return null
-
-	// TODO Режим опроса: старый вариант /  новый вариант POS-admin
-	// TODO Период опроса для каждого склада свой период / для POS (все склады одновременно)
-
-	// Начальные данные из файла (основа для формирования delta изменений)
-	if (store?.poll?.init) ref = await readOne('state.json', stateDir)
-
-	// Актуальные значения с датчиков и оборудования
-	const value = store.value
-
-	// Последний опрос: true - успешен, false - Не успешен(сервер был перезапущен, ошибка сервера pos)
-	let last = store?.poll?.last
-	return { data, value, ref, last }
 }
 
 async function loopState() {
@@ -84,3 +55,70 @@ async function loopState() {
 }
 
 module.exports = loopState
+
+
+// PC  =  карточки складов
+function convertPC(obj) {
+	let r = {}
+	const buildings = Object.keys(obj.list)
+	if (!buildings.length) return
+	r.buildings = buildings
+	for (const bldId in obj.list) r = { ...r, ...convert(obj.list[bldId], bldId) }
+	return r
+}
+// Склад  = карточки секций + некоторая инфа по складу
+function convertBld(obj) {
+	let r = {}
+	const buildings = Object.keys(obj)
+	if (!buildings.length) return
+	r.buildings = buildings
+	// По складам
+	for (const bldId in obj) {
+		delete obj[bldId]._id
+		// Поля склада
+		r = { ...r, ...convert(obj[bldId], bldId) }
+		delete r[`${bldId}.sections`]
+		delete r[`${bldId}.value`]
+		r[`${bldId}.sections`] = Object.keys(obj[bldId].sections)
+		// По секции
+		for (const secId in obj[bldId].sections) {
+			delete obj[bldId].sections[secId]._id
+			// Поля sections
+			r = { ...r, ...convert(obj[bldId].sections[secId], `${bldId}.${secId}`) }
+		}
+		// поля Value
+		r = { ...r, ...convert(obj[bldId].value, `${bldId}.value`) }
+	}
+	return r
+}
+// Секция = Полное описание секции + карточки секций + некоторая инфа по складу
+function convertSec(obj) {
+	let r = { buildings: new Set() }
+	for (const secId in obj) {
+		const bldId = obj[secId]._id
+		// Поля склада
+		if (!r.buildings.has(bldId)) {
+			r.buildings.add(bldId)
+			delete obj[secId]._id
+			r = { ...r, ...convert(obj[secId], bldId) }
+			delete r[`${bldId}.sections`]
+			delete r[`${bldId}.value`]
+			// Карточки секций
+			for (const sId in obj[secId].sections) {
+				delete obj[secId].sections[sId]._id
+				r = { ...r, ...convert(obj[secId].sections[sId], `${bldId}.sections.${sId}`) }
+			}
+			r[`${bldId}.sections`] = Object.keys(obj)
+		}
+		// Полное описание секции
+		r = { ...r, ...convert(obj[secId].value, `${bldId}.${secId}.value`) }
+	}
+	r.buildings = [...r.buildings]
+	return r
+}
+
+function convert(obj, key) {
+	const r = {}
+	for (const fld in obj) r[`${key}.${fld}`] = obj[fld]
+	return r
+}

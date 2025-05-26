@@ -28,11 +28,11 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// Да
 	clear(bld._id, clr, accAuto, fnChange, stateCooler, store)
 
-	console.log('\tОстановка из-за ошибок:')
-	console.log('\t\tСклад остановлен:', !start)
-	console.log('\t\tАвария:', alr)
-	console.log('\t\tАгрегат готов к работ', aggr)
-	console.log('\t\tОжидание после включения питания', !supplySt)
+	// console.log('\tОстановка из-за ошибок:')
+	// console.log('\t\tСклад остановлен:', !start)
+	// console.log('\t\tАвария:', alr)
+	// console.log('\t\tАгрегат готов к работ', aggr)
+	// console.log('\t\tОжидание после включения питания', !supplySt)
 
 	return true
 }

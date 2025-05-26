@@ -8,13 +8,17 @@ const express = require('express');
 const router = express.Router();
 
 function read() {
-	// Значения (датчики, настройки, режимы)
+	// Карточки PC
 	router.get('/pc', pc());
-	// Значения датчиков по коду склада, коду  настроки и коду продукта
+	// Карточки секций || секция
 	router.get('/store/:bldId/:secId', getStore());
+	// Экран датчики
 	router.get('/sensor/:bldId/:secId', sensor());
+	// Экран сигналы
 	router.get('/signal/:bldId', signal());
+	// Экран настройки
 	router.get('/setting/:bldId/:codeS/:codeP', setting());
+	// Экран мониторинг
 	router.get('/monitoring/:bldId', monitoring());
 	return router;
 }

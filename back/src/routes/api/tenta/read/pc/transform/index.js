@@ -14,46 +14,50 @@ function transform(data, building) {
 		// Расчетная абсолютная влажность улицы
 		ah: { value: data?.humAbs?.out?.com, state: checkS(tout?.state, hout?.state) },
 	}
-	const retain = data.retain
 
-	if (!retain || !Object?.keys(retain).length) return result
+	// if (!data.retain || !Object?.keys(data.retain).length) return result
+	// Object?.keys(retain).forEach((idB) => fnTransform(idB))
 	// По складам
-	Object?.keys(retain).forEach((idB) => {
-		// TODO:rrp  Надо проверить почему undefined записан как строка
-		if (!idB || idB === 'undefined') return
-		// Тип склада
-		const type = building?.find((el) => el._id === idB)?.type
-		const timer = Object.values(data?.alarm?.timer?.[idB] ?? {}).map((el) => ({ code: el?.type, msg: el?.msg }))
-		const obj = {
-			product: retain?.[idB]?.product?.code ?? null,
-			mode: store.value?.building?.[idB]?.submode?.[0] ?? retain?.[idB]?.automode ?? null,
-			count: retain?.[idB]?.drying?.count ?? retain?.[idB]?.drying?.acc ?? 0,
-			on: retain?.[idB]?.start ?? null,
-			// Влажность продукта (hin)
-			rh: { value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined, state: data?.total?.[idB]?.hin?.state },
-			// Температура продукта (tprd)
-			min: { value: data?.total?.[idB]?.tprd?.min?.toFixed(1) ?? undefined, state: data?.total?.[idB]?.tprd?.state },
-			max: { value: data?.total?.[idB]?.tprd?.max?.toFixed(1) ?? undefined, state: data?.total?.[idB]?.tprd?.state },
-
-			crash: data?.alarm?.count?.[idB] ?? null,
-			alarm: Object.keys(data?.alarm?.barB?.[idB] ?? {})
-				.map((k) => {
-					const alr = data?.alarm?.barB?.[idB]?.[k]?.[0]
-					return alr ? { code: k, msg: alr?.msg } : null
-				})
-				.filter((el) => !!el),
-		}
-
-		obj.alarm.push(...timer)
-		// GVM Данные для холодильника
-		if (type === 'cold') {
-			// Удаляем не нужные ключи для Холодильника
-			delete result.temp
-			delete result.rh
-			delete result.ah
-		}
-		result.list[idB] = obj
-	})
+	building.forEach((el) => fnTransform(el, data, result))
 	return result
 }
+
 module.exports = transform
+
+function fnTransform(bld, data, result) {
+	// TODO:rrp  Надо проверить почему undefined записан как строка
+	if (!bld._id || bld._id === 'undefined') return
+	// Тип склада
+	const type = bld?.type
+	const obj = {
+		product: data?.retain?.[bld._id]?.product?.code ?? null,
+		mode: store.value?.building?.[bld._id]?.submode?.[0] ?? data?.retain?.[bld._id]?.automode ?? null,
+		count: data?.retain?.[bld._id]?.drying?.count ?? data?.retain?.[bld._id]?.drying?.acc ?? 0,
+		on: data?.retain?.[bld._id]?.start ?? null,
+		// Влажность продукта (hin)
+		rh: { value: data?.total?.[bld._id]?.hin?.max?.toFixed(1) ?? undefined, state: data?.total?.[bld._id]?.hin?.state },
+		// Температура продукта (tprd)
+		min: { value: data?.total?.[bld._id]?.tprd?.min?.toFixed(1) ?? undefined, state: data?.total?.[bld._id]?.tprd?.state },
+		max: { value: data?.total?.[bld._id]?.tprd?.max?.toFixed(1) ?? undefined, state: data?.total?.[bld._id]?.tprd?.state },
+
+		crash: data?.alarm?.count?.[bld._id] ?? null,
+		alarm: Object.keys(data?.alarm?.barB?.[bld._id] ?? {})
+			.map((k) => {
+				const alr = data?.alarm?.barB?.[bld._id]?.[k]?.[0]
+				return alr ? { code: k, msg: alr?.msg } : null
+			})
+			.filter((el) => !!el),
+	}
+	// Таймеры запретов
+	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map((el) => ({ code: el?.type, msg: el?.msg }))
+	obj.alarm.push(...timer)
+	
+	// GVM Данные для холодильника
+	if (type === 'cold') {
+		// Удаляем не нужные ключи для Холодильника
+		delete result.temp
+		delete result.rh
+		delete result.ah
+	}
+	result.list[bld._id] = obj
+}
