@@ -9,7 +9,7 @@ function drain(fnChange, accAuto, acc, se, s, bld, clr) {
 	const time = compareTime(acc.state.drain, s.cooler.water);
 	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn;
 	console.log(4443, 'drain', 'time', time, 'tmp', tmp);
-	// время вышло
+	// время не окончено
 	if (!time) return;
 	// Повтор
 	if (tmp) return fnChange(0, 0, 1, 0, 'defrost');

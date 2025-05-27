@@ -49,7 +49,6 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	if (se.tin > s.cold.room + s.cold.deltaRoom) sol = 1
 	if (se.tin <= s.cold.room) sol = 0
 
-
 	// Условия включения вентилятора
 	if (se.cooler.tmpCooler <= s.cooler.cold) ven = 1
 	if (se.cooler.tmpCooler > s.cooler.cold + s.cooler.deltaCold) ven = 0
@@ -60,7 +59,7 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
-		if (accAuto.drainAll) return
+		if (code == 'drain' && !accAuto.drainAll) return
 		return fnChange(1, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
@@ -108,7 +107,7 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
-		if (accAuto.drainAll) return
+		if (code == 'drain' && !accAuto.drainAll) return
 		return fnChange(1, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
