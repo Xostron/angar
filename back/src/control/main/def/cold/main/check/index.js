@@ -60,6 +60,7 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
+		if (accAuto.drainAll) return
 		return fnChange(1, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
@@ -107,6 +108,7 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
+		if (accAuto.drainAll) return
 		return fnChange(1, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
