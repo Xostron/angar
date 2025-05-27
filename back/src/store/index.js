@@ -107,8 +107,8 @@ const data = {
 	zero: new Set(),
 	// Готовые настройки для алгоритма
 	calcSetting: {},
-	// Режим опроса POS-AdminServer
-	poll: { init: false, last: false },
+	// Режим получения данных от ЦС
+	hub: { init: false, last: false },
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),

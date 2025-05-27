@@ -19,6 +19,14 @@ function transform(data, building) {
 	// Object?.keys(retain).forEach((idB) => fnTransform(idB))
 	// По складам
 	building.forEach((el) => fnTransform(el, data, result))
+	
+	// GVM Данные для холодильника
+	if (building.every(el=>el.type=='cold')){
+		// Удаляем не нужные ключи для Холодильника
+		delete result.temp
+		delete result.rh
+		delete result.ah
+	}
 	return result
 }
 
@@ -51,13 +59,6 @@ function fnTransform(bld, data, result) {
 	// Таймеры запретов
 	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map((el) => ({ code: el?.type, msg: el?.msg }))
 	obj.alarm.push(...timer)
-	
-	// GVM Данные для холодильника
-	if (type === 'cold') {
-		// Удаляем не нужные ключи для Холодильника
-		delete result.temp
-		delete result.rh
-		delete result.ah
-	}
+
 	result.list[bld._id] = obj
 }
