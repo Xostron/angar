@@ -12,7 +12,7 @@ function transform(data, building) {
 		// Влажность улицы (макс)
 		rh: { value: hout?.max?.toFixed(1) ?? undefined, state: hout?.state },
 		// Расчетная абсолютная влажность улицы
-		ah: { value: data?.humAbs?.out?.com, state: checkS(tout?.state, hout?.state) },
+		ah: { value: data?.humAbs?.out?.com ?? undefined, state: checkS(tout?.state, hout?.state) },
 	}
 
 	// if (!data.retain || !Object?.keys(data.retain).length) return result

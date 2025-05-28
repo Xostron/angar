@@ -1,6 +1,8 @@
 const { data: store, dataDir, stateDir, retainDir } = require('@store')
 const { readTO, readOne } = require('@tool/json')
 const fsp = require('fs').promises
+const transformStore = require('@routes/api/tenta/read/store/transform')
+const transformPC = require('@routes/api/tenta/read/pc/transform')
 
 /**
  *
@@ -15,18 +17,31 @@ async function preparing() {
 	// Рама
 	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 	const data = await readTO(files)
-	let ref
-	// Режим опроса POS-AdminServer активен - true? (переключатель на PC)
-	const isHub = data?.pc?.hub
-	if (!isHub) return null
-	// TODO Режим опроса: старый вариант /  новый вариант POS-admin
-	// TODO Период опроса для каждого склада свой период / для POS (все склады одновременно)
-	// Начальные данные из файла (основа для формирования delta изменений)
-	if (store?.hub?.init) ref = await readOne('state.json', stateDir)
-	// Актуальные значения с датчиков и оборудования
-	const value = store.value
+
+	// Получение данных от ЦС (вкл/выкл : true/false)
+	// TODO hub -> state{on, date}
+	if (!data?.pc?.hub) {
+		console.log('\x1b[33m%s\x1b[0m', 'Получение данных от ЦС выключен')
+		return null
+	}
+
+	// Собираем мясо
+	if (!Object.keys(store.value).length) {
+		console.log('\x1b[33m%s\x1b[0m', 'Данные от ЦС еще не готовы')
+		return null
+	}
+	// Предыдщие значения по складу
+
+	// Новые значения по складу
+	// Карточки PC
+	const resPC = transformPC(store.value, data.building)
+	// Полное содержимое секции
+	let value = {}
+	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
+	// Преобразуем в одноуровневый объект с составными ключами
+	value = { ...convertPC(resPC), ...convertSec(value) }
 	// Последний опрос: true - успешен, false - Не успешен(сервер был перезапущен, ошибка сервера pos)
-	return { data, value, ref, hub: store.hub }
+	return { value, hub: store.hub, pcId: data.pc._id }
 }
 
 // PC  =  карточки складов
@@ -60,7 +75,7 @@ function convertSec(obj) {
 			for (const sId in obj[secId].sections) {
 				delete obj[secId].sections[sId]._id
 				// Клапаны
-				const valve = convert(obj[secId].sections[sId].valve)
+				const valve = convert(obj[secId].sections[sId].valve, sId)
 				delete obj[secId].sections[sId].valve
 				// секция
 				r = { ...r, ...convert(obj[secId].sections[sId], `${sId}`), ...valve }
@@ -76,11 +91,40 @@ function convertSec(obj) {
 
 function convert(obj, key) {
 	const r = {}
-	for (const fld in obj) {
-		// именованный ключ
-		if (fld.length != 24) r[`${key}.${fld}`] = obj[fld]
-		// ключ Id
-		else r[`${fld}`] = obj[fld]
+	for (const fld in obj) r[`${key}.${fld}`] = obj[fld]
+	return r
+}
+
+// Преобразование данных для Tenta
+function convertTenta(value, pcId) {
+	const r = []
+	for (const key in value) {
+		const fld = key.split('.')
+		// console.log(fld)
+		const o = {
+			key: fld.pop(),
+			value: value[key],
+			owner: !fld.length ? pcId : fld.pop(),
+		}
+		r.push(o)
+	}
+	return r
+}
+
+function delta(value, old) {
+	const r = {}
+	for (const key in value) {
+		value[key]
+		switch (typeof value[key]) {
+			case 'object':
+				// Объекты
+				if (JSON.stringify(value[key]) !== JSON.stringify(old[key])) r[key] = value[key]
+				break
+			default:
+				// Простые данные: числа, строки, null, undefined
+				if (value[key] !== old[key]) r[key] = value[key]
+				break
+		}
 	}
 	return r
 }
@@ -111,4 +155,4 @@ function convert(obj, key) {
 // 	return r
 // }
 
-module.exports = { preparing, convertPC, convertSec }
+module.exports = { preparing, convertPC, convertSec, convertTenta, delta }
