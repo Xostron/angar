@@ -6,33 +6,31 @@ const transformPC = require('@routes/api/tenta/read/pc/transform')
 
 /**
  *
- * @returns {object}	data - Рама,
- * 						value - Акутальные значения+retain,
- * 						ref - state.json Мясо (показания датчиков и т.д.)
- * 							опорный объект для вычисления delta изменений,
- * 						poll: {init:Date, last:Date} init - данные в state.json актуальны,
- * 							last краняя передача данных прошла успешна
+ * @returns {object}	result Данные по датчикам (Полная или дельта изменений),
+ * 						hub: {init:boolean, last:boolean, state:object}
+ * 							init Инициализация пройдена,
+ * 							last Предыдущая передача данных прошла успешна
+ * 							state Данные по датчикам (предыдущее состояние)
+ * 						value Данные по датчикам (не преобразованные)
  */
 async function preparing() {
+	const hub = store.hub
 	// Рама
 	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 	const data = await readTO(files)
 
 	// Получение данных от ЦС (вкл/выкл : true/false)
-	// TODO hub -> state{on, date}
-	if (!data?.pc?.hub) {
+	if (!data?.pc?.state?.on) {
 		console.log('\x1b[33m%s\x1b[0m', 'Получение данных от ЦС выключен')
 		return null
 	}
 
-	// Собираем мясо
+	// Собираем значения по складу
 	if (!Object.keys(store.value).length) {
 		console.log('\x1b[33m%s\x1b[0m', 'Данные от ЦС еще не готовы')
 		return null
 	}
-	// Предыдщие значения по складу
 
-	// Новые значения по складу
 	// Карточки PC
 	const resPC = transformPC(store.value, data.building)
 	// Полное содержимое секции
@@ -40,8 +38,15 @@ async function preparing() {
 	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
 	// Преобразуем в одноуровневый объект с составными ключами
 	value = { ...convertPC(resPC), ...convertSec(value) }
-	// Последний опрос: true - успешен, false - Не успешен(сервер был перезапущен, ошибка сервера pos)
-	return { value, hub: store.hub, pcId: data.pc._id }
+
+	// Расчет delta (первое включение прошло успешно hub.init = true)
+	let valDelta
+	if (hub.init) valDelta = delta(value, hub.state)
+
+	// Формируем данные для Tenta
+	const result = convertTenta(valDelta ?? value, data.pc._id)
+
+	return { result, hub, value }
 }
 
 // PC  =  карточки складов

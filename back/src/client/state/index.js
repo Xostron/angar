@@ -32,24 +32,12 @@ async function state() {
 		// Формирование state (значения данных по PC)
 		const o = await preparing()
 		if (!o) return
-		const { value, hub, pcId } = o
-
-		// Расчет delta (первое включение прошло успешно hub.init = true)
-		let valDelta
-		if (hub.init) {
-			// Предыдущая передача POS->Tenta успешна, сохраняем результат
-			valDelta = delta(value, hub.state)
-			// console.log(661, 'Расчет delta', valDelta)
-		}
-
-		// Формируем данные для Tenta
-		const result = convertTenta(valDelta ?? value, pcId)
-		// console.log(662, result.length)
+		const { result, hub, value } = o
 
 		// Передать данные INIT или delta
 		const config = apiConfig(result)
+		const response = await axios.request(config)
 		// const response = await api(config)
-		const response = await axios.request(config);
 		if (!response.data) {
 			hub.init = false
 			hub.last = false
@@ -61,7 +49,6 @@ async function state() {
 		hub.last = true
 		hub.state = value
 		console.log('\x1b[33m%s\x1b[0m', 'Данные POS->Tenta переданы', result.length)
-		return true
 	} catch (error) {
 		throw error
 	}
