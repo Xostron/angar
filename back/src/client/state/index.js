@@ -39,7 +39,7 @@ async function state() {
 		const response = await axios.request(config)
 		// const response = await api(config)
 		if (!response.data) {
-			hub.init = false
+			// hub.init = false
 			hub.last = false
 			throw new Error('Не удалось передать данные POS->Tenta')
 		}
