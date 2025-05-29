@@ -3,9 +3,8 @@ const { data: store } = require('@store')
 
 function alarm(s, seB, building, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	// console.log(444, 'hysteresisAbs = ', hAbsOut, acc?.setting?.mois?.abs?.h, hAbsIn, acc?.setting?.mois?.differenceMin)
-	if (!Object.keys(acc?.setting ?? {}).length) return null
-	return [
+
+	const r = [
 		// Абсолютная влажность улицы ниже допустимой при охлаждении
 		{
 			set: hAbsOut < hAbsIn - acc?.setting?.mois?.differenceMax,
@@ -48,6 +47,12 @@ function alarm(s, seB, building, acc) {
 			msg: msgB(building, 12),
 		},
 	]
+	// console.log(
+	// 	444,
+	// 	r.map(({ set, reset }) => ({ set, reset }))
+	// )
+
+	return r
 }
 
 module.exports = alarm

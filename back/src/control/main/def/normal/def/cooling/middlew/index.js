@@ -7,7 +7,7 @@ const sm = require('@dict/submode')
 /**
  * Определение подрежима
  */
-function submode(building, section, obj, s, se, seB, alr, acc) {
+function submode(building, obj, s, seB, acc) {
 	// Минимальная температура продукта (ограничение по температуре задания)
 	acc.tprdMin = obj.retain?.[building._id]?.cooling?.tprdMin ?? null
 
@@ -52,7 +52,7 @@ function submode(building, section, obj, s, se, seB, alr, acc) {
 /**
  * Расчет задания
  */
-function target(building, section, obj, s, se, seB, alr, acc) {
+function target(building, obj, s, seB, acc) {
 	// Температура задания канала
 	acc.tcnl = seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
@@ -60,7 +60,6 @@ function target(building, section, obj, s, se, seB, alr, acc) {
 	// Задание на сутки
 	// Момент запуска режима - Температура задания продукта
 	if (acc?.tgt === undefined) {
-		console.log(333,seB.tprd)
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 	}
@@ -83,7 +82,7 @@ function target(building, section, obj, s, se, seB, alr, acc) {
 /**
  * Сообщения
  */
-function message(building, section, obj, s, se, seB, alr, acc) {
+function message(building, obj, s, seB, acc) {
 	// Продукт достиг температуры задания*****************************************
 	// В режиме лечения - Продукт достиг не активен
 	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {

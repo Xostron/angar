@@ -13,12 +13,14 @@ const data = {
 	toAlrS: (s, sectionId, acc) => ({ exclude: '' }),
 	// Данные от охлаждения на Доп. функции (контроль вентиляции, обогрев клапанов и т.д.)
 	toExtra: (s, alarm, sectionId, acc) => ({ fanOff: alarm, alwaysFan: null }),
-	// message: (s, se, sectionId, acc) => {},
-	middlew,
+	// Промежуточные расчеты по секции
+	middlew: (building, section, obj, s, se, seB, alr, acc) => {},
+	// Промежуточные расчеты по складу
+	middlewB,
 }
 
-function middlew(building, section, obj, s, se, seB, alr, acc) {
-	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = se
+function middlewB(building, obj, s, seB, acc) {
+	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
 	// TODO: Как реагировать при обвале датчиков?
 	if (tout === null || hout === null) {
 		acc.alarm = true
@@ -26,11 +28,11 @@ function middlew(building, section, obj, s, se, seB, alr, acc) {
 	}
 	acc.alarm = false
 	// Вычисление подрежима
-	submode(building, section, obj, s, se, seB, alr, acc)
+	submode(building, obj, s, seB, acc)
 	// Вычисления
-	target(building, section, obj, s, se, seB, alr, acc)
+	target(building, obj, s, seB, acc)
 	// Сообщения
-	message(building, section, obj, s, se, seB, alr, acc)
+	message(building, obj, s, seB, acc)
 }
 
 function valve(s, se, sectionId, acc) {
