@@ -18,12 +18,10 @@ const building = require('./fn/building')
 function periphery(val, obj) {
 	const { data: equip, retain } = obj
 	let result = {}
-
 	// Маска выходных модулей DO, AO
 	result.outputM = outputM(equip, val)
 	// Исполнительные механизмы: значение выхода
 	result.outputEq = outputEq(equip, val)
-	// console.log(result)
 	// Анализ датчиков
 	sensor(equip, val, retain, result)
 	// Значения сигналов и состояние ИМ

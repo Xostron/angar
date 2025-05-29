@@ -65,7 +65,7 @@ function pull(val, moduleId, r) {
 	// Сдвоенный модуль (DI/DO)
 	if (val?.[moduleId]?.output) return (r[moduleId] = val?.[moduleId]?.output?.map((el) => (el === 0 ? 0 : 1)))
 	// Модуль DO|AO
-	return (r[moduleId] = val?.[moduleId]?.map((el) => (el === 0 ? 0 : 1)))
+	return (r[moduleId] = val?.[moduleId]?.map((el) => (el === 0 ? 0 : el)))
 }
 
 module.exports = outputM

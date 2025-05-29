@@ -6,16 +6,18 @@ const transformPC = require('@routes/api/tenta/read/pc/transform')
 
 /**
  *
- * @returns {object}	result Данные по датчикам (Полная или дельта изменений),
+ * @returns {object}	result Данные по датчикам (для Tenta админки),
  * 						hub: {init:boolean, last:boolean, state:object}
  * 							init Инициализация пройдена,
  * 							last Предыдущая передача данных прошла успешна
  * 							state Данные по датчикам (предыдущее состояние)
- * 						value Данные по датчикам (не преобразованные)
+ * 						value Данные по датчикам (для расчета delta)
  */
 async function preparing() {
+	let value = {},
+		valDelta
 	const hub = store.hub
-	// Рама
+	// Рама pc
 	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 	const data = await readTO(files)
 
@@ -34,14 +36,12 @@ async function preparing() {
 	// Карточки PC
 	const resPC = transformPC(store.value, data.building)
 	// Полное содержимое секции
-	let value = {}
 	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
 	// Преобразуем в одноуровневый объект с составными ключами
 	value = { ...convertPC(resPC), ...convertSec(value) }
 
 	// Расчет delta (первое включение прошло успешно hub.init = true)
-	let valDelta
-	if (hub.init) valDelta = delta(value, hub.state)
+	valDelta = hub.init ? delta(value, hub.state) : null
 
 	// Формируем данные для Tenta
 	const result = convertTenta(valDelta ?? value, data.pc._id)
@@ -116,6 +116,7 @@ function convertTenta(value, pcId) {
 	return r
 }
 
+// Расчет delta изменений
 function delta(value, old) {
 	const r = {}
 	for (const key in value) {

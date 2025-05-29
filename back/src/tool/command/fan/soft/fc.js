@@ -23,7 +23,7 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	acc.delay ??= new Date()
 	acc.busy ??= false
 	acc.fc ??= {}
-	acc.fc.value ??= 100
+	acc.fc.value ??=10 
 
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fans, bldId, aCmd)) return
@@ -66,9 +66,8 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// 	on,
 	// 	`off = `,
 	// 	off,
-	// 	// acc,
-	// 	// aCmd
-	// 	acc.count
+	// 	acc,
+		
 	// )
 }
 

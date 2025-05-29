@@ -8,7 +8,6 @@ function rhr(client, opt, name, options = {}) {
 		client
 			.readHoldingRegisters(opt.start, n)
 			.then((r) => {
-				// if (options.name=='МВ110-8АC')console.log(999, r.response._body[name])
 				let v = r.response._body[name]
 				v = data(v, opt, options)
 				resolve(v)
