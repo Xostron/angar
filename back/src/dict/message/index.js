@@ -88,7 +88,7 @@ const data = {
 	// Антивьюга antibliz
 	13: { code: 'antibliz', type: 'antibliz', typeSignal: 'valve', msg: 'Сработал режим антивьюги' },
 	// Работа клапанов over_vlv
-	14: { code: 'over_vlv', typeSignal: 'valve', msg: 'Превышено время работы с закрытыми клапанами' },
+	14: { code: 'overVlv', typeSignal: 'valve', msg: 'Превышено время работы с закрытыми клапанами' },
 	// Авария низкой температуры (Аварийное закрытие клапанов) Реле безопасности
 	26: { count: true, code: 'alrClosed', type: 'alr', typeSignal: 'critical', msg: 'Аварийное закрытие клапанов' },
 	// Переключатель на щите секции - местный режим

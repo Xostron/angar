@@ -3,7 +3,7 @@ const { delay } = require('@tool/command/time')
 const api = require('@tool/api')
 const axios = require('axios')
 
-const apiConfig = (data) => ({
+const apiConfig = (data, params) => ({
 	method: 'post',
 	maxBodyLength: Infinity,
 	baseURL: 'http://192.168.21.39:3200/api/',
@@ -13,6 +13,7 @@ const apiConfig = (data) => ({
 		ip: process.env.IP,
 	},
 	data,
+	params,
 })
 
 async function loopState() {
@@ -34,7 +35,8 @@ async function state() {
 		if (!o) return
 
 		// Передать данные INIT или delta
-		const config = apiConfig(o.result)
+		const params = o.hub.init ? null : { type: 'init' }
+		const config = apiConfig(o.result, params)
 		const response = await axios.request(config)
 		// const response = await api(config)
 		if (!response.data) {

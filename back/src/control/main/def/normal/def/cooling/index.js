@@ -36,6 +36,9 @@ function middlewB(building, obj, s, seB, acc) {
 }
 
 function valve(s, se, sectionId, acc) {
+	// console.log(4442, 'open', se.tcnl > acc.tcnl + s.cooling.hysteresisIn, se.tcnl, acc.tcnl, s.cooling.hysteresisIn)
+	// console.log(4443, 'close', se.tcnl < acc.tcnl - s.cooling.hysteresisIn, se.tcnl, acc.tcnl, s.cooling.hysteresisIn)
+	// console.log(4444, 'force', acc.finish, acc.alarm)
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
 	const forceCls = acc.finish || acc.alarm

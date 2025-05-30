@@ -5,13 +5,13 @@ const { data: store } = require('@store')
 
 // Простой склад
 function normal(building, obj, bdata) {
-	console.log(22, `\t${building?.type==='combi'? 'Комбинированный обычный':'Обычный'} склад - процесс`, building?.type)
+	console.log(22, `\t${building?.type === 'combi' ? 'Комбинированный обычный' : 'Обычный'} склад - процесс`, building?.type)
 	// Данные по складу
-	const { start, automode, s, se:seB, m, accAuto, resultFan } = bdata
+	const { start, automode, s, se: seB, m, accAuto, resultFan } = bdata
 	// СКЛАД: доп.функции - extra, доп. аварии - extralrm
 	const { alrBld, alrAm } = build(start, building, obj, s, seB, m, automode, accAuto)
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm
-	section(start, building, obj, s, automode, accAuto, resultFan, alrBld, alrAm, seB)
+	section(start, building, obj, s, seB, automode, accAuto, resultFan, alrBld, alrAm)
 	// Управление напорными вентиляторами
 	fan(building, obj, s, seB, m, resultFan)
 }

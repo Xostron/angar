@@ -3,7 +3,7 @@ const { data: store } = require('@store')
 
 function alarm(s, seB, building, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-
+	//
 	const r = [
 		// Абсолютная влажность улицы ниже допустимой при охлаждении
 		{
@@ -51,7 +51,18 @@ function alarm(s, seB, building, acc) {
 	// 	444,
 	// 	r.map(({ set, reset }) => ({ set, reset }))
 	// )
-
+	// console.log(
+	// 	4441,
+	// 	hAbsOut + acc?.setting?.mois?.abs?.h < hAbsIn - acc?.setting?.mois?.differenceMin,
+	// 	hAbsOut + acc?.setting?.mois?.abs?.h,
+	// 	'<',
+	// 	hAbsIn - acc?.setting?.mois?.differenceMin,
+	// 	'===',
+	// 	hAbsOut,
+	// 	acc?.setting?.mois?.abs?.h,
+	// 	hAbsIn,
+	// 	acc?.setting?.mois?.differenceMin
+	// )
 	return r
 }
 

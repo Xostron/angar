@@ -6,7 +6,7 @@ function sectionOff(building, sect, obj, s, se, m, am, accAuto, resultFan, start
 	if (!start || !obj.retain?.[building._id]?.mode?.[sect._id]) {
 		// Сброс доп. аварий секции
 		delExtralrm(building._id, sect._id, 'antibliz')
-		delExtralrm(building._id, sect._id, 'over_vlv')
+		delExtralrm(building._id, sect._id, 'overVlv')
 		// Очистить задание вентиляторов
 		store.aCmd ??= {}
 		store.aCmd[sect._id] ??= {}

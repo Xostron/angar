@@ -3,6 +3,7 @@ const { isReset } = require('@tool/reset')
 const { stateV } = require('@tool/command/valve')
 const { stateEq } = require('@tool/command/fan')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { compareTime } = require('@tool/command/time')
 /**
  * Превышено время работы с закрытыми клапанами
  * @param {*} building Рама склада
@@ -34,35 +35,31 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 	const run = fanS.some((f) => stateEq(f._id, value))
 
 	// Логика
-	// Текущее время
-	const curTime = +new Date().getTime()
-	// Инициализация функции:при отсутствии аварии - данные по аварии обнулены, приточный клапан изменил состояние
-	if ((!acc.beginTime || !run || state != 'cls') && !acc.alarm) {
-		// Временной интервал слежения за клапаном
-		acc.beginTime = +new Date().getTime()
-		acc.endTime = acc.beginTime + s.overVlv.time
-		// Сигнал аварии
-		acc.alarm = false
+	// Фиксируем точку отсчета, когда приточный клапан закрыт с работающими ВНО
+	if (state == 'cls' && run && !acc.begin) {
+		acc.begin = new Date()
+	}
+	// Если клапан не закрыт или ВНО остановлены - отключаем слежение
+	if (state != 'cls' || !run) {
+		delete acc.begin
+	}
+	// Слежение - истекло ли разрешенно время закрытых клапанов
+	const time = compareTime(acc.begin, s.overVlv.time)
+
+	// Истекло -> авария и фиксация времени ожидания сброса аварии
+	if (time && !acc.end) {
+		acc.end = new Date()
+		wrExtralrm(building._id, section._id, 'overVlv', msg(building, section, 14))
 	}
 
-	// Установка
-	if (run && state === 'cls' && curTime >= acc.endTime && !acc.alarm) {
-		acc.alarm = true
-		acc.beginWait = +new Date().getTime()
-		acc.endWait = acc.beginWait + s.overVlv.wait
-		wrExtralrm(building._id, section._id, 'over_vlv', msg(building, section, 14))
+	// Ожидание сброса аварии или нажата кнопка "Сброс аварии"
+	if (compareTime(acc.end, s.overVlv.wait) || isReset(building._id)) {
+		delete acc.begin
+		delete acc.end
+		delExtralrm(building._id, section._id, 'overVlv')
 	}
 
-	// Сброс
-	if (curTime >= acc.endWait || isReset(building._id)) {
-		delete acc.alarm
-		delete acc.beginTime
-		delete acc.endTime
-		delete acc.beginWait
-		delete acc.endWait
-		delExtralrm(building._id, section._id, 'over_vlv')
-	}
-	return acc?.alarm ?? false
+	return time ?? false
 }
 
 module.exports = overVlv

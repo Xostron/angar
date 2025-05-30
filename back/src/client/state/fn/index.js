@@ -66,6 +66,7 @@ function convertPC(obj) {
 // Секция = Полное описание секции + карточки секций + некоторая инфа по складу
 function convertSec(obj) {
 	let r = { buildings: new Set() }
+	let valve
 	for (const secId in obj) {
 		const bldId = obj[secId]._id
 		// Поля склада
@@ -80,7 +81,11 @@ function convertSec(obj) {
 			for (const sId in obj[secId].sections) {
 				delete obj[secId].sections[sId]._id
 				// Клапаны
-				const valve = convert(obj[secId].sections[sId].valve, sId)
+				valve = convert(obj[secId].sections[sId].valve, sId)
+				// Ключи клапанов
+				r[`${sId}.valves`] ??= []
+
+				r[`${sId}.valves`].push(...Object.keys(obj[secId].sections[sId].valve))
 				delete obj[secId].sections[sId].valve
 				// секция
 				r = { ...r, ...convert(obj[secId].sections[sId], `${sId}`), ...valve }
@@ -91,6 +96,9 @@ function convertSec(obj) {
 		r = { ...r, ...convert(obj[secId].value, `${secId}`) }
 	}
 	r.buildings = [...r.buildings]
+
+	// console.log(r)
+
 	return r
 }
 
@@ -113,6 +121,7 @@ function convertTenta(value, pcId) {
 		}
 		r.push(o)
 	}
+	// console.log(r)
 	return r
 }
 

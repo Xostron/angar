@@ -25,21 +25,20 @@ function valve(building, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 			valve: obj.retain?.[building._id]?.valve,
 			valvePosition: obj.retain?.[building._id]?.valvePosition,
 		},
-		alr || v.forceCls || fanOff,
+		forceOff,
 		v.forceOpn
 	)
 	// Выпускной клапан (следит за приточным клапаном)
 	flyingVlv(building._id, sect._id, obj, accAuto, vlvS, s, forceOff)
 }
 
-
 /**
  * @param {*} fanS Вентиляторы секции
  * @param {*} fanOff Вентиляторы выведенные из работы retain[build].fan
  * @returns FALSE/TRUE: Напорные вентиляторы секции выведены из работы
-*/
+ */
 function isOff(section, fanS, fanOff) {
-    if (!fanS.length) return false
+	if (!fanS.length) return false
 	const a = Object.values(fanOff?.[section._id] ?? {})
 	return a.length === fanS.length ? a.every((el) => el === true) : false
 }

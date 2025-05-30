@@ -123,7 +123,7 @@ function flyingVlv(buildingId, sectionId, obj, acc, vlvS, s, forceOff) {
 		// Позиция, %
 		posIn: vlvPercent(vIn?._id, retain?.[buildingId]),
 		// Коэффициент выпускного клапана
-		k: s.sys?.cf?.kOut ?? 1,
+		k: s.sys?.cf?.kOut?.k ?? 1,
 		// Коэффициент пропорциональности
 		kp: vIn?.kp ?? 1,
 	}
@@ -138,7 +138,6 @@ function flyingVlv(buildingId, sectionId, obj, acc, vlvS, s, forceOff) {
 		}
 		multiTgt(v, acc, oIn, sectionId, arrOut, buildingId, obj)
 	}
-
 	// Команда на открытие/закрытие
 	for (const v of arrOut) {
 		// Позиция выпускного клапана в %

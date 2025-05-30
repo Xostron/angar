@@ -15,10 +15,10 @@ const clear = require('@tool/clear')
  * @param {*} accAuto Промежуточные вычислинения авторежимов
  * @param {*} resultFan Для управления напорными вентиляторыми секций
  * @param {boolean} alrBld Аварии склада extralrms
- * @param {boolean} alrAm Аварии склада extralrms
+ * @param {boolean} alrAm Аварии авторежима
  * @param {*} seB Датчики склада и усредненные значения по всем секциям
  */
-function section(start, bld, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB) {
+function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm) {
 	const { data, retain } = obj
 	let alrAlw
 
@@ -41,8 +41,8 @@ function section(start, bld, obj, s, am, accAuto, resultFan, alrBld, alrAm, seB)
 	}
 	// Если все секции не в авто - очистка аккумулятора
 	const isAllSectOff = sections.every((el) => !retain?.[bld._id]?.mode?.[el._id])
-	clear(bld,obj, accAuto, isAllSectOff, start)
 	// Если склад выключен - очистка аккумулятора
+	clear(bld,obj, accAuto, isAllSectOff, start)
 }
 
 module.exports = section

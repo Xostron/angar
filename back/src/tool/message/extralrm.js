@@ -1,28 +1,28 @@
-const { data } = require('@store')
+const { data:store } = require('@store')
 
 // Получить extralrm аварию
 function isExtralrm(bldId, secId, name) {
-	return secId ? !!data.alarm?.extralrm?.[bldId]?.[secId]?.[name] : !!data.alarm?.extralrm?.[bldId]?.[name]
+	return secId ? !!store.alarm?.extralrm?.[bldId]?.[secId]?.[name] : !!store.alarm?.extralrm?.[bldId]?.[name]
 }
 
 // Записать в extralrm (доп. аварии)
 function wrExtralrm(buildingId, sectionId, name, o) {
-	data.alarm.extralrm ??= {}
-	data.alarm.extralrm[buildingId] ??= {}
+	store.alarm.extralrm ??= {}
+	store.alarm.extralrm[buildingId] ??= {}
 	if (!sectionId) {
-		data.alarm.extralrm[buildingId][name] = o
+		store.alarm.extralrm[buildingId][name] = o
 		return
 	}
-	data.alarm.extralrm[buildingId][sectionId] ??= {}
-	data.alarm.extralrm[buildingId][sectionId][name] = o
+	store.alarm.extralrm[buildingId][sectionId] ??= {}
+	store.alarm.extralrm[buildingId][sectionId][name] = o
 }
 // Удалить из extralrm (доп. аварии)
 function delExtralrm(buildingId, sectionId, name) {
 	if (!sectionId) {
-		delete data.alarm?.extralrm?.[buildingId]?.[name]
+		delete store.alarm?.extralrm?.[buildingId]?.[name]
 		return
 	}
-	delete data.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
+	delete store.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
 }
 
 /**
@@ -36,17 +36,17 @@ function sumExtralrmSection(building, obj) {
 	const section = data.section.filter((el) => el.buildingId == building._id)
 	let alrS = false
 	//Список аварий: Аварийное закрытие клапанов
-	const list = ['alrClosed']
+	const list = ['alrClosed','overVlv', 'antibliz']
 	// id секций склада
 	const secIds = section.map((el) => el._id)
 	// аварии склада
-	const alrSect = data.alarm?.extralrm?.[building._id]
+	const alrSect = store.alarm?.extralrm?.[building._id]
 	// Поиск аварий из списка
 	// По секциям
 	for (const sId in alrSect) {
 		if (!secIds.includes(sId)) continue
 		// по авариям в секции
-		for (const alrId in data.alarm?.extralrm?.[building._id]?.[sId]) {
+		for (const alrId in store.alarm?.extralrm?.[building._id]?.[sId]) {
 			// авария не найдена
 			if (!list.includes(alrId)) continue
 			// авария найдена, тут же выходим

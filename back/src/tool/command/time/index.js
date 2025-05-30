@@ -42,10 +42,11 @@ function range(o) {
  * Проверка на пройденное время, true - время прошло
  * @param {String||DateTime} t дата и время (начальная точка)
  * @param {Integer} d пройденное время, мс
- * @returns {Boolean}
+ * @returns {Boolean} true - время истекло
  */
 function compareTime(t, d) {
 	try {
+		if (!t) return false
 		if (typeof t === 'string') t = new Date(t)
 		const now = new Date()
 		return now - t >= d
