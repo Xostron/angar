@@ -12,7 +12,7 @@ function drain(fnChange, accAuto, acc, se, s, bld, clr) {
 	// время не окончено
 	if (!time) return;
 	// Повтор
-	if (tmp) return fnChange(0, 0, 1, 0, 'defrost');
+	if (tmp) return fnChange(0, 0, 1, 0, 'defrost', clr);
 	// Ждем пока все испарители не закончат процесс оттайка-слив воды
 	acc.state.drainAll = true
 	check.cold(fnChange, 'drain', accAuto, acc, se, s, bld, clr);
