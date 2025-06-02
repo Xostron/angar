@@ -14,6 +14,7 @@ export default function Aggregate({ data = null }) {
 	const input = useInputStore(({ input }) => input)
 	// Список агрегатов: агрегаты привязанные к испарителю(секции)
 	const coolers = data ?? []
+	// console.log(coolers, input)
 	return (
 		<div className='row1'>
 			{!!coolers.length &&
@@ -23,7 +24,7 @@ export default function Aggregate({ data = null }) {
 					return (
 						<div className='cmp-sec-aggregate' key={el._id}>
 							<Pressure data={pin} state={build?.pin || section?.pin} />
-							<Agregat key={i} state={el} data={input?.[el?._id]} />
+							<Agregat key={i} state={el} data={input?.[el.aggregate?._id]} />
 							<Pressure data={pout} state={build?.pout || section?.pout} />
 							{!!el.aggregate.condenser.length &&
 								el.aggregate.condenser.map((cn, i) => <Condens key={i} state={cn} data={input?.[el?.aggregateListId]} />)}
