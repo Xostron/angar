@@ -14,7 +14,6 @@ export default function Aggregate({ data = null }) {
 	const input = useInputStore(({ input }) => input)
 	// Список агрегатов: агрегаты привязанные к испарителю(секции)
 	const coolers = data ?? []
-	// console.log(coolers, input)
 	return (
 		<div className='row1'>
 			{!!coolers.length &&

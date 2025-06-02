@@ -242,7 +242,7 @@ a {
 .sir-item-run img,
 .a-run {
 	animation-name: rotation;
-	animation-duration: 3s;
+	animation-duration: 2s;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
 }
@@ -250,7 +250,7 @@ a {
 	0% {
 		transform: rotate(0deg);
 	}
-	100% {
+	100%{
 		transform: rotate(360deg);
 	}
 }

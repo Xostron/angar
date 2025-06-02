@@ -3,25 +3,21 @@ function fnAggregate(equip, val, retain, result) {
 	const { aggregate, building } = equip
 	// По складу
 	building.forEach((doc) => {
+		if (doc.type === 'normal') return
 		// Агрегаты склада
 		const agg = aggregate.filter((el) => el.buildingId === doc._id)
-		// Нет агрегатов или склад "Вентиляционный"
-		if (!agg.length || doc.type === 'normal') return
-		// if (doc.type === 'combi') {
-		// 	//  TODO обработка агрегатов для склада "Комбинированный"
-		// 	aggCombi(doc, agg, equip, val, retain, result)
-		// 	return
-		// }
 		// Агрегаты склада "Холодильник" и "Комбинированный"
-		aggCold(doc, agg, equip, val, retain, result)
+		aggB(doc, agg, equip, val, retain, result)
 	})
 }
 
 module.exports = fnAggregate
 
-// Агрегаты склада "Холодильник"
-function aggCold(bld, agg, equip, val, retain, result) {
-	const { signal, condenser, module } = equip
+// Агрегаты склада "Холодильник" и "Комбинированный"
+function aggB(bld, agg, equip, val, retain, result) {
+	// Нет агрегатов
+	if (!agg.length) return
+	const { signal, module } = equip
 	// По агрегату
 	agg.forEach((doc) => {
 		result[doc._id] ??= {}
@@ -32,7 +28,6 @@ function aggCold(bld, agg, equip, val, retain, result) {
 			result[doc._id].compressor[el._id].beep ??= {}
 			// Сигналы beep компрессора
 			el?.beep?.forEach((be) => {
-				// sig = signal.find((s) => s.owner.id === be._id && s.extra.id === el._id) 
 				let sig = signal.filter((s) => s.owner.id === be._id && s.extra.id === el._id)
 				//****Cигнал текущего склада bld._id (у сигналов**** */
 				sig = sig.find((el) => {
@@ -60,18 +55,13 @@ function aggCold(bld, agg, equip, val, retain, result) {
 				?.sort((a, b) => a?.order - b?.order)
 				?.forEach((e) => result[doc._id].condenser[el._id].fan.push(result[e._id] ? 'run' : 'stop'))
 			// Состояние конденсатора
-			result[doc._id].condenser[el._id].state = result[doc._id].condenser[el._id].fan.some((el) => el === 'run')
-				? 'run'
-				: 'stop'
+			result[doc._id].condenser[el._id].state = result[doc._id].condenser[el._id].fan.some((el) => el === 'run') ? 'run' : 'stop'
 		})
 		// Состояние агрегата
 		result[doc._id].state = stateA(result[doc._id]?.compressor)
 	})
 	sum(bld, agg, result)
 }
-
-// Агрегаты склада "Комбинированный"
-function aggCombi(doc, agg, equip, val, retain, result) {}
 
 // Состояние компрессора
 function stateC(o = {}) {
