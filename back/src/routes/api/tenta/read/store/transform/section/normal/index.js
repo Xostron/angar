@@ -3,7 +3,7 @@ const alarm = require('../../alarm')
 
 function normal(result, idS, idB, obj) {
 	const { data, heating, sensor, fan, valve } = obj
-	const value = result.value
+	// const value = result.value
 	// Аварии авторежима секции
 	result.alarm = alarm(idB, idS, data)
 	// Температура улицы (мин)
@@ -20,23 +20,23 @@ function normal(result, idS, idB, obj) {
 
 	// console.log(111, 'ИТОГО: ', result.alarm)
 	// Температура продукта секции
-	get('tprd', idS, 'section', sensor).forEach((el) => fe(el, value, data))
+	get('tprd', idS, 'section', sensor).forEach((el) => fe(el, result, data))
 	// Температура канала секции
-	get('tcnl', idS, 'section', sensor).forEach((el) => fe(el, value, data))
+	get('tcnl', idS, 'section', sensor).forEach((el) => fe(el, result, data))
 	// Давление секции
-	get('p', idS, 'section', sensor).forEach((el) => fe(el, value, data))
+	get('p', idS, 'section', sensor).forEach((el) => fe(el, result, data))
 	// Статусы вентиляторов секции
 	fan.forEach((el) => {
 		if (el.owner.id !== idS) return
-		value[el._id] = data[el._id]?.state
+		result[el._id] = data[el._id]?.state
 	})
 	// Обогрев клапанов секции
 	const heatingId = heating.find((el) => el.owner.id === idS)?._id
-	if (heatingId) value.vheating = data?.outputEq?.[heatingId]
+	if (heatingId) result.vheating = data?.outputEq?.[heatingId]
 	// Приток in секции
 	valve.forEach((el) => {
 		if (!el.sectionId.includes(idS)) return
-		value[el._id] = {
+		result[el._id] = {
 			val: data?.[el._id]?.val,
 			state: data?.[el._id]?.state,
 		}

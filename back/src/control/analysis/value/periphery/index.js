@@ -9,6 +9,7 @@ const aggregate = require('./fn/aggregate')
 const device = require('./fn/device')
 const building = require('./fn/building')
 
+
 /**
  * Преобразование прочитанных входов/выходов (коррекция, точность, клапан(концевики))
  * @param {*} val данные опроса модулей
@@ -41,7 +42,7 @@ function periphery(val, obj) {
 
 	// Состояние склада (подрежим работы)
 	building(equip, val, retain, result)
-	
+
 	return result
 }
 

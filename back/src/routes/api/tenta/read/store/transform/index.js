@@ -36,52 +36,55 @@ async function transform(idB, secId) {
 		let f = fan.filter((el) => idsS.includes(el.owner.id) && el.type === 'accel')
 		f = f.some((el) => data?.[el?._id]?.state === 'run') ? 'run' : 'stop'
 		// Формируем объект с результатами для склада
-		let result = {
-			// Погода
-			// weather: {},
-			_id: idB,
-			// Включен/выкл склад
-			on: bldData?.start ?? null,
-			// Продукт, хранящийся в складе
-			product: bldData?.product?.code ?? null,
-			// Режим склада
-			mode: store.value?.building?.[idB]?.submode?.[0] ?? bldData?.automode ?? null,
-			// Сообщение авторежима
-			note: data.alarm?.achieve?.[idB] ?? null,
-			crash: data.alarm?.count?.[idB] ?? 0,
-			alarm: alarm(idB, null, data) ?? null,
-			banner: banner(idB, data) ?? null,
-			//Краткая информация по секциям
-			sections: sections(idB, section, data, { heating, valve, fan }) ?? null,
-			value: {
-				// Разгонный вентилятор склада
-				fan: f,
-				// Абсолютная влажность продукта
-				ahb: {
-					value: data?.humAbs?.in?.[idB],
-					state: checkS(data?.total?.[idB]?.hin?.state, data?.total?.[idB]?.tprd?.state),
-				},
-				// Температура потолка (мин)
-				tempb: {
-					value: data?.total?.[idB]?.tin?.max?.toFixed(1) ?? undefined,
-					state: data?.total?.[idB]?.tin?.state,
-				},
-				// Относительная Влажность продукта (макс)
-				rhb: {
-					value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined,
-					state: data?.total?.[idB]?.hin?.state,
-				},
-				// Точка росы
-				point: { value: data?.total?.[idB]?.point },
-			},
+		const result = {}
+		// let result = {
+		// Погода
+		// weather: {},
+		result['_id'] = idB
+		// Включен/выкл склад
+		result['on'] = bldData?.start ?? null
+		// Продукт, хранящийся в складе
+		result['product'] = bldData?.product?.code ?? null
+		// Режим склада
+		result['mode'] = store.value?.building?.[idB]?.submode?.[0] ?? bldData?.automode ?? null
+		// Сообщение авторежима
+		result['note'] = data.alarm?.achieve?.[idB] ?? null
+		result['crash'] = data.alarm?.count?.[idB] ?? 0
+		result['alarm'] = alarm(idB, null, data) ?? null
+		result['banner'] = banner(idB, data) ?? null
+		//Краткая информация по секциям
+		// sections: sections(idB, section, data, { heating, valve, fan }) ?? null,
+		// value: {
+		// Разгонный вентилятор склада
+		result['accelFan'] = f
+		// Абсолютная влажность продукта
+		result['ahb'] = {
+			value: data?.humAbs?.in?.[idB],
+			state: checkS(data?.total?.[idB]?.hin?.state, data?.total?.[idB]?.tprd?.state),
 		}
+		// Температура потолка (мин)
+		result['tempb'] = {
+			value: data?.total?.[idB]?.tin?.max?.toFixed(1) ?? undefined,
+			state: data?.total?.[idB]?.tin?.state,
+		}
+		// Относительная Влажность продукта (макс)
+		result['rhb'] = {
+			value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined,
+			state: data?.total?.[idB]?.hin?.state,
+		}
+		// Точка росы
+		result['point'] = { value: data?.total?.[idB]?.point }
+		// },
+		// }
+		// Карточки секций
+		sections(idB, section, data, { heating, valve, fan }, result)
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы
-			result.value.ah = { value: data?.humAbs?.out?.com, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
+			result[secId + 'ah'] = { value: data?.humAbs?.out?.com, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
 			// Температура улицы (мин)
-			result.value.temp = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
+			result[secId + 'temp'] = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
 			// Влажность улицы (макс)
-			result.value.rh = { value: data?.total?.hout?.max?.toFixed(1) ?? undefined, state: data?.total?.hout?.state }
+			result[secId + 'rh'] = { value: data?.total?.hout?.max?.toFixed(1) ?? undefined, state: data?.total?.hout?.state }
 		}
 
 		// Если указан secId, обрабатываем полную информацию по секции

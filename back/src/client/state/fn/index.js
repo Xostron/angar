@@ -35,11 +35,14 @@ async function preparing() {
 
 	// Карточки PC
 	const resPC = transformPC(store.value, data.building)
+	console.log(55, resPC)
 	// Полное содержимое секции
 	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
-	// Преобразуем в одноуровневый объект с составными ключами
-	value = { ...convertPC(resPC), ...convertSec(value) }
-
+	console.log(555, value)
+		// console.log(5555, convertSec(value))
+		// Преобразуем в одноуровневый объект с составными ключами
+	// value = { ...convertPC(resPC), ...convertSec(value) }
+value = {...resPC, ...value}
 	// Расчет delta (первое включение прошло успешно hub.init = true)
 	valDelta = hub.init ? delta(value, hub.state) : null
 
