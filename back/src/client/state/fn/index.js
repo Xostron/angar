@@ -3,7 +3,7 @@ const { readTO, readOne } = require('@tool/json')
 const fsp = require('fs').promises
 const transformStore = require('@routes/api/tenta/read/store/transform')
 const transformPC = require('@routes/api/tenta/read/pc/transform')
-
+const _OBJECT_ID_LENGTH = 24
 /**
  *
  * @returns {object}	result Данные по датчикам (для Tenta админки),
@@ -35,79 +35,62 @@ async function preparing() {
 
 	// Карточки PC
 	const resPC = transformPC(store.value, data.building)
-	console.log(55, resPC)
-	// Полное содержимое секции
+	// console.log(551, resPC)
+	
+	// Полное содержимое секции и карточки секций
 	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
-	console.log(555, value)
-		// console.log(5555, convertSec(value))
-		// Преобразуем в одноуровневый объект с составными ключами
-	// value = { ...convertPC(resPC), ...convertSec(value) }
-value = {...resPC, ...value}
+	// console.log(555, value)
+
+	// Преобразуем в одноуровневый объект с составными ключами
+	value = { ...convertPC(resPC), ...convertSec(value) }
+	// console.log(5551, value)
+
 	// Расчет delta (первое включение прошло успешно hub.init = true)
 	valDelta = hub.init ? delta(value, hub.state) : null
+	// console.log(55551, valDelta)
 
 	// Формируем данные для Tenta
 	const result = convertTenta(valDelta ?? value, data.pc._id)
-
+	// console.log(5553, result)
 	return { result, hub, value }
 }
+
 
 // PC  =  карточки складов
 function convertPC(obj) {
 	let r = {}
-	const buildings = Object.keys(obj.list)
-	if (!buildings.length) return
-	r.buildings = buildings
-	r.temp = obj.temp
-	r.rh = obj.rh
-	r.ah = obj.ah
-	// console.log(666, r)
-	for (const bldId in obj.list) r = { ...r, ...convert(obj.list[bldId], bldId) }
+	for (const fld in obj) {
+		if (['ah', 'rh', 'temp'].includes(fld)) r[fld] = obj[fld]
+		else {
+			const bldId = fld.slice(0,_OBJECT_ID_LENGTH)
+			r[bldId + '.' + fld] = obj[fld]
+		}
+	}
 	return r
 }
 
 // Секция = Полное описание секции + карточки секций + некоторая инфа по складу
 function convertSec(obj) {
 	let r = { buildings: new Set() }
-	let valve
 	for (const secId in obj) {
-		const bldId = obj[secId]._id
-		// Поля склада
+		const bldId = obj[secId].bldId
+		delete obj[secId].bldId
+		// Поля склада и карточек секций
 		if (!r.buildings.has(bldId)) {
 			r.buildings.add(bldId)
-			delete obj[secId]._id
-			delete obj[secId].value.vheating
 			r = { ...r, ...convert(obj[secId], bldId) }
-			delete r[`${bldId}.sections`]
-			delete r[`${bldId}.value`]
-			// Карточки секций
-			for (const sId in obj[secId].sections) {
-				delete obj[secId].sections[sId]._id
-				// Клапаны
-				valve = convert(obj[secId].sections[sId].valve, sId)
-				// Ключи клапанов
-				r[`${sId}.valves`] ??= []
-
-				r[`${sId}.valves`].push(...Object.keys(obj[secId].sections[sId].valve))
-				delete obj[secId].sections[sId].valve
-				// секция
-				r = { ...r, ...convert(obj[secId].sections[sId], `${sId}`), ...valve }
-			}
 			r[`${bldId}.sections`] = Object.keys(obj)
 		}
 		// Полное описание секции
 		r = { ...r, ...convert(obj[secId].value, `${secId}`) }
 	}
 	r.buildings = [...r.buildings]
-
-	// console.log(r)
-
 	return r
 }
 
 function convert(obj, key) {
 	const r = {}
-	for (const fld in obj) r[`${key}.${fld}`] = obj[fld]
+	for (const fld in obj) ['rh', 'ah', 'temp', 'value'].includes(fld) ? null : (r[`${key}.${fld}`] = obj[fld])
 	return r
 }
 
@@ -124,7 +107,7 @@ function convertTenta(value, pcId) {
 		}
 		r.push(o)
 	}
-	// console.log(r)
+
 	return r
 }
 
@@ -144,33 +127,9 @@ function delta(value, old) {
 				break
 		}
 	}
+	// console.log(5551, r)
 	return r
 }
 
-// // Склад  = карточки секций + некоторая инфа по складу
-// function convertBld(obj) {
-// 	let r = {}
-// 	const buildings = Object.keys(obj)
-// 	if (!buildings.length) return
-// 	r.buildings = buildings
-// 	// По складам
-// 	for (const bldId in obj) {
-// 		delete obj[bldId]._id
-// 		// Поля склада
-// 		r = { ...r, ...convert(obj[bldId], bldId) }
-// 		delete r[`${bldId}.sections`]
-// 		delete r[`${bldId}.value`]
-// 		r[`${bldId}.sections`] = Object.keys(obj[bldId].sections)
-// 		// По секции
-// 		for (const secId in obj[bldId].sections) {
-// 			delete obj[bldId].sections[secId]._id
-// 			// Поля sections
-// 			r = { ...r, ...convert(obj[bldId].sections[secId], `${bldId}.${secId}`) }
-// 		}
-// 		// поля Value
-// 		r = { ...r, ...convert(obj[bldId].value, `${bldId}.value`) }
-// 	}
-// 	return r
-// }
 
-module.exports = { preparing, convertPC, convertSec, convertTenta, delta }
+module.exports = { preparing, convertSec, convertTenta, delta }

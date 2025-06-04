@@ -10,14 +10,15 @@ const sections = require('./sections')
  * Трансформация данных о здании и секциях с использованием сенсоров и оборудования.
  *
  * @param {Object} bldData - Входные данные здания, которые необходимо трансформировать.
- * @param {String} idB - Идентификатор здания.
+ * @param {String} bldId - Идентификатор здания.
  * @param {String} secId - Идентификатор секции (если нужно получить полные данные по секции).
  * @returns {Object} Объект с результатами трансформации.
  */
-async function transform(idB, secId) {
+async function transform(bldId, secId) {
 	try {
+		let result = { value: {} }
 		// Получаем данные для конкретного здания из хранилища
-		const bldData = store?.value?.retain?.[idB]
+		const bldData = store?.value?.retain?.[bldId]
 		const data = store?.value
 		// Параллельно считываем необходимые данные
 		const p = [
@@ -30,75 +31,66 @@ async function transform(idB, secId) {
 		]
 		const [sensor, fan, heating, valve, section, building] = await Promise.all(p)
 		// Тип склада
-		const type = building?.find((el) => el._id === idB)?.type
+		const type = building?.find((el) => el._id === bldId)?.type
 		// Поиск разгонного вентилятора, принадлежащего зданию
-		let idsS = getId(section, idB)
+		let idsS = getId(section, bldId)
 		let f = fan.filter((el) => idsS.includes(el.owner.id) && el.type === 'accel')
 		f = f.some((el) => data?.[el?._id]?.state === 'run') ? 'run' : 'stop'
-		// Формируем объект с результатами для склада
-		const result = {}
-		// let result = {
-		// Погода
-		// weather: {},
-		result['_id'] = idB
+
+		result['bldId'] = bldId
 		// Включен/выкл склад
-		result['on'] = bldData?.start ?? null
+		result[bldId + 'on'] = bldData?.start ?? null
 		// Продукт, хранящийся в складе
-		result['product'] = bldData?.product?.code ?? null
+		result[bldId + 'product'] = bldData?.product?.code ?? null
 		// Режим склада
-		result['mode'] = store.value?.building?.[idB]?.submode?.[0] ?? bldData?.automode ?? null
+		result[bldId + 'mode'] = store.value?.building?.[bldId]?.submode?.[0] ?? bldData?.automode ?? null
 		// Сообщение авторежима
-		result['note'] = data.alarm?.achieve?.[idB] ?? null
-		result['crash'] = data.alarm?.count?.[idB] ?? 0
-		result['alarm'] = alarm(idB, null, data) ?? null
-		result['banner'] = banner(idB, data) ?? null
-		//Краткая информация по секциям
-		// sections: sections(idB, section, data, { heating, valve, fan }) ?? null,
-		// value: {
+		result[bldId + 'note'] = data.alarm?.achieve?.[bldId] ?? null
+		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0
+		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null
+		result[bldId + 'banner'] = banner(bldId, data) ?? null
 		// Разгонный вентилятор склада
-		result['accelFan'] = f
+		result[bldId + 'accel'] = f
 		// Абсолютная влажность продукта
-		result['ahb'] = {
-			value: data?.humAbs?.in?.[idB],
-			state: checkS(data?.total?.[idB]?.hin?.state, data?.total?.[idB]?.tprd?.state),
+		result[bldId + 'ahb'] = {
+			value: data?.humAbs?.in?.[bldId],
+			state: checkS(data?.total?.[bldId]?.hin?.state, data?.total?.[bldId]?.tprd?.state),
 		}
 		// Температура потолка (мин)
-		result['tempb'] = {
-			value: data?.total?.[idB]?.tin?.max?.toFixed(1) ?? undefined,
-			state: data?.total?.[idB]?.tin?.state,
+		result[bldId + 'tempb'] = {
+			value: data?.total?.[bldId]?.tin?.max?.toFixed(1) ?? undefined,
+			state: data?.total?.[bldId]?.tin?.state,
 		}
 		// Относительная Влажность продукта (макс)
-		result['rhb'] = {
-			value: data?.total?.[idB]?.hin?.max?.toFixed(1) ?? undefined,
-			state: data?.total?.[idB]?.hin?.state,
+		result[bldId + 'rhb'] = {
+			value: data?.total?.[bldId]?.hin?.max?.toFixed(1) ?? undefined,
+			state: data?.total?.[bldId]?.hin?.state,
 		}
 		// Точка росы
-		result['point'] = { value: data?.total?.[idB]?.point }
-		// },
-		// }
-		// Карточки секций
-		sections(idB, section, data, { heating, valve, fan }, result)
+		result[bldId + 'point'] = { value: data?.total?.[bldId]?.point }
+
+		// Краткая информация по секциям (карточки)
+		sections(bldId, section, data, { heating, valve, fan }, result)
+
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы
-			result[secId + 'ah'] = { value: data?.humAbs?.out?.com, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
+			result['ah'] = { value: data?.humAbs?.out?.com, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
 			// Температура улицы (мин)
-			result[secId + 'temp'] = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
+			result['temp'] = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
 			// Влажность улицы (макс)
-			result[secId + 'rh'] = { value: data?.total?.hout?.max?.toFixed(1) ?? undefined, state: data?.total?.hout?.state }
+			result['rh'] = { value: data?.total?.hout?.max?.toFixed(1) ?? undefined, state: data?.total?.hout?.state }
 		}
-
 		// Если указан secId, обрабатываем полную информацию по секции
 		if (secId && secId !== 'undefined') {
 			// Объединяем результаты с полными данными по секции
 			const o = { data, heating, sensor, fan, valve }
-			if (secDef[type]) await secDef[type](result, secId, idB, o)
+			if (secDef[type]) await secDef[type](result, secId, bldId, o)
 		}
-		// Возвращаем результаты трансформации для Виктора
+		//
 		return result
 	} catch (error) {
-		// В случае ошибки возвращаем её
 		console.log(error)
-		return error
+		throw error
 	}
 }
 module.exports = transform

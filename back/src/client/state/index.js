@@ -24,7 +24,7 @@ async function loopState() {
 				console.log(660001, error.message)
 			})
 		// отправка состояния каждые 5 минут
-		await delay(process.env?.PERIOD_STATE1 ?? 10000)
+		await delay(process.env?.PERIOD_STATE ?? 10000)
 	}
 }
 

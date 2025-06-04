@@ -3,12 +3,16 @@ function sections(idB, list, data, obj, result) {
 	// Получаем данные для конкретного здания из хранилища
 	const bldData = data.retain?.[idB]
 	const { heating, valve, fan } = obj
-	// const r = {}
+
+	// Обогрев клапанов секции (1 обогрев на много секций)
+	let h = null
+	const idSections = list.map((s) => s._id)
+	const heatings = heating.filter((h) => idSections.includes(h.owner.id))
+	if (heatings.length === 1) h = data?.outputEq?.[heatings[0]._id]
+
+	// По секции
 	list.forEach((el) => {
 		if (el.buildingId !== idB) return
-		// const o = {
-		result[el._id + '_id'] = el._id
-		result[el._id + 'name'] = el.name
 		// Режим работы секции
 		result[el._id + 'mode'] = bldData?.mode?.[el._id] ?? null
 		// Минимальная и максимальная температура продукта в секции
@@ -20,14 +24,16 @@ function sections(idB, list, data, obj, result) {
 			value: data?.total?.[el._id]?.tprd?.max?.toFixed(1) ?? undefined,
 			state: data?.total?.[el._id]?.tprd?.state,
 		}
-		// Клапаны секции
-		// valve: {},
+
 		// Статус вентилятора секции (по умолчанию "остановлен")
 		result[el._id + 'fan'] = 'stop'
-		// }
+
 		// Обогрев клапанов секции
-		const heatingId = heating.find((e) => e.owner.id === el._id)?._id
-		if (heatingId) result.heating = data?.outputEq?.[heatingId]
+		if (h !== null) result[el._id + 'heating'] = h
+		else {
+			const heatingId = heating.find((e) => e.owner.id === el._id)?._id
+			result[el._id + 'heating'] = data?.outputEq?.[heatingId]
+		}
 
 		// Получем данные для o.valve
 		valve.forEach((v) => {
@@ -37,6 +43,7 @@ function sections(idB, list, data, obj, result) {
 				state: data?.[v._id]?.state,
 			}
 		})
+
 		// Обработка вентиляторов секции
 		fan.forEach((f) => {
 			if (f.owner.id !== el._id || f.type !== 'fan') return
@@ -45,12 +52,9 @@ function sections(idB, list, data, obj, result) {
 			if (result[el._id + 'fan'] === need[0]) return
 			const st = data?.[f._id]?.state
 			if (!st) return
-			if (need.includes(st))result[el._id + 'fan'] = st
+			if (need.includes(st)) result[el._id + 'fan'] = st
 		})
-
-		// r[el._id] = o
 	})
-	// return r
 }
 
 module.exports = sections

@@ -37,6 +37,7 @@ function fnTransform(bld, data, result) {
 	// Тип склада
 	const type = bld?.type
 	// const obj = {
+	// result[bld._id+'pcId'] = bld.pcId
 	result[bld._id + 'product'] = data?.retain?.[bld._id]?.product?.code ?? null
 	result[bld._id + 'mode'] = store.value?.building?.[bld._id]?.submode?.[0] ?? data?.retain?.[bld._id]?.automode ?? null
 	result[bld._id + 'count'] = data?.retain?.[bld._id]?.drying?.count ?? data?.retain?.[bld._id]?.drying?.acc ?? 0
