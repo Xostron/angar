@@ -35,7 +35,7 @@ function fnTransform(bld, data, result) {
 	// TODO:rrp  Надо проверить почему undefined записан как строка
 	if (!bld._id || bld._id === 'undefined') return
 	// Тип склада
-	const type = bld?.type
+	// const type = bld?.type
 	// const obj = {
 	// result[bld._id+'pcId'] = bld.pcId
 	result[bld._id + 'product'] = data?.retain?.[bld._id]?.product?.code ?? null

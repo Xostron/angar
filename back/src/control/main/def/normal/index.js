@@ -5,7 +5,7 @@ const { data: store } = require('@store')
 
 // Простой склад
 function normal(building, obj, bdata) {
-	console.log(22, `\t${building?.type === 'combi' ? 'Комбинированный обычный' : 'Обычный'} склад - процесс`, building?.type)
+	// console.log(22, `\t${building?.type === 'combi' ? 'Комбинированный обычный' : 'Обычный'} склад - процесс`, building?.type)
 	// Данные по складу
 	const { start, automode, s, se: seB, m, accAuto, resultFan } = bdata
 	// СКЛАД: доп.функции - extra, доп. аварии - extralrm

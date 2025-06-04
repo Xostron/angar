@@ -70,7 +70,7 @@ async function transform(bldId, secId) {
 		result[bldId + 'point'] = { value: data?.total?.[bldId]?.point }
 
 		// Краткая информация по секциям (карточки)
-		sections(bldId, section, data, { heating, valve, fan }, result)
+		sections(bldId, type, section, data, { heating, valve, fan }, result)
 
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы

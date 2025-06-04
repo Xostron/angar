@@ -22,10 +22,12 @@ function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm)
 	const { data, retain } = obj
 	let alrAlw
 
-	const sections = data.section.filter((el) => (el.buildingId = bld._id))
+	const sections = data.section.filter((el) => (el.buildingId == bld._id))
 	// Секции склада
 	for (const sect of sections) {
-		if (sect.buildingId != bld._id) continue
+
+		if (sect.buildingId !== bld._id) continue
+		console.log(111, sect)
 		// Исполнительные механизмы секции
 		const m = mech(obj.data, sect._id, sect.buildingId)
 		// Показания с датчиков секции

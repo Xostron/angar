@@ -18,13 +18,14 @@ const apiConfig = (data, params) => ({
 
 async function loopState() {
 	while (true) {
-		state()
-			.then()
-			.catch((error) => {
-				console.log(660001, error.message)
-			})
-		// отправка состояния каждые 5 минут
-		await delay(process.env?.PERIOD_STATE ?? 10000)
+		try {
+			const ok = await state()
+			// отправка состояния каждые 5 минут
+			ok ? await delay(process.env?.PERIOD_STATE ?? 10000) : await delay(10000)
+		} catch (error) {
+			console.log(660001, error.message)
+			return
+		}
 	}
 }
 
@@ -32,7 +33,7 @@ async function state() {
 	try {
 		// Формирование state (значения данных по PC)
 		const o = await preparing()
-		if (!o) return
+		if (!o) return false
 
 		// Передать данные INIT или delta
 		const params = o.hub.init ? null : { type: 'init' }
@@ -49,6 +50,7 @@ async function state() {
 		o.hub.last = true
 		o.hub.state = o.value
 		console.log('\x1b[33m%s\x1b[0m', 'Данные POS->Tenta переданы', o.result.length)
+		return true
 	} catch (error) {
 		throw error
 	}

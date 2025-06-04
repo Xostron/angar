@@ -36,7 +36,7 @@ async function preparing() {
 	// Карточки PC
 	const resPC = transformPC(store.value, data.building)
 	// console.log(551, resPC)
-	
+
 	// Полное содержимое секции и карточки секций
 	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
 	// console.log(555, value)
@@ -55,14 +55,13 @@ async function preparing() {
 	return { result, hub, value }
 }
 
-
 // PC  =  карточки складов
 function convertPC(obj) {
 	let r = {}
 	for (const fld in obj) {
 		if (['ah', 'rh', 'temp'].includes(fld)) r[fld] = obj[fld]
 		else {
-			const bldId = fld.slice(0,_OBJECT_ID_LENGTH)
+			const bldId = fld.slice(0, _OBJECT_ID_LENGTH)
 			r[bldId + '.' + fld] = obj[fld]
 		}
 	}
@@ -79,10 +78,13 @@ function convertSec(obj) {
 		if (!r.buildings.has(bldId)) {
 			r.buildings.add(bldId)
 			r = { ...r, ...convert(obj[secId], bldId) }
-			r[`${bldId}.sections`] = Object.keys(obj)
+			r[`${bldId}.sections`] ??= []
+			r[`${bldId}.sections`].push(secId)
 		}
 		// Полное описание секции
+		// console.log(22, obj[secId].valve?.[secId])
 		r = { ...r, ...convert(obj[secId].value, `${secId}`) }
+		if (obj[secId].valve?.[secId]) r = { ...r, [secId + '.valve']: obj[secId].valve?.[secId] }
 	}
 	r.buildings = [...r.buildings]
 	return r
@@ -90,7 +92,7 @@ function convertSec(obj) {
 
 function convert(obj, key) {
 	const r = {}
-	for (const fld in obj) ['rh', 'ah', 'temp', 'value'].includes(fld) ? null : (r[`${key}.${fld}`] = obj[fld])
+	for (const fld in obj) ['rh', 'ah', 'temp', 'value', 'valve'].includes(fld) ? null : (r[`${key}.${fld}`] = obj[fld])
 	return r
 }
 
@@ -130,6 +132,5 @@ function delta(value, old) {
 	// console.log(5551, r)
 	return r
 }
-
 
 module.exports = { preparing, convertSec, convertTenta, delta }

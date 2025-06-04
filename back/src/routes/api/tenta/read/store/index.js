@@ -14,6 +14,7 @@ function getStore() {
 			// Превращаем в одноуровневый для Виктора
 			result = { ...result, ...result.value }
 			delete result.value
+			delete result.valve
 			res.json({ result })
 		} catch (error) {
 			console.log('getStore error', error)

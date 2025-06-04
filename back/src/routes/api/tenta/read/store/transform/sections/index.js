@@ -1,12 +1,12 @@
 // Обрабатываем секции - краткая информация (Карточки секций)
-function sections(idB, list, data, obj, result) {
+function sections(idB, type, list, data, obj, result) {
 	// Получаем данные для конкретного здания из хранилища
 	const bldData = data.retain?.[idB]
 	const { heating, valve, fan } = obj
 
 	// Обогрев клапанов секции (1 обогрев на много секций)
 	let h = null
-	const idSections = list.map((s) => s._id)
+	const idSections = list.filter((s) => s.buildingId == idB).map((s) => s._id)
 	const heatings = heating.filter((h) => idSections.includes(h.owner.id))
 	if (heatings.length === 1) h = data?.outputEq?.[heatings[0]._id]
 
@@ -29,10 +29,12 @@ function sections(idB, list, data, obj, result) {
 		result[el._id + 'fan'] = 'stop'
 
 		// Обогрев клапанов секции
-		if (h !== null) result[el._id + 'heating'] = h
-		else {
-			const heatingId = heating.find((e) => e.owner.id === el._id)?._id
-			result[el._id + 'heating'] = data?.outputEq?.[heatingId]
+		if (type !== 'cold') {
+			if (h !== null) result[el._id + 'heating'] = h
+			else {
+				const heatingId = heating.find((e) => e.owner.id === el._id)?._id
+				result[el._id + 'heating'] = data?.outputEq?.[heatingId]
+			}
 		}
 
 		// Получем данные для o.valve
@@ -42,6 +44,9 @@ function sections(idB, list, data, obj, result) {
 				val: data?.[v._id]?.val,
 				state: data?.[v._id]?.state,
 			}
+			result.valve??={}
+			result.valve[el._id] ??=[]
+			result.valve[el._id].push(v._id)
 		})
 
 		// Обработка вентиляторов секции
