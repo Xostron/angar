@@ -39,7 +39,6 @@ function periphery(val, obj) {
 	aggregate(equip, val, retain, result)
 	// Устройства (СО2, увлажнитель)
 	device(equip, val, retain, result)
-
 	// Состояние склада (подрежим работы)
 	building(equip, val, retain, result)
 

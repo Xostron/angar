@@ -1,7 +1,7 @@
 const { fnDetection } = require('@tool/sensor/fn')
 const vSensor = require('@tool/sensor')
 const total = require('./total')
-const forecast = require('./forecast')
+
 /**
  * Аналоговые датчики
  * Преобразование с учетом точности и коррекции
@@ -19,8 +19,6 @@ function sensor(equip, val, retain, result) {
 	fnDetection(equip, result, retain)
 	// Готовые результаты по датчикам
 	total(equip, result, retain)
-	// Прогноз погоды
-	forecast(equip, result, retain)
 }
 
 module.exports = sensor

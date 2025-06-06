@@ -17,7 +17,7 @@ async function analysis(obj) {
 	// Анализ - данные для клиента и работы алгоритма
 	v = value(v, obj)
 	// Настройки складов (обработанные для расчетов)
-	calcSetting(obj, v)
+	calcSetting(v, obj)
 	// Передача мяса по Socket.io на web-клиент
 	console.log(333, v.coef)
 	await cValue(v)
@@ -41,7 +41,7 @@ const _STG = [
  * @param {*} v Глобальные данные склада для клиента Web
  * @returns
  */
-const calcSetting = (obj, v) =>
+const calcSetting = (v, obj) => {
 	obj.data.building.forEach((bld) => {
 		store.calcSetting[bld._id] = setting(bld, obj)
 		v.coef ??= {}
@@ -54,3 +54,4 @@ const calcSetting = (obj, v) =>
 			v.coef[bld._id][key] = !field2 ? store.calcSetting[bld._id][key][field1] : store.calcSetting[bld._id][key][field1][field2]
 		}
 	})
+}
