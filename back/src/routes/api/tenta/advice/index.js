@@ -18,9 +18,7 @@ function advice() {
 				tprd: total?.[bld._id]?.tprd,
 				houtAbs: humAbs?.out?.[bld._id] ?? humAbs?.out?.com,
 				hinAbs: humAbs?.in?.[bld._id],
-				setting: {
-					cooling: { target: setting?.[bld._id]?.cooling?.target },
-				},
+				target: setting?.[bld._id]?.cooling?.target,
 			}
 		})
 		res.json(r)
