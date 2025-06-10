@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
-import { sForecast } from '@socket/emit'
 import './style.css'
-import { useState } from 'react'
+// import { sForecast } from '@socket/emit'
+// import { useState } from 'react'
+// import Btn from '@cmp/fields/btn'
 
 export default function Forecast({ address, weather, cls }) {
 	const { build } = useParams()
@@ -13,7 +14,7 @@ export default function Forecast({ address, weather, cls }) {
 	const dt = new Date(weather.time).toLocaleString()
 	const updateTime = new Date(weather.update).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })
 	// Аналитика
-	const [fore, setFore] = useState(null)
+	// const [fore, setFore] = useState(null)
 	return (
 		<div className={cl}>
 			{address ? (
@@ -37,7 +38,7 @@ export default function Forecast({ address, weather, cls }) {
 
 			<div className='wthr-update'>
 				<span>Точка росы: {point ?? '--'}°C</span>
-				<button onClick={() => sForecast({ build }, setFore)}>Аналитика</button>
+				{/* <Btn onClick={() => sForecast({ build }, setFore)} title='Аналитика' style={{fontSize:'16px'}}/> */}
 				<span>{updateTime}</span>
 			</div>
 		</div>
