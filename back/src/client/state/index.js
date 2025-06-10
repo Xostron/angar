@@ -4,7 +4,7 @@ const api = require('@tool/api')
 const axios = require('axios')
 
 const apiConfig = (data, params) => ({
-	method: 'post',
+	method: 'POST',
 	maxBodyLength: Infinity,
 	baseURL: 'http://192.168.21.39:3200/api/',
 	url: 'angar/state',

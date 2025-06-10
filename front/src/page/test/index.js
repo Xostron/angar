@@ -7,7 +7,7 @@ import { socket } from '@socket/index'
 import useEquipStore from '@store/equipment'
 import useInputStore from '@store/input'
 import useOutputStore from '@store/output'
-import { sEquip } from '@socket/emit'
+
 import { useShallow } from 'zustand/react/shallow'
 
 const Main = () => {
@@ -33,7 +33,7 @@ const Main = () => {
 				<button style={{ width: 80, height: 40 }} onClick={clickWS}>
 					Socket
 				</button>
-				<button style={{ width: 80, height: 40 }} onClick={() => sEquip(initE)}>
+				<button style={{ width: 80, height: 40 }} onClick={() => {}}>
 					Equipment
 				</button>
 			</p>

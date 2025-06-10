@@ -1,11 +1,14 @@
 import { socket } from '@socket/index'
 // Сообщения клиент -> сервер
 
-// Запрос оборудования
-function sEquip(callback) {
-	socket.emit('s_equip', {}, callback)
+// Запрос аналитики по прогнозу погоды
+function sForecast(data, set) {
+	socket.emit('s_forecast', data, (res) => {
+		// Ответ по аналитике
+		set(res)
+		console.log('s_forecast', res)
+	})
 }
-
 // Данные на сервер: команды управления
 function sOutput(data, callback) {
 	socket.emit('s_output', data, (res) => {
@@ -73,15 +76,15 @@ function sWarming(data, callback) {
 	})
 }
 // Изменить продукт
-function sProduct(data,callback){
+function sProduct(data, callback) {
 	socket.emit('s_product', data, (res) => {
 		console.log(res)
 	})
 }
 // Обнулить счетчик сушки
-function sZero(data,callback){
+function sZero(data, callback) {
 	socket.emit('s_zero', data, (res) => {
 		console.log(res)
 	})
 }
-export { sEquip, sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sReset, sWarming, sProduct, sZero }
+export { sForecast, sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sReset, sWarming, sProduct, sZero }

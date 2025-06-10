@@ -36,10 +36,6 @@ function init() {
 		// отправка рамы на клиент
 		.then((data) => cEquip(data))
 		.catch(console.log)
-	// обновление конфигурации склада каждые 7 минут
-	// .finally((_) => {
-	// 	setTimeout(() => init(), process.env?.PERIOD ?? 420001)
-	// })
 }
 
 async function loopInit() {

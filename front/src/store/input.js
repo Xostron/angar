@@ -1,7 +1,5 @@
 import { create } from 'zustand'
-import invalid from '@tool/status/invalid_value'
-import useEquipStore from '@store/equipment'
-import { useShallow } from 'zustand/react/shallow'
+
 
 // Данные от сервера: датчики, режимы, настройки
 const useInputStore = create((set, get) => ({
