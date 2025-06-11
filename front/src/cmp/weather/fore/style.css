@@ -3,7 +3,8 @@
 	width: 100%;
 	position: relative;
 	padding: 8px 8px;
-	gap: 16px;
+	/* gap: 10px; */
+	justify-content: space-between;
 }
 
 .weather-fore .adr {
@@ -12,6 +13,14 @@
 	gap: 20px;
 	font-size: var(--fsz20);
 	color: var(--background);
+}
+
+.wthr-update {
+	display: flex;
+	justify-content: space-between;
+	width: calc(100% - 16px);
+	color: var(--background);
+	font-size: 16px;
 }
 
 .weather-fore .wthr {
@@ -41,12 +50,13 @@
 	height: 100px;
 }
 
-.wthr-update {
+.wthr-title {
 	display: flex;
+	font-size: 16px;
 	justify-content: space-between;
-	width: calc(100% - 16px);
-	position: absolute;
-	bottom: 8px;
-	font-size: var(--fsz20);
-	color: var(--background);
+}
+.seven {
+	line-height: 0;
+	padding: 0 8px;
+	font-size: 16px !important;
 }

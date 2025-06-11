@@ -1,46 +1,27 @@
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
+import Today from './today'
 import './style.css'
-// import { sForecast } from '@socket/emit'
-// import { useState } from 'react'
-// import Btn from '@cmp/fields/btn'
 
-export default function Forecast({ address, weather, cls }) {
+
+export default function Forecast({ address, weather }) {
 	const { build } = useParams()
-	const [tweather, point] = useInputStore(({ input }) => [input?.[build]?.tweather?.value, input?.total?.[build]?.point])
-	let cl = ['w-fore', cls]
-	cl = cl.join(' ')
-	const img = typeof weather.code == 'number' ? <img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} /> : null
-	const dt = new Date(weather.time).toLocaleString()
+	const [point] = useInputStore(({ input }) => [input?.total?.[build]?.point])
 	const updateTime = new Date(weather.update).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' })
-	// Аналитика
-	// const [fore, setFore] = useState(null)
+
 	return (
-		<div className={cl}>
+		<div className='weather-fore'>
 			{address ? (
-				<div className='adr'>
+				<article className='adr'>
 					<img src='/img/geo.svg' />
 					<span>{address ?? '--'}</span>
-				</div>
+				</article>
 			) : null}
-
-			<div className='wthr'>
-				<div>
-					<span className='status'>{weather.weather ?? ''}</span>
-					<span className='temp' title={dt}>
-						{tweather ?? '--'}°C
-					</span>
-					{/* <span>Точка росы: {point ?? '--'}°C</span> */}
-					{weather.humidity ? <span>Влажность: {weather.humidity ?? '--'}%</span> : null}
-				</div>
-				<div>{img}</div>
-			</div>
-
-			<div className='wthr-update'>
+			<Today weather={weather} />
+			<article className='wthr-update'>
 				<span>Точка росы: {point ?? '--'}°C</span>
-				{/* <Btn onClick={() => sForecast({ build }, setFore)} title='Аналитика' style={{fontSize:'16px'}}/> */}
 				<span>{updateTime}</span>
-			</div>
+			</article>
 		</div>
 	)
 }

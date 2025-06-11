@@ -14,32 +14,35 @@ function submode(building, obj, s, seB, acc) {
 	// ========= Доп. Охлаждение 2 =========
 	const x2 = acc.tprdMin + s.mois.max
 	// set
+	console.log(11,'set Охлаждение+', x2, '<=', seB.tprd ,'&&', acc?.submode?.[0], '===' ,sm?.cooling?.[0])
 	if (x2 <= seB.tprd && acc?.submode?.[0] === sm?.cooling?.[0]) acc.submode = sm.cooling2
 	// reset
+	console.log(11,'reset Охлаждение+', x2, '-' ,s.cooling.hysteresisIn, '>' ,seB.tprd ,'&&', acc?.submode?.[0], '===' ,sm?.cooling2?.[0])
 	if (x2 - s.cooling.hysteresisIn > seB.tprd && acc?.submode?.[0] === sm?.cooling2?.[0]) acc.submode = sm.cooling
 	// check
 	if (acc?.submode?.[0] === sm?.cooling2?.[0]) {
+		console.log(11, 'check охлаждение+')
 		acc.setting = { cooling: s.cooling, mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 } }
 		return
 	}
 
 	// ========= Лечение =========
 	// set
-	// console.log(11, 'check лечение', s.mois.humidity + s.cure.hysteresisJump, '<', seB.hin, '&&', seB.tprd, '<=', acc.tgt, '&&', acc?.submode?.[0])
+	console.log(22, 'set лечение', s.mois.humidity + s.cure.hysteresisJump, '<', seB.hin, '&&', seB.tprd, '<=', acc.tgt, '&&', acc?.submode?.[0],'===',sm?.cooling?.[0])
 	if (s.mois.humidity + s.cure.hysteresisJump < seB.hin && seB.tprd <= acc.tgt && acc?.submode?.[0] === sm?.cooling?.[0]) {
 		acc.submode = sm.cure
-		// console.log(12, 'set лечение')
 	}
 	// reset
+	console.log(22, 'reset лечение', s.mois.humidity, '>', seB.hin, '||', seB.tprd, '>', acc.tgt+s.cooling.hysteresisIn, '&&', acc?.submode?.[0],'===',sm?.cure?.[0])
 	if ((s.mois.humidity > seB.hin || seB.tprd > acc.tgt + s.cooling.hysteresisIn) && acc?.submode?.[0] === sm?.cure?.[0]) {
 		acc.submode = sm.cooling
-		// console.log(22, 'reset лечение')
 	}
 	// Уменьшение разницы продукт-канал
 	if (seB.tprd + 0.2 <= acc.tgt && acc?.submode?.[0] === sm?.cure?.[0]) acc.setting.cooling.differenceValue = 0
 	else if (seB.tprd > acc.tgt && acc?.submode?.[0] === sm?.cure?.[0]) acc.setting.cooling.differenceValue = s.cure.differenceValue
 	// check
 	if (acc?.submode?.[0] === sm?.cure?.[0]) {
+		console.log(2, 'check лечение')
 		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
 		return
 	}
@@ -47,6 +50,7 @@ function submode(building, obj, s, seB, acc) {
 	// =========Охлаждение - по умолчанию =========
 	acc.submode = sm.cooling
 	acc.setting = { cooling: s.cooling, mois: s.mois }
+	console.log(333, 'Охлаждение', acc.submode)
 }
 
 /**
