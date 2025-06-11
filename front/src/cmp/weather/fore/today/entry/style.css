@@ -1,0 +1,30 @@
+.entry-fore {
+	display: flex;
+	flex-direction: column;
+	height: 350px;
+	color: var(--primary);
+	/* justify-content: center; */
+	/* gap: 0px!important; */
+}
+
+.entry-fore-btn {
+	line-height: 22px;
+	border-radius: 0;
+	padding: 0;
+	font-size: var(--fsz22) !important;
+	color: var(--secondary);
+	background-color:transparent;
+	width: fit-content;
+}
+
+
+
+.entry-fore-btn-ok {
+	line-height: 18px;
+	border-radius: 0;
+	padding: 0;
+	font-size: var(--fsz16) !important;
+	color: var(--secondary);
+	background-color:transparent;
+	width: fit-content;
+}

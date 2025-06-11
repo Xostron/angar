@@ -2,6 +2,7 @@ import './style.css'
 
 export default function Weather7d({ weather }) {
 	const { forecast, update } = weather
+	
 	const items = forecast
 		.reduce(
 			(acc, el) => {
@@ -15,13 +16,19 @@ export default function Weather7d({ weather }) {
 		)
 		.result.map((el, i) => <Day key={i} items={el} idx={i} />)
 
-	return <section className='cmp-weather7d'>{!!items.length && items}</section>
+	const dd1 = new Date(forecast[0].time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
+	const dd2 = new Date(forecast[27].time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
+	return (
+		<section className='cmp-weather7d'>
+			<span>Прогноз погоды {dd1 && dd2 ? `c ${dd1} по ${dd2}` : ''}</span>
+			<div className='cmp-weather7d-content'>{!!items.length && items}</div>
+		</section>
+	)
 }
 
 // День - состоит из 4 замеров температуры
 function Day({ items, idx }) {
-	// console.log(111, arr)
-	const dd = new Date(items[0].time).toLocaleString('ru', {weekday:'short', day: '2-digit', month: '2-digit' })
+	const dd = new Date(items[0].time).toLocaleString('ru', { weekday: 'short', day: '2-digit', month: '2-digit' })
 	return (
 		<article className='cmp-weather7d-day'>
 			{idx == 0 ? 'Сегодня ' : ''}

@@ -1,20 +1,30 @@
 .cmp-weather7d {
 	display: flex;
+	flex-direction: column;
+	text-align: center;
+	gap: 20px;
+	color: var(--primary);
+}
+.cmp-weather7d > span{
+	font-size: var(--fsz22);
+}
+.cmp-weather7d-content {
+	display: flex;
 	flex-direction: row;
 	gap: 8px;
 }
 .cmp-weather7d-day {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 	text-align: center;
-	/* padding-left: 16px; */
 }
 .cmp-weather7d-day-content {
 	display: flex;
-	/* border: 1px solid var(--primary); */
 	border-radius: 16px;
 	padding: 8px;
 	gap: 16px;
-	/* background-color: rgb(232, 232, 232); */
-	background-color:#65a7ee2f;
+	background-color: #65a7ee2f;
 }
 
 .cmp-weather7d-day-item {

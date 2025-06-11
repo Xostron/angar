@@ -50,13 +50,4 @@
 	height: 100px;
 }
 
-.wthr-title {
-	display: flex;
-	font-size: 16px;
-	justify-content: space-between;
-}
-.seven {
-	line-height: 0;
-	padding: 0 8px;
-	font-size: 16px !important;
-}
+
