@@ -4,6 +4,6 @@ export default function useDialog() {
 	const refDialog = useRef(null)
 	const open = () => refDialog?.current?.showModal()
 	const close = () => refDialog?.current?.close()
-
-	return { refDialog, open, close }
+	const isOpen = refDialog.current?.open
+	return { refDialog, open, close, isOpen }
 }

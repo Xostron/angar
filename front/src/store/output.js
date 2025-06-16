@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sWarming } from "@socket/emit";
 
+
 // Данные на сервер
 const useOutputStore = create((set, get) => ({
   // Команды управления выходами
@@ -137,6 +138,7 @@ const useOutputStore = create((set, get) => ({
   },
   // Настройки
   setSettingAu(obj) {
+	console.log(888,obj)
     if (!obj) {
       set({ settingAu: {} });
       return;
@@ -145,7 +147,7 @@ const useOutputStore = create((set, get) => ({
     settingAu.buildingId = obj?.build ?? null;
     settingAu.code = obj?.type ?? null;
     if (!["antibliz", "heating", "overVlv", "accel", "idle", "co2", "ozon", "heater", "smoking"].includes(obj?.type))
-      settingAu.prdCode = get().prd?.code ?? null;
+      settingAu.prdCode = get().prd?.code ?? obj?.prdCode
     settingAu.value ??= {};
     const name = obj.name.split(".");
     if (name.length === 1) {
@@ -154,7 +156,7 @@ const useOutputStore = create((set, get) => ({
       settingAu.value[name[0]] ??= {};
       settingAu.value[name[0]][name[1]] = obj.value;
     }
-    // console.log(1111, settingAu)
+    console.log(1111, settingAu)
     set({ settingAu });
   },
   sendSettingAu() {

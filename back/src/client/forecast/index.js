@@ -30,6 +30,7 @@ async function forecast(bldId) {
 			target: setting?.[bldId]?.cooling?.target,
 		}
 		const response = await api(apiConfig(o, { bldId }))
+		console.log(553, response.data)
 		return response.data
 	} catch (error) {
 		console.log(error.toJSON()?.message)

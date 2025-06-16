@@ -23,29 +23,30 @@
 	font-size: 16px;
 }
 
-.weather-fore .wthr {
+.wthr {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: var(--fsz28);
 	color: var(--background);
+	cursor: pointer;
 }
 
-.weather-fore .wthr > div:first-child {
+.wthr > div:first-child {
 	display: flex;
 	flex-direction: column;
 }
 
-.weather-fore .wthr > div:first-child > span {
+.wthr > div:first-child > span {
 	text-align: right;
 }
-.weather-fore .wthr .temp {
+.wthr .temp {
 	font-size: var(--fsz55);
 }
-.weather-fore .wthr .status {
+.wthr .status {
 	font-size: var(--fsz20);
 }
-.weather-fore .wthr img {
+.wthr img {
 	width: 100px;
 	height: 100px;
 }

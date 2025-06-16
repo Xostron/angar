@@ -166,7 +166,8 @@ a {
 
 .curt {
 	position: fixed;
-	background-color: var(--onSurface);
+	/* background-color: var(--onSurface); */
+	background-color: rgba(0, 0, 0, 0.144);
 	z-index: 999;
 	top: 0;
 	left: 0;

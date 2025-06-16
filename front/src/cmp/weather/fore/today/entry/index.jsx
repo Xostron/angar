@@ -1,30 +1,66 @@
 import { useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { sForecast } from '@socket/emit'
 import Btn from '@cmp/fields/btn'
 import './style.css'
 import Weather7d from '@cmp/weather_7d'
+import useOutputStore from '@store/output'
+import useInputStore from '@store/input'
 
-export default function Entry({ close, weather }) {
-	const { build } = useParams()
-	// Аналитика
-	const [fore, setFore] = useState(null)
-	console.log(111, fore)
+export default function Entry({ close, weather, isOpen }) {
 	return (
-		<div className='entry entry-fore'>
+		<div className='entry cmp-weather-entry'>
 			<Weather7d weather={weather} />
-			<Btn cls='entry-fore-btn' onClick={fnFore} title='Аналитика' />
-			{fore && (
-				<div>
-					{fore.msg}
-					<Btn cls='entry-fore-btn-ok' onClick={fnFore} title='Применить' />
-					<Btn cls='entry-fore-btn-ok' onClick={fnFore} title='Отмена' />
+			{isOpen ? <Analytic /> : <span>Аналитика</span>}
+		</div>
+	)
+}
+
+function Analytic({}) {
+	const { build } = useParams()
+	const [fore, setFore] = useState(null)
+	const [setSettingAu, sendSettingAu] = useOutputStore(({ setSettingAu, sendSettingAu }) => [setSettingAu, sendSettingAu])
+	const [prdCode] = useInputStore(({ input }) => [input.retain?.[build]?.product?.code])
+
+	let cl = ['cmp-weather-entry-fore']
+	if (fore) cl.push('cmp-weather-entry-fore-active')
+	cl = cl.join(' ')
+	// cleanup
+	// useEffect(() => {
+	// 	return () => {
+	// 		setFore(null)
+	// 	}
+	// }, [isOpen])
+	return (
+		<>
+			<Btn cls='cmp-weather-entry-btn' onClick={fnFore} title='Аналитика' />
+			{!fore?.building ? (
+				<>{fore?.msg}</>
+			) : (
+				<div className={cl}>
+					{fore?.msg}
+					<div className='cmp-weather-entry-btns'>
+						<Btn cls='cmp-weather-entry-btn-apy' onClick={fnOk} title='Применить' />
+						<Btn cls='cmp-weather-entry-btn-apy' onClick={fnCancel} title='Отмена' />
+					</div>
 				</div>
 			)}
-		</div>
+		</>
 	)
 	// Запрос аналитики по погоде
 	function fnFore() {
 		sForecast({ build }, setFore)
+	}
+	// Применить расчеты аналитики к настройке "Конечная темп. охлаждения"
+	function fnOk() {
+		if (typeof fore?.value !== 'object') return
+		const obj = { build, type: 'cooling', name: 'target.target', value: fore.value.target.target, prdCode }
+		setSettingAu(obj)
+		sendSettingAu()
+		setFore(null)
+	}
+	// Отмена, очистка сообщения
+	function fnCancel() {
+		setFore(null)
 	}
 }

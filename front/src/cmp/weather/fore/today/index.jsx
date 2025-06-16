@@ -7,7 +7,7 @@ import Entry from './entry'
 export default function Today({ weather }) {
 	const { build } = useParams()
 	const [tweather] = useInputStore(({ input }) => [input?.[build]?.tweather])
-	const { refDialog, open, close } = useDialog()
+	const { refDialog, open, close, isOpen } = useDialog()
 	const img = typeof weather.code == 'number' ? <img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} /> : null
 	const dt = new Date(weather.time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
 
@@ -25,7 +25,7 @@ export default function Today({ weather }) {
 			</article>
 			{/* Прогноз погоды на 7 дней */}
 			<Dialog href={refDialog}>
-				<Entry close={close} weather={weather} />
+				<Entry close={close} weather={weather} isOpen={isOpen} />
 			</Dialog>
 		</>
 	)
