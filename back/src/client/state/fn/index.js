@@ -133,4 +133,4 @@ function delta(value, old) {
 	return r
 }
 
-module.exports = { preparing, convertSec, convertTenta, delta }
+module.exports = preparing

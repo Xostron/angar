@@ -1,4 +1,4 @@
-const { preparing } = require('./fn')
+const preparing = require('./fn')
 const { delay } = require('@tool/command/time')
 const api = require('@tool/api')
 // const axios = require('axios')
