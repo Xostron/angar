@@ -1,12 +1,12 @@
-const { preparing, convertTenta, delta } = require('./fn')
+const { preparing } = require('./fn')
 const { delay } = require('@tool/command/time')
 const api = require('@tool/api')
-const axios = require('axios')
+// const axios = require('axios')
 
 const apiConfig = (data, params) => ({
 	method: 'POST',
 	maxBodyLength: Infinity,
-	baseURL: 'http://192.168.21.39:3200/api/',
+	// baseURL: 'http://192.168.21.39:3200/api/',
 	url: 'angar/state',
 	headers: {
 		'Content-Type': 'application/json',
@@ -20,8 +20,8 @@ async function loopState() {
 	while (true) {
 		try {
 			const ok = await state()
-			// отправка состояния каждые 5 минут
-			ok ? await delay(process.env?.PERIOD_STATE ?? 10000) : await delay(10000)
+			// отправка состояния каждые 10 минут (при первом запуске ожидание 15сек)
+			ok ? await delay(process.env?.PERIOD_STATE ?? 600000) : await delay(15000)
 		} catch (error) {
 			console.log(660001, error.message)
 			return
@@ -38,8 +38,8 @@ async function state() {
 		// Передать данные INIT или delta
 		const params = o.hub.init ? null : { type: 'init' }
 		const config = apiConfig(o.result, params)
-		const response = await axios.request(config)
-		// const response = await api(config)
+		// const response = await axios.request(config)
+		const response = await api(config)
 		if (!response.data) {
 			o.hub.last = false
 			throw new Error('Не удалось передать данные POS->Tenta')

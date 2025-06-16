@@ -5,7 +5,6 @@ import Btn from '@cmp/fields/btn'
 import './style.css'
 import Weather7d from '@cmp/weather_7d'
 import useOutputStore from '@store/output'
-import useInputStore from '@store/input'
 
 export default function Entry({ close, weather, isOpen }) {
 	return (
@@ -20,21 +19,15 @@ function Analytic({}) {
 	const { build } = useParams()
 	const [fore, setFore] = useState(null)
 	const [setSettingAu, sendSettingAu] = useOutputStore(({ setSettingAu, sendSettingAu }) => [setSettingAu, sendSettingAu])
-	const [prdCode] = useInputStore(({ input }) => [input.retain?.[build]?.product?.code])
 
 	let cl = ['cmp-weather-entry-fore']
 	if (fore) cl.push('cmp-weather-entry-fore-active')
 	cl = cl.join(' ')
-	// cleanup
-	// useEffect(() => {
-	// 	return () => {
-	// 		setFore(null)
-	// 	}
-	// }, [isOpen])
+
 	return (
 		<>
 			<Btn cls='cmp-weather-entry-btn' onClick={fnFore} title='Аналитика' />
-			{!fore?.building ? (
+			{!fore?.buildingId ? (
 				<>{fore?.msg}</>
 			) : (
 				<div className={cl}>
@@ -54,7 +47,7 @@ function Analytic({}) {
 	// Применить расчеты аналитики к настройке "Конечная темп. охлаждения"
 	function fnOk() {
 		if (typeof fore?.value !== 'object') return
-		const obj = { build, type: 'cooling', name: 'target.target', value: fore.value.target.target, prdCode }
+		const obj = { build:fore.buildingId, type: 'cooling', name: 'target.target', value: fore.value.target.target, prdCode:fore.product }
 		setSettingAu(obj)
 		sendSettingAu()
 		setFore(null)

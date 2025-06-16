@@ -51,7 +51,7 @@ export default function Entry({ close }) {
 				<Line name='' type='automode' data={am} setData={actAutomode} list={aAm} />
 				<Line name='' type='product' data={pr} setData={actProduct} list={aProd} />
 			</span>
-			<Data />
+			<Data prd={product?.code}/>
 			<Footer name={bStart} act1={action} act2={cancel} act3={zero} />
 		</div>
 	)

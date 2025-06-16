@@ -4,9 +4,15 @@ import Switch from '@cmp/fields/switch'
 import Text from '@cmp/fields/text'
 import useInputStore from '@store/input'
 
-export default function Data({}) {
+export default function Data({ prd }) {
 	let { build } = useParams()
-	const [count] = useInputStore(({ input }) => [input?.retain?.[build]?.drying?.count ?? input?.retain?.[build]?.drying?.acc])
+	// Время сушки в днях
+	const [count, day, inp] = useInputStore(({ input }) => [
+		input?.retain?.[build]?.drying?.acc,
+		input?.retain?.[build]?.setting?.drying?.[prd]?.day?.day ?? input?.factory?.drying?.[prd]?.day?.day,
+		input?.retain,
+	])
+	console.log(111, count, day, inp)
 	return (
 		<div className='data'>
 			<IconText
@@ -17,7 +23,7 @@ export default function Data({}) {
 				style={{ gridColumn: '1 /span 5' }}
 				cls='cell-entry'
 			/>
-			<Switch data={{ value: true }} />
+			<Switch value={false} setValue={() => {}} />
 			<IconText
 				data={{
 					value: 'Время сушки в днях',
@@ -28,7 +34,7 @@ export default function Data({}) {
 			/>
 			<Text
 				data={{
-					value: 12,
+					value: day,
 				}}
 			/>
 			<Text data={{ value: 'Дни' }} />
