@@ -21,7 +21,7 @@ async function loopState() {
 		try {
 			const ok = await state()
 			// отправка состояния каждые 10 минут (при первом запуске ожидание 15сек)
-			ok ? await delay(process.env?.PERIOD_STATE ?? 600000) : await delay(15000)
+			ok ? await delay(process.env?.PERIOD_STATE1 ?? 15000) : await delay(15000)
 		} catch (error) {
 			console.log(660001, error.message)
 			return
@@ -29,12 +29,12 @@ async function loopState() {
 	}
 }
 
-async function state() {
+async function state(type) {
 	try {
 		// Формирование state (значения данных по PC)
 		const o = await preparing()
 		if (!o) return false
-
+		if (type == 'force') console.log(999002, o.hub, o.result)
 		// Передать данные INIT или delta
 		const params = o.hub.init ? null : { type: 'init' }
 		const config = apiConfig(o.result, params)
@@ -56,4 +56,4 @@ async function state() {
 	}
 }
 
-module.exports = loopState
+module.exports = { loopState, state }

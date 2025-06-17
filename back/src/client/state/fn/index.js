@@ -34,7 +34,7 @@ async function preparing() {
 	}
 
 	// Карточки PC
-	const resPC = transformPC(store.value, data.building)
+	const resPC = transformPC(store.value, data.building, data.section, data.fan)
 	// console.log(551, resPC)
 
 	// Полное содержимое секции и карточки секций

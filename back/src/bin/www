@@ -11,7 +11,7 @@ const { data: store, retainDir, accDir, dataDir, stateDir } = require('@store')
 // Получение конфигурации от сервера
 const loopInit = require('@root/client/init')
 // Отправка состояния складов на админ-сервер
-const loopState = require('@root/client/state')
+const { loopState } = require('@root/client/state')
 // Выполнение основного цикла программы
 const loop = require('@root/control')
 // Запись логов с периодом
@@ -98,7 +98,6 @@ loop()
 	.then(() => console.log('Главный цикл остановлен'))
 	.catch(console.error)
 
-	
 /**
  * Normalize a port into a number, string, or false.
  */

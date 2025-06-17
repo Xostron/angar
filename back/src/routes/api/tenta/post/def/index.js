@@ -32,14 +32,6 @@ module.exports = data
 
 function fn(code) {
 	return async function (obj) {
-		// return new Promise(async (resolve, reject) => {
-		// 	try {
-		// 		await createAndModifySync(obj, 'data', retainDir, cb[code])
-		// 		resolve()
-		// 	} catch (error) {
-		// 		reject(error)
-		// 	}
-		// })
 		try {
 			await createAndModifySync(obj, 'data', retainDir, cb[code])
 			return true

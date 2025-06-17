@@ -20,7 +20,7 @@ async function transform(bldId, secId) {
 		// Получаем данные для конкретного здания из хранилища
 		const bldData = store?.value?.retain?.[bldId]
 		const data = store?.value
-		// Параллельно считываем необходимые данные
+		// Читаем раму json
 		const p = [
 			readOne('sensor'), // Считываем данные сенсоров
 			readOne('fan'), // Считываем данные вентиляторов
