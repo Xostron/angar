@@ -51,7 +51,6 @@ async function preparing() {
 
 	// Формируем данные для Tenta
 	const result = convertTenta(valDelta ?? value, data.pc._id)
-	// console.log(5553, result)
 	return { result, hub, value }
 }
 

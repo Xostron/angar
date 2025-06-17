@@ -2,6 +2,7 @@ const value = require('./get/value')
 const write = require('./post')
 const read = require('./read')
 const advice = require('./advice')
+const state = require('./state')
 
 function tenta(router) {
 	// Запись данных: настройки, команды управления
@@ -11,6 +12,7 @@ function tenta(router) {
 	// Чтение мяса
 	router.use('/tenta/read', read())
 	router.get('/tenta/advice', advice())
+	router.get('/tenta/state', state())
 }
 
 module.exports = tenta

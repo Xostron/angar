@@ -9,7 +9,7 @@ function write() {
 
 		def[code](obj)
 			.then((_) => {
-				console.log(999001, code)
+				// console.log(999001, code)
 				// state('force')
 				res.status(200).json({ result: true })
 			})

@@ -1,8 +1,8 @@
 const { loggerEvent } = require('@tool/logger')
+// const {state} = require('@root/client/state')
 const readJson = require('@tool/json').read
 const def = require('./def')
 const path = require('path')
-
 
 /**
  * Логирование действий пользователя: web
@@ -45,6 +45,7 @@ function mobileLog(req) {
 
 function activity(code, o) {
 	if (!def[code]) return
+	// state('force')
 	const { _id, buildingId, sectionId, clientId, cliName, fanId } = o
 	const _retain = path.join('retain', 'data.json')
 	readJson(['fan', 'valve', 'sensor', 'section', 'factory', 'building', _retain])

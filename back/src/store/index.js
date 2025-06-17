@@ -109,6 +109,8 @@ const data = {
 	calcSetting: {},
 	// Режим получения данных от ЦС
 	hub: { init: false, last: false },
+	// Флаги: появилась новая авария, ушла авария (для обновления state )
+	// isUpdate: false,
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
