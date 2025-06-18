@@ -15,7 +15,7 @@ const { data: store } = require('@store')
  * @returns
  */
 function relay(bldId, secId, obj, aCmd, fans, s, seB, idx) {
-	const { p } = sensor(bldId, secId, obj)
+	const  p  = sensor(bldId, secId, obj)?.p
 	// acc.count - Кол-во включенных вентиляторов (всегда один вентилятор в работе, независимо от давления в канале)
 	// Изменяя данное число, регулируем порядком вкл/выкл вентиляторов для поддержания давления в канале
 	store.watchdog.softFan[secId] ??= {}

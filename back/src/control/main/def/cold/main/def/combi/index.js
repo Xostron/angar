@@ -3,7 +3,7 @@ const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
 const { oneChange } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
-const target = require('../../fn/target')
+const target = require('../../fn/tgt')
 const coolers = require('./coolers')
 
 // Комбинированный - холодильник
