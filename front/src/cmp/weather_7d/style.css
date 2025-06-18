@@ -4,27 +4,31 @@
 	text-align: center;
 	gap: 20px;
 	color: var(--primary);
+	font-size: var(--fsz20);
 }
-.cmp-weather7d > h1{
-	font-size: var(--fsz22);
+.cmp-weather7d > h1 {
+	font-size: var(--fsz24);
 }
 .cmp-weather7d-content {
 	display: flex;
-	gap: 8px;
-	flex-direction: row;
 	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px 16px;
+	width: calc(4 * 230px + 3 * 16px);
 }
 .cmp-weather7d-day {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 	text-align: center;
+	width: 230px;
 }
 .cmp-weather7d-day-content {
 	display: flex;
 	border-radius: 16px;
 	padding: 8px;
-	gap: 16px;
+	justify-content: space-between;
 	background-color: #65a7ee29;
 }
 
@@ -34,5 +38,3 @@
 	align-items: center;
 	gap: 8px;
 }
-
-
