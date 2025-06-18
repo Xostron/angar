@@ -1,5 +1,4 @@
 const { loggerEvent } = require('@tool/logger')
-const { state } = require('@root/client/state')
 
 /**
  * Логирование информационных сообщений
