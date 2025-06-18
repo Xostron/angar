@@ -2,7 +2,7 @@ import './style.css'
 
 export default function Weather7d({ weather }) {
 	const { forecast, update } = weather
-
+	if (!forecast) return null
 	const items = forecast
 		.reduce(
 			(acc, el) => {

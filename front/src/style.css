@@ -91,7 +91,7 @@ img {
 }
 .weather {
 	display: flex;
-	width: calc(75% - var(--fsz30) / 2);
+	width: calc(77% - var(--fsz30) / 2);
 	aspect-ratio: 3/1;
 	background-color: var(--secondary);
 	background-position: center;
@@ -99,7 +99,7 @@ img {
 	background-size: cover;
 }
 .sens {
-	width: calc(25% - var(--fsz30) / 2);
+	width: calc(23% - var(--fsz30) / 2);
 	aspect-ratio: 1/1;
 	border: 1px solid var(--primary);
 	border-radius: 20px;

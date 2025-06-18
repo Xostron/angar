@@ -9,14 +9,8 @@
 }
 /* ************************** */
 .weather-sens {
-	width: 30%;
+	width: 26%;
 	box-sizing: border-box;
 	padding: 1% 2%;
 }
 
-/* ************************* */
-.weather-fore {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-}
