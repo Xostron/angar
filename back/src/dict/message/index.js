@@ -1,102 +1,90 @@
 const data = {
 	0: { code: '', msg: '' },
-	// ======== Сушка (Авто)========
+	// ======== Аварии авторежима (Сушка)========
 	1: {
 		code: 'tout1',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы не подходит при сушке',
-		count: false, // Участие в счетчике аварий и экран мониторинга
-		automode:true,
 	},
 	2: {
 		code: 'tout2',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой при сушке',
-		automode:true,
 	},
 	3: {
 		code: 'hout1',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы ниже допустимой при сушке',
-		automode:true,
 	},
 	4: {
 		code: 'hout2',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы выше допустимой при сушке',
-		automode:true,
 	},
 	5: {
 		code: 'ahout1',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы ниже допустимой при сушке',
-		automode:true,
 	},
 	6: {
 		code: 'ahout2',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы выше допустимой при сушке',
-		automode:true,
 	},
-	// ======== Охлаждение (Авто) ========
+	// ======== Аварии авторежима (Хранение) ========
 	7: {
 		code: 'ahout1',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы ниже допустимой',
-		automode:true,
 	},
 	8: {
 		code: 'ahout2',
 		type: 'ahout',
 		typeSignal: 'sensor',
 		msg: 'Абсолютная влажность улицы выше допустимой',
-		automode:true,
 	},
 	9: {
 		code: 'hout1',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы ниже допустимой',
-		automode:true,
 	},
 	10: {
 		code: 'hout2',
 		type: 'hout',
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы выше допустимой',
-		automode:true,
 	},
 	11: {
 		code: 'tout1',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы выше допустимой',
-		automode:true,
 	},
 	12: {
 		code: 'tout2',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой',
-		automode:true,
 	},
 	16: {
 		code: 'tout3',
 		type: 'tout',
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой (по продукту)',
-		automode:true,
 	},
-	15: { order: 1, code: 'cooling-1', msg: 't продукта в задании', automode:true,},
+	// ======= Сообщения Achieve =======
+	15: { order: 1, code: 'cooling-1', msg: 't продукта в задании' },
 	150: { order: 2, code: 'cooling-2', msg: 'Задание канала, задание продукта' },
-	151: { order: 3, code: 'datestop', msg: 'Склад выключен',automode:true, },
+	151: { order: 3, code: 'datestop', msg: 'Склад выключен' },
+
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
 	13: { code: 'antibliz', type: 'antibliz', typeSignal: 'valve', msg: 'Сработал режим антивьюги' },
@@ -108,22 +96,19 @@ const data = {
 	27: {
 		count: true,
 		code: 'local',
-		type: '',
 		typeSignal: 'critical',
 		msg: 'Управление переведено переключателем на щите',
 	},
 	// Модуль не в сети
 	28: {
 		code: 'connect',
-		type: '',
 		typeSignal: 'critical',
 		msg: 'Обратитесь в сервисный центр (пропала связь с модулем)',
 	},
 	// Генератор (склад)
 	29: {
-		count: true,
+		count: true, //Участвует в подсчете аварий (см. карточку склада)
 		code: 'gen',
-		type: '',
 		typeSignal: 'critical',
 		msg: 'Нет электропитания: работа от генератора',
 	},
@@ -139,7 +124,6 @@ const data = {
 	36: {
 		count: true,
 		code: 'alarm',
-		type: '',
 		typeSignal: 'critical',
 		msg: 'Нажат аварийный стоп',
 	},
@@ -147,7 +131,6 @@ const data = {
 	38: {
 		count: true,
 		code: 'supply',
-		type: '',
 		typeSignal: 'critical',
 		msg: 'Питание отключено',
 	},
@@ -155,14 +138,13 @@ const data = {
 	39: {
 		count: true,
 		code: 'openVin',
-		type: '',
 		typeSignal: 'valve',
 		msg: 'Температура канала выше температуры продукта',
 	},
 	40: {
 		code: 'stableVno',
 		typeSignal: 'fan',
-		msg: 'Неправильные настройки "гистерезиса давления" в "Настройках вентилятора"',
+		msg: 'Неправильные настройки "Гистерезиса давления" в "Настройках вентилятора"',
 	},
 	// beep alarm
 	65: [{ count: true, code: 'off', typeSignal: 'critical', msg: 'Выбит автоматический выключатель' }],
@@ -225,7 +207,6 @@ const data = {
 	// ======== Окуривание (холодильник) ========
 	82: {
 		code: 'smoking',
-		type: '',
 		typeSignal: 'critical',
 		msg: 'Окуривание',
 	},
@@ -234,8 +215,8 @@ const data = {
 	399: { code: 399, typeSignal: 'info', msg: 'Описание аварии не найдено' },
 
 	// ======== События системы (POS) =======
-	400: { msg: 'Система запущена' },
-	401: { msg: '' },
+	// 400: { msg: '' },
+	// 401: { msg: '' },
 	// ======== Действия пользователя =======
 	500: { msg: 'Склад включен' },
 	501: { msg: 'Склад выключен' },
