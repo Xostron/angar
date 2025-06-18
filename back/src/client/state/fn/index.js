@@ -1,5 +1,5 @@
-const { data: store, dataDir, stateDir, retainDir } = require('@store')
-const { readTO, readOne } = require('@tool/json')
+const { data: store, dataDir } = require('@store')
+const { readTO } = require('@tool/json')
 const fsp = require('fs').promises
 const transformStore = require('@routes/api/tenta/read/store/transform')
 const transformPC = require('@routes/api/tenta/read/pc/transform')

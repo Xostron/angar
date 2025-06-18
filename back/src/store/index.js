@@ -119,7 +119,6 @@ const data = {
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
-	stateDir: path.join(process.env.PATH_STATE),
 }
 
 // Сссылка на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
@@ -174,7 +173,6 @@ const retainDir = data.retainDir
 const factoryDir = data.factoryDir
 const rootDir = data.rootDir
 const accDir = data.accDir
-const stateDir = data.stateDir
 
 module.exports = {
 	data,
@@ -184,7 +182,7 @@ module.exports = {
 	retainDir,
 	factoryDir,
 	accDir,
-	stateDir,
+
 	setTick,
 	setToMan: toggleMode('toMan'),
 	setToAuto: toggleMode('toAuto'),

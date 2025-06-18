@@ -22,7 +22,7 @@ async function loopState() {
 		try {
 			await state()
 			// отправка состояния каждые 10 секунд
-			await delay(process.env?.PERIOD_STATE1 ?? 10000)
+			await delay(process.env?.PERIOD_STATE ?? 10000)
 		} catch (error) {
 			console.log(660001, error.message)
 			return

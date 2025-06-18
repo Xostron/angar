@@ -7,7 +7,7 @@ const fs = require('fs')
 var debug = require('debug')('angar:server')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-const { data: store, retainDir, accDir, dataDir, stateDir } = require('@store')
+const { data: store, retainDir, accDir, dataDir } = require('@store')
 // Получение конфигурации от сервера
 const loopInit = require('@root/client/init')
 // Отправка состояния складов на админ-сервер
@@ -81,10 +81,6 @@ if (!fs.existsSync(retainDir)) {
 if (!fs.existsSync(accDir)) {
 	fs.mkdirSync(accDir)
 	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}')
-}
-if (!fs.existsSync(stateDir)) {
-	fs.mkdirSync(stateDir)
-	fs.writeFileSync(path.join(stateDir, 'state.json'), '{}')
 }
 
 // Запрос конфигурации у админ-сервера
