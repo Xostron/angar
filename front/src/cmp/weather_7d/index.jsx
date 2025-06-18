@@ -2,7 +2,7 @@ import './style.css'
 
 export default function Weather7d({ weather }) {
 	const { forecast, update } = weather
-	
+
 	const items = forecast
 		.reduce(
 			(acc, el) => {
@@ -20,8 +20,8 @@ export default function Weather7d({ weather }) {
 	const dd2 = new Date(forecast[27].time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
 	return (
 		<section className='cmp-weather7d'>
-			<span>Прогноз погоды {dd1 && dd2 ? `c ${dd1} по ${dd2}` : ''}</span>
-			<div className='cmp-weather7d-content'>{!!items.length && items}</div>
+			<h1>Прогноз погоды {dd1 && dd2 ? `c ${dd1} по ${dd2}` : ''}</h1>
+			<article className='cmp-weather7d-content'>{!!items.length && items}</article>
 		</section>
 	)
 }

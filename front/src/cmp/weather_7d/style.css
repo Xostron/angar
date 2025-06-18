@@ -5,13 +5,14 @@
 	gap: 20px;
 	color: var(--primary);
 }
-.cmp-weather7d > span{
+.cmp-weather7d > h1{
 	font-size: var(--fsz22);
 }
 .cmp-weather7d-content {
 	display: flex;
-	flex-direction: row;
 	gap: 8px;
+	flex-direction: row;
+	flex-wrap: wrap;
 }
 .cmp-weather7d-day {
 	display: flex;
@@ -24,7 +25,7 @@
 	border-radius: 16px;
 	padding: 8px;
 	gap: 16px;
-	background-color: #65a7ee2f;
+	background-color: #65a7ee29;
 }
 
 .cmp-weather7d-day-item {

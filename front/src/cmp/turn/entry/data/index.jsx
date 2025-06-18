@@ -12,7 +12,6 @@ export default function Data({ prd }) {
 		input?.retain?.[build]?.setting?.drying?.[prd]?.day?.day ?? input?.factory?.drying?.[prd]?.day?.day,
 		input?.retain,
 	])
-	console.log(111, count, day, inp)
 	return (
 		<div className='data'>
 			<IconText

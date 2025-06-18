@@ -10,7 +10,7 @@ import defUn from '@tool/unit'
 import defImg from '@tool/icon'
 
 const t = ['tout', 'tin', 'tprd', 'tcnl', 'tweather', 'cooler']
-const m = ['hin', 'hout', 'hweather']
+const m = ['hin', 'hout', 'hweather', 'co2']
 
 export default function Row({ data }) {
 	const { build } = useParams()
@@ -40,10 +40,9 @@ export default function Row({ data }) {
 		setCorr(setting?.[el]?.corr ?? 0)
 		setOn(onn)
 	}, [el])
-
+console.log(data)
 	const { unit, ico } = fnUnit(data)
 	const { cl, cls, clCorr } = fnStyle(sens?.[build]?.[el]?.corr, raw, on)
-	// if (data.type === 'tweather') console.log(111, input?.[build]?.[el])
 	return (
 		<>
 			<IconText cls={cl} data={{ value: data.name, icon: ico }} />

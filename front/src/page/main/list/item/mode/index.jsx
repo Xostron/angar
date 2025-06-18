@@ -1,7 +1,6 @@
 import defImg from '@tool/icon'
 import useInputStore from '@store/input'
 import './style.css'
-import useEquipStore from '@store/equipment'
 
 export default function Mode({ buildingId , type}) {
 	const retain = useInputStore(({ input }) => input.retain)
