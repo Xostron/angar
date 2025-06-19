@@ -12,7 +12,9 @@ export default function Weather({}) {
 	const [humAbs, getTotal, getTotalBy] = useInputStore(({ input, getTotal, getTotalBy }) => [input?.humAbs, getTotal, getTotalBy])
 
 	if (!build) return null
-	const cold = getType(build._id) === 'cold'
+	// Тип склада
+	const type = getType(build._id)
+
 	const sens = [
 		// Температура улицы - мин
 		{ type: 'tout', ...getTotalBy('tout', 'min', build?._id) },
@@ -26,8 +28,8 @@ export default function Weather({}) {
 	return (
 		<section className='weather' style={{ backgroundImage: 'url(/img/w.jpg)' }}>
 			<Owner data={{ company: build.company, code: build.code, address: build?.pc?.address?.value }} cls='weather-owner' />
-			{!cold && <Sensor data={sens} cls='weather-sens' />}
-			<Forecast address={build?.pc?.address?.value ?? ''} weather={weather} />
+			<Sensor data={sens} cls='weather-sens' type={type} />
+			<Forecast address={build?.pc?.address?.value ?? ''} weather={weather} type={type} />
 		</section>
 	)
 }

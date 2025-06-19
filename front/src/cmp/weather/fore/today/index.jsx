@@ -4,7 +4,7 @@ import useDialog from '@cmp/dialog/use_dialog'
 import Dialog from '@cmp/dialog'
 import Entry from './entry'
 
-export default function Today({ weather }) {
+export default function Today({ weather, type }) {
 	const { build } = useParams()
 	const [tweather] = useInputStore(({ input }) => [input?.[build]?.tweather])
 	const { refDialog, open, close, isOpen } = useDialog()
@@ -24,9 +24,11 @@ export default function Today({ weather }) {
 				{img}
 			</article>
 			{/* Прогноз погоды на 7 дней */}
-			<Dialog href={refDialog}>
-				<Entry close={close} weather={weather} isOpen={isOpen} />
-			</Dialog>
+			{weather?.forecast && (
+				<Dialog href={refDialog}>
+					<Entry close={close} weather={weather} isOpen={isOpen} type={type} />
+				</Dialog>
+			)}
 		</>
 	)
 }

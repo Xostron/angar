@@ -5,7 +5,9 @@
 	padding: 8px 8px;
 	justify-content: space-between;
 }
-
+.forecast-cold {
+	width: 100%;
+}
 .weather-fore .adr {
 	display: flex;
 	align-items: center;
@@ -49,5 +51,3 @@
 	width: 100px;
 	height: 100px;
 }
-
-

@@ -35,10 +35,7 @@ async function cold(result, idS, idB, obj) {
 	cooler
 		?.filter((el) => el?.sectionId === idS)
 		?.forEach((el) => {
-			// console.log(111, data[el?._id])
 			result.value[el._id] = { state: data[el?._id]?.state, mode: data[el?._id]?.name }
-			// result.value[el._id] = data[el?._id]?.state
-			// result['mode'] = data[el?._id]?.name
 			get('cooler', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))
 			get('pin', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))
 			get('pout', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))

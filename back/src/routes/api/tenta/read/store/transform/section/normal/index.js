@@ -14,14 +14,15 @@ function normal(result, idS, idB, obj) {
 	get('tcnl', idS, 'section', sensor).forEach((el) => fe(el, value, data))
 	// Давление секции
 	get('p', idS, 'section', sensor).forEach((el) => fe(el, value, data))
+
 	// Статусы вентиляторов секции
 	fan.forEach((el) => {
 		if (el.owner.id !== idS) return
+		// TODO ВНО и ПЧ
+		// value[el._id] = data[el._id]?.value === undefined ? data[el._id]?.state : { value: data[el._id]?.state, ao: data[el._id]?.value }
 		value[el._id] = data[el._id]?.state
 	})
-	// Обогрев клапанов секции
-	// const heatingId = heating.find((el) => el.owner.id === idS)?._id
-	// if (heatingId) value.vheating = data?.outputEq?.[heatingId]
+
 	// Приток in секции
 	valve.forEach((el) => {
 		if (!el.sectionId.includes(idS)) return

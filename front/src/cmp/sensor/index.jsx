@@ -5,10 +5,10 @@ import def from '@src/tool/icon'
 import './style.css'
 
 //Группа датчиков склада
-export default function Sensor({ data, cls, withImg = false }) {
+export default function Sensor({ data, cls, type = 'normal', withImg = false }) {
 	let cl = ['gr-sens', cls]
 	cl = cl.join(' ')
-
+	if (type === 'cold') return null
 	const row = useCallback((el, i) => {
 		const imgF = def.fan?.[el?.fan?.state]
 		const state = el?.fan?.state

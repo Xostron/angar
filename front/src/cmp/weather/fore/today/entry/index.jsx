@@ -6,11 +6,11 @@ import './style.css'
 import Weather7d from '@cmp/weather_7d'
 import useOutputStore from '@store/output'
 
-export default function Entry({ close, weather, isOpen }) {
+export default function Entry({ close, weather, isOpen, type }) {
 	return (
 		<div className='entry cmp-weather-entry'>
 			<Weather7d weather={weather} />
-			<Analytic />
+			{type != 'cold' && <Analytic />}
 		</div>
 	)
 }
