@@ -9,6 +9,7 @@ export default function Message() {
 	const [hid, setHid] = useState(true)
 	const [achieve] = useInputStore(({ alarm }) => [alarm.achieve])
 
+
 	// Подсветка "синим" - продукт достиг задания
 	let cl = ['mes']
 	useEffect(
@@ -28,16 +29,8 @@ export default function Message() {
 	const act = arr.find((el) => el?.order === 1)
 	if (act) cl.push('act')
 	cl = cl.join(' ')
-	// arr.push({order:1, msg:'hello'})
-	// console.log(cl)
-	// если нет сообщений - для каждого режима своя инфа
 
-	// if (arr.length == 1)
-	// 	return (
-	// 		<div className={cl}>
-	// 			<p className='text'>{arr[0]?.msg}</p>
-	// 		</div>
-	// 	)
+
 	return (
 		<div className='mes-container'>
 			<div className='all' hidden={hid}>

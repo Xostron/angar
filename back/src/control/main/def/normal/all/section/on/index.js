@@ -8,10 +8,10 @@ const auto = require('./auto')
 function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld, alrAm, alrAlw) {
 	// Проверка секции (Если условия для авто не подходят, то ничего не делаем)
 	if (!check(building._id, sect, obj, am, start)) {
-		console.log(22, building.name, 'Секция не в работе', sect.name)
+		// console.log(22, building.name, 'Секция не в работе', sect.name)
 		return
 	} // clear(accAuto)
-	console.log(22, 'Секция в работе', sect.name)
+	// console.log(22, 'Секция в работе', sect.name)
 	// Логика авторежима {Суммарная авария, команды клапана}
 	const { alr, v } = auto(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, alrBld, alrAm, alrAlw)
 	// Секция: Дополнительные функции авторежимов

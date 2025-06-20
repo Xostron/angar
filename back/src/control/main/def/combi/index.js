@@ -1,6 +1,5 @@
-// const normal = require('../normal')
-// const cold = require('../cold')
-const {normal, cold} = require('..')
+const normal = require('../normal')
+const cold = require('../cold')
 
 // Комбинированный склад (простой склад+холодильник с некоторыми особенностями)
 function combi(building, obj, bdata) {
