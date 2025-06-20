@@ -28,7 +28,6 @@ function main(bld, obj, bdata, alr) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.cold(bld, obj, bdata, alr)
 	}
-	// console.log(999, accAuto)
 }
 
 module.exports = main

@@ -1,4 +1,4 @@
-const { data:store } = require('@store')
+const { data: store } = require('@store')
 const { elapsedTime } = require('@tool/command/time')
 const mes = require('@dict/message')
 const { msgB } = require('@tool/message')
@@ -36,7 +36,6 @@ function updAchieve(buildingId, name, code, set) {
 function clearAchieve(bld, obj, accAuto, isAllSectOff, start) {
 	if (!start || isAllSectOff) fnClear()
 	add()
-console.log(999001, bld.name)
 	// Очистка всех событий
 	function fnClear() {
 		if (!accAuto.clearAchieve) {
@@ -56,8 +55,8 @@ console.log(999001, bld.name)
 		if (accAuto.datestop) {
 			const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
 			const msg = elapsed ? mes[151].msg + ' ' + elapsed : null
-			wrAchieve(bld._id, 'building', msgB(bld, 151))
-			if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
+			wrAchieve(bld._id, 'building', msgB(bld, 151, elapsed))
+			// if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
 		}
 	}
 }

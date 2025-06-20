@@ -52,6 +52,8 @@ function fnTransform(bld, data, section, fan, result) {
 			return alr ? { code: k, msg: alr?.msg } : null
 		})
 		.filter((el) => !!el)
+	// Сообщение достижений
+	result[bld._id + 'note'] = data.alarm?.achieve?.[bld._id] ?? null
 	// Таймеры запретов
 	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map((el) => ({ code: el?.type, msg: el?.msg }))
 	result[bld._id + 'alarm'].push(...timer)
