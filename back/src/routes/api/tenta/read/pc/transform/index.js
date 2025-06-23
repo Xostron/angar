@@ -58,7 +58,7 @@ function fnTransform(bld, data, section, fan, result) {
 	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map((el) => ({ code: el?.type, msg: el?.msg }))
 	result[bld._id + 'alarm'].push(...timer)
 
-	// Общий ВНО (кроме холодильника)
+	// Общее состояние ВНО (кроме холодильника)
 	if (bld.type !== 'cold') {
 		const sec = section.filter((el) => el.buildingId == bld._id).map((el) => el._id)
 		const f = fan.filter((el) => el.type == 'fan' && sec.includes(el.owner.id))

@@ -27,13 +27,15 @@ function readTCP(host, port, opt) {
 					p.push(rhr(cl, opt.wr, 'valuesAsArray'))
 					break
 				case 'rw':
-					p.push(rhr(cl, opt.re, 'valuesAsArray',opt))
-					p.push(rhr(cl, opt.wr, 'valuesAsArray',opt))
+					p.push(rhr(cl, opt.re, 'valuesAsArray', opt))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt))
 					break
 				default:
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
+					// console.log(opt)
+					convAO(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve([r, w])
@@ -48,6 +50,11 @@ function readTCP(host, port, opt) {
 		})
 		socket.connect(optTCP)
 	})
+}
+
+function convAO(opt, arr) {
+	if (!opt.name.includes('AO')) return
+	arr.forEach((el, i) => (arr[i] = el / opt.wr.on))
 }
 
 module.exports = readTCP

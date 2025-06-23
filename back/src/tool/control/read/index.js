@@ -15,6 +15,7 @@ async function read(arr, obj) {
 			// флаг первого запуска сервера
 			store.startup = false
 			const k = arr[i]._id
+
 			const buildingId = arr[i].buildingId
 			await pause(store.tPause)
 			// ошибка модуля

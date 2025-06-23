@@ -1,5 +1,5 @@
 import Radio from '@cmp/fields/radio'
-import { useEffect } from 'react'
+import Input from '@cmp/fields/input'
 
 // чек-бокс - управление вентилятором
 /**
@@ -10,19 +10,30 @@ import { useEffect } from 'react'
  * @param {*} change Переключение радиокнопок
  * @returns
  */
-export default function Field({ sel, change, active, state }) {
+export default function Field({ sel, change, active, state, spO, setSpO }) {
 	const title = state !== 'off' ? 'Вывести из работы' : 'Ввести в работу'
 	return (
 		<fieldset className='ef-field'>
-			<Radio
-				cls={active && state !== 'run' ? '' : 'off'}
-				value='run'
-				selected={active ? sel : ''}
-				name='fan'
-				title='Включить'
-				change={change}
-				disabled={state === 'run'}
-			/>
+			<span className={active && state !== 'run' ? '' : 'off'}>
+				<Radio
+					// cls={active && state !== 'run' ? '' : 'off'}
+					value='run'
+					selected={active ? sel : ''}
+					name='fan'
+					title='Включить'
+					change={change}
+					disabled={state === 'run'}
+				/>
+				{/* cls={active && state !== 'run' ? 'cell-modal' : 'off cell-modal'} */}
+				{active  ? (
+					<>
+						<Input type='number' min={0} max={100} step={1} value={spO} setValue={setSpO} cls='cell-modal' />
+						{'%'}
+					</>
+				) : (
+					<></>
+				)}
+			</span>
 			<Radio
 				cls={active && state !== 'stop' ? '' : 'off'}
 				value='stop'
@@ -32,13 +43,8 @@ export default function Field({ sel, change, active, state }) {
 				change={change}
 				disabled={state === 'stop'}
 			/>
-			<Radio
-				value='off'
-				selected={sel}
-				name='fan'
-				title={title}
-				change={change}
-			/>
+
+			<Radio value='off' selected={sel} name='fan' title={title} change={change} />
 		</fieldset>
 	)
 }

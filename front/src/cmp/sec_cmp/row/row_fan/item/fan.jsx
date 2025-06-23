@@ -7,19 +7,19 @@ import Btn from '@cmp/fields/btn'
  */
 export default function ItemFan({ data, action, isAuth, cls }) {
 	// Задание ПЧ
-	let value = ''
-	if (data?.value !== undefined){
-		if (isNaN(data?.value)) value = '-'
-		else value = Math.trunc(data?.value / 10) + '%'
+	let sp = ''
+	if (data?.sp !== undefined) {
+		if (isNaN(data?.sp)) sp = '-'
+		else sp = data?.sp + '%'
 	}
 	// Стили
 	const imgF = defImg.fan?.[data.state]
 	let cl = ['cmp-sec-row-item', cls]
-	if (value) cl.push('fc')
+	if (sp) cl.push('fc')
 	if (data.state === 'off') cl.push('off')
 	if (data.state === 'run') cl.push('sir-item-run')
 	if (isAuth) cl.push('auth-sir')
 	cl = cl.join(' ')
 
-	return <Btn onClick={action} icon={imgF} txt={value} cls={cl} />
+	return <Btn onClick={action} icon={imgF} txt={sp} cls={cl} />
 }

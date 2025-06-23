@@ -44,7 +44,7 @@ async function control() {
 		if (store._cycle_ms_ < 50) await delay(1000)
 		return true
 	} catch (error) {
-		await delay(2000)
+		await delay(5000)
 		exception(error)
 	}
 }

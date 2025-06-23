@@ -42,6 +42,7 @@ function fan(obj) {
 		if (f.owner.type === 'cooler') continue
 		const mdl = f?.module?.id
 		if (!output[mdl]) continue
+
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
 		// Состояние вентилятора: авария / выведен из работы
@@ -53,9 +54,10 @@ function fan(obj) {
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null
-		// offS = offS && !store.aCmd?.[f.owner.id]?.fan?.end
-		// output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !isAlrOff && !local && offS !== null)
-		out(output, f, isAlrOff, localB, local, offS, alrStop)
+		// Склад выключен
+		const start = retain?.[idB]?.start
+
+		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, !start)
 	}
 }
 // Блокировки напорных вентиляторов (обычный склад и холодильник)
@@ -77,7 +79,7 @@ function fanAccel(obj) {
 		// Таймер запрета
 		const ban = store.alarm.timer?.[idB]?.accel
 
-		out(output, el, localB, local, !!ban, alrStop)
+		out(obj, output, el, localB, local, !!ban, alrStop)
 	}
 }
 
@@ -94,7 +96,7 @@ function heating(obj) {
 		const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
-		out(output, el, localB, local, alrStop)
+		out(obj, output, el, localB, local, alrStop)
 	}
 }
 
@@ -110,7 +112,7 @@ function device(obj) {
 		const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
-		out(output, el, localB, alrStop)
+		out(obj, output, el, localB, alrStop)
 	}
 }
 
@@ -118,16 +120,22 @@ module.exports = { vlv, fan, fanAccel, heating, device }
 
 /**
  *
- * @param {*} output объект выхода
- * @param {*} o устройство включения - вентилятор, клапан, обогрев клапана
+ * @param {object} obj Глобальные данные PC
+ * @param {object} output маска выходов
+ * @param {object} o Исполнительный механизм - вентилятор, клапан, обогрев клапана
  * @param  {...boolean} args сигналы блкировки
  */
-function out(output, o, ...args) {
+function out(obj, output, o, ...args) {
 	const mdl = o?.module?.id
 	if (!output[mdl] || !o) return
 	const ch = o?.module?.channel - 1
 	const lock = fn(args)
+	// Дискретный выход
 	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
+	// Аналоговый выход
+	// ВНО имеет аналоговое управление?
+	const ao = getAO(obj, o)
+	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = 0
 }
 
 function outV(type, output, o, ...args) {
@@ -138,6 +146,20 @@ function outV(type, output, o, ...args) {
 	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
 }
 
+// Сумматор аварий: хотя бы 1 авария  =>return true авария активна
 function fn(args) {
 	return args.some((el) => el === true)
+}
+
+/**
+ * Имеется аналоговое управление
+ * @param {*} obj Глобальный объект с информацией о PC
+ * @param {*} o Рама исполнительного механизма
+ */
+function getAO(obj, o) {
+	const binding = obj?.data?.binding
+	if (!binding || !o) return
+
+	const ao = binding.find((el) => el.owner.id == o._id && el.type == 'ao')
+	return ao
 }

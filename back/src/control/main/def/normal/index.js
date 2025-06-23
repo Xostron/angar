@@ -1,7 +1,6 @@
 const build = require('./all/build')
 const section = require('./all/section')
 const fan = require('@tool/command/fan/auto')
-const { data: store } = require('@store')
 
 // Простой склад
 function normal(building, obj, bdata) {

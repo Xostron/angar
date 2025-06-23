@@ -1,5 +1,5 @@
 const readJson = require('@tool/json').read
-const readVal = require('@tool/control/read/index')
+const readVal = require('@tool/control/read')
 
 // Опрос модулей
 function read(obj) {

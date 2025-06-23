@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import useInputStore from '@store/input'
 import useAuthStore from '@store/auth'
 import useDialog from '@cmp/dialog/use_dialog'
-import Entry from '@cmp/modal/fan'
+import EntryFan from '@cmp/modal/fan'
+import EntryFao from '@cmp/modal/fan_ao'
 import Dialog from '@cmp/dialog'
 import ItemFan from './item/fan'
 import ItemCooler from './item/cooler'
@@ -20,9 +21,8 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 	const [fdata, setFdata] = useState(null)
 	useEffect((_) => setFdata(fdata), [fdata])
 
-	// Режим работы секции
-	// const { isOff } = running(build, sect)
-
+	// Модальное окно ВНО
+	const entry = fdata?.ao ? <EntryFao data={fdata} setData={setFdata} close={close} /> : <EntryFan data={fdata} setData={setFdata} close={close} />
 
 	let cl = ['cmp-sec-row', cls]
 	cl = cl.join(' ')
@@ -33,10 +33,11 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 					fan.map((el) => {
 						// данные о ВНО
 						const d = getFan(el)
+						// console.log(222,d)
 						// Данные для модального окна
 						const action = () => {
 							if (!isAuth) return
-							setFdata({ ...el, buildingId: build, sectionId: sect, active })
+							setFdata({ ...d, buildingId: build, sectionId: sect, active })
 							open()
 						}
 						return <ItemFan key={el._id} data={d} action={action} isAuth={isAuth} />
@@ -53,7 +54,7 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 						return <ItemCooler key={el._id} data={el} action={action} isAuth={isAuth} />
 					})}
 			</div>
-			<Dialog href={refDialog}>{fdata && <Entry data={fdata} setData={setFdata} close={close} />}</Dialog>
+			<Dialog href={refDialog}>{fdata && entry}</Dialog>
 		</>
 	)
 }
