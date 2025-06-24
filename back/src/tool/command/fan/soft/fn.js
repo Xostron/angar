@@ -160,6 +160,7 @@ function turnOff(fans, bldId, aCmd) {
  * @param {*} acc Аккумулятор
  */
 function turnOn(fans, bldId, acc) {
+	console.log(99001,bldId, fans)
 	fans.forEach((f, i) => {
 		f?.ao?.id ? ctrlAO(f, bldId, acc?.fc?.value) : null
 		i < acc.count ? ctrlDO(f, bldId, 'on') : ctrlDO(f, bldId, 'off')

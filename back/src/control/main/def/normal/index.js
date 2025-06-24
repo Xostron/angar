@@ -13,6 +13,7 @@ function normal(building, obj, bdata) {
 	section(start, building, obj, s, seB, automode, accAuto, resultFan, alrBld, alrAm)
 	// Управление напорными вентиляторами
 	fan(building, obj, s, seB, m, resultFan)
+	// console.log(990010, resultFan.fan)
 }
 
 module.exports = normal

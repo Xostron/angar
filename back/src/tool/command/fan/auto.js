@@ -3,7 +3,8 @@ const { setACmd } = require('@tool/command/set')
 const soft = require('./soft')
 
 /**
- * Для секций в авторежиме: если у одной секции формируется сигнал на включение вент (2я секция в авторежиме - вент остановлены),
+ * Для секций в авторежиме: если у одной секции формируется сигнал на 
+ * включение вент (2я секция в авторежиме - вент остановлены),
  * включается вентиляторы на всех секциях в авторежиме
  * @param {string} bld Cклад
  * @param {object} resultFan Задание на включение ВНО
@@ -23,17 +24,19 @@ function fan(bld, obj, s, seB, m, resultFan) {
 module.exports = fan
 
 /**
- * Формирование aCmd: команда авторежима на вкл/выкл ВНО
+ * Команда авторежима на пуск/стоп ВНО секции
  * @param {*} bldId Id склада
  * @param {*} resultFan Задание на включение ВНО
  * @param {*} s Настройки склада
- * @param {*} start авторежим: вкл/выкл ВНО
+ * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
 function fnACmd(bldId, resultFan, s, start) {
 	const delay = s.fan.delay * 1000
 	resultFan.list.forEach((idS) => {
 		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local')) {
-			!resultFan?.force ? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' }) : setACmd('fan', idS, { delay, type: 'on' })
+			!resultFan?.force ? 
+			setACmd('fan', idS, { delay, type: start ? 'on' : 'off' }) : 
+			setACmd('fan', idS, { delay, type: 'on' })
 		} else setACmd('fan', idS, { delay, type: 'off' })
 	})
 }
