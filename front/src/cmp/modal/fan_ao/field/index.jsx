@@ -12,15 +12,26 @@ import Input from '@cmp/fields/input'
  */
 export default function Field({ sel, change, active, state, spO, setSpO }) {
 	const title = state !== 'off' ? 'Вывести из работы' : 'Ввести в работу'
+	const styleIn = active ? 'run' : 'off'
 	return (
 		<fieldset className='ef-field'>
 			<span className={active && state !== 'run' ? '' : 'off'}>
 				<Radio value='run' selected={active ? sel : ''} name='fan' title='Включить' change={change} disabled={state === 'run'} />
-				{active && (
-					<>
-						<Input type='number' min={0} max={100} step={1} value={spO} setValue={setSpO} cls='cell-modal' />%
-					</>
-				)}
+				{/* {active && ( */}
+				<>
+					<Input
+						type='number'
+						min={0}
+						max={100}
+						step={1}
+						value={spO}
+						setValue={setSpO}
+						cls={`cell-modal ${styleIn}`}
+						disabled={active ? false : true}
+					/>
+					%
+				</>
+				{/* )} */}
 			</span>
 			<Radio
 				cls={active && state !== 'stop' ? '' : 'off'}

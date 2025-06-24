@@ -33,7 +33,6 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 					fan.map((el) => {
 						// данные о ВНО
 						const d = getFan(el)
-						// console.log(222,d)
 						// Данные для модального окна
 						const action = () => {
 							if (!isAuth) return

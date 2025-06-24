@@ -19,7 +19,6 @@ export default function Combi() {
 	// Ручной режим активен
 	const { isMan } = running(build, sect)
 	const r3 = [...tcnl, ...p]
-	// console.log(555, cooler)
 
 	return (
 		<section className='sect cold combi'>
