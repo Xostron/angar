@@ -13,7 +13,7 @@ const path = require('path')
 function webLog(code, o) {
 	// Если нет данных от клиента - выход
 	o = o ?? {}
-	console.log(5551, o)
+	console.log(5551, o, code)
 	if (!Object.keys(o)?.length || !code) return
 	activity(code, o)
 }

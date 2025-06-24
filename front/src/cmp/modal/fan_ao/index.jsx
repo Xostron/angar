@@ -25,7 +25,6 @@ export default function Entry({ data = {}, setData, close }) {
 		setSel(state)
 		setSpO(sp)
 	}, [_id])
-	console.log(111, ao, sp)
 	return (
 		<div className='entry'>
 			<Title name={name} />
@@ -37,13 +36,21 @@ export default function Entry({ data = {}, setData, close }) {
 	// Ок
 	function set() {
 		const cmd = sel === 'run' ? 1 : 0
+		// Вывести из работы
 		if (sel === 'off' && state !== 'off') setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true })
+		// Включить
 		else if (sel == 'run') setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false, setpoint: spO })
+		// Выключить
 		else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })
+
 		const out = { idB: buildingId, idM: module.id, value: cmd, channel: ch }
 		const outAO = { idB: buildingId, idM: ao.id, value: sel == 'run' ? spO : 0, channel: ao.channel - 1 }
+		// Блокировка включения при 0%
+		if (sel == 'run' && spO <= 0) {
+			console.log('Блокировка включения при 0%')
+			return
+		}
 		setO(out, outAO)
-		close()
 	}
 	// Отмена
 	function cancel() {

@@ -4,7 +4,7 @@ const { retainDir } = require('@store')
 
 async function cmd(obj) {
 	try {
-		const { buildingId, fanId, value } = obj
+		const { buildingId, fanId, value, ao = null } = obj
 		const fan = await findOne('fan', { key: '_id', v: fanId })
 		const sectionId = fan?.owner.id
 		// Вывести из работы
@@ -13,13 +13,21 @@ async function cmd(obj) {
 			await createAndModifySync(o, 'data', retainDir, cb)
 			return true
 		}
-		// Пуск/стоп (+ ввод в работу)
+		// ввод/вывод в/из работы
 		const o = { buildingId, sectionId, fanId, value: false }
 		await createAndModifySync(o, 'data', retainDir, cb)
+		// Пуск/стоп - дискретный выход
 		const moduleId = fan.module.id
 		const channel = fan.module.channel - 1
 		const val = value === 'run' ? { [channel]: 1 } : { [channel]: 0 }
-		const s = { [buildingId]: { [moduleId]: val } }
+		// Аналоговый выход
+		// Блокировка включения с 0%
+		if (ao && Number(ao) <= 0 && value == 'run') return true
+		const binding = await findOne('binding', { key: ['owner', 'id'], v: fanId })
+		if (!binding) return true
+
+		const s = { [buildingId]: { [moduleId]: val, [binding.moduleId]: { [binding.channel - 1]: value == 'run' ? +ao : 0 } } }
+		console.log(333, s)
 		setCmd(s)
 		return true
 	} catch (error) {

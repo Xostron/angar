@@ -25,7 +25,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		const stateCooler = obj.value?.[clr._id]
 
 		// Режим секции true-Авто
-		const sectM = retain[bld._id].mode[sect._id]
+		const sectM = retain?.[bld._id]?.mode?.[sect._id]
 		if (denied.combi(bld, sect, clr, sectM, bdata, alr, stateCooler, fnChange, obj)) continue
 
 		const seClr = { ...seS, cooler: {} }

@@ -15,23 +15,11 @@ export default function Field({ sel, change, active, state, spO, setSpO }) {
 	return (
 		<fieldset className='ef-field'>
 			<span className={active && state !== 'run' ? '' : 'off'}>
-				<Radio
-					// cls={active && state !== 'run' ? '' : 'off'}
-					value='run'
-					selected={active ? sel : ''}
-					name='fan'
-					title='Включить'
-					change={change}
-					disabled={state === 'run'}
-				/>
-				{/* cls={active && state !== 'run' ? 'cell-modal' : 'off cell-modal'} */}
-				{active  ? (
+				<Radio value='run' selected={active ? sel : ''} name='fan' title='Включить' change={change} disabled={state === 'run'} />
+				{active && (
 					<>
-						<Input type='number' min={0} max={100} step={1} value={spO} setValue={setSpO} cls='cell-modal' />
-						{'%'}
+						<Input type='number' min={0} max={100} step={1} value={spO} setValue={setSpO} cls='cell-modal' />%
 					</>
-				) : (
-					<></>
 				)}
 			</span>
 			<Radio
