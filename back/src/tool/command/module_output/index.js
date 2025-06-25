@@ -18,6 +18,7 @@ function ctrlAO(o, bldId, value) {
  * @returns
  */
 function ctrlDO(obj, buildingId, type) {
+	if (obj.type=='fan') console.log(888, obj)
 	if (!type) return null
 	const bldId = obj?._build ?? buildingId
 	const mdlId = obj?.module?.id

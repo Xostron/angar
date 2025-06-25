@@ -113,14 +113,10 @@ function elapsedTime(date) {
 	const d = new Date(date)
 	// время в минутах
 	const r = (cur - d) / 60000
-	// console.log(9999, r, r / 60, Math.trunc(r / 60), Math.trunc(r % 60))
-
 	// часы
 	const hh = Math.trunc(r / 60) < 10 ? '0' + Math.trunc(r / 60) : Math.trunc(r / 60)
-
 	// мин
 	const mm = Math.trunc(r % 60) < 10 ? '0' + Math.trunc(r % 60) : Math.trunc(r % 60) >= 60 ? '00' : Math.trunc(r % 60)
-
 	return `${hh}ч ${mm}м`
 }
 

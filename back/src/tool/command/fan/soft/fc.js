@@ -1,4 +1,4 @@
-const { checkOn, checkOff, regul, turnOn, turnOff } = require('./fn')
+const { checkOn, checkOff, regul, turnOn, turnOff, init } = require('./fn')
 const { sensor } = require('@tool/command/sensor')
 const { data: store } = require('@store')
 /**
@@ -15,15 +15,7 @@ const { data: store } = require('@store')
  */
 function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	const { p } = sensor(bldId, secId, obj)
-	// acc.count - Кол-во включенных вентиляторов (всегда один вентилятор в работе, независимо от давления в канале)
-	// Изменяя данное число, регулируем порядком вкл/выкл вентиляторов для поддержания давления в канале
-	store.watchdog.softFan[secId] ??= {}
-	const acc = store.watchdog.softFan[secId]
-	acc.count ??= 1
-	acc.delay ??= new Date()
-	acc.busy ??= false
-	acc.fc ??= {}
-	acc.fc.value ??= 10
+	const acc = init(fans, secId)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fans, bldId, aCmd)) return
@@ -38,7 +30,7 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	acc.busy = regul(acc, on, off, s)
+	acc.busy = regul(acc, fans, on, off, s)
 	if (acc.busy) (on = false), (off = false)
 
 	// Управление очередью вкл|выкл вентиляторов
@@ -48,27 +40,24 @@ function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
 	// Непосредственное включение
 	turnOn(fans, bldId, acc)
 
-	// console.log(444,
-	// 	`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-	// 	`Авто = "${aCmd.type}",`,
-	// 	'Давление в канале =',
-	// 	p,
-	// 	'Задание по давлению',
-	// 	s.fan.pressure.p - s.fan.hysteresisP,
-	// 	'...',
-	// 	s.fan.pressure.p,
-	// 	'...',
-	// 	s.fan.pressure.p + s.fan.hysteresisP,
-	// 	`ВНО = ${acc.count},`,
-	// 	`ПЧ busy = `,
-	// 	acc.busy,
-	// 	`on = `,
-	// 	on,
-	// 	`off = `,
-	// 	off,
-	// 	acc,
-
-	// )
+	console.log(
+		444,
+		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+		`Авто = "${aCmd.type}",`,
+		'Давление в канале =',
+		p,
+		'Задание по давлению',
+		s.fan.pressure.p - s.fan.hysteresisP,
+		'...',
+		s.fan.pressure.p,
+		'...',
+		s.fan.pressure.p + s.fan.hysteresisP,
+		`ПЧ busy = `,
+		acc.busy,
+		acc.fc,
+		'#ВНО =',
+		acc.order
+	)
 }
 
 module.exports = fc

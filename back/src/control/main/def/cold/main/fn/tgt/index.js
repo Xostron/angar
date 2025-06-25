@@ -24,7 +24,7 @@ function coldTarget(bld, obj, bdata, alr) {
 function combiTarget(bld, obj, bdata, alr) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
-	console.log(999,accAuto.cold)
+	// console.log(999,accAuto.cold)
 
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
 	if (!accAuto.cold.targetDT || accAuto.cold.targetDT.getDate() !== new Date().getDate() || accAuto.cold?.isChange(s.cooling.target, s.cooling.decrease)) {

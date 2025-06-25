@@ -5,9 +5,9 @@ const _RAMP = 5000
 const _MAX = 100
 
 /**
- * Управление очередью вкл ВНО
+ * Логика плавного пуска ВНО
  * @param {boolean} on Давление в канала меньше задания
- * @param {object} acc {count - кол-во вентиляторов в работе, delay - время на выравнивание давления, после вкл/выкл ВНО}
+ * @param {object} acc Аккумулятор
  * @param {object} aCmd Команда авторежима на вкл/выкл ВНО
  * @param {number} length Кол-во вентиляторов в секции
  * @returns
@@ -15,25 +15,25 @@ const _MAX = 100
 function checkOn(on, acc, aCmd, length) {
 	if (!on) return
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	const time = acc.count !== 1 ? aCmd.delay : aCmd.delay + _RAMP
-	if (!compareTime(acc.delay, time)) {
+	const time = aCmd.delay + _RAMP
+	if (!compareTime(acc.date, time)) {
 		// console.log(555, `Ожидайте пока выровнится давление после вкл ВНО`, time)
 		return
 	}
 	// Включаем следующий ВНО
-	if (++acc.count > length) {
-		acc.count = length
+	if (++acc.order >= length - 1) {
+		acc.order = length - 1
 		return
 	}
 	// Новая точка отсчета
-	acc.delay = new Date()
-	console.log(111, 'Вкл ВНО и фиксирую новое время', acc.delay)
+	acc.date = new Date()
+	console.log(111, 'Вкл ВНО и фиксирую новое время', acc.date)
 }
 
 /**
- * Управление очередью выкл ВНО
+ * Логика плавного останова ВНО
  * @param {boolean} off Давление в канале выше задания
- * @param {object} acc {count-кол-во вентиляторов в работе, delay - время на выравнивание давления, после вкл/выкл ВНО}
+ * @param {object} acc Аккумулятор
  * @param {object} aCmd Авто - команда на вкл/выкл ВНО
  * @returns
  */
@@ -41,103 +41,78 @@ function checkOff(off, acc, aCmd) {
 	if (!off) return
 	const time = aCmd.delay
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	if (!compareTime(acc.delay, time)) {
+	if (!compareTime(acc.date, time)) {
 		// console.log(22, `Ожидайте пока выровнится давление после откл ВНО`)
 		return
 	}
-	if (--acc.count < 1) {
-		acc.count = 1
+	if (--acc.order <= 0) {
+		acc.order = 0
 		return
 	}
-	acc.delay = new Date()
-	console.log(222, 'Выкл ВНО и фиксирую новое время', acc.delay)
+	acc.date = new Date()
+	console.log(222, 'Выкл ВНО и фиксирую новое время', acc.date)
 }
 
 /**
- * Регулирование ПЧ
+ * Регулирование ПЧ (Аналоговый выход ВНО)
  * @param {object} acc аккумулятор
  * @param {object} aCmd команда авто
  * @param {boolean} on сигнал на повышение давления
  * @param {boolean} off сигнал на понижение давления
  * @param {object} s настройки
- * @returns {boolean} acc.busy - Флаг регулирование частоты (true: запрет на вкл/выкл соседних ВНО)
+ * @returns {boolean} acc.busy - Флаг регулирование частоты
+ * true: Регулирование частоты текущего (acc.order) ВНО,
+ * false: Регулирование по кол-ву ВНО
  */
-function regul(acc, on, off, s) {
-	// Когда задание ПЧ увеличивается до 100 - инициализируем новое время для подключения следующего ВНО
-	if (acc.fc.value >= 100 && on) {
-		acc.fc.value = 100
-		acc.delay = !acc.first ? new Date() : acc.delay
-		acc.first = true
-		return false
-	}
-	acc.first = false
+function regul(acc, fans, on, off, s) {
+	// Какой ВНО сейчас на очереди: без ПЧ
+	const fan = fans[acc.order]
+	if (!fan?.ao?.id) return false
 
-	// Авария Антидребезг ВНО - выходим из регулирования
+	// С ПЧ
+	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
-
 	// Время ожидания следующего шага
 	const time = s.fan.next * 1000
-
-	// Пошагово увеличиваем
+	// Пошагово увеличиваем задание ПЧ
 	if (on) {
-		if (!acc.fc.delay) {
-			acc.fc.delay = new Date()
-			// acc.fc.value += s.fan.step
-			// Достигли макс задания
-			if (acc.fc.value >= _MAX) {
-				// При работе одного ВНО
-				if (acc.count === 1) {
-					acc.fc.value = _MAX
-					// acc.delay = new Date()
-				}
-				// При работе больше одного ВНО => задание на 100 и
-				// выходим с разрешением на вкл/выкл следующего ВНО
-				return false
-			}
-		}
+		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
+		if (acc.fc?.[fan._id] >= _MAX) return false
+
 		// Ждем стабилизации
-		if (!compareTime(acc.fc.delay, time)) {
-			return true
-		}
+		if (!acc.fc?.date) acc.fc.date = new Date()
+		if (!compareTime(acc.fc.date, time)) return true
+
 		// Время стабилизации прошло
-		acc.fc.value += s.fan.step
-		acc.fc.value = acc.fc.value > _MAX ? _MAX : acc.fc.value
-		delete acc.fc.delay
+		acc.fc[fan._id] += s.fan.step
+		// Ограничение max задания ПЧ
+		acc.fc[fan._id] = acc.fc[fan._id] > _MAX ? _MAX : acc.fc[fan._id]
+		// Ограничение min задания ПЧ
+		acc.fc[fan._id] = acc.fc[fan._id] < s.fan.min ? s.fan.min : acc.fc[fan._id]
+		acc.fc.date = new Date()
 	}
 
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
-		if (!acc.fc.delay) {
-			acc.fc.delay = new Date()
-			// Достигли минимального задания
-			if (acc.fc.value <= s.fan.min) {
-				if (acc.count === 1) {
-					// При работе одного ВНО
-					acc.fc.value = s.fan.min
-					return true
-				}
-				// При работе больше одного ВНО => задание на 100 и
-				// выходим с разрешением на вкл/выкл следующего ВНО
-				acc.fc.value = _MAX
-				return false
-			}
-		}
+		// Задание ПЧ дошло до 0% &&   => разрешаем регулировать по кол-ву ВНО
+		if (acc.fc?.[fan._id] <= s.fan.min && acc.order !== 0) return false
+		if (acc.fc?.[fan._id] <= s.fan.min && acc.order === 0) return true
+		
 		// Ждем стабилизации
-		if (!compareTime(acc.fc.delay, time)) {
-			return true
-		}
-		// Время стабилизации прошло
-		acc.fc.value -= s.fan.step
-		acc.fc.value = acc.fc.value < s.fan.min ? s.fan.min : acc.fc.value
+		if (!acc.fc.date) acc.fc.date = new Date()
+		if (!compareTime(acc.fc.date, time)) return true
 
-		delete acc.fc.delay
+		// Время стабилизации прошло
+		acc.fc[fan._id] -= s.fan.step
+		acc.fc[fan._id] = acc.fc[fan._id] < s.fan.min ? s.fan.min : acc.fc[fan._id]
+		acc.fc.date = new Date()
 	}
 	return true
 }
 
 /**
- * Выключить ВНО
- * @param {*} fans Ветиляторы
+ * Выключение ВНО секции
+ * @param {*} fans ВНО секции
  * @param {*} bldId Склад Id
  * @param {*} aCmd Команда авто
  * @returns {boolean} true - выкл ВНО, false - разрешить вкл ВНО
@@ -154,17 +129,51 @@ function turnOff(fans, bldId, aCmd) {
 }
 
 /**
- * Включить ВНО
- * @param {*} fans Ветиляторы
+ * Включение ВНО по порядку
+ * @param {*} fans ВНО секции
  * @param {*} bldId Склад Id
  * @param {*} acc Аккумулятор
  */
 function turnOn(fans, bldId, acc) {
-	console.log(99001,bldId, fans)
 	fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, bldId, acc?.fc?.value) : null
-		i < acc.count ? ctrlDO(f, bldId, 'on') : ctrlDO(f, bldId, 'off')
+		// Очередь не дошла - выключить ВНО
+		if (acc.order < i) {
+			ctrlDO(f, bldId, 'off')
+			f?.ao?.id ? ctrlAO(f, bldId, 0) : null
+			return
+		}
+		// Включить ВНО
+		ctrlDO(f, bldId, 'on')
+		f?.ao?.id ? ctrlAO(f, bldId, acc?.fc?.[f._id]) : null
 	})
 }
 
-module.exports = { checkOn, checkOff, regul, turnOn, turnOff }
+/**
+ * Инициализация аккумулятора для управления ВНО
+ * acc.order - номер текущего ВНО (от 0 до n) (мин кол-во включенных ВНО = 1)
+ * Изменяя данное число, регулируем порядком вкл/выкл вентиляторов
+ * для поддержания давления в канале
+ * @param {object[]} fans ВНО секции допущенные к управлению
+ * @param {string} secId id секции
+ * @returns {object} Аккумулятор секции
+ */
+function init(fans, secId) {
+	store.watchdog.softFan[secId] ??= {}
+	const a = store.watchdog.softFan[secId]
+	// Номер текущего ВНО
+	a.order ??= 0
+	// Точка отсчета
+	a.date ??= new Date()
+	// true - регулирование по ПЧ, false - регулирование по кол-ву ВНО
+	a.busy ??= false
+	// Задание ПЧ
+	a.fc ??= {}
+	fans.forEach((el) => {
+		if (!el.ao) return
+		a.fc[el._id] ??= 0
+	})
+	// a.fc.value ??= 10
+	return a
+}
+
+module.exports = { checkOn, checkOff, regul, turnOn, turnOff, init }

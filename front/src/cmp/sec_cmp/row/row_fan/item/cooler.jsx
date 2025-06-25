@@ -17,10 +17,10 @@ export default function ItemCooler({ data, action, isAuth, cls }) {
 	const utxt = start ? cooler.name : ''
 	// Задание ПЧ
 	let ltxt = Object.values(cooler?.fan ?? {})?.[0]?.value
-	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : Math.trunc(ltxt / 10) + '%'
+	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : ltxt + '%'
 	else ltxt = '-- %'
 	// Температура всасывания
-	const idT = data.sensor?.find(el=>el.type==='cooler')?._id
+	const idT = data.sensor?.find((el) => el.type === 'cooler')?._id
 	let t = cooler?.sensor?.[idT]?.value ?? '-'
 	const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
 

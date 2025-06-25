@@ -37,16 +37,20 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
  * @param {*} fnChange
  * @param {*} stateCooler
  * @param {*} store
+ * @param {} alrAuto
  * @returns
  */
-function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store) {
+function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) {
 	delete accAuto?.cold?.[clr._id]?.state?.off
 
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
+	
 	// Выключение всех узлов испарителя
-
-	fnChange(0, 0, 0, 0, null, clr)
+	// Если комбинированный склад работает как обычный, то разрешаем ВНО, остальные компоненты испарителя выключаем
+	if (!alrAuto) fnChange(0, null, 0, 0, null, clr)
+	// Если работает как холодильник, то выключаем весь испаритель
+	else fnChange(0, 0, 0, 0, null, clr)
 
 	delete accAuto?.cold?.[clr._id]?.state?.off
 }
@@ -58,7 +62,7 @@ function clearBuild(bld, accAuto) {
 	if (!denied.every((el) => el)) return true
 	// Все испарители запрещены к работе -> очистка
 	del[bld.type](accAuto)
-	console.log(555, bld.type, 'Все испарители запрещены')
+	// console.log(555, bld.type, 'Все испарители запрещены')
 	return false
 }
 

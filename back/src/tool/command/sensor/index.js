@@ -1,4 +1,10 @@
-// Показания датчиков секции для расчетов авторежимов
+/**
+ * Показания датчиков секции для расчетов авторежимов
+ * @param {string} idB id склада
+ * @param {string} idS id секции
+ * @param {object} obj Глобальные данные
+ * @returns 
+ */
 function sensor(idB, idS, obj) {
 	const { value, data } = obj
 	// Показания с датчиков
@@ -24,7 +30,6 @@ function sensor(idB, idS, obj) {
 		// Датчики по камере и испарителю
 		cooler: coolerS(idB, idS, obj),
 	}
-
 	return o
 }
 

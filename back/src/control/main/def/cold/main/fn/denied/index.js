@@ -45,9 +45,10 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 
 	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
 	const aggr = isRunAgg(obj.value, bld._id, clr._id)
+	const alrAuto = isAlr(bld._id, automode)
 
 	store.denied[bld._id][clr._id] =
-		!start || alr || !aggr || !supplySt || !sectMode || !store.toAuto?.[bld._id]?.[sect._id] || !isAlr(bld._id, automode) || automode != 'cooling'
+		!start || alr || !aggr || !supplySt || !sectMode || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
 	console.log(55, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
@@ -56,7 +57,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 		return false
 	}
 	// Да
-	clearCombi(bld._id, clr, accAuto.cold, fnChange, stateCooler, store)
+	clearCombi(bld._id, clr, accAuto.cold, fnChange, stateCooler, store, alrAuto)
 
 	// console.log('\tОстановка из-за ошибок:')
 	// console.log('\t\tСклад в работе:', start)
@@ -65,7 +66,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	// console.log('\t\tОжидание после включения питания пройдено', supplySt)
 	// console.log('\t\tСекция в Авто', sectMode)
 	// console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
-	// console.log('\t\tАвария авторежима активна, можно работать', isAlr(bld._id, automode))
+	// console.log('\t\tАвария авторежима активна, можно работать', alrAuto)
 	// console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
 
 	return true

@@ -23,9 +23,15 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 
 	// TODO Управление механизмами
 	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
-	fan.forEach((el) => ctrlDO(el, idB, f ? 'on' : 'off'))
+	fan.forEach((el) => {
+		// f = null - означает игнорирование ВНО испарителя, разрешение на работу в обычном режиме комби склада
+		console.log(777, el.name, el._id)
+		if (f === null) return
+		ctrlDO(el, idB, f ? 'on' : 'off')
+	})
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
 	// Доп состояние слива воды
+	accAuto[clr._id] ??= {}
 	accAuto[clr._id].state ??= {}
 	accAuto[clr._id].state.add = add ? new Date() : false
 	// Обновление времени включения состояния
