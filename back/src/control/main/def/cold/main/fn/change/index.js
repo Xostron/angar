@@ -1,4 +1,4 @@
-const { ctrlDO } = require('@tool/command/module_output')
+const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 
 // function change(bdata, idB, sl, f, h, add, code) {
 // 	const { start, s, se, m, accAuto } = bdata
@@ -25,9 +25,9 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	fan.forEach((el) => {
 		// f = null - означает игнорирование ВНО испарителя, разрешение на работу в обычном режиме комби склада
-		console.log(777, el.name, el._id)
 		if (f === null) return
 		ctrlDO(el, idB, f ? 'on' : 'off')
+		if (el?.ao?.id) f ? ctrlAO(el, idB, 100) : ctrlAO(el, idB, 0)
 	})
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
 	// Доп состояние слива воды

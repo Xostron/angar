@@ -1,4 +1,4 @@
-const { checkOn, checkOff, regul, turnOn, turnOff, init } = require('./fn')
+const { checkOn, checkOff, regul, turnOn, turnOff, init, defOnOff } = require('./fn')
 const { sensor } = require('@tool/command/sensor')
 const { data: store } = require('@store')
 /**
@@ -13,17 +13,17 @@ const { data: store } = require('@store')
  * @param {number} номер секции
  * @returns
  */
-function fc(bldId, secId, obj, aCmd, fans, s, seB, idx) {
-	const { p } = sensor(bldId, secId, obj)
-	const acc = init(fans, secId)
+function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
+	const bldId = bld._id
+	const { p } = sensor(bldId, idS, obj)
+	const acc = init(fans, idS)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fans, bldId, aCmd)) return
+	if (turnOff(fans, bld, aCmd, acc, bdata, where)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
-	let on = p < s.fan.pressure.p - s.fan.hysteresisP
-	let off = p > s.fan.pressure.p + s.fan.hysteresisP
+	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
 
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)

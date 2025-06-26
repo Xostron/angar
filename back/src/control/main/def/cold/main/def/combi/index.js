@@ -5,11 +5,12 @@ const { oneChange } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
+const fan = require('@tool/command/fan/auto')
 
 // Комбинированный - холодильник
 function main(bld, obj, bdata, alr) {
 	const { data } = obj
-	const { start, automode, s, se, m, accAuto, resultFan } = bdata
+	const { start, automode, s, se, m, accAuto } = bdata
 
 	// Управление испарителем
 	const fnChange = (sl, f, h, add, code, clr) => oneChange(bdata, bld._id, sl, f, h, add, code, clr)
@@ -27,11 +28,62 @@ function main(bld, obj, bdata, alr) {
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		// Работа ВНО
+		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}
 	if (clearBuild(bld, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
+		console.log(999)
 		target.combi(bld, obj, bdata, alr)
 	}
 }
 
 module.exports = main
+
+/**
+ * Для секции
+ * @param {*} bld
+ * @param {*} sect
+ * @param {*} bdata
+ * @param {*} obj
+ * @param {*} s
+ * @param {*} seB
+ * @param {*} seS
+ * @param {*} m
+ * @param {*} mS
+ * @param {*} alr
+ * @param {*} acc
+ */
+function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
+	const resultFan = { start: [], list: [], fan: [],  }
+	// Логика включения ВНО в комбинированном складе в режиме холодильник
+	const start = isStart(sect, s, seS, acc)
+	resultFan.start.push(start)
+	resultFan.list.push(sect._id)
+	resultFan.fan.push(...mS.fanSS)
+	// console.log(994, resultFan)
+	fan.combi(bld, obj, s, seB, seS, m, resultFan, bdata)
+}
+
+/**
+ * 1) если температура канала выше задания, то продолжаем работать только испарителями
+ * 2) температура канала в пределах температуры канала +- гистерезис, продолжаем
+ * 		работать только испарителями
+ * 3) температура канала ниже задания канала - гистерезис, начинаем подключать
+ * 		ВНО начиная с того у кого частотник, если температура канала начинает рости
+ * 		уменьшаем работу ВНО
+ * 4) если температура канала ниже задания канала - гистерезис и все ВНО работают
+ * 		на 100%, то (я пока что не знаю как узнаю сообщу тебе)
+ */
+function isStart(sect, s, seS, acc) {
+	// acc[sect._id] ??= { flagTcnl: false }
+	if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
+		console.log(991)
+		return true
+	}
+	if (seS.tcnl > acc.tgtTcnl) {
+		console.log(992)
+		return false
+	}
+	console.log(993)
+	return true
+}

@@ -11,10 +11,8 @@ function combi(building, obj, bdata) {
 	// Аккумулятор комбинированного склада (холодильник)
 	accAuto.cold ??= { test: 0 }
 	accAuto.cold.test++
-
 	// Простой склад (см. папку normal)
 	normal(building, obj, bdata)
-
 	// Холодильник (включение при аварии авторежима)
 	cold(building, obj, bdata)
 }

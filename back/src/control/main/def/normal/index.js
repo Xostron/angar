@@ -12,7 +12,7 @@ function normal(building, obj, bdata) {
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm
 	section(start, building, obj, s, seB, automode, accAuto, resultFan, alrBld, alrAm)
 	// Управление напорными вентиляторами
-	fan(building, obj, s, seB, m, resultFan)
+	fan.normal(building, obj, s, seB, null, m, resultFan, bdata)
 	// console.log(990010, resultFan.fan)
 }
 

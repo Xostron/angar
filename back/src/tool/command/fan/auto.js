@@ -1,56 +1,37 @@
-const { isExtralrm } = require('@tool/message/extralrm')
-const { setACmd } = require('@tool/command/set')
+const { fnACmd, fnFanWarm } = require('./fn')
 const soft = require('./soft')
 
 /**
- * Для секций в авторежиме: если у одной секции формируется сигнал на 
+ * Обычный склад и Комбинированный склад в обычном режиме
+ * Для секций в авторежиме: если у одной секции формируется сигнал на
  * включение вент (2я секция в авторежиме - вент остановлены),
  * включается вентиляторы на всех секциях в авторежиме
  * @param {string} bld Cклад
  * @param {object} resultFan Задание на включение ВНО
  * @param {object} s Настройки склада
  * @param {object} obj Глобальные данные склада
+ * @param {object} bdata Результат функции scan()
  */
-function fan(bld, obj, s, seB, m, resultFan) {
+function normal(bld, obj, s, seB, seS, m, resultFan, bdata) {
 	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	fnACmd(bld._id, resultFan, s, start)
 	// Формирование aCmd: Прогрев клапанов
 	if (!start) fnFanWarm(resultFan, s)
 	// Плавный пуск/стоп ВНО склада
-	soft(bld._id, obj, s, seB, m, resultFan)
+	soft(bld, obj, s, seB, seS, m, resultFan, bdata, 'normal')
 }
 
-module.exports = fan
-
-/**
- * Команда авторежима на пуск/стоп ВНО секции
- * @param {*} bldId Id склада
- * @param {*} resultFan Задание на включение ВНО
- * @param {*} s Настройки склада
- * @param {*} start команда авторежим: пуск/стоп ВНО секции
- */
-function fnACmd(bldId, resultFan, s, start) {
-	const delay = s.fan.delay * 1000
-	resultFan.list.forEach((idS) => {
-		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local')) {
-			!resultFan?.force ? 
-			setACmd('fan', idS, { delay, type: start ? 'on' : 'off' }) : 
-			setACmd('fan', idS, { delay, type: 'on' })
-		} else setACmd('fan', idS, { delay, type: 'off' })
-	})
+// Комбинированный склад в холодильном режиме
+function combi(bld, obj, s, seB, seS, m, resultFan, bdata) {
+	const start = resultFan.start.includes(true)
+	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
+	fnACmd(bld._id, resultFan, s, start)
+	// Плавный пуск/стоп ВНО склада
+	soft(bld, obj, s, seB, seS, m, resultFan, bdata, 'cold')
 }
 
-/**
- * Прогрев клапанов
- * @param {*} resultFan Задание на включение ВНО
- * @param {*} s Настройки склада
- */
-// Задержка включения ВНО при прогреве клапанов
-const delay = 3
-function fnFanWarm(resultFan, s) {
-	const group = Object.values(resultFan.warming)
-	for (const o of group) {
-		setACmd('fan', o.sectionId, { delay, type: 'on', warming: true })
-	}
+module.exports = {
+	normal,
+	combi,
 }

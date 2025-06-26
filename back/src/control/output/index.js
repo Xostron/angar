@@ -45,7 +45,7 @@ function convCmd(obj) {
 			}
 		}
 	// console.log('\x1b[32m%s\x1b[0m', 'Выхода: ', JSON.stringify(out))
-	// console.log(888,value?.outputM)
+	// console.log(8884,cmd)
 	// Команды управления с таймером
 	tracking(out, retain)
 

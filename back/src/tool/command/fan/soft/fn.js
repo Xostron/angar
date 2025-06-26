@@ -3,7 +3,8 @@ const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store')
 const _RAMP = 5000
 const _MAX = 100
-
+const { isAlr } = require('@tool/message/auto')
+const { sensor } = require('@tool/command/sensor')
 /**
  * Логика плавного пуска ВНО
  * @param {boolean} on Давление в канала меньше задания
@@ -97,7 +98,7 @@ function regul(acc, fans, on, off, s) {
 		// Задание ПЧ дошло до 0% &&   => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc?.[fan._id] <= s.fan.min && acc.order !== 0) return false
 		if (acc.fc?.[fan._id] <= s.fan.min && acc.order === 0) return true
-		
+
 		// Ждем стабилизации
 		if (!acc.fc.date) acc.fc.date = new Date()
 		if (!compareTime(acc.fc.date, time)) return true
@@ -115,17 +116,61 @@ function regul(acc, fans, on, off, s) {
  * @param {*} fans ВНО секции
  * @param {*} bldId Склад Id
  * @param {*} aCmd Команда авто
- * @returns {boolean} true - выкл ВНО, false - разрешить вкл ВНО
+ * @param {*} acc Аккумулятор плавного пуска
+ * @param {*} bdata Результат функции scan()
+ * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fans, bldId, aCmd) {
-	if (aCmd.type !== 'off' || !aCmd.type) return false
+function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
+	acc.turnoff??=null
+	const r = ignore[where](bld, acc, bdata, where)
+	console.log(99001, where, r, acc)
+	if (r) {
+		return true
+	}
+	if (aCmd.type !== 'off' || !aCmd.type) {
+		console.log(99002, where, false)
+		return false
+	}
 	// Сброс аккумулятора
 	store.watchdog.softFan = {}
 	fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, bldId, 0) : null
-		ctrlDO(f, bldId, 'off')
+		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
+		ctrlDO(f, bld._id, 'off')
 	})
+	console.log(99003, where)
 	return true
+}
+
+/**
+ * Для комбинированного склада: игнорировать управление ВНО
+ * при переходе из обычного в холодильный режим
+ * @param {*} bld Склад
+ * @param {*} acc Аккумулятор плавного пуска
+ * @param {*} bdata Результат функции scan()
+ * @returns false - разрешить управление, true - запрет управления
+ */
+function normal(bld, acc, bdata, where) {
+	if (bld.type == 'normal' || bdata.automode != 'cooling') return false
+	// Проверка перехода из обычного в холодильный режим
+	const alrAuto = isAlr(bld._id, bdata.automode)
+	console.log(99004, where, alrAuto, acc)
+	if (alrAuto && !acc.turnoff) {
+		acc.turnoff = new Date()
+		// Разрешаем в первый итерации ВНО
+		return false
+	}
+	if (!alrAuto) delete acc.turnoff
+	return acc.turnoff
+}
+function cold(bld, acc, bdata, where) {
+	// Проверка перехода из обычного в холодильный режим
+	const alrAuto = isAlr(bld._id, bdata.automode)
+	if (!alrAuto) return true
+	if (alrAuto) return false
+}
+const ignore = {
+	normal,
+	cold,
 }
 
 /**
@@ -176,4 +221,17 @@ function init(fans, secId) {
 	return a
 }
 
-module.exports = { checkOn, checkOff, regul, turnOn, turnOff, init }
+const defOnOff = {
+	normal: (idB, idS, accAuto, obj, seS, s) => {
+		const { p } = sensor(idB, idS, obj)
+		let on = p < s.fan.pressure.p - s.fan.hysteresisP
+		let off = p > s.fan.pressure.p + s.fan.hysteresisP
+		return { on, off }
+	},
+	cold: (idB, idS, accAuto, obj, seS, s) => {
+		let on = seS.tcnl < accAuto.cold.tgtTcnl - s.cooling.hysteresisIn
+		let off = seS.tcnl > accAuto.cold.tgtTcnl
+		return { on, off }
+	},
+}
+module.exports = { checkOn, checkOff, regul, turnOn, turnOff, init, defOnOff }
