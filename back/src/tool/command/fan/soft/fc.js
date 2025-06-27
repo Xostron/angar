@@ -29,7 +29,7 @@ function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	console.log(990012, on, off, acc)
+	// console.log(990012, on, off, acc)
 	acc.busy = regul(acc, fans, on, off, s)
 	if (acc.busy) (on = false), (off = false)
 

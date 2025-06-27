@@ -44,6 +44,8 @@ function cooler(equip, val, retain, result) {
 
 		// Состояние испарителя
 		result[clr._id].state = state(result[clr._id], clr, building, section)
+		// AO ВНО испарителя
+		result[clr._id].ao = Object.values(result[clr._id].fan).find(el=>el.value!==null||el.value!==undefined)?.value
 		// Аккумулятор авторежима
 		// if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add'
 		//Добавление читаемого названия состояния
