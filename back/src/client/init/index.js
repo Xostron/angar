@@ -7,6 +7,7 @@ const { writeSync } = require('@tool/json')
 const { cEquip } = require('@socket/emit')
 const transformF = require('./fn')
 const api = require('@tool/api')
+
 /**
  * Запрос конфигурации склада у админ-сервера
  * Сохранение в json

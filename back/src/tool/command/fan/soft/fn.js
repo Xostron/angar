@@ -18,6 +18,7 @@ function checkOn(on, acc, aCmd, length) {
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	// TODO для комбинированного склада увеличенное время?
 	const time = aCmd.delay + _RAMP
+	// if (acc.date)
 	if (!compareTime(acc.date, time)) {
 		// console.log(555, `Ожидайте пока выровнится давление после вкл ВНО`, time)
 		return
@@ -76,14 +77,17 @@ function regul(acc, fans, on, off, s) {
 	if (acc.stable) return false
 	// Время ожидания следующего шага
 	// TODO для комбинированного склада увеличенное время?
-	const time = s.fan.next * 1000
+	let time = s.fan.next * 1000
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc?.[fan._id] >= _MAX) return false
 
 		// Ждем стабилизации
-		if (!acc.fc?.date) acc.fc.date = new Date()
+		if (!acc.fc?.date) {
+			acc.fc.date = new Date()
+			time = 0
+		}
 		if (!compareTime(acc.fc.date, time)) return true
 
 		// Время стабилизации прошло
@@ -99,9 +103,13 @@ function regul(acc, fans, on, off, s) {
 	if (off) {
 		// Задание ПЧ дошло до 0% &&   => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc?.[fan._id] <= s.fan.min && acc.order !== 0) return false
-		if (acc.fc?.[fan._id] <= s.fan.min && acc.order === 0) return true
+		if (acc.fc?.[fan._id] <= s.fan.min && acc.order === 0) {
+			acc.fc[fan._id] = s.fan.min
+			return true
+		}
 
 		// Ждем стабилизации
+
 		if (!acc.fc.date) acc.fc.date = new Date()
 		if (!compareTime(acc.fc.date, time)) return true
 
@@ -125,12 +133,12 @@ function regul(acc, fans, on, off, s) {
 function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
 	const r = ignore[where](bld, acc, bdata, where)
 	if (r) {
-		console.log(99002, where, 'Запрет ВНО, на вкл и выкл')
+		// console.log(99002, where, 'Запрет ВНО, на вкл и выкл')
 		return true
 	}
 
 	if (aCmd.type !== 'off' || !aCmd.type) {
-		console.log(99003, where, 'Запрет ВНО, но разрешаем вкл')
+		// console.log(99003, where, 'Запрет ВНО, но разрешаем вкл')
 		return false
 	}
 	// Сброс аккумулятора
@@ -139,7 +147,7 @@ function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
 		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
 		ctrlDO(f, bld._id, 'off')
 	})
-	console.log(99004, where, 'Запрет ВНО, но выключаем')
+	// console.log(99004, where, 'Запрет ВНО, но выключаем')
 	return true
 }
 
@@ -181,8 +189,16 @@ function turnOn(fans, bldId, acc) {
 			return
 		}
 		// Включить ВНО
-		ctrlDO(f, bldId, 'on')
-		f?.ao?.id ? ctrlAO(f, bldId, acc?.fc?.[f._id]) : null
+		// Без ПЧ
+		if (!f?.ao?.id) {
+			ctrlDO(f, bldId, 'on')
+			return
+		}
+		// С ПЧ
+		if (acc?.fc?.[f._id] > 0) {
+			ctrlDO(f, bldId, 'on')
+		}
+		ctrlAO(f, bldId, acc?.fc?.[f._id])
 	})
 }
 

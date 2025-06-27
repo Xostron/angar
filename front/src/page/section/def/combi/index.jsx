@@ -25,7 +25,7 @@ export default function Combi() {
 			{/* Агрегаты и давление */}
 			<Aggregate data={cooler} />
 			{/* Температура продукта */}
-			<RowTemp data={[...tprd, ...tprd]} />
+			<RowTemp data={[...tprd]} />
 			{/* Напорные вентиляторы */}
 			<RowFan active={isMan} fan={fan} cooler={cooler} />
 			{/* Температура канала (смешения) */}

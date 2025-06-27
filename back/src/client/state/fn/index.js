@@ -35,11 +35,11 @@ async function preparing() {
 
 	// Карточки PC
 	const resPC = transformPC(store.value, data.building, data.section, data.fan)
-	// console.log(551, resPC)
+	// console.log(99001, resPC)
 
 	// Полное содержимое секции и карточки секций
 	for (const sec of data.section) value[sec._id] = await transformStore(sec.buildingId, sec._id)
-	// console.log(555, value)
+	// console.log(99002, value)
 
 	// Преобразуем в одноуровневый объект с составными ключами
 	value = { ...convertPC(resPC), ...convertSec(value) }
