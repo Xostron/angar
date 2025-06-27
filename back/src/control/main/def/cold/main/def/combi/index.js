@@ -6,6 +6,7 @@ const { mech } = require('@tool/command/mech')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
 const fan = require('@tool/command/fan/auto')
+const denied = require('../../fn/denied')
 
 // Комбинированный - холодильник
 function main(bld, obj, bdata, alr) {
@@ -21,6 +22,7 @@ function main(bld, obj, bdata, alr) {
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
+		if (denied.section(bld, sect,  bdata, alr, obj)) continue
 		// Исполнительные механизмы камеры
 		const mS = mech(obj.data, sect._id, sect.buildingId)
 		// Показания с датчиков секции

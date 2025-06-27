@@ -16,6 +16,7 @@ const { sensor } = require('@tool/command/sensor')
 function checkOn(on, acc, aCmd, length) {
 	if (!on) return
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
+	// TODO для комбинированного склада увеличенное время?
 	const time = aCmd.delay + _RAMP
 	if (!compareTime(acc.date, time)) {
 		// console.log(555, `Ожидайте пока выровнится давление после вкл ВНО`, time)
@@ -74,6 +75,7 @@ function regul(acc, fans, on, off, s) {
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
 	// Время ожидания следующего шага
+	// TODO для комбинированного склада увеличенное время?
 	const time = s.fan.next * 1000
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {
@@ -121,14 +123,14 @@ function regul(acc, fans, on, off, s) {
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
 function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
-	acc.turnoff??=null
 	const r = ignore[where](bld, acc, bdata, where)
-	console.log(99001, where, r, acc)
 	if (r) {
+		console.log(99002, where, 'Запрет ВНО, на вкл и выкл')
 		return true
 	}
+
 	if (aCmd.type !== 'off' || !aCmd.type) {
-		console.log(99002, where, false)
+		console.log(99003, where, 'Запрет ВНО, но разрешаем вкл')
 		return false
 	}
 	// Сброс аккумулятора
@@ -137,7 +139,7 @@ function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
 		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
 		ctrlDO(f, bld._id, 'off')
 	})
-	console.log(99003, where)
+	console.log(99004, where, 'Запрет ВНО, но выключаем')
 	return true
 }
 
@@ -151,22 +153,13 @@ function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
  */
 function normal(bld, acc, bdata, where) {
 	if (bld.type == 'normal' || bdata.automode != 'cooling') return false
-	// Проверка перехода из обычного в холодильный режим
 	const alrAuto = isAlr(bld._id, bdata.automode)
-	console.log(99004, where, alrAuto, acc)
-	if (alrAuto && !acc.turnoff) {
-		acc.turnoff = new Date()
-		// Разрешаем в первый итерации ВНО
-		return false
-	}
-	if (!alrAuto) delete acc.turnoff
-	return acc.turnoff
+	return alrAuto
 }
 function cold(bld, acc, bdata, where) {
 	// Проверка перехода из обычного в холодильный режим
 	const alrAuto = isAlr(bld._id, bdata.automode)
-	if (!alrAuto) return true
-	if (alrAuto) return false
+	return !alrAuto
 }
 const ignore = {
 	normal,

@@ -2,7 +2,7 @@ const { data: store } = require('@store')
 const checkSupply = require('../supply')
 const { isRunAgg, clear, clearCombi } = require('./fn')
 const { isAlr } = require('@tool/message/auto')
-const {clearAchieve} = require('@tool/message/achieve')
+const { clearAchieve } = require('@tool/message/achieve')
 
 /**
  * @description Склад Холодиьник: Запрет работы испарителя
@@ -23,7 +23,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	store.denied[bld._id][clr._id] = !start || alr || !aggr || !supplySt
 	console.log(55, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
 	clearAchieve(bld, obj, accAuto, false, start)
-	
+
 	// Работа испарителя запрещена?
 	// Нет
 	if (!store.denied[bld._id][clr._id]) return false
@@ -59,7 +59,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	// Да
 	clearCombi(bld._id, clr, accAuto.cold, fnChange, stateCooler, store, alrAuto)
 
-	// console.log('\tОстановка из-за ошибок:')
+	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
 	// console.log('\t\tСклад в работе:', start)
 	// console.log('\t\tНет аварий комбинированного склада:', !alr)
 	// console.log('\t\tАгрегат готов к работе', aggr)
@@ -72,4 +72,31 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	return true
 }
 
-module.exports = { cold: deniedCold, combi: deniedCombi }
+function deniedSection(bld, sect,  bdata, alr, obj) {
+	const { start, s, se, m, accAuto, supply, automode } = bdata
+
+	store.denied[bld._id] ??= {}
+	store.denied[bld._id][sect._id] ??= {}
+
+	// Режим секции true-Авто
+	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
+	// Наличие аварии авторежима
+	const alrAuto = isAlr(bld._id, automode)
+
+	store.denied[bld._id][sect._id] = !start || alr || !sectM || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
+	console.log(
+		55,
+		sect.name,
+		'работа секции запрещена',
+		store.denied[bld._id][sect._id],
+		'==',
+		!start,
+		alr,
+		!sectM,
+		!store.toAuto?.[bld._id]?.[sect._id],
+		!alrAuto,
+		automode != 'cooling'
+	)
+	return store.denied[bld._id][sect._id]
+}
+module.exports = { cold: deniedCold, combi: deniedCombi, section: deniedSection }
