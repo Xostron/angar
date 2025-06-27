@@ -47,7 +47,7 @@ function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) 
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 
 	// Выключение всех узлов испарителя
-	// Если комбинированный склад работает как обычный, то разрешаем ВНО, остальные компоненты испарителя выключаем
+	// Если комбинированный склад работает как обычный, то разрешаем ВНО испарителя, остальные компоненты испарителя выключаем
 	if (!alrAuto) fnChange(0, null, 0, 0, null, clr)
 	// Если работает как холодильник, то выключаем весь испаритель
 	else fnChange(0, 0, 0, 0, null, clr)

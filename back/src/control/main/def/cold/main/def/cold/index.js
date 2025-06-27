@@ -5,6 +5,7 @@ const { oneChange } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
+const denied = require('../../fn/denied')
 
 // Холодильник - алгоритм управления
 function main(bld, obj, bdata, alr) {

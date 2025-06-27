@@ -22,13 +22,13 @@ function main(bld, obj, bdata, alr) {
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
-		if (denied.section(bld, sect,  bdata, alr, obj)) continue
 		// Исполнительные механизмы камеры
 		const mS = mech(obj.data, sect._id, sect.buildingId)
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
+		if (denied.section(bld, sect,  bdata, alr, obj)) continue
 		// Работа ВНО
 		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}
