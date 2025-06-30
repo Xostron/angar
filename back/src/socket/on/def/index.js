@@ -43,7 +43,7 @@ module.exports = function onConnection(io, socket) {
 	fn('s_sens')(io, socket)
 	fn('s_fan')(io, socket)
 	fn('s_setting_au')(io, socket)
-	// Ответ конкретному клиенту, когда клиент подключается
+	// Ответ конкретному клиенту при подключении
 	equipment().then((data) => {
 		console.log(99001, new Date(),  'Клиент подключился к серверу, рама отправлена', Object.keys(data))
 		socket.emit('c_equip', data)
