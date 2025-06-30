@@ -60,7 +60,7 @@ async function state() {
 		// Передача POS->Tenta успешна, сохраняем результат
 		o.hub.init = new Date()
 		o.hub.last = new Date()
-		o.hub.state = o.value
+		o.hub.state = o.present
 		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: Данные переданы', o?.result?.length)
 		return true
 	} catch (error) {
