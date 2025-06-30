@@ -87,4 +87,11 @@ function sZero(data, callback) {
 		console.log(res)
 	})
 }
-export { sForecast, sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sReset, sWarming, sProduct, sZero }
+
+// Запрос рамы на сервер
+// function sEquip(data, callback) {
+// 	socket.emit('s_equip', data, (res) => {
+// 		console.log(111, res)
+// 	})
+// }
+export { /*sEquip,*/ sForecast, sOutput, sStart, sMode, sTune, sSens, sFan, sOutputT, sSettingAu, sAutomode, sReset, sWarming, sProduct, sZero }

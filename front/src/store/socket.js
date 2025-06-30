@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 /**
  * Пример Zustand
  * https://docs.pmnd.rs/zustand/getting-started/introduction
@@ -13,9 +13,9 @@ const useSocketStore = create((set, get) => ({
 	setInfo: (info) => set({ info }),
 	fooEvents: [],
 	setfooEvents: (value) => set({ fooEvents: [...fooEvents, value] }),
-}));
+}))
 
-export default useSocketStore;
+export default useSocketStore
 
 /*
 Пример использования Zustand в компаненте

@@ -12,11 +12,11 @@ const Main = () => {
 	const [list] = useEquipStore(({ list }) => [list])
 	const { name } = list?.[0]?.company ?? {}
 
-	// Автоматический переход на склад (список секций)(если складов меньше 1)
+	// Автоматический переход на склад (список секций)(если складов == 1)
 	useEffect(() => {
-        // Складов больше одного
-		if (list?.length > 1 || list?.length===0) return
-        // Складов == 1 
+		// Складов больше одного
+		if (list?.length > 1 || list?.length === 0) return
+		// Складов == 1
 		const path = `/building/${list?.[0]?._id}`.replace('//', '/')
 		navigate(path)
 	}, [list?.length])

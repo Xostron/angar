@@ -28,7 +28,7 @@ module.exports = function onConnection(io, socket) {
 
 	// Регистрируем обработчики
 	test(io, socket)
-	sEquip(io, socket)
+	// sEquip(io, socket)
 	sOutput(io, socket)
 	sOutputT(io, socket)
 	sWarming(io, socket)
@@ -43,8 +43,9 @@ module.exports = function onConnection(io, socket) {
 	fn('s_sens')(io, socket)
 	fn('s_fan')(io, socket)
 	fn('s_setting_au')(io, socket)
-	// Ответ конкретному клиенту
+	// Ответ конкретному клиенту, когда клиент подключается
 	equipment().then((data) => {
+		console.log(99001, new Date(),  'Клиент подключился к серверу, рама отправлена', Object.keys(data))
 		socket.emit('c_equip', data)
 	})
 }

@@ -13,7 +13,8 @@ const config = {
 	// 	authorization: `bearer `,
 	// 	// authorization: `bearer ${access}`,
 	// },
-	reconnectionDelayMax: 10000,
+	reconnectionDelay: 5000,
+	reconnectionDelayMax: 5000,
 	// auth: {
 	// 	token: '123',
 	// },

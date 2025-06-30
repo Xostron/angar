@@ -22,7 +22,6 @@ function vlv(obj) {
 		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
 		const vlvCrash = isExtralrm(idB, v.sectionId[0], 'vlvCrash' + v._id)
 		const longOC = isExtralrm(idB, v.sectionId[0], 'alrValve')
-
 		// Секция выключена (true)
 		const offS = v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) && cls
 
@@ -35,6 +34,7 @@ function vlv(obj) {
 }
 
 // Блокировки напорных вентиляторов (обычный склад)
+// Если склад выключен, а секция в ручном режиме - не блокировать ВНО
 function fan(obj) {
 	const { value, data, retain, output } = obj
 	for (const f of data.fan) {
@@ -45,6 +45,7 @@ function fan(obj) {
 
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		// Блокировки:
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrOff = value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
 		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
@@ -54,10 +55,10 @@ function fan(obj) {
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null
-		// Склад выключен
-		const start = retain?.[idB]?.start
+		// Склад выключен и секция в авторежиме
+		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id]
 
-		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, !start)
+		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
 	}
 }
 // Блокировки напорных вентиляторов (обычный склад и холодильник)
