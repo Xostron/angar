@@ -2,7 +2,7 @@ const { convertPC, convertSec, convertTenta, fnDiffing } = require('./fn')
 const transformStore = require('@routes/api/tenta/read/store/transform')
 const transformPC = require('@routes/api/tenta/read/pc/transform')
 const { data: store, dataDir } = require('@store')
-const data = require('./delta/data.json')
+const tolerance = require('./tolerance/data.json')
 const { readTO } = require('@tool/json')
 const fsp = require('fs').promises
 
@@ -17,6 +17,9 @@ async function reconciliation() {
 	// Рама pc
 	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 	const data = await readTO(files)
+	// Кэш датчиков с допусками из tolerance.json
+	const sens = {}
+	data.sensor.forEach((el) => (sens[el._id] = tolerance[el.type]))
 
 	// Если данных по ангару нет
 	if (!Object.keys(raw).length) {
@@ -30,11 +33,13 @@ async function reconciliation() {
 	for (const sec of data.section) present[sec._id] = await transformStore(sec.buildingId, sec._id)
 
 	present = { ...convertPC(resPC), ...convertSec(present) }
-	diffing = past ? fnDiffing(present, past, tolerance) : null
-
+	diffing = past ? fnDiffing(present, past, sens, tolerance) : null
 	// Формируем данные для Tenta
 	result = convertTenta(diffing ?? present, data.pc._id)
-	return { result, present }
+
+	// Фиксируем частичные изменения
+	store.past = diffing === null ? { ...store.past, ...present } : { ...store.past, ...diffing }
+	return { result, present, diffing }
 }
 
 module.exports = reconciliation

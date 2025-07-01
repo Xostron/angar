@@ -1,4 +1,4 @@
-const _OBJECT_ID_LENGTH=24
+const _OBJECT_ID_LENGTH = 24
 // PC  =  карточки складов
 function convertPC(obj) {
 	let r = {}
@@ -58,25 +58,23 @@ function convertTenta(value, pcId) {
 }
 
 // Расчет delta изменений
-function delta(value, old) {
+function delta(present, past) {
 	const r = {}
-	for (const key in value) {
-		value[key]
-		switch (typeof value[key]) {
+	for (const key in present) {
+		switch (typeof present[key]) {
 			case 'object':
 				// Объекты
-				if (JSON.stringify(value[key]) !== JSON.stringify(old[key])) r[key] = value[key]
+				if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) r[key] = present[key]
 				break
 			default:
 				// Простые данные: числа, строки, null, undefined
-				if (value[key] !== old[key]) r[key] = value[key]
+				if (present[key] !== past[key]) r[key] = present[key]
 				break
 		}
 	}
-	// console.log(5551, old)
+	// console.log(5551, past)
 	return r
 }
-
 
 /**
  * Расчет delta изменений с учетом допусков
@@ -85,18 +83,19 @@ function delta(value, old) {
  * @param {object} tolerance Допуски изменений
  * @returns {object} delta изменения
  */
-function fnDiffing(present, past, tolerance) {
+function fnDiffing(present, past, sens, tolerance) {
 	const r = {}
-	for (const key in value) {
-		value[key]
-		switch (typeof value[key]) {
+	for (const key in present) {
+		switch (typeof present[key]) {
 			case 'object':
 				// Объекты
-				if (JSON.stringify(value[key]) !== JSON.stringify(old[key])) r[key] = value[key]
+				checkObj(key, present, past, sens, tolerance, r)
+
+				// if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) r[key] = present[key]
 				break
 			default:
 				// Простые данные: числа, строки, null, undefined
-				if (value[key] !== old[key]) r[key] = value[key]
+				if (present[key] !== past[key]) r[key] = present[key]
 				break
 		}
 	}
@@ -105,3 +104,40 @@ function fnDiffing(present, past, tolerance) {
 }
 
 module.exports = { convertPC, convertSec, convert, convertTenta, delta, fnDiffing }
+
+function checkObj(key, present, past, sens, tolerance, result) {
+	// Обычный ключ: temp,rh,ah
+	if (key.length < _OBJECT_ID_LENGTH) {
+		fnIf(key, key, tolerance, present, past, result)
+		return
+	}
+	// Составной ключ: id.id
+	if (key.length === _OBJECT_ID_LENGTH * 2 + 1) {
+		const fld = key.split('.')
+		fnIf(key, fld[1], sens, present, past, result)
+		return
+	}
+	// Составной ключ: id.id+слово
+	if (key.length > _OBJECT_ID_LENGTH * 2 + 1) {
+		const fld = key.split('.')
+		const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
+		fnIf(key, fldd, tolerance, present, past, result)
+		return
+	}
+}
+
+function fnIf(key, fld, tolerance, present, past, result) {
+	if (tolerance[fld] !== undefined) {
+		if (
+			past[key].state != present[key].state ||
+			present[key].value > +past[key].value + tolerance[fld] ||
+			present[key].value < +past[key].value - tolerance[fld]
+		) {
+			result[key] = present[key]
+			console.log(22200222, key, fld, result[key])
+		}
+	} else {
+		if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) result[key] = present[key]
+		result[key] ? console.log(333, key, fld) : null
+	}
+}
