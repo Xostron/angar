@@ -4,9 +4,9 @@ const { data: store, dataDir } = require('@store')
 
 function state() {
 	return async function (req, res) {
-		const { result, present } = await reconciliation()
-
-		console.log(999002, 'Запрос state, present (собранные)', Object.keys(present).length, 'Отправлено на сервер:', result.length)
+		const type = req.query?.type
+		const { result, present } = await reconciliation(type)
+		console.log(999002, 'Запрос state от Admin: отправлено данных на сервер:', result.length, 'из', Object.keys(present).length)
 		res.status(200).json(result ?? [])
 	}
 }

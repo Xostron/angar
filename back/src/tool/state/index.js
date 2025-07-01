@@ -6,12 +6,18 @@ const tolerance = require('./tolerance/data.json')
 const { readTO } = require('@tool/json')
 const fsp = require('fs').promises
 
-// Подготовка ответа (state) для сервера (с учетом delta-дребезга и расчета delta-изменений)
-async function reconciliation() {
+//
+/**
+ * Подготовка ответа (state) для сервера (с учетом delta-дребезга и расчета delta-изменений)
+ * @param {string} type init - Сервер запрашивает полный набор данных
+ * @returns
+ */
+async function reconciliation(type) {
+	console.log(1111, type)
 	const past = store.past // Предыдущее состояние ангара (Вторичная - составные ключи)
 	let present = {}, // Актуальное состояние ангара (Вторичная - составные ключи)
 		diffing, // delta-изменения (Вторичная - составные ключи)
-		result // ответ для Админки
+		result = {} // ответ для Админки
 	const raw = store.value // Актуальное состояние ангара (первичная форма)
 
 	// Рама pc
@@ -33,13 +39,13 @@ async function reconciliation() {
 	for (const sec of data.section) present[sec._id] = await transformStore(sec.buildingId, sec._id)
 
 	present = { ...convertPC(resPC), ...convertSec(present) }
-	diffing = past ? fnDiffing(present, past, sens, tolerance) : null
-	// Формируем данные для Tenta
+	diffing = past && type != 'init' ? fnDiffing(present, past, sens, tolerance) : null
+	// Формируем данные для Admin
 	result = convertTenta(diffing ?? present, data.pc._id)
 
-	// Фиксируем частичные изменения
+	// Фиксируем изменения
 	store.past = diffing === null ? { ...store.past, ...present } : { ...store.past, ...diffing }
-	return { result, present, diffing }
+	return { result, present }
 }
 
 module.exports = reconciliation
