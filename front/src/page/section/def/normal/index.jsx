@@ -9,16 +9,15 @@ import running from '@tool/status/build_section'
 export default function Normal() {
 	const { build, sect } = useParams()
 	const { tprd, tcnl, fan, valve, heating, p } = useEquipStore(({ section }) => section())
-	const binding = useEquipStore(({ build }) => build()?.binding)
+	let binding = useEquipStore(({ build }) => build()?.binding)
 	const { isMan } = running(build, sect)
 	const r3 = p?.length < 3 ? [...tcnl, ...p] : tcnl
 	const fans = fan
 		.map((el) => {
-			const b = binding.find((el) => el.owner.id == el._id)
+			const b = binding?.find((el) => el.owner.id == el._id)
 			return b ? { ...el, ao: { id: b.moduleId, channel: b.channel } } : el
 		})
 		.sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
-	// console.log(111, fans)
 	return (
 		<section className='sect'>
 			{/* Температура продукта */}
