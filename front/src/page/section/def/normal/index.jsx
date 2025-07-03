@@ -9,7 +9,7 @@ import running from '@tool/status/build_section'
 export default function Normal() {
 	const { build, sect } = useParams()
 	const { tprd, tcnl, fan, valve, heating, p } = useEquipStore(({ section }) => section())
-	let binding = useEquipStore(({ build }) => build()?.binding)
+	const binding = useEquipStore(({ build }) => build()?.binding)
 	const { isMan } = running(build, sect)
 	const r3 = p?.length < 3 ? [...tcnl, ...p] : tcnl
 	const fans = fan
