@@ -34,9 +34,12 @@
 	background-color: var(--surface);
 }
 .fc {
-	padding: 10px;
-	width: 130px;
+	padding-inline:0px;
+	width: 145px;
 	font-size: 22px!important;
+}
+.fc > span{
+	width: 60px;
 }
 /* Испаритель - комбинированный склад - кнопка */
 .btn-cooler {
