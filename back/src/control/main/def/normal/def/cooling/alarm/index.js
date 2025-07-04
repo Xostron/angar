@@ -3,7 +3,7 @@ const { data: store } = require('@store')
 
 function alarm(s, seB, building, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	//
+
 	const r = [
 		// Абсолютная влажность улицы ниже допустимой при охлаждении
 		{
