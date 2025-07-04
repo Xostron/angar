@@ -1,8 +1,8 @@
 /**
  * Точка росы
  * https://poliol.ru/cont/articles/3-sposoba-rascheta-tochki-rosy-pri-uteplenii-pomeshcheniya/
- * @param {number} [h=50] Температура, С
- * @param {number} [t=25] Влажность,%
+ * @param {number} [h=50] Температура улицы, С
+ * @param {number} [t=25] Влажность улицы,%
  * @returns
  */
 function dewpoint(t, h) {
