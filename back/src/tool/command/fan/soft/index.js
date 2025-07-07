@@ -21,7 +21,6 @@ function soft(bld, obj, s, seB,seS, m, resultFan,bdata, where) {
 	// Плавный пуск (все вентиляторы на контакторах)
 	if (!resultFan.list?.length) return
 	// По секциям
-
 	resultFan.list.forEach((idS, idx) => {
 		const aCmd = store.aCmd?.[idS]?.fan
 		// Испарители, принадлежащие текущей секции

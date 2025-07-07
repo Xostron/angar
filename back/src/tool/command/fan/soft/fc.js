@@ -15,11 +15,10 @@ const { data: store } = require('@store')
  */
 function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const { p } = sensor(bldId, idS, obj)
-	const acc = init(fans, idS)
+	const acc = init(fans, idS, where)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fans, bld, aCmd, acc, bdata, where)) return
+	if (turnOff(fans, bld, idS, aCmd, acc, bdata, where)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
@@ -29,7 +28,6 @@ function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	// console.log(990012, on, off, acc)
 	acc.busy = regul(acc, fans, on, off, s)
 	if (acc.busy) (on = false), (off = false)
 
@@ -40,24 +38,16 @@ function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
 	// Непосредственное включение
 	turnOn(fans, bldId, acc)
 
-	// console.log(
-	// 	444,
-	// 	`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-	// 	`Авто = "${aCmd.type}",`,
-	// 	'Давление в канале =',
-	// 	p,
-	// 	'Задание по давлению',
-	// 	s.fan.pressure.p - s.fan.hysteresisP,
-	// 	'...',
-	// 	s.fan.pressure.p,
-	// 	'...',
-	// 	s.fan.pressure.p + s.fan.hysteresisP,
-	// 	`ПЧ busy = `,
-	// 	acc.busy,
-	// 	acc.fc,
-	// 	'#ВНО =',
-	// 	acc.order
-	// )
+	console.log(
+		444,
+		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+		`Авто = "${aCmd.type}",`,
+		`ПЧ busy = `,
+		acc.busy,
+		acc.fc,
+		'#ВНО =',
+		acc.order
+	)
 }
 
 module.exports = fc

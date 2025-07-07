@@ -71,7 +71,6 @@ function regul(acc, fans, on, off, s) {
 	// Какой ВНО сейчас на очереди: без ПЧ
 	const fan = fans[acc.order]
 	if (!fan?.ao?.id) return false
-
 	// С ПЧ
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
@@ -84,11 +83,12 @@ function regul(acc, fans, on, off, s) {
 		if (acc.fc?.[fan._id] >= _MAX) return false
 
 		// Ждем стабилизации
-		if (!acc.fc?.date) {
-			acc.fc.date = new Date()
-			time = 0
+		if (!acc?.date) {
+			acc.date = new Date()
+			time = 50
 		}
-		if (!compareTime(acc.fc.date, time)) return true
+		// console.log(2222, fan, time)
+		if (!compareTime(acc.date, time)) return true
 
 		// Время стабилизации прошло
 		acc.fc[fan._id] += s.fan.step
@@ -96,7 +96,7 @@ function regul(acc, fans, on, off, s) {
 		acc.fc[fan._id] = acc.fc[fan._id] > _MAX ? _MAX : acc.fc[fan._id]
 		// Ограничение min задания ПЧ
 		acc.fc[fan._id] = acc.fc[fan._id] < s.fan.min ? s.fan.min : acc.fc[fan._id]
-		acc.fc.date = new Date()
+		acc.date = new Date()
 	}
 
 	// Пошагово уменьшаем задание ПЧ
@@ -110,13 +110,13 @@ function regul(acc, fans, on, off, s) {
 
 		// Ждем стабилизации
 
-		if (!acc.fc.date) acc.fc.date = new Date()
-		if (!compareTime(acc.fc.date, time)) return true
+		if (!acc.date) acc.date = new Date()
+		if (!compareTime(acc.date, time)) return true
 
 		// Время стабилизации прошло
 		acc.fc[fan._id] -= s.fan.step
 		acc.fc[fan._id] = acc.fc[fan._id] < s.fan.min ? s.fan.min : acc.fc[fan._id]
-		acc.fc.date = new Date()
+		acc.date = new Date()
 	}
 	return true
 }
@@ -130,25 +130,24 @@ function regul(acc, fans, on, off, s) {
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fans, bld, aCmd, acc, bdata, where = 'normal') {
+function turnOff(fans, bld, idS, aCmd, acc, bdata, where = 'normal') {
 	const r = ignore[where](bld, acc, bdata, where)
-	if (r) {
-		// console.log(99002, where, 'Запрет ВНО, на вкл и выкл')
-		return true
-	}
-
-	if (aCmd.type !== 'off' || !aCmd.type) {
-		// console.log(99003, where, 'Запрет ВНО, но разрешаем вкл')
-		return false
-	}
+	if (r) return true
+	if (aCmd.type !== 'off' || !aCmd.type) return false
 	// Сброс аккумулятора
-	store.watchdog.softFan = {}
+	clear(idS)
 	fans.forEach((f, i) => {
 		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
 		ctrlDO(f, bld._id, 'off')
 	})
-	// console.log(99004, where, 'Запрет ВНО, но выключаем')
 	return true
+}
+
+function clear(idS) {
+	store.watchdog.softFan[idS].order = null
+	store.watchdog.softFan[idS].date = null
+	store.watchdog.softFan[idS].busy = false
+	store.watchdog.softFan[idS].fc = {}
 }
 
 /**
@@ -214,6 +213,7 @@ function turnOn(fans, bldId, acc) {
 function init(fans, secId) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
+	// console.log(3330, 'init', a)
 	// Номер текущего ВНО
 	a.order ??= 0
 	// Точка отсчета
@@ -226,7 +226,6 @@ function init(fans, secId) {
 		if (!el.ao) return
 		a.fc[el._id] ??= 0
 	})
-	// a.fc.value ??= 10
 	return a
 }
 

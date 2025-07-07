@@ -25,7 +25,7 @@ function relay(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
 	acc.date ??= new Date()
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fans, bld, aCmd, acc, bdata, where)) return
+	if (turnOff(fans, bld,idS, aCmd, acc, bdata, where)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)

@@ -80,15 +80,19 @@ function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
  */
 function checkStart(bld, sect, s, seS, acc) {
 	// Достиг задания => выкл ВНО
+	console.log(11, 'ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
+		console.log(1110, sect.name, 'Достиг задания - выкл ВНО')
 		return false
 	}
 	// Температура канала ниже задания канала => вкл ВНО
 	if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
+		console.log(1112, sect.name, 'Температура канала ниже задания канала => вкл ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
 		return true
 	}
 	// Температура канала выше задания канала => выкл ВНО
 	if (seS.tcnl > acc.tgtTcnl) {
+		console.log(1113, sect.name, 'Температура канала выше задания канала => выкл ВНО', seS.tcnl, acc.tgtTcnl)
 		return false
 	}
 	return true
