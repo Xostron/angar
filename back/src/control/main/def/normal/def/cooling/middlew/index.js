@@ -116,7 +116,7 @@ function message(building, obj, s, seB, acc) {
 		const elapsed = elapsedTime(obj.retain?.[building._id]?.cooling?.finish ?? null)
 		const msg = elapsed ? mes[15].msg + ' ' + elapsed : null
 		if (!msg) return
-		updAchieve(building._id, 'cooling', 'cooling-1', { msg })
+		updAchieve(building._id, 'cooling', 'finish', { msg })
 	}
 }
 

@@ -7,6 +7,7 @@ const target = require('../../fn/tgt')
 const coolers = require('./coolers')
 const fan = require('@tool/command/fan/auto')
 const denied = require('../../fn/denied')
+const { data: store } = require('@store')
 
 // Комбинированный - холодильник
 function main(bld, obj, bdata, alr) {
@@ -28,7 +29,7 @@ function main(bld, obj, bdata, alr) {
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
-		if (denied.section(bld, sect,  bdata, alr, obj)) continue
+		if (denied.section(bld, sect, bdata, alr, obj)) continue
 		// Работа ВНО
 		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}
@@ -56,9 +57,9 @@ module.exports = main
  * @param {*} acc
  */
 function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
-	const resultFan = { start: [], list: [], fan: [],  }
+	const resultFan = { start: [], list: [], fan: [] }
 	// Логика включения ВНО в комбинированном складе в режиме холодильник
-	const start = isStart(sect, s, seS, acc)
+	const start = checkStart(bld, sect, s, seS, acc)
 	resultFan.start.push(start)
 	resultFan.list.push(sect._id)
 	resultFan.fan.push(...mS.fanSS)
@@ -75,17 +76,20 @@ function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
  * 		уменьшаем работу ВНО
  * 4) если температура канала ниже задания канала - гистерезис и все ВНО работают
  * 		на 100%, то (я пока что не знаю как узнаю сообщу тебе)
+ * @returns {boolean} true - вкл ВНО, fakse - выкл ВНО
  */
-function isStart(sect, s, seS, acc) {
-	// acc[sect._id] ??= { flagTcnl: false }
-	if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
-		console.log(991)
-		return true
-	}
-	if (seS.tcnl > acc.tgtTcnl) {
-		console.log(992)
+function checkStart(bld, sect, s, seS, acc) {
+	// Достиг задания => выкл ВНО
+	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
 		return false
 	}
-	console.log(993)
+	// Температура канала ниже задания канала => вкл ВНО
+	if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
+		return true
+	}
+	// Температура канала выше задания канала => выкл ВНО
+	if (seS.tcnl > acc.tgtTcnl) {
+		return false
+	}
 	return true
 }

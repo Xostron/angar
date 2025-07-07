@@ -2,6 +2,7 @@ const { onTime } = require('@tool/command/time')
 const mes = require('@dict/message')
 const { msgB } = require('@tool/message')
 const { wrAchieve, delAchieve } = require('@tool/message/achieve')
+const { data: store } = require('@store')
 
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
@@ -75,16 +76,23 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
 	console.log('\n\tПроверка условий принятия решений')
 	// Выключение (Температура задания достигнута)
-	if (se.tprd <= accCold.tgtTprd) {
-		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.tgtTprd} °C`))
-		delAchieve(bld._id, bld.type, mes[81].code)
+	// TODO - В комби режиме и так формируется ачивка Достиг температуры, в этом месте создавалась еще одна ачивка
+	// TODO Достиг темпы, но со стороны холодильника (в целом она не нужна пока что)
+	// if (se.tprd <= accCold.tgtTprd) {
+	// 	wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.tgtTprd} °C`))
+	// 	delAchieve(bld._id, bld.type, mes[81].code)
+	// 	if (code === 'off') return
+	// 	console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accCold.tgtTprd} тмп. задания`)
+	// 	return fnChange(0, 0, 0, 0, 'off', clr)
+	// } else {
+	// 	delAchieve(bld._id, bld.type, mes[80].code)
+	// 	const txt = `Температура задания ${accCold.tgtTprd} °C, продукта ${se.tprd} °C`
+	// 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
+	// }
+	// Достиг задания => выкл испаритель
+	if (store.alarm.achieve[bld._id].cooling.finish) {
 		if (code === 'off') return
-		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accCold.tgtTprd} тмп. задания`)
 		return fnChange(0, 0, 0, 0, 'off', clr)
-	} else {
-		delAchieve(bld._id, bld.type, mes[80].code)
-		const txt = `Температура задания ${accCold.tgtTprd} °C, продукта ${se.tprd} °C`
-		wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	}
 
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
