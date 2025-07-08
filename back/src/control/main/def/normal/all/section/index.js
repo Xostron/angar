@@ -27,7 +27,7 @@ function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm)
 	for (const sect of sections) {
 		if (sect.buildingId !== bld._id) continue
 		// Исполнительные механизмы секции
-		const m = mech(obj.data, sect._id, sect.buildingId)
+		const m = mech(obj, sect._id, sect.buildingId)
 		// Показания с датчиков секции
 		const se = sensor(bld._id, sect._id, obj)
 		// Секция в любом режиме

@@ -1,7 +1,7 @@
 const { msg } = require('@tool/message')
 const { isReset } = require('@tool/reset')
 const { stateV } = require('@tool/command/valve')
-const { stateEq } = require('@tool/command/fan')
+const { stateEq } = require('@tool/command/fan/fn')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 /**

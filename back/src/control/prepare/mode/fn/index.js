@@ -1,6 +1,6 @@
 const { data: store, setToAuto, setToMan, setToOffSection } = require('@store')
 const { ctrlV, ctrlDO } = require('@tool/command/module_output')
-const { stateEq} = require('@tool/command/fan')
+const { stateEq} = require('@tool/command/fan/fn')
 const { stateV } = require('@tool/command/valve')
 
 /**

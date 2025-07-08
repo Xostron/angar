@@ -1,4 +1,4 @@
-const { stateEq } = require('@tool/command/fan')
+const { stateEq } = require('@tool/command/fan/fn')
 const { stateV } = require('@tool/command/valve')
 
 // Режим вентиляции: Вкл - принудительное включение

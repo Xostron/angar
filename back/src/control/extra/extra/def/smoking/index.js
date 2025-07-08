@@ -1,6 +1,6 @@
 const { compareTime, runTime } = require('@tool/command/time')
 const { delExtra, wrExtra } = require('@tool/message/extra')
-const { arrCtrl } = require('@tool/command/fan')
+const { arrCtrl } = require('@tool/command/fan/fn')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 

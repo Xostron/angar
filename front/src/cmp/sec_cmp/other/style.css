@@ -31,7 +31,7 @@
 	flex-direction: row;
 	align-items: center;
 	gap: var(--fsz10);
-	width: 132px;
+	width: 150px;
 	justify-content: space-around;
 }
 .sio-valve-map{
@@ -39,9 +39,7 @@
 	flex-direction: column;
 	gap: var(--fsz10);
 }
-.sio-valve > span{
-	width: 50px;
-}
+
 /* Heater */
 .section-info-other > img {
 	height: var(--fsz80);

@@ -59,6 +59,7 @@ function fan(obj) {
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id]
 
 		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
+		ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
 	}
 }
 // Блокировки напорных вентиляторов (обычный склад и холодильник)
@@ -133,10 +134,6 @@ function out(obj, output, o, ...args) {
 	const lock = fn(args)
 	// Дискретный выход
 	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
-	// Аналоговый выход
-	// ВНО имеет аналоговое управление?
-	const ao = getAO(obj, o)
-	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = 0
 }
 
 function outV(type, output, o, ...args) {
@@ -153,14 +150,33 @@ function fn(args) {
 }
 
 /**
- * Имеется аналоговое управление
+ * Имеется аналоговое управление (ВНО)
  * @param {*} obj Глобальный объект с информацией о PC
- * @param {*} o Рама исполнительного механизма
+ * @param {*} f Рама исполнительного механизма
  */
-function getAO(obj, o) {
+function getAO(obj, f) {
 	const binding = obj?.data?.binding
-	if (!binding || !o) return
+	if (!binding || !f) return
 
-	const ao = binding.find((el) => el.owner.id == o._id && el.type == 'ao')
+	const ao = binding.find((el) => el.owner.id == f._id && el.type == 'ao')
 	return ao
+}
+function ao(obj, output, f, localB, local, ...args) {
+	const lock = fn(args)
+	// Аналоговый выход
+	// ВНО имеет аналоговое управление?
+	const ao = getAO(obj, f)
+	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = 0
+	// Местный переключатель => задание ВНО на 100%, DO выкл
+	if (ao) {
+		if (local || localB) {
+			store.heap.fan[f._id] = true
+			output[ao.moduleId].value[ao.channel - 1] = 100
+		}
+		// Перключатель в авто, однократно сбросить АО
+		if (store.heap.fan?.[f._id] && !local && !localB) {
+			store.heap.fan[f._id] = false
+			output[ao.moduleId].value[ao.channel - 1] = 0
+		}
+	}
 }

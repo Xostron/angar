@@ -1,21 +1,27 @@
 // Исполнительные механизмы секции
-function mech(data, sId, bldId) {
+function mech(obj, idS, idB) {
+	const { data, retain, value } = obj
 	const { valve, fan, heating, signal, binding, cooler } = data
 	// Клапаны и обогрев (приточный и выпускной)
-	const vlvS = valve.filter((el) => el.sectionId.includes(sId))
-	const heatS = heating.filter((el) => el?.owner?.id === sId)
+	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
+	const heatS = heating.filter((el) => el?.owner?.id === idS)
 
 	// Испарители (соленоид + ВНО + оттайка)
 	const coolerS = []
 	cooler.forEach((el) => {
-		if (el.sectionId != sId) return
+		if (el.sectionId != idS) return
 		coolerS.push(transformClr(el, data))
 	})
 	const fanClr = coolerS.flatMap((el) => el.fan)
-
 	// Напорные ВНО камеры для режима холодильник
 	const fanSS = fan
-		.filter((el) => el.owner.id === sId && el.type === 'fan')
+		.filter(
+			(el) =>
+				el.owner.id === idS &&
+				el.type === 'fan' &&
+				value[el._id].state != 'alarm' &&
+				!retain?.[idB]?.fan?.[idS]?.[el._id]
+		)
 		.map((el) => {
 			const ao = binding.find((b) => b.owner.id === el._id)
 			if (!ao) return el
@@ -25,12 +31,14 @@ function mech(data, sId, bldId) {
 	const fanS = [...fanSS, ...fanClr]
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
-	// const fanAux = fan.filter((el) => el.owner.id === sId && el.type === 'aux')
+	// const fanAux = fan.filter((el) => el.owner.id === idS && el.type === 'aux')
 
 	// Выход "Модуль в работе" для реле безопасности
-	const connect = signal.filter((el) => el.owner.id == sId && el.type == 'connect')
+	const connect = signal.filter((el) => el.owner.id == idS && el.type == 'connect')
 	// Выход сигнала Сброс аварии (создается как в секции, так и для склада)
-	const reset = signal.filter((el) => (el.owner.id == sId || el.owner.id == bldId) && el.type == 'reset')
+	const reset = signal.filter(
+		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset'
+	)
 
 	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS }
 }
@@ -44,11 +52,14 @@ function mechB(bId, type, obj) {
 	// Разгонные вентиляторы
 	const fanA = data?.fan?.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
 	// Выход "Модуль в работе" для реле безопасности
-	const connect = data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'connect') ?? []
+	const connect =
+		data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'connect') ?? []
 	// Выход Сброс аварии для реле безопасности
-	const reset = data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
+	const reset =
+		data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
 	// Притотчные клапаны склада
-	const vlvIn = data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
+	const vlvIn =
+		data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
 	// Оборудование холодильника
 	let cold = type == 'cold' || type == 'combi' ? fnCold(bId, obj) : undefined
 	return { fanA, connect, reset, vlvIn, cold }

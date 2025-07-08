@@ -20,7 +20,7 @@ function main(bld, obj, bdata, alr) {
 		if (sect.buildingId != bld._id) continue
 		const seS = sensor(bld._id, sect._id, obj)
 		// Исполнительные механизмы камеры
-		const mS = mech(obj.data, sect._id, sect.buildingId)
+		const mS = mech(obj, sect._id, sect.buildingId)
 		// console.log(1111, seS, 11112, seB)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)

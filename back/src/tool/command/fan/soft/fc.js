@@ -1,5 +1,8 @@
-const { checkOn, checkOff, regul, turnOn, turnOff, init, defOnOff } = require('./fn')
+const { checkOn, checkOff, init, defOnOff } = require('./fn/fn')
 const { sensor } = require('@tool/command/sensor')
+const turnOn = require('./fn/turn_on')
+const turnOff = require('./fn/turn_off')
+const regul = require('./fn/regul')
 const { data: store } = require('@store')
 /**
  * Плавный пуск ВНО в секции на контакторах
@@ -13,12 +16,12 @@ const { data: store } = require('@store')
  * @param {number} номер секции
  * @returns
  */
-function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
+function fc(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init(fans, idS, where)
+	const acc = init(idS)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fans, bld, idS, aCmd, acc, bdata, where)) return
+	if (turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
@@ -28,15 +31,16 @@ function fc(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	acc.busy = regul(acc, fans, on, off, s)
+	acc.busy = regul(acc, fanFC, on, off, s)
 	if (acc.busy) (on = false), (off = false)
 
+	console.log(3333, on, off, acc)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, aCmd, fans.length)
 	checkOff(off, acc, aCmd)
 
 	// Непосредственное включение
-	turnOn(fans, bldId, acc)
+	turnOn(fanFC, fans, bldId, acc)
 
 	console.log(
 		444,

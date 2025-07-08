@@ -16,24 +16,45 @@ const data = {
  * @param {*} resultFan Данные о ВНО всего склада
  * @param {object} bdata Результат функции scan()
  */
-function soft(bld, obj, s, seB,seS, m, resultFan,bdata, where) {
+function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 	const { section, cooler } = obj.data
-	// Плавный пуск (все вентиляторы на контакторах)
+	// console.log(111, resultFan)
 	if (!resultFan.list?.length) return
-	// По секциям
+	// Управление цепочкой ВНО - По секциям
 	resultFan.list.forEach((idS, idx) => {
 		const aCmd = store.aCmd?.[idS]?.fan
 		// Испарители, принадлежащие текущей секции
 		const coolerIds = cooler.filter((el) => el.sectionId == idS).map((el) => el._id)
-		// ВНО данной секции
-		const fans = resultFan.fan.filter((el) => el.owner.id === idS).sort((a, b) => a?.order - b?.order)
-		// ВНО испарителей данной секции
-		const fansCoo = resultFan.fan.filter((el) => coolerIds.includes(el.owner.id)).sort((a, b) => a?.order - b?.order)
+		// ВНО испарителей данной секции (управляем ими как обычными ВНО без ПЧ)
+		const fansCoo = resultFan.fan
+			.filter((el) => coolerIds.includes(el.owner.id))
+			.sort((a, b) => a?.order - b?.order)
+
+		// ВНО без ПЧ
+		const fans = resultFan.fan
+			.filter((el) => el.owner.id === idS && !el?.ao)
+			.sort((a, b) => a?.order - b?.order)
+
+		// ВНО с ПЧ
+		const fansFC = resultFan.fan
+			.filter((el) => el.owner.id === idS && el?.ao)
+			.sort((a, b) => a?.order - b?.order)
+
+			// Выделяем главный ВНО с ПЧ (fanFC) и все остальные ВНО
+		const fanFC = fansFC?.[0]
+		if (fansFC.length > 1) {
+			fans.push(...fansFC.slice(1, fansFC.length))
+			fans.sort((a, b) => a?.order - b?.order)
+		}
 		fans.push(...fansCoo)
+
+		// Тип управления: с ПЧ или реле
+		const type = fanFC ? 'fc' : 'relay'
+
+		console.log(2220, idS, type, !!fanFC, 'ВНО без ПЧ:', fans.length)
 		if (!aCmd) return
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
-		const type = fans[0]?.ao?.id ? 'fc' : 'relay'
-		data[type](bld, idS, obj, aCmd, fans, s, seB,seS, idx, bdata,where)
+		data[type](bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)
 	})
 }
 

@@ -1,4 +1,4 @@
-const { stateF } = require('@tool/command/fan')
+const { stateF } = require('@tool/command/fan/fn')
 const { data: store, readAcc } = require('@store')
 const { getIdByClr, getB } = require('@tool/get/building')
 

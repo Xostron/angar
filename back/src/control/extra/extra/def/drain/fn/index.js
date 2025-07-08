@@ -1,5 +1,5 @@
 const {delExtra, wrExtra} = require('@tool/message/extra')
-const { arrCtrl } = require('@tool/command/fan')
+const { arrCtrl } = require('@tool/command/fan/fn')
 const { msgB } = require('@tool/message')
 
 // Оттайка слива воды: Вкл

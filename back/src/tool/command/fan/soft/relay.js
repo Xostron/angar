@@ -1,4 +1,4 @@
-const { checkOn, checkOff, regul, turnOn, turnOff, defOnOff } = require('./fn')
+const { checkOn, checkOff, regul, turnOn, turnOff, defOnOff } = require('./fn/fn')
 const { sensor } = require('@tool/command/sensor')
 const { data: store } = require('@store')
 
@@ -14,7 +14,7 @@ const { data: store } = require('@store')
  * @param {number} номер секции
  * @returns
  */
-function relay(bld, idS, obj, aCmd, fans, s, seB, seS, idx, bdata, where) {
+function relay(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
 	const p = sensor(bldId, idS, obj)?.p
 	// acc.count - Кол-во включенных вентиляторов (всегда один вентилятор в работе, независимо от давления в канале)

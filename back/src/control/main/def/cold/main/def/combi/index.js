@@ -24,7 +24,7 @@ function main(bld, obj, bdata, alr) {
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
 		// Исполнительные механизмы камеры
-		const mS = mech(obj.data, sect._id, sect.buildingId)
+		const mS = mech(obj, sect._id, sect.buildingId)
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей

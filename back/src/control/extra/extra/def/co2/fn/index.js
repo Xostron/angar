@@ -1,4 +1,4 @@
-const { arrCtrl } = require('@tool/command/fan')
+const { arrCtrl } = require('@tool/command/fan/fn')
 const { compareTime } = require('@tool/command/time')
 
 // СО2: Вкл
