@@ -73,7 +73,9 @@ function init(secId, s) {
 	// true - регулирование по ПЧ, false - регулирование по кол-ву ВНО
 	a.busy ??= false
 	// Задание главного ВНО с ПЧ
-	a.fc ??= s.fan.min ?? 20
+	a.fc ??= {}
+	a.fc.value ??= false
+	a.fc.sp ??= 0
 	return a
 }
 

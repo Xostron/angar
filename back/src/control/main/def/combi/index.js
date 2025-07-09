@@ -12,8 +12,10 @@ function combi(building, obj, bdata) {
 	accAuto.cold ??= { test: 0 }
 	accAuto.cold.test++
 	// Простой склад (см. папку normal)
+	console.log(11, 'ОБЫЧНЫЙ ====================')
 	normal(building, obj, bdata)
 	// Холодильник (включение при аварии авторежима)
+	console.log(11, 'ХОЛОД ====================')
 	cold(building, obj, bdata)
 }
 

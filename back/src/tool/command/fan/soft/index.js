@@ -18,7 +18,6 @@ const data = {
  */
 function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 	const { section, cooler } = obj.data
-	// console.log(111, resultFan)
 	if (!resultFan.list?.length) return
 	// Управление цепочкой ВНО - По секциям
 	resultFan.list.forEach((idS, idx) => {
@@ -40,7 +39,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 			.filter((el) => el.owner.id === idS && el?.ao)
 			.sort((a, b) => a?.order - b?.order)
 
-			// Выделяем главный ВНО с ПЧ (fanFC) и все остальные ВНО
+		// Выделяем главный ВНО с ПЧ (fanFC) и все остальные ВНО
 		const fanFC = fansFC?.[0]
 		if (fansFC.length > 1) {
 			fans.push(...fansFC.slice(1, fansFC.length))
@@ -51,7 +50,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
 
-		console.log(2220, idS, type, !!fanFC, 'ВНО без ПЧ:', fans.length)
+		// console.log(2220, idS, type, !!fanFC, 'ВНО без ПЧ:', fans.length)
 		if (!aCmd) return
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
 		data[type](bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)

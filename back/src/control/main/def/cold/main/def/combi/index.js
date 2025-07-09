@@ -35,7 +35,7 @@ function main(bld, obj, bdata, alr) {
 	}
 	if (clearBuild(bld, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
-		console.log(999)
+		// console.log(999)
 		target.combi(bld, obj, bdata, alr)
 	}
 }
@@ -76,24 +76,24 @@ function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
  * 		уменьшаем работу ВНО
  * 4) если температура канала ниже задания канала - гистерезис и все ВНО работают
  * 		на 100%, то (я пока что не знаю как узнаю сообщу тебе)
- * @returns {boolean} true - вкл ВНО, fakse - выкл ВНО
+ * @returns {boolean} true - вкл ВНО, false - выкл ВНО
  */
 function checkStart(bld, sect, s, seS, acc) {
 	// Достиг задания => выкл ВНО
-	console.log(11, 'ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
+	// console.log(11, 'ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
-		console.log(1110, sect.name, 'Достиг задания - выкл ВНО')
+		// console.log(1110, sect.name, 'Достиг задания - выкл ВНО')
 		return false
 	}
 	// Температура канала ниже задания канала => вкл ВНО
-	if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
-		console.log(1112, sect.name, 'Температура канала ниже задания канала => вкл ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
-		return true
-	}
+	// if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
+	// 	// console.log(1112, sect.name, 'Температура канала ниже задания канала => вкл ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
+	// 	return true
+	// }
 	// Температура канала выше задания канала => выкл ВНО
-	if (seS.tcnl > acc.tgtTcnl) {
-		console.log(1113, sect.name, 'Температура канала выше задания канала => выкл ВНО', seS.tcnl, acc.tgtTcnl)
-		return false
-	}
+	// if (seS.tcnl > acc.tgtTcnl) {
+	// 	// console.log(1113, sect.name, 'Температура канала выше задания канала => выкл ВНО', seS.tcnl, acc.tgtTcnl)
+	// 	return false
+	// }
 	return true
 }

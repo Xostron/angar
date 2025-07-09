@@ -28,8 +28,8 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 	// Вентилятор
 	const f = def[am].fan(s, se, alr, sect._id, acc)
 	resultFan.start.push(f.start)
-	resultFan.list.push(sect._id)
-	resultFan.fan.push(...m.fanS)
+	// resultFan.list.push(sect._id)
+	// resultFan.fan.push(...m.fanS)
 	// Запись аккумулятора
 	const automode = obj.retain?.[building._id]?.automode
 	const t = building?.type == 'normal' ? automode ?? building?.type : building?.type

@@ -1,5 +1,5 @@
 const { clearAchieve } = require('@tool/message/achieve')
-
+const { data: store } = require('@store')
 /**
  * @description Обычный склад: Очистка аккумулятора, когда выключен склад или все секции не в авто
  * @param {object} accAuto Аккумулятор
@@ -17,6 +17,7 @@ function clearAcc(accAuto, isAllSectOff, start) {
 			delete accAuto[key]
 		}
 	}
+	
 }
 
 function clear(bld, obj, accAuto, isAllSectOff, start) {

@@ -14,48 +14,71 @@ const { sensor } = require('@tool/command/sensor')
  * true: Регулирование частоты текущего (acc.order) ВНО,
  * false: Регулирование по кол-ву ВНО
  */
-function regul(acc, fanFC, on, off, s) {
+function regul(acc, fanFC, on, off, s, where) {
 	if (!fanFC) return false
+
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
 	// Время ожидания следующего шага
 	let time = s.fan.next * 1000
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {
+		acc.fc.value = true
+		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
-		if (acc.fc >= _MAX) return false
+		if (acc.fc.sp >= _MAX) return false
 
 		// Ждем стабилизации
-		if (!acc?.date) {
-			acc.date = new Date()
-			time = 50
-		}
+		// if (!acc?.date) {
+		// 	acc.date = new Date()
+		// 	time = 50
+		// 	// acc.fc.sp = s.fan.min
+		// }
 		if (!compareTime(acc.date, time)) return true
 		// Время стабилизации прошло
-		acc.fc += s.fan.step
+		acc.fc.sp += s.fan.step
 		// Ограничение max задания ПЧ
-		acc.fc = acc.fc > _MAX ? _MAX : acc.fc
+		acc.fc.sp = acc.fc.sp > _MAX ? _MAX : acc.fc.sp
 		// Ограничение min задания ПЧ
-		acc.fc = acc.fc < s.fan.min ? s.fan.min : acc.fc
+		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.date = new Date()
 	}
 
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
+		acc.fc.value = true
+		if (where == 'cold' && acc.order === -1 && acc.fc.sp < s.fan.min) {
+			acc.fc.sp = 0
+			acc.fc.value = false
+			acc.date=new Date()
+			return true
+		}
 		// Задание ПЧ дошло до 0% &&   => разрешаем регулировать по кол-ву ВНО
-		if (acc.fc <= s.fan.min) return false
-		// if (acc.fc <= s.fan.min && acc.order === 0) {
-		// 	acc.fc = s.fan.min
-		// 	return true
-		// }
+		if (acc.fc.sp <= s.fan.min && acc.order >= 0) {
+			acc.fc.sp = s.fan.min
+			return false
+		}
+
 		// Ждем стабилизации
-		if (!acc.date) acc.date = new Date()
+		// if (!acc.date) {
+		// 	acc.date = new Date()
+		// 	acc.fc.sp = s.fan.min
+		// }
 		if (!compareTime(acc.date, time)) return true
 		// Время стабилизации прошло
-		acc.fc -= s.fan.step
-		acc.fc = acc.fc < s.fan.min ? s.fan.min : acc.fc
+		acc.fc.sp -= s.fan.step
+		console.log(2223, acc.fc.sp)
+		if (where == 'cold' && acc.order === -1 && acc.fc.sp < s.fan.min) {
+			acc.fc.sp = 0
+			acc.fc.value = false
+			acc.date=new Date()
+			return true
+		}
+		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.date = new Date()
+		// логика работы комби(холод): выкл ВНО
 	}
+	acc.date=new Date()
 	return true
 }
 

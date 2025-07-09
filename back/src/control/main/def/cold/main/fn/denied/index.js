@@ -49,7 +49,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 
 	store.denied[bld._id][clr._id] =
 		!start || alr || !aggr || !supplySt || !sectMode || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
-	console.log(55, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
+	console.log(55, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
 	// Нет

@@ -19,10 +19,9 @@ const { data: store } = require('@store')
 function fc(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
 	const acc = init(idS, s)
-
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where)) return
-
+	// console.log(2221, acc)
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
@@ -31,27 +30,29 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Регулирование по ПЧ
-	acc.busy = regul(acc, fanFC, on, off, s)
+	// console.log(2222, on, off, where, acc)
+	acc.busy = regul(acc, fanFC, on, off, s, where)
 	if (acc.busy) (on = false), (off = false)
-
-	console.log(3333, on, off, acc)
+	// console.log(2223, acc)
+	// console.log(3333, on, off, acc)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, aCmd, fans.length)
+	// console.log(2224, acc)
 	checkOff(off, acc, aCmd)
-
+	// console.log(2225, acc)
 	// Непосредственное включение
 	turnOn(fanFC, fans, bldId, acc)
-
-	console.log(
-		444,
-		`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-		`Авто = "${aCmd.type}",`,
-		`ПЧ busy = `,
-		acc.busy,
-		acc.fc,
-		'#ВНО =',
-		acc.order
-	)
+	// console.log('==============', 2226, on, off, where, acc)
+	// console.log(
+	// 	444,
+	// 	`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
+	// 	`Авто = "${aCmd.type}",`,
+	// 	`ПЧ busy = `,
+	// 	acc.busy,
+	// 	acc.fc,
+	// 	'#ВНО =',
+	// 	acc.order
+	// )
 }
 
 module.exports = fc

@@ -90,7 +90,7 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	// }
 	// Достиг задания => выкл испаритель
-	if (store.alarm.achieve[bld._id].cooling.finish) {
+	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
 		if (code === 'off') return
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	}

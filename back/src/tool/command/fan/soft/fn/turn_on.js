@@ -8,8 +8,8 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
  */
 function turnOn(fanFC, fans, idB, acc) {
 	if (fanFC) {
-		ctrlAO(fanFC, idB, acc.fc)
-		ctrlDO(fanFC, idB, 'on')
+		ctrlAO(fanFC, idB, acc.fc.sp)
+		ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
 	}
 
 	fans.forEach((f, i) => {
