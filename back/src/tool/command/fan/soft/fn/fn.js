@@ -63,7 +63,7 @@ function checkOff(off, acc, aCmd) {
  * @param {string} secId id секции
  * @returns {object} Аккумулятор секции
  */
-function init(secId) {
+function init(secId, s) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
 	// Номер текущего ВНО
@@ -73,7 +73,7 @@ function init(secId) {
 	// true - регулирование по ПЧ, false - регулирование по кол-ву ВНО
 	a.busy ??= false
 	// Задание главного ВНО с ПЧ
-	a.fc ??= 0
+	a.fc ??= s.fan.min ?? 20
 	return a
 }
 

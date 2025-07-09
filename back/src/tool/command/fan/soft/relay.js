@@ -16,7 +16,6 @@ const { data: store } = require('@store')
  */
 function relay(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const p = sensor(bldId, idS, obj)?.p
 	// acc.count - Кол-во включенных вентиляторов (всегда один вентилятор в работе, независимо от давления в канале)
 	// Изменяя данное число, регулируем порядком вкл/выкл вентиляторов для поддержания давления в канале
 	store.watchdog.softFan[idS] ??= {}
@@ -25,7 +24,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)
 	acc.date ??= new Date()
 
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fans, bld,idS, aCmd, acc, bdata, where)) return
+	if (turnOff(null, fans, bld,idS, aCmd, acc, bdata, where)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
@@ -40,7 +39,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)
 	checkOff(off, acc, aCmd)
 	// console.log(990011, on,off)
 	// Непосредственное включение
-	turnOn(fans, bldId, acc)
+	turnOn(null,fans, bldId, acc)
 
 	// console.log(
 	// 	444,

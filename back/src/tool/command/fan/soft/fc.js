@@ -18,7 +18,7 @@ const { data: store } = require('@store')
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init(idS)
+	const acc = init(idS, s)
 
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where)) return
