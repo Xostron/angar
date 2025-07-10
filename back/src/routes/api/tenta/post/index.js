@@ -1,5 +1,4 @@
 const def = require('./def')
-const {state} = require('@root/client/state')
 
 function write() {
 	return function (req, res) {
@@ -9,8 +8,6 @@ function write() {
 
 		def[code](obj)
 			.then((_) => {
-				// console.log(999001, code)
-				// state('force')
 				res.status(200).json({ result: true })
 			})
 			.catch((error) => {

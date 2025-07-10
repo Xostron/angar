@@ -13,7 +13,6 @@ const soft = require('./soft')
  * @param {object} bdata Результат функции scan()
  */
 function normal(bld, obj, s, seB, seS, m, resultFan, bdata) {
-	console.log(999001, 'soft режим норм')
 	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	fnACmd(bld._id, resultFan, s, start)
@@ -25,8 +24,6 @@ function normal(bld, obj, s, seB, seS, m, resultFan, bdata) {
 
 // Комбинированный склад в холодильном режиме
 function combi(bld, obj, s, seB, seS, m, resultFan, bdata) {
-	console.log(999001, 'soft режим холода')
-
 	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	fnACmd(bld._id, resultFan, s, start)

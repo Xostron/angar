@@ -16,7 +16,6 @@ function turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where = 'normal') {
 	if (r) return true
 	if (aCmd.type == 'on') return false
 
-	console.log(3332, idS, 'Выключаем ВНО')
 	// Сброс аккумулятора
 	clear(idS)
 	fans.forEach((f, i) => {

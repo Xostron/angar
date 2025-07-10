@@ -39,7 +39,7 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 
 module.exports = auto
 
-// Авария неисправности основных датчиков true-авария, false - нет аварии
+// Неисправности основных датчиков true-авария, false - нет аварии
 function alrSens(se) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = se
 	if (typeof tout !== 'number' || typeof hout !== 'number') return true
