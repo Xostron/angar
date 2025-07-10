@@ -1,4 +1,4 @@
-const { vlv, fan, fanAccel, heating, device,fanCooler } = require('./fn')
+const { vlv, fan, fanAccel, heating, device } = require('./fn')
 
 /**
  * Применение блокировок к командам управления выходами
@@ -8,7 +8,6 @@ const { vlv, fan, fanAccel, heating, device,fanCooler } = require('./fn')
 function writeLock(obj) {
 	vlv(obj)
 	fan(obj)
-	// fanCooler(obj)
 	fanAccel(obj)
 	heating(obj)
 	device(obj)

@@ -120,37 +120,7 @@ function device(obj) {
 	}
 }
 
-// Блокировка вентиляторов испарителей
-function fanCooler(obj){
-	const { value, data, retain, output } = obj
-	for (const f of data.fan) {
-		if (f.type !== 'fan') continue
-		if (f.owner.type === 'section') continue
-		console.log(99, f.name, f.type, f.owner.type)
-		// const mdl = f?.module?.id
-		// if (!output[mdl]) continue
-
-		// // Id cклада
-		// const idB = getIdB(mdl, data.module)
-		// // Блокировки:
-		// // Состояние вентилятора: авария / выведен из работы
-		// // const isAlrOff =
-		// // 	value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
-		// // // местный режим (aCmd.end - флаг о плавном останове вентиляторов)
-		// // const local = isExtralrm(idB, f.owner.id, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
-		// // const localB = isExtralrm(idB, null, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
-		// // // Нажат аварийный стоп
-		// const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
-		// // // Секция выключена (null)
-		// let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null
-		// // // Склад выключен и секция в авторежиме
-		// const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id]
-		// out(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
-		// ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
-	}
-}
-
-module.exports = { vlv, fan, fanAccel, heating, device, fanCooler }
+module.exports = { vlv, fan, fanAccel, heating, device }
 
 /**
  *

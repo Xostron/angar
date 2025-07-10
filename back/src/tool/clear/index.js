@@ -17,7 +17,6 @@ function clearAcc(accAuto, isAllSectOff, start) {
 			delete accAuto[key]
 		}
 	}
-	
 }
 
 function clear(bld, obj, accAuto, isAllSectOff, start) {
