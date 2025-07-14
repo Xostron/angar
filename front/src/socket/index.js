@@ -2,7 +2,11 @@ import { io } from 'socket.io-client'
 
 // "undefined" means the URL will be computed from the `window.location` object
 // const URL = process.env.NODE_ENV === 'production' ? process.env.PUBLIC_SOCKET_URI : process.env.PUBLIC_SOCKET_URI
-const URL = process.env.NODE_ENV === 'production' ? window.location.host : process.env.PUBLIC_SOCKET_URI
+const URL =
+	process.env.NODE_ENV === 'production'
+		? process.env.PUBLIC_SOCKET_URI
+		: process.env.PUBLIC_SOCKET_URI
+console.log('PUBLIC_SOCKET_URI', URL)
 const config = {
 	// extraHeaders - дополнительные заголовки, сохраняются на протяжении сессии (не могут быть изменены):
 	// extraHeaders: {
