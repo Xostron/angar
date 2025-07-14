@@ -10,7 +10,7 @@ export default function Title({ title, head, st, warn }) {
 	const { name, bName, action } = title
 
 	// Окно подтверждения
-	const onWarn = useWarn(({ warn }) => warn)
+	const onWarn = useWarn(({ warnCustom }) => warnCustom)
 	const onClick = () => onWarn(warn)
 	return (
 		<section className='set-head' style={st}>

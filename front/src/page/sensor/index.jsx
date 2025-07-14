@@ -28,8 +28,7 @@ export default function Sensor({}) {
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
-	const warn = useWarn(({ warn }) => warn)
-	const { link, setLink } = useWarn(({ link, setLink }) => ({ link, setLink }))
+	const { link, setLink, warnCustom } = useWarn(({ link, setLink,warnCustom }) => ({ link, setLink,warnCustom }))
 	const obj = {
 		type: 'warn',
 		title: `Сохранение`,
@@ -37,11 +36,11 @@ export default function Sensor({}) {
 		default() {
 			navigate(this.path)
 		},
-		action() {
+		fnYes() {
 			sendSens()
 			this.default()
 		},
-		noaction() {
+		fnNo() {
 			setSens(null)
 			this.default()
 		},
@@ -49,7 +48,7 @@ export default function Sensor({}) {
 
 	// Обработчик вызова окна
 	function onDialog(path) {
-		warn({ ...obj, path })
+		warnCustom({ ...obj, path })
 	}
 
 	// Окно подтверждения

@@ -4,7 +4,7 @@ import useWarn from '@store/warn'
 import out from './fn'
 import Entry from './entry'
 import Dialog from '@cmp/dialog'
-import useDialog from '@cmp/dialog/use_dialog'
+import useDialog from '@cmp/dialog/hook'
 
 //Войти или Информация о пользователе
 export default function Person({ style, cls }) {
@@ -12,12 +12,6 @@ export default function Person({ style, cls }) {
 	const warn = useWarn(({ warn }) => warn)
 	const { refDialog, open, close } = useDialog()
 	const title = isAuth ? name : 'Войти'
-	const data = {
-		type: 'warn',
-		title: 'Выход из системы',
-		text: 'Вы действительно хотите выйти из системы?',
-		action: (_) => out(),
-	}
 	let cl = ['control', cls]
 	cl = cl.join(' ')
 	return (
@@ -33,6 +27,6 @@ export default function Person({ style, cls }) {
 			open()
 			return
 		}
-		warn(data)
+		warn('logout', out)
 	}
 }

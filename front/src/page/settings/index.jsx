@@ -50,8 +50,7 @@ export default function Settings({}) {
 
   // Окно подтверждения сохранения
   const navigate = useNavigate();
-  const warn = useWarn(({ warn }) => warn);
-  const { setLink } = useWarn();
+  const [warnCustom, setLink] = useWarn(({ warnCustom,setLink }) => [warnCustom, setLink]);
 
   const obj = {
     type: "warn",
@@ -98,7 +97,7 @@ export default function Settings({}) {
 
   // Обработчик вызова окна
   function onDialog(path) {
-    warn({ ...obj, path });
+    warnCustom({ ...obj, path });
   }
   // Вкл/выкл калибровку клапанов - Обработчик Switch
   function onSwitch(vlv, val) {

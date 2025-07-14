@@ -13,26 +13,19 @@ export default function Item({ data, cur, set, deactive }) {
 	const name = section.name
 
 	// Окно подтверждения
-	const warn = useWarn(({ warn }) => warn)
-	const onClick = () => isAuth && warn(obj)
 	const obj = {
 		type: 'warn',
 		title: `Режим работы. ${name}`,
 		text: `Вы действительно хотите переключить секцию в ${title.toUpperCase()} РЕЖИМ?`,
-		action: (_) => set(value),
 	}
+	const [warn, warnCustom] = useWarn(({ warn, warnCustom }) => [warn, warnCustom])
+	const fnYes = (_) => set(value)
+	const onClick = () => (isAuth ? warnCustom(obj, fnYes) : warn('auth'))
 
 	let cls = ['nav-item']
 	if (cur == value) cls.push('active')
 	if (!isAuth || deactive) cls.push('auth_bg')
 	cls = cls.join(' ')
 
-	return (
-		<Btn
-			onClick={onClick}
-			cls={cls}
-			title={title}
-			style={isAuth || cur == value ? {} : { color: 'var(--primary)' }}
-		/>
-	)
+	return <Btn onClick={onClick} cls={cls} title={title} style={isAuth || cur == value ? {} : { color: 'var(--primary)' }} />
 }

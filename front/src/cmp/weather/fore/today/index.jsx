@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
-import useDialog from '@cmp/dialog/use_dialog'
+import useDialog from '@cmp/dialog/hook'
 import Dialog from '@cmp/dialog'
 import Entry from './entry'
 

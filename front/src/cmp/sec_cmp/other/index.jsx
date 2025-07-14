@@ -7,7 +7,7 @@ import EntryH from '@cmp/modal/heating'
 import Btn from '@cmp/fields/btn'
 import defImg from '@src/tool/icon'
 import Dialog from '@cmp/dialog'
-import useDialog from '@cmp/dialog/use_dialog'
+import useDialog from '@cmp/dialog/hook'
 import Valve from './valve'
 import './style.css'
 
