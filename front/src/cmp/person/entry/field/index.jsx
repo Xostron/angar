@@ -1,10 +1,7 @@
 import Input from "@cmp/fields/input";
 
-
-
 //Поля логина и пароля
 export default function Field({login, password, setLogin, setPassword}) {
-
 	return (
 		<>
 			<Input 
@@ -14,7 +11,7 @@ export default function Field({login, password, setLogin, setPassword}) {
 				setValue={setLogin}
 				sti={{textAlign: 'left'}}
 				cls='cell-login'
-				disabled={false}
+				disabled={'true'}
 			/>
 			<Input
 				placeholder={"Пароль"}
@@ -24,7 +21,7 @@ export default function Field({login, password, setLogin, setPassword}) {
 				setValue={setPassword}
 				sti={{textAlign: 'left'}}
 				cls='cell-login'
-				disabled={false}
+				disabled={'true'}
 			/>
 		</>
 	)

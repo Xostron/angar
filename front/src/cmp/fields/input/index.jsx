@@ -34,7 +34,7 @@ export default function Input({ value, setValue, style, placeholder, icon, sti, 
 				placeholder={placeholder}
 				value={val}
 				onChange={onChange}
-				disabled={!disabled ? !isAuth : disabled}
+				disabled={!disabled ? !isAuth : typeof disabled=='boolean' ? true : false}
 				title={title}
 			/>
 		</div>

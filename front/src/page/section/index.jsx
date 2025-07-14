@@ -10,7 +10,15 @@ import './style.css'
 export default function Sect({}) {
 	const { sect, build } = useParams()
 	const [section, sections, getCurB, setCurB, getCurS, setCurS, getType] = useEquipStore(
-		({ section, sections, getCurB, setCurB, getCurS, setCurS, getType }) => [section(), sections(), getCurB, setCurB, getCurS, setCurS, getType]
+		({ section, sections, getCurB, setCurB, getCurS, setCurS, getType }) => [
+			section(),
+			sections(),
+			getCurB,
+			setCurB,
+			getCurS,
+			setCurS,
+			getType,
+		]
 	)
 
 	// обновление страницы
@@ -20,16 +28,14 @@ export default function Sect({}) {
 	}, [sect, getCurB(build)])
 
 	if (!section) return null
-
 	const nhs = { gridTemplateRows: `repeat(${sections.length}, var(--fsz65))` }
 	const type = getType(build)
 	return (
 		<>
+		
 			<Nav cls='nav-h-section' cur={sect} data={sections} ph='section' stl={nhs} />
 			<Sidebar />
 			<DefSection type={type} />
-			{/* <DefSection type={'normal'} /> */}
-			{/* <DefSection type={'cold'} /> */}
 		</>
 	)
 }

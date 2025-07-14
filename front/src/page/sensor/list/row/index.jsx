@@ -40,7 +40,6 @@ export default function Row({ data }) {
 		setCorr(setting?.[el]?.corr ?? 0)
 		setOn(onn)
 	}, [el])
-console.log(data)
 	const { unit, ico } = fnUnit(data)
 	const { cl, cls, clCorr } = fnStyle(sens?.[build]?.[el]?.corr, raw, on)
 	return (

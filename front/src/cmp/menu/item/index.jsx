@@ -9,7 +9,6 @@ export default function Item({ data }) {
 	const href = useHref()
 	const { link, setLink } = useWarn()
 	const { title, icon, path, active } = data
-	// const [list] = useEquipStore(({ list }) => [list])
 	const cur = href.split('/').at(3) ?? null
 
 	let cls = null
@@ -23,7 +22,6 @@ export default function Item({ data }) {
 			return
 		}
 		setLink(null)
-		// if (list.length == 1 && path == '/') return
 		navigate(path)
 	}
 }

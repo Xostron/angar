@@ -1,28 +1,22 @@
-
-import Logo from '@cmp/header/logo'
+import { useState } from 'react'
 import Control from './control'
 import Field from './field'
-import useEntry from './use'
+import './style.css'
+
 //Аваторизация
-export default function Entry({show, setShow}) {
-	const {login, password, setLogin, setPassword} = useEntry(show, setShow)
-	if (!show) return null
+export default function Entry({ close }) {
+	const [login, setLogin] = useState('')
+	const [password, setPassword] = useState('')
 	return (
-		<div className="curt" >
-			<dialog className="entry">
-				<Logo />
-				<Field 
-					login={login}
-					password={password}
-					setLogin={setLogin}
-					setPassword={setPassword}
-				/>
-				<Control
-					login={login}
-					password={password}
-					setShow={setShow}
-				/>
-			</dialog>
+		<div className='entry'>
+			<img src='/img/logo.svg' alt='logo' className='cmp-person-entry-logo' />
+			<Field
+				login={login}
+				password={password}
+				setLogin={setLogin}
+				setPassword={setPassword}
+			/>
+			<Control login={login} password={password} setShow={close} />
 		</div>
 	)
-}	
+}
