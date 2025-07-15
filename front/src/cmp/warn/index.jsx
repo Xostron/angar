@@ -1,23 +1,27 @@
 import useWarn from '@store/warn'
-import Control from './control'
-import Title from './title'
 import Dialog from '@cmp/dialog'
 import useDialog from '@cmp/dialog/hook'
+import def from './def'
 
 // Предупреждение и информирование
 export default function Warn({}) {
 	const { refDialog, open, close } = useDialog()
-	const { cancel, data, show } = useWarn(({ cancel, data, show }) => ({ cancel, data, show }))
+	const { clear, data, show, entryCode } = useWarn(({ clear, data, show, entryCode }) => ({
+		clear,
+		data,
+		show,
+		entryCode,
+	}))
 	show ? open() : close()
-	const { type = 'info', title, text, action } = data
-	const icon = type === 'info' ? '/img/info.svg' : '/img/warn.svg'
+	console.log(110, data, entryCode)
+	const Entry = def[entryCode] ?? def.notfound
 	return (
 		<Dialog href={refDialog}>
-			<div className='entry'>
-				<Title icon={icon} title={title} />
-				<p>{text}</p>
-				<Control data={data} cancel={cancel} />
-			</div>
+			<Entry data={data} entryCode={entryCode} />
 		</Dialog>
 	)
 }
+
+
+
+

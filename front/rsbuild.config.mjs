@@ -13,7 +13,7 @@ export default defineConfig({
 		sourceMap: {
 			css: true,
 			js:
-			  process.env.NODE_ENV === 'production'
+			  process.env.NODE_ENV === 'development'
 				? // Use a high quality source map format for production
 				  'source-map'
 				: // Use a more performant source map format for development
@@ -23,7 +23,7 @@ export default defineConfig({
 	html: {
 		title: 'AngarWEB',
 		// 	template: './static/index.html',
-		// favicon: './static/icon.png',
+		favicon: './public/img/logoico.svg',
 		// appIcon: './src/assets/icon.png',
 		meta: {
 			description: 'Веб интерфейс управления сервером Angar',
@@ -33,7 +33,7 @@ export default defineConfig({
 		},
 	},
 	tools: {
-		rspack: (config, { env }) => {
+		rspack: (config, obj) => {
 			if (process.env.NODE_ENV === 'development') {
 				config.devtool = 'cheap-module-eval-source-map';
 			}

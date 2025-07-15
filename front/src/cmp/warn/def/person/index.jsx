@@ -3,8 +3,8 @@ import Control from './control'
 import Field from './field'
 import './style.css'
 
-//Аваторизация
-export default function Entry({ close }) {
+//Авторизация
+export default function Entry({ data, entryCode }) {
 	const [login, setLogin] = useState('')
 	const [password, setPassword] = useState('')
 	return (
@@ -16,7 +16,7 @@ export default function Entry({ close }) {
 				setLogin={setLogin}
 				setPassword={setPassword}
 			/>
-			<Control login={login} password={password} setShow={close} />
+			<Control login={login} password={password} />
 		</div>
 	)
 }

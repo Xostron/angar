@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import useEquipStore from '@store/equipment'
 import useOutputStore from '@store/output'
 import useInputStore from '@store/input'
+import useWarn from '@store/warn'
 import { sProduct, sZero } from '@socket/emit'
 import defImg from '@tool/icon'
 import Data from './data'
@@ -12,8 +12,9 @@ import Footer from './footer/inde'
 import './style.css'
 
 // Модальное окно: вкл/выкл склад
-export default function Entry({ close }) {
-	const { build } = useParams()
+export default function Entry({ data, entryCode }) {
+	const { build } = data
+	const { clear } = useWarn(({ clear }) => ({ clear }))
 	const [prdList] = useEquipStore(({ prdList }) => [prdList(build)])
 	const [automode, start, product] = useInputStore(({ input }) => [
 		input?.retain?.[build]?.automode,
@@ -52,14 +53,14 @@ export default function Entry({ close }) {
 				<Line name='' type='product' data={pr} setData={actProduct} list={aProd} />
 			</span>
 			<Data prd={product?.code}/>
-			<Footer name={bStart} act1={action} act2={cancel} act3={zero} />
+			<Footer name={bStart} act1={action} act2={clear} act3={zero} />
 		</div>
 	)
 
 	// Кнопка Вкл/выкл склад
 	function action() {
 		setStart({ _id: build, val: !start })
-		close()
+		clear()
 	}
 	// Кнопка выбрать product
 	function actProduct(val) {
@@ -72,10 +73,7 @@ export default function Entry({ close }) {
 		setAutomode({ _id: build, val: val })
 		setAm(val)
 	}
-	// Кнопка Отмена
-	function cancel() {
-		close()
-	}
+	
 	// Кнопка Обнулить
 	function zero() {
 		sZero({ buildingId: build })

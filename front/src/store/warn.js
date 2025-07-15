@@ -6,8 +6,11 @@ const useWarn = create((set, get) => ({
 	show: false,
 	// Данные для формы
 	data: {},
-	// Ссылки
+	// // link это история посещений, необходимо для срабатывания диалогового окна
+	// если мы хотим покинуть текущую страницу
 	link: {},
+	// Код отображаемой модалки
+	entryCode: null,
 	/**
 	 * Статические данные из def
 	 * Записать данные и показать
@@ -15,26 +18,23 @@ const useWarn = create((set, get) => ({
 	 * @param {*} fnYes Выполнение пользовательских функци - кнопка Да
 	 * @param {*} fnNo кнопка Нет
 	 */
-	warn: (code, fnYes, fnNo) => {
+	warn: (code, entryCode, fnYes, fnNo) => {
 		const data = { ...def[code], fnYes, fnNo }
-		set({ show: true, data })
+		set({ show: true, data, entryCode })
 	},
 	// Записать данные и показать, динамические данные
-	warnCustom: (obj, fnYes, fnNo) => {
-		const data = { ...obj, fnYes, fnNo }
-		set({ show: true, data })
+	warnCustom: (obj, entryCode) => {
+		const data = { ...obj }
+		set({ show: true, data, entryCode })
 	},
 	// Очистить данные и закрыть - кнопка Отмена
-	cancel: () => set({ show: false, data: {} }),
+	clear: () => set({ show: false, data: {}, entryCode: null }),
 	// Записать ссылки
 	setLink(data) {
 		if (!data) set({ link: {} })
 		set({ link: { ...data } })
 	},
 }))
-
-// link это история посещений, необходимо для срабатывания диалогового окна
-// если мы хотим покинуть текущую страницу
 
 export default useWarn
 
@@ -51,14 +51,9 @@ const def = {
 		title: 'Выход из системы',
 		text: 'Вы действительно хотите выйти из системы?',
 	},
-    setting:{
-        type: 'warn',
+	save: {
+		type: 'warn',
 		title: `Сохранение`,
 		text: `Сохранить настройки?`,
-    },
-    save:{
-        type: 'warn',
-		title: `Сохранение`,
-		text: `Сохранить настройки?`,
-    }
+	},
 }

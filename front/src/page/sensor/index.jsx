@@ -48,7 +48,8 @@ export default function Sensor({}) {
 
 	// Обработчик вызова окна
 	function onDialog(path) {
-		warnCustom({ ...obj, path })
+		console.log(222)
+		warnCustom({ ...obj, path },'warn')
 	}
 
 	// Окно подтверждения
