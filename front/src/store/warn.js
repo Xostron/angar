@@ -1,33 +1,37 @@
 import { create } from 'zustand'
 
-//Хранилище состояния предупреждений
+// Состояние для управления диалоговыми окнами
 const useWarn = create((set, get) => ({
-	// Показать
+	// Флаг - Показать entry (диалоговое окно)
 	show: false,
-	// Данные для формы
+	// Данные для entry
 	data: {},
-	// // link это история посещений, необходимо для срабатывания диалогового окна
-	// если мы хотим покинуть текущую страницу
+	// link это история посещений, необходимо для срабатывания диалогового окна, если мы хотим покинуть текущую страницу
 	link: {},
-	// Код отображаемой модалки
+	// Код отображаемой entry
 	entryCode: null,
 	/**
-	 * Статические данные из def
+	 * Статические entry
 	 * Записать данные и показать
-	 * @param {*} code код предупреждения
-	 * @param {*} fnYes Выполнение пользовательских функци - кнопка Да
-	 * @param {*} fnNo кнопка Нет
+	 * @param {string} code код для data = def[code] данные для entry
+	 * @param {string} entryCode код entry (компонент формы диалогового окна)
+	 * @param {function} fnYes кнопка Да - опционально пользовательские функции
+	 * @param {function} fnNo кнопка Нет - опционально
 	 */
 	warn: (code, entryCode, fnYes, fnNo) => {
 		const data = { ...def[code], fnYes, fnNo }
 		set({ show: true, data, entryCode })
 	},
-	// Записать данные и показать, динамические данные
+	/**
+	 * Динамические entry
+	 * @param {*} obj данные формы
+	 * @param {*} entryCode код entry (компонент формы диалогового окна)
+	 */
 	warnCustom: (obj, entryCode) => {
 		const data = { ...obj }
 		set({ show: true, data, entryCode })
 	},
-	// Очистить данные и закрыть - кнопка Отмена
+	// Очистить данные формы, выключить показ формы
 	clear: () => set({ show: false, data: {}, entryCode: null }),
 	// Записать ссылки
 	setLink(data) {
@@ -38,6 +42,7 @@ const useWarn = create((set, get) => ({
 
 export default useWarn
 
+// Статические формы, статические формы отобраэаются на форме entryCode='warn'
 const def = {
 	auth: {
 		type: 'warn',

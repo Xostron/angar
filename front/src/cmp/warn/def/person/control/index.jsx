@@ -2,6 +2,7 @@ import Btn from '@cmp/fields/btn'
 import auth from './fn'
 import useEquipStore from '@store/equipment'
 import useWarn from '@store/warn'
+
 //Кнопки войти и отмена
 export default function Control({ login, password }) {
 	const [b] = useEquipStore(({ build }) => [build()])

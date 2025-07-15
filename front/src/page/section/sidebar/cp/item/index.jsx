@@ -3,7 +3,7 @@ import useWarn from '@store/warn'
 import useEquipStore from '@store/equipment'
 import Btn from '@cmp/fields/btn'
 
-// Кнопки панели управления режимами
+// Кнопки панели управления режимами секции
 export default function Item({ data, cur, set, deactive }) {
 	const { title, value } = data
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))

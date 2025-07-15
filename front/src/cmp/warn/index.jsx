@@ -16,12 +16,8 @@ export default function Warn({}) {
 	console.log(110, data, entryCode)
 	const Entry = def[entryCode] ?? def.notfound
 	return (
-		<Dialog href={refDialog}>
+		<Dialog href={refDialog} >
 			<Entry data={data} entryCode={entryCode} />
 		</Dialog>
 	)
 }
-
-
-
-

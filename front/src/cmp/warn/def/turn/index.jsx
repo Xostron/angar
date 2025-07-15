@@ -45,6 +45,7 @@ export default function Entry({ data, entryCode }) {
 	}))
 	// Список режимов
 	const aAm = Object.values(defImg.automode)
+
 	return (
 		<div className='entry'>
 			<Title />
@@ -52,11 +53,10 @@ export default function Entry({ data, entryCode }) {
 				<Line name='' type='automode' data={am} setData={actAutomode} list={aAm} />
 				<Line name='' type='product' data={pr} setData={actProduct} list={aProd} />
 			</span>
-			<Data prd={product?.code}/>
+			<Data prd={product?.code} />
 			<Footer name={bStart} act1={action} act2={clear} act3={zero} />
 		</div>
 	)
-
 	// Кнопка Вкл/выкл склад
 	function action() {
 		setStart({ _id: build, val: !start })
@@ -73,7 +73,7 @@ export default function Entry({ data, entryCode }) {
 		setAutomode({ _id: build, val: val })
 		setAm(val)
 	}
-	
+
 	// Кнопка Обнулить
 	function zero() {
 		sZero({ buildingId: build })

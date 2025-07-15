@@ -1,7 +1,7 @@
 import Btn from '@cmp/fields/btn'
 import useWarn from '@store/warn'
 
-//Кнопки ok и отмена
+//Кнопки ок и отмена
 export default function Control({ data }) {
 	const { clear } = useWarn(({ clear }) => ({ clear }))
 	return (

@@ -48,7 +48,6 @@ export default function Sensor({}) {
 
 	// Обработчик вызова окна
 	function onDialog(path) {
-		console.log(222)
 		warnCustom({ ...obj, path },'warn')
 	}
 
