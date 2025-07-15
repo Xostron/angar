@@ -59,11 +59,11 @@ export default function Settings({}) {
     default() {
       navigate(this.path);
     },
-    action() {
+    fnYes() {
       sendSettingAu();
       this.default();
     },
-    noaction() {
+    fnNo() {
       setSettingAu(null);
       this.default();
     },
@@ -89,7 +89,7 @@ export default function Settings({}) {
 
   return (
     <main className="sett" style={st}>
-      <SubHead title={data.title} head={data.head} st={sth} warn={data.warn} />
+      <SubHead title={data.title} head={data.head} st={sth} dataWarn={data.warn} />
       <List data={data} st={stl} />
       <Nav st={stn} cur={type} dialog={onDialog} hasChanged={hasChangedSettingAu(build, type)} />
     </main>
@@ -97,7 +97,7 @@ export default function Settings({}) {
 
   // Обработчик вызова окна
   function onDialog(path) {
-    warnCustom({ ...obj, path });
+    warnCustom({ ...obj, path }, 'warn');
   }
   // Вкл/выкл калибровку клапанов - Обработчик Switch
   function onSwitch(vlv, val) {

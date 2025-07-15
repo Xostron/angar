@@ -59,7 +59,7 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
   if (code === "tuneup" && bldType !== "cold") {
     const d = def[code];
     d.list = listVlv(equipSect, retainTune, tune, onSwitch);
-    d.warn = { ...d.warn, action: sendTune };
+    d.warn = { ...d.warn, fnYes: sendTune };
     return d;
   }
   // Настройки из БД
@@ -84,8 +84,8 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
   // Окно подтверждения warn
   data.warn =
     code === "tuneup"
-      ? { type: "warn", title: `Калибровка клапанов`, text: `Начать калибровку?`, action: sendTune }
-      : { type: "warn", title: `${fct?.name}`, text: `Сохранить настройки?`, action: sendSettingAu };
+      ? { type: "warn", title: `Калибровка клапанов`, text: `Начать калибровку?`, fnYes: sendTune, code }
+      : { type: "warn", title: `${fct?.name}`, text: `Сохранить настройки?`, fnYes: sendSettingAu, code };
 
   return data;
 }
