@@ -1,28 +1,16 @@
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import useInputStore from '@store/input'
 import useAuthStore from '@store/auth'
-import useDialog from '@cmp/dialog/hook'
-import EntryFan from '@cmp/modal/fan'
-import EntryFao from '@cmp/modal/fan_ao'
-import Dialog from '@cmp/dialog'
+import useWarn from '@store/warn'
 import ItemFan from './item/fan'
 import ItemCooler from './item/cooler'
-// import running from '@tool/status/build_section'
 import '../style.css'
 
 export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 	const { build, sect } = useParams()
-	const { refDialog, open, close } = useDialog()
-	const { isAuth } = useAuthStore(({ isAuth, name }) => ({ isAuth, name }))
-	const [getFan] = useInputStore(({ getFan }) => [getFan])
-
-	// Данные для модального окна
-	const [fdata, setFdata] = useState(null)
-	useEffect((_) => setFdata(fdata), [fdata])
-
-	// Модальное окно ВНО
-	const entry = fdata?.ao ? <EntryFao data={fdata} setData={setFdata} close={close} /> : <EntryFan data={fdata} setData={setFdata} close={close} />
+	const { warnCustom, warn } = useWarn()
+	const { isAuth } = useAuthStore()
+	const { getFan } = useInputStore()
 
 	let cl = ['cmp-sec-row', cls]
 	cl = cl.join(' ')
@@ -32,28 +20,40 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 				{!!fan?.length &&
 					fan.map((el) => {
 						// данные о ВНО
-						const d = getFan(el)
-						// Данные для модального окна
-						const action = () => {
-							if (!isAuth) return
-							setFdata({ ...d, buildingId: build, sectionId: sect, active })
-							open()
-						}
-						return <ItemFan key={el._id} data={d} action={action} isAuth={isAuth} />
+						const f = getFan(el)
+						return (
+							<ItemFan
+								key={el._id}
+								data={{ ...f, buildingId: build, sectionId: sect, active }}
+								onClick={onClick}
+								isAuth={isAuth}
+							/>
+						)
 					})}
 				{/* Испарители + датчик температуры всасывания */}
 				{!!cooler?.length &&
 					cooler.map((el) => {
-						// Данные для модального окна
-						const action = () => {
-							if (!isAuth) return
-							setFdata({ ...el, buildingId: build, sectionId: sect, active })
-							open()
-						}
-						return <ItemCooler key={el._id} data={el} action={action} isAuth={isAuth} />
+						// данные о ВНО испарителя
+						const f = el?.fan?.[0] ? getFan(el?.fan?.[0]) : {}
+
+						return (
+							<ItemCooler
+								key={el._id}
+								data={{ el, ...f, buildingId: build, sectionId: sect, active }}
+								onClick={onClick}
+								isAuth={isAuth}
+							/>
+						)
 					})}
 			</div>
-			<Dialog href={refDialog}>{fdata && entry}</Dialog>
 		</>
 	)
+
+	function onClick(data) {
+		if (!isAuth) {
+			return warn('auth', 'warn', () => warnCustom({}, 'person'))
+		}
+		if (data._id === null) return warn('noexist_cooler', 'warn')
+		data?.ao ? warnCustom(data, 'fanao') : warnCustom(data, 'fan')
+	}
 }

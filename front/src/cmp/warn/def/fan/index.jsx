@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
+import useOutputStore from '@store/output'
+import useInputStore from '@store/input'
+import useWarn from '@store/warn'
 import Control from '../fn/control'
 import Field from './field'
 import Title from '../fn/title'
-import useOutputStore from '@store/output'
-import useInputStore from '@store/input'
 import '../style.css'
 
 //Управление вентилятором
-export default function Entry({ data = {}, setData, close }) {
+export default function Entry({ data = {}, entryCode }) {
 	const { _id, name, module, buildingId, sectionId, active } = data
+	const { clear } = useWarn(({ clear }) => ({ clear }))
 	const { setO, setFan } = useOutputStore()
 	const [getFan] = useInputStore(({ getFan }) => [getFan])
 
@@ -34,15 +36,15 @@ export default function Entry({ data = {}, setData, close }) {
 	// Ок
 	function set() {
 		const cmd = sel === 'run' ? 1 : 0
-		if (sel === 'off' && state !== 'off') setFan({ buildingId, sectionId, fanId: _id, action:sel, value: true })
-		else setFan({ buildingId, sectionId, fanId: _id, action:sel, value: false })
+		if (sel === 'off' && state !== 'off')
+			setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true })
+		else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })
 		setO({ idB: buildingId, idM: module.id, value: cmd, channel: ch })
-		close()
+		clear()
 	}
 	// Отмена
 	function cancel() {
-		setData(null)
-		close()
+		clear()
 	}
 	// Переключение радиокнопок
 	function change(e) {

@@ -1,15 +1,25 @@
 function section(doc, data) {
 	// TODO Добавить cooler, device
 	// Датчик со2
-	const co2 = correct(data.sensor.filter((el) => el.owner.id === doc._id && ['co2'].includes(el.type)))
+	const co2 = correct(
+		data.sensor.filter((el) => el.owner.id === doc._id && ['co2'].includes(el.type))
+	)
 	// Датчики давления
-	const p = correct(data.sensor.filter((el) => el.owner.id === doc._id && ['p'].includes(el.type)))
+	const p = correct(
+		data.sensor.filter((el) => el.owner.id === doc._id && ['p'].includes(el.type))
+	)
 	// Температура продукта
-	const tprd = correct(data.sensor.filter((el) => el.owner.id === doc._id && ['tprd'].includes(el.type)))
+	const tprd = correct(
+		data.sensor.filter((el) => el.owner.id === doc._id && ['tprd'].includes(el.type))
+	)
 	// Температура канала
-	const tcnl = correct(data.sensor.filter((el) => el.owner.id === doc._id && ['tcnl'].includes(el.type)))
+	const tcnl = correct(
+		data.sensor.filter((el) => el.owner.id === doc._id && ['tcnl'].includes(el.type))
+	)
 	// Датчики влажности секции
-	const mois = correct(data.sensor.filter((el) => el.owner.id === doc._id && ['hin'].includes(el.type)))
+	const mois = correct(
+		data.sensor.filter((el) => el.owner.id === doc._id && ['hin'].includes(el.type))
+	)
 	// Напорные вентиляторы
 	const fan = data.fan
 		.filter((el) => el.owner.id === doc._id && el.type === 'fan')
@@ -33,7 +43,14 @@ function section(doc, data) {
 	// Испаритель: сленоиды, датчики, aggregateListId
 	cooler?.forEach((el) => {
 		el.sensor = data.sensor.filter((e) => e.owner.id === el._id)
-		el.aggregate = data.aggregate?.find(a=> a._id==el.aggregateListId)
+		el.aggregate = data.aggregate?.find((a) => a._id == el.aggregateListId)
+		el.fan = data.fan
+			?.filter((e) => e.owner.id === el._id)
+			?.map((e) => {
+				const ao = data.binding.find((b) => b.owner.id === e._id)
+				if (!ao) return el
+				return { ...e, ao: { id: ao?.moduleId, channel: ao?.channel } }
+			})
 	})
 	// console.log(555,data.aggregate, data.cooler)
 	// Давление всасывания агрегата

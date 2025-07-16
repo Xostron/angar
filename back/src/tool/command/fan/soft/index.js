@@ -50,8 +50,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
 
-		// console.log(2220, idS, type, !!fanFC, 'ВНО без ПЧ:', fans.length)
-		if (!aCmd) return
+		// if (aCmd.type=='off') return
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
 		data[type](bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)
 	})

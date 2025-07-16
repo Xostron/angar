@@ -1,5 +1,4 @@
 const { isExtralrm } = require('@tool/message/extralrm')
-const { setCmd } = require('@tool/command/set')
 
 /**
  * Состояние клапана

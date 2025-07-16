@@ -15,17 +15,23 @@ function turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where = 'normal') {
 	const r = ignore[where](bld, acc, bdata, where)
 	if (r) return true
 	if (aCmd.type == 'on') return false
-
-	// Сброс аккумулятора
-	clear(idS)
-	fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
-		ctrlDO(f, bld._id, 'off')
-	})
-	if (fanFC) {
-		ctrlAO(fanFC, bld._id, 0)
-		ctrlDO(fanFC, bld._id, 'off')
+	// Ручной режим -> запрет управления, но ВНО оставляем как есть
+	if (aCmd.type == 'off' && !bdata.mode?.[idS]) {
+		clear(idS)
+		return true
 	}
+	// Выключение всех ВНО (однократно)
+	if (acc.order !== -1) {
+		fans.forEach((f, i) => {
+			f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
+			ctrlDO(f, bld._id, 'off')
+		})
+		if (fanFC) {
+			ctrlAO(fanFC, bld._id, 0)
+			ctrlDO(fanFC, bld._id, 'off')
+		}
+	}
+	clear(idS)
 	return true
 }
 

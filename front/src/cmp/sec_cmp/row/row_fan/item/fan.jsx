@@ -5,7 +5,7 @@ import Btn from '@cmp/fields/btn'
  * @param {string} type cooler - испаритель, по-умолчанию - ВНО
  * @returns
  */
-export default function ItemFan({ data, action, isAuth, cls }) {
+export default function ItemFan({ data, onClick, isAuth, cls }) {
 	// Задание ПЧ
 	let sp = ''
 	if (data?.sp !== undefined) {
@@ -21,5 +21,5 @@ export default function ItemFan({ data, action, isAuth, cls }) {
 	if (isAuth) cl.push('auth-sir')
 	cl = cl.join(' ')
 
-	return <Btn onClick={action} icon={imgF} txt={sp} cls={cl} />
+	return <Btn onClick={() => onClick(data)} icon={imgF} txt={sp} cls={cl} />
 }

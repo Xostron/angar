@@ -9,7 +9,7 @@ export default function Title({ title }) {
 	const { isAuth } = useAuthStore(({ isAuth, name }) => ({ isAuth, name }))
 	// Окно подтверждения
 	const warn = useWarn(({ warn }) => warn)
-	const onClick = () => warn('save', sendSens)
+	const onClick = () => warn('save', 'warn', sendSens)
 
 	return (
 		<div className='title '>

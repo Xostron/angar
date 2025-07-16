@@ -9,6 +9,8 @@ function scan(bld, obj) {
 	const { data, retain } = obj
 	// Запущен ли склад (сброс доп. аварий авторежима)
 	const start = retain?.[bld._id]?.start ?? false
+	// Режимы работы секций
+	const mode = retain?.[bld._id]?.mode
 	// Режим работы склада (сушка, лечение и т.д.)
 	const automode = retain?.[bld._id]?.automode
 	// Все настройки склада
@@ -33,7 +35,7 @@ function scan(bld, obj) {
 		warming: {},
 	}
 
-	return { start, automode, s, se, m, accAuto, resultFan, supply }
+	return { start, automode,mode, s, se, m, accAuto, resultFan, supply }
 }
 
 module.exports = scan

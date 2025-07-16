@@ -8,16 +8,16 @@ function sectionOff(building, sect, obj, s, se, m, am, accAuto, resultFan, start
 		delExtralrm(building._id, sect._id, 'antibliz')
 		delExtralrm(building._id, sect._id, 'overVlv')
 		// Очистить задание вентиляторов
-		store.aCmd ??= {}
-		store.aCmd[sect._id] ??= {}
-		store.aCmd[sect._id].fan = {}
+		// store.aCmd ??= {}
+		// store.aCmd[sect._id] ??= {}
+		// store.aCmd[sect._id].fan = {}
 		// TODO?
 		// m.fanS.forEach((el) => {
 		// 	store.watchdog ??= {}
 		// 	store.watchdog[el._id] = {}
 		// })
 		// Очистка расчетов плавного пуска
-		store.watchdog.softFan[sect._id] = {}
+		// store.watchdog.softFan[sect._id] = {}
 		// выключение испарителей
 		// obj.data.fan.filter(el=>el)
 		// fans.forEach((f, i) => {

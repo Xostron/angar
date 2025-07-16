@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react'
 import useOutputStore from '@store/output'
 import useInputStore from '@store/input'
+import useWarn from '@store/warn'
 import Control from '../fn/control'
 import Field from '../valve/field'
 import Title from '../fn/title'
 import '../style.css'
 
 //Управление клапаном
-export default function Entry({ data = {}, setData, close }) {
+export default function Entry({ data = {}, entryCode }) {
 	const { vlv, state, build, refSp, sp } = data
 	const { setO, setT, setTune, sendTune } = useOutputStore()
-
+	const { clear } = useWarn()
 	// Текущее значение выходов
 	const chOn = vlv?.module?.on?.channel - 1
 	const chOff = vlv?.module?.off?.channel - 1
@@ -57,7 +58,14 @@ export default function Entry({ data = {}, setData, close }) {
 		}
 		if (sel === 'popn') {
 			if (spO > sp) {
-				cmd = { idB: build, idM: vlv.module.off.id, value: 0, channel: chOff, sel, setpoint:spO }
+				cmd = {
+					idB: build,
+					idM: vlv.module.off.id,
+					value: 0,
+					channel: chOff,
+					sel,
+					setpoint: spO,
+				}
 				tCmd = {
 					idB: build,
 					idM: vlv.module.on.id,
@@ -65,11 +73,19 @@ export default function Entry({ data = {}, setData, close }) {
 					channel: chOn,
 					time: timeSP,
 					_id: vlv._id,
-					type: 'on', sel
+					type: 'on',
+					sel,
 				}
 			}
 			if (spO < sp) {
-				cmd = { idB: build, idM: vlv.module.on.id, value: 0, channel: chOn, sel, setpoint:spO }
+				cmd = {
+					idB: build,
+					idM: vlv.module.on.id,
+					value: 0,
+					channel: chOn,
+					sel,
+					setpoint: spO,
+				}
 				tCmd = {
 					idB: build,
 					idM: vlv.module.off.id,
@@ -77,7 +93,8 @@ export default function Entry({ data = {}, setData, close }) {
 					channel: chOff,
 					time: timeSP,
 					_id: vlv._id,
-					type: 'off', sel
+					type: 'off',
+					sel,
 				}
 			}
 		}
@@ -85,12 +102,11 @@ export default function Entry({ data = {}, setData, close }) {
 		if (cmd) setO(cmd, off, 'valve', vlv._id)
 		if (tCmd) setT(tCmd)
 		sendTune()
-		close()
+		clear()
 	}
 	// Отмена
 	function cancel() {
-		setData(null)
-		close()
+		clear()
 	}
 	// Переключение радиокнопок
 	function change(e) {

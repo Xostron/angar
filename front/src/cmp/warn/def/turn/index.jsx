@@ -77,6 +77,5 @@ export default function Entry({ data, entryCode }) {
 	// Кнопка Обнулить
 	function zero() {
 		sZero({ buildingId: build })
-		// close()
 	}
 }

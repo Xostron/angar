@@ -7,10 +7,13 @@ import useInputStore from '@store/input'
  * @param {object} data Рама испарителя
  * @returns
  */
-export default function ItemCooler({ data, action, isAuth, cls }) {
+export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const { build } = useParams()
 	// [Состояния и показания испарителя], [склад вкл/выкл]
-	const [cooler, start] = useInputStore(({ input }) => [input?.[data?._id], input?.retain?.[build]?.start])
+	const [cooler, start] = useInputStore(({ input }) => [
+		input?.[data.el?._id],
+		input?.retain?.[build]?.start,
+	])
 	// Состояние испарителя
 	const state = cooler?.state
 	// Стадия испарителя - режим
@@ -20,7 +23,7 @@ export default function ItemCooler({ data, action, isAuth, cls }) {
 	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : ltxt + '%'
 	else ltxt = '-- %'
 	// Температура всасывания
-	const idT = data.sensor?.find((el) => el.type === 'cooler')?._id
+	const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
 	let t = cooler?.sensor?.[idT]?.value ?? '-'
 	const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
 
@@ -32,7 +35,16 @@ export default function ItemCooler({ data, action, isAuth, cls }) {
 
 	cl = cl.join(' ')
 
-	return <BtnCooler onClick={action} icon={img} ltxt={ltxt} rtxt={rtxt} utxt={utxt} cls={cl} />
+	return (
+		<BtnCooler
+			onClick={() => onClick(data)}
+			icon={img}
+			ltxt={ltxt}
+			rtxt={rtxt}
+			utxt={utxt}
+			cls={cl}
+		/>
+	)
 }
 
 // Кнопка Испаритель
