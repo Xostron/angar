@@ -3,10 +3,6 @@
 		"removeComments": true,
 		"target": "ES6",
 		"baseUrl": ".",
-		"sourceMap": true,
-		"jsx": "react",
-		// "rootDir": "./src",
-		// "mapRoot": "",
 		"paths": {
 			"@socket/*": ["./src/socket/*"],
 			"@page/*": ["./src/page/*"],
