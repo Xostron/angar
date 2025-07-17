@@ -23,15 +23,12 @@ function post(code, data) {
 		headers: { 'Content-Type': 'application/json' },
 		data,
 	}
-	api(config)
+	return api(config)
 		.then((r) => {
 			console.log(`Response service_angar/${code}`, r.data)
-			return Promise.resolve(r.data.result)
+			return r.data.result
 		})
-		.catch((error) => {
-			console.log(`Error service_angar/${code}`, error)
-			throw error
-		})
+		.catch((error) => console.log(`Error service_angar/${code}`, error))
 }
 
 export { get, post }
