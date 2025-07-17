@@ -6,6 +6,7 @@ import Settings from '@page/settings'
 import Signal from '@page/signal'
 import NotFound from '@page/404'
 import BuildOrSect from '@page/build_or_sect'
+import Service from '@page/service'
 
 //Роутинг склада
 const building = [
@@ -38,6 +39,10 @@ const building = [
 	{
 		path: 'report',
 		element: <Report />,
+	},
+	{
+		path: 'service',
+		element: <Service />,
 	},
 	{
 		path: '*',

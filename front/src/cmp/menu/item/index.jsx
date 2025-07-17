@@ -10,7 +10,6 @@ export default function Item({ data }) {
 	const { link, setLink } = useWarn()
 	const { title, icon, path, active } = data
 	const cur = href.split('/').at(3) ?? null
-
 	let cls = null
 	if (active.includes(cur)) cls = 'active'
 

@@ -1,17 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const test = require('./test');
-const auth = require('./auth');
-const live = require('./live')
 const tenta = require('./tenta');
 const stat = require('./stat');
+const web = require('./web')
 
 function api() {
-	auth(router);
-	test(router);
-	live(router)
 	tenta(router)
 	stat(router)
+	web(router)
 	return router;
 }
 
