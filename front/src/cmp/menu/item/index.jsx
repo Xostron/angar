@@ -10,8 +10,8 @@ export default function Item({ data }) {
 	const { link, setLink } = useWarn()
 	const { title, icon, path, active } = data
 	const cur = href.split('/').at(3) ?? null
-	let cls = null
-	if (active.includes(cur)) cls = 'active'
+	let cls = 'menu-button'
+	if (active.includes(cur)) cls += 'active'
 
 	return <Btn onClick={onClick} cls={cls} title={title} icon={icon} />
 

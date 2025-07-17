@@ -1,3 +1,37 @@
-import equipment from './equipment'
+import api from './config'
 
-export default { equipment }
+function get(code) {
+	const config = {
+		method: 'GET',
+		maxBodyLength: Infinity,
+		url: `web/service/${code}`,
+		headers: { 'Content-Type': 'application/json' },
+	}
+	return api(config)
+		.then((r) => {
+			console.log(`Response service_angar/${code}`, r.data)
+			return r.data.result
+		})
+		.catch((error) => console.log(`Error service_angar/${code}`, error))
+}
+
+function post(code, data) {
+	const config = {
+		method: 'POST',
+		maxBodyLength: Infinity,
+		url: `web/service/${code}`,
+		headers: { 'Content-Type': 'application/json' },
+		data,
+	}
+	api(config)
+		.then((r) => {
+			console.log(`Response service_angar/${code}`, r.data)
+			return Promise.resolve(r.data.result)
+		})
+		.catch((error) => {
+			console.log(`Error service_angar/${code}`, error)
+			throw error
+		})
+}
+
+export { get, post }

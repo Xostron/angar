@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 import useEquipStore from '@store/equipment'
 import Header from '@cmp/header'
 import Weather from './weather'

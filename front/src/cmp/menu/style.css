@@ -7,15 +7,10 @@ menu  {
 	gap: 8px
 }
 
-menu button {
-	flex-direction: row;
-	font-family: Q-Medium;
+.menu-button {
 	font-size: var(--fsz24);
-	padding:3px;
-	
+	padding:0 24px;
 }
 
-menu button img {
-	margin-right: var(--fsz10);
-}
+
 
