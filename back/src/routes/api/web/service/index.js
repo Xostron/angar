@@ -7,6 +7,7 @@ const pm2 = require('./pm2')
 const npm = require('./npm')
 const express = require('express')
 
+// TODO Рома ip, reboot, software,pm2,npm
 function service(router) {
 	const serviceRouter = express.Router() // api/web/service
 	router.use('/service', serviceRouter)
