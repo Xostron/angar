@@ -1,11 +1,30 @@
 const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
+require('dotenv').config({ path: path.join(__dirname, '../../../../.env') })
 const api = require('@tool/api')
 const { factoryDir, dataDir } = require('@store')
 const equipment = require('@tool/equipment')
 const { writeSync } = require('@tool/json')
 const { cEquip } = require('@socket/emit')
-
+const t = [
+	'building',
+	'equipment',
+	'fan',
+	'heating',
+	'module',
+	'pc',
+	'product',
+	'range',
+	'section',
+	'sensor',
+	'signal',
+	'valve',
+	'factory',
+	'aggregate',
+	'device',
+	'cooler',
+	'binding',
+	'weather',
+]
 /**
  * Запрос конфигурации склада у админ-сервера
  * Сохранение в json
@@ -43,8 +62,10 @@ async function init() {
 			.catch(console.log)
 	)
 }
-
-module.exports = init
+function test1() {
+	return 'test1'
+}
+module.exports =  init
 
 /**
  * Преобразование и сохранение заводских настроек
@@ -111,24 +132,3 @@ function transformF(factory, phF) {
 	// Значения заводских настроек (factory/factory.json)
 	writeSync({ factory: fct }, phF)
 }
-
-const t = [
-	'building',
-	'equipment',
-	'fan',
-	'heating',
-	'module',
-	'pc',
-	'product',
-	'range',
-	'section',
-	'sensor',
-	'signal',
-	'valve',
-	'factory',
-	'aggregate',
-	'device',
-	'cooler',
-	'binding',
-	'weather',
-]

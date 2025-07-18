@@ -1,8 +1,6 @@
-const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
 const init = require('@root/client/init/fn/index')
 
-console.log(999999, init, test1)
+console.log(999999, init, test2)
 function equipment() {
 	return async (req, res, next) => {
 		try {
@@ -19,6 +17,6 @@ function equipment() {
 
 module.exports = equipment
 
-function test1() {
+function test2() {
 	return 'test1'
 }

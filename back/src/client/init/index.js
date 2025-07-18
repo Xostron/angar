@@ -1,5 +1,5 @@
-const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
+// const path = require('path')
+// require('dotenv').config({ path: path.join(__dirname, '../../../.env') })
 const { delay } = require('@tool/command/time')
 const init = require('./fn')
 console.log(5555, init)
