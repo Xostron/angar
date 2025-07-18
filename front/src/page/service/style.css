@@ -9,12 +9,12 @@
 	background-color: var(--primary);
 }
 
-.page-service-ip {
+.page-service-row {
 	display: flex;
 	width: 100%;
 	gap: 8px;
 }
-.page-service-ip > button,
-.page-service-ip > .input {
+.page-service-row > button,
+.page-service-row > .input {
 	width: 100%;
 }

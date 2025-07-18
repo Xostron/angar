@@ -9,7 +9,7 @@ const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { data: store, retainDir, accDir, dataDir } = require('@store')
 // Получение конфигурации от сервера
-const loopInit = require('@root/client/init')
+const  loopInit  = require('@root/client/init')
 // Отправка состояния складов на админ-сервер
 const { loopState } = require('@root/client/state')
 // Выполнение основного цикла программы

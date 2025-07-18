@@ -1,6 +1,6 @@
 import api from './config'
 
-function get(code) {
+async function get(code) {
 	const config = {
 		method: 'GET',
 		maxBodyLength: Infinity,
@@ -12,10 +12,13 @@ function get(code) {
 			console.log(`Response service_angar/${code}`, r.data)
 			return r.data.result
 		})
-		.catch((error) => console.log(`Error service_angar/${code}`, error))
+		.catch((error) => {
+			console.log(`Error service_angar/${code}`, error)
+			return {  error }
+		})
 }
 
-function post(code, data) {
+async function post(code, data) {
 	const config = {
 		method: 'POST',
 		maxBodyLength: Infinity,
