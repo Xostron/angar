@@ -1,7 +1,7 @@
 const mac = require('./mac')
 const ip = require('./ip')
 const reboot = require('./reboot')
-const equipment = require('./equipment')
+const equip = require('./equipment')
 const software = require('./software')
 const pm2 = require('./pm2')
 const npm = require('./npm')
@@ -18,7 +18,7 @@ function service(router) {
 	// Перезагрузка ОС
 	serviceRouter.get('/reboot', reboot())
 	// Обновить оборудование
-	serviceRouter.get('/equipment', equipment())
+	serviceRouter.get('/equipment', equip())
 	// Обновить ПО
 	serviceRouter.get('/software', software())
 	// pm2 restart

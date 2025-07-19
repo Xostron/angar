@@ -1,12 +1,9 @@
-const init = require('@root/client/init/fn/index')
+const init = require('@tool/init')
 
-console.log(999999, init, test2)
-function equipment() {
-	return async (req, res, next) => {
-		try {
-			init()
-			// test()
-			console.log(99001)
+function equip() {
+    return async (req, res, next) => {
+        try {
+            await init()
 			res.json({ result: new Date() })
 		} catch (error) {
 			console.log(error)
@@ -15,7 +12,7 @@ function equipment() {
 	}
 }
 
-module.exports = equipment
+module.exports = equip
 
 function test2() {
 	return 'test1'

@@ -36,7 +36,7 @@
 		"jsmodbus": "^4.0.10",
 		"jsonwebtoken": "^9.0.2",
 		"module-alias": "^2.2.3",
-		"morgan": "~1.9.1",
+		"morgan": "^1.10.1",
 		"passport": "^0.7.0",
 		"passport-jwt": "^4.0.1",
 		"pug": "^3.0.3",

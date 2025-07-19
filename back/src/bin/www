@@ -9,7 +9,7 @@ const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 const { data: store, retainDir, accDir, dataDir } = require('@store')
 // Получение конфигурации от сервера
-const  loopInit  = require('@root/client/init')
+const loopInit = require('@root/client/init')
 // Отправка состояния складов на админ-сервер
 const { loopState } = require('@root/client/state')
 // Выполнение основного цикла программы
@@ -20,6 +20,8 @@ const { statOnTime } = require('@root/stat')
 const { server, io } = require('@tool/server')
 const onConnection = require('../socket/on/def')
 const { delay } = require('@tool/command/time')
+const app = require('@root/app')
+const apiRouter = require('@routes/api')
 
 if (process.env.NODE_ENV === 'development') {
 	console.log('Подключение .env ', path.join(__dirname, '../../.env'))
@@ -67,9 +69,13 @@ server.on('listening', onListening)
 // 		console.log('user disconnected');
 // 	});
 // });
+
+// Инициализация socket
 io.on('connection', (socket) => {
 	onConnection(io, socket)
 })
+// Подключам api после инициализации socket.io, чтобы можно было в api вызывать emit socket.io, иначе ошибка circular dependency
+app.use('/api', apiRouter())
 
 // Создание папки data, data/retain, retain/data.json, data/acc, data/acc/acc.json
 // data/state, data/state/state.json

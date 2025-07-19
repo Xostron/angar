@@ -1,12 +1,12 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const compression = require('compression');
-var logger = require('morgan');
+const logger = require('morgan');
 const cors = require('cors');
-var indexRouter = require('./routes/index');
-var apiRouter = require('./routes/api');
+const indexRouter = require('./routes/index');
+// const apiRouter = require('./routes/api');
 const activityMiddlew = require('./middleware/activity')
 const passport = require('passport');
 const passportJwt = require('passport-jwt');
@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use(activityMiddlew)
-app.use('/api', apiRouter());
+// app.use('/api', apiRouter());
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
