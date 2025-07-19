@@ -1,6 +1,6 @@
 const login = require('./login');
-const logout = require('./logout');
-const refresh = require('./refresh');
+// const logout = require('./logout');
+// const refresh = require('./refresh');
 // const reset = require('./reset');
 
 function auth(router, db) {
