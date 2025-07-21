@@ -5,9 +5,7 @@ import List from './list'
 import Btn from '@cmp/fields/btn'
 import useAuthStore from '@store/auth'
 import { sReset } from '@socket/emit'
-
 import './style.css'
-import { useEffect } from 'react'
 
 //Информация по сигналам
 export default function Signal({}) {
