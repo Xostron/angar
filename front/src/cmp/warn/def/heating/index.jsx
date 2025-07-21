@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import Control from '../fn/control'
-import Field from './field'
-import Title from '../fn/title'
 import useOutputStore from '@store/output'
 import useInputStore from '@store/input'
+import useWarn from '@store/warn'
+import Control from '../../../modal/fn/control'
+import Field from './field'
+import Title from '../../../modal/fn/title'
 import '../style.css'
 
 // Управление обогревателем клапанов
-export default function Entry({ data = {}, setData, close }) {
+export default function Entry({ data = {}, entryCode  }) {
 	const { _id, sectionId, module, build, state } = data
+		const { clear } = useWarn(({ clear }) => ({ clear }))
 	const { setO } = useOutputStore()
 	const input = useInputStore(({ input }) => input)
 
@@ -35,12 +37,11 @@ export default function Entry({ data = {}, setData, close }) {
 	function set() {
 		const cmd = sel === 'on' ? 1 : 0
 		setO({ idB: build, idM: module.id, value: cmd, channel: ch })
-		close()
+		clear()
 	}
 	// Отмена
 	function cancel() {
-		setData(null)
-		close()
+		clear()
 	}
 	// Переключение радиокнопок
 	function change(e) {
