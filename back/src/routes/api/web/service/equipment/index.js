@@ -3,6 +3,7 @@ const init = require('@tool/init')
 function equip() {
     return async (req, res, next) => {
         try {
+			console.log(99002)
             await init()
 			res.json({ result: new Date() })
 		} catch (error) {
@@ -14,6 +15,4 @@ function equip() {
 
 module.exports = equip
 
-function test2() {
-	return 'test1'
-}
+

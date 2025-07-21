@@ -5,6 +5,7 @@ async function get(code) {
 		method: 'GET',
 		maxBodyLength: Infinity,
 		url: `web/service/${code}`,
+		// url:`/test/${code}`,
 		headers: { 'Content-Type': 'application/json' },
 	}
 	return api(config)

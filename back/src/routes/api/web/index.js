@@ -9,6 +9,7 @@ function web(router) {
 	auth(webRouter)
 	service(webRouter)
 	test(webRouter)
+	
 }
 
 module.exports = web
