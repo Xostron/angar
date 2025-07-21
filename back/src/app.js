@@ -42,21 +42,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-// // Get port from environment and store in Express.
-// var port = normalizePort(process.env.PORT || '4000')
-// app.set('port', port)
-// // Normalize a port into a number, string, or false.
-// function normalizePort(val) {
-// 	var port = parseInt(val, 10)
-// 	if (isNaN(port)) {
-// 		// named pipe
-// 		return val
-// 	}
-// 	if (port >= 0) {
-// 		// port number
-// 		return port
-// 	}
-// 	return false
-// }
+
 
 module.exports = app
