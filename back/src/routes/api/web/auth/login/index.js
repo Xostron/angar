@@ -12,7 +12,7 @@ const users = {
 		fio: 'Админ',
 		role: ['admin'],
 	},
-	employ: {
+	emp: {
 		id: 3,
 		pwd: '1242',
 		fio: 'Сотрудник',
@@ -41,7 +41,7 @@ function login() {
 				expiresIn: process.env.REFRESH_EXPIRE,
 			})
 
-			res.json({ access, refresh })
+			res.json({ access, refresh, name:users[login].fio })
 		} else {
 			console.log('wrong credentials')
 			res.status(401).end()

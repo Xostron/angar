@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 /**
  * Пример Zustand
@@ -8,6 +8,9 @@ import { create } from 'zustand';
  */
 const useAuthStore = create((set, get) => ({
 	isAuth: false,
+	get checkAuth() {
+		return !!localStorage.getItem('access')
+	},
 	access: '',
 	refresh: '',
 	name: '',
@@ -15,7 +18,11 @@ const useAuthStore = create((set, get) => ({
 	updateRefresh: (refresh) => set({ refresh }),
 	updateTokens: (access, refresh) => set({ access, refresh }),
 	delTokens: () => set({ access: '', refresh: '' }),
-	logout: _ => set({isAuth: false})
-}));
+	logout: (_) => {
+		localStorage.removeItem('access')
+		localStorage.removeItem('name')
+		set({ isAuth: false, name: '' })
+	},
+}))
 
-export default useAuthStore;
+export default useAuthStore

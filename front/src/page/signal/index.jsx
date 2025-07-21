@@ -7,10 +7,11 @@ import useAuthStore from '@store/auth'
 import { sReset } from '@socket/emit'
 
 import './style.css'
+import { useEffect } from 'react'
 
 //Информация по сигналам
 export default function Signal({}) {
-	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
+	const { isAuth } = useAuthStore()
 	const { build } = useParams()
 	return (
 		<main className='signal'>

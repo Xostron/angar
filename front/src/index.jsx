@@ -5,18 +5,20 @@ import Keyboard from '@cmp/keyboard'
 import Version from '@cmp/version'
 import Socket from '@cmp/socket'
 import router from './router'
+import Auth from '@cmp/auth'
 import './style.css'
 import './style_large.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
 	<>
-	{/*<React.StrictMode> */}
+		{/*<React.StrictMode> */}
+		<Auth />
 		<Warn />
 		<Socket />
-		<Keyboard/>
-		<Version/>
+		<Keyboard />
+		<Version />
 		<RouterProvider router={router} />
-	{/*</React.StrictMode> */}
+		{/*</React.StrictMode> */}
 	</>
 )

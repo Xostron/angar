@@ -1,7 +1,7 @@
 import './style.css'
 import Btn from '@cmp/fields/btn'
 import Input from '@cmp/fields/input'
-import { get, post } from '@tool/service_angar'
+import { get, post } from '@tool/api/service'
 import { useReducer, useState } from 'react'
 import { useNavigate } from 'react-router'
 
