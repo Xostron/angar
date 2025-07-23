@@ -13,9 +13,9 @@ const { data: store } = require('@store')
 function main(bld, obj, bdata, alr) {
 	const { data } = obj
 	const { start, automode, s, se, m, accAuto } = bdata
-
 	// Управление испарителем
-	const fnChange = (sl, f, h, add, code, clr) => oneChange(bdata, bld._id, sl, f, h, add, code, clr)
+	const fnChange = (sl, f, h, add, code, clr) =>
+		oneChange(bdata, bld._id, sl, f, h, add, code, clr)
 
 	// Синхронизация оттайки-слива_воды испарителей
 	defrostAll(accAuto.cold, m.cold.cooler, obj)
@@ -30,7 +30,7 @@ function main(bld, obj, bdata, alr) {
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		if (denied.section(bld, sect, bdata, alr, obj)) continue
-		// Работа ВНО
+		// Работа ВНО секции и TODO соленоида подогрева (регулирование температурой канала)
 		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}
 	if (clearBuild(bld, bdata.accAuto)) {
@@ -58,11 +58,13 @@ module.exports = main
  */
 function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
 	const resultFan = { start: [], list: [], fan: [] }
+	
 	// Логика включения ВНО в комбинированном складе в режиме холодильник
 	const start = checkStart(bld, sect, s, seS, acc)
 	resultFan.start.push(start)
 	resultFan.list.push(sect._id)
-	resultFan.fan.push(...mS.fanSS)
+	// Последовательное вкл/выкл соленоида подогрева и ВНО
+	resultFan.fan.push(...mS.solHeatS, ...mS.fanSS)
 	// console.log(994, resultFan)
 	fan.combi(bld, obj, s, seB, seS, m, resultFan, bdata)
 }
@@ -80,20 +82,6 @@ function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
  */
 function checkStart(bld, sect, s, seS, acc) {
 	// Достиг задания => выкл ВНО
-	// console.log(11, 'ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
-	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
-		// console.log(1110, sect.name, 'Достиг задания - выкл ВНО')
-		return false
-	}
-	// Температура канала ниже задания канала => вкл ВНО
-	// if (seS.tcnl < acc.tgtTcnl - s.cooling.hysteresisIn) {
-	// 	// console.log(1112, sect.name, 'Температура канала ниже задания канала => вкл ВНО', seS.tcnl, acc.tgtTcnl, s.cooling.hysteresisIn)
-	// 	return true
-	// }
-	// Температура канала выше задания канала => выкл ВНО
-	// if (seS.tcnl > acc.tgtTcnl) {
-	// 	// console.log(1113, sect.name, 'Температура канала выше задания канала => выкл ВНО', seS.tcnl, acc.tgtTcnl)
-	// 	return false
-	// }
+	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) return false
 	return true
 }

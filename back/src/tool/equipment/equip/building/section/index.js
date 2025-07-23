@@ -51,6 +51,7 @@ function section(doc, data) {
 				if (!ao) return el
 				return { ...e, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			})
+		el.solHeat = data.heating.filter((e) => e.owner.id == el._id && e.type=='channel')
 	})
 	// console.log(555,data.aggregate, data.cooler)
 	// Давление всасывания агрегата

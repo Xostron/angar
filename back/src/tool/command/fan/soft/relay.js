@@ -2,8 +2,9 @@ const { checkOn, defOnOff } = require('./fn/fn')
 const checkOff = require('./fn/check_off')
 const turnOff = require('./fn/turn_off')
 const turnOn = require('./fn/turn_on')
-const { data: store } = require('@store')
 const init = require('./fn/init')
+const fnSolHeat = require('./fn/sol_heat')
+
 /**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
@@ -16,7 +17,7 @@ const init = require('./fn/init')
  * @param {number} номер секции
  * @returns
  */
-function relay(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
+function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
 	const acc = init.relay(idS)
 	// ****************** Авто: команда выкл ВНО секции ******************
@@ -30,6 +31,8 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
+
+	if (where == 'cold') acc.busySol = fnSolHeat(acc, solHeat, on, off, s)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, aCmd, fans.length)
 	checkOff.relay(off, acc, aCmd, where)

@@ -3,8 +3,9 @@ const checkOff = require('./fn/check_off')
 const turnOn = require('./fn/turn_on')
 const turnOff = require('./fn/turn_off')
 const regul = require('./fn/regul')
-const { data: store } = require('@store')
 const init = require('./fn/init')
+const fnSolHeat = require('./fn/sol_heat')
+
 /**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
@@ -17,7 +18,7 @@ const init = require('./fn/init')
  * @param {number} номер секции
  * @returns
  */
-function fc(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
+function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
 	const acc = init.fc(idS)
 	// ****************** Авто: команда выкл ВНО секции ******************
@@ -29,24 +30,20 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where) {
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
+
+	console.log(222, idS, where, solHeat)
+	acc.busySol = fnSolHeat(acc, solHeat, on, off, s, where)
+
 	// Регулирование по ПЧ
-	acc.busy = regul(acc, fanFC, on, off, s, where)
-	if (acc.busy) (on = false), (off = false)
+	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)
+	if (acc.busy || acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, aCmd, fans.length)
 	checkOff.fc(off, acc, aCmd)
 	// Непосредственное включение
-	turnOn(fanFC, fans, bldId, acc)
-	// console.log(
-	// 	444,
-	// 	`FC: Склад ${bldId.slice(bldId.length - 4, bldId.length)} Секция ${idx}: `,
-	// 	`Авто = "${aCmd.type}",`,
-	// 	`ПЧ busy = `,
-	// 	acc.busy,
-	// 	acc.fc,
-	// 	'#ВНО =',
-	// 	acc.order
-	// )
+	turnOn(fanFC, fans, solHeat, bldId, acc)
 }
 
 module.exports = fc
+
+

@@ -38,6 +38,7 @@ function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm)
 		on(bld, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)
 		// Склад выключен, секция не в авто
 		off(bld, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
+		// resultFan - массив ВНО секций для последовательного включения (каждая секция управляет ВНО независимо друг от друга)
 		resultFan.list.push(sect._id)
 		resultFan.fan.push(...m.fanS)
 	}

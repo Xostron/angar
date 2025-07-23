@@ -5,7 +5,7 @@ const { isAlr } = require('@tool/message/auto')
 const { clearAchieve } = require('@tool/message/achieve')
 
 /**
- * @description Склад Холодиьник: Запрет работы испарителя
+ * @description Склад Холодильник: Запрет работы испарителя
  * @param {object} bld Склад
  * @param {object} bdata Данные для конкретного склада
  * @param {boolean} alr Аварии extralrm
@@ -38,7 +38,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	return true
 }
 
-// Комбинированный склад
+// Склад Комби: Запрет работы испарителя
 function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 	store.denied[bld._id] ??= {}
@@ -72,6 +72,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	return true
 }
 
+// Склад Комби: Первичный запрет работы от секции
 function deniedSection(bld, sect,  bdata, alr, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 

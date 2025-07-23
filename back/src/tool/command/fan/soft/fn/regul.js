@@ -1,12 +1,11 @@
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store')
 const _MAX = 100
-const { sensor } = require('@tool/command/sensor')
 
 /**
  * Регулирование ПЧ (Аналоговый выход ВНО)
  * @param {object} acc аккумулятор
- * @param {object} aCmd команда авто
+ * @param {object} fanFC команда авто
  * @param {boolean} on сигнал на повышение давления
  * @param {boolean} off сигнал на понижение давления
  * @param {object} s настройки

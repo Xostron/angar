@@ -1,7 +1,6 @@
 const build = require('./all/build')
 const section = require('./all/section')
 const fan = require('@tool/command/fan/auto')
-const { data: store } = require('@store')
 
 // Простой склад
 function normal(building, obj, bdata) {
@@ -13,9 +12,8 @@ function normal(building, obj, bdata) {
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm
 	section(start, building, obj, s, seB, automode, accAuto, resultFan, alrBld, alrAm)
 	// Управление напорными вентиляторами
-	fan.normal(building, obj, s, seB, null, m, resultFan, bdata)
+	fan.normal(building, obj, s, seB, m, resultFan, bdata)
 	// console.log(88, store.watchdog)
 }
 
 module.exports = normal
-

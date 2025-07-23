@@ -38,6 +38,7 @@ const defOnOff = {
 	cold: (idB, idS, accAuto, obj, seS, s) => {
 		let on = seS.tcnl < accAuto.cold.tgtTcnl - s.cooling.hysteresisIn
 		let off = seS.tcnl > accAuto.cold.tgtTcnl
+		console.log(333, idS, on, off)
 		return { on, off }
 	},
 }

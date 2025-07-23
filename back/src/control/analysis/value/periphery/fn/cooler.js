@@ -12,13 +12,17 @@ function cooler(equip, val, retain, result) {
 		result[clr._id].fan ??= {}
 		result[clr._id].heating ??= {}
 		result[clr._id].sensor ??= {}
+		result[clr._id].solHeat ??= {}
 
 		// Соленоид - добавление холода
 		clr.solenoid.forEach((el) => {
 			const sigId = signal.find((e) => e.owner.id === el._id)?._id
 
 			if (result?.[sigId] === undefined) {
-				console.log('src\\control\\analysis\\value\\periphery\\fn\\cooler.js', 'Нет сигнала от соленоида используем альтернативу')
+				console.log(
+					'src\\control\\analysis\\value\\periphery\\fn\\cooler.js',
+					'Нет сигнала от соленоида используем альтернативу'
+				)
 				result[clr._id].solenoid[el._id] = result?.outputEq?.[el._id]
 			} else result[clr._id].solenoid[el._id] = result?.[sigId]
 		})
@@ -30,11 +34,16 @@ function cooler(equip, val, retain, result) {
 
 		// Оттайка испарителя
 		heating
-			.filter((el) => el.owner.id === clr._id)
+			.filter((el) => el.owner.id === clr._id && el.type == 'cooler')
 			.forEach((h) => {
 				result[clr._id].heating[h._id] = result?.outputEq?.[h._id]
 			})
-
+		// Соленоид испарителя
+		heating
+			.filter((el) => el.owner.id === clr._id && el.type == 'channel')
+			.forEach((h) => {
+				result[clr._id].solHeat[h._id] = result?.outputEq?.[h._id]
+			})
 		// Датчики
 		sensor
 			.filter((el) => el.owner.id === clr._id)
@@ -45,7 +54,9 @@ function cooler(equip, val, retain, result) {
 		// Состояние испарителя
 		result[clr._id].state = state(result[clr._id], clr, building, section)
 		// AO ВНО испарителя
-		result[clr._id].ao = Object.values(result[clr._id].fan).find(el=>el.value!==null||el.value!==undefined)?.value
+		result[clr._id].ao = Object.values(result[clr._id].fan).find(
+			(el) => el.value !== null || el.value !== undefined
+		)?.value
 		// Аккумулятор авторежима
 		// if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add'
 		//Добавление читаемого названия состояния

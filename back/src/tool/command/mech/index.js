@@ -13,6 +13,9 @@ function mech(obj, idS, idB) {
 		coolerS.push(transformClr(el, data))
 	})
 	const fanClr = coolerS.flatMap((el) => el.fan)
+	// Испаритель: соленоид подогрева
+	const solHeatS = coolerS.flatMap((el) => el.solHeat)
+
 	// Напорные ВНО камеры для режима холодильник
 	const fanSS = fan
 		.filter(
@@ -27,7 +30,8 @@ function mech(obj, idS, idB) {
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
-	// Напорные ВНО камеры + ВНО испарителей для обычного склада
+		
+	// Напорные ВНО камеры + ВНО испарителей для обычного склада/комби склада в режиме обычного
 	const fanS = [...fanSS, ...fanClr]
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
@@ -40,7 +44,7 @@ function mech(obj, idS, idB) {
 		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset'
 	)
 
-	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS }
+	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS }
 }
 
 // Исполнительные механизмы склада
@@ -115,7 +119,8 @@ function transformClr(doc, data) {
 				const ao = data?.binding.find((b) => b.owner.id === el._id)
 				return !ao ? el : { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			}),
-		heating: data.heating.filter((el) => el.owner.id === doc._id),
+		heating: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'cooler'),
+		solHeat: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'channel'),
 	}
 }
 

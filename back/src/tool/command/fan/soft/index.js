@@ -13,6 +13,7 @@ const data = {
  * @param {*} s Настройки склада
  * @param {*} seB Датчики склада
  * @param {*} m Доп. устройства склада
+ * @param {} solHeatS соленоид подгрева испарителей
  * @param {*} resultFan Данные о ВНО всего склада
  * @param {object} bdata Результат функции scan()
  */
@@ -28,7 +29,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		const fansCoo = resultFan.fan
 			.filter((el) => coolerIds.includes(el.owner.id))
 			.sort((a, b) => a?.order - b?.order)
-
+		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ
 		const fans = resultFan.fan
 			.filter((el) => el.owner.id === idS && !el?.ao)
@@ -45,14 +46,13 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 			fans.push(...fansFC.slice(1, fansFC.length))
 			fans.sort((a, b) => a?.order - b?.order)
 		}
+		// Обычные ВНО + ВНО испарителей
 		fans.push(...fansCoo)
 
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
-
-		// if (aCmd.type=='off') return
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
-		data[type](bld, idS, obj, aCmd, fanFC, fans, s, seB, seS, idx, bdata, where)
+		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }
 

@@ -6,7 +6,7 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
  * @param {*} idB Склад Id
  * @param {*} acc Аккумулятор
  */
-function turnOn(fanFC, fans, idB, acc) {
+function turnOn(fanFC, fans, solHeat, idB, acc) {
 	if (fanFC) {
 		ctrlAO(fanFC, idB, acc.fc.sp)
 		ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')

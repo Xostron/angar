@@ -26,7 +26,9 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
 	let t = cooler?.sensor?.[idT]?.value ?? '-'
 	const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
-
+	// Соленоид подогрева
+	const idSolHeat = data.el?.solHeat?.[0]?._id
+	const solHeat = cooler?.solHeat?.[idSolHeat]
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 	// Иконка состояния испарителя с ПЧ
 	const img = `/img/cold/cooler/cooler-${state}.svg` ?? ''
@@ -42,18 +44,25 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 			ltxt={ltxt}
 			rtxt={rtxt}
 			utxt={utxt}
+			solHeat={solHeat}
 			cls={cl}
 		/>
 	)
 }
 
 // Кнопка Испаритель
-function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', cls, style }) {
+function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, cls, style }) {
 	let cl = ['btn', cls]
 	cl = cl.join(' ')
-
+	// Соленоид подогрева
+	const Sh = solHeat ? (
+		<img src={'/img/periphery/heater/on.svg'} />
+	) : (
+		<img src={'/img/periphery/heater/off.svg'} />
+	)
 	return (
 		<button onClick={onClick} className={cl} style={style}>
+			{solHeat !== undefined && Sh}
 			<span>{ltxt}</span>
 			<div>
 				<span className='up'>{utxt}</span>
