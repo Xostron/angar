@@ -31,8 +31,8 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 
-	console.log(222, idS, where, solHeat)
-	acc.busySol = fnSolHeat(acc, solHeat, on, off, s, where)
+		acc.busySol = fnSolHeat(acc, solHeat, on, off, s, where)
+		console.log(222, idS, where, acc)
 
 	// Регулирование по ПЧ
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)

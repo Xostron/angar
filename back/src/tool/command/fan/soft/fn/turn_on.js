@@ -23,6 +23,9 @@ function turnOn(fanFC, fans, solHeat, idB, acc) {
 		ctrlDO(f, idB, 'on')
 		f?.ao?.id ? ctrlAO(f, idB, 100) : null
 	})
+	solHeat.forEach((el) => {
+		ctrlDO(el, idB, acc.sol.value ? 'on' : 'off')
+	})
 }
 
 module.exports = turnOn

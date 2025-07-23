@@ -1,6 +1,7 @@
 const { compareTime } = require('@tool/command/time')
 
 // Соленоид подогрева
+// true - 1 этап соленоид подогрева, false - 1 этап пройден
 function fnSolHeat(acc, solHeat, on, off, s, where) {
 	if (!solHeat?.length) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
@@ -8,11 +9,13 @@ function fnSolHeat(acc, solHeat, on, off, s, where) {
 	// Работает только в комби складе в режиме холодильник
 	if (where != 'cold') return false
 	// Время ожидания следующего шага
-	let time = s.fan.next * 1000
+	let time = s.fan.wait * 1000
 	// Включаем соленоид
 	if (on) {
 		acc.sol.value = true
+
 		if (!compareTime(acc.sol.date, time)) return true
+		acc.fc.date = new Date()
 		return false
 	}
 
