@@ -52,7 +52,8 @@ function fnSolHeat(acc, solHeat, on, off, s, where) {
 		// Разрешаем регулировать ПЧ
 		return false
 	}
-
+	// Обновляем точку отсчета отключения соленоида подгрева
+	acc.sol.date = new Date()
 	// По-умолчанию, если имеются соленоиды подогрева запрещаем регулировать ПЧ
 	if (solHeat?.length) return true
 }

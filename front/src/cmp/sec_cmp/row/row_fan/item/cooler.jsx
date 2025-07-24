@@ -38,7 +38,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	if (isAuth) cl.push('auth-sir')
 
 	cl = cl.join(' ')
-
+console.log(111, cooler)
 	return (
 		<BtnCooler
 			onClick={() => onClick(data)}
@@ -47,13 +47,14 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 			rtxt={rtxt}
 			utxt={utxt}
 			solHeat={solHeat}
+			level={cooler?.level}
 			cls={cl}
 		/>
 	)
 }
 
 // Кнопка Испаритель
-function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, cls, style }) {
+function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, level, cls, style }) {
 	let cl = ['btn', cls]
 	cl = cl.join(' ')
 	// Соленоид подогрева
@@ -63,12 +64,11 @@ function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, cl
 		<span className='sol-heat'></span>
 		// <img className='sol-heat' src={'/img/periphery/heater/on.svg'} />
 	)
-	// Ступени испарителя
-	const level = <span>1/2</span>
+
 	return (
 		<button onClick={onClick} className={cl} style={style}>
 			<div className='state-extra'>
-				{level}
+				<span>{level}</span>
 				{solHeat !== undefined && Sh}
 			</div>
 

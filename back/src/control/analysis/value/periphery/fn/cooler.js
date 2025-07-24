@@ -61,6 +61,15 @@ function cooler(equip, val, retain, result) {
 		// if (store.acc?.[idB]?.cold?.state?.add) result[clr._id].state += '-add'
 		//Добавление читаемого названия состояния
 		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? ''
+		// Кол-во запущенных ступеней (соленоидов охлаждения)
+		const arr = Object.values(result[clr._id].solenoid)
+		if (arr.length < 2) return
+		const level = arr.reduce((acc, el, i) => {
+			if (el) acc++
+			return acc
+		}, 0)
+		// result[clr._id].level = level > 0 ? `${level} (${arr.length})` : undefined
+		result[clr._id].level = `${level} (${arr.length})`
 	})
 }
 module.exports = cooler
