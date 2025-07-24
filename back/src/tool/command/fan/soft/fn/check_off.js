@@ -7,11 +7,11 @@ const { compareTime } = require('@tool/command/time')
  * @param {object} aCmd Авто - команда на вкл/выкл ВНО
  * @returns
  */
-function fc(off, acc, aCmd) {
+function fc(off, acc) {
 	if (!off) return
-	const time = aCmd.delay
+
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
-	if (!compareTime(acc.date, time)) return
+	if (!compareTime(acc.date, acc.delayRelay)) return
 	// Выкл следующего ВНО
 	if (--acc.order <= -1) {
 		acc.order = -1
@@ -22,11 +22,11 @@ function fc(off, acc, aCmd) {
 }
 
 // Последовательное выключение - Релейная схема
-function relay(off, acc, aCmd, where) {
+function relay(off, acc,  where) {
 	if (!off) return
-	const time = aCmd.delay
+
 	// Проверка времени (время на стабилизацию давления/темп в канале, после выкл ВНО)
-	if (!compareTime(acc.date, time)) {
+	if (!compareTime(acc.date, acc.delayRelay)) {
 		return
 	}
 	// Выкл следующего ВНО

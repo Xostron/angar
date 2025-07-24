@@ -1,4 +1,5 @@
 const { data: store } = require('@store')
+const _RAMP = 5000
 
 /**
  * Инициализация аккумулятора для управления ВНО
@@ -9,7 +10,7 @@ const { data: store } = require('@store')
  * @param {string} secId id секции
  * @returns {object} Аккумулятор секции
  */
-function fc(secId) {
+function fc(secId, s, where) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
 	// Номер текущего ВНО
@@ -28,20 +29,43 @@ function fc(secId) {
 	a.fc.value ??= false
 	a.fc.sp ??= 0
 	a.fc.date ??= new Date()
+	if (where == 'cold') {
+		a.delaySolHeat = s.fan.wait * 1000
+		a.delayFC = a.delaySolHeat
+		a.delayRelay = a.delaySolHeat
+	} else {
+		a.delaySolHeat = s.fan.wait * 1000
+		a.delayFC = s.fan.next * 1000
+		a.delayRelay = s.fan.delay * 1000 + _RAMP
+	}
 	return a
 }
 
-function relay(secId) {
+function relay(secId, s, where) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
 	// Номер текущего ВНО
 	a.order ??= 0
 	// Точка отсчета
 	a.date ??= new Date()
+	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ
+	a.busySol ??= false
+	a.sol ??= {}
+	a.sol.value ??= false
+	a.sol.date ??= new Date()
 	// true - регулирование по ПЧ, false - регулирование по кол-ву ВНО
 	a.busy = false
 	// Задание главного ВНО с ПЧ
 	a.fc = undefined
+	if (where == 'cold') {
+		a.delaySolHeat = s.fan.wait * 1000
+		a.delayFC = a.delaySolHeat
+		a.delayRelay = a.delaySolHeat
+	} else {
+		a.delaySolHeat = s.fan.wait * 1000
+		a.delayFC = s.fan.next * 1000
+		a.delayRelay = s.fan.delay * 1000 + _RAMP
+	}
 	return a
 }
 

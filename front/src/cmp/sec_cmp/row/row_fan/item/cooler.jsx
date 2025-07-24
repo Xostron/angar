@@ -30,6 +30,8 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const idSolHeat = data.el?.solHeat?.[0]?._id
 	const solHeat = cooler?.solHeat?.[idSolHeat]
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
+	// Ступени соленоиды
+	console.log()
 	// Иконка состояния испарителя с ПЧ
 	const img = `/img/cold/cooler/cooler-${state}.svg` ?? ''
 	// Доступ разрешен
@@ -56,17 +58,24 @@ function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, cl
 	cl = cl.join(' ')
 	// Соленоид подогрева
 	const Sh = solHeat ? (
-		<img src={'/img/periphery/heater/on.svg'} />
+		<img className='sol-heat' src={'/img/periphery/heater/on.svg'} />
 	) : (
-		<img src={'/img/periphery/heater/off.svg'} />
+		<span className='sol-heat'></span>
+		// <img className='sol-heat' src={'/img/periphery/heater/on.svg'} />
 	)
+	// Ступени испарителя
+	const level = <span>1/2</span>
 	return (
 		<button onClick={onClick} className={cl} style={style}>
-			{solHeat !== undefined && Sh}
+			<div className='state-extra'>
+				{level}
+				{solHeat !== undefined && Sh}
+			</div>
+
 			<span>{ltxt}</span>
 			<div>
 				<span className='up'>{utxt}</span>
-				<img src={icon} />
+				<img className='state-cooler' src={icon} />
 			</div>
 			<span>{rtxt}</span>
 		</button>

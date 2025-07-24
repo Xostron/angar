@@ -58,7 +58,6 @@ module.exports = main
  */
 function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
 	const resultFan = { start: [], list: [], fan: [] }
-	
 	// Логика включения ВНО в комбинированном складе в режиме холодильник
 	const start = checkStart(bld, sect, s, seS, acc)
 	resultFan.start.push(start)

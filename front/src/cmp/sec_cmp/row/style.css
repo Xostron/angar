@@ -34,11 +34,11 @@
 	background-color: var(--surface);
 }
 .fc {
-	padding-inline:0px;
+	padding-inline: 0px;
 	width: 145px;
-	font-size: 22px!important;
+	font-size: 22px !important;
 }
-.fc > span{
+.fc > span {
 	width: 60px;
 }
 /* Испаритель - комбинированный склад - кнопка */
@@ -49,21 +49,42 @@
 	padding-inline: 0px;
 	font-size: var(--fsz22) !important;
 }
-.btn-cooler div {
-	position: relative;
-
-}
 .btn-cooler .up {
 	position: absolute;
 	font-size: var(--fsz18);
 	transform: translateX(50%);
 	right: 50%;
-	top: -2rem;
+	top: -2.4rem;
 	width: 210px;
 }
-.btn-cooler img {
+.btn-cooler .state-cooler {
 	position: relative;
 	top: 0.6rem;
 	height: 40px;
-	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg) brightness(92%) contrast(95%);
+	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg)
+		brightness(92%) contrast(95%);
+}
+
+.btn-cooler .state-extra {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	font-size: 12px;
+	/* border: solid 1px red; */
+	height: 100%;
+}
+
+.state-extra > .sol-heat {
+	height: calc(100% / 2);
+	width:24px;
+}
+
+.state-extra > span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: calc(100% / 2);
+	
 }

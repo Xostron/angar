@@ -1,8 +1,7 @@
 const { ctrlDO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
-const { setACmd, setCmd } = require('@tool/command/set')
+const { setACmd } = require('@tool/command/set')
 const { getIdB } = require('@tool/get/building')
-
 
 /**
  * Команда авторежима на пуск/стоп ВНО секции
@@ -15,7 +14,9 @@ function fnACmd(bldId, resultFan, s, start) {
 	const delay = s.fan.delay * 1000
 	resultFan.list.forEach((idS) => {
 		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local')) {
-			!resultFan?.force ? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' }) : setACmd('fan', idS, { delay, type: 'on' })
+			!resultFan?.force
+				? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' })
+				: setACmd('fan', idS, { delay, type: 'on' })
 		} else setACmd('fan', idS, { delay, type: 'off' })
 	})
 }
@@ -33,9 +34,6 @@ function fnFanWarm(resultFan, s) {
 		setACmd('fan', o.sectionId, { delay, type: 'on', warming: true })
 	}
 }
-
-
-
 
 /**
  * Состояние устройств (вентиляторы, обогреватель и т.д.)
@@ -62,4 +60,4 @@ function stateF(fan, equip, result, retain) {
 function arrCtrl(idB, arr, type) {
 	arr?.forEach((el) => ctrlDO(el, idB, type))
 }
-module.exports = {fnACmd, fnFanWarm, 	stateEq,stateF,	arrCtrl}
+module.exports = { fnACmd, fnFanWarm, stateEq, stateF, arrCtrl }
