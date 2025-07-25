@@ -23,37 +23,16 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		accAuto.cold[clr._id].state ??= {}
 
 		const stateCooler = obj.value?.[clr._id]
-
 		// Режим секции true-Авто
 		const sectM = retain?.[bld._id]?.mode?.[sect._id]
 		if (denied.combi(bld, sect, clr, sectM, bdata, alr, stateCooler, fnChange, obj)) continue
 
 		const seClr = { ...seS, cooler: {} }
 		seClr.cooler = seS.cooler[clr._id]
+		// Проверка выключена ли оттайка -> оттайка выключена -> управление испарителем
+		if (!checkDefrost.combi(fnChange,accAuto.cold,accAuto.cold[clr._id],seClr,s,stateCooler.state,clr))
+			cooler.combi?.[stateCooler.state](fnChange,accAuto.cold,accAuto.cold[clr._id],seClr,s,bld,clr)
 
-		// Выключена ли оттайка -> оттайка выключена -> управление испарителем
-		if (
-			!checkDefrost.combi(
-				fnChange,
-				accAuto.cold,
-				accAuto.cold[clr._id],
-				seClr,
-				s,
-				stateCooler.state,
-				clr
-			)
-		)
-			cooler.combi?.[stateCooler.state](
-				fnChange,
-				accAuto.cold,
-				accAuto.cold[clr._id],
-				seClr,
-				s,
-				bld,
-				clr
-			)
-
-		// TODO Функции комбинированного склада
 	}
 }
 

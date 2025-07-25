@@ -75,20 +75,7 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
 	console.log('\n\tПроверка условий принятия решений')
-	// Выключение (Температура задания достигнута)
-	// TODO - В комби режиме и так формируется ачивка Достиг температуры, в этом месте создавалась еще одна ачивка
-	// TODO Достиг темпы, но со стороны холодильника (в целом она не нужна пока что)
-	// if (se.tprd <= accCold.tgtTprd) {
-	// 	wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.tgtTprd} °C`))
-	// 	delAchieve(bld._id, bld.type, mes[81].code)
-	// 	if (code === 'off') return
-	// 	console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accCold.tgtTprd} тмп. задания`)
-	// 	return fnChange(0, 0, 0, 0, 'off', clr)
-	// } else {
-	// 	delAchieve(bld._id, bld.type, mes[80].code)
-	// 	const txt = `Температура задания ${accCold.tgtTprd} °C, продукта ${se.tprd} °C`
-	// 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
-	// }
+
 	// Достиг задания => выкл испаритель
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
 		if (code === 'off') return
@@ -101,17 +88,11 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// условия включения соленоида
 	let sol = 1
 
-	// if (se.tprd > accCold.tgtTprd + s.cooling.hysteresisIn) sol=1
-	// if (se.tprd <= accCold.tgtTprd) sol=0
 	// Условия включения вентилятора испарителя
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
 	if (se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
-	// TODO Комбинированный откр/закр соленоид
-	// const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
-	// const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
+
 	console.log(666, clr.name, code, sol, ven)
-	// console.log('(!sol && !ven )||(sol && !ven)', (!sol && !ven ), (sol && !ven), (!sol && !ven )||(sol && !ven));
-	// console.log('!sol && ven', !sol && ven);
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
@@ -122,7 +103,7 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 		acc.state.frost = new Date()
 		return fnChange(0, 1, 0, 0, 'blow', clr)
 	} else {
-		if (code === 'cooling') return
+		//TODO if (code === 'cooling') return
 		return fnChange(1, 1, 0, 0, 'cooling', clr)
 	}
 }

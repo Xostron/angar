@@ -16,6 +16,8 @@ const _RAMP = 5000
 function init(secId, s, where, type, fansLength) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
+	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
+	a.allStarted ??= a.order >= fansLength - 1 ? new Date() : undefined
 	// Точка отсчета вкл/выкл ВНО
 	a.date ??= new Date()
 	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ
@@ -45,16 +47,13 @@ function init(secId, s, where, type, fansLength) {
 		a.delaySolHeat = s.fan.wait * 1000
 		a.delayFC = a.delaySolHeat
 		a.delayRelay = a.delaySolHeat
-		// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
-		a.allStarted = a.order >= fansLength - 1 ? new Date() : undefined
 	} else {
 		// Обычный склад/комби склад в режиме холодильника
 		a.delaySolHeat = s.fan.wait * 1000
 		a.delayFC = s.fan.next * 1000
 		a.delayRelay = s.fan.delay * 1000 + _RAMP
-		a.allStarted = undefined
 	}
-
+	console.log(111, where, type)
 	return a
 }
 

@@ -21,13 +21,13 @@ const fnSolHeat = require('../fn/sol_heat')
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init(idS, s, where, 'fc')
+	const acc = init(idS, s, where, 'fc', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where)) return
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
-	console.log(222, idS, 'on:', on, 'off:', off)
+	// console.log(222, idS, 'on:', on, 'off:', off)
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
@@ -42,7 +42,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	checkOff.fc(off, acc)
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)
-	console.log(333, idS, where, acc)
+	// console.log(333, idS, where, acc)
 }
 
 module.exports = fc

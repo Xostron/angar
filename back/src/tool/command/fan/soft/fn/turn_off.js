@@ -68,6 +68,7 @@ function clear(idS) {
 	store.watchdog.softFan[idS].busy = false
 	store.watchdog.softFan[idS].fc = undefined
 	store.watchdog.softFan[idS].sol = undefined
+	store.watchdog.softFan[idS].allStarted = undefined
 }
 
 module.exports = turnOff
