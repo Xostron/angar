@@ -68,8 +68,8 @@ function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, le
 	return (
 		<button onClick={onClick} className={cl} style={style}>
 			<div className='state-extra'>
-				<span>{level}</span>
 				{solHeat !== undefined && Sh}
+				<span>{level}</span>
 			</div>
 
 			<span>{ltxt}</span>

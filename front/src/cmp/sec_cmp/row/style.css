@@ -44,7 +44,7 @@
 /* Испаритель - комбинированный склад - кнопка */
 .btn-cooler {
 	position: relative;
-	min-width: 210px !important;
+	min-width: 240px !important;
 	color: var(--primary);
 	padding-inline: 0px;
 	font-size: var(--fsz22) !important;
@@ -66,25 +66,24 @@
 }
 
 .btn-cooler .state-extra {
-	display: flex;
-	flex-direction: column;
 	position: absolute;
-	left: 0px;
-	top: 0px;
-	font-size: 12px;
-	/* border: solid 1px red; */
 	height: 100%;
+	width: 35px;
+	top: 0px;
+	left: 0px;
+	font-size: 14px;
 }
 
 .state-extra > .sol-heat {
-	height: calc(100% / 2);
-	width:26px;
+	position: absolute;
+	left: 0px;
+	top: -5px;
+	height: 35px;
+	width: 35px;
 }
 
 .state-extra > span {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: calc(100% / 2);
-	
+	position: absolute;
+	left: 7px;
+	bottom: -16px;
 }

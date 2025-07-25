@@ -69,7 +69,10 @@ function cooler(equip, val, retain, result) {
 			return acc
 		}, 0)
 		// result[clr._id].level = level > 0 ? `${level} (${arr.length})` : undefined
+
+		// const lvl = {0:0, 1:'I', 2:'II'}
 		result[clr._id].level = `${level} (${arr.length})`
+		// result[clr._id].level = lvl[level]
 	})
 }
 module.exports = cooler
