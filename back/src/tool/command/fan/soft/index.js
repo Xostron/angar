@@ -27,12 +27,12 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		const coolerIds = cooler.filter((el) => el.sectionId == idS).map((el) => el._id)
 		// ВНО испарителей данной секции (управляем ими как обычными ВНО без ПЧ)
 		const fansCoo = resultFan.fan
-			.filter((el) => coolerIds.includes(el.owner.id))
+			.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
 		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ
 		const fans = resultFan.fan
-			.filter((el) => el.owner.id === idS && !el?.ao)
+			.filter((el) => el.owner.id === idS && !el?.ao && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
 
 		// ВНО с ПЧ
@@ -48,7 +48,6 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		}
 		// Обычные ВНО + ВНО испарителей
 		fans.push(...fansCoo)
-
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная

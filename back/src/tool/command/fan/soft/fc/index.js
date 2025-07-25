@@ -21,7 +21,7 @@ const fnSolHeat = require('../fn/sol_heat')
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init.fc(idS, s, where)
+	const acc = init(idS, s, where, 'fc')
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where)) return
 	// ****************** Авто: команда вкл ВНО секции ******************
@@ -32,7 +32,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
-
+	// Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(acc, solHeat, on, off, s, where)
 	// Регулирование по ПЧ после ожидания соленоида подогрева
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)
