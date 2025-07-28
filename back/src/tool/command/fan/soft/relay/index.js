@@ -41,6 +41,8 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// Непосредственное включение
 	turnOn(null, fans, bldId, acc)
 	// console.log(3331, idS, where, acc)
+	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
+	acc.allStarted = acc.order >= fans.length - 1 ? new Date() : undefined
 }
 
 module.exports = relay

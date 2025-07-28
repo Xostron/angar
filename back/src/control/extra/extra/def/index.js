@@ -10,6 +10,7 @@ const { coOn, coAuto } = require('./co2')
 const { drainAuto, drainOn, drainOff } = require('./drain')
 const smoking = require('./smoking')
 const { accelCOn, accelCAuto } = require('./accel_cold')
+const tChannel = require('./t_channel')
 
 const data = {
 	// Доп функции для секции
@@ -17,6 +18,7 @@ const data = {
 		// Секция - АВТО
 		on: {
 			vent,
+			tChannel,
 		},
 		// Секция - ВЫКЛ
 		off: {},

@@ -43,6 +43,8 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)
 	// console.log(333, idS, where, acc)
+	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
+	acc.allStarted = acc.order >= fans.length - 1 ? new Date() : undefined
 }
 
 module.exports = fc

@@ -1,3 +1,4 @@
+const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 // Ступенчатое управление соленоидами испарителя
 // Комби склад в режиме холодильник:
 // 1. Сразу все соленоиды включаются/выключаются,
@@ -14,11 +15,53 @@
 // -> выдаем предупреждение "Низкая температура канала"
 const { data: store } = require('@store')
 
-module.exports = function softSol(solenoid, sl, clr, accAuto) {
-	accAuto.softSol ??= {}
+function softsol(idB, solenoid, sl, clr, accAuto) {
 	const secId = clr.sectionId
+	const map = accAuto?.cold?.softSol?.[secId]
 	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
 	const allStarted = store?.watchdog?.softFan?.[secId].allStarted
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
-	console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
+	console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId], map)
+
+	solenoid.forEach((el) => {
+		// Вкл/выкл соленоидов в обычном режиме
+		if (!allStarted) return ctrlDO(el, idB, sl ? 'on' : 'off')
+		// Текущий соленоид
+		const cur = map.get(el._id)
+		// Счетчик выключенных соленоидов
+		// allStarted=true - "Низкая температура канала" - все ВНО и соленоид подогрева включены
+		if (new Date() > cur?.date) {
+			if (el.order === 1) return map.set('warning', true)
+			ctrlDO(el, idB, 'off')
+		}
+	})
+
 }
+
+/**
+ * Инициализация очереди отключения соленоидов,
+ * @param {*} accAuto
+ * @param {*} sect
+ * @param {*} coolerS
+ * @param {*} s
+ */
+function initSoftsol(accAuto, sect, coolerS, s) {
+	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
+	const allStarted = store?.watchdog?.softFan?.[sect._id].allStarted
+	// Прекратить обновление точки отсчета при срабатывании флага отключения соленоидов
+	if (accAuto?.cold?.softSol?.[sect._id] && allStarted) return
+	accAuto.cold.softSol ??= {}
+	accAuto.cold.softSol[sect._id] = coolerS
+		.flatMap((el) => {
+			return el.solenoid.map((e) => ({ ...e, orderClr: el.order }))
+		})
+		// .filter((el) => el.order > 1)
+		.sort((a, b) => a.orderClr - b.orderClr && a.order - b.order)
+		.reverse()
+		.reduce((map, el, i) => {
+			map.set(el._id, { ...el, date: new Date(new Date().getTime() + i * s.fan.wait * 1000) })
+			return map
+		}, new Map())
+	accAuto.cold.softSol[sect._id].set('warning', false)
+}
+module.exports = { softsol, initSoftsol }

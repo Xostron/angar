@@ -16,8 +16,7 @@ const _RAMP = 5000
 function init(secId, s, where, type, fansLength) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
-	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
-	a.allStarted ??= a.order >= fansLength - 1 ? new Date() : undefined
+
 	// Точка отсчета вкл/выкл ВНО
 	a.date ??= new Date()
 	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ
@@ -53,7 +52,7 @@ function init(secId, s, where, type, fansLength) {
 		a.delayFC = s.fan.next * 1000
 		a.delayRelay = s.fan.delay * 1000 + _RAMP
 	}
-	console.log(111, where, type)
+	console.log(111, where, type, fansLength)
 	return a
 }
 

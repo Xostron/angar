@@ -1,7 +1,7 @@
 const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
 const denied = require('../../fn/denied')
-
+const { initSoftsol } = require('../../fn/change/soft_solenoid')
 /**
  * Склад Комби: Логика испарителей
  * @param {object} bld Склад
@@ -17,6 +17,9 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
+	initSoftsol(accAuto, sect, mS.coolerS, s)
+
+	// console.log(111, accAuto.cold.softSol)
 	for (const clr of mS.coolerS) {
 		console.log('-----------------------------------------------------------------------')
 		accAuto.cold[clr._id] ??= {}
@@ -30,9 +33,26 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		const seClr = { ...seS, cooler: {} }
 		seClr.cooler = seS.cooler[clr._id]
 		// Проверка выключена ли оттайка -> оттайка выключена -> управление испарителем
-		if (!checkDefrost.combi(fnChange,accAuto.cold,accAuto.cold[clr._id],seClr,s,stateCooler.state,clr))
-			cooler.combi?.[stateCooler.state](fnChange,accAuto.cold,accAuto.cold[clr._id],seClr,s,bld,clr)
-
+		if (
+			!checkDefrost.combi(
+				fnChange,
+				accAuto.cold,
+				accAuto.cold[clr._id],
+				seClr,
+				s,
+				stateCooler.state,
+				clr
+			)
+		)
+			cooler.combi?.[stateCooler.state](
+				fnChange,
+				accAuto.cold,
+				accAuto.cold[clr._id],
+				seClr,
+				s,
+				bld,
+				clr
+			)
 	}
 }
 

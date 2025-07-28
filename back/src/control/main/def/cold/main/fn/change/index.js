@@ -1,15 +1,15 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
-const softSol = require('./soft_solenoid')
+const { softsol } = require('./soft_solenoid')
 
 function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	const { start, s, se, m, accAuto } = bdata
 	const { solenoid, fan, heating } = clr
 
 	// TODO Управление механизмами
-	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
+	// solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	// Ступенчатое управление соленоидами
-	softSol(solenoid, sl, clr, accAuto)
-	
+	softsol(idB, solenoid, sl, clr, accAuto)
+
 	fan.forEach((el) => {
 		// f = null - означает игнорирование ВНО испарителя, разрешение на работу в обычном режиме комби склада
 		if (f === null) return
