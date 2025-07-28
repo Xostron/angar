@@ -21,7 +21,7 @@ function softsol(idB, solenoid, sl, clr, accAuto) {
 	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
 	const allStarted = store?.watchdog?.softFan?.[secId].allStarted
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
-	console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId], map)
+	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
 
 	solenoid.forEach((el) => {
 		// Вкл/выкл соленоидов в обычном режиме
@@ -35,7 +35,6 @@ function softsol(idB, solenoid, sl, clr, accAuto) {
 			ctrlDO(el, idB, 'off')
 		}
 	})
-
 }
 
 /**
@@ -59,7 +58,10 @@ function initSoftsol(accAuto, sect, coolerS, s) {
 		.sort((a, b) => a.orderClr - b.orderClr && a.order - b.order)
 		.reverse()
 		.reduce((map, el, i) => {
-			map.set(el._id, { ...el, date: new Date(new Date().getTime() + i * s.fan.wait * 1000) })
+			map.set(el._id, {
+				...el,
+				date: new Date(new Date().getTime() + (i + 1) * s.fan.wait * 1000),
+			})
 			return map
 		}, new Map())
 	accAuto.cold.softSol[sect._id].set('warning', false)
