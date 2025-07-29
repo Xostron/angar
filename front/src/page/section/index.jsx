@@ -32,7 +32,6 @@ export default function Sect({}) {
 	const type = getType(build)
 	return (
 		<>
-		
 			<Nav cls='nav-h-section' cur={sect} data={sections} ph='section' stl={nhs} />
 			<Sidebar />
 			<DefSection type={type} />

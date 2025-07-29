@@ -11,6 +11,7 @@ const { drainAuto, drainOn, drainOff } = require('./drain')
 const smoking = require('./smoking')
 const { accelCOn, accelCAuto } = require('./accel_cold')
 const tChannel = require('./t_channel')
+const compressor = require('./compressor')
 
 const data = {
 	// Доп функции для секции
@@ -61,6 +62,7 @@ const data = {
 			reset,
 			coOn,
 			drainOn,
+			compressor,
 		},
 	},
 	combi: {
@@ -69,6 +71,7 @@ const data = {
 		always: {
 			reset,
 			connect,
+			compressor,
 		},
 	},
 }

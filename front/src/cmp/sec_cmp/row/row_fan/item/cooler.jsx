@@ -38,7 +38,6 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	if (isAuth) cl.push('auth-sir')
 
 	cl = cl.join(' ')
-console.log(111, cooler)
 	return (
 		<BtnCooler
 			onClick={() => onClick(data)}

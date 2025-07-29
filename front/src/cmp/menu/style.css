@@ -12,5 +12,8 @@ menu  {
 	padding:0 24px;
 }
 
+.menu-button.active {
+	background-color: var(--primary);
+}
 
 

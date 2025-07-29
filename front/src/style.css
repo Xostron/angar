@@ -131,9 +131,6 @@ a {
 	cursor: pointer;
 	text-decoration: none;
 }
-.active {
-	background-color: var(--primary);
-}
 
 .control {
 	display: flex;

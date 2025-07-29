@@ -13,7 +13,7 @@ export default function Item({ data }) {
 	const { title, icon, path, active, id } = data
 	const cur = href.split('/').at(3) ?? null
 	let cls = 'menu-button'
-	if (active.includes(cur)) cls += 'active'
+	if (active.includes(cur)) cls += ' active'
 	const root = name == 'Root' && id === 7
 	return (
 		<>{(root || id !== 7) && <Btn onClick={onClick} cls={cls} title={title} icon={icon} />}</>
