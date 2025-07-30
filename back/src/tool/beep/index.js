@@ -26,7 +26,6 @@ function beepD(devc, arr, obj, building, acc, codeMsg) {
 function beepA(agg, cl, arr, obj, building, acc, codeMsg) {
 	acc.beep ??= {}
 	acc.beep[cl._id] ??= {}
-
 	// По beep устройства (аварийные beep)
 	arr.filter((el) => el?.alarm)?.forEach((el) => {
 		// Значение beep

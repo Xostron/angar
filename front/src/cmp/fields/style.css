@@ -1,275 +1,277 @@
 .cell {
-  border: var(--brdP);
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  gap: var(--fsz24);
-  font-size: var(--fsz26);
-  justify-content: center;
-  white-space: wrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+	border: var(--brdP);
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	gap: var(--fsz24);
+	font-size: var(--fsz26);
+	justify-content: center;
+	white-space: wrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .cell > img {
-  padding-left: var(--fsz10);
-  height: var(--fsz40);
+	padding-left: var(--fsz10);
+	height: var(--fsz40);
 }
 .ti {
-  justify-content: flex-start;
+	justify-content: flex-start;
 }
 .cell-entry {
-  line-height: var(--fsz40);
+	line-height: var(--fsz40);
 }
 .cell-login {
-  height: var(--fsz55);
+	height: var(--fsz55);
 }
 .cell-modal {
-  width: clamp(2.353rem, 0.672rem + 4.482vw, 4.706rem);
-  padding: 0;
-  height: var(--fsz45);
-  font-size: var(--fsz40);
+	width: clamp(2.353rem, 0.672rem + 4.482vw, 4.706rem);
+	padding: 0;
+	height: var(--fsz45);
+	font-size: var(--fsz40);
 }
 .popup {
-  justify-content: flex-start;
-  position: relative;
-  cursor: pointer;
-  overflow: visible;
-  border: none;
+	justify-content: flex-start;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+	border: none;
 }
 
 .popup > button {
-  position: relative;
-  border-radius: 6px;
-  aspect-ratio: 1/1;
-  align-items: center;
-  display: flex;
-  width: 30px;
-  height: 30px;
-  
+	position: relative;
+	border-radius: 6px;
+	aspect-ratio: 1/1;
+	align-items: center;
+	display: flex;
+	width: 30px;
+	height: 30px;
 }
 .popup > button > img {
-    position: absolute;
-    height: var(--fsz24);
-    left: 50%;
-    transform: translateX(-50%);
-  }
+	position: absolute;
+	height: var(--fsz24);
+	left: 50%;
+	transform: translateX(-50%);
+}
 .modal {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: calc(90% + var(--fsz10));
-  left: var(--fsz10);
-  padding: var(--fsz10);
-  border-radius: 10px;
-  background-color: var(--background);
-  box-shadow: 0 0 7px var(--primary);
-  z-index: 10;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: calc(90% + var(--fsz10));
+	left: var(--fsz10);
+	padding: var(--fsz10);
+	border-radius: 10px;
+	background-color: var(--background);
+	box-shadow: 0 0 7px var(--primary);
+	z-index: 10;
 }
 
 .modal > button {
-  background-color: var(--background);
-  font-size: var(--fsz28);
-  line-height: var(--fsz28);
-  padding: var(--fsz16);
-  text-align: left;
-  border-radius: 5px;
-  border-bottom: 1px solid var(--primary);
+	background-color: var(--background);
+	font-size: var(--fsz28);
+	line-height: var(--fsz28);
+	padding: var(--fsz16);
+	text-align: left;
+	border-radius: 5px;
+	border-bottom: 1px solid var(--primary);
 }
 .modal > button:last-child {
-  border: 0;
+	border: 0;
 }
 .val {
-  margin: 0;
-  -webkit-line-clamp: 1;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+	margin: 0;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 .show {
-  visibility: visible;
+	visibility: visible;
 }
 
 .input input {
-  font-size: var(--fsz24);
-  color: var(--primary);
-  font-family: "Q-Medium";
-  width: 100%;
-  text-align: center;
-  padding-left: 0;
+	font-size: var(--fsz24);
+	color: var(--primary);
+	font-family: 'Q-Medium';
+	width: 100%;
+	text-align: center;
+	padding-left: 0;
 }
 input,
 input:hover,
 input:focus {
-  outline: none;
-  border: none;
+	outline: none;
+	border: none;
 }
-input[type="number"] {
-  padding-inline: 0px;
-  padding-block: 0px;
-  padding-left: 12px;
+input[type='number'] {
+	padding-inline: 0px;
+	padding-block: 0px;
+	padding-left: 12px;
 }
-input[type="time"] {
-  padding-left: var(--fsz30);
+input[type='time'] {
+	padding-left: var(--fsz30);
 }
 
 /* switch - Rounded sliders */
 .switch {
-  position: relative;
-  display: inline-block;
-  width: var(--fsz90);
-  height: var(--fsz45);
-  color: var(--background);
-  justify-self: center;
-  align-self: center;
-  -webkit-tap-highlight-color: transparent;
+	position: relative;
+	display: inline-block;
+	width: var(--fsz90);
+	height: var(--fsz45);
+	color: var(--background);
+	justify-self: center;
+	align-self: center;
+	-webkit-tap-highlight-color: transparent;
 }
 .switch input {
-  display: none;
+	display: none;
 }
 .slider {
-  border-radius: 34px;
-  border: 2px solid var(--secondary);
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--background);
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-  /* background-color: red; */
+	border-radius: 34px;
+	border: 2px solid var(--secondary);
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--background);
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
+	/* background-color: red; */
 }
 .slider > p {
-  position: relative;
-  font-size: var(--fsz24);
-  top: 50%;
-  left: var(--fsz10);
-  transform: translateY(-50%);
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+	position: relative;
+	font-size: var(--fsz24);
+	top: 50%;
+	left: var(--fsz10);
+	transform: translateY(-50%);
+	-webkit-transition: 0.4s;
+	transition: 0.4s;
 }
 input:not(:checked) + .slider > p {
-  position: relative;
-  --tr-t: var(--fsz30);
-  top: 50%;
-  color: var(--secondary);
-  -webkit-transform: translate(var(--tr-t), -50%);
-  -ms-transform: translate(var(--tr-t), -50%);
-  transform: translate(var(--tr-t), -50%);
+	position: relative;
+	--tr-t: var(--fsz30);
+	top: 50%;
+	color: var(--secondary);
+	-webkit-transform: translate(var(--tr-t), -50%);
+	-ms-transform: translate(var(--tr-t), -50%);
+	transform: translate(var(--tr-t), -50%);
 }
 .slider:before {
-  position: absolute;
-  content: "";
-  height: var(--fsz16);
-  width: var(--fsz16);
-  background-color: var(--secondary);
-  border-radius: 50%;
-  left: var(--fsz10);
-  top: 50%;
-  transform: translateY(-50%);
-  -webkit-transition: transform 0.4s;
-  transition: transform 0.4s;
+	position: absolute;
+	content: '';
+	height: var(--fsz16);
+	width: var(--fsz16);
+	background-color: var(--secondary);
+	border-radius: 50%;
+	left: var(--fsz10);
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transition: transform 0.4s;
+	transition: transform 0.4s;
 }
 input:checked + .slider:before {
-  --tr: var(--fsz60);
-  top: 50%;
-  background-color: var(--background);
-  -webkit-transform: translate(var(--tr), -50%);
-  -ms-transform: translate(var(--tr), -50%);
-  transform: translate(var(--tr), -50%);
+	--tr: var(--fsz60);
+	top: 50%;
+	background-color: var(--background);
+	-webkit-transform: translate(var(--tr), -50%);
+	-ms-transform: translate(var(--tr), -50%);
+	transform: translate(var(--tr), -50%);
 }
 
 input:checked + .slider {
-  background-color: var(--secondary);
+	background-color: var(--secondary);
 }
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--secondary);
+	box-shadow: 0 0 1px var(--secondary);
 }
 
 /* radio button */
 .radio {
-  display: inline-flex;
-  gap: var(--fsz10);
-  align-items: center;
+	display: inline-flex;
+	gap: var(--fsz10);
+	align-items: center;
 }
 .radio,
 .radio > input,
 .radio > label {
-  cursor: pointer;
+	cursor: pointer;
 }
-input[type="radio"] {
-  position: relative;
-  height: clamp(0.875rem, 0.071rem + 2.143vw, 2rem);
-  width: clamp(0.875rem, 0.071rem + 2.143vw, 2rem);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: none;
+input[type='radio'] {
+	position: relative;
+	height: clamp(0.875rem, 0.071rem + 2.143vw, 2rem);
+	width: clamp(0.875rem, 0.071rem + 2.143vw, 2rem);
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
 }
-input[type="radio"]::before {
-  box-sizing: border-box;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: clamp(0.875rem, 0.339rem + 1.429vw, 1.625rem);
-  height: clamp(0.875rem, 0.339rem + 1.429vw, 1.625rem);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  border: 2px solid var(--secondary);
+input[type='radio']::before {
+	box-sizing: border-box;
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: clamp(0.875rem, 0.339rem + 1.429vw, 1.625rem);
+	height: clamp(0.875rem, 0.339rem + 1.429vw, 1.625rem);
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	border: 2px solid var(--secondary);
 }
 
-input[type="radio"]:checked::after {
-  box-sizing: border-box;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: clamp(0.625rem, 0.402rem + 0.595vw, 0.938rem);
-  height: clamp(0.625rem, 0.402rem + 0.595vw, 0.938rem);
-  border-radius: 50%;
-  background-color: var(--secondary);
-  transform: translate(-50%, -50%);
-  visibility: visible;
+input[type='radio']:checked::after {
+	box-sizing: border-box;
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: clamp(0.625rem, 0.402rem + 0.595vw, 0.938rem);
+	height: clamp(0.625rem, 0.402rem + 0.595vw, 0.938rem);
+	border-radius: 50%;
+	background-color: var(--secondary);
+	transform: translate(-50%, -50%);
+	visibility: visible;
 }
 /* Кнопка */
 button {
-  cursor: pointer;
-  border: 0;
-  background-color: var(--secondary);
-  padding: 0 8px;
-  font-family: 'Q-Medium';
+	cursor: pointer;
+	border: 0;
+	background-color: var(--secondary);
+	padding: 0 8px;
+	font-family: 'Q-Medium';
 }
 
 .btn {
-  border-radius: var(--br);
-  align-items: center;
-  display: flex;
-  color: var(--background);
-  padding: 0 var(--fsz40);
-  line-height: var(--fsz45);
-  font-size: var(--fsz28);
-  gap: var(--fsz10);
+	border-radius: var(--br);
+	align-items: center;
+	display: flex;
+	color: var(--background);
+	padding: 0 var(--fsz40);
+	line-height: var(--fsz45);
+	font-size: var(--fsz28);
+	gap: var(--fsz10);
+}
+.btn.active {
+	background-color: var(--primary);
 }
 .btn > img {
-  height: var(--fsz30);
+	height: var(--fsz30);
 }
 
-.btn-chc{
-  border-radius: var(--fsz10);
-  border: 1px solid var(--secondary);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: var(--fsz45);
-  height: var(--fsz45);
-  background: var(--background);
-  color: var(--secondary);
-  font-size: var(--fsz35);
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Q-Medium';
-  margin-top: 7%;  
+.btn-chc {
+	border-radius: var(--fsz10);
+	border: 1px solid var(--secondary);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: var(--fsz45);
+	height: var(--fsz45);
+	background: var(--background);
+	color: var(--secondary);
+	font-size: var(--fsz35);
+	font-weight: 700;
+	cursor: pointer;
+	font-family: 'Q-Medium';
+	margin-top: 7%;
 }

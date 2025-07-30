@@ -14,6 +14,8 @@ function fnAggregate(equip, val, retain, result) {
 module.exports = fnAggregate
 
 // Агрегаты склада "Холодильник" и "Комбинированный"
+// Для неуправляемых и управляемых агрегатов
+// Состояние управляемых агрегатов - здесь рассчитывается предварительно + зависит от результата работы логики (уровень масла в процессе работы)
 function aggB(bld, agg, equip, val, retain, result) {
 	// Нет агрегатов
 	if (!agg.length) return
@@ -28,22 +30,20 @@ function aggB(bld, agg, equip, val, retain, result) {
 			result[doc._id].compressor[el._id].beep ??= {}
 			// Сигналы beep компрессора
 			el?.beep?.forEach((be) => {
-				let sig = signal.filter((s) => s.owner.id === be._id && s.extra.id === el._id)
-				//****Cигнал текущего склада bld._id (у сигналов**** */
-				sig = sig.find((el) => {
-					const idB = module.find((m) => m._id === el.module.id)?.buildingId
-					return idB === bld._id
+				const sig = signal.find((ell) => {
+					const idB = module.find((m) => m._id === ell.module.id)?.buildingId
+					return idB === bld._id && ell.owner.id === be._id && ell.extra.id === doc._id
 				})
-				//******** */
 				if (!sig) return
-				//TODO Инверсия
 				result[doc._id].compressor[el._id].beep[be.code] = {
 					value: be.reverse ? !result[sig._id] : result[sig._id],
 					alarm: be.alarm,
 				}
 			})
-			// Состояние компрессора
-			result[doc._id].compressor[el._id].state = stateC(result?.[doc._id]?.compressor?.[el._id]?.beep)
+			// Состояние компрессора на основе beep
+			result[doc._id].compressor[el._id].state = stateC(
+				result[doc._id].compressor[el._id].beep
+			)
 		})
 		// Конденсаторы
 		result[doc._id].condenser ??= {}
@@ -53,9 +53,15 @@ function aggB(bld, agg, equip, val, retain, result) {
 			// Сигналы конденсатора (вентилятор в работе)
 			el?.signal
 				?.sort((a, b) => a?.order - b?.order)
-				?.forEach((e) => result[doc._id].condenser[el._id].fan.push(result[e._id] ? 'run' : 'stop'))
+				?.forEach((e) =>
+					result[doc._id].condenser[el._id].fan.push(result[e._id] ? 'run' : 'stop')
+				)
 			// Состояние конденсатора
-			result[doc._id].condenser[el._id].state = result[doc._id].condenser[el._id].fan.some((el) => el === 'run') ? 'run' : 'stop'
+			result[doc._id].condenser[el._id].state = result[doc._id].condenser[el._id].fan.some(
+				(el) => el === 'run'
+			)
+				? 'run'
+				: 'stop'
 		})
 		// Состояние агрегата
 		result[doc._id].state = stateA(result[doc._id]?.compressor)
@@ -65,9 +71,13 @@ function aggB(bld, agg, equip, val, retain, result) {
 
 // Состояние компрессора
 function stateC(o = {}) {
+	// Поиск активного аварийного сигнала
 	const r = Object.values(o).find((el) => el.alarm && el.value)
+	// Найден -> компрессор в аварии
 	if (r) return 'alarm'
+	// run - beep: неуправляемый (дискретный вход - в работе), управляемый (дискретный выход - управляющий сигнал)
 	if (o?.run?.value) return 'run'
+	// Состояние Стоп (по-умолчанию)
 	return 'stop'
 }
 // Состояние агрегата

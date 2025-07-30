@@ -30,7 +30,7 @@ function mech(obj, idS, idB) {
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
-		
+
 	// Напорные ВНО камеры + ВНО испарителей для обычного склада/комби склада в режиме обычного
 	const fanS = [...fanSS, ...fanClr]
 
@@ -84,8 +84,10 @@ function fnCold(idB, obj) {
 	const idSec = idS.filter((el) => el !== idB)
 	// Сигналы склада и камер
 	const sigB = obj.data.signal.filter((el) => idS.includes(el.owner.id))
-	// Агрегаты склада
+	// Агрегаты склада все
 	const aggr = obj.data.aggregate.filter((el) => el.buildingId === idB)
+	// Управляемые агрегаты
+	const slaveAgg = aggr.filter((el) => el.aggregate.slave)
 	// Испарители камеры
 	const cooler = []
 	obj.data.cooler.forEach((doc) => {
@@ -103,7 +105,7 @@ function fnCold(idB, obj) {
 		device[code] ??= []
 		device[code].push(el)
 	})
-	return { signal: sigB, aggregate: aggr, cooler, heating, device }
+	return { signal: sigB, aggregate: aggr, cooler, heating, device, slaveAgg }
 }
 
 function transformClr(doc, data) {

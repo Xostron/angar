@@ -1,0 +1,55 @@
+{
+  _id: '68888d3cb78fa416c4da9183',
+  order: 4,
+  buildingId: '68063bd0b77d3a35f86e0e66',
+  aggregateId: '68887ba7296b0e18d05338ab',
+  name: 'Управляемый агрегат',
+  condenser: [],
+  aggregate: {
+    _id: '68887ba7296b0e18d05338ab',
+    name: 'Агрегат для стенда Quantum',
+    slave: true
+  },
+  compressorList: [
+    {
+      _id: '68887bb6296b0e18d05338ac',
+      order: 1,
+      aggregateId: '68887ba7296b0e18d05338ab',
+      compressorId: '68886cb6296b0e18d05338aa',
+      compressor: [Object],
+      beep: [Array]
+    }
+  ]
+} 
+{
+ "compressor": {
+  "68887bb6296b0e18d05338ac": {
+   "beep": {
+    "supply": {
+     "value": false,
+     "alarm": true
+    },
+    "int": {
+     "value": true,
+     "alarm": true
+    },
+    "oil": {
+     "value": false,
+     "alarm": false
+    },
+    "pressure": {
+     "value": false,
+     "alarm": true
+    },
+    "run": {
+     "value": false
+    }
+   },
+   "state": "alarm"
+  }
+ },
+ "condenser": {},
+ "state": "alarm"
+} 
+{ raw: 0.1, value: 0.1, state: 'on' } 
+0 0.2

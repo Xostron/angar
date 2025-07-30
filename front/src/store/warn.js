@@ -1,9 +1,8 @@
 import { create } from 'zustand'
-import useInputStore from './input'
+
 // Состояние для управления диалоговыми окнами
 const useWarn = create((set, get) => ({
 	// Флаг - Показать entry (диалоговое окно)
-	clear1: () => set({ clear1: get().clear1 }, true),
 	show: false,
 	// Данные для entry
 	data: {},
