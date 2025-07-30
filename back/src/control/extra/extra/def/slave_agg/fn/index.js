@@ -22,9 +22,10 @@ module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 		// Наличие аварий и создание сообщений
 		fnAlarm(agg, cmpr, cmpr.beep, stateAgg.compressor[cmpr._id].beep, acc)
 		// Пуск-Стоп
-		const DO = cmpr.beep.find((el) => el.code == 'run')
-		ctrlDO(DO, agg.buildingId, acc[cmpr._id].running)
+		let DO = cmpr.beep.find((el) => el.code == 'run')
+		DO = obj.data.signal.find(el=>el.owner.id==DO?._id)
+		ctrlDO(DO, agg.buildingId, acc[cmpr._id].running ? 'on':'off')
 
-		console.log(99009, 'работаем епта', acc)
+		console.log(99009, 'работаем епта', stateAgg, acc)
 	}
 }

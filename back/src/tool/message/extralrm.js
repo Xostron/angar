@@ -1,8 +1,8 @@
 const { data:store } = require('@store')
 
 // Получить extralrm аварию
-function isExtralrm(bldId, secId, name) {
-	return secId ? !!store.alarm?.extralrm?.[bldId]?.[secId]?.[name] : !!store.alarm?.extralrm?.[bldId]?.[name]
+function isExtralrm(bldId, secId, code) {
+	return secId ? !!store.alarm?.extralrm?.[bldId]?.[secId]?.[code] : !!store.alarm?.extralrm?.[bldId]?.[code]
 }
 
 // Записать в extralrm (доп. аварии)

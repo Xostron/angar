@@ -1,7 +1,8 @@
 const { msgBeep } = require('@tool/message')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { isReset } = require('@tool/reset')
-
+const { compareTime } = require('@tool/command/time')
+const delayOilAlarm = 60000
 /**
  * Основные аварии компрессоров агрегата
  * @param {object} Агрегат
@@ -15,12 +16,12 @@ function fnAlarm(agg, cmpr, beep, state, acc) {
 	// Создание аварийных сообщений
 	acc[cmpr._id] ??= {}
 	beep.forEach((el) => {
-		if (el.code == 'run') return
+		if (['oil', 'run'].includes(el.code)) return
 		const be = state[el.code]?.value
 		const owner = agg._id + ' ' + cmpr._id
 		// Сброс аварии
 		if (!be && isReset(agg.buildingId)) {
-			delExtralrm(agg.buildingId, null, el.code)
+			delExtralrm(agg.buildingId, owner, el.code)
 			acc[cmpr._id][el.code] = false
 		}
 		// Установить аварию
@@ -35,8 +36,6 @@ function fnAlarm(agg, cmpr, beep, state, acc) {
 	oilAlarm(agg, cmpr, oilD, state.oil, acc)
 }
 
-const { compareTime } = require('@tool/command/time')
-
 /**
  * Авария низкого уровня масла (наблюдается во время работы компрессора)
  * @param {*} permission Разрешение - агрегат в работе
@@ -45,11 +44,12 @@ const { compareTime } = require('@tool/command/time')
  */
 function oilAlarm(agg, cmpr, oil, stateOil, acc) {
 	if (!oil) return
+	const owner = agg._id + ' ' + cmpr._id
+	console.log(777, owner)
+	// Установка аварии
 	if (acc[cmpr._id].running) {
 		if (!acc.date) acc.date = new Date()
-		// Установка аварии
-		if (compareTime(acc.date, 60) && stateOil.value) {
-			const owner = agg._id + ' ' + cmpr._id
+		if (compareTime(acc.date, delayOilAlarm) && stateOil.value) {
 			const name = `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, 'oil', msgBeep({ _id: agg.buildingId }, oil, name))
 			acc[cmpr._id][oil.code] = true
@@ -57,10 +57,9 @@ function oilAlarm(agg, cmpr, oil, stateOil, acc) {
 	} else {
 		acc.date = undefined
 	}
-
 	// Сброс аварии
-	if (!stateOil.value && isReset(agg.buildingId)) {
-		delExtralrm(agg.buildingId, null, oil.code)
+	if (isReset(agg.buildingId)) {
+		delExtralrm(agg.buildingId, owner, oil.code)
 		acc[cmpr._id][oil.code] = false
 	}
 	return acc[cmpr._id][oil.code]

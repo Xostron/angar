@@ -1,3 +1,5 @@
+const { isExtralrm } = require('@tool/message/extralrm')
+const { data: store } = require('@store')
 // Агрегат
 function fnAggregate(equip, val, retain, result) {
 	const { aggregate, building } = equip
@@ -40,10 +42,18 @@ function aggB(bld, agg, equip, val, retain, result) {
 					alarm: be.alarm,
 				}
 			})
-			// Состояние компрессора на основе beep
-			result[doc._id].compressor[el._id].state = stateC(
-				result[doc._id].compressor[el._id].beep
-			)
+			// Состояние компрессора на основе beep управляемый/неуправляемый
+			const owner = doc._id + ' ' + el._id
+			if (!doc.aggregate?.slave)
+				result[doc._id].compressor[el._id].state = stateC(
+					result[doc._id].compressor[el._id].beep
+				)
+			else
+				result[doc._id].compressor[el._id].state = stateCSlave(
+					result[doc._id].compressor[el._id].beep,
+					bld._id,
+					owner
+				)
 		})
 		// Конденсаторы
 		result[doc._id].condenser ??= {}
@@ -69,10 +79,27 @@ function aggB(bld, agg, equip, val, retain, result) {
 	sum(bld, agg, result)
 }
 
-// Состояние компрессора
+// Состояние компрессора неуправляемый
 function stateC(o = {}) {
 	// Поиск активного аварийного сигнала
 	const r = Object.values(o).find((el) => el.alarm && el.value)
+	// Найден -> компрессор в аварии
+	if (r) return 'alarm'
+	// run - beep: неуправляемый (дискретный вход - в работе), управляемый (дискретный выход - управляющий сигнал)
+	if (o?.run?.value) return 'run'
+	// Состояние Стоп (по-умолчанию)
+	return 'stop'
+}
+// Состояние компрессора управляемый
+function stateCSlave(o = {}, bldId, owner) {
+	// Фильтр аварий
+	const arr = []
+	for (const code in o) {
+		if (o[code]?.alarm || code == 'oil') arr.push(code)
+	}
+	// Для управляемых агрегатов
+	const r = arr.find((code) => isExtralrm(bldId, owner, code))
+	console.log(555, arr, owner)
 	// Найден -> компрессор в аварии
 	if (r) return 'alarm'
 	// run - beep: неуправляемый (дискретный вход - в работе), управляемый (дискретный выход - управляющий сигнал)
