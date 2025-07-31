@@ -7,10 +7,10 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	if (!acc?.state?.off) {
 		acc.state.off = new Date()
 		console.log('\toff', 'Не выключался, решаем что делать дальше')
-		return check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
 	}
 	// Время работы в текущем режиме
 	onTime('off', acc)
+	check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
 	//Выключен по достижению задания
 	// TODO Ожидание Только для холодильника, а для комбинированного работа по acc.finish (True достиг задания - выкл испаритель)
 	// false - вкл холодильник
@@ -18,7 +18,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	// console.log(77, '\toff', 'Выключен по достижению задания', time)
 	// вкл обдув: напорный вентилятор - 1, соленоид - 0, обогрев - 0
 	// if (time) return 
-	fnChange(0, 1, 0, 0, 'blow', clr)
+	// fnChange(0, 1, 0, 0, 'blow', clr)
 }
 
 module.exports = off

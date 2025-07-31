@@ -22,7 +22,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	const bldId = bld._id
 	const acc = init(idS, s, where, 'relay', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(null, fans, bld, idS, aCmd, acc, bdata, where)) return
+	if (turnOff(null, fans,solHeat, bld, idS, aCmd, acc, bdata, where)) return
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления/темп в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
@@ -39,7 +39,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	checkOff.relay(off, acc, where)
 	// console.log(990011, on,off)
 	// Непосредственное включение
-	turnOn(null, fans, bldId, acc)
+	turnOn(null, fans, solHeat,bldId, acc)
 	// console.log(3331, idS, where, acc)
 	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
 	acc.allStarted = acc.order >= fans.length - 1 ? new Date() : undefined

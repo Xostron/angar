@@ -11,11 +11,12 @@ const { data: store } = require('@store')
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where = 'normal') {
+function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'normal') {
 	const r = ignore[where](bld, acc, bdata, where)
 	if (r) return true
 	if (aCmd.type == 'on') return false
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть
+	// Продукт достиг задания aCmd.type=off
 	if (aCmd.type == 'off' && !bdata.mode?.[idS]) {
 		clear(idS)
 		return true
@@ -30,6 +31,9 @@ function turnOff(fanFC, fans, bld, idS, aCmd, acc, bdata, where = 'normal') {
 			ctrlAO(fanFC, bld._id, 0)
 			ctrlDO(fanFC, bld._id, 'off')
 		}
+		solHeat.forEach((el) => {
+			ctrlDO(el, bld._id, 'off')
+		})
 	}
 	clear(idS)
 	return true

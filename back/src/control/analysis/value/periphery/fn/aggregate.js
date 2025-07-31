@@ -99,7 +99,6 @@ function stateCSlave(o = {}, bldId, owner) {
 	}
 	// Для управляемых агрегатов
 	const r = arr.find((code) => isExtralrm(bldId, owner, code))
-	console.log(555, arr, owner)
 	// Найден -> компрессор в аварии
 	if (r) return 'alarm'
 	// run - beep: неуправляемый (дискретный вход - в работе), управляемый (дискретный выход - управляющий сигнал)
