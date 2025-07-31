@@ -227,6 +227,9 @@ a {
 	color: rgb(186, 186, 186) !important;
 	border: solid 2px rgb(186, 186, 186);
 }
+.off img {
+	filter: invert(70%);
+}
 
 .error,
 .alarm {
@@ -248,7 +251,7 @@ a {
 	0% {
 		transform: rotate(0deg);
 	}
-	100%{
+	100% {
 		transform: rotate(360deg);
 	}
 }

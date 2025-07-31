@@ -52,7 +52,6 @@ function init(secId, s, where, type, fansLength) {
 		a.delayFC = s.fan.next * 1000
 		a.delayRelay = s.fan.delay * 1000 + _RAMP
 	}
-	console.log(111, where, type, fansLength)
 	return a
 }
 

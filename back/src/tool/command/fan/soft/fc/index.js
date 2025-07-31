@@ -6,6 +6,7 @@ const turnOff = require('../fn/turn_off')
 const regul = require('../fn/regul')
 const init = require('../fn/init')
 const fnSolHeat = require('../fn/sol_heat')
+const isAllStarted = require('../fn/all_started')
 
 /**
  * Плавный пуск ВНО в секции на контакторах
@@ -43,8 +44,8 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)
 	console.log(333, idS, where, acc)
-	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
-	acc.allStarted = acc.order >= fans.length - 1 ? new Date() : undefined
+	// Все вспомагательные механизмы подогрева канала запущены
+	isAllStarted(acc, fans)
 }
 
 module.exports = fc

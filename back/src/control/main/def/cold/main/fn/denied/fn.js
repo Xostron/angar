@@ -6,8 +6,8 @@ const { data: store } = require('@store')
  * @param {*} idB id склада
  * @returns {boolean} true Агрегат готов
  */
-function isReadyAgg(value, idB) {
-	return value.total[idB].aggregate?.state !== 'alarm' ? true : false
+function isReadyAgg(value, idB, aggListId) {
+	return value.total[idB].aggregate.agg?.[aggListId] !== 'alarm' ? true : false
 }
 
 /**
