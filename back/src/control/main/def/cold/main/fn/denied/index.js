@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 const checkSupply = require('../supply')
-const { isRunAgg, clear, clearCombi } = require('./fn')
+const { isReadyAgg, clear, clearCombi } = require('./fn')
 const { isAlr } = require('@tool/message/auto')
 const { clearAchieve } = require('@tool/message/achieve')
 
@@ -18,7 +18,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	store.denied[bld._id] ??= {}
 
 	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
-	const aggr = isRunAgg(obj.value, bld._id, clr._id)
+	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
 
 	store.denied[bld._id][clr._id] = !start || alr || !aggr || !supplySt
 	console.log(55, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
@@ -42,21 +42,33 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 	store.denied[bld._id] ??= {}
-
+	// Проверка питания
 	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
-	const aggr = isRunAgg(obj.value, bld._id, clr._id)
+	// Готов ли агрегат
+	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
+	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
 	const alrAuto = isAlr(bld._id, automode)
-
+	// Выведен ли из работы ВНО испарителя
+	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
 	store.denied[bld._id][clr._id] =
-		!start || alr || !aggr || !supplySt || !sectMode || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
+		!start ||
+		alr ||
+		!aggr ||
+		!supplySt ||
+		!sectMode ||
+		!store.toAuto?.[bld._id]?.[sect._id] ||
+		!alrAuto ||
+		automode != 'cooling' ||
+		fansOff
+
 	console.log(55, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
-	// Нет
 	if (!store.denied[bld._id][clr._id]) {
+		//false - Нет - работаем испарителем
 		return false
 	}
-	// Да
+	// true - Да
 	clearCombi(bld._id, clr, accAuto.cold, fnChange, stateCooler, store, alrAuto)
 
 	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
@@ -73,7 +85,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 }
 
 // Склад Комби: Первичный запрет работы от секции
-function deniedSection(bld, sect,  bdata, alr, obj) {
+function deniedSection(bld, sect, bdata, alr, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
 	store.denied[bld._id] ??= {}
@@ -84,7 +96,13 @@ function deniedSection(bld, sect,  bdata, alr, obj) {
 	// Наличие аварии авторежима
 	const alrAuto = isAlr(bld._id, automode)
 
-	store.denied[bld._id][sect._id] = !start || alr || !sectM || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
+	store.denied[bld._id][sect._id] =
+		!start ||
+		alr ||
+		!sectM ||
+		!store.toAuto?.[bld._id]?.[sect._id] ||
+		!alrAuto ||
+		automode != 'cooling'
 	console.log(
 		55,
 		sect.name,

@@ -47,8 +47,13 @@ function stateEq(id, value) {
 // Состояние вентилятора
 function stateF(fan, equip, result, retain) {
 	const idB = getIdB(fan.module?.id, equip.module)
-	// Выведен из работы
-	const off = retain?.[idB]?.fan?.[fan.owner.id]?.[fan._id]
+	// Выведен из работы для секционных ВНО и ВНО испарителей
+	let off
+	if (fan.owner.type == 'section') off = retain?.[idB]?.fan?.[fan.owner.id]?.[fan._id]
+	else if (fan.owner.type == 'cooler') {
+		const secId = equip.cooler.find((el) => el._id == fan.owner.id)?.sectionId
+		off = retain?.[idB]?.fan?.[secId]?.[fan._id]
+	}
 	// Состояние выхода
 	const out = result?.outputEq?.[fan._id]
 	if (off) return 'off'

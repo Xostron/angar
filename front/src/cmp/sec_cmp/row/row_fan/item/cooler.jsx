@@ -4,7 +4,7 @@ import useInputStore from '@store/input'
 
 /**
  *
- * @param {object} data Рама испарителя
+ * @param {object} data Рамаи мясо по ВНО испарителя
  * @returns
  */
 export default function ItemCooler({ data, onClick, isAuth, cls }) {
@@ -14,12 +14,10 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 		input?.[data.el?._id],
 		input?.retain?.[build]?.start,
 	])
-	// Состояние испарителя
-	const state = cooler?.state
 	// Стадия испарителя - режим
-	const utxt = start ? cooler.name : ''
+	const uptxt = start ? cooler.name : ''
 	// Задание ПЧ
-	let ltxt = Object.values(cooler?.fan ?? {})?.[0]?.value
+	let ltxt = data.sp
 	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : ltxt + '%'
 	else ltxt = '-- %'
 	// Температура всасывания
@@ -30,13 +28,13 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const idSolHeat = data.el?.solHeat?.[0]?._id
 	const solHeat = cooler?.solHeat?.[idSolHeat]
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
-	// Ступени соленоиды
-	console.log()
-	// Иконка состояния испарителя с ПЧ
+	// Иконка состояния испарителя
+	const state = cooler?.state
 	const img = `/img/cold/cooler/cooler-${state}.svg` ?? ''
 	// Доступ разрешен
 	if (isAuth) cl.push('auth-sir')
-
+	// Вывод из работы ВНО
+	if (data.state == 'off') cl.push('off')
 	cl = cl.join(' ')
 	return (
 		<BtnCooler
@@ -44,7 +42,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 			icon={img}
 			ltxt={ltxt}
 			rtxt={rtxt}
-			utxt={utxt}
+			uptxt={uptxt}
 			solHeat={solHeat}
 			level={cooler?.level}
 			cls={cl}
@@ -53,7 +51,17 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 }
 
 // Кнопка Испаритель
-function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, level, cls, style }) {
+function BtnCooler({
+	icon,
+	onClick,
+	ltxt = '',
+	rtxt = '',
+	uptxt = '',
+	solHeat,
+	level,
+	cls,
+	style,
+}) {
 	let cl = ['btn', cls]
 	cl = cl.join(' ')
 	// Соленоид подогрева
@@ -70,13 +78,12 @@ function BtnCooler({ icon, onClick, ltxt = '', rtxt = '', utxt = '', solHeat, le
 				{solHeat !== undefined && Sh}
 				<span>{level}</span>
 			</div>
-
-			<span>{ltxt}</span>
-			<div>
-				<span className='up'>{utxt}</span>
-				<img className='state-cooler' src={icon} />
+			<div className='state-cooler'>
+				<span>{ltxt}</span>
+				<img src={icon} />
+				<span>{rtxt}</span>
 			</div>
-			<span>{rtxt}</span>
+			<span className='up'>{uptxt}</span>
 		</button>
 	)
 }

@@ -41,28 +41,41 @@
 .fc > span {
 	width: 60px;
 }
+
 /* Испаритель - комбинированный склад - кнопка */
 .btn-cooler {
 	position: relative;
-	min-width: 240px !important;
+	width: 270px !important;
 	color: var(--primary);
-	padding-inline: 0px;
 	font-size: var(--fsz22) !important;
 }
 .btn-cooler .up {
 	position: absolute;
 	font-size: var(--fsz18);
-	transform: translateX(50%);
-	right: 50%;
 	top: -2.4rem;
-	width: 210px;
 }
 .btn-cooler .state-cooler {
-	position: relative;
-	top: 0.6rem;
+	position: absolute;
+	top: 0.1rem;
 	height: 40px;
+	left: calc(50%);
+	transform: translateX(-50%);
+	display: flex;
+	gap: 8px;
+}
+.state-cooler > img {
 	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg)
 		brightness(92%) contrast(95%);
+}
+
+.state-cooler > span {
+	width: 55px;
+	&:first-child {
+		text-align: right;
+	}
+	&:last-child {
+		text-align: left;
+	}
 }
 
 .btn-cooler .state-extra {

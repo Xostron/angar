@@ -6,7 +6,7 @@ const { data: store } = require('@store')
  * @param {*} idB id склада
  * @returns {boolean} true Агрегат готов
  */
-function isRunAgg(value, idB) {
+function isReadyAgg(value, idB) {
 	return value.total[idB].aggregate?.state !== 'alarm' ? true : false
 }
 
@@ -79,4 +79,4 @@ const del = {
 	},
 }
 
-module.exports = { isRunAgg, clear, clearCombi, clearBuild }
+module.exports = { isReadyAgg, clear, clearCombi, clearBuild }
