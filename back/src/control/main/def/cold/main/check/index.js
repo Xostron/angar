@@ -92,7 +92,7 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
 	if (se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
 
-	console.log(666, clr.name, code, sol, ven)
+	// console.log(666, clr.name, code, sol, ven)
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return

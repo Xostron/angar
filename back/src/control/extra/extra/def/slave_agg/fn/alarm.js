@@ -45,7 +45,6 @@ function fnAlarm(agg, cmpr, beep, state, acc) {
 function oilAlarm(agg, cmpr, oil, stateOil, acc) {
 	if (!oil) return
 	const owner = agg._id + ' ' + cmpr._id
-	console.log(777, owner)
 	// Установка аварии
 	if (acc[cmpr._id].running) {
 		if (!acc.date) acc.date = new Date()

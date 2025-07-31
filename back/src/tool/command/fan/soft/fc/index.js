@@ -43,7 +43,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	checkOff.fc(off, acc)
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)
-	console.log(333, idS, where, acc)
+	// console.log(333, idS, where, acc)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 }

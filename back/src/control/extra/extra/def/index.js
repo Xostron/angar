@@ -14,7 +14,7 @@ const tChannel = require('./t_channel')
 const slaveAgg = require('./slave_agg')
 
 const data = {
-	// Доп функции для секции
+	// Обычный склад - Доп функции для секции
 	section: {
 		// Секция - АВТО
 		on: {
@@ -30,7 +30,7 @@ const data = {
 			cableS,
 		},
 	},
-	// Доп функции для склада
+	// Обычный склад - Доп функции для склада
 	building: {
 		// Склад - ВКЛ
 		on: {
@@ -46,6 +46,7 @@ const data = {
 			cableB,
 		},
 	},
+	// Склад холодильник
 	cold: {
 		on: {
 			accelCAuto,
@@ -65,12 +66,16 @@ const data = {
 			slaveAgg,
 		},
 	},
+	// Комбинированный склад = {...обычный склад, комбинированный}
 	combi: {
-		on: {},
-		off: {},
+		on: {
+			coAuto,
+		},
+		off: {
+			smoking,
+		},
 		always: {
-			reset,
-			connect,
+			coOn,
 			slaveAgg,
 		},
 	},
