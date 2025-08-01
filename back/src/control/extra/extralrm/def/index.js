@@ -16,7 +16,7 @@ const alrStop = require('./alr_stop')
 const supply = require('./supply')
 const co2 = require('./co2')
 const aggregate = require('./aggregate')
-const idle = require('./idle')
+const banTimer = require('./ban_timer')
 const deltaMdl = require('./delta_mdl')
 const openVin = require('./open_vin')
 const stableVno = require('./stable_vno')
@@ -42,7 +42,7 @@ const def = {
 	},
 	building: {
 		on: {
-			idle,
+			banTimer,
 			genB,
 			openVin,
 		},
@@ -57,13 +57,13 @@ const def = {
 	},
 	// Доп. аварии холодильника
 	cold: {
-		on: { idle, genB },
+		on: { banTimer, genB },
 		off: {},
 		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate },
 	},
 	// Комбинированный склад (холодильник)
 	combi: {
-		on: { idle, genB },
+		on: { banTimer, genB },
 		off: {},
 		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate },
 	},

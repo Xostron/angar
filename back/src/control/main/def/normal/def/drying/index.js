@@ -66,14 +66,14 @@ function middlewB(building, obj, s, seB, acc) {
 	}
 }
 
-function valve(s, se) {
+function valve(s, se, sectionId, acc, extraCO2) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
 	// console.log(1111, 'roma', 'Клапаны', `Открыть ${open}, Закрыть ${close}, Открыть форс ${forceOpn}`)
 	return { open, close, forceOpn, forceCls: false }
 }
-function fan(s, se, alr) {
+function fan(s, se, alr, sectionId, acc, extraCO2) {
 	const forceRun = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	// TODO если клапана закрыты при работающих вентиляторах более Х мин. , нужно ли выключать вентиляторы?
 	// сообщение: "Температура канала "

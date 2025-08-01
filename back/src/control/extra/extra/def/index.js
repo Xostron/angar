@@ -6,12 +6,13 @@ const reset = require('./reset')
 const warming = require('./warming')
 const cableB = require('./cableB')
 const cableS = require('./cableS')
-const { coOn, coAuto } = require('./co2')
+const { coOn, coAuto } = require('./co2_cold')
 const { drainAuto, drainOn, drainOff } = require('./drain')
 const smoking = require('./smoking')
 const { accelCOn, accelCAuto } = require('./accel_cold')
 const tChannel = require('./t_channel')
 const slaveAgg = require('./slave_agg')
+const coNormal = require('./co2_normal_combi')
 
 const data = {
 	// Обычный склад - Доп функции для секции
@@ -35,6 +36,7 @@ const data = {
 		// Склад - ВКЛ
 		on: {
 			accelAuto,
+			coNormal,
 		},
 		// Склад - ВЫКЛ
 		off: {},
@@ -68,14 +70,11 @@ const data = {
 	},
 	// Комбинированный склад = {...обычный склад, комбинированный}
 	combi: {
-		on: {
-			coAuto,
-		},
+		on: {},
 		off: {
 			smoking,
 		},
 		always: {
-			coOn,
 			slaveAgg,
 		},
 	},

@@ -1,9 +1,11 @@
-const { data: store } = require('@store')
+const { data: store, readAcc } = require('@store')
 const def = require('@control/main/def/normal/def')
 const extralrm = require('@control/extra/extralrm')
 const { fnValve } = require('@tool/command/valve/auto')
 
 function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, alrAlw) {
+	// Удаление СО2
+	const extraCO2 = readAcc(building._id, 'building', 'co2')
 	// Таймер запретов - закрываем клапана, выключаем вентиляторы
 	let ban = !!store.alarm.timer?.[building._id]?.[am]
 
@@ -22,11 +24,11 @@ function auto(building, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, al
 	if (def[am]?.middlew) def[am]?.middlew(building, sect, obj, s, se, seB, alr, acc)
 
 	// Клапан
-	const v = def[am].valve(s, se, sect._id, acc)
+	const v = def[am].valve( s, se, sect._id, acc, extraCO2)
 	fnValve(v, sect._id, s)
 
 	// Вентилятор
-	const f = def[am].fan(s, se, alr, sect._id, acc)
+	const f = def[am].fan(s, se, alr, sect._id, acc, extraCO2)
 	resultFan.start.push(f.start)
 	// resultFan.list.push(sect._id)
 	// resultFan.fan.push(...m.fanS)

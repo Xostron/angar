@@ -64,7 +64,7 @@ function fan(obj) {
 		ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
 	}
 }
-// Блокировки напорных вентиляторов (обычный склад и холодильник)
+// Блокировки разгонных вентиляторов (обычный склад и холодильник)
 function fanAccel(obj) {
 	const { value, data, retain, output } = obj
 	for (const el of data.fan) {

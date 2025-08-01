@@ -61,7 +61,7 @@ function mechB(bId, type, obj) {
 	// Выход Сброс аварии для реле безопасности
 	const reset =
 		data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
-	// Притотчные клапаны склада
+	// Приточные клапаны склада
 	const vlvIn =
 		data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
 	// Оборудование холодильника

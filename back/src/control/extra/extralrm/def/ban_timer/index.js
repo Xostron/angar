@@ -3,8 +3,8 @@ const { wrTimer, delTimer } = require('@tool/message/ban_timer')
 // Авторежимы склада
 const am = ['drying', 'cure', 'cooling', 'heat']
 
-// Время работы
-function idle(building, section, obj, s, se, m, automode, acc, data) {
+// Таймера запретов
+function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 	const name = `Склад ${building.code ?? ''}`
 	const exclude = am.filter((el) => el != automode)
 	// По таймерам запрета
@@ -25,7 +25,7 @@ function idle(building, section, obj, s, se, m, automode, acc, data) {
 	}
 }
 
-module.exports = idle
+module.exports = banTimer
 
 function checkRange(begin, end, exclude) {
 	const cur = +new Date().toLocaleTimeString('ru-RU', { hour: 'numeric', minute: 'numeric' }).split(':').join('')
