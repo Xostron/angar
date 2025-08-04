@@ -8,7 +8,7 @@ module.exports = function prepare(bld, obj, acc, m, se, s) {
 	ids.forEach((id) => {
 		vlv = obj.data.valve.filter((el) => el.sectionId.includes(id))
 	})
-	vlv = vlv.every((el) => obj.value[el._id].state == 'cls')
+	vlv = vlv?.every((el) => obj.value[el._id].state == 'cls')
 	// Точка росы
 	const point = obj.value.total[bld._id].point
 	// Температура продукта

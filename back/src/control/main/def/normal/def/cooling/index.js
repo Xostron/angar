@@ -14,7 +14,7 @@ const data = {
 	toAlrS: (s, sectionId, acc) => ({ exclude: '' }),
 	// Данные от охлаждения на Доп. функции (контроль вентиляции, обогрев клапанов и т.д.)
 	toExtra: (s, alarm, sectionId, acc) => ({ fanOff: alarm, alwaysFan: null }),
-	// Промежуточные расчеты по секции
+	// Промежуточные расчеты по секции (если такие возникнут)
 	middlew: (building, section, obj, s, se, seB, alr, acc) => {},
 	// Промежуточные расчеты по складу
 	middlewB,
@@ -22,12 +22,6 @@ const data = {
 
 function middlewB(building, obj, s, seB, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
-	// TODO: Как реагировать при обвале датчиков?
-	if (tout === null || hout === null) {
-		acc.alarm = true
-		return
-	}
-	acc.alarm = false
 	// Вычисление подрежима
 	submode(building, obj, s, seB, acc)
 	// Вычисления
@@ -40,16 +34,18 @@ function valve(s, se, sectionId, acc, extraCO2) {
 	// console.log(4442, 'open', se.tcnl > acc.tcnl + s.cooling.hysteresisIn, se.tcnl, acc.tcnl, s.cooling.hysteresisIn)
 	// console.log(4443, 'close', se.tcnl < acc.tcnl - s.cooling.hysteresisIn, se.tcnl, acc.tcnl, s.cooling.hysteresisIn)
 	// console.log(4444, 'force', acc.finish, acc.alarm)
-	console.log(99003, extraCO2)
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
-	const forceCls = (acc.finish || acc.alarm) && !extraCO2.start
+	const forceCls = acc.finish  && !extraCO2.start
+	console.log(99003, extraCO2, open,close,forceCls)
 	return { open, close, forceCls, forceOpn: false }
 }
 
 function fan(s, se, alr, sectionId, acc, extraCO2) {
-	console.log(99002, extraCO2)
-	const start = (!alr && !acc.finish && !acc.alarm) || extraCO2.start
+	// Условие пуска ВНО: нет аварии И {задание продукта не достигнуто ИЛИ удаление СО2}
+	const alright = !acc.finish  || extraCO2.start
+	const start = !alr && alright
+	console.log(99002, extraCO2, start)
 	// console.log(777, 'fan ===============',sectionId, start, '=', !alr, !acc.finish, !acc.alarm)
 	return { start }
 }

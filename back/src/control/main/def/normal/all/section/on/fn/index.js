@@ -7,8 +7,8 @@ const { ctrlVSoft, flyingVlv } = require('@tool/command/valve/auto')
  * @param {*} vlvS
  * @param {*} fanS
  * @param {*} obj
- * @param {*} alr
- * @param {*} v
+ * @param {*} alr Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада, авария по низкой темпаературе
+ * @param {*} v Команда на управлением клапаном от авторежима
  * @param {*} accAuto
  * @param {*} s
  * @returns

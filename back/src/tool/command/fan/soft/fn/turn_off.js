@@ -1,6 +1,6 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
-const { isAlr } = require('@tool/message/auto')
 const { data: store } = require('@store')
+const ignore = require('./ignore')
 
 /**
  * Выключение ВНО секции
@@ -12,7 +12,7 @@ const { data: store } = require('@store')
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
 function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'normal') {
-	const r = ignore[where](bld, acc, bdata, where)
+	const r = ignore[where](bld, acc, bdata, solHeat)
 	if (r) return true
 	if (aCmd.type == 'on') return false
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть
@@ -39,31 +39,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'norm
 	return true
 }
 
-const ignore = {
-	normal,
-	cold,
-}
-/**
- * normal - обычный склад и комби(режим обычный)
- * cold - комби (режим холодильник)
- *
- * Для комбинированного склада: игнорировать управление ВНО
- * при переходе из обычного в холодильный режим
- * @param {*} bld Склад
- * @param {*} acc Аккумулятор плавного пуска
- * @param {*} bdata Результат функции scan()
- * @returns false - разрешить управление, true - запрет управления
- */
-function normal(bld, acc, bdata, where) {
-	if (bld.type == 'normal' || bdata.automode != 'cooling') return false
-	const alrAuto = isAlr(bld._id, bdata.automode)
-	return alrAuto
-}
-function cold(bld, acc, bdata, where) {
-	// Проверка перехода из обычного в холодильный режим
-	const alrAuto = isAlr(bld._id, bdata.automode)
-	return !alrAuto
-}
+
 
 // Очистка аккумулятора
 function clear(idS) {

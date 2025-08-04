@@ -143,6 +143,9 @@ function outV(type, output, o, ...args) {
 	if (!output[mdl] || !o) return
 	const ch = o?.module?.[type]?.channel - 1
 	const lock = fn(args)
+	// if (o._id == '680a00442341ab3e64048cc5') {
+	// 	console.log(1111,o._id, lock, output[mdl].value[ch])
+	// }
 	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
 }
 

@@ -9,11 +9,10 @@ function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
 	def[s?.co2?.mode](bld, obj, acc, m, se, s)
+	def.fnSol(bld, obj, acc)
 }
 
-
-
-module.exports =  coNormal
+module.exports = coNormal
 
 function fnMsg(bld, acc, s) {
 	if (acc.lastMode !== s?.co2?.mode) {

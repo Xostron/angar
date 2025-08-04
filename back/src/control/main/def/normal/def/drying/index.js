@@ -77,7 +77,7 @@ function fan(s, se, alr, sectionId, acc, extraCO2) {
 	const forceRun = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	// TODO если клапана закрыты при работающих вентиляторах более Х мин. , нужно ли выключать вентиляторы?
 	// сообщение: "Температура канала "
-	const start = s.drying.ventilation || forceRun || !alr
+	const start = s.drying.ventilation || forceRun || !alr|| extraCO2.start
 	// console.log(2222, `Вентиляторы в работе = ${start} |`, `Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе ${s.drying.ventilation}`)
 	return { start }
 }

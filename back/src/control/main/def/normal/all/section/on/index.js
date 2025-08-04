@@ -10,8 +10,8 @@ function sectionOn(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, s
 	if (!check(building._id, sect, obj, am, start)) {
 		// console.log(22, building.name, 'Секция не в работе', sect.name)
 		return
-	} // clear(accAuto)
-	// console.log(22, 'Секция в работе', sect.name)
+	} 
+	// clear(accAuto)
 	// Логика авторежима {Суммарная авария, команды клапана}
 	const { alr, v } = auto(building, sect, obj, s, se, seB, m, am, accAuto, resultFan, alrBld, alrAm, alrAlw)
 	// Секция: Дополнительные функции авторежимов

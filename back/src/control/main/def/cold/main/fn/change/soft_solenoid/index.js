@@ -13,9 +13,11 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 // Отключение: Обогрев канала включен, сигнал на обогрев активен -> ждем время -> выкл сол4
 // -> ждем время -> выкл сол2 -> ждем время -> выкл сол1 и сол2
 // -> выдаем предупреждение "Низкая температура канала"
-const { data: store } = require('@store')
+const { data: store, readAcc } = require('@store')
 
 function softsol(idB, solenoid, sl, clr, accAuto) {
+	const extraCO2 = readAcc(idB, 'building', 'co2')
+	if (extraCO2.sol) return fnSol(idB, extraCO2, solenoid)
 	const secId = clr.sectionId
 	const map = accAuto?.cold?.softSol?.[secId]
 	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
@@ -67,3 +69,9 @@ function initSoftsol(accAuto, sect, coolerS, s) {
 	accAuto.cold.softSol[sect._id].set('warning', false)
 }
 module.exports = { softsol, initSoftsol }
+
+// Отключение соленоидов
+function fnSol(idB, extraCO2, sol) {
+	if (!extraCO2.sol) return
+	sol.forEach((el) => ctrlDO(el, idB, 'off'))
+}
