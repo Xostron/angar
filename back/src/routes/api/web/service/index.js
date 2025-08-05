@@ -1,30 +1,32 @@
-const mac = require('./mac')
-const ip = require('./ip')
-const reboot = require('./reboot')
-const equip = require('./equipment')
-const software = require('./software')
-const pm2 = require('./pm2')
-const npm = require('./npm')
-const express = require('express')
+const equip = require('./equipment');
+const express = require('express');
+const {
+	net_info,
+	set_ip,
+	reload,
+	upt_soft,
+	pm2_cmd,
+	build,
+} = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
 function service(router) {
-	const serviceRouter = express.Router() // api/web/service
-	router.use('/service', serviceRouter)
+	const serviceRouter = express.Router(); // api/web/service
+	router.use('/service', serviceRouter);
 	// Текущий IP и Mac-адрес
-	serviceRouter.get('/mac', mac())
+	serviceRouter.get('/net_info', net_info());
 	// Установить IP
-	serviceRouter.post('/ip', ip())
+	serviceRouter.post('/set_ip', set_ip());
 	// Перезагрузка ОС
-	serviceRouter.get('/reboot', reboot())
+	serviceRouter.get('/reboot', reload());
 	// Обновить оборудование
-	serviceRouter.get('/equipment', equip())
+	serviceRouter.get('/equipment', equip());
 	// Обновить ПО
-	serviceRouter.get('/software', software())
+	serviceRouter.get('/upt_soft', upt_soft());
 	// pm2 restart
-	serviceRouter.get('/pm2', pm2())
+	serviceRouter.get('/pm2/:code', pm2_cmd());
 	// npm install && npm run build
-	serviceRouter.get('/npm', npm())
+	serviceRouter.get('/build', build());
 }
 
-module.exports = service
+module.exports = service;
