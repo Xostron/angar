@@ -38,18 +38,14 @@ async function preparing() {
 
 	// Карточки PC
 	const resPC = transformPC(raw, data.building, data.section, data.fan)
-	// console.log(99001, resPC)
 	// Полное содержимое секции и карточки секций
 	for (const sec of data.section) present[sec._id] = await transformStore(sec.buildingId, sec._id)
-	// console.log(99002, present)
 
 	// Преобразуем в одноуровневый объект с составными ключами
 	present = { ...convertPC(resPC), ...convertSec(present) }
-	// console.log(5551, hub.state)
 
 	// Расчет delta (первое включение прошло успешно hub.init = true)
 	diffing = hub.init ? delta(present, hub.state) : null
-	// console.log(55551, diffing)
 
 	// Формируем данные для Tenta
 	result = convertTenta(diffing ?? present, data.pc._id)

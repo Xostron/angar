@@ -13,12 +13,11 @@ const { data: store, readAcc } = require('@store')
 // СО2: По времени
 function time(bld, obj, acc, m, se, s) {
 	const o = prepare(bld, obj, acc, m, se, s)
+	console.log(99001, 'time', acc)
 	// Ожидание: Клапаны закрыты в течении времени wait
-	console.log(99000, acc)
 	if (!acc?.work) {
 		if (!o.vlvClose) return clear(acc, 'work', 'wait', 'start')
 		if (!acc.wait) acc.wait = new Date()
-
 		// ожидаем
 		const time = compareTime(acc.wait, s.co2.wait)
 		// время не прошло
@@ -41,7 +40,7 @@ function time(bld, obj, acc, m, se, s) {
 // СО2: По датчику
 function sensor(bld, obj, acc, m, se, s) {
 	const o = prepare(bld, obj, acc, m, se, s)
-	console.log(99001, 'sensor', o)
+	console.log(99001, 'sensor', acc)
 	if (o.co2 === null || o.co2 === undefined) return clear(acc, 'work', 'start')
 	// Ожидание: Клапаны закрыты, co2 превышает уровень ->* Проветриваем
 	if (!acc.work) {
@@ -72,14 +71,19 @@ function sensor(bld, obj, acc, m, se, s) {
  * @param {*} s Настройки
  */
 function on(bld, obj, acc, m, se, s) {
-	console.log(99001, 'on')
-	acc.start = true
+	console.log(99001, 'on', acc)
+	const o = prepare(bld, obj, acc, m, se, s)
+	// ->* Проветриваем по времени s.co2.work
+	// Включить удаление СО2
+	if (o.tprd - 1.5 > o.point) acc.start = true
+	// Выключить удаление СО2
+	if (o.tprd - 1 < o.point) acc.start = false
 	acc.sol = fnSol(bld, obj, acc)
 }
 
 // СО2: Выкл
 function off(bld, obj, acc, m, se, s) {
-	console.log(99001, 'off')
+	console.log(99001, 'off', acc)
 	acc.start = false
 }
 

@@ -11,8 +11,10 @@ const defOnOff = {
 	},
 	// Комби (режим холодильника)
 	cold: (idB, idS, accAuto, obj, seS, s) => {
-		let on = seS.tcnl < accAuto.cold.tgtTcnl - s.cooling.hysteresisIn
+		const { p } = sensor(idB, idS, obj)
+		let on = seS.tcnl < accAuto.cold.tgtTcnl - s.cooling.hysteresisIn && p<=s.fan.maxp
 		let off = seS.tcnl > accAuto.cold.tgtTcnl + s.cooling.hysteresisIn
+		console.log(99009, p, s.fan.maxp, p<=200,  'on=',on , 'off=', off)
 		return { on, off }
 	},
 }

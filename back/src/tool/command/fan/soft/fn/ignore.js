@@ -17,7 +17,19 @@ const { ctrlDO } = require('@tool/command/module_output')
 function normal(bld, acc, bdata) {
 	// Удаление СО2
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
-	if (bld.type == 'normal' || bdata.automode != 'cooling' || extraCO2.start) return false
+	if (bld.type == 'normal' || bdata.automode != 'cooling' || extraCO2.start) {
+		console.log(
+			99002,
+			'bld.type == normal',
+			bld.type == 'normal',
+			'bdata.automode != cooling',
+			bdata.automode != 'cooling',
+			'extraCO2',
+			extraCO2.start,
+			'Работает алгоритм ВНО простого склада'
+		)
+		return false
+	}
 	const alrAuto = isAlr(bld._id, bdata.automode)
 	return alrAuto
 }
@@ -27,6 +39,7 @@ function cold(bld, acc, bdata, solHeat) {
 	if (extraCO2.start) {
 		// Отключение соленоидов подогрева
 		fnSol(bld._id, extraCO2, solHeat)
+		console.log(99002, 'Соленоиды отключены, алгоритм ВНО холодильника отключен')
 		return true
 	}
 	// Если есть авария авторежима, то логика обычного -> логика холодильника

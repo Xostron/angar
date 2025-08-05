@@ -5,19 +5,23 @@ const { getIdB } = require('@tool/get/building')
 
 /**
  * Команда авторежима на пуск/стоп ВНО секции
- * @param {*} bldId Id склада
+ * @param {*} idB Id склада
  * @param {*} resultFan Задание на включение ВНО
  * @param {*} s Настройки склада
  * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
-function fnACmd(bldId, resultFan, s, start) {
+function fnACmd(idB, resultFan, s, start, obj) {
 	const delay = s.fan.delay * 1000
 	resultFan.list.forEach((idS) => {
-		if (!isExtralrm(bldId, idS, 'local') && !isExtralrm(bldId, null, 'local')) {
+		const sectOn = obj?.retain?.[idB]?.mode?.[idS]
+		console.log(1111,idS, sectOn)
+		const local = isExtralrm(idB, idS, 'local')
+		const localB = isExtralrm(idB, null, 'local')
+		if (local || localB || !sectOn) setACmd('fan', idS, { delay, type: 'off' })
+		else
 			!resultFan?.force
 				? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' })
 				: setACmd('fan', idS, { delay, type: 'on' })
-		} else setACmd('fan', idS, { delay, type: 'off' })
 	})
 }
 

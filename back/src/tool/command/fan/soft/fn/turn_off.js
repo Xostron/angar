@@ -16,8 +16,8 @@ function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'norm
 	if (r) return true
 	if (aCmd.type == 'on') return false
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть
-	// Продукт достиг задания aCmd.type=off
-	if (aCmd.type == 'off' && !bdata.mode?.[idS]) {
+	// Продукт достиг задания aCmd.type=off и секция не в авто
+	if (aCmd.type == 'off' && bdata.mode?.[idS]===false) {
 		clear(idS)
 		return true
 	}

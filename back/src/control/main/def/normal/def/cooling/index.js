@@ -31,22 +31,18 @@ function middlewB(building, obj, s, seB, acc) {
 }
 
 function valve(s, se, sectionId, acc, extraCO2) {
-	// console.log(4442, 'open', se.tcnl > acc.tcnl + s.cooling.hysteresisIn, se.tcnl, acc.tcnl, s.cooling.hysteresisIn)
-	// console.log(4443, 'close', se.tcnl < acc.tcnl - s.cooling.hysteresisIn, se.tcnl, acc.tcnl, s.cooling.hysteresisIn)
-	// console.log(4444, 'force', acc.finish, acc.alarm)
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
-	const forceCls = acc.finish  && !extraCO2.start
-	console.log(99003, extraCO2, open,close,forceCls)
+	const forceCls = acc.finish && !extraCO2.start
+	console.log(99004, 'open', open, 'close', close, 'forceCls', forceCls)
 	return { open, close, forceCls, forceOpn: false }
 }
 
 function fan(s, se, alr, sectionId, acc, extraCO2) {
 	// Условие пуска ВНО: нет аварии И {задание продукта не достигнуто ИЛИ удаление СО2}
-	const alright = !acc.finish  || extraCO2.start
+	const alright = !acc.finish || extraCO2.start
 	const start = !alr && alright
-	console.log(99002, extraCO2, start)
-	// console.log(777, 'fan ===============',sectionId, start, '=', !alr, !acc.finish, !acc.alarm)
+	console.log(990041, 'start', start, 'alright', alright, 'Alarm', alr)
 	return { start }
 }
 
