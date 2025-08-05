@@ -18,7 +18,7 @@ function Service() {
 				<Btn
 					title='Показать IP, Mac-адрес'
 					onClick={async () => {
-						const o = await get('mac')
+						const o = await get('net_info')
 						console.log(888, o)
 						setInfo(o)
 					}}
@@ -36,7 +36,7 @@ function Service() {
 			</div>
 
 			<div className='page-service-row'>
-				<Btn title='Установить IP' onClick={() => post('ip', { ip })} />
+				<Btn title='Установить IP' onClick={() => post('set_ip', { ip })} />
 				<Input value={ip} setValue={setIp} placeholder='0.0.0.0' disabled={1} />
 			</div>
 
@@ -60,9 +60,9 @@ function Service() {
 				)}
 			</div>
 
-			<Btn title='Обновить ПО' onClick={() => get('software')} />
-			<Btn title='pm2 restart' onClick={() => get('pm2')} />
-			<Btn title='npm install && build' onClick={() => get('npm')} />
+			<Btn title='Обновить ПО' onClick={() => get('upt_soft')} />
+			<Btn title='pm2 restart' onClick={() => get('pm2/restart')} />
+			<Btn title='npm install && build' onClick={() => get('build')} />
 			<Btn
 				title='Назад'
 				onClick={() => {
