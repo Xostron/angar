@@ -3,7 +3,6 @@ import Btn from '@cmp/fields/btn'
 import Th from './th'
 import useWarn from '@store/warn'
 import Line from './line'
-import useWarn from '@store/warn'
 
 //Заголовок таблицы с кнопкой "Записать" - Страница настройки
 export default function Title({ title, head, st, dataWarn }) {
