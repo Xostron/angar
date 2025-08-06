@@ -1,10 +1,14 @@
 const {data:store} = require('@store')
+
 /**
- * @param {*} obj данные от web клиента
+ * Слияние объектов
+ * @param {*} obj данные от web клиента (obj.value - основные данные)
  * @param {*} data данные из файла json
+ * @return {object} Данные retain + данные от клиента
  */
 function cb(obj, data) {
-	const { buildingId, code, product, value } = obj
+	// TODO 
+	const { buildingId, code, product, value, timestamp=null } = obj
 	data[buildingId] ??= {}
 	data[buildingId].setting ??= {}
 	data[buildingId].setting[code] ??= {}
@@ -60,3 +64,5 @@ obj = {
 }
 */
 module.exports = cb
+
+

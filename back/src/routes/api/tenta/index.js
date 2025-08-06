@@ -5,7 +5,7 @@ const advice = require('./advice')
 const state = require('./state')
 
 function tenta(router) {
-	// Запись данных: настройки, команды управления
+	// Запись данных (воркирование/таскирование): настройки, команды управления
 	router.post('/tenta/write/:code', write())
 	// Состояние входов/выходов датчиков
 	router.get('/tenta/value', value())

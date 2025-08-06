@@ -13,13 +13,25 @@ const tune = require('./tune')
 const warming = require('./warming')
 const zero = require('./zero')
 
+// callback формирование данных на запись в retain.json
+const cb = {
+	section,
+	automode,
+	start,
+	product,
+	sensor,
+	setting,
+}
+
 const data = {
+	// Команды по изменению retain.json
 	section: fn('section'),
 	automode: fn('automode'),
 	start: fn('start'),
 	product: fn('product'),
 	sensor: fn('sensor'),
 	setting: fn('setting'),
+	// Команды управления
 	fan,
 	valve,
 	reset,
@@ -30,6 +42,7 @@ const data = {
 
 module.exports = data
 
+// Запись в retain.json
 function fn(code) {
 	return async function (obj) {
 		try {
@@ -39,12 +52,4 @@ function fn(code) {
 			throw new Error('Мобильный клиент: Запись данных не успешна!')
 		}
 	}
-}
-const cb = {
-	section,
-	automode,
-	start,
-	product,
-	sensor,
-	setting,
 }
