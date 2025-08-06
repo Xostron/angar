@@ -20,8 +20,8 @@ function softsol(idB, solenoid, sl, clr, accAuto) {
 	if (extraCO2.sol) return fnSol(idB, extraCO2, solenoid)
 	const secId = clr.sectionId
 	const map = accAuto?.cold?.softSol?.[secId]
-	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
-	const allStarted = store?.watchdog?.softFan?.[secId].allStarted
+	// Комби: Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
+	const allStarted = store?.watchdog?.softFan?.[secId]?.allStarted
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
 

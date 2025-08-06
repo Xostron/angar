@@ -7,17 +7,17 @@ const { data: store } = require('@store')
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log('\n\tПроверка условий принятия решений')
+	console.log('\n\tПроверка условий принятия решений', accAuto.target)
 	// Выключение (Температура задания достигнута)
 	if (se.tprd <= accAuto.target) {
-		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.target} °C`))
+		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.target ?? '--'} °C`))
 		delAchieve(bld._id, bld.type, mes[81].code)
 		if (code === 'off') return
 		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accAuto.target} тмп. задания`)
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	} else {
 		delAchieve(bld._id, bld.type, mes[80].code)
-		const txt = `Температура задания ${accAuto.target} °C, продукта ${se.tprd} °C`
+		const txt = `Температура задания ${accAuto.target ?? '--'} °C, продукта ${se.tprd} °C`
 		wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	}
 

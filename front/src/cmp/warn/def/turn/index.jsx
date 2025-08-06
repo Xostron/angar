@@ -13,13 +13,13 @@ import './style.css'
 
 // Модальное окно: вкл/выкл склад
 export default function Entry({ data, entryCode }) {
-	const { build } = data
+	const idB = data?.build
 	const { clear } = useWarn(({ clear }) => ({ clear }))
-	const [prdList] = useEquipStore(({ prdList }) => [prdList(build)])
+	const [prdList, bType] = useEquipStore(({ prdList, build }) => [prdList(idB), build()?.type])
 	const [automode, start, product] = useInputStore(({ input }) => [
-		input?.retain?.[build]?.automode,
-		input?.retain?.[build]?.start,
-		input?.retain?.[build]?.product,
+		input?.retain?.[idB]?.automode,
+		input?.retain?.[idB]?.start,
+		input?.retain?.[idB]?.product,
 	])
 	const { setStart, setAutomode } = useOutputStore()
 
@@ -50,7 +50,9 @@ export default function Entry({ data, entryCode }) {
 		<div className='entry'>
 			<Title />
 			<span className='line3'>
-				<Line name='' type='automode' data={am} setData={actAutomode} list={aAm} />
+				{bType != 'cold' && (
+					<Line name='' type='automode' data={am} setData={actAutomode} list={aAm} />
+				)}
 				<Line name='' type='product' data={pr} setData={actProduct} list={aProd} />
 			</span>
 			<Data prd={product?.code} />
@@ -59,23 +61,23 @@ export default function Entry({ data, entryCode }) {
 	)
 	// Кнопка Вкл/выкл склад
 	function action() {
-		setStart({ _id: build, val: !start })
+		setStart({ _id: idB, val: !start })
 		clear()
 	}
 	// Кнопка выбрать product
 	function actProduct(val) {
 		const prod = prdList?.find((el) => el.code === val)
 		setPr(val)
-		sProduct({ buildingId: build, ...prod })
+		sProduct({ buildingId: idB, ...prod })
 	}
 	// Кнопка выбрать режим автоуправления
 	function actAutomode(val) {
-		setAutomode({ _id: build, val: val })
+		setAutomode({ _id: idB, val: val })
 		setAm(val)
 	}
 
 	// Кнопка Обнулить
 	function zero() {
-		sZero({ buildingId: build })
+		sZero({ buildingId: idB })
 	}
 }
