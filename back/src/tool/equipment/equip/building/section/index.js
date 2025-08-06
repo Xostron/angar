@@ -42,18 +42,18 @@ function section(doc, data) {
 	const cooler = correct(data?.cooler.filter((el) => el.sectionId === doc._id))
 	// Испаритель: сленоиды, датчики, aggregateListId
 	cooler?.forEach((el) => {
-		el.sensor = data.sensor.filter((e) => e.owner.id === el._id)
-		el.aggregate = data.aggregate?.find((a) => a._id == el.aggregateListId)
-		el.fan = data.fan
-			?.filter((e) => e.owner.id === el._id)
-			?.map((e) => {
-				const ao = data.binding.find((b) => b.owner.id === e._id)
-				if (!ao) return el
-				return { ...e, ao: { id: ao?.moduleId, channel: ao?.channel } }
+		el.sensor = data?.sensor.filter((s) => s.owner.id === el._id)
+		el.aggregate = data?.aggregate?.find((a) => a._id == el.aggregateListId)
+		el.fan = data?.fan
+			?.filter((f) => f.owner.id === el._id)
+			?.map((f) => {
+				const ao = data?.binding?.find((b) => b.owner.id === f._id)
+				if (!ao) return f
+				return { ...f, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			})
-		el.solHeat = data.heating.filter((e) => e.owner.id == el._id && e.type=='channel')
+		el.solHeat = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'channel')
+		// console.log(555, el)
 	})
-	// console.log(555,data.aggregate, data.cooler)
 	// Давление всасывания агрегата
 	const coolerIds = cooler?.map((el) => el._id) ?? []
 	const pin = data.sensor.filter((el) => coolerIds.includes(el.owner.id) && el.type === 'pin')

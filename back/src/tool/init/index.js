@@ -1,4 +1,4 @@
-// // const path = require('path')
+// const path = require('path')
 // // require('dotenv').config({ path: path.join(__dirname, '../../../../.env') })
 const { factoryDir, dataDir } = require('@store')
 const { writeSync } = require('@tool/json')
@@ -38,14 +38,21 @@ async function init() {
 		url: 'angar/init',
 		headers: { ip: process.env.IP },
 	}
+	console.log(99900)
 	return (
 		api(config)
 			.then((r) => {
 				if (!r?.data?.result) {
-					console.log('\x1b[32m%s\x1b[0m', `AdminServer ${process.env.API_URI} не отвечает`)
+					console.log(
+						'\x1b[32m%s\x1b[0m',
+						`AdminServer ${process.env.API_URI} не отвечает`
+					)
 					return
 				}
-				console.log('\x1b[32m%s\x1b[0m', `Данные с AdminServer ${process.env.API_URI} получены`)
+				console.log(
+					'\x1b[32m%s\x1b[0m',
+					`Данные с AdminServer ${process.env.API_URI} получены`
+				)
 				// Сохранение конфигурации в json
 				writeSync(r.data.result, dataDir, t)
 				// Заводские настройки в json

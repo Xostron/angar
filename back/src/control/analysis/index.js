@@ -13,7 +13,6 @@ async function analysis(obj) {
 	await readAll(obj)
 	// Опрос модулей по сети
 	let v = await read(obj)
-
 	// Анализ - данные для клиента и работы алгоритма
 	v = value(v, obj)
 	// Настройки складов (обработанные для расчетов)
