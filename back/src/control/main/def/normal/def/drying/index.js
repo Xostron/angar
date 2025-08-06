@@ -12,7 +12,10 @@ const data = {
 	// Данные от сушки на Доп. аварии (Антивьюга, работа клапанов и т.д.)
 	toAlrS: (s) => ({ exclude: s.drying.ventilation }),
 	// Данные от сушки на Доп. функции (контроль вентиляции, обогрев клапанов и т.д.)
-	toExtra: (s, alarm) => ({ fanOff: alarm && !s.drying.ventilation, alwaysFan: s.drying.ventilation }),
+	toExtra: (s, alarm) => ({
+		fanOff: alarm && !s.drying.ventilation,
+		alwaysFan: s.drying.ventilation,
+	}),
 	// Промежуточные расчеты по секции
 	middlew: (building, section, obj, s, se, seB, alr, acc) => {},
 	// Промежуточные расчеты по складу
@@ -71,15 +74,17 @@ function valve(s, se, sectionId, acc, extraCO2) {
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
 	// console.log(1111, 'roma', 'Клапаны', `Открыть ${open}, Закрыть ${close}, Открыть форс ${forceOpn}`)
+	console.log(99004, 'open', open, 'close', close, 'forceOpn', forceOpn)
 	return { open, close, forceOpn, forceCls: false }
 }
 function fan(s, se, alr, sectionId, acc, extraCO2) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	// TODO если клапана закрыты при работающих вентиляторах более Х мин. , нужно ли выключать вентиляторы?
 	// сообщение: "Температура канала "
-	const force = s.drying.ventilation || forceByTout 
-	const start =  !alr && extraCO2 || force
+	const force = s.drying.ventilation || forceByTout
+	const start = (!alr && extraCO2.start) || force
 	// console.log(2222, `Вентиляторы в работе = ${start} |`, `Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе ${s.drying.ventilation}`)
+	console.log(990041, 'start', start, 'force', force, 'extraCO2', extraCO2.start)
 	return { start }
 }
 module.exports = data

@@ -8,13 +8,15 @@ function alarm(s, seB, building, acc) {
 		// Абсолютная влажность улицы ниже допустимой при охлаждении
 		{
 			set: hAbsOut < hAbsIn - acc?.setting?.mois?.differenceMax,
-			reset: hAbsOut - acc?.setting?.mois?.abs?.h > hAbsIn - acc?.setting?.mois?.differenceMax,
+			reset:
+				hAbsOut - acc?.setting?.mois?.abs?.h > hAbsIn - acc?.setting?.mois?.differenceMax,
 			msg: msgB(building, 7),
 		},
 		// Абсолютная влажность улицы выше допустимой при охлаждении
 		{
 			set: hAbsOut > hAbsIn - acc?.setting?.mois?.differenceMin,
-			reset: hAbsOut + acc?.setting?.mois?.abs?.h < hAbsIn - acc?.setting?.mois?.differenceMin,
+			reset:
+				hAbsOut + acc?.setting?.mois?.abs?.h < hAbsIn - acc?.setting?.mois?.differenceMin,
 			msg: msgB(building, 8),
 		},
 		// Влажность улицы ниже допустимой при охлаждении
@@ -32,13 +34,17 @@ function alarm(s, seB, building, acc) {
 		// Температура улицы выше допустимой для охлаждения
 		{
 			set: tout >= tprd - acc?.setting?.cooling?.differenceMin,
-			reset: tout + acc?.setting?.cooling?.hysteresisOut < tprd - acc?.setting?.cooling?.differenceMin,
+			reset:
+				tout + acc?.setting?.cooling?.hysteresisOut <
+				tprd - acc?.setting?.cooling?.differenceMin,
 			msg: msgB(building, 11),
 		},
 		// Температура улицы ниже допустимой для охлаждения
 		{
 			set: tout <= tprd - acc?.setting?.cooling?.differenceMax,
-			reset: tout - acc?.setting?.cooling?.hysteresisOut > tprd - acc?.setting?.cooling?.differenceMax,
+			reset:
+				tout - acc?.setting?.cooling?.hysteresisOut >
+				tprd - acc?.setting?.cooling?.differenceMax,
 			msg: msgB(building, 16),
 		},
 		{

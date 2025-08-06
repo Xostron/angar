@@ -13,7 +13,7 @@ const { data: store, readAcc } = require('@store')
 // СО2: По времени
 function time(bld, obj, acc, m, se, s) {
 	const o = prepare(bld, obj, acc, m, se, s)
-	console.log(99001, 'time', acc)
+	console.log(99001, 'Удаление СО2 по времени', JSON.stringify(acc))
 	// Ожидание: Клапаны закрыты в течении времени wait
 	if (!acc?.work) {
 		if (!o.vlvClose) return clear(acc, 'work', 'wait', 'start')
@@ -40,7 +40,7 @@ function time(bld, obj, acc, m, se, s) {
 // СО2: По датчику
 function sensor(bld, obj, acc, m, se, s) {
 	const o = prepare(bld, obj, acc, m, se, s)
-	console.log(99001, 'sensor', acc)
+	console.log(99001, 'Удаление СО2 по датчику', JSON.stringify(acc))
 	if (o.co2 === null || o.co2 === undefined) return clear(acc, 'work', 'start')
 	// Ожидание: Клапаны закрыты, co2 превышает уровень ->* Проветриваем
 	if (!acc.work) {
@@ -71,7 +71,7 @@ function sensor(bld, obj, acc, m, se, s) {
  * @param {*} s Настройки
  */
 function on(bld, obj, acc, m, se, s) {
-	console.log(99001, 'on', acc)
+	console.log(99001, 'Удаление СО2 режим вкл', JSON.stringify(acc))
 	const o = prepare(bld, obj, acc, m, se, s)
 	// ->* Проветриваем по времени s.co2.work
 	// Включить удаление СО2
@@ -83,7 +83,7 @@ function on(bld, obj, acc, m, se, s) {
 
 // СО2: Выкл
 function off(bld, obj, acc, m, se, s) {
-	console.log(99001, 'off', acc)
+	console.log(99001, 'Удаление СО2 режим выкл', JSON.stringify(acc))
 	acc.start = false
 }
 

@@ -1,4 +1,4 @@
-// const path = require('path')
+// // const path = require('path')
 // // require('dotenv').config({ path: path.join(__dirname, '../../../../.env') })
 const { factoryDir, dataDir } = require('@store')
 const { writeSync } = require('@tool/json')
@@ -38,7 +38,6 @@ async function init() {
 		url: 'angar/init',
 		headers: { ip: process.env.IP },
 	}
-	console.log(99900)
 	return (
 		api(config)
 			.then((r) => {

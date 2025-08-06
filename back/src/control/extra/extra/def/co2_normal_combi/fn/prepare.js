@@ -1,7 +1,7 @@
 module.exports = function prepare(bld, obj, acc, m, se, s) {
 	// Секции в авто
 	const ids = obj.data.section
-		.filter((el) => el.buildingId == bld._id && obj.retain[bld._id].mode[el._id])
+		.filter((el) => el.buildingId == bld._id && obj.retain[bld._id]?.mode?.[el._id])
 		.map((el) => el._id)
 	// Рабочие клапаны - закрыты
 	let vlv
