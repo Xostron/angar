@@ -4,7 +4,7 @@ import Switch from '@cmp/fields/switch'
 import Text from '@cmp/fields/text'
 import useInputStore from '@store/input'
 
-export default function Data({ prd }) {
+export default function Data({ prd, bType }) {
 	let { build } = useParams()
 	// Время сушки в днях
 	const [count, day, inp] = useInputStore(({ input }) => [
@@ -12,6 +12,7 @@ export default function Data({ prd }) {
 		input?.retain?.[build]?.setting?.drying?.[prd]?.day?.day ?? input?.factory?.drying?.[prd]?.day?.day,
 		input?.retain,
 	])
+	if (bType=='cold') return
 	return (
 		<div className='data'>
 			<IconText

@@ -48,15 +48,10 @@ export default function Entry({ data, entryCode }) {
 
 	return (
 		<div className='entry'>
-			<Title />
-			<span className='line3'>
-				{bType != 'cold' && (
-					<Line name='' type='automode' data={am} setData={actAutomode} list={aAm} />
-				)}
-				<Line name='' type='product' data={pr} setData={actProduct} list={aProd} />
-			</span>
-			<Data prd={product?.code} />
-			<Footer name={bStart} act1={action} act2={clear} act3={zero} />
+			<Title bType={bType} />
+			<Line {...{ bType, am, actAutomode, aAm, pr, actProduct, aProd }} />
+			<Data prd={product?.code} bType={bType} />
+			<Footer name={bStart} act1={action} act2={clear} act3={zero} bType={bType}/>
 		</div>
 	)
 	// Кнопка Вкл/выкл склад
@@ -81,3 +76,5 @@ export default function Entry({ data, entryCode }) {
 		sZero({ buildingId: idB })
 	}
 }
+
+

@@ -11,35 +11,34 @@ const ignore = require('./ignore')
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'normal') {
+function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'normal', type) {
 	const r = ignore[where](bld, acc, bdata, solHeat)
+	console.log(990021, aCmd, bdata.mode?.[idS] === false)
 	if (r) return true
 	if (aCmd.type == 'on') return false
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть
 	// Продукт достиг задания aCmd.type=off и секция не в авто
-	if (aCmd.type == 'off' && bdata.mode?.[idS]===false) {
+	if (aCmd.type == 'off' && bdata.mode?.[idS] === false) {
 		clear(idS)
 		return true
 	}
-	// Выключение всех ВНО (однократно)
-	if (acc.order !== -1) {
-		fans.forEach((f, i) => {
-			f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
-			ctrlDO(f, bld._id, 'off')
-		})
-		if (fanFC) {
-			ctrlAO(fanFC, bld._id, 0)
-			ctrlDO(fanFC, bld._id, 'off')
-		}
-		solHeat.forEach((el) => {
-			ctrlDO(el, bld._id, 'off')
-		})
+	// Выключение всех ВНО (однократно) TODO проверить комбинированный
+	// if (acc.order !== -1  || where == 'normal') {
+	fans.forEach((f, i) => {
+		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
+		ctrlDO(f, bld._id, 'off')
+	})
+	if (fanFC) {
+		ctrlAO(fanFC, bld._id, 0)
+		ctrlDO(fanFC, bld._id, 'off')
 	}
+	solHeat.forEach((el) => {
+		ctrlDO(el, bld._id, 'off')
+	})
+	// }
 	clear(idS)
 	return true
 }
-
-
 
 // Очистка аккумулятора
 function clear(idS) {

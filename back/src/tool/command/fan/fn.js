@@ -14,7 +14,6 @@ function fnACmd(idB, resultFan, s, start, obj) {
 	const delay = s.fan.delay * 1000
 	resultFan.list.forEach((idS) => {
 		const sectOn = obj?.retain?.[idB]?.mode?.[idS]
-		console.log(1111,idS, sectOn)
 		const local = isExtralrm(idB, idS, 'local')
 		const localB = isExtralrm(idB, null, 'local')
 		if (local || localB || !sectOn) setACmd('fan', idS, { delay, type: 'off' })

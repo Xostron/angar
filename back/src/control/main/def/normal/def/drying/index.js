@@ -82,9 +82,9 @@ function fan(s, se, alr, sectionId, acc, extraCO2) {
 	// TODO если клапана закрыты при работающих вентиляторах более Х мин. , нужно ли выключать вентиляторы?
 	// сообщение: "Температура канала "
 	const force = s.drying.ventilation || forceByTout
-	const start = (!alr && extraCO2.start) || force
+	const start = (!alr && extraCO2.start) || force || !alr
 	// console.log(2222, `Вентиляторы в работе = ${start} |`, `Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе ${s.drying.ventilation}`)
-	console.log(990041, 'start', start, 'force', force, 'extraCO2', extraCO2.start)
+	console.log(990041, 'start', start, 'force', force, 'extraCO2', extraCO2.start, 'alr',alr)
 	return { start }
 }
 module.exports = data
