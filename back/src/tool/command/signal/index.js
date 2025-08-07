@@ -3,7 +3,6 @@ const { puIO } = require('@tool/in_out')
 
 // Получить значение сигнала
 function getSignal(ownerId, obj, type) {
-	//TODO rrp const t = obj.data?.signal?.filter((o) => o.owner.id === ownerId && o.type == type)?.[0] ?? null
 	const t = obj.data?.signal?.find((o) => o.owner.id === ownerId && o.type == type) ?? null
 	return obj.value?.[t?._id] ?? null
 }

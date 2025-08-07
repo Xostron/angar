@@ -18,7 +18,6 @@ function normal(result, idS, idB, obj) {
 	// Статусы вентиляторов секции
 	fan.forEach((el) => {
 		if (el.owner.id !== idS) return
-		// TODO ВНО и ПЧ
 		value[el._id] = data[el._id]?.value === undefined ? data[el._id]?.state : { value: data[el._id]?.state, ao: data[el._id]?.value }
 		// value[el._id] = data[el._id]?.state
 	})

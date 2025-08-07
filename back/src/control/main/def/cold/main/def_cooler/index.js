@@ -36,8 +36,7 @@ const def = {
 		'on-on-off': (fnChange, accCold,acc, se, s, bld, clr) => check.combi(fnChange, 'cooling', accCold, acc, se, s, bld, clr),
 		// Обдув
 		'off-on-off': (fnChange, accCold,acc, se, s, bld, clr) => check.combi(fnChange, 'blow', accCold, acc, se, s, bld, clr),
-
-		// TODO Комбинированный - что оттайка и стекание блокирует полностью склад?
+		// Комбинированный - что оттайка и стекание блокирует полностью склад?
 		// Оттайка
 		'off-off-on': defrostCombi,
 		// Стекание воды

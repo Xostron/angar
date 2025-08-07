@@ -30,7 +30,7 @@ function main(bld, obj, bdata, alr) {
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 		if (denied.section(bld, sect, bdata, alr, obj)) continue
-		// Работа ВНО секции и TODO соленоида подогрева (регулирование температурой канала)
+		// Работа ВНО секции и соленоида подогрева (регулирование температурой канала)
 		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}
 	if (clearBuild(bld, bdata.accAuto)) {

@@ -1,5 +1,4 @@
 function section(doc, data) {
-	// TODO Добавить cooler, device
 	// Датчик со2
 	const co2 = correct(
 		data.sensor.filter((el) => el.owner.id === doc._id && ['co2'].includes(el.type))

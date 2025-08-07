@@ -46,7 +46,6 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
 	const time = compareTime(accCold.targetDT, s.coolerCombi.defrostWait)
 	// console.log(777, se.cooler.tmpCooler ,  s?.coolerCombi?.defrostOn, accCold.targetDT, )
 	// Запуск оттайки по температуре и времени
-	// TODO Combi:
 	if (tmp || time || accCold.defrostAll) {
 		acc.state.defrostCount += 1
 		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')

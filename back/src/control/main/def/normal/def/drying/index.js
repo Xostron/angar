@@ -25,12 +25,6 @@ const data = {
 function middlewB(building, obj, s, seB, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
 
-	// TODO: Как реагировать при обвале датчиков? Отключено
-	// if (tout === null || hout === null) {
-	// 	acc.alarm = true
-	// 	return
-	// }
-	// acc.alarm = false
 	// ************************************************
 	if (tout < s.drying.channelMin) {
 		wrAchieve(building._id, 'drying', {
@@ -79,8 +73,6 @@ function valve(s, se, sectionId, acc, extraCO2) {
 }
 function fan(s, se, alr, sectionId, acc, extraCO2) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
-	// TODO если клапана закрыты при работающих вентиляторах более Х мин. , нужно ли выключать вентиляторы?
-	// сообщение: "Температура канала "
 	const force = s.drying.ventilation || forceByTout
 	const start = (!alr && extraCO2.start) || force || !alr
 	// console.log(2222, `Вентиляторы в работе = ${start} |`, `Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе ${s.drying.ventilation}`)
