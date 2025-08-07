@@ -1,4 +1,4 @@
-const {data:store} = require('@store')
+const { data: store } = require('@store')
 
 /**
  * Слияние объектов
@@ -7,12 +7,29 @@ const {data:store} = require('@store')
  * @return {object} Данные retain + данные от клиента
  */
 function cb(obj, data) {
-	// TODO 
-	const { buildingId, code, product, value, timestamp=null } = obj
+	// TODO
+
+	const { buildingId, code, product, value, timestamp = null } = obj
+
+	
+	let lastRefresh = data?.[buildingId]?.update?.setting?.[code]?.[product]
+	lastRefresh = lastRefresh ? new Date(lastRefresh) : undefined
+	const time = timestamp ? new Date(timestamp) : undefined
+	if (!lastRefresh || time <= lastRefresh) {
+		console.log(
+			'================================',
+			data?.[buildingId]?.timestamp?.setting?.[code]?.[product]
+		)
+		return data
+	}
+
 	data[buildingId] ??= {}
 	data[buildingId].setting ??= {}
 	data[buildingId].setting[code] ??= {}
-	// console.log(1111, obj)
+	data[buildingId].timestamp ??= {}
+	data[buildingId].timestamp.setting ??= {}
+	data[buildingId].timestamp.setting[code] ??= {}
+	data[buildingId].timestamp.setting[code][product] = new Date()
 	// Данная настройка относится к настройкам без продукта ?
 	const isWithout = store.stgWithout.includes(code)
 	// С продуктом
@@ -20,7 +37,7 @@ function cb(obj, data) {
 		data[buildingId].setting[code][product] ??= {}
 		for (const fld in value) {
 			const val = value[fld]
-			if (typeof val != "object" || val == null)
+			if (typeof val != 'object' || val == null)
 				data[buildingId].setting[code][product][fld] = val
 			else
 				data[buildingId].setting[code][product][fld] = {
@@ -28,14 +45,14 @@ function cb(obj, data) {
 					...val,
 				}
 		}
+
 		return data
 	}
 	// Без продукта
 	data[buildingId].setting[code] ??= {}
 	for (const fld in value) {
 		const val = value[fld]
-		if (typeof val != "object" || val == null)
-			data[buildingId].setting[code][fld] = val
+		if (typeof val != 'object' || val == null) data[buildingId].setting[code][fld] = val
 		else
 			data[buildingId].setting[code][fld] = {
 				...data[buildingId].setting[code][fld],
@@ -64,5 +81,3 @@ obj = {
 }
 */
 module.exports = cb
-
-
