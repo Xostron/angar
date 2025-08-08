@@ -5,7 +5,6 @@ function write() {
 	return function (req, res) {
 		const code = req.params.code
 		const obj = req.body
-		console.log('+++++++++++++++++', obj)
 		if (!def[code])
 			return res.status(400).json({ error: `Операция отклонена. Неизвестный код ${code}` })
 		// Выполнение команды

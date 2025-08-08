@@ -7,7 +7,7 @@ const { data: store } = require('@store')
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log('\n\tПроверка условий принятия решений', accAuto.target)
+	console.log('\n\tПроверка условий принятия решений')
 	// Выключение (Температура задания достигнута)
 	if (se.tprd <= accAuto.target) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.target ?? '--'} °C`))

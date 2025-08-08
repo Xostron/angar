@@ -2,8 +2,8 @@ import Moment from 'react-moment'
 import './style.css'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
-const CLICK = 5
-const DELTA_MS = 800
+const CLICK = 3
+const DELTA_MS = 1000
 //Текущее время
 export default function Time({}) {
 	const [data, setData] = useReducer(reducer, { count: 0 })

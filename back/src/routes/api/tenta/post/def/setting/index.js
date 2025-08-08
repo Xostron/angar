@@ -8,17 +8,20 @@ const { data: store } = require('@store')
  */
 function cb(obj, data) {
 	const { buildingId, code, product, value, date = null } = obj
+	// Данная настройка относится к настройкам без продукта ?
+	const isWithout = store.stgWithout.includes(code)
+	if (!check(obj, data, isWithout)) return data
+	// Запись разрешена
 	data[buildingId] ??= {}
 	data[buildingId].setting ??= {}
 	data[buildingId].setting[code] ??= {}
-	data[buildingId].timestamp ??= {}
-	data[buildingId].timestamp.setting ??= {}
-	data[buildingId].timestamp.setting[code] ??= {}
-	data[buildingId].timestamp.setting[code][product] = new Date()
-	// Данная настройка относится к настройкам без продукта ?
-	const isWithout = store.stgWithout.includes(code)
+	data[buildingId].update ??= {}
+	data[buildingId].update.setting ??= {}
+
 	// С продуктом
 	if (!isWithout) {
+		data[buildingId].update.setting[code] ??= {}
+		data[buildingId].update.setting[code][product] = new Date()
 		data[buildingId].setting[code][product] ??= {}
 		for (const fld in value) {
 			const val = value[fld]
@@ -35,6 +38,7 @@ function cb(obj, data) {
 	}
 	// Без продукта
 	data[buildingId].setting[code] ??= {}
+	data[buildingId].update.setting[code] = new Date()
 	for (const fld in value) {
 		const val = value[fld]
 		if (typeof val != 'object' || val == null) data[buildingId].setting[code][fld] = val
@@ -52,26 +56,42 @@ module.exports = cb
 
 /**
  * Проверка временных меток изменения настроек
- * @param {object} obj Данные 
+ * @param {object} obj Данные из запроса
  * @param {object} data Данные из retain.json (пользовательские настройки)
+ * @param {boolean} isWithout Настройка с продуктом false / без true
  * @return {boolean} true - разрешить запись, false - запретить запись
  */
-function check(obj, data){
+function check(obj, data, isWithout) {
 	// date Временная метка новых данных от мобильного приложения
 	const { buildingId, code, product, value, date = null } = obj
 
 	// Дата последнего изменения настройки
-	let lastUpd = data?.[buildingId]?.update?.setting?.[code]?.[product]
+	isWithout
+	let lastUpd = isWithout
+		? data?.[buildingId]?.update?.setting?.[code]
+		: data?.[buildingId]?.update?.setting?.[code]?.[product]
 	lastUpd = lastUpd ? new Date(lastUpd) : undefined
 	// Разрешить запись: нет времени последней записи настроек
-	if (!lastUpd) return true
-	// Время 
-	const update = date ? new Date(date) : undefined
-	if (!lastRefresh || time <= lastRefresh) {
-		console.log(
-			'================================',
-			data?.[buildingId]?.timestamp?.setting?.[code]?.[product]
-		)
-		return data
+	if (!lastUpd) {
+		console.log('===========', 'Разрешить запись. Нет времени последней записи настроек')
+		return true
 	}
+	// Время
+	const update = date ? new Date(date) : undefined
+	// Разрешить запись: не указано время в запросе
+	if (!update) {
+		console.log('===========', 'Разрешить запись. Не указано время в запросе')
+		return true
+	}
+	const r = update > lastUpd
+	r
+		? console.log(
+				'===========',
+				'Разрешить запись. Новые данные: Время запроса > Времени последнего обновления'
+		  )
+		: console.log(
+				'===========',
+				'Запретить запись. Устаревшие данные: Время запроса <= Времени последнего обновления (устаревшее)'
+		  )
+	return r
 }
