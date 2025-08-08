@@ -1,28 +1,13 @@
 const { data: store } = require('@store')
 
 /**
- * Слияние объектов
- * @param {*} obj данные от web клиента (obj.value - основные данные)
- * @param {*} data данные из файла json
+ * Обновление данных в настройках retain.json
+ * @param {*} obj Данные от web клиента (obj.value - основные данные)
+ * @param {*} data Данные из файла json
  * @return {object} Данные retain + данные от клиента
  */
 function cb(obj, data) {
-	// TODO
-
-	const { buildingId, code, product, value, timestamp = null } = obj
-
-	
-	let lastRefresh = data?.[buildingId]?.update?.setting?.[code]?.[product]
-	lastRefresh = lastRefresh ? new Date(lastRefresh) : undefined
-	const time = timestamp ? new Date(timestamp) : undefined
-	if (!lastRefresh || time <= lastRefresh) {
-		console.log(
-			'================================',
-			data?.[buildingId]?.timestamp?.setting?.[code]?.[product]
-		)
-		return data
-	}
-
+	const { buildingId, code, product, value, date = null } = obj
 	data[buildingId] ??= {}
 	data[buildingId].setting ??= {}
 	data[buildingId].setting[code] ??= {}
@@ -63,21 +48,30 @@ function cb(obj, data) {
 	return data
 }
 
-/* 
-obj = {
- "buildingId":"65d4aed4b47bb93c40100fd5", "code":"cure", "productId":"65fa9dbb73cd8d23f0d07faa",
- "value": {
-   "difference": {
-    "min": 1,
-    "max": 1,
-    "value": 1
-   },
-   "min": 1,
-   "hysteresis": {
-    "in": 1,
-    "out": 1
-   }
-  }
-}
-*/
 module.exports = cb
+
+/**
+ * Проверка временных меток изменения настроек
+ * @param {object} obj Данные 
+ * @param {object} data Данные из retain.json (пользовательские настройки)
+ * @return {boolean} true - разрешить запись, false - запретить запись
+ */
+function check(obj, data){
+	// date Временная метка новых данных от мобильного приложения
+	const { buildingId, code, product, value, date = null } = obj
+
+	// Дата последнего изменения настройки
+	let lastUpd = data?.[buildingId]?.update?.setting?.[code]?.[product]
+	lastUpd = lastUpd ? new Date(lastUpd) : undefined
+	// Разрешить запись: нет времени последней записи настроек
+	if (!lastUpd) return true
+	// Время 
+	const update = date ? new Date(date) : undefined
+	if (!lastRefresh || time <= lastRefresh) {
+		console.log(
+			'================================',
+			data?.[buildingId]?.timestamp?.setting?.[code]?.[product]
+		)
+		return data
+	}
+}

@@ -1,14 +1,14 @@
 import Input from '@cmp/fields/input'
 
 //Поля логина и пароля
-export default function Field({ form, dispatch }) {
+export default function Field({ form, setForm }) {
 	return (
 		<>
 			<Input
 				placeholder={'Логин'}
 				icon={'/img/login.svg'}
 				value={form.login}
-				setValue={(val) => dispatch({ type: 'login', val })}
+				setValue={(val) => setForm({ type: 'login', val })}
 				sti={{ textAlign: 'left' }}
 				cls='cell-login'
 				disabled={'true'}
@@ -18,7 +18,7 @@ export default function Field({ form, dispatch }) {
 				icon={'/img/password.svg'}
 				type={'password'}
 				value={form.password}
-				setValue={(val) => dispatch({ type: 'password', val })}
+				setValue={(val) => setForm({ type: 'password', val })}
 				sti={{ textAlign: 'left' }}
 				cls='cell-login'
 				disabled={'true'}

@@ -9,7 +9,7 @@ export default function Entry({ data, entryCode }) {
 	return (
 		<div className='entry'>
 			<img src='/img/logo.svg' alt='logo' className='cmp-person-entry-logo' />
-			<Field dispatch={setForm} form={form} />
+			<Field setForm={setForm} form={form} />
 			<Control form={form} />
 		</div>
 	)
@@ -17,7 +17,7 @@ export default function Entry({ data, entryCode }) {
 
 /**
  *
- * @param {*} state Предыдущее состояние
+ * @param {*} prev Предыдущее состояние
  * @param {*} action Входные данные
  * @returns Текущее состояние
  */
