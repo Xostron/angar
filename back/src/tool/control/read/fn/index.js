@@ -109,7 +109,7 @@ function countMB101(opt, options) {
 	const { name, interface, use } = options
 	// Другие модули
 	if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8) {
-		return opt.channel*opt.step
+		return opt.channel * opt.step
 	}
 	// Модуль МВ210-101 Int/10
 	return opt.channel * 2
@@ -121,10 +121,13 @@ function dataMB101(arr, opt, options, max) {
 	// Для вычисления отрицательных чисел
 	const limit = max / 2
 	// Обычный модуль int10
-	if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8) return arr.map((v) => fnLimit(v, limit, max))
+	if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8)
+		return arr.map((v) => fnLimit(v, limit, max))
 	// Модуль МВ210-101 Int/10
 	const status = arr.splice(opt.channel, opt.channel)
-	return arr.map((v, i) => (status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false)))
+	return arr.map((v, i) =>
+		status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false)
+	)
 }
 
 function fnLimit(v, limit, max, ok = true) {
