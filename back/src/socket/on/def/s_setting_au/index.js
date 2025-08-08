@@ -13,7 +13,7 @@ function cb(obj, data) {
 
 	if (prdCode) {
 		data[buildingId].update.setting[code] ??= {}
-		data[buildingId].update.setting[code][product] = new Date()
+		data[buildingId].update.setting[code][prdCode] = new Date()
 		data[buildingId].setting[code][prdCode] ??= {}
 		for (const fld in value) {
 			const val = value[fld]
