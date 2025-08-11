@@ -14,6 +14,12 @@ const ignore = require('./ignore')
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 'normal') {
 	// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
 	hasToggle(bld, obj, acc)
+	if (acc.toggleMode) {
+		console.log('+++++++++++++++++++++++ПЕРЕКЛЮЧИЛСЯ+++++++++++++++++++++++++++')
+		offAll(fanFC, fans, solHeat, bld)
+		clear(idS)
+		return true
+	}
 	// Игнор работы
 	const r = ignore[where](bld, obj, acc, bdata, solHeat)
 	if (r) return true
@@ -32,7 +38,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 
 
 // Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
 function hasToggle(bld, obj, acc) {
-	if (acc.prevMode != obj?.value?.building?.[bld._id]?.bldType) acc.toggleMode = true
+	if (acc.prevMode && acc.prevMode != obj?.value?.building?.[bld._id]?.bldType) acc.toggleMode = true
 	else acc.toggleMode = false
 	acc.prevMode = obj?.value?.building?.[bld._id]?.bldType
 }

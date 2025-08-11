@@ -52,7 +52,7 @@ function init(bld, secId, obj, s, where, type, fansLength) {
 		// Обычный склад/комби склад в режиме холодильника
 		a.delaySolHeat = s.fan.wait * 1000
 		a.delayFC = s.fan.next * 1000
-		a.delayRelay = s.fan.delay * 1000 + _RAMP
+		a.delayRelay = s.fan.delay * 1000 //+ _RAMP
 	}
 	return a
 }
