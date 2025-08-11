@@ -1,0 +1,89 @@
+.network-modal {
+	padding: var(--fsz20);
+	background: var(--background);
+	min-width: 500px;
+	max-width: 600px;
+}
+
+.network-modal-content {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz20);
+}
+
+.network-modal-title {
+	font-size: var(--fsz32);
+	font-weight: bold;
+	color: var(--primary);
+	text-align: center;
+	margin: 0;
+	margin-bottom: var(--fsz10);
+}
+
+.network-mode-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz15);
+}
+
+.network-section-title {
+	font-size: var(--fsz28);
+	font-weight: bold;
+	color: var(--primary);
+}
+
+.network-radio-group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz10);
+	padding-left: var(--fsz20);
+}
+
+.network-manual-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz15);
+	padding: var(--fsz15);
+	background: rgba(var(--secondary-rgb), 0.1);
+}
+
+.network-field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz8);
+}
+
+.network-field-label {
+	font-size: var(--fsz24);
+	color: var(--primary);
+	font-weight: 500;
+}
+
+.network-modal-buttons {
+	display: flex;
+	gap: var(--fsz15);
+	justify-content: flex-end;
+	margin-top: var(--fsz10);
+}
+
+.network-modal-buttons .btn {
+	min-width: 120px;
+	justify-content: center;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+	.network-modal {
+		min-width: 90vw;
+		max-width: 95vw;
+		padding: var(--fsz15);
+	}
+
+	.network-modal-buttons {
+		flex-direction: column;
+	}
+
+	.network-modal-buttons .btn {
+		min-width: unset;
+	}
+}

@@ -22,10 +22,14 @@ const isAllStarted = require('../fn/all_started')
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init(idS, s, where, 'fc', fans.length)
+	const acc = init(bld, idS, obj, s, where, 'fc', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where)) return
-	console.log(99003, idS, 'ПОДТВЕРЖДЕНИЕ АЛГОРИТМА ВНО', where, where=='normal' ? 'РАБОТА ПО ОБЫЧНОМУ СКЛАДУ':'РАБОТА ПО ХОЛОДИЛЬНИКУ', aCmd, fanFC.length, fans.length)
+	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where)) return
+	console.log(
+		99003,
+		aCmd,
+		idS + where == 'normal' ? 'РАБОТА ПО ОБЫЧНОМУ СКЛАДУ' : 'РАБОТА ПО ХОЛОДИЛЬНИКУ'
+	)
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)

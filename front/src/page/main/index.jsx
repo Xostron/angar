@@ -4,11 +4,13 @@ import useEquipStore from '@store/equipment'
 import Header from '@cmp/header'
 import Weather from './weather'
 import List from './list'
+import { get } from '@tool/api/service'
 import './style.css'
 
 const Main = () => {
 	const navigate = useNavigate()
 	const [list] = useEquipStore(({ list }) => [list])
+	// const [status, setStatus] = useState()
 	const { name } = list?.[0]?.company ?? {}
 
 	// Автоматический переход на склад (список секций)(если складов == 1)
@@ -25,7 +27,19 @@ const Main = () => {
 			<Header>{name && <span className='header-cmp'>{name ?? ''} </span>}</Header>
 			<main className='main'>
 				<Weather />
-				<List list={list} />
+				{list?.length > 0 ? (
+					<List list={list} />
+				) : (
+					<div style={{ textAlign: 'center', fontSize: '40px', padding: '100px', cursor: 'pointer' }} onClick={async () => {
+						get('equipment').then((o) => {
+							console.log('equipment', o)
+						}).catch((e) => {
+							alert('equipment: '+e.error)
+						})
+					}}>
+						Нет складов
+					</div>
+				)}
 			</main>
 		</>
 	)

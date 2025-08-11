@@ -13,10 +13,12 @@ const _RAMP = 5000
  * @returns {object} Аккумулятор секции
  */
 
-function init(secId, s, where, type, fansLength) {
+function init(bld, secId, obj, s, where, type, fansLength) {
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
-
+	// Тип склада + режим: normal, cold, combi_normal, combi_cold
+	a.prevMode ??= obj?.value?.building?.[bld._id]?.bldType
+	a.toggleMode ??= false
 	// Точка отсчета вкл/выкл ВНО
 	a.date ??= new Date()
 	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ

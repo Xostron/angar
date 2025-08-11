@@ -11,9 +11,11 @@ const ignore = require('./ignore')
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'normal', type) {
-	const r = ignore[where](bld, acc, bdata, solHeat)
-	console.log(990021, aCmd, bdata.mode?.[idS] === false)
+function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 'normal') {
+	// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
+	hasToggle(bld, obj, acc)
+	// Игнор работы
+	const r = ignore[where](bld, obj, acc, bdata, solHeat)
 	if (r) return true
 	if (aCmd.type == 'on') return false
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть
@@ -22,6 +24,31 @@ function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'norm
 		clear(idS)
 		return true
 	}
+	// Если Cmd.type == 'off' И выкл секция
+	offAll(fanFC, fans, solHeat, bld)
+	clear(idS)
+	return true
+}
+
+// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
+function hasToggle(bld, obj, acc) {
+	if (acc.prevMode != obj?.value?.building?.[bld._id]?.bldType) acc.toggleMode = true
+	else acc.toggleMode = false
+	acc.prevMode = obj?.value?.building?.[bld._id]?.bldType
+}
+
+// Очистка аккумулятора
+function clear(idS) {
+	store.watchdog.softFan[idS].order = undefined
+	store.watchdog.softFan[idS].date = undefined
+	store.watchdog.softFan[idS].busy = false
+	store.watchdog.softFan[idS].fc = undefined
+	store.watchdog.softFan[idS].sol = undefined
+	store.watchdog.softFan[idS].allStarted = undefined
+}
+
+// Секция выключена -> отключение всех узлов
+function offAll(fanFC, fans, solHeat, bld) {
 	// Выключение всех ВНО (однократно) TODO проверить комбинированный
 	// if (acc.order !== -1  || where == 'normal') {
 	fans.forEach((f, i) => {
@@ -35,19 +62,6 @@ function turnOff(fanFC, fans, solHeat, bld, idS, aCmd, acc, bdata, where = 'norm
 	solHeat.forEach((el) => {
 		ctrlDO(el, bld._id, 'off')
 	})
-	// }
-	clear(idS)
-	return true
-}
-
-// Очистка аккумулятора
-function clear(idS) {
-	store.watchdog.softFan[idS].order = undefined
-	store.watchdog.softFan[idS].date = undefined
-	store.watchdog.softFan[idS].busy = false
-	store.watchdog.softFan[idS].fc = undefined
-	store.watchdog.softFan[idS].sol = undefined
-	store.watchdog.softFan[idS].allStarted = undefined
 }
 
 module.exports = turnOff

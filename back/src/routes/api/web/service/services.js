@@ -6,6 +6,7 @@ const pm2 = require('@tool/scripts/pm2');
 const rebuild = require('@tool/scripts/rebuild');
 const get_net_info = require('@tool/scripts/get_net_info');
 const set_new_ip = require('@tool/scripts/set_new_ip');
+const auto_login = require('@tool/scripts/auto_login');
 
 function net_info() {
 	return async (req, res) => {
@@ -50,4 +51,22 @@ function build() {
 		res.json(result);
 	};
 }
-module.exports = { reload, upt_soft, pm2_cmd, build, net_info, set_ip };
+
+function autoLogin() {
+	return async (req, res) => {
+		const { flag } = req.params;
+
+		const result = await auto_login(flag === true || flag === 'true');
+		res.json(result);
+	};
+}
+
+module.exports = {
+	reload,
+	upt_soft,
+	pm2_cmd,
+	build,
+	net_info,
+	set_ip,
+	autoLogin,
+};

@@ -7,6 +7,7 @@ const {
 	upt_soft,
 	pm2_cmd,
 	build,
+	autoLogin,
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -27,6 +28,8 @@ function service(router) {
 	serviceRouter.get('/pm2/:code', pm2_cmd());
 	// npm install && npm run build
 	serviceRouter.get('/build', build());
+	// AutoLogin On/Off
+	serviceRouter.get('/auto_login/:flag', autoLogin());
 }
 
 module.exports = service;

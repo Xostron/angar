@@ -14,26 +14,20 @@ const { ctrlDO } = require('@tool/command/module_output')
  * @param {*} bdata Результат функции scan()
  * @returns false - разрешить управление, true - запрет управления
  */
-function normal(bld, acc, bdata) {
+function normal(bld, obj, acc, bdata) {
+	console.log('=======================normal', acc, )
 	// Удаление СО2
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+
 	if (bld.type == 'normal' || bdata.automode != 'cooling' || extraCO2.start) {
-		console.log(
-			99002,
-			'bld.type == normal',
-			bld.type == 'normal',
-			'bdata.automode != cooling',
-			bdata.automode != 'cooling',
-			'extraCO2',
-			extraCO2.start,
-			'Работает алгоритм ВНО простого склада'
-		)
+		console.log('Работает алгоритм ВНО простого склада')
 		return false
 	}
 	const alrAuto = isAlr(bld._id, bdata.automode)
 	return alrAuto
 }
-function cold(bld, acc, bdata, solHeat) {
+function cold(bld, obj, acc, bdata, solHeat) {
+	console.log('=======================cold', acc, )
 	// Удаление СО2: логика холодильника -> логика обычного
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	if (extraCO2.start) {

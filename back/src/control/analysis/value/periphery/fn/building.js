@@ -16,12 +16,13 @@ function building(equip, val, retain, result) {
 		// Авторежим подрежимы хранения
 		const am = retain?.[bld._id]?.automode
 		if (am) result.building[bld._id].submode = store.acc?.[bld._id]?.[am]?.submode
-		// Тип склада + режим
+		// Тип склада + режим: normal, cold, combi_normal, combi_cold
 		const alrAuto = isAlr(bld._id, am)
-		if (am == 'drying') result.building[bld._id].typeMode = bld.type + '_normal'
+		if (bld.type!='combi') result.building[bld._id].bldType = bld.type
+		else if (am == 'drying') result.building[bld._id].bldType = bld.type + '_normal'
 		else if (am == 'cooling' && !alrAuto)
-			result.building[bld._id].typeMode = bld.type + '_normal'
-		else if (am == 'cooling' && alrAuto) result.building[bld._id].typeMode = bld.type + '_cold'
+			result.building[bld._id].bldType = bld.type + '_normal'
+		else if (am == 'cooling' && alrAuto) result.building[bld._id].bldType = bld.type + '_cold'
 
 		// console.log(888, result.building, )
 	}

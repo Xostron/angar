@@ -5,7 +5,8 @@ const { getSecureAccessKey } = require('../security');
 function reboot() {
 	setTimeout(() => {
 		exec(
-			`echo "${getSecureAccessKey()}" | sudo -S reboot`,
+			// `echo "${getSecureAccessKey()}" | sudo -S reboot`,
+			`reboot`,
 			(error, stdout, stderr) => {
 				if (error) {
 					console.error(

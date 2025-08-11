@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Ошибка сервера</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .error-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        .description {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        .redirect-info {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            border-radius: 3px;
+            animation: progress 15s linear infinite;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .countdown {
+            font-size: 18px;
+            font-weight: bold;
+            color: #feca57;
+        }
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">⚠️</div>
+        <div class="error-code">500</div>
+        <div class="error-message">Внутренняя ошибка сервера</div>
+        <div class="description">
+            Произошла ошибка на сервере. Просим обратиться к администратору.
+            Вы будете автоматически перенаправлены на главную страницу.
+        </div>
+        <div class="redirect-info">
+            Перенаправление через <span class="countdown" id="countdown">15</span> секунд
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        let countdown = 15;
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = 'http://127.0.0.1/';
+            }
+        }, 1000);
+        
+        // Также перенаправляем через 15 секунд в качестве резервного способа
+        setTimeout(() => {
+            window.location.href = 'http://127.0.0.1/';
+        }, 15000);
+    </script>
+</body>
+</html>

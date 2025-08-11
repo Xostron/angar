@@ -21,9 +21,9 @@ const isAllStarted = require('../fn/all_started')
  */
 function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init(idS, s, where, 'relay', fans.length)
+	const acc = init(bld, idS, obj, s, where, 'relay', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(null, fans, solHeat, bld, idS, aCmd, acc, bdata, where)) return
+	if (turnOff(null, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where)) return
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления/темп в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
