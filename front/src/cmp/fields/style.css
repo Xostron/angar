@@ -10,6 +10,21 @@
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
+.btn:hover {
+	background-color: var(--primary);
+}
+.btn {
+	transition: 0.3s ease-out;
+	transition-behavior: normal;
+	transition-duration: 0.3s;
+	transition-timing-function: ease-out;
+	transition-delay: 0s;
+	transition-property: all;
+}
+.btn:active {
+	transform: scale(0.9); /* Slightly shrink the button */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce the shadow to simulate depth */
+}
 .cell > img {
 	padding-left: var(--fsz10);
 	height: var(--fsz40);

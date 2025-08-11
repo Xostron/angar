@@ -1,4 +1,4 @@
-import api from '../config'
+import api from '../config';
 
 function authLogin(data) {
 	return new Promise((resolve, reject) => {

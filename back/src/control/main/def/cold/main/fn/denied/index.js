@@ -73,14 +73,14 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	clearCombi(bld._id, clr, accAuto.cold, fnChange, stateCooler, store, alrAuto)
 
 	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
-	console.log('\t\tСклад в работе:', start)
-	console.log('\t\tНет аварий комбинированного склада:', !alr)
-	console.log('\t\tАгрегат готов к работе', aggr)
-	console.log('\t\tОжидание после включения питания пройдено', supplySt)
-	console.log('\t\tСекция в Авто', sectMode)
-	console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
-	console.log('\t\tАвария авторежима активна, можно работать', alrAuto)
-	console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
+	// console.log('\t\tСклад в работе:', start)
+	// console.log('\t\tНет аварий комбинированного склада:', !alr)
+	// console.log('\t\tАгрегат готов к работе', aggr)
+	// console.log('\t\tОжидание после включения питания пройдено', supplySt)
+	// console.log('\t\tСекция в Авто', sectMode)
+	// console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
+	// console.log('\t\tАвария авторежима активна, можно работать', alrAuto)
+	// console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
 
 	return true
 }

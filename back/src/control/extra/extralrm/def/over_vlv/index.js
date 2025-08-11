@@ -6,8 +6,8 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 /**
  * Превышено время работы с закрытыми клапанами
- * @param {*} building Рама склада
- * @param {*} section Рама секции
+ * @param {*} bld Рама склада
+ * @param {*} sect Рама секции
  * @param {*} obj Глобальный объект цикла
  * @param {*} s Настройки склада
  * @param {*} se Показания датчиков секции
@@ -18,11 +18,11 @@ const { compareTime } = require('@tool/command/time')
  * - Режим сушки - настройка Постоянный вентилятор = Вкл
  * @returns
  */
-function overVlv(building, section, obj, s, se, m, automode, acc, data) {
+function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 	const { value } = obj
 	const { vlvS, fanS } = m
 	const { exclude } = data
-
+	const typeMode = obj?.value?.building?.[bld._id]?.typeMode
 	// Отмена выполнения подпрограммы
 	if (exclude) return null
 	// Настроек нет - функцию не выполняем
@@ -30,7 +30,7 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
-	const state = stateV(vlvIn?._id, value, building._id, vlvIn?.sectionId?.[0])
+	const state = stateV(vlvIn?._id, value, bld._id, vlvIn?.sectionId?.[0])
 	// Хотя бы один вентилятор запущен
 	const run = fanS.some((f) => stateEq(f._id, value))
 
@@ -49,14 +49,14 @@ function overVlv(building, section, obj, s, se, m, automode, acc, data) {
 	// Истекло -> авария и фиксация времени ожидания сброса аварии
 	if (time && !acc.end) {
 		acc.end = new Date()
-		wrExtralrm(building._id, section._id, 'overVlv', msg(building, section, 14))
+		wrExtralrm(bld._id, sect._id, 'overVlv', msg(bld, sect, 14))
 	}
 
-	// Ожидание сброса аварии или нажата кнопка "Сброс аварии"
-	if (compareTime(acc.end, s.overVlv.wait) || isReset(building._id)) {
+	// Ожидание сброса аварии или нажата кнопка "Сброс аварии" или склад комби-холод
+	if (compareTime(acc.end, s.overVlv.wait) || isReset(bld._id) || typeMode == 'combi_cold') {
 		delete acc.begin
 		delete acc.end
-		delExtralrm(building._id, section._id, 'overVlv')
+		delExtralrm(bld._id, sect._id, 'overVlv')
 	}
 
 	return time ?? false

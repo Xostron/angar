@@ -10,8 +10,6 @@ function rhr(client, opt, name, options = {}) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
-				if (options._id == '6895f6e055b4e21048ce2837')
-					console.log(222, options.name, opt, v)
 				resolve(v)
 			})
 			.catch(reject)
