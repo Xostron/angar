@@ -1,11 +1,12 @@
 // // const path = require('path')
 // // require('dotenv').config({ path: path.join(__dirname, '../../../../.env') })
-const { factoryDir, dataDir } = require('@store')
+const { factoryDir, dataDir, retainDir } = require('@store')
 const { writeSync } = require('@tool/json')
 const { cEquip } = require('@socket/emit')
 const equipment = require('@tool/equipment')
 const transformF = require('./fn')
 const api = require('@tool/api')
+const initRetain = require('./retain')
 const t = [
 	'building',
 	'equipment',
@@ -56,9 +57,10 @@ async function init() {
 				writeSync(r.data.result, dataDir, t)
 				// Заводские настройки в json
 				transformF(r?.data?.result?.factory, factoryDir)
-				// Формирование рамы для клиента
-				return equipment()
+				return initRetain(r.data.result)
 			})
+			// Формирование рамы для клиента
+			.then((_) => equipment())
 			// отправка рамы на клиент
 			.then((data) => cEquip(data))
 			.catch(console.log)

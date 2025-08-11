@@ -1,6 +1,16 @@
 const { data: store, retainDir, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
-const { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop,cbDryingCount } = require('./fn')
+const {
+	positionVlv,
+	cbPos,
+	cbTune,
+	cbSupply,
+	cbSmoking,
+	cbAcc,
+	cbCooling,
+	cbDatestop,
+	cbDryingCount,
+} = require('./fn')
 const { readOne } = require('@tool/json')
 
 // Сохранение в файл retain (Настройки, режимы работы и т.д.)
@@ -23,8 +33,9 @@ async function save(obj) {
 	if (store.tuneTime) await createAndModifySync(store.tuneTime, 'data', retainDir, cbTune)
 	if (store.supply) await createAndModifySync(store.supply, 'data', retainDir, cbSupply)
 	if (store.smoking) await createAndModifySync(store.smoking, 'data', retainDir, cbSmoking)
+
 	/**
-	 * Сохраняемые аварии 
+	 * Сохраняемые аварии
 	 * При первом запуске читаем аварии (Неисправность модулей и аварии авторежима) из файла
 	 *  */
 	if (store._first) {

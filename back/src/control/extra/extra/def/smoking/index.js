@@ -7,7 +7,20 @@ const { msgB } = require('@tool/message')
 // const h = 60000
 const h = 3600000
 // Окуривание
-function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
+function smoking(
+	building,
+	section,
+	obj,
+	s,
+	se,
+	m,
+	alarm,
+	acc,
+	data,
+	ban,
+	resultFan,
+	clear = false
+) {
 	if (clear) return fnClear(building._id)
 
 	const state = s?.smoking
@@ -15,11 +28,11 @@ function smoking(building, section, obj, s, se, m, alarm, acc, data, ban, result
 	const buildingId = building._id
 	const doc = obj.retain?.[buildingId]?.smoking ?? {}
 	store.smoking[buildingId] = doc
-
+	const stg = s.cooler ?? s.coolerCombi
 	// Выключено окуривание
 	if (!state || !state?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
-		if (s.cooler.accel !== 'on') arrCtrl(building._id, arr, 'off')
+		if (stg.accel !== 'on') arrCtrl(building._id, arr, 'off')
 		delete doc.work
 		delete doc.wait
 		delExtra(building._id, null, 'smoking')

@@ -181,7 +181,8 @@ function cbCooling(acc, data) {
 		result ??= {}
 		result[bldId] ??= {}
 		result[bldId].cooling ??= {}
-		result[bldId].cooling.tprdMin = result[bldId].automode === 'cooling' ? acc?.[bldId]?.cooling?.tprdMin ?? null : null
+		result[bldId].cooling.tprdMin =
+			result[bldId].automode === 'cooling' ? acc?.[bldId]?.cooling?.tprdMin ?? null : null
 		result[bldId].cooling.finish = acc?.[bldId]?.cooling?.finish
 	}
 	return result
@@ -217,11 +218,18 @@ function cbDryingCount(bldId, data) {
 	result[bldId].drying ??= {}
 	result[bldId].drying.acc ??= 0
 	// Фиксируем точку отсчета работы сушки
-	if (result?.[bldId]?.start && result[bldId]?.automode == 'drying' && !result[bldId]?.drying?.date) {
+	if (
+		result?.[bldId]?.start &&
+		result[bldId]?.automode == 'drying' &&
+		!result[bldId]?.drying?.date
+	) {
 		result[bldId].drying.date = new Date()
 	}
 	// Сушка выключена / склад выключен - сохраняем в аккумулятор
-	if ((!result?.[bldId]?.start || result[bldId]?.automode !== 'drying') && result?.[bldId]?.drying?.date) {
+	if (
+		(!result?.[bldId]?.start || result[bldId]?.automode !== 'drying') &&
+		result?.[bldId]?.drying?.date
+	) {
 		result[bldId].drying.acc = result[bldId].drying.count
 		delete result?.[bldId]?.drying?.date
 		delete result?.[bldId]?.drying?.count
@@ -237,10 +245,21 @@ function cbDryingCount(bldId, data) {
 	// Подсчет дней
 	if (dt) {
 		const dd = typeof dt == 'string' ? new Date(dt) : dt
-		result[bldId].drying.count = result[bldId].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
+		result[bldId].drying.count =
+			result[bldId].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
 	}
 
 	return result
 }
 
-module.exports = { positionVlv, cbPos, cbTune, cbSupply, cbSmoking, cbAcc, cbCooling, cbDatestop, cbDryingCount }
+module.exports = {
+	positionVlv,
+	cbPos,
+	cbTune,
+	cbSupply,
+	cbSmoking,
+	cbAcc,
+	cbCooling,
+	cbDatestop,
+	cbDryingCount,
+}

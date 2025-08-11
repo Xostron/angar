@@ -48,7 +48,7 @@ function softsol(idB, solenoid, sl, clr, accAuto) {
  */
 function initSoftsol(accAuto, sect, coolerS, s) {
 	// Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
-	const allStarted = store?.watchdog?.softFan?.[sect._id].allStarted
+	const allStarted = store?.watchdog?.softFan?.[sect._id]?.allStarted
 	// Прекратить обновление точки отсчета при срабатывании флага отключения соленоидов
 	if (accAuto?.cold?.softSol?.[sect._id] && allStarted) return
 	accAuto.cold.softSol ??= {}
