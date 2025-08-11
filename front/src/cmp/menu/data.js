@@ -45,13 +45,13 @@ const data = [
 		icon: '/img/menu/report.svg',
 		active: ['report']
 	},
-	{
-		id:7,
-		title: 'C',
-		path: 'service',
-		icon: '/img/menu/report.svg',
-		active: ['service']
-	},
+	// {
+	// 	id:7,
+	// 	title: 'C',
+	// 	path: 'service',
+	// 	icon: '/img/menu/report.svg',
+	// 	active: ['service']
+	// },
 ]
 
 

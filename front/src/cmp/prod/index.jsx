@@ -13,17 +13,16 @@ export default function Prod({ change, style, show }) {
 	const subm = sm?.[1] ? `(${sm[1]})` : ''
 	return (
 		<div className='prod' style={style}>
-			{product ? (
-				<>
-					<img src={defImg.product?.[product?.code]?.img} />
-					<p>{product?.name}</p>
-				</>
-			) : null}
-
 			{automode ? (
 				<>
 					<img src={defImg.automode?.[automode]?.img} />
 					<p>{`${defImg.automode?.[automode]?.title}  ${subm}`} </p>
+				</>
+			) : null}
+			{product ? (
+				<>
+					<img src={defImg.product?.[product?.code]?.img} />
+					<p>{product?.name}</p>
 				</>
 			) : null}
 		</div>
