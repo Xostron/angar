@@ -12,33 +12,31 @@ const ignore = require('./ignore')
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 'normal') {
-	// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД и выход
+	// (КОМБИ) Проверка переключения с НОРМАЛЬНОГО на ХОЛОД и выход
 	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) return true
-
-	// Игнор работы
-	const r = ignore[where](bld, obj, acc, bdata, solHeat)
-	if (r) return true
-	if (aCmd.type == 'on') return false
-	// Ручной режим -> запрет управления, но ВНО оставляем как есть
-	// Продукт достиг задания aCmd.type=off и секция не в авто
+	// Игнор работы в комби складе (Работа в НОРМ или ХОЛОД)
+	if (ignore[where](bld, obj, acc, bdata, solHeat)) return true
+	// Ручной режим -> запрет управления, но ВНО оставляем как есть (aCmd.type=off и секция в ручном)
 	if (aCmd.type == 'off' && bdata.mode?.[idS] === false) {
 		clear(idS)
 		return true
 	}
-	// Если Cmd.type == 'off' И выкл секция
+	// aCmd - задание на вкл активно
+	if (aCmd.type == 'on') return false
+	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
 	return true
 }
 
-// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
+// ========================================================================
+// Отключение ВНО при переключения комби склада с режима НОРМАЛЬНОГО на ХОЛОД
 function hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat) {
 	if (
 		acc.prevMode &&
 		acc.prevMode == 'combi_normal' &&
 		obj?.value?.building?.[bld._id]?.bldType == 'combi_cold'
 	) {
-		console.log('+++++++++++++++++++++++ПЕРЕКЛЮЧИЛСЯ+++++++++++++++++++++++++++')
 		acc.toggleMode = true
 		offAll(fanFC, fans, solHeat, bld)
 		clear(idS)
