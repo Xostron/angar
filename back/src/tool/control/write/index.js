@@ -12,6 +12,7 @@ async function write(obj) {
 		if (!obj) return null
 		const ok = {}
 		for (const i in obj) {
+			if (i=='689afe4911055545dc2d68df') continue
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль

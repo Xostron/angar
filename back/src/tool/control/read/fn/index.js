@@ -2,7 +2,7 @@
 const max = 65535
 
 // Чтение регистров
-function rhr(client, opt, name, options = {}) {
+function rhr(client, opt, name, options = {}, typeModule) {
 	return new Promise((resolve, reject) => {
 		const n = count(opt, options)
 		client
@@ -10,6 +10,7 @@ function rhr(client, opt, name, options = {}) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
+				console.log('=======$$$$$$=====', 111, options.name, typeModule, v)
 				resolve(v)
 			})
 			.catch(reject)

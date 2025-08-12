@@ -15,7 +15,6 @@ const { ctrlDO } = require('@tool/command/module_output')
  * @returns false - разрешить управление, true - запрет управления
  */
 function normal(bld, obj, acc, bdata) {
-	console.log('=======================normal', acc, )
 	// Удаление СО2
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 
@@ -27,7 +26,6 @@ function normal(bld, obj, acc, bdata) {
 	return alrAuto
 }
 function cold(bld, obj, acc, bdata, solHeat) {
-	console.log('=======================cold', acc, )
 	// Удаление СО2: логика холодильника -> логика обычного
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	if (extraCO2.start) {

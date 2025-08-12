@@ -8,6 +8,8 @@ async function read(arr, obj) {
 	try {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
+			if (arr[i].name=='ОВЕН_int') continue
+			// if (arr[i].name=='ОВЕН_DI_DO') continue
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
 			// Чтение данных в модуль
@@ -15,8 +17,8 @@ async function read(arr, obj) {
 			// флаг первого запуска сервера
 			store.startup = false
 			const k = arr[i]._id
-
 			const buildingId = arr[i].buildingId
+			console.log('=======$$$$$$=====', 222, arr[i].name, v)
 			await pause(store.tPause)
 			// ошибка модуля
 			if (!(v instanceof Array)) {
@@ -41,7 +43,7 @@ async function read(arr, obj) {
 		}
 		return data
 	} catch (error) {
-		console.log(error)
+		console.error('ERROR',error)
 		throw Error('Чтение: связь RTU/TCP потеряна')
 	}
 }

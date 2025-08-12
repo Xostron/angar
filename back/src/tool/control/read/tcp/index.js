@@ -21,20 +21,19 @@ function readTCP(host, port, opt) {
 			const p = []
 			switch (opt.use) {
 				case 'r':
-					p.push(rhr(cl, opt.re, 'valuesAsArray', opt))
+					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, 'INPUT'))
 					break
 				case 'w':
-					p.push(rhr(cl, opt.wr, 'valuesAsArray'))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray','OUTPUT'))
 					break
 				case 'rw':
-					p.push(rhr(cl, opt.re, 'valuesAsArray', opt))
-					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt))
+					p.push(rhr(cl, opt.re, 'valuesAsArray', opt,'INPUT'))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt,'OUTPUT'))
 					break
 				default:
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-
 					convAO(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
