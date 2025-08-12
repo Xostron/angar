@@ -1,17 +1,21 @@
 {
 	"compilerOptions": {
 		"removeComments": true,
-		"target": "ES6",
+		"target": "esnext",
 		"baseUrl": ".",
+		"allowJs": true,
+		"noEmit": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
 		"paths": {
-			"@socket/*": ["./src/socket/*"],
-			"@page/*": ["./src/page/*"],
-			"@cmp/*": ["./src/cmp/*"],
-			"@store/*": ["./src/store/*"],
-			"@static/*": ["./static/*"],
 			"@src/*": ["./src/*"],
-			"@font/*": ["./public/fonts/*"],
-			"@tool/*": ["./src/tool/*"]
+			"@cmp/*": ["./src/cmp/*"],
+			"@page/*": ["./src/page/*"],
+			"@tool/*": ["./src/tool/*"],
+			"@store/*": ["./src/store/*"],
+			"@socket/*": ["./src/socket/*"],
+			"@font/*": ["./public/fonts/*"]
 		}
-	}
+	},
+	"include": ["src/**/*"]
 }
