@@ -8,6 +8,11 @@ const {
 	pm2_cmd,
 	build,
 	autoLogin,
+	reload_netmanager,
+	wifi_info,
+	wifi_manager,
+	eth_info,
+	eth_manager,
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -30,6 +35,14 @@ function service(router) {
 	serviceRouter.get('/build', build());
 	// AutoLogin On/Off
 	serviceRouter.get('/auto_login/:flag', autoLogin());
+	// Перезапуск сети
+	serviceRouter.get('/reload_net', reload_netmanager());
+	// Перезапуск сети
+	serviceRouter.get('/wifi', wifi_info());
+	serviceRouter.post('/wifi', wifi_manager());
+
+	serviceRouter.get('/eth', eth_info());
+	serviceRouter.post('/eth', eth_manager());
 }
 
 module.exports = service;

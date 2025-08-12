@@ -8,10 +8,10 @@ import running from '@tool/status/build_section'
 //Подробная информация по секции - Обычный склад
 export default function Normal() {
 	const { build, sect } = useParams()
-	const { tprd, tcnl, fan, valve, heating, p } = useEquipStore(({ section }) => section())
+	const { tprd, tcnl=[], fan, valve, heating, p } = useEquipStore(({ section }) => section())
 	const binding = useEquipStore(({ build }) => build()?.binding)
 	const { isMan } = running(build, sect)
-	const r3 = p?.length < 3 ? [...tcnl, ...p] : tcnl
+	const r3 = p?.length < 3 ? [...tcnl ?? [], ...p] : tcnl
 	const fans = fan
 		.map((el) => {
 			const b = binding?.find((el) => el.owner.id == el._id)

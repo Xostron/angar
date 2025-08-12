@@ -5,6 +5,7 @@ import Header from '@cmp/header'
 import Weather from './weather'
 import List from './list'
 import { get } from '@tool/api/service'
+import { notification } from '@cmp/notification'
 import './style.css'
 
 const Main = () => {
@@ -33,8 +34,11 @@ const Main = () => {
 					<div style={{ textAlign: 'center', fontSize: '40px', padding: '100px', cursor: 'pointer' }} onClick={async () => {
 						get('equipment').then((o) => {
 							console.log('equipment', o)
+							notification.info('Конфигурация оборудования получена')
 						}).catch((e) => {
-							alert('equipment: '+e.error)
+							notification.error(e.message || 'Ошибка получения конфигурации оборудования', {
+								errorId: e.id
+							})
 						})
 					}}>
 						Нет складов

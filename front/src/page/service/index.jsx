@@ -5,14 +5,32 @@ import NetworkEthernetModal from './modals/network-ethernet'
 import NetworkWifiModal from './modals/network-wifi'
 import Accordion from '@cmp/accordion'
 import { get, post } from '@tool/api/service'
+import { notification } from '@cmp/notification'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import Radio from '@cmp/fields/radio'
 
+// Функция валидации IP-адреса
+function validateIP(ip) {
+	if (!ip) return false
+	const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+	return ipRegex.test(ip) && ip !== '0.0.0.0'
+}
+
+// Функция для извлечения сообщения из ответа сервера
+function getResponseMessage(result, defaultMessage='Выполнено') {
+	if (typeof result === 'string' && result.trim()) return result
+	if (typeof result === 'object' && result?.message) return result.message
+	// Если result пустой, undefined, null или пустая строка
+	return defaultMessage
+}
+
+
 function Service() {
 	const navigate = useNavigate()
 	const [ip, setIp] = useState()
-	const [req_ip, setReqIp] = useState('')
+
+	const [req_ip, setReqIp] = useState()
 	const [info, setInfo] = useState()
 	const [ttyS, setTtyS] = useState()
 	const [equip, setEquip] = useState()
@@ -21,26 +39,38 @@ function Service() {
 	const ethernetModalRef = useRef()
 	const wifiModalRef = useRef()
 	useEffect(() => {
-		get('net_info').then((o) => {
+		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
+		api = api.replace('http://', '').replace('https://', '').replace(':4000/api/', '')
+		setReqIp(api)
+		notification.success('IP для запросов установлен на ' + api)
+		get('net_info', api ).then((o) => {
 			setInfo(o.net)
 			setTtyS(o.ttyS)
+			notification.success('Информация о сети обновлена')
 		}).catch((e) => {
-			alert(e.error)
+			notification.error(e.message || e.error || 'Ошибка получения информации о сети', {
+				errorId: e.id
+			})
 		})
 	}, [])
 	
 	function set_ip(ip) {
-		console.log('set_ip', ip)
-		if(!ip || ip == '0.0.0.0') {
-			alert('ip is empty')
+		if(!validateIP(ip)) {
+			notification.warning('Некорректный IP адрес. Укажите валидный IP адрес (например: 192.168.1.100)')
 			return
 		}
-		post('set_ip', { ip })
+		post('set_ip', { ip }, req_ip)
 			.then((r) => {
-					alert('set_ip: '+r.success+': '+r.message)
+					if (r.success) {
+						notification.success(`IP адрес установлен: ${r.message}`)
+					} else {
+						notification.error(`Ошибка установки IP: ${r.message}`)
+					}
 			})
 			.catch((e) => {
-				alert('set_ip: '+e.error.message)
+				notification.error(e.message || 'Ошибка установки IP адреса', {
+					errorId: e.id
+				})
 			})
 	}
 
@@ -54,39 +84,49 @@ function Service() {
 	}
 
 	function handleEthernetSave(config) {
-		console.log('Ethernet config:', config)
-		// Здесь будет отправка конфигурации на сервер
-		post('set_ethernet', config)
+		// Валидация IP в конфигурации Ethernet
+		if (config.ip && !validateIP(config.ip)) {
+			notification.warning('Некорректный IP адрес в настройках Ethernet')
+			return
+		}
+		post('set_ethernet', config, req_ip)
 			.then((r) => {
-				alert('Настройки Ethernet сохранены: ' + r.message)
+				notification.success('Настройки Ethernet сохранены: ' + r.message)
 				// Обновляем информацию о сети
-				get('net_info').then((o) => {
+				get('net_info', req_ip).then((o) => {
 					setInfo(o.net)
 				})
 			})
 			.catch((e) => {
-				alert('Ошибка настройки Ethernet: ' + e.error)
+				notification.error(e.message || 'Ошибка настройки Ethernet', {
+					errorId: e.id
+				})
 			})
 	}
 
 	function handleWifiSave(config) {
-		console.log('WiFi config:', config)
-		// Здесь будет отправка конфигурации на сервер
-		post('set_wifi', config)
+		// Валидация IP в конфигурации WiFi
+		if (config.ip && !validateIP(config.ip)) {
+			notification.warning('Некорректный IP адрес в настройках WiFi')
+			return
+		}
+		post('set_wifi', config, req_ip)
 			.then((r) => {
-				alert('Подключение к WiFi: ' + r.message)
+				notification.success('Подключение к WiFi: ' + r.message)
 				// Обновляем информацию о сети
-				get('net_info').then((o) => {
+				get('net_info', req_ip).then((o) => {
 					setInfo(o.net)
 				})
 			})
 			.catch((e) => {
-				alert('Ошибка подключения к WiFi: ' + e.error)
+				notification.error(e.message || 'Ошибка подключения к WiFi', {
+					errorId: e.id
+				})
 			})
 	}
 	return (
 		<main className='page-service'>
-			<Accordion title="Устройства последовательных портов" defaultOpen={false}>
+			<Accordion title={`Устройства последовательных портов (${ttyS?.length || 0})`} defaultOpen={false}>
 				{ttyS && !ttyS.error ? (
 					ttyS.map((el, i)=>{
 						return (
@@ -103,31 +143,43 @@ function Service() {
 			</Accordion>
 			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>Настройка сети:</span>
 			<div className='page-service-row'>
-				<Btn title='Настройки сети Ethernet' onClick={() => modal_eth()} />
-				<Btn title='Подключение к WiFi' onClick={() => modal_wifi()} />
+				<Btn title='Ethernet' onClick={() => modal_eth()} />
+				<Btn title='WiFi' onClick={() => modal_wifi()} />
+				<Btn title='Перезагрузка сети' onClick={() =>{
+					get('reload_net', req_ip).then((result) => {
+						notification.success(getResponseMessage(result, 'Перезагрузка сети запущена'))
+					}).catch((e) => {
+						notification.error(e.message || 'Ошибка перезагрузки сети', {
+							errorId: e.id
+						})
+					})
+				}} />
 			</div>
 			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>Настройка IP-адреса для проекта:</span>
 			
 			<div className='page-service-row'>
 				
-				<Input value={ip} setValue={setIp} placeholder='0.0.0.0' disabled={1} />
+				<Input value={ip} setValue={setIp} placeholder='192.168.1.100' />
 				<Btn title='Установить IP вручную' onClick={() => set_ip(ip)} />
 				<div className='page-service-row'>
 					<Btn
 						title='Обновить'
 						onClick={async () => {
-							get('net_info').then((o) => {
+							get('net_info', req_ip).then((o) => {
+								notification.success('Информация о сети обновлена')
 								setInfo(o.net)
 								setTtyS(o.ttyS)
 							}).catch((e) => {
-								alert('net_info: '+e.error)
+								notification.error(e.message || 'Ошибка обновления информации о сети', {
+									errorId: e.id
+								})
 							})
 						}}
 					/>
 				</div>
 			</div>
 			
-			<Accordion title="Список сетевых интерфейсов" defaultOpen={false}>
+			<Accordion title={`Список сетевых интерфейсов (${info?.length || 0})`} defaultOpen={false}>
 				{info && !info.error ? (
 					info.map((el, i)=>{
 						return (
@@ -151,15 +203,18 @@ function Service() {
 				<Btn
 					title='Обновить конфигурацию оборудования'
 					onClick={async () => {
-						get('equipment').then((o) => {
-							setEquip(o)
+						get('equipment', req_ip).then((o) => {
+							setEquip(o.result)
+							notification.success('Конфигурация оборудования обновлена')
 						}).catch((e) => {
-							alert('equipment: '+e.error)
+							notification.error(e.message || 'Ошибка обновления конфигурации оборудования', {
+								errorId: e.id
+							})
 						})
 					}}
 				/>
 				{!equip?.error?.code ? (
-					<span>Обновление: {equip}</span>
+					<span>Обновление: <br/>{equip ? new Date(equip).toLocaleString() : ''}</span>
 				) : (
 					<span title={`${equip?.error?.code}: ${equip?.error?.message}`}>
 						Возникла ошибка!
@@ -168,22 +223,64 @@ function Service() {
 			</div>
 
 			<div className='page-service-row'>
-				<Btn title='Обновить ПО' onClick={() => get('upt_soft')} />
-				<Btn title='pm2 restart' onClick={() => get('pm2/restart')} />
-				<Btn title='npm install && build' onClick={() => get('build')} />
+				<Btn title='Обновить ПО' onClick={() => get('upt_soft', req_ip).then((result) => {
+					notification.success(getResponseMessage(result, 'Обновление ПО запущено'))
+				}).catch((e) => {
+					notification.error(e.message || 'Ошибка обновления ПО', {
+						errorId: e.id
+					})
+				})} />
+				<Btn title='pm2 restart' onClick={() => get('pm2/restart', req_ip).then((result) => {
+					notification.success(getResponseMessage(result, 'Перезапуск pm2 запущен'))
+				}).catch((e) => {
+					notification.error(e.message || 'Ошибка перезапуска pm2', {
+						errorId: e.id
+					})
+				})} />
+				<Btn title='npm install && build' onClick={() => get('build', req_ip).then((result) => {
+					notification.success(getResponseMessage(result, 'Сборка проекта запущена'))
+				}).catch((e) => {
+					notification.error(e.message || 'Ошибка сборки проекта', {
+						errorId: e.id
+					})
+				})} />
 			</div>
 			<div className='page-service-row'>
-				<Btn title='AutoLogin On' onClick={() => get('auto_login/true')} />
-				<Btn title='AutoLogin Off' onClick={() => get('auto_login/false')} />
-				<Btn title='Reboot Устройства' onClick={() => get('reboot')} />
+				<Btn title='AutoLogin On' onClick={() => get('auto_login/true', req_ip).then((result) => {
+					notification.success(getResponseMessage(result, 'Автоматический вход включен'))
+				}).catch((e) => {
+					notification.error(e.message || 'Ошибка включения автоматического входа', {
+						errorId: e.id
+					})
+				})} />
+				<Btn title='AutoLogin Off' onClick={() => get('auto_login/false', req_ip).then((result) => {
+					notification.success(getResponseMessage(result, 'Автоматический вход выключен'))
+				}).catch((e) => {
+					notification.error(e.message || 'Ошибка выключения автоматического входа', {
+						errorId: e.id
+					})
+				})} />
+				<Btn title='Reboot Устройства' onClick={() => get('reboot', req_ip).then((result) => {
+					notification.success(getResponseMessage(result, 'Перезагрузка устройств запущена'))
+				}).catch((e) => {
+					notification.error(e.message || 'Ошибка перезагрузки устройств', {
+						errorId: e.id
+					})
+				})} />
 			</div>
 			<div className='page-service-row'>
 				<span>IP для запросов:</span>
-				<Radio value='localhost' title='localhost' name='ip' selected={'localhost'} change={()=>setReqIp('localhost')}/>
+				<Radio value='127.0.0.1' title='127.0.0.1' name='ip' selected={req_ip} change={()=>{
+					notification.success('IP для запросов установлен на 127.0.0.1')
+					setReqIp('127.0.0.1')
+				}}/>
 				{info && info.length > 0 && (
 				info.map((el, i)=>{
 					return (
-						<Radio key={i} value={el.ip} title={el.ip} name='ip' selected={el.ip} change={()=>setReqIp(el.ip)}/>
+						<Radio key={i} value={el.ip} title={el.ip} name='ip' selected={req_ip} change={()=>{
+							notification.success('IP для запросов установлен на ' + el.ip)
+							setReqIp(el.ip)
+						}}/>
 					)
 				})
 			)}
