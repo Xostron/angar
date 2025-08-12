@@ -12,14 +12,9 @@ const ignore = require('./ignore')
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 'normal') {
-	// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
-	hasToggle(bld, obj, acc)
-	if (acc.toggleMode) {
-		console.log('+++++++++++++++++++++++ПЕРЕКЛЮЧИЛСЯ+++++++++++++++++++++++++++')
-		offAll(fanFC, fans, solHeat, bld)
-		clear(idS)
-		return true
-	}
+	// Проверка переключения с НОРМАЛЬНОГО на ХОЛОД и выход
+	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) return true
+
 	// Игнор работы
 	const r = ignore[where](bld, obj, acc, bdata, solHeat)
 	if (r) return true
@@ -37,10 +32,22 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 
 }
 
 // Проверка переключения с НОРМАЛЬНОГО на ХОЛОД /и обратно
-function hasToggle(bld, obj, acc) {
-	if (acc.prevMode && acc.prevMode != obj?.value?.building?.[bld._id]?.bldType) acc.toggleMode = true
-	else acc.toggleMode = false
+function hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat) {
+	if (
+		acc.prevMode &&
+		acc.prevMode == 'combi_normal' &&
+		obj?.value?.building?.[bld._id]?.bldType == 'combi_cold'
+	) {
+		console.log('+++++++++++++++++++++++ПЕРЕКЛЮЧИЛСЯ+++++++++++++++++++++++++++')
+		acc.toggleMode = true
+		offAll(fanFC, fans, solHeat, bld)
+		clear(idS)
+		acc.prevMode = obj?.value?.building?.[bld._id]?.bldType
+		return true
+	}
+	acc.toggleMode = false
 	acc.prevMode = obj?.value?.building?.[bld._id]?.bldType
+	return false
 }
 
 // Очистка аккумулятора
