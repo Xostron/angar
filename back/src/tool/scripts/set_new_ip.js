@@ -50,7 +50,7 @@ function set_new_ip(ip) {
 	rebuild()
 		.then(() => {
 			console.log('Перезапуск pm2...');
-			pm2('restart');
+			pm2('start', '/home/tenta/apps/ecosystem/ecosystem.config.js');
 		})
 		.catch((e) => {
 			console.error('Ошибка при перезапуске pm2:', e.message);

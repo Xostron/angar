@@ -8,18 +8,22 @@ async function read(arr, obj) {
 	try {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
+			// Блокировка чтения входов модулей
 			if (arr[i].name=='ОВЕН_int') continue
-			// if (arr[i].name=='ОВЕН_DI_DO') continue
+			if (arr[i].name=='ОВЕН_DI_DO') continue
+			// if (arr[i].name=='ОВЕН DI') continue
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
+			console.log(111, 'Начинаем чтение модуля ', arr[i].name)
 			// Чтение данных в модуль
 			const v = await make(arr[i])
 			// флаг первого запуска сервера
 			store.startup = false
 			const k = arr[i]._id
 			const buildingId = arr[i].buildingId
-			console.log('=======$$$$$$=====', 222, arr[i].name, v)
+			console.log('=======$$$$$$=====ЧТЕНИЕ', 111, arr[i].name, v)
 			await pause(store.tPause)
+			// await pause(2000)
 			// ошибка модуля
 			if (!(v instanceof Array)) {
 				data[k] = v
@@ -43,7 +47,7 @@ async function read(arr, obj) {
 		}
 		return data
 	} catch (error) {
-		console.error('ERROR',error)
+		console.error('ERROR', error)
 		throw Error('Чтение: связь RTU/TCP потеряна')
 	}
 }

@@ -9,7 +9,7 @@ function update() {
 		'cd /home/tenta/apps',
 		'git config --global --add safe.directory /home/tenta/apps',
 		'git restore .',
-		'git clean -fd',
+		// 'git clean -f',
 		'git pull',
 	];
 

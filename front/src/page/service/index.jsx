@@ -48,6 +48,7 @@ function Service() {
 			setTtyS(o.ttyS)
 			notification.success('Информация о сети обновлена')
 		}).catch((e) => {
+			setReqIp('127.0.0.1')
 			notification.error(e.message || e.error || 'Ошибка получения информации о сети', {
 				errorId: e.id
 			})
@@ -187,7 +188,7 @@ function Service() {
 								<span>interface: {el.interface}</span>
 								<span>mac: {el.mac}</span>
 								<span>ip: {el.ip}</span>
-								<Btn title={'Установить '+el.ip} onClick={()=>set_ip(el.ip)} />
+								{el.ip && <Btn title={'Установить '+el.ip} onClick={()=>set_ip(el.ip)} />}
 							</div>
 						)
 					})
@@ -270,12 +271,13 @@ function Service() {
 			</div>
 			<div className='page-service-row'>
 				<span>IP для запросов:</span>
+
 				<Radio value='127.0.0.1' title='127.0.0.1' name='ip' selected={req_ip} change={()=>{
 					notification.success('IP для запросов установлен на 127.0.0.1')
 					setReqIp('127.0.0.1')
 				}}/>
 				{info && info.length > 0 && (
-				info.map((el, i)=>{
+				info.filter(el => el.ip).map((el, i)=>{
 					return (
 						<Radio key={i} value={el.ip} title={el.ip} name='ip' selected={req_ip} change={()=>{
 							notification.success('IP для запросов установлен на ' + el.ip)

@@ -12,11 +12,14 @@ async function write(obj) {
 		if (!obj) return null
 		const ok = {}
 		for (const i in obj) {
+			// Блокировка записи выходов модулей
 			if (i=='689afe4911055545dc2d68df') continue
+			console.log(222, 'Начинаем запись в модуля ', obj[i].name)
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль
 			const v = await make(obj[i])
+			console.log('=======$$$$$$=====ЗАПИСЬ', 222, obj[i].name, v)
 			await pause(100)
 			const k = obj[i].name + ' Порт ' + obj[i].port
 			ok[k] = v
