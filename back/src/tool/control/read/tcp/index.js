@@ -34,6 +34,7 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
+
 					convAO(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)

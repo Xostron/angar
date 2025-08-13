@@ -7,13 +7,10 @@ function rhr(client, opt, name, options = {}, typeModule) {
 		const n = count(opt, options)
 		client
 			.readHoldingRegisters(opt.start, n)
-			// .readCoils(0, 1)
-			// .readDiscreteInputs(0,5)
 			.then((r) => {
 				console.log('@@@@@@@@@@@@@', Object.keys(r))
 				let v = r.response._body[name]
 				v = data(v, opt, options)
-
 				resolve(v)
 			})
 			.catch(reject)

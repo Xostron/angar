@@ -20,10 +20,10 @@ async function read(arr, obj) {
 			// флаг первого запуска сервера
 			store.startup = false
 			const k = arr[i]._id
+
 			const buildingId = arr[i].buildingId
 			console.log('=======$$$$$$=====ЧТЕНИЕ', 111, arr[i].name, v)
 			await pause(store.tPause)
-			// await pause(2000)
 			// ошибка модуля
 			if (!(v instanceof Array)) {
 				data[k] = v
