@@ -12,7 +12,7 @@ import Auth from '@cmp/auth'
 import './style.css'
 import './style_large.css'
 
-// Инициализируем глобальный обработчик ошибок
+// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РіР»РѕР±Р°Р»СЊРЅС‹Р№ РѕР±СЂР°Р±РѕС‚С‡РёРє РѕС€РёР±РѕРє
 globalErrorHandler.init()
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

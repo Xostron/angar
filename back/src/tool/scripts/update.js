@@ -1,5 +1,4 @@
 const { exec } = require('child_process');
-const { getSecureAccessKey } = require('../security');
 
 function update() {
 	// обновление кода через git от имени пользователя tenta
@@ -9,7 +8,7 @@ function update() {
 		'cd /home/tenta/apps',
 		'git config --global --add safe.directory /home/tenta/apps',
 		'git restore .',
-		// 'git clean -f',
+		// 'git clean -fdX',
 		'git pull',
 	];
 

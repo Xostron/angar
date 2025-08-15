@@ -1,8 +1,7 @@
-const { format } = require('winston')
-const DailyRotateFile = require('winston-daily-rotate-file')
-const path = require('path')
-const { combine, timestamp, json } = format
-
+const { format } = require('winston');
+const DailyRotateFile = require('winston-daily-rotate-file');
+const path = require('path');
+const { combine, timestamp, json } = format;
 
 /**
  * Фильтр, пропускающий только указанный уровень
@@ -10,9 +9,9 @@ const { combine, timestamp, json } = format
  */
 const filterOnly = (level) => {
 	return format((info) => {
-		return info.level === level ? info : false
-	})()
-}
+		return info.level === level ? info : false;
+	})();
+};
 
 /**
  * Объект с приоритетами уровней.
@@ -43,7 +42,7 @@ const customLevels = {
 	alarm: 19, // Неисправности
 	watt: 20, // Электросчетчик
 	event: 21, // События о работе склада
-}
+};
 
 /**
  * Создаём функцию, которая генерирует DailyRotateFile-транспорт
@@ -57,7 +56,7 @@ function hourlyT(level) {
 		datePattern: 'YYYY-MM-DD-HH',
 		// Сколько файлов хранить (пример: 24 часа)
 		// delete maxFiles - очистка журнала отключена
-		// maxFiles:100 - хранит последние 100 файлов журнала, 
+		// maxFiles:100 - хранит последние 100 файлов журнала,
 		// maxFiles: '1001d' - Хранит файлы созданные за последние 1001 день
 		maxFiles: '1001d',
 		// Формат лога
@@ -66,7 +65,7 @@ function hourlyT(level) {
 			timestamp(),
 			json()
 		),
-	})
+	});
 }
 
-module.exports = { hourlyT, customLevels }
+module.exports = { hourlyT, customLevels };
