@@ -8,7 +8,6 @@ function rhr(client, opt, name, options = {}, typeModule) {
 		client
 			.readHoldingRegisters(opt.start, n)
 			.then((r) => {
-				console.log('@@@@@@@@@@@@@', Object.keys(r))
 				let v = r.response._body[name]
 				v = data(v, opt, options)
 				resolve(v)
