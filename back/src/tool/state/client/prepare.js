@@ -6,7 +6,8 @@ const { readTO } = require('@tool/json')
 const fsp = require('fs').promises
 
 /**
- *
+ * Request на админ-сервер
+ * Формирование state (значения данных по PC)
  * @returns {object}	result Данные по датчикам (для Tenta админки),
  * 						hub: {init:boolean, last:boolean, state:object}
  * 							init Инициализация пройдена,
@@ -14,13 +15,13 @@ const fsp = require('fs').promises
  * 							state Данные по датчикам (предыдущее состояние)
  * 						present Данные по датчикам (для расчета delta)
  */
-async function preparing() {
+module.exports = async function prepareReq() {
 	const hub = store.hub //Аккумулятор
 	let present = {}, // Актуальное состояние ангара (Вторичная - составные ключи)
 		diffing, // delta-изменения (Вторичная - составные ключи)
 		result // ответ для Админки
 	const raw = store.value // Актуальное состояние ангара (первичная форма)
-	
+
 	// Рама pc
 	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 	const data = await readTO(files)
@@ -51,5 +52,3 @@ async function preparing() {
 	result = convertTenta(diffing ?? present, data.pc._id)
 	return { result, hub, present }
 }
-
-module.exports = preparing

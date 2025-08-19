@@ -1,23 +1,23 @@
-const { convertPC, convertSec, convertTenta, fnDiffing } = require('./fn')
+const { convertPC, convertSec, convertTenta, deltaTol } = require('../fn')
 const transformStore = require('@routes/api/tenta/read/store/transform')
 const transformPC = require('@routes/api/tenta/read/pc/transform')
 const { data: store, dataDir } = require('@store')
-const tolerance = require('./tolerance/data.json')
+const tolerance = require('../fn/tolerance.json')
 const { readTO } = require('@tool/json')
 const fsp = require('fs').promises
 
-//
 /**
- * Подготовка ответа (state) для сервера (с учетом delta-дребезга и расчета delta-изменений)
+ * Response для админ-сервера
+ * Подготовка state для Админ-сервера (с учетом delta-дребезга и расчета delta-изменений)
  * @param {string} type init - Сервер запрашивает полный набор данных
  * @returns
  */
-async function reconciliation(type) {
+module.exports = async function prepareRes(type) {
 	console.log(1111, type)
 	const past = store.past // Предыдущее состояние ангара (Вторичная - составные ключи)
 	let present = {}, // Актуальное состояние ангара (Вторичная - составные ключи)
 		diffing, // delta-изменения (Вторичная - составные ключи)
-		result = {} // ответ для Админки
+		result // ответ для Админки
 	const raw = store.value // Актуальное состояние ангара (первичная форма)
 
 	// Рама pc
@@ -37,9 +37,10 @@ async function reconciliation(type) {
 	const resPC = transformPC(raw, data.building, data.section, data.fan)
 	// Мясо - Полное содержимое секции и карточки секций
 	for (const sec of data.section) present[sec._id] = await transformStore(sec.buildingId, sec._id)
-
+	// Актуальные данные
 	present = { ...convertPC(resPC), ...convertSec(present) }
-	diffing = past && type != 'init' ? fnDiffing(present, past, sens, tolerance) : null
+	// delta-изменения
+	diffing = past && type != 'init' ? deltaTol(present, past, sens, tolerance) : null
 	// Формируем данные для Admin
 	result = convertTenta(diffing ?? present, data.pc._id)
 
@@ -47,5 +48,3 @@ async function reconciliation(type) {
 	store.past = diffing === null ? { ...store.past, ...present } : { ...store.past, ...diffing }
 	return { result, present }
 }
-
-module.exports = reconciliation

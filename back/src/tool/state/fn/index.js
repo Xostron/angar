@@ -53,7 +53,6 @@ function convertTenta(value, pcId) {
 		}
 		r.push(o)
 	}
-
 	return r
 }
 
@@ -83,15 +82,13 @@ function delta(present, past) {
  * @param {object} tolerance Допуски изменений
  * @returns {object} delta изменения
  */
-function fnDiffing(present, past, sens, tolerance) {
+function deltaTol(present, past, sens, tolerance) {
 	const r = {}
 	for (const key in present) {
 		switch (typeof present[key]) {
 			case 'object':
 				// Объекты
 				checkObj(key, present, past, sens, tolerance, r)
-
-				// if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) r[key] = present[key]
 				break
 			default:
 				// Простые данные: числа, строки, null, undefined
@@ -99,11 +96,10 @@ function fnDiffing(present, past, sens, tolerance) {
 				break
 		}
 	}
-	// console.log(5551, r)
 	return r
 }
 
-module.exports = { convertPC, convertSec, convert, convertTenta, delta, fnDiffing }
+module.exports = { convertPC, convertSec, convert, convertTenta, delta, deltaTol }
 
 function checkObj(key, present, past, sens, tolerance, result) {
 	// Обычный ключ: temp,rh,ah
