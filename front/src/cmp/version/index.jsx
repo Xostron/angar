@@ -19,20 +19,17 @@ function Version() {
 		get('net_info', 'localhost')
 			.then((o) => {
 				setInfo(o.net)
-				notification.success('Информация о сети обновлена')
+				notification.success('Сеть обновлена')
 			})
 			.catch((e) => {
-				notification.error(e.message || e.error || 'Ошибка получения информации о сети', {
-					errorId: e.id,
-				})
+				console.log(e)
 			})
 	}, [])
 
 	return (
 		<div style={{ position: 'absolute', bottom: '15px', right: '15px', color: 'darkgray' }}>
 			<Helmet title={title} />
-			<p>server 4.3.0: {process.env.PUBLIC_SOCKET_URI}</p>
-			<p>Ethernet: {info?.ip ?? info?.mac ?? '--'}</p>
+			<p>server 4.3.0: {process.env.PUBLIC_SOCKET_URI} {info && ' Сеть: '+info.map(el=>`${el.interface}: ${el.ip || el.mac}`).join('')}</p>
 		</div>
 	)
 }

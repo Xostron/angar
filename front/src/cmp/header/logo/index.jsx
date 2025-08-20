@@ -7,6 +7,6 @@ export default function Logo({}) {
 		src="/img/logo.svg" 
 		alt="" 
 		className='logo' 
-		onClick={()=>window.location.reload(false)}
+		onClick={()=>window.location.reload(true)}
 	/>
 }

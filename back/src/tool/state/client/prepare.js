@@ -26,11 +26,13 @@ module.exports = async function prepareReq() {
 	const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 	const data = await readTO(files)
 
-	// Получение данных от ЦС (вкл/выкл : true/false)
-	if (!data?.pc?.state?.on) {
-		console.log('\x1b[33m%s\x1b[0m', 'Получение данных от ЦС выключен')
-		return null
-	}
+	// Настройка в админке: Получение данных от ЦС (вкл/выкл : true/false)
+	// TODO - отключено для сервера ангара, чтобы у нас всегда формировался какой-либо state
+	// if (!data?.pc?.state?.on) {
+	// 	console.log('\x1b[33m%s\x1b[0m', 'Получение данных от ЦС выключен')
+	// 	return null
+	// }
+	
 	// Собираем значения по складу
 	if (!Object.keys(raw).length) {
 		console.log('\x1b[33m%s\x1b[0m', 'Данные от ЦС еще не готовы')
