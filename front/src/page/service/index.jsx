@@ -9,6 +9,8 @@ import { notification } from '@cmp/notification'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import Radio from '@cmp/fields/radio'
+import Dialog from '@cmp/dialog'
+import useDialog from '@cmp/dialog/hook'
 
 // Функция валидации IP-адреса
 function validateIP(ip) {
@@ -33,25 +35,29 @@ function Service() {
 	const [req_ip, setReqIp] = useState()
 	const [info, setInfo] = useState()
 	const [ttyS, setTtyS] = useState()
-	const [equip, setEquip] = useState()
 	
 	// Ссылки на модальные окна
 	const ethernetModalRef = useRef()
 	const wifiModalRef = useRef()
+	
+	// Диалог подтверждения для AutoLogin
+	const confirmDialog = useDialog()
+	const [pendingAction, setPendingAction] = useState(null)
 	useEffect(() => {
 		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
 		api = api.replace('http://', '').replace('https://', '').replace(':4000/api/', '')
 		setReqIp(api)
-		notification.success('IP для запросов установлен на ' + api)
 		get('net_info', api ).then((o) => {
+			notification.success('IP для запросов установлен на ' + api)
 			setInfo(o.net)
 			setTtyS(o.ttyS)
 			notification.success('Информация о сети обновлена')
 		}).catch((e) => {
-			setReqIp('127.0.0.1')
-			notification.error(e.message || e.error || 'Ошибка получения информации о сети', {
+			notification.error(e.message || e.error || 'Ошибка получения информации о сети от : '+api, {
 				errorId: e.id
 			})
+			setReqIp('127.0.0.1')
+			notification.success('IP для запросов установлен на ' + api)
 		})
 	}, [])
 	
@@ -73,6 +79,48 @@ function Service() {
 					errorId: e.id
 				})
 			})
+	}
+
+	// Функции для AutoLogin с подтверждением
+	const handleAutoLoginToggle = (enable) => {
+		const action = enable ? 'enable' : 'disable'
+		const message = enable ? 'включить' : 'выключить'
+		
+		setPendingAction({
+			action,
+			message: `Вы уверены, что хотите ${message} автоматический вход?`,
+			onConfirm: () => {
+				const endpoint = enable ? 'auto_login/true' : 'auto_login/false'
+				const successMessage = enable ? 'Автоматический вход включен' : 'Автоматический вход выключен'
+				const errorMessage = enable ? 'Ошибка включения автоматического входа' : 'Ошибка выключения автоматического входа'
+				
+				get(endpoint, req_ip)
+					.then((result) => {
+						notification.success(getResponseMessage(result, successMessage))
+					})
+					.catch((e) => {
+						notification.error(e.message || errorMessage, {
+							errorId: e.id
+						})
+					})
+					.finally(() => {
+						confirmDialog.close()
+						setPendingAction(null)
+					})
+			}
+		})
+		confirmDialog.open()
+	}
+
+	const handleConfirmAction = () => {
+		if (pendingAction?.onConfirm) {
+			pendingAction.onConfirm()
+		}
+	}
+
+	const handleCancelAction = () => {
+		confirmDialog.close()
+		setPendingAction(null)
 	}
 
 	// Функции для модальных окон
@@ -159,8 +207,7 @@ function Service() {
 			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>Настройка IP-адреса для проекта:</span>
 			
 			<div className='page-service-row'>
-				
-				<Input value={ip} setValue={setIp} placeholder='192.168.1.100' />
+				<Input value={ip} setValue={setIp} auth={false} placeholder='192.168.1.100' />
 				<Btn title='Установить IP вручную' onClick={() => set_ip(ip)} />
 				<div className='page-service-row'>
 					<Btn
@@ -185,10 +232,10 @@ function Service() {
 					info.map((el, i)=>{
 						return (
 							<div key={i} style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between',padding: '5px'}}>
-								<span>interface: {el.interface}</span>
-								<span>mac: {el.mac}</span>
-								<span>ip: {el.ip}</span>
-								{el.ip && <Btn title={'Установить '+el.ip} onClick={()=>set_ip(el.ip)} />}
+								<span style={{width: '100px'}}>{el.interface}</span>
+								<span style={{width: '160px'}}>mac: {el.mac || '--'}</span>
+								<span style={{width: '160px'}}>ip: {el.ip || '--'}</span>
+								{el.ip ? <Btn title={'Установить '+el.ip} onClick={()=>set_ip(el.ip)} /> : <span style={{width: '310px'}}></span>}
 							</div>
 						)
 					})
@@ -204,23 +251,17 @@ function Service() {
 				<Btn
 					title='Обновить конфигурацию оборудования'
 					onClick={async () => {
-						get('equipment', req_ip).then((o) => {
-							setEquip(o.result)
-							notification.success('Конфигурация оборудования обновлена')
-						}).catch((e) => {
-							notification.error(e.message || 'Ошибка обновления конфигурации оборудования', {
-								errorId: e.id
+						get('equipment', req_ip)
+							.then((o) => {
+								notification.success('Конфигурация оборудования обновлена: '+o.message)
+							})
+							.catch((e) => {
+								notification.error(e.message || 'Ошибка обновления конфигурации оборудования: '+e.error || e.message, {
+									errorId: e.id
 							})
 						})
 					}}
 				/>
-				{!equip?.error?.code ? (
-					<span>Обновление: <br/>{equip ? new Date(equip).toLocaleString() : ''}</span>
-				) : (
-					<span title={`${equip?.error?.code}: ${equip?.error?.message}`}>
-						Возникла ошибка!
-					</span>
-				)}
 			</div>
 
 			<div className='page-service-row'>
@@ -247,20 +288,8 @@ function Service() {
 				})} />
 			</div>
 			<div className='page-service-row'>
-				<Btn title='AutoLogin On' onClick={() => get('auto_login/true', req_ip).then((result) => {
-					notification.success(getResponseMessage(result, 'Автоматический вход включен'))
-				}).catch((e) => {
-					notification.error(e.message || 'Ошибка включения автоматического входа', {
-						errorId: e.id
-					})
-				})} />
-				<Btn title='AutoLogin Off' onClick={() => get('auto_login/false', req_ip).then((result) => {
-					notification.success(getResponseMessage(result, 'Автоматический вход выключен'))
-				}).catch((e) => {
-					notification.error(e.message || 'Ошибка выключения автоматического входа', {
-						errorId: e.id
-					})
-				})} />
+				<Btn title='AutoLogin On' onClick={() => handleAutoLoginToggle(true)} />
+				<Btn title='AutoLogin Off' onClick={() => handleAutoLoginToggle(false)} />
 				<Btn title='Reboot Устройства' onClick={() => get('reboot', req_ip).then((result) => {
 					notification.success(getResponseMessage(result, 'Перезагрузка устройств запущена'))
 				}).catch((e) => {
@@ -304,6 +333,21 @@ function Service() {
 				modalRef={wifiModalRef} 
 				onSave={handleWifiSave} 
 			/>
+			
+			{/* Диалог подтверждения для AutoLogin */}
+			<Dialog href={confirmDialog.refDialog} cls="confirm-dialog">
+				<div className="confirm-dialog-content">
+					<div className="confirm-dialog-icon">⚠️</div>
+					<h3 className="confirm-dialog-title">Подтверждение действия</h3>
+					<p className="confirm-dialog-message">
+						{pendingAction?.message || 'Вы уверены, что хотите выполнить это действие?'}
+					</p>
+					<div className="confirm-dialog-actions">
+						<Btn title="Отмена" onClick={handleCancelAction} />
+						<Btn title="Подтвердить" onClick={handleConfirmAction} />
+					</div>
+				</div>
+			</Dialog>
 		</main>
 	)
 }

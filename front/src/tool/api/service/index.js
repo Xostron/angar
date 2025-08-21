@@ -56,7 +56,10 @@ function formatApiError(error, endpoint) {
 		formattedError = {
 			...formattedError,
 			type: 'NETWORK_ERROR',
-			message: 'Ошибка сети или сервер недоступен',
+			message:
+				'Ошибка сети или сервер недоступен ' + error.request?.url ||
+				error.request?.config?.url ||
+				'',
 		};
 	} else if (error.code === 'ECONNABORTED') {
 		// Таймаут запроса
@@ -86,7 +89,12 @@ function get(code, ip = '127.0.0.1') {
 			maxBodyLength: Infinity,
 			url: endpoint,
 			baseURL: 'http://' + ip + ':4000/api/',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				'Cache-Control': 'no-cache, no-store, must-revalidate',
+				Pragma: 'no-cache',
+				Expires: '0',
+			},
 			timeout: 10000,
 		};
 
@@ -110,7 +118,12 @@ function post(code, data, ip = '127.0.0.1') {
 			maxBodyLength: Infinity,
 			url: endpoint,
 			baseURL: 'http://' + ip + ':4000/api/',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json',
+				'Cache-Control': 'no-cache, no-store, must-revalidate',
+				Pragma: 'no-cache',
+				Expires: '0',
+			},
 			timeout: 10000,
 			data,
 		};

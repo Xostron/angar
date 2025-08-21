@@ -144,7 +144,11 @@ function NotificationItem({ notification, onRemove }) {
 	}
 
 	return (
-		<div className={`notification notification-${notification.type}`}>
+		<div 
+			className={`notification notification-${notification.type}`}
+			onClick={() => onRemove(notification.id)}
+			style={{ cursor: 'pointer' }}
+		>
 			<div className="notification-icon">
 				{getIcon()}
 			</div>
@@ -159,7 +163,10 @@ function NotificationItem({ notification, onRemove }) {
 			</div>
 			<button 
 				className="notification-close" 
-				onClick={() => onRemove(notification.id)}
+				onClick={(e) => {
+					e.stopPropagation()
+					onRemove(notification.id)
+				}}
 			>
 				×
 			</button>
