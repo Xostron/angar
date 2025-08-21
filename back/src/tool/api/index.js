@@ -12,11 +12,11 @@ const api = axios.create({
 // Перехват 401 ошибки Не авторизованный пользователь
 api.interceptors.response.use(
 	(response) => {
-		console.log('\n\napi.interceptors.response.use', response);
+		// console.log('\n\napi.interceptors.response.use', response);
 		return response;
 	},
 	async (error) => {
-		console.log('\n\napi.interceptors.response.use error', error);
+		// console.log('\n\napi.interceptors.response.use error', error);
 		// Обрабатываем ошибку
 		const original = error.config;
 		if (!error.response) {

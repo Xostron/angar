@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { get } from '@tool/api/service'
 import { notification } from '@cmp/notification'
+import StatusWS from './status_ws'
 
 function Version() {
 	const [title, setTitle] = useState('')
@@ -15,6 +16,7 @@ function Version() {
 		if (name && code) setTitle(`${code} ${name} `)
 	}, [name, code])
 
+	// Запрос у ангар-сервера mac ethernet
 	useEffect(() => {
 		get('net_info', 'localhost')
 			.then((o) => {
@@ -27,10 +29,22 @@ function Version() {
 	}, [])
 
 	return (
-		<div style={{ position: 'absolute', bottom: '15px', right: '15px', color: 'darkgray' }}>
+		<div style={stl}>
 			<Helmet title={title} />
-			<p>server 4.3.0: {process.env.PUBLIC_SOCKET_URI} {info && ' Сеть: '+info.map(el=>`${el.interface}: ${el.ip || el.mac}`).join('')}</p>
+			<StatusWS />
+			server 4.3.0: {process.env.PUBLIC_SOCKET_URI}{' '}
+			{info && ' Сеть: ' + info.map((el) => `${el.interface}: ${el.ip || el.mac}`).join('')}
 		</div>
 	)
 }
 export default Version
+
+const stl = {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '.3em',
+	position: 'absolute',
+	bottom: '15px',
+	right: '15px',
+	color: 'darkgray',
+}

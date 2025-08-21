@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import useViewStore from '@store/view'
+import throttle from '@tool/throttle'
 
 export default function useView() {
 	const updateView = useViewStore((s) => s.updateView)
@@ -7,11 +8,7 @@ export default function useView() {
 	useEffect((_) => {
 		const rs = (_) => {
 			if (tm.current) return
-			tm.current = setTimeout(() => {
-				tm.current = null
-				console.log('resize')
-				updateView()
-			}, 700)
+			throttle(tm, updateView,1000)
 		}
 		window.addEventListener('resize', rs)
 		return (_) => window.removeEventListener('resize', rs)
