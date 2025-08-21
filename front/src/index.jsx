@@ -9,6 +9,7 @@ import NotificationContainer from '@cmp/notification'
 import globalErrorHandler from '@tool/error-handler'
 import router from './router'
 import Auth from '@cmp/auth'
+import View from '@cmp/view'
 import './style.css'
 import './style_large.css'
 
@@ -25,6 +26,7 @@ root.render(
 		<Keyboard />
 		<Version />
 		<NotificationContainer />
+		<View />
 		<RouterProvider router={router} />
 		{/*</React.StrictMode> */}
 	</ErrorBoundary>

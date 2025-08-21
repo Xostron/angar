@@ -8,7 +8,7 @@ const users = {
 	},
 	admin: {
 		id: 2,
-		pwd: '163264',
+		pwd: '9988',
 		fio: 'Админ',
 		role: ['admin'],
 	},

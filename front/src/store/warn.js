@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 // Состояние для управления диалоговыми окнами
-const useWarn = create((set, get) => ({
+const useWarnStore = create((set, get) => ({
 	// Флаг - Показать entry (диалоговое окно)
 	show: false,
 	// Данные для entry
@@ -40,7 +40,7 @@ const useWarn = create((set, get) => ({
 	},
 }))
 
-export default useWarn
+export default useWarnStore
 
 // Статические формы, статические формы отобраэаются на форме entryCode='warn'
 const def = {

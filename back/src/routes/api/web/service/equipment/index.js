@@ -2,6 +2,7 @@ const init = require('@tool/init')
 
 function equip() {
     return async (req, res, next) => {
+		console.log('\n\nequipment')
         try {
             await init()
 			res.json({ result: new Date() })

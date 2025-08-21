@@ -1,4 +1,4 @@
-const axios = require('axios')
+const axios = require('axios');
 
 const api = axios.create({
 	// Axios Interceptors
@@ -7,23 +7,25 @@ const api = axios.create({
 	// Базовый url
 	baseURL: process.env.API_URI || 'http://localhost:3200/api/',
 	// timeout: 10000,
-})
+});
 
 // Перехват 401 ошибки Не авторизованный пользователь
 api.interceptors.response.use(
 	(response) => {
-		return response
+		console.log('\n\napi.interceptors.response.use', response);
+		return response;
 	},
 	async (error) => {
+		console.log('\n\napi.interceptors.response.use error', error);
 		// Обрабатываем ошибку
-		const original = error.config
+		const original = error.config;
 		if (!error.response) {
-			return error
+			return error;
 		}
-		const st = error.response.status
+		const st = error.response.status;
 		// Обработка статусов
-		return error
+		return error;
 	}
-)
+);
 
-module.exports = api
+module.exports = api;
