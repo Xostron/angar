@@ -1,0 +1,17 @@
+.cmp-warn-def-burger-dialog {
+	display: flex;
+	flex-direction: column;
+	top: 0%;
+	left: 100%;
+	transform: translate(-100%, 0%);
+	border-radius: 0px;
+	max-height: none;
+	height: 100vh;
+}
+
+.cmp-warn-def-burger {
+	display: flex;
+	flex-direction: column;
+	max-width: calc(100vw - 32px);
+	min-width: 200px;
+}

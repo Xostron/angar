@@ -4,6 +4,7 @@ import warn from './warn'
 import fan from './fan'
 import fanao from './fan_ao'
 import valve from './valve'
+import burger from './burger'
 
 export default {
 	person,
@@ -12,6 +13,7 @@ export default {
 	fan,
 	fanao,
 	valve,
+	burger,
 	notfound: ({ data, entryCode }) => (
 		<div className='entry'>Модального окна {entryCode} не существует</div>
 	),

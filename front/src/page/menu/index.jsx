@@ -1,5 +1,4 @@
 import Header from "@cmp/header"
-import Menu from "@cmp/menu"
 import { Outlet } from "react-router-dom"
 
 
@@ -7,9 +6,7 @@ import { Outlet } from "react-router-dom"
 export default function Building({}) {
 	return (
 		<>
-			<Header>
-				<Menu/>
-			</Header>
+			<Header/>				
 			<Outlet/>
 		</>
 	)

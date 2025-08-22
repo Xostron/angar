@@ -12,7 +12,6 @@ const useWarnStore = create((set, get) => ({
 	entryCode: null,
 	/**
 	 * Статические entry
-	 * Записать данные и показать
 	 * @param {string} code код для data = def[code] данные для entry
 	 * @param {string} entryCode код entry (компонент формы диалогового окна)
 	 * @param {function} fnYes кнопка Да - опционально пользовательские функции

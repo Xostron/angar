@@ -1,8 +1,12 @@
-.head > section {
+.head {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	/* padding-bottom: 1vmin; */
 	gap: 30px;
 	height: 100px;
+	&.mb {
+		height: 50px;
+		gap: 0px;
+		justify-content: space-between;
+	}
 }

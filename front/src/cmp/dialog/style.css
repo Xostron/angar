@@ -6,11 +6,13 @@
 	border: none;
 	border-radius: 10px;
 }
-
 .dia::backdrop {
 	background-color: rgba(0, 0, 0, 0.144);
 }
-.dia:focus{
-	border:none;
+.dia:focus {
+	border: none;
 	outline: none;
 }
+
+/* Для модального окна Burger */
+

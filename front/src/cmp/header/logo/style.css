@@ -1,6 +1,7 @@
 .logo {
-	/* height: var(--fsz80); */
-	/* aspect-ratio: 16/9; */
 	height: 100%;
 	width: 200px;
+	&.mb {
+		width: 149px;
+	}
 }

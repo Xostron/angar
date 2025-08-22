@@ -1,0 +1,41 @@
+.cmp-burger-wrapper {
+	opacity: 1;
+	width: 50px;
+	height: 50px;
+	transition: opacity .3s ease;
+	cursor: pointer;
+	position: relative;
+}
+.cmp-burger-wrapper:hover {
+	opacity: .5;
+}
+
+.cmp-burger {
+	position: absolute;
+	transform: translate(-50%, 50%);
+	left: 50%;
+	bottom: 50%;
+	width: 30px;
+	height: 3px;
+	background-color: var(--primary);
+	aspect-ratio: 1;
+}
+.cmp-burger::after {
+	content: '';
+	width: 30px;
+	height: 3px;
+	position: absolute;
+	bottom: 10px;
+	right: 0%;
+	background-color: var(--primary);
+}
+
+.cmp-burger::before {
+	content: '';
+	width: 30px;
+	height: 3px;
+	position: absolute;
+	bottom: -10px;
+	right: 0%;
+	background-color: var(--primary);
+}

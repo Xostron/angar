@@ -10,6 +10,7 @@ export default function useView() {
 			if (tm.current) return
 			throttle(tm, updateView,1000)
 		}
+		updateView()
 		window.addEventListener('resize', rs)
 		return (_) => window.removeEventListener('resize', rs)
 	}, [])
