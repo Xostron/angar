@@ -1,8 +1,8 @@
-import Btn from '@cmp/fields/btn'
 import { useHref, useNavigate } from 'react-router-dom'
 import useWarn from '@store/warn'
-// import useEquipStore from '@store/equipment'
 import useAuthStore from '@store/auth'
+import useViewStore from '@store/view'
+import Btn from '@cmp/fields/btn'
 
 //Элемент меню
 export default function Item({ data }) {
@@ -10,14 +10,11 @@ export default function Item({ data }) {
 	const navigate = useNavigate()
 	const href = useHref()
 	const { link, setLink } = useWarn()
-	const { title, icon, path, active, id } = data
+	const mb = useViewStore((s) => s.mb())
+	const { title, icon, path, active } = data
 	const cur = href.split('/').at(3) ?? null
-	let cls = 'menu-button'
-	if (active.includes(cur)) cls += ' active'
-	const root = name == 'Root' && id === 7
-	return (
-		<>{(root || id !== 7) && <Btn onClick={onClick} cls={cls} title={title} icon={icon} />}</>
-	)
+	const cls = ['menu-button', mb, active.includes(cur) ? ' active' : ''].join(' ')
+	return <Btn onClick={onClick} cls={cls} title={title} icon={icon} />
 
 	function onClick() {
 		if (link?.hasChanged) {

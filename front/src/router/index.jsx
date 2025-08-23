@@ -1,35 +1,21 @@
-import Main from '@page/main'
-import Menu from '@page/menu'
-import Test from '@page/test'
-import NotFound from '@page/404'
-import Service from '@page/service'
-import RouterError from '@cmp/router-error'
+// import Main from '@page/main'
+// import Menu from '@page/menu'
+// import Test from '@page/test'
+// import Service from '@page/service'
+// import building from './building'
+
 import { createBrowserRouter } from 'react-router-dom'
-import building from './building'
+import RouterError from '@cmp/router-error'
+import { routesApp } from './app'
+import NotFound from '@page/404'
+import App from '@src/page/App'
 
 const router = createBrowserRouter([
-	{
-		path: 'test',
-		element: <Test />,
-		errorElement: <RouterError />,
-	},
-	{
-		path: 'building/:build',
-		element: <Menu />,
-		children: building,
-		errorElement: <RouterError />,
-	},
-	{
-		path: '/',
-		element: <Main />,
-		children: [{ path: 'building', element: <Main /> }],
-		errorElement: <RouterError />,
-	},
-	{
-		path: 'service',
-		element: <Service />,
-		errorElement: <RouterError />,
-	},
+    {
+        path:'/',
+        element:<App/>,
+        children:routesApp
+    },
 	{
 		path: '*',
 		element: <NotFound header />,

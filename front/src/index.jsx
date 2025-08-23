@@ -1,4 +1,3 @@
-import Warn from '@cmp/warn'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import Keyboard from '@cmp/keyboard'
@@ -19,15 +18,18 @@ globalErrorHandler.init()
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
 	<ErrorBoundary>
-		{/*<React.StrictMode> */}
+        {/* Проверка авторизации */}
 		<Auth />
-		<Warn />
+        {/* Инициализация webSocket */}
 		<Socket />
+        {/* Обработка клавиатуры */}
 		<Keyboard />
+        {/* Вывод версии ПО */}
 		<Version />
+        {/* Уведомления */}
 		<NotificationContainer />
+        {/* Размер экрана */}
 		<View />
 		<RouterProvider router={router} />
-		{/*</React.StrictMode> */}
 	</ErrorBoundary>
 )

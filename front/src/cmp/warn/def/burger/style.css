@@ -7,11 +7,25 @@
 	border-radius: 0px;
 	max-height: none;
 	height: 100vh;
+	background-color: rgba(255, 255, 255, 0.9);
 }
 
 .cmp-warn-def-burger {
 	display: flex;
 	flex-direction: column;
-	max-width: calc(100vw - 32px);
+	max-width: calc(100vw - 2em);
 	min-width: 200px;
+}
+
+.cmp-warn-def-burger-close {
+	position: absolute;
+	right: 15px;
+	top: 2px;
+	background-color: white;
+}
+.cmp-warn-def-burger-close > img {
+	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg) brightness(92%) contrast(95%);
+}
+.cmp-warn-def-burger-close > img:hover {
+	filter: none;
 }

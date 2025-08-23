@@ -1,9 +1,10 @@
 import Logo from './logo'
 import Time from './time'
-import './style.css'
 import useViewStore from '@store/view'
 import Menu from '../menu'
 import Burger from './burger'
+import MainNav from '../main_nav'
+import './style.css'
 //Шапка страницы
 export default function Header({}) {
 	const mb = useViewStore((s) => s.mb())
@@ -15,6 +16,7 @@ export default function Header({}) {
 			<Logo />
 			{bmb && <Burger />}
 			{!bmb && <Menu />}
+            {/* {!bmb && <MainNav/>} */}
 			{!bmb && <Time />}
 		</header>
 	)
