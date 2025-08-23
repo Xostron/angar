@@ -4,7 +4,7 @@
 	height: 46px;
 	cursor: pointer;
 	position: relative;
-    background-color: transparent;
+	background-color: transparent;
 }
 .cmp-burger-wrapper:hover {
 	& .cmp-burger,

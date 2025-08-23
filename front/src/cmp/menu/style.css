@@ -8,7 +8,6 @@ menu {
 		flex-direction: column;
 		margin: calc(50px + 1em) 0px;
 		align-items: flex-start;
-		background-color: red;
 		height: 70vh;
 	}
 }
