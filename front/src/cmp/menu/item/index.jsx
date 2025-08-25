@@ -1,4 +1,4 @@
-import { useHref, useNavigate } from 'react-router-dom'
+import { useHref, useNavigate } from 'react-router'
 import useWarn from '@store/warn'
 import useAuthStore from '@store/auth'
 import useViewStore from '@store/view'
@@ -11,9 +11,11 @@ export default function Item({ data }) {
 	const href = useHref()
 	const { link, setLink } = useWarn()
 	const mb = useViewStore((s) => s.mb())
+	const bmb = useViewStore((s) => s.bmb())
 	const { title, icon, path, active } = data
-	const cur = href.split('/').at(3) ?? null
+	const cur = href.split('/').at(3) ?? href.split('/').at(1)
 	const cls = ['menu-button', mb, active.includes(cur) ? ' active' : ''].join(' ')
+
 	return <Btn onClick={onClick} cls={cls} title={title} icon={icon} />
 
 	function onClick() {
@@ -22,6 +24,29 @@ export default function Item({ data }) {
 			return
 		}
 		setLink(null)
-		navigate(path)
+		if (!bmb) navigate(path)
+		if (bmb) bmbNavigate(path, href,navigate)
+		// console.log(111, path, href, cur)
 	}
+}
+
+// Навигация через модальное окно (мобилка)
+function bmbNavigate(path, href,navigate) {
+	// Строим абсолютные пути
+	let newPath = href.split('/').slice(0, 3).join('/') + '/'
+	switch (path) {
+		// Склады
+		case '/building':
+			newPath = path
+			break
+		// Склад
+		case '':
+			break
+		// Остальные дети склада
+		default:
+			newPath += path
+			break
+	}
+	console.log('newPath', newPath)
+	navigate(newPath)
 }

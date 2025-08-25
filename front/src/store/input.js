@@ -78,7 +78,6 @@ const useInputStore = create((set, get) => ({
 	},
 	getTotalBy(key, type, id) {
 		const o = get()?.input?.total?.[id]?.[key]
-		// console.log(222, key, type, get()?.input?.total);
 		return { state: o?.state, value: o?.[type] }
 	},
 	getTotal(key, type) {

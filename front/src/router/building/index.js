@@ -1,22 +1,24 @@
-import Building from '@page/building';
-import Report from '@page/report';
-import Section from '@page/section';
-import Sensor from '@page/sensor';
-import Settings from '@page/settings';
-import Signal from '@page/signal';
-import NotFound from '@page/404';
-import BuildOrSect from '@page/build_or_sect';
-import Service from '@page/service';
-import RouterError from '@cmp/router-error';
+import Building from '@page/building'
+import Report from '@page/report'
+import Section from '@page/section'
+import Sensor from '@page/sensor'
+import Settings from '@page/settings'
+import Signal from '@page/signal'
+import NotFound from '@page/404'
+import BuildOrSect from '@page/build_or_sect'
+import Service from '@page/service'
+import RouterError from '@cmp/router-error'
 
 //Роутинг склада
 const building = [
 	{
+		
 		path: '',
 		element: <BuildOrSect />,
 		errorElement: <RouterError />,
 		children: [
 			{
+				index: true,
 				path: '',
 				element: <Building />,
 				errorElement: <RouterError />,
@@ -57,7 +59,7 @@ const building = [
 		path: '*',
 		element: <NotFound />,
 	},
-];
+]
 
 //Роутинг склада
 // const building = [
@@ -91,4 +93,4 @@ const building = [
 // 	}
 // ]
 
-export default building;
+export default building

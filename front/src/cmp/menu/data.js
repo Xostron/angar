@@ -1,49 +1,46 @@
-
-
 //Список меню склада
 const data = [
 	{
-		id:1,
+		id: 1,
 		title: 'Склады',
-		path: '/',
+		path: '/building',
 		icon: '/img/menu/all.svg',
-		active: []
+		active: [],
 	},
 	{
-		id:2,
+		id: 2,
 		title: 'Склад',
 		path: '',
 		icon: '/img/menu/building.svg',
-		active: [null, 'section']
-		
+		active: ['building', 'section'],
 	},
 	{
-		id:3,
+		id: 3,
 		title: 'Датчики',
 		path: 'sensor/all',
 		icon: '/img/menu/sensor.svg',
-		active: ['sensor']
+		active: ['sensor'],
 	},
 	{
-		id:4,
+		id: 4,
 		title: 'Сигналы',
 		path: 'signal',
 		icon: '/img/menu/signal.svg',
-		active: ['signal']
+		active: ['signal'],
 	},
 	{
-		id:5,
+		id: 5,
 		title: 'Настройки',
 		path: 'settings/menu',
 		icon: '/img/menu/settings.svg',
-		active: ['settings']
+		active: ['settings'],
 	},
 	{
-		id:6,
+		id: 6,
 		title: 'Отчеты',
 		path: 'report',
 		icon: '/img/menu/report.svg',
-		active: ['report']
+		active: ['report'],
 	},
 	// {
 	// 	id:7,
@@ -54,5 +51,4 @@ const data = [
 	// },
 ]
 
-
-export default  data
+export default data

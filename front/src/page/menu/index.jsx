@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom"
 export default function Building({}) {
 	return (
 		<>
-			<Header/>				
+			<Header menu/>				
 			<Outlet/>
 		</>
 	)
