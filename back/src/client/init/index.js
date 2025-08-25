@@ -1,5 +1,5 @@
 const { delay } = require('@tool/command/time')
-const init = require('@tool/init')
+const {init} = require('@tool/init')
 
 // Периодическое выполнение каждые 7 мин
 async function loopInit() {

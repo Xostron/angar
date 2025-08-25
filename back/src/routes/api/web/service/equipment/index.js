@@ -1,10 +1,10 @@
-const init = require('@tool/init')
+const { init } = require('@tool/init')
 
 function equip() {
-    return async (req, res, next) => {
+	return async (req, res, next) => {
 		console.log('\n\nequipment')
-        try {
-            await init()
+		try {
+			await init()
 			res.json({ result: new Date() })
 		} catch (error) {
 			console.log(error)
@@ -14,5 +14,3 @@ function equip() {
 }
 
 module.exports = equip
-
-

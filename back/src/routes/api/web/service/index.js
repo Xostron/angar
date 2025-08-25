@@ -13,6 +13,7 @@ const {
 	wifi_manager,
 	eth_info,
 	eth_manager,
+	file
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -43,6 +44,9 @@ function service(router) {
 
 	serviceRouter.get('/eth', eth_info());
 	serviceRouter.post('/eth', eth_manager());
+
+	// Установить файл с конфигурацией оборудования
+	serviceRouter.post('/file', file())
 }
 
 module.exports = service;

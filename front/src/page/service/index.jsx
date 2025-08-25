@@ -36,6 +36,7 @@ function Service({ header = false }) {
 	const [req_ip, setReqIp] = useState()
 	const [info, setInfo] = useState()
 	const [ttyS, setTtyS] = useState()
+	const [file, setFile] = useState()
 
 	// Ссылки на модальные окна
 	const ethernetModalRef = useRef()
@@ -189,6 +190,7 @@ function Service({ header = false }) {
 		<>
 			{header && <Header />}
 			<main className='page-service'>
+				<span style={{ fontSize: '20px', fontWeight: 'bold' }}>COM/USB</span>
 				<Accordion
 					title={`Устройства последовательных портов (${ttyS?.length || 0})`}
 					defaultOpen={false}
@@ -209,6 +211,7 @@ function Service({ header = false }) {
 						</div>
 					)}
 				</Accordion>
+
 				<span style={{ fontSize: '20px', fontWeight: 'bold' }}>Настройка сети:</span>
 				<div className='page-service-row'>
 					<Btn title='Ethernet' onClick={() => modal_eth()} />
@@ -230,10 +233,10 @@ function Service({ header = false }) {
 						}}
 					/>
 				</div>
+
 				<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
 					Настройка IP-адреса для проекта:
 				</span>
-
 				<div className='page-service-row'>
 					<Input value={ip} setValue={setIp} auth={false} placeholder='192.168.1.100' />
 					<Btn title='Установить IP вручную' onClick={() => set_ip(ip)} />
@@ -259,7 +262,6 @@ function Service({ header = false }) {
 						/>
 					</div>
 				</div>
-
 				<Accordion
 					title={`Список сетевых интерфейсов (${info?.length || 0})`}
 					defaultOpen={false}
@@ -302,7 +304,7 @@ function Service({ header = false }) {
 				</span>
 				<div className='page-service-row'>
 					<Btn
-						title='Обновить конфигурацию оборудования'
+						title='Обновить конфигурацию оборудования по сети'
 						onClick={async () => {
 							get('equipment', req_ip)
 								.then((o) => {
@@ -324,7 +326,38 @@ function Service({ header = false }) {
 						}}
 					/>
 				</div>
-
+				<div className='page-service-row'>
+					<input
+						type='file'
+						onChange={(e) => {
+							setFile(e.target.files[0])
+						}}
+					/>
+					<Btn
+						title='Принять'
+						onClick={async (e) => {
+							const formData = new FormData()
+							formData.append('file', file)
+							post('file', formData)
+								.then((o) => {
+									notification.success(
+										'Конфигурация оборудования установлена: ' + o.message
+									)
+								})
+								.catch((e) => {
+									notification.error(
+										e.message ||
+											'Ошибка установки конфигурации оборудования: ' +
+												e.error ||
+											e.message,
+										{
+											errorId: e.id,
+										}
+									)
+								})
+						}}
+					/>
+				</div>
 				<div className='page-service-row'>
 					<Btn
 						title='Обновить ПО'

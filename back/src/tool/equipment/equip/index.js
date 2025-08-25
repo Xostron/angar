@@ -36,7 +36,7 @@ const factory = require('./factory')
  */
 function equip(data) {
 	const result = {
-		building: data.building.map((el) => building(el, data)),
+		building: data?.building?.map((el) => building(el, data)),
 		factory: factory(data?.factory),
 		weather: data?.weather,
 	}

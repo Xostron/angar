@@ -1,15 +1,17 @@
-const fs = require('fs');
-const path = require('path');
-const reboot = require('@tool/scripts/reboot');
-const update = require('@tool/scripts/update');
-const pm2 = require('@tool/scripts/pm2');
-const rebuild = require('@tool/scripts/rebuild');
-const get_net_info = require('@tool/scripts/get_net_info');
-const set_new_ip = require('@tool/scripts/set_new_ip');
-const auto_login = require('@tool/scripts/auto_login');
-const reload_net = require('@tool/scripts/reload_net');
-const wifi = require('@tool/scripts/wifi');
-const eth = require('@tool/scripts/eth');
+const fs = require('fs')
+const path = require('path')
+const reboot = require('@tool/scripts/reboot')
+const update = require('@tool/scripts/update')
+const pm2 = require('@tool/scripts/pm2')
+const rebuild = require('@tool/scripts/rebuild')
+const get_net_info = require('@tool/scripts/get_net_info')
+const set_new_ip = require('@tool/scripts/set_new_ip')
+const auto_login = require('@tool/scripts/auto_login')
+const reload_net = require('@tool/scripts/reload_net')
+const wifi = require('@tool/scripts/wifi')
+const eth = require('@tool/scripts/eth')
+const fsp = require('fs').promises
+const { writeConfig } = require('@tool/init')
 
 function net_info() {
 	return (req, res) => {
@@ -95,9 +97,31 @@ function eth_info() {
 
 function eth_manager() {
 	return async (req, res) => {
-		const result = await eth.manager(req.body);
-		res.json(result);
-	};
+		const result = await eth.manager(req.body)
+		res.json(result)
+	}
+}
+
+function file() {
+	return async (req, res) => {
+		// Получение файла
+		const f = req?.files?.file
+		if (!f) return res.status(400).json({ error: 'Нет файла' })
+		// Прочитали файл
+		const ff = await fsp.readFile(f.tempFilePath, { encoding: 'utf8' })
+		if (!ff) return res.status(404).json({ error: 'Файл пуст' })
+		// Дисериализуем и сохраняем в root/data
+		try {
+			const result = JSON.parse(ff)
+			if (!result.pc) throw Error('Некорректный файл')
+			console.log(99010, 'Конфигурация из файла обработана -> Устанавливаем...')
+			writeConfig(result)
+			console.log(99011, 'Конфигурация из файла успешно установлена!')
+			res.status(200).json({ resilt: 'ok' })
+		} catch (error) {
+			res.status(409).json({ error: error.toString() })
+		}
+	}
 }
 
 module.exports = {
@@ -113,4 +137,5 @@ module.exports = {
 	wifi_manager,
 	eth_info,
 	eth_manager,
-};
+	file,
+}

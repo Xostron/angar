@@ -8,6 +8,8 @@ const passport = require('passport')
 const passportJwt = require('passport-jwt')
 const JwtStrategy = passportJwt.Strategy
 const ExtractJwt = passportJwt.ExtractJwt
+const fileUpload = require('express-fileupload');
+const tempFileDir = path.join(__dirname, 'temp');
 
 const jwtDecodeOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -42,6 +44,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-
+// Настрока загрузки файлов
+app.use(
+	fileUpload({
+		createParentPath: true,
+		// safeFileNames: true,
+		useTempFiles: true,
+		tempFileDir,
+		// debug: true,
+	})
+)
 
 module.exports = app

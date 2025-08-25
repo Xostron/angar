@@ -53,11 +53,12 @@ async function init() {
 					'\x1b[32m%s\x1b[0m',
 					`Данные с AdminServer ${process.env.API_URI} получены`
 				)
-				// Сохранение конфигурации в json
-				writeSync(r.data.result, dataDir, t)
-				// Заводские настройки в json
-				transformF(r?.data?.result?.factory, factoryDir)
-				return initRetain(r.data.result)
+				// // Сохранение конфигурации в json
+				// writeSync(r.data.result, dataDir, t)
+				// // Заводские настройки в json
+				// transformF(r?.data?.result?.factory, factoryDir)
+				// return initRetain(r.data.result)
+				writeConfig(r.data.result)
 			})
 			// Формирование рамы для клиента
 			.then((_) => equipment())
@@ -67,4 +68,13 @@ async function init() {
 	)
 }
 
-module.exports = init
+function writeConfig(result) {
+	// Сохранение конфигурации в json
+	writeSync(result, dataDir, t)
+	// Заводские настройки в json
+	transformF(result.factory, factoryDir)
+	// Первичные данные retain
+	initRetain(result)
+}
+
+module.exports = { init, writeConfig }
