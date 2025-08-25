@@ -327,14 +327,14 @@ function Service({ header = false }) {
 					/>
 				</div>
 				<div className='page-service-row'>
-					<input
+					<input className='cell input'
 						type='file'
 						onChange={(e) => {
 							setFile(e.target.files[0])
 						}}
 					/>
 					<Btn
-						title='Принять'
+						title='Обновить конфигурацию из файла'
 						onClick={async (e) => {
 							const formData = new FormData()
 							formData.append('file', file)

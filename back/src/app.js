@@ -10,6 +10,7 @@ const JwtStrategy = passportJwt.Strategy
 const ExtractJwt = passportJwt.ExtractJwt
 const fileUpload = require('express-fileupload');
 const tempFileDir = path.join(__dirname, 'temp');
+const clearTemp = require('@util/clear_tmp')
 
 const jwtDecodeOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -54,5 +55,8 @@ app.use(
 		// debug: true,
 	})
 )
+// Очистка от временных файлов
+clearTemp(tempFileDir)
+console.log(9990099)
 
 module.exports = app
