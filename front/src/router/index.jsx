@@ -1,9 +1,3 @@
-// import Main from '@page/main'
-// import Menu from '@page/menu'
-// import Test from '@page/test'
-// import Service from '@page/service'
-// import building from './building'
-
 import { createBrowserRouter } from 'react-router-dom'
 import RouterError from '@cmp/router-error'
 import { routesApp } from './app'

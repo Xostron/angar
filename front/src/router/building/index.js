@@ -12,13 +12,11 @@ import RouterError from '@cmp/router-error'
 //Роутинг склада
 const building = [
 	{
-		
 		path: '',
 		element: <BuildOrSect />,
 		errorElement: <RouterError />,
 		children: [
 			{
-				index: true,
 				path: '',
 				element: <Building />,
 				errorElement: <RouterError />,
@@ -59,7 +57,7 @@ const building = [
 		path: '*',
 		element: <NotFound />,
 	},
-]
+];
 
 //Роутинг склада
 // const building = [
@@ -93,4 +91,4 @@ const building = [
 // 	}
 // ]
 
-export default building
+export default building;

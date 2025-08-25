@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component {
 			error: error,
 			errorInfo: errorInfo,
 			errorId: errorId,
-			countdown: 100000
+			countdown: 10
 		})
 
 		// Запускаем таймер обратного отсчета

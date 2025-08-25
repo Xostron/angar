@@ -5,7 +5,8 @@ import Menu from '../menu'
 import Burger from './burger'
 import MainNav from '../main_nav'
 import './style.css'
-//Шапка страницы
+
+//Оглавление страницы
 export default function Header({ menu = false }) {
 	const mb = useViewStore((s) => s.mb())
 	const bmb = useViewStore((s) => s.bmb())

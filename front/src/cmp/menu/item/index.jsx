@@ -47,6 +47,5 @@ function bmbNavigate(path, href,navigate) {
 			newPath += path
 			break
 	}
-	console.log('newPath', newPath)
 	navigate(newPath)
 }

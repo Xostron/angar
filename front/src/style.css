@@ -1,4 +1,3 @@
-/* Стиль для разрешения 1600px - PoS Terminal */
 html body {
 	/* min-width: 1200px; */
 	height: 100vh;
@@ -10,7 +9,7 @@ html body {
 	padding: 0;
 	box-sizing: border-box;
 }
-/* .mb{background-color:burlywood} */
+
 body {
 	padding-inline: 15px;
 }
