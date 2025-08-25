@@ -67,6 +67,7 @@ if (!fs.existsSync(accDir)) {
 	fs.mkdirSync(accDir)
 	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}')
 }
+
 // Запрос конфигурации у админ-сервера
 loopInit().then().catch(console.error)
 // Отправка состояния складов на админ-сервер

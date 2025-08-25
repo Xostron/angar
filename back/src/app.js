@@ -57,6 +57,5 @@ app.use(
 )
 // Очистка от временных файлов
 clearTemp(tempFileDir)
-console.log(9990099)
 
 module.exports = app
