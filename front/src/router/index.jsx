@@ -15,7 +15,7 @@ const router = createBrowserRouter(
 		},
 		{
 			path: 'service',
-			element: <Service />,
+			element: <Service header/>,
 			errorElement: <RouterError />,
 		},
 		{
