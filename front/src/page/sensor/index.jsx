@@ -6,7 +6,7 @@ import useWarn from '@store/warn'
 import SubHead from './sub_head'
 import List from './list'
 import Nav from '@cmp/nav'
-import {navList, sensList} from './fn'
+import { navList, sensList } from './fn'
 import './style.css'
 
 //Информация по датчикам склада
@@ -24,11 +24,14 @@ export default function Sensor({}) {
 			setCurS,
 		]
 	)
-	const [setSens, sendSens, hasChangedSens] = useOutputStore(({ setSens, sendSens, hasChangedSens }) => [setSens, sendSens, hasChangedSens])
+	const [setSens, sendSens, hasChangedSens] = useOutputStore(
+		({ setSens, sendSens, hasChangedSens }) => [setSens, sendSens, hasChangedSens]
+	)
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
-	const { link, setLink, warnCustom } = useWarn(({ link, setLink,warnCustom }) => ({ link, setLink,warnCustom }))
+	const setLink = useWarn((s) => s.setLink)
+	const warn = useWarn((s) => s.warn)
 	const obj = {
 		type: 'warn',
 		title: `Сохранение`,
@@ -48,7 +51,7 @@ export default function Sensor({}) {
 
 	// Обработчик вызова окна
 	function onDialog(path) {
-		warnCustom({ ...obj, path },'warn')
+		warn({ ...obj, path }, 'warn')
 	}
 
 	// Окно подтверждения
@@ -79,12 +82,18 @@ export default function Sensor({}) {
 	// Стили
 
 	return (
-		<main className='sen' >
-			<SubHead title={title} type={sect}/>
-			<List data={data} type={sect}/>
-			<Nav cls='nav-h-sen' cur={sect} data={sec} ph='sensor' stl={nhs} dialog={onDialog} hasChanged={hasChangedSens(buildId)} />
+		<main className='sen'>
+			<SubHead title={title} type={sect} />
+			<List data={data} type={sect} />
+			<Nav
+				cls='nav-h-sen'
+				cur={sect}
+				data={sec}
+				ph='sensor'
+				stl={nhs}
+				dialog={onDialog}
+				hasChanged={hasChangedSens(buildId)}
+			/>
 		</main>
 	)
 }
-
-

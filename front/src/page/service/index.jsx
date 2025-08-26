@@ -1,6 +1,7 @@
 import './style.css'
 import Btn from '@cmp/fields/btn'
 import Input from '@cmp/fields/input'
+import useWarn from '@store/warn'
 import NetworkEthernetModal from './modals/network-ethernet'
 import NetworkWifiModal from './modals/network-wifi'
 import Accordion from '@cmp/accordion'
@@ -13,30 +14,15 @@ import Dialog from '@cmp/dialog'
 import useDialog from '@cmp/dialog/hook'
 import Header from '@src/cmp/header'
 
-// Функция валидации IP-адреса
-function validateIP(ip) {
-	if (!ip) return false
-	const ipRegex =
-		/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-	return ipRegex.test(ip) && ip !== '0.0.0.0'
-}
-
-// Функция для извлечения сообщения из ответа сервера
-function getResponseMessage(result, defaultMessage = 'Выполнено') {
-	if (typeof result === 'string' && result.trim()) return result
-	if (typeof result === 'object' && result?.message) return result.message
-	// Если result пустой, undefined, null или пустая строка
-	return defaultMessage
-}
-
 function Service({ header = false }) {
 	const navigate = useNavigate()
 	const [ip, setIp] = useState()
-
 	const [req_ip, setReqIp] = useState()
 	const [info, setInfo] = useState()
 	const [ttyS, setTtyS] = useState()
 	const [file, setFile] = useState()
+
+	const warn = useWarn((s) => s.warn)
 
 	// Ссылки на модальные окна
 	const ethernetModalRef = useRef()
@@ -214,7 +200,8 @@ function Service({ header = false }) {
 
 				<span style={{ fontSize: '20px', fontWeight: 'bold' }}>Настройка сети:</span>
 				<div className='page-service-row'>
-					<Btn title='Ethernet' onClick={() => modal_eth()} />
+					{/* <Btn title='Ethernet' onClick={() => modal_eth()} /> */}
+					<Btn title='Ethernet' onClick={() => warn({cls:''}, 'ethernet')} /> 
 					<Btn title='WiFi' onClick={() => modal_wifi()} />
 					<Btn
 						title='Перезагрузка сети'
@@ -327,7 +314,8 @@ function Service({ header = false }) {
 					/>
 				</div>
 				<div className='page-service-row'>
-					<input className='cell input auth-input'
+					<input
+						className='cell input auth-input'
 						type='file'
 						onChange={(e) => {
 							setFile(e.target.files[0])
@@ -501,3 +489,19 @@ function Service({ header = false }) {
 }
 
 export default Service
+
+// Функция валидации IP-адреса
+function validateIP(ip) {
+	if (!ip) return false
+	const ipRegex =
+		/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+	return ipRegex.test(ip) && ip !== '0.0.0.0'
+}
+
+// Функция для извлечения сообщения из ответа сервера
+function getResponseMessage(result, defaultMessage = 'Выполнено') {
+	if (typeof result === 'string' && result.trim()) return result
+	if (typeof result === 'object' && result?.message) return result.message
+	// Если result пустой, undefined, null или пустая строка
+	return defaultMessage
+}

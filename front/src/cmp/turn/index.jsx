@@ -8,8 +8,8 @@ import Btn from '@cmp/fields/btn'
 //Включить/Выключить
 export default function Turn({ style, cls }) {
 	const { build } = useParams()
-	const [warn, warnCustom] = useWarn(({ warn, warnCustom }) => [warn, warnCustom])
-	const { isAuth } = useAuthStore(({ isAuth, name }) => ({ isAuth, name }))
+	const warn = useWarn((s) => s.warn)
+	const isAuth = useAuthStore((s) => s.isAuth)
 	const [start] = useInputStore(useShallow(({ input }) => [input?.retain?.[build]?.start]))
 
 	const img = isAuth ? '/img/turn.svg' : '/img/turn_b.svg'
@@ -35,6 +35,6 @@ export default function Turn({ style, cls }) {
 			return
 		}
 		// Авторизован -> окно управления складом
-		warnCustom({ build }, 'turn')
+		warn({ build }, 'turn')
 	}
 }

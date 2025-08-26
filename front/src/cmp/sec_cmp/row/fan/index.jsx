@@ -8,9 +8,9 @@ import '../style.css'
 
 export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 	const { build, sect } = useParams()
-	const { warnCustom, warn } = useWarn()
-	const { isAuth } = useAuthStore()
-	const { getFan } = useInputStore()
+	const warn = useWarn((s) => s.warn)
+	const isAuth = useAuthStore((s) => s.isAuth)
+	const getFan = useInputStore((s) => s.getFan)
 
 	let cl = ['cmp-sec-row', cls]
 	cl = cl.join(' ')
@@ -51,9 +51,9 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 
 	function onClick(data) {
 		if (!isAuth) {
-			return warn('auth', 'warn', () => warnCustom({}, 'person'))
+			return warn('auth', 'warn', () => warn(null, 'person'))
 		}
 		if (data._id === null) return warn('noexist_cooler', 'warn')
-		data?.ao ? warnCustom(data, 'fanao') : warnCustom(data, 'fan')
+		data?.ao ? warn(data, 'fanao') : warn(data, 'fan')
 	}
 }

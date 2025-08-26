@@ -3,7 +3,7 @@ import './style.css'
 
 // Кнопка с вызовом меню навигации
 export default function Burger() {
-	const warnCustom = useWarnStore((s) => s.warnCustom)
+	const warn = useWarnStore((s) => s.warn)
 
 	return (
 		<button className='cmp-burger-wrapper' onClick={onClick}>
@@ -11,6 +11,6 @@ export default function Burger() {
 		</button>
 	)
 	function onClick() {
-		warnCustom({ cls:'cmp-warn-def-burger-dialog' }, 'burger')
+		warn({ cls:'cmp-warn-def-burger-dialog' }, 'burger')
 	}
 }

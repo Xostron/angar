@@ -10,7 +10,7 @@ export default function RowValve({ active, data }) {
 	const { heating = [], valve = [] } = data
 	const isAuth = useAuthStore((s) => s.isAuth)
 	const input = useInputStore((s) => s.input)
-	const warnCustom = useWarn((s) => s.warnCustom)
+	const warn = useWarn((s) => s.warn)
 
 	if (!valve && !heating) return null
 
@@ -52,7 +52,10 @@ export default function RowValve({ active, data }) {
 	)
 
 	function onClick(obj) {
-		if (!isAuth || !active) return
-		warnCustom(obj, 'valve')
+		if (!isAuth) {
+			return warn('auth', 'warn', () => warn(null, 'person'))
+		}
+		if (!active) return
+		warn(obj, 'valve')
 	}
 }

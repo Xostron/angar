@@ -13,7 +13,7 @@ export default function Item({ data, cur, set, deactive }) {
 	const name = section.name
 
 	// Окно подтверждения
-	const [warn, warnCustom] = useWarn(({ warn, warnCustom }) => [warn, warnCustom])
+	const warn = useWarn((s) => s.warn)
 	const obj = {
 		type: 'warn',
 		title: `Режим работы. ${name}`,
@@ -22,7 +22,7 @@ export default function Item({ data, cur, set, deactive }) {
 	}
 
 	const onClick = () =>
-		isAuth ? warnCustom(obj, 'warn') : warn('auth', 'warn', () => warn(null, 'person'))
+		isAuth ? warn(obj, 'warn') : warn('auth', 'warn', () => warn(null, 'person'))
 
 	let cls = ['nav-item']
 	if (cur == value) cls.push('active')

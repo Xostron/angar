@@ -10,7 +10,7 @@ export default function Title({ title, head, st, dataWarn }) {
 	const { name, bName, action } = title
 
 	// Окно подтверждения
-	const warnCustom = useWarn(({ warnCustom }) => warnCustom)
+	const warn = useWarn((s) => s.warn)
 
 	return (
 		<section className='set-head' style={st}>
@@ -30,6 +30,6 @@ export default function Title({ title, head, st, dataWarn }) {
 		</section>
 	)
 	function onClick() {
-		warnCustom(dataWarn, 'warn')
+		warn(dataWarn, 'warn')
 	}
 }

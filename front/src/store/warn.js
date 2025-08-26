@@ -12,22 +12,16 @@ const useWarnStore = create((set, get) => ({
 	entryCode: null,
 	/**
 	 * Статические entry
-	 * @param {string} code код для data = def[code] данные для entry
-	 * @param {string} entryCode код entry (компонент формы диалогового окна)
-	 * @param {function} fnYes кнопка Да - опционально пользовательские функции
-	 * @param {function} fnNo кнопка Нет - опционально
+	 * @param {string | object} code Данные для отображения: def[code](шаблоны)
+	 * 								или object(пользовательские)
+	 * @param {string} entryCode Код формы
+	 * @param {function} fnYes кнопка Да - опционально, пользовательские функции
+	 * @param {function} fnNo кнопка Нет - опционально, пользовательские функции
 	 */
 	warn: (code, entryCode, fnYes, fnNo) => {
-		const data = { ...def[code], fnYes, fnNo }
-		set({ show: true, data, entryCode })
-	},
-	/**
-	 * Динамические entry
-	 * @param {*} obj данные формы
-	 * @param {*} entryCode код entry (компонент формы диалогового окна)
-	 */
-	warnCustom: (obj, entryCode) => {
-		const data = { ...obj }
+		let data
+		if (typeof code === 'string') data = { ...def[code], fnYes, fnNo }
+		else data = { ...code, fnYes, fnNo }
 		set({ show: true, data, entryCode })
 	},
 	// Очистить данные формы, выключить показ формы
@@ -41,7 +35,7 @@ const useWarnStore = create((set, get) => ({
 
 export default useWarnStore
 
-// Статические формы, статические формы отобраэаются на форме entryCode='warn'
+// Данные для отображения в шаблоне формы warn('save', 'warn')
 const def = {
 	auth: {
 		type: 'warn',
