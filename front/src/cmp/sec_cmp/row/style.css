@@ -47,7 +47,6 @@
 .btn-cooler {
 	position: relative;
 	width: 270px !important;
-	color: var(--primary);
 	font-size: var(--fsz22) !important;
 }
 .btn-cooler .up {
@@ -63,6 +62,7 @@
 	transform: translateX(-50%);
 	display: flex;
 	gap: 8px;
+	color: var(--primary);
 }
 .state-cooler > img {
 	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg)
@@ -86,6 +86,7 @@
 	top: 0px;
 	left: 0px;
 	font-size: 14px;
+	color: var(--primary);
 }
 
 .state-extra > .sol-heat {
