@@ -24,6 +24,7 @@ const useWarnStore = create((set, get) => ({
 		else data = { ...code, fnYes, fnNo }
 		set({ show: true, data, entryCode })
 	},
+
 	// Очистить данные формы, выключить показ формы
 	clear: () => set({ show: false, data: {}, entryCode: null }),
 	// Записать ссылки
