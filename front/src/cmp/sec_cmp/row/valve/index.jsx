@@ -7,10 +7,10 @@ import Item from './item'
 import './style.css'
 
 export default function RowValve({ active, data }) {
-	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
 	const { heating = [], valve = [] } = data
-	const [input] = useInputStore(({ input }) => [input])
-	const { warnCustom, warn } = useWarn()
+	const isAuth = useAuthStore((s) => s.isAuth)
+	const input = useInputStore((s) => s.input)
+	const warnCustom = useWarn((s) => s.warnCustom)
 
 	if (!valve && !heating) return null
 
@@ -53,6 +53,6 @@ export default function RowValve({ active, data }) {
 
 	function onClick(obj) {
 		if (!isAuth || !active) return
-		warnCustom(obj,'valve')
+		warnCustom(obj, 'valve')
 	}
 }

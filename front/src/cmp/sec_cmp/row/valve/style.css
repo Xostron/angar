@@ -3,18 +3,12 @@
 	align-items: center;
 	font-size: var(--fsz26);
 	justify-content: center;
-	gap: var(--fsz30);
-}
-
-.sio-span {
-	width: min-content;
-	text-align: center;
-	background-color: aqua;
+	gap: 16px;
 }
 
 .sio-btn {
 	background-color: transparent;
-	padding: 4px;
+	padding: 0!important;
 }
 /* Valve */
 .sio-btn > img {
@@ -26,15 +20,18 @@
 	clip-path: circle();
 }
 
-.sio-valve{
+.sio-valve {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: var(--fsz10);
-	width: 150px;
-	justify-content: space-around;
+	justify-content: space-between;
+	gap:8px;
+	& > span {
+		width: 42px;
+	}
 }
-.sio-valve-map{
+
+.sio-valve-map {
 	display: flex;
 	flex-direction: column;
 	gap: var(--fsz10);
