@@ -2,7 +2,6 @@ import './style.css'
 import Btn from '@cmp/fields/btn'
 import Input from '@cmp/fields/input'
 import useWarn from '@store/warn'
-import NetworkEthernetModal from './modals/network-ethernet'
 import NetworkWifiModal from './modals/network-wifi'
 import Accordion from '@cmp/accordion'
 import { get, post } from '@tool/api/service'
@@ -25,8 +24,7 @@ function Service({ header = false }) {
 	const warn = useWarn((s) => s.warn)
 
 	// Ссылки на модальные окна
-	const ethernetModalRef = useRef()
-	const wifiModalRef = useRef()
+	// const wifiModalRef = useRef()
 
 	// Диалог подтверждения для AutoLogin
 	const confirmDialog = useDialog()
@@ -123,13 +121,13 @@ function Service({ header = false }) {
 	}
 
 	// Функции для модальных окон
-	function modal_eth() {
-		ethernetModalRef.current?.showModal()
-	}
+	// function modal_eth() {
+	// 	ethernetModalRef.current?.showModal()
+	// }
 
-	function modal_wifi() {
-		wifiModalRef.current?.showModal()
-	}
+	// function modal_wifi() {
+	// 	wifiModalRef.current?.showModal()
+	// }
 
 	function handleEthernetSave(config) {
 		// Валидация IP в конфигурации Ethernet
@@ -201,8 +199,9 @@ function Service({ header = false }) {
 				<span style={{ fontSize: '20px', fontWeight: 'bold' }}>Настройка сети:</span>
 				<div className='page-service-row'>
 					{/* <Btn title='Ethernet' onClick={() => modal_eth()} /> */}
-					<Btn title='Ethernet' onClick={() => warn({cls:''}, 'ethernet')} /> 
-					<Btn title='WiFi' onClick={() => modal_wifi()} />
+					<Btn title='Ethernet' onClick={() => warn({cls:'network-modal'}, 'ethernet')} /> 
+					{/* <Btn title='WiFi' onClick={() => modal_wifi()} /> */}
+					<Btn title='WiFi' onClick={() => warn({cls:'network-modal wifi-modal'}, 'wifi')} /> 
 					<Btn
 						title='Перезагрузка сети'
 						onClick={() => {
@@ -465,8 +464,7 @@ function Service({ header = false }) {
 				</div>
 
 				{/* Модальные окна */}
-				<NetworkEthernetModal modalRef={ethernetModalRef} onSave={handleEthernetSave} />
-				<NetworkWifiModal modalRef={wifiModalRef} onSave={handleWifiSave} />
+				{/* <NetworkWifiModal modalRef={wifiModalRef} onSave={handleWifiSave} /> */}
 
 				{/* Диалог подтверждения для AutoLogin */}
 				<Dialog href={confirmDialog.refDialog} cls='confirm-dialog'>

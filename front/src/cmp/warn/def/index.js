@@ -6,6 +6,7 @@ import fanao from './fan_ao'
 import valve from './valve'
 import burger from './burger'
 import ethernet from './ethernet'
+import wifi from './wifi'
 
 export default {
 	person,
@@ -16,6 +17,7 @@ export default {
 	valve,
 	burger,
 	ethernet,
+	wifi,
 	notfound: ({ data, entryCode }) => (
 		<div className='entry'>Модального окна {entryCode} не существует</div>
 	),

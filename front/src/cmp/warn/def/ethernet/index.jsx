@@ -1,17 +1,18 @@
-import useWarn from '@store/warn'
 import { useState } from 'react'
+import useWarn from '@store/warn'
 import Input from '@cmp/fields/input'
 import Radio from '@cmp/fields/radio'
 import Btn from '@cmp/fields/btn'
 import './style.css'
 
-export default function Ethernet({ modalRef, onSave }) {
+export default function Ethernet({ data }) {
+	const {modalRef, onSave} = data
 	const [networkMode, setNetworkMode] = useState('dhcp') // 'dhcp' или 'manual'
 	const [ip, setIp] = useState('')
 	const [mask, setMask] = useState('')
 	const [gateway, setGateway] = useState('')
 	const [dns, setDns] = useState('')
-	const { clear } = useWarn(({ clear }) => ({ clear }))
+	const clear = useWarn((s) => s.clear)
 
 	const handleSave = () => {
 		const networkConfig = {

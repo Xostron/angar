@@ -72,7 +72,7 @@
 }
 
 /* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 	.network-modal {
 		min-width: 90vw;
 		max-width: 95vw;
