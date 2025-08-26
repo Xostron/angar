@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
-import Other from '@cmp/sec_cmp/other'
-import RowTemp from '@cmp/sec_cmp/row/row_temp'
-import RowFan from '@cmp/sec_cmp/row/row_fan'
+import RowValve from '@src/cmp/sec_cmp/row/valve'
+import RowTemp from '@src/cmp/sec_cmp/row/temp'
+import RowFan from '@src/cmp/sec_cmp/row/fan'
 import useEquipStore from '@store/equipment'
 import running from '@tool/status/build_section'
 import Aggregate from '@cmp/sec_cmp/aggregate'
@@ -31,7 +31,7 @@ export default function Combi() {
 			{/* Температура канала (смешения) */}
 			<RowTemp data={r3} />
 			{/* Клапан, обогреватель */}
-			<Other active={isMan} data={{ valve, heating }} />
+			<RowValve active={isMan} data={{ valve, heating }} />
 		</section>
 	)
 }

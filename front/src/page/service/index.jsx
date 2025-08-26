@@ -327,7 +327,7 @@ function Service({ header = false }) {
 					/>
 				</div>
 				<div className='page-service-row'>
-					<input className='cell input'
+					<input className='cell input auth-input'
 						type='file'
 						onChange={(e) => {
 							setFile(e.target.files[0])

@@ -3,10 +3,10 @@ import useAuthStore from '@store/auth'
 import useInputStore from '@store/input'
 import useWarn from '@store/warn'
 import defImg from '@src/tool/icon'
-import Valve from './valve'
+import Item from './item'
 import './style.css'
 
-export default function Other({ active, data }) {
+export default function RowValve({ active, data }) {
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
 	const { heating = [], valve = [] } = data
 	const [input] = useInputStore(({ input }) => [input])
@@ -28,7 +28,7 @@ export default function Other({ active, data }) {
 			<div className={cls}>
 				<div className='sio-valve-map' style={{ alignItems: 'start' }}>
 					{vin.map((el, i) => (
-						<Valve key={i} valve={el} onClick={onClick} active={active} />
+						<Item key={i} valve={el} onClick={onClick} active={active} />
 					))}
 				</div>
 
@@ -44,7 +44,7 @@ export default function Other({ active, data }) {
 
 				<div className='sio-valve-map' style={{ alignItems: 'end' }}>
 					{vout.map((el, i) => (
-						<Valve key={i} valve={el} onClick={onClick} active={active} />
+						<Item key={i} valve={el} onClick={onClick} active={active} />
 					))}
 				</div>
 			</div>

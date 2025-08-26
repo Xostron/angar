@@ -34,9 +34,10 @@
 	background-color: var(--surface);
 }
 .fc {
-	padding-inline: 0px;
-	width: 145px;
+	padding-inline: 0px !important;
 	font-size: 22px !important;
+	gap: 0px !important;
+	width: 145px;
 }
 .fc > span {
 	width: 60px;

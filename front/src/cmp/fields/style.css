@@ -98,8 +98,8 @@
 	padding-left: 0;
 }
 input,
-input:hover,
-input:focus {
+input[type='button']:hover,
+input[type='button']:focus {
 	outline: none;
 	border: none;
 }
