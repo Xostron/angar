@@ -38,9 +38,10 @@ const lists = [
 		icon: '/img/service/laptop.svg',
 		name: 'Управление POS',
 	},
-	// {
-	// 	path: '..',
-	// 	icon: '/img/arrow-left.svg',
-	// 	name: 'Выйти',
-	// },
+	{},
+	{
+		path: '..',
+		icon: '/img/arrow-left.svg',
+		name: 'Выйти',
+	},
 ]
