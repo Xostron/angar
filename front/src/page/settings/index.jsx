@@ -20,49 +20,30 @@ export default function Settings({}) {
 	const kindList = useEquipStore((s) => s.getKindList(build))
 
 	// ***************** Калибровка клапанов *****************
-	const [bldType, equipSect] = useEquipStore(({ list }) => [
-		list?.[curB]?.type,
-		list?.[curB]?.section,
-	])
+	const bldType = useEquipStore((s) => s.list?.[curB]?.type)
+	const equipSect = useEquipStore((s) => s.list?.[curB]?.section)
 
 	// Изменение и запись настроек
-	const [setTune, tune, sendTune, setSettingAu, sendSettingAu, hasChangedSettingAu, prd, hid] =
-		useOutputStore(
-			({
-				setTune,
-				tune,
-				sendTune,
-				setSettingAu,
-				sendSettingAu,
-				hasChangedSettingAu,
-				prd,
-				hid,
-			}) => [
-				setTune,
-				tune,
-				sendTune,
-				setSettingAu,
-				sendSettingAu,
-				hasChangedSettingAu,
-				prd,
-				hid?.[`${type}.text-collapse`]?.hid ?? true,
-			]
-		)
+	const setTune = useOutputStore((s) => s.setTune)
+	const tune = useOutputStore((s) => s.tune)
+	const sendTune = useOutputStore((s) => s.sendTune)
+	const setSettingAu = useOutputStore((s) => s.setSettingAu)
+	const sendSettingAu = useOutputStore((s) => s.sendSettingAu)
+	const hasChangedSettingAu = useOutputStore((s) => s.hasChangedSettingAu)
+	const prd = useOutputStore((s) => s.prd)
+	const hid = useOutputStore((s) => s.hid?.[`${type}.text-collapse`]?.hid ?? true)
 
-	const [retainTune, coef, factory, retain, curPrd] = useInputStore(({ input }) => [
-		input?.retain?.[build]?.valve,
-		input.coef?.[build]?.[type],
-		input?.factory,
-		input?.retain?.[build]?.setting?.[type]?.[prd?.code],
-		input?.retain?.[build]?.product?.code,
-	])
+	const retainTune = useInputStore((s) => s.input?.retain?.[build]?.valve)
+	const coef = useInputStore((s) => s.input.coef?.[build]?.[type])
+	const factory = useInputStore((s) => s.input?.factory)
+	const retain = useInputStore((s) => s.input?.retain?.[build]?.setting?.[type]?.[prd?.code])
+	const curPrd = useInputStore((s) => s.input?.retain?.[build]?.product?.code)
+
 	// Спрятанные настройки
 	const skip = fnSkip(prd, factory?.[type], coef, retain)
 	const show = fnAct(prd, factory?.[type], coef, retain)
 	// Заводские настройки - рама
-	const [fct] = useEquipStore(({ getFactory }) => [
-		getFactory(type, hid, skip, prd?.code, curPrd),
-	])
+	const fct = useEquipStore((s) => s.getFactory(type, hid, skip, prd?.code, curPrd))
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
@@ -180,3 +161,34 @@ function fnAct(prd, factory, coef, retain) {
 		  }, [])
 		: null
 }
+
+// const [setTune, tune, sendTune, setSettingAu, sendSettingAu, hasChangedSettingAu, prd, hid] =
+// 	useOutputStore(
+// 		({
+// 			setTune,
+// 			tune,
+// 			sendTune,
+// 			setSettingAu,
+// 			sendSettingAu,
+// 			hasChangedSettingAu,
+// 			prd,
+// 			hid,
+// 		}) => [
+// 			setTune,
+// 			tune,
+// 			sendTune,
+// 			setSettingAu,
+// 			sendSettingAu,
+// 			hasChangedSettingAu,
+// 			prd,
+// 			hid?.[`${type}.text-collapse`]?.hid ?? true,
+// 		]
+// 	)
+
+// const [retainTune, coef, factory, retain, curPrd] = useInputStore(({ input }) => [
+// 	input?.retain?.[build]?.valve,
+// 	input.coef?.[build]?.[type],
+// 	input?.factory,
+// 	input?.retain?.[build]?.setting?.[type]?.[prd?.code],
+// 	input?.retain?.[build]?.product?.code,
+// ])
