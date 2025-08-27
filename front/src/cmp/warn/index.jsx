@@ -3,7 +3,7 @@ import Dialog from '@cmp/dialog'
 import useDialog from '@cmp/dialog/hook'
 import def from './def'
 
-// Предупреждение и информирование
+// Фабричный компонент модальных окон
 export default function Warn({}) {
 	const { refDialog, open, close } = useDialog()
 	const { clear, data, show, entryCode } = useWarnStore(({ clear, data, show, entryCode }) => ({

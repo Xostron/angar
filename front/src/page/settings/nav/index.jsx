@@ -6,11 +6,18 @@ import data from '../def'
 //Навигация по настройкам
 export default function Nav({ cur, st, dialog, hasChanged }) {
 	const { build } = useParams()
-	const [menuFactory] = useEquipStore(({ getMenuFactory }) => [getMenuFactory(build, data)])
+	const menuFactory = useEquipStore((s) => s.getMenuFactory(build, data))
 	return (
 		<nav style={st} className='nav-set'>
 			{menuFactory?.map((el, i) => (
-				<Item data={el} key={i} cur={cur} index={i} dialog={dialog} hasChanged={hasChanged} />
+				<Item
+					data={el}
+					key={i}
+					cur={cur}
+					index={i}
+					dialog={dialog}
+					hasChanged={hasChanged}
+				/>
 			))}
 		</nav>
 	)

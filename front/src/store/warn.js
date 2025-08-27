@@ -20,8 +20,10 @@ const useWarnStore = create((set, get) => ({
 	 */
 	warn: (code, entryCode, fnYes, fnNo) => {
 		let data
-		if (typeof code === 'string') data = { ...def[code], fnYes, fnNo }
-		else data = { ...code, fnYes, fnNo }
+		if (typeof code === 'string') data = { ...def[code] }
+		else data = { ...code }
+		if (!data.fnYes) data.fnYes = fnYes
+		if (!data.fnNo) data.fnNo = fnNo
 		set({ show: true, data, entryCode })
 	},
 

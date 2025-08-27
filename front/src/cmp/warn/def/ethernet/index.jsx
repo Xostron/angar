@@ -6,7 +6,7 @@ import Btn from '@cmp/fields/btn'
 import './style.css'
 
 export default function Ethernet({ data }) {
-	const {modalRef, onSave} = data
+	const { onSave } = data
 	const [networkMode, setNetworkMode] = useState('dhcp') // 'dhcp' или 'manual'
 	const [ip, setIp] = useState('')
 	const [mask, setMask] = useState('')

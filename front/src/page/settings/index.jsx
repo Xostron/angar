@@ -16,10 +16,8 @@ import def from './def'
 //Настройки склада
 export default function Settings({}) {
 	const { type, build } = useParams()
-	const [curB, kindList] = useEquipStore(({ getCurB, getKindList }) => [
-		getCurB(build),
-		getKindList(build),
-	])
+	const curB = useEquipStore((s) => s.getCurB(build))
+	const kindList = useEquipStore((s) => s.getKindList(build))
 
 	// ***************** Калибровка клапанов *****************
 	const [bldType, equipSect] = useEquipStore(({ list }) => [
@@ -68,7 +66,9 @@ export default function Settings({}) {
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
+	// При переключении по навигации
 	const setLink = useWarn((s) => s.setLink)
+	// При переключении по навигации настроек
 	const warn = useWarn((s) => s.warn)
 
 	const obj = {

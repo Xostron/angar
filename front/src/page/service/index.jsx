@@ -74,11 +74,27 @@ function Service({ header = false }) {
 				<div className='page-service-row'>
 					<Btn
 						title='Ethernet'
-						onClick={() => warn({ cls: 'network-modal' }, 'ethernet')}
+						onClick={() =>
+							warn(
+								{
+									cls: 'network-modal',
+									onSave: () => handleEthernetSave(config, req_ip, setInfo),
+								},
+								'ethernet'
+							)
+						}
 					/>
 					<Btn
 						title='WiFi'
-						onClick={() => warn({ cls: 'network-modal wifi-modal' }, 'wifi')}
+						onClick={() =>
+							warn(
+								{
+									cls: 'network-modal wifi-modal',
+									onSave: () => handleWifiSave(config, req_ip, setInfo),
+								},
+								'wifi'
+							)
+						}
 					/>
 					<Btn title='Перезагрузка сети' onClick={() => onReloadNet(req_ip)} />
 				</div>
@@ -427,18 +443,3 @@ function onNetInfo(req_ip, setInfo, setTtyS) {
 			})
 		})
 }
-// {/* Диалог подтверждения для AutoLogin */}
-// <Dialog href={confirmDialog.refDialog} cls='confirm-dialog'>
-// 	<div className='confirm-dialog-content'>
-// 		<div className='confirm-dialog-icon'>⚠️</div>
-// 		<h3 className='confirm-dialog-title'>Подтверждение действия</h3>
-// 		<p className='confirm-dialog-message'>
-// 			{pendingAction?.message ||
-// 				'Вы уверены, что хотите выполнить это действие?'}
-// 		</p>
-// 		<div className='confirm-dialog-actions'>
-// 			<Btn title='Отмена' onClick={handleCancelAction} />
-// 			<Btn title='Подтвердить' onClick={handleConfirmAction} />
-// 		</div>
-// 	</div>
-// </Dialog>

@@ -5,7 +5,7 @@ export default function Item({ cur, data, index, dialog, hasChanged }) {
 	const navigate = useNavigate()
 
 	const { name, icon, path } = data
-	const r = ~~(index / 2) + 1
+	const r = ~~(index / 2) + 1 // тоже самое что parseInt()
 	const c = (index + 1) % 2 || 2
 	const gridArea = `${r}/${c}/${r + 1}/${c + 1}`
 	const st = cur === data.code ? { backgroundColor: 'var(--primary)', gridArea } : { gridArea }
