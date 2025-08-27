@@ -49,7 +49,7 @@ const building = [
 		errorElement: <RouterError />,
 	},
 	{
-		path: 'service',
+		path: 'service/:type',
 		element: <Service />,
 		errorElement: <RouterError />,
 	},

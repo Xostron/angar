@@ -9,7 +9,11 @@ import './style.css'
 // Склад: список секций
 export default function Building({}) {
 	let { build } = useParams()
-	const [getCurB, setCurB, sects = []] = useEquipStore(({ getCurB, setCurB, sections }) => [getCurB, setCurB, sections()])
+	const [getCurB, setCurB, sects = []] = useEquipStore(({ getCurB, setCurB, sections }) => [
+		getCurB,
+		setCurB,
+		sections(),
+	])
 	const navigate = useNavigate()
 	const location = useLocation()
 
@@ -21,11 +25,7 @@ export default function Building({}) {
 
 	// Редирект на секции
 	useEffect(() => {
-		if (sects?.length > 1 || sects?.length === 0 || sects?.[0]?.buildingId != build) {
-			// console.log(1112, 'Редирект на секции отклонен', build, sects)
-			return
-		}
-		// console.log(1113, build, 'Переход в секцию', sects?.[0]?._id, 'length = ' + sects.length)
+		if (sects?.length > 1 || sects?.length === 0 || sects?.[0]?.buildingId != build) return
 		const path = `${location.pathname}/section/${sects?.[0]?._id}`.replace('//', '/')
 		navigate(path)
 	}, [sects])

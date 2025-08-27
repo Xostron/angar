@@ -10,7 +10,7 @@ export default function Time({}) {
 	const navigate = useNavigate()
 	useEffect(() => {
 		if (!data.ok) return
-		navigate('./service')
+		navigate('./service/1')
 	}, [data])
 	return (
 		<div className='time' onClick={setData}>
