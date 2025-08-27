@@ -248,7 +248,7 @@ function getResponseMessage(result, defaultMessage = 'Выполнено') {
 function onAL(enable, req_ip, warn, clear) {
 	const msg = enable ? 'включить' : 'выключить'
 	const o = {
-		type: 'warn',
+		type: 'attention',
 		title: `Подтверждение действия`,
 		text: `Вы уверены, что хотите ${msg} автоматический вход?`,
 	}

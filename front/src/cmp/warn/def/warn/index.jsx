@@ -3,7 +3,18 @@ import Title from './title'
 
 export default function WarnEnt({ data, entryCode }) {
 	const { type = 'info', title, text, action } = data
-	const icon = type === 'info' ? '/img/info.svg' : '/img/warn.svg'
+	let icon
+	switch (type) {
+		case 'info':
+			icon = '/img/info.svg'
+			break
+		case 'attention':
+			// icon = <>⚠️</>
+			icon = <div className='cmp-warn-icon'>⚠️</div>
+			break
+		default:
+			icon = '/img/warn.svg'
+	}
 	return (
 		<div className='entry'>
 			<Title icon={icon} title={title} />

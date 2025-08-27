@@ -44,3 +44,8 @@
 	align-items: center;
 	gap: var(--fsz10);
 }
+
+.cmp-warn-icon {
+	font-size: 48px;
+	margin-bottom: 16px;
+}

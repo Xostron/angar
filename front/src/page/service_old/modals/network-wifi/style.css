@@ -1,0 +1,144 @@
+.wifi-modal {
+	min-width: 600px;
+	max-width: 700px;
+}
+
+.wifi-input-mode-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz15);
+	margin-bottom: var(--fsz20);
+}
+
+.wifi-networks-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz15);
+	margin-bottom: var(--fsz20);
+}
+
+.wifi-scan-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--fsz15);
+}
+
+.wifi-scan-header .btn {
+	min-width: 120px;
+	justify-content: center;
+	font-size: var(--fsz22);
+	padding: 0 var(--fsz20);
+	line-height: var(--fsz35);
+}
+
+.wifi-networks-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz8);
+	max-height: 200px;
+	overflow-y: auto;
+	border: 1px solid var(--secondary);
+	border-radius: 10px;
+	padding: var(--fsz10);
+}
+
+.wifi-network-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: var(--fsz12);
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	border: 1px solid transparent;
+}
+
+.wifi-network-item:hover {
+	background: rgba(var(--secondary-rgb), 0.1);
+	border-color: var(--secondary);
+}
+
+.wifi-network-item.selected {
+	background: rgba(var(--primary-rgb), 0.15);
+	border-color: var(--primary);
+}
+
+.wifi-network-info {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz4);
+}
+
+.wifi-network-ssid {
+	font-size: var(--fsz24);
+	font-weight: 600;
+	color: var(--primary);
+}
+
+.wifi-network-security {
+	font-size: var(--fsz20);
+	color: var(--secondary);
+}
+
+.wifi-network-signal {
+	font-size: var(--fsz20);
+	color: var(--secondary);
+	font-weight: 500;
+}
+
+.wifi-no-networks {
+	text-align: center;
+	padding: var(--fsz30);
+	color: var(--secondary);
+	font-size: var(--fsz24);
+	border: 2px dashed var(--secondary);
+	border-radius: var(--br);
+}
+
+.wifi-manual-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz15);
+	padding: var(--fsz15);
+	/* border: 1px solid var(--secondary); */
+	/* border-radius: var(--br); */
+	background: rgba(var(--secondary-rgb), 0.05);
+	margin-bottom: var(--fsz20);
+}
+
+.wifi-credentials-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz15);
+	padding: var(--fsz15);
+	/* border: 1px solid var(--primary); */
+	/* border-radius: var(--br); */
+	background: rgba(var(--primary-rgb), 0.05);
+}
+
+.wifi-credentials-section .network-field-label {
+	color: var(--primary);
+	font-weight: 600;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+	.wifi-modal {
+		min-width: 90vw;
+		max-width: 95vw;
+	}
+
+	.wifi-scan-header {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.wifi-scan-header .btn {
+		min-width: unset;
+	}
+
+	.wifi-networks-list {
+		max-height: 150px;
+	}
+}

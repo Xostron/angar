@@ -131,7 +131,7 @@ export default function Settings({}) {
 		</main>
 	)
 
-	// Обработчик вызова окна
+	// Вызов окна подтверждения
 	function onDialog(path) {
 		warn({ ...obj, path }, 'warn')
 	}
