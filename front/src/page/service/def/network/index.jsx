@@ -14,7 +14,7 @@ export default function Network() {
 	const [ttyS, setTtyS] = useState()
 	// Модальные окна
 	const warn = useWarn((s) => s.warn)
-
+	// Запрос интерфейсов сети и COM
 	useEffect(() => {
 		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
 		api = api.replace('http://', '').replace('https://', '').replace(':4000/api/', '')

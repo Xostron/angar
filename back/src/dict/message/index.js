@@ -110,7 +110,7 @@ const data = {
 		count: true, //Участвует в подсчете аварий (см. карточку склада)
 		code: 'gen',
 		typeSignal: 'critical',
-		msg: 'Нет электропитания: работа от генератора',
+		msg: 'Работа от генератора',
 	},
 	// Аварии клапанов
 	30: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Превышено время открытия' },

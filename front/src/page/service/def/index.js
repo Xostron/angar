@@ -4,7 +4,6 @@ import Soft from './soft'
 import Pos from './pos'
 const def = {
 	1: Network,
-
 	2: Equip,
 	3: Soft,
 	4: Pos,
