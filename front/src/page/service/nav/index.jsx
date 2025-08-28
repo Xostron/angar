@@ -12,9 +12,9 @@ export default function Nav() {
 
 const lists = [
 	{
-		path: '../service/2',
-		icon: '/img/service/project-configuration.svg',
-		name: 'Конфигурация',
+		path: '../service/3',
+		icon: '/img/service/network-2.svg',
+		name: 'Обновить ПО',
 	},
 	{
 		path: '../service/1',
@@ -27,9 +27,9 @@ const lists = [
 		name: 'Управление POS',
 	},
 	{
-		path: '../service/3',
-		icon: '/img/service/network-2.svg',
-		name: 'Обновить ПО',
+		path: '../service/2',
+		icon: '/img/service/project-configuration.svg',
+		name: 'Конфигурация',
 	},
 	{
 		path: '..',
