@@ -12,24 +12,24 @@ export default function Nav() {
 
 const lists = [
 	{
-		path: '../service/1',
-		icon: '/img/service/wifi.svg',
-		name: 'Настройки сети',
-	},
-	{
 		path: '../service/2',
 		icon: '/img/service/project-configuration.svg',
 		name: 'Конфигурация',
 	},
 	{
-		path: '../service/3',
-		icon: '/img/service/network-2.svg',
-		name: 'Обновить ПО',
+		path: '../service/1',
+		icon: '/img/service/wifi.svg',
+		name: 'Настройки сети',
 	},
 	{
 		path: '../service/4',
 		icon: '/img/service/laptop.svg',
 		name: 'Управление POS',
+	},
+	{
+		path: '../service/3',
+		icon: '/img/service/network-2.svg',
+		name: 'Обновить ПО',
 	},
 	{
 		path: '..',
