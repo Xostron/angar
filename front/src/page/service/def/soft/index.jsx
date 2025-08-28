@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import Btn from '@cmp/fields/btn'
+import useWarn from '@store/warn'
 import { get, post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import Radio from '@cmp/fields/radio'
 
-export default function Equip() {
+export default function Soft() {
 	const [req_ip, setReqIp] = useState()
 	const [info, setInfo] = useState()
 	const [ttyS, setTtyS] = useState()
-	const [file, setFile] = useState()
 
 	useEffect(() => {
 		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
@@ -70,56 +71,66 @@ export default function Equip() {
 						})}
 			</div>
 			{/*  */}
-			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
-				Управление проектом и оборудованием:
-			</span>
+
+			{/*  */}
 			<div className='page-service-row'>
-				<Btn
-					title='Обновить конфигурацию оборудования по сети'
-					onClick={() => onEquip(req_ip)}
-				/>
+				<Btn title='Обновить ПО' onClick={() => onUptSoft(req_ip)} />
+				<Btn title='pm2 restart' onClick={() => onPm2(req_ip)} />
+				<Btn title='npm install && build' onClick={() => onNpm(req_ip)} />
 			</div>
-			<div className='page-service-row'>
-				<input
-					className='cell input auth-input'
-					type='file'
-					onChange={(e) => setFile(e.target.files[0])}
-				/>
-				<Btn title='Обновить конфигурацию из файла' onClick={() => onEquipFile(file)} />
-			</div>
+			{/*  */}
+
+			{/*  */}
 		</section>
 	)
 }
 
-// Выполнить обновление конфигурации оборудования через файл
-function onEquipFile(file) {
-	const formData = new FormData()
-	formData.append('file', file)
-	post('file', formData)
-		.then((o) => {
-			notification.success('Конфигурация оборудования установлена: ' + o.message)
+
+// Функция для извлечения сообщения из ответа сервера
+function getResponseMessage(result, defaultMessage = 'Выполнено') {
+	if (typeof result === 'string' && result.trim()) return result
+	if (typeof result === 'object' && result?.message) return result.message
+	// Если result пустой, undefined, null или пустая строка
+	return defaultMessage
+}
+
+
+// Выполнить npm i && build
+function onNpm(req_ip) {
+	get('build', req_ip)
+		.then((result) => {
+			notification.success(getResponseMessage(result, 'Сборка проекта запущена'))
 		})
 		.catch((e) => {
-			notification.error(
-				e.message || 'Ошибка установки конфигурации оборудования: ' + e.error || e.message,
-				{
-					errorId: e.id,
-				}
-			)
+			notification.error(e.message || 'Ошибка сборки проекта', {
+				errorId: e.id,
+			})
 		})
 }
-// Выполнить обновление конфигурации оборудования по сети
-function onEquip(req_ip) {
-	get('equipment', req_ip)
-		.then((o) => {
-			notification.success('Конфигурация оборудования обновлена: ' + o.message)
+
+// Выполнить pm2 restart
+function onPm2(req_ip) {
+	get('pm2/restart', req_ip)
+		.then((result) => {
+			notification.success(getResponseMessage(result, 'Перезапуск pm2 запущен'))
 		})
 		.catch((e) => {
-			notification.error(
-				e.message || 'Ошибка обновления конфигурации оборудования: ' + e.error || e.message,
-				{
-					errorId: e.id,
-				}
-			)
+			notification.error(e.message || 'Ошибка перезапуска pm2', {
+				errorId: e.id,
+			})
 		})
 }
+
+// Выполнить обновление ПО
+function onUptSoft(req_ip) {
+	get('upt_soft', req_ip)
+		.then((result) => {
+			notification.success(getResponseMessage(result, 'Обновление ПО запущено'))
+		})
+		.catch((e) => {
+			notification.error(e.message || 'Ошибка обновления ПО', {
+				errorId: e.id,
+			})
+		})
+}
+
