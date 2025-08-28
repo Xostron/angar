@@ -20,13 +20,35 @@ async function cmd(obj) {
 		const moduleId = fan.module.id
 		const channel = fan.module.channel - 1
 		const val = value === 'run' ? { [channel]: 1 } : { [channel]: 0 }
+		let s = {
+			[buildingId]: {
+				[moduleId]: val,
+			},
+		}
+		setCmd(s)
 		// Аналоговый выход
-		// Блокировка включения с 0%
-		if (ao && Number(ao) <= 0 && value == 'run') return true
 		const binding = await findOne('binding', { key: ['owner', 'id'], v: fanId })
 		if (!binding) return true
-
-		const s = { [buildingId]: { [moduleId]: val, [binding.moduleId]: { [binding.channel - 1]: value == 'run' ? +ao : 0 } } }
+		
+		// Блокировка включения с 0%
+		if (ao !== null && Number(ao) <= 0 && value == 'run') {
+			const val = { [channel]: 0 }
+			const s = {
+				[buildingId]: {
+					[moduleId]: val,
+					[binding.moduleId]: { [binding.channel - 1]: 0 },
+				},
+			}
+			setCmd(s)
+			return true
+		}
+		// Обычное включение с АО
+		s = {
+			[buildingId]: {
+				[moduleId]: val,
+				[binding.moduleId]: { [binding.channel - 1]: value == 'run' ? +ao : 0 },
+			},
+		}
 		console.log(333, s)
 		setCmd(s)
 		return true

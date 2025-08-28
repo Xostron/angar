@@ -6,13 +6,6 @@ export default function Nav() {
 			{lists.map((el) => (
 				<Item key={el.path} data={el} />
 			))}
-			{/* <Item
-				data={{
-					path: '..',
-					icon: '/img/arrow-left.svg',
-					name: 'Выйти',
-				}}
-			/> */}
 		</nav>
 	)
 }
@@ -38,7 +31,6 @@ const lists = [
 		icon: '/img/service/laptop.svg',
 		name: 'Управление POS',
 	},
-	{},
 	{
 		path: '..',
 		icon: '/img/arrow-left.svg',

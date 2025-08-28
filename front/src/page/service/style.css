@@ -36,6 +36,7 @@
 	height: calc(100vh - 130px);
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: repeat(10, var(--fsz65));
+	direction: rtl;
 }
 
 .page-service-navlink {
