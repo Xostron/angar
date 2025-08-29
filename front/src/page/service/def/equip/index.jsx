@@ -1,75 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Btn from '@cmp/fields/btn'
 import { get, post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
-import Radio from '@cmp/fields/radio'
 
-export default function Equip() {
-	const [req_ip, setReqIp] = useState()
-	const [info, setInfo] = useState()
-	const [ttyS, setTtyS] = useState()
+export default function Equip({ props }) {
+	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
 	const [file, setFile] = useState()
 
-	useEffect(() => {
-		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
-		api = api.replace('http://', '').replace('https://', '').replace(':4000/api/', '')
-		setReqIp(api)
-		get('net_info', api)
-			.then((o) => {
-				notification.success('IP для запросов установлен на ' + api)
-				setInfo(o.net)
-				setTtyS(o.ttyS)
-				notification.success('Информация о сети обновлена')
-			})
-			.catch((e) => {
-				notification.error(
-					e.message || e.error || 'Ошибка получения информации о сети от : ' + api,
-					{
-						errorId: e.id,
-					}
-				)
-				setReqIp('127.0.0.1')
-				notification.success('IP для запросов установлен на ' + api)
-			})
-	}, [])
-
 	return (
-		<section className='page-service'>
-			{/*  */}
-			<div className='page-service-row'>
-				<span>IP для запросов:</span>
-				<Radio
-					value='127.0.0.1'
-					title='127.0.0.1'
-					name='ip'
-					selected={req_ip}
-					change={() => {
-						notification.success('IP для запросов установлен на 127.0.0.1')
-						setReqIp('127.0.0.1')
-					}}
-				/>
-				{info?.length > 0 &&
-					info
-						.filter((el) => el.ip)
-						.map((el, i) => {
-							return (
-								<Radio
-									key={i}
-									value={el.ip}
-									title={el.ip}
-									name='ip'
-									selected={req_ip}
-									change={() => {
-										notification.success(
-											'IP для запросов установлен на ' + el.ip
-										)
-										setReqIp(el.ip)
-									}}
-								/>
-							)
-						})}
-			</div>
-			{/*  */}
+		<>
 			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
 				Управление проектом и оборудованием:
 			</span>
@@ -87,7 +26,7 @@ export default function Equip() {
 				/>
 				<Btn title='Обновить конфигурацию из файла' onClick={() => onEquipFile(file)} />
 			</div>
-		</section>
+		</>
 	)
 }
 

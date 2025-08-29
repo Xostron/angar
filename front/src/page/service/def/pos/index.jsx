@@ -1,48 +1,18 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 import Btn from '@cmp/fields/btn'
 import useWarn from '@store/warn'
-import { get, post } from '@tool/api/service'
+import { get } from '@tool/api/service'
 import { notification } from '@cmp/notification'
-import Radio from '@cmp/fields/radio'
 
-export default function Equip() {
-	const navigate = useNavigate()
-	const [req_ip, setReqIp] = useState()
-	const [info, setInfo] = useState()
-	const [ttyS, setTtyS] = useState()
-
+export default function Equip({ props }) {
+	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
 	// Модальные окна
 	const warn = useWarn((s) => s.warn)
 	const clear = useWarn((s) => s.clear)
 
-	useEffect(() => {
-		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
-		api = api.replace('http://', '').replace('https://', '').replace(':4000/api/', '')
-		setReqIp(api)
-		get('net_info', api)
-			.then((o) => {
-				notification.success('IP для запросов установлен на ' + api)
-				setInfo(o.net)
-				setTtyS(o.ttyS)
-				notification.success('Информация о сети обновлена')
-			})
-			.catch((e) => {
-				notification.error(
-					e.message || e.error || 'Ошибка получения информации о сети от : ' + api,
-					{
-						errorId: e.id,
-					}
-				)
-				setReqIp('127.0.0.1')
-				notification.success('IP для запросов установлен на ' + api)
-			})
-	}, [])
-
 	return (
-		<section className='page-service'>
+		<>
 			{/*  */}
-			<div className='page-service-row'>
+			{/* <div className='page-service-row'>
 				<span>IP для запросов:</span>
 				<Radio
 					value='127.0.0.1'
@@ -80,7 +50,7 @@ export default function Equip() {
 						navigate('../')
 					}}
 				/>
-			</div>
+			</div> */}
 
 			{/*  */}
 			<div className='page-service-row'>
@@ -88,17 +58,17 @@ export default function Equip() {
 				<Btn title='AutoLogin Off' onClick={() => onAL(false, req_ip, warn, clear)} />
 				<Btn title='Reboot Устройства' onClick={() => onReboot(req_ip)} />
 			</div>
-		</section>
+		</>
 	)
 }
 
 // Функция валидации IP-адреса
-function validateIP(ip) {
-	if (!ip) return false
-	const ipRegex =
-		/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-	return ipRegex.test(ip) && ip !== '0.0.0.0'
-}
+// function validateIP(ip) {
+// 	if (!ip) return false
+// 	const ipRegex =
+// 		/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+// 	return ipRegex.test(ip) && ip !== '0.0.0.0'
+// }
 
 // Функция для извлечения сообщения из ответа сервера
 function getResponseMessage(result, defaultMessage = 'Выполнено') {
