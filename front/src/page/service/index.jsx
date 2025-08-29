@@ -44,7 +44,9 @@ function Service({ header = false }) {
 			{header && <Header />}
 			<main className='page-service-main'>
 				<section className='page-service'>
-					<RadioIp props={{ req_ip, setReqIp, info, setInfo, ttyS, setTtyS }} />
+					{type !== 'journal' && (
+						<RadioIp props={{ req_ip, setReqIp, info, setInfo, ttyS, setTtyS }} />
+					)}
 					{Content && (
 						<Content props={{ req_ip, setReqIp, info, setInfo, ttyS, setTtyS }} />
 					)}

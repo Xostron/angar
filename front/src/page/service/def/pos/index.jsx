@@ -11,48 +11,6 @@ export default function Equip({ props }) {
 
 	return (
 		<>
-			{/*  */}
-			{/* <div className='page-service-row'>
-				<span>IP для запросов:</span>
-				<Radio
-					value='127.0.0.1'
-					title='127.0.0.1'
-					name='ip'
-					selected={req_ip}
-					change={() => {
-						notification.success('IP для запросов установлен на 127.0.0.1')
-						setReqIp('127.0.0.1')
-					}}
-				/>
-				{info?.length > 0 &&
-					info
-						.filter((el) => el.ip)
-						.map((el, i) => {
-							return (
-								<Radio
-									key={i}
-									value={el.ip}
-									title={el.ip}
-									name='ip'
-									selected={req_ip}
-									change={() => {
-										notification.success(
-											'IP для запросов установлен на ' + el.ip
-										)
-										setReqIp(el.ip)
-									}}
-								/>
-							)
-						})}
-				<Btn
-					title='Назад'
-					onClick={() => {
-						navigate('../')
-					}}
-				/>
-			</div> */}
-
-			{/*  */}
 			<div className='page-service-row'>
 				<Btn title='AutoLogin On' onClick={() => onAL(true, req_ip, warn, clear)} />
 				<Btn title='AutoLogin Off' onClick={() => onAL(false, req_ip, warn, clear)} />
@@ -61,14 +19,6 @@ export default function Equip({ props }) {
 		</>
 	)
 }
-
-// Функция валидации IP-адреса
-// function validateIP(ip) {
-// 	if (!ip) return false
-// 	const ipRegex =
-// 		/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-// 	return ipRegex.test(ip) && ip !== '0.0.0.0'
-// }
 
 // Функция для извлечения сообщения из ответа сервера
 function getResponseMessage(result, defaultMessage = 'Выполнено') {

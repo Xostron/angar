@@ -32,7 +32,7 @@ const lists = [
 		icon: '/img/service/laptop.svg',
 		name: 'Управление POS',
 	},
-	{ path: '../service/5', icon: '/img/service/journal.svg', name: 'Архив действий' },
+	{ path: '../service/journal', icon: '/img/service/journal.svg', name: 'Архив действий' },
 	{
 		path: '..',
 		icon: '/img/arrow-right.svg',
