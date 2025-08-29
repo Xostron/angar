@@ -18,18 +18,21 @@ globalErrorHandler.init()
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
 	<ErrorBoundary>
-        {/* Проверка авторизации */}
+		{/* Проверка авторизации */}
 		<Auth />
-        {/* Инициализация webSocket */}
+		{/* Инициализация webSocket */}
 		<Socket />
-        {/* Обработка клавиатуры */}
+		{/* Обработка клавиатуры */}
 		<Keyboard />
-        {/* Вывод версии ПО */}
+		{/* Вывод версии ПО */}
 		<Version />
-        {/* Уведомления */}
+		{/* Уведомления */}
 		<NotificationContainer />
-        {/* Размер экрана */}
+		{/* Размер экрана */}
 		<View />
+		{/* {process.env.PUBLIC_DESIGN === 'v2' && (
+			<img className='build2-background-img' src='/img/v2/angar1.jpg' />
+		)} */}
 		<RouterProvider router={router} />
 	</ErrorBoundary>
 )

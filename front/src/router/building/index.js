@@ -8,6 +8,7 @@ import NotFound from '@page/404'
 import BuildOrSect from '@page/build_or_sect'
 import Service from '@page/service'
 import RouterError from '@cmp/router-error'
+import BuildOrSect2 from '@page/build_or_sect/index2'
 
 //Роутинг склада
 const building = [
@@ -59,36 +60,5 @@ const building = [
 	},
 ];
 
-//Роутинг склада
-// const building = [
-// 	{
-// 		path:'',
-// 		element:<Building/>
-// 	},
-// 	{
-// 		path:'section/:sect',
-// 		element: <Section/>,
-// 	},
-// 	{
-// 		path:'sensor/:sect',
-// 		element: <Sensor/>,
-// 	},
-// 	{
-// 		path:'signal',
-// 		element: <Signal/>,
-// 	},
-// 	{
-// 		path:'settings/:type',
-// 		element: <Settings/>,
-// 	},
-// 	{
-// 		path:'report',
-// 		element: <Report/>,
-// 	},
-// 	{
-// 		path: '*',
-// 		element: <NotFound />
-// 	}
-// ]
 
 export default building;

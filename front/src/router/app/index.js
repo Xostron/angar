@@ -18,7 +18,7 @@ export const routesApp = [
 	},
 	{
 		path: 'building/service',
-		element: <Service header/>,
+		element: <Service header />,
 		errorElement: <RouterError />,
 	},
 	{
