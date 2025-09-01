@@ -111,8 +111,7 @@ function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
       el['_acv'] = true
     })
   }
-
-  if (mark._type === "txt") result = [{ field: "title", icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : "", value: mark._name }];
+  if (mark._type === "txt" || mark._code=='text-collapse') result = [{ field: "title", icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : "", value: mark._name }];
   else result = [{ field: "iconText", icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : "", value: mark._name }];
   column(code, result, mark, buildingId, setSettingAu);
   return result;

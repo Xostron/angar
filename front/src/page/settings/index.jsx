@@ -12,6 +12,7 @@ import './style.css'
 import SubHead from './sub_head'
 import { rack, sty } from './fn'
 import def from './def'
+import { ms } from '@src/tool/datetime'
 
 //Настройки склада
 export default function Settings({}) {
@@ -128,16 +129,18 @@ export default function Settings({}) {
 
 // Спрятанные настройки
 function fnSkip(prd, factory, coef, retain) {
-	let o = prd?.code ? factory?.[prd?.code] : null
+	let o = prd?.code ? factory?.[prd?.code] ?? factory : null
 	let cf = coef ? Object.keys(coef) : null
 	return coef && o
 		? Object?.entries(o).reduce((acc, [code, val]) => {
 				const nv = retain?.[code] ?? {}
 				let o = {}
-				if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
+				if (!isNaN(val[cf?.[0]]) && (!isNaN(val[cf?.[1]]) || !!val[cf?.[1]])) {
 					o = { ...val, ...nv }
 					const one = o[cf?.[0]] != coef[cf?.[0]]
-					const two = o[cf?.[1]] != coef[cf?.[1]]
+					let two
+					if (`${o[cf?.[1]]}`.includes(':')) two = ms(o[cf?.[1]]) != coef[cf?.[1]]
+					else two = o[cf?.[1]] != coef[cf?.[1]]
 					if ((one && two) || one != two) acc.push(code)
 				}
 				return acc
@@ -147,48 +150,26 @@ function fnSkip(prd, factory, coef, retain) {
 
 // Активная настройка
 function fnAct(prd, factory, coef, retain) {
-	let o = prd?.code ? factory?.[prd?.code] : null
+	let o = prd?.code ? factory?.[prd?.code] ?? factory : null
 	let cf = coef ? Object.keys(coef) : null
 	return coef && o
 		? Object.entries(o).reduce((acc, [code, val]) => {
 				const nv = retain?.[code] ?? {}
 				let o = {}
-				if (!isNaN(val[cf?.[0]]) && !isNaN(val[cf?.[1]])) {
+				if (!isNaN(val[cf?.[0]]) && (!isNaN(val[cf?.[1]]) || !!val[cf?.[1]])) {
 					o = { ...val, ...nv }
-					if (o[cf?.[0]] == coef[cf?.[0]] && o[cf?.[1]] == coef[cf?.[1]]) acc.push(code)
+					// Для времени ожидания (CO2)
+					let time
+					if (`${o[cf?.[1]]}`.includes(':')) time = ms(o[cf?.[1]])
+					console.log(444, o[cf?.[0]], coef[cf?.[0]], o[cf?.[1]], time, coef[cf?.[1]])
+
+					if (
+						o[cf?.[0]] == coef[cf?.[0]] &&
+						(o[cf?.[1]] == coef[cf?.[1]] || time === coef[cf?.[1]])
+					)
+						acc.push(code)
 				}
 				return acc
 		  }, [])
 		: null
 }
-
-// const [setTune, tune, sendTune, setSettingAu, sendSettingAu, hasChangedSettingAu, prd, hid] =
-// 	useOutputStore(
-// 		({
-// 			setTune,
-// 			tune,
-// 			sendTune,
-// 			setSettingAu,
-// 			sendSettingAu,
-// 			hasChangedSettingAu,
-// 			prd,
-// 			hid,
-// 		}) => [
-// 			setTune,
-// 			tune,
-// 			sendTune,
-// 			setSettingAu,
-// 			sendSettingAu,
-// 			hasChangedSettingAu,
-// 			prd,
-// 			hid?.[`${type}.text-collapse`]?.hid ?? true,
-// 		]
-// 	)
-
-// const [retainTune, coef, factory, retain, curPrd] = useInputStore(({ input }) => [
-// 	input?.retain?.[build]?.valve,
-// 	input.coef?.[build]?.[type],
-// 	input?.factory,
-// 	input?.retain?.[build]?.setting?.[type]?.[prd?.code],
-// 	input?.retain?.[build]?.product?.code,
-// ])

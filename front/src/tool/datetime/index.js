@@ -16,4 +16,17 @@ function elapsedTime(date) {
 	return `${hh}ч ${mm}м`
 }
 
-export { elapsedTime }
+
+/**
+ * Преобразование hh:mm (string) в миллисекунды
+ * @param {*} hm hh:mm (string), 01:42
+ */
+function ms(hm) {
+	if (!hm || typeof hm !== 'string') return null
+	return hm.split(':').reduce((acc, val, i) => {
+		if (i === 0) acc = +val * 60 * 60 * 1000
+		if (i === 1) acc += +val * 60 * 1000
+		return acc
+	}, 0)
+}
+export { elapsedTime, ms }

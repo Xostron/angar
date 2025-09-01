@@ -22,6 +22,7 @@ export default function Field({ form, setForm }) {
 				sti={{ textAlign: 'left' }}
 				cls='cell-login'
 				disabled={'true'}
+				max='999999'
 			/>
 		</>
 	)
