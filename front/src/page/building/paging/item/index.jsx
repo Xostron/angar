@@ -8,7 +8,7 @@ import { useShallow } from 'zustand/react/shallow'
 export default function Item({ sec = {}, bId, iSect, cls }) {
 	const { _id, name, valve, heating, fan } = sec
 	// Показания и настройки
-	const input = useInputStore(({ input }) => input)
+	const input = useInputStore((s) => s.input)
 	const retain = input?.retain?.[bId]
 	// ссылка на секцию
 	const path = 'section/' + _id

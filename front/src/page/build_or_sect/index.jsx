@@ -6,7 +6,7 @@ import Banner from '@cmp/banner'
 
 //Секции склада / Секция
 export default function BuildOrSect({}) {
-	let { sect, build } = useParams()
+	let { sect } = useParams()
 	const type = sect ? 'section' : 'building'
 
 	return (

@@ -9,11 +9,9 @@ import './style.css'
 // Склад: список секций
 export default function Building({}) {
 	let { build } = useParams()
-	const [getCurB, setCurB, sects = []] = useEquipStore(({ getCurB, setCurB, sections }) => [
-		getCurB,
-		setCurB,
-		sections(),
-	])
+	const getCurB = useEquipStore((s) => s.getCurB)
+	const setCurB = useEquipStore((s) => s.setCurB)
+	const sects = useEquipStore((s) => s.sections()) ?? []
 	const navigate = useNavigate()
 	const location = useLocation()
 
