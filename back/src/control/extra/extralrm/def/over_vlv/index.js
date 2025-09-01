@@ -5,7 +5,7 @@ const { stateEq } = require('@tool/command/fan/fn')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 /**
- * Превышено время работы с закрытыми клапанами
+ * Превышено время работы с закрытыми клапанами (работает только в авторежиме)
  * @param {*} bld Рама склада
  * @param {*} sect Рама секции
  * @param {*} obj Глобальный объект цикла
@@ -22,7 +22,8 @@ function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 	const { value } = obj
 	const { vlvS, fanS } = m
 	const { exclude } = data
-	const typeMode = obj?.value?.building?.[bld._id]?.typeMode
+	// Тип склада
+	const bldType = obj?.value?.building?.[bld._id]?.bldType
 	// Отмена выполнения подпрограммы
 	if (exclude) return null
 	// Настроек нет - функцию не выполняем
@@ -53,7 +54,7 @@ function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 	}
 
 	// Ожидание сброса аварии или нажата кнопка "Сброс аварии" или склад комби-холод
-	if (compareTime(acc.end, s.overVlv.wait) || isReset(bld._id) || typeMode == 'combi_cold') {
+	if (compareTime(acc.end, s.overVlv.wait) || isReset(bld._id) || bldType !== 'normal') {
 		delete acc.begin
 		delete acc.end
 		delExtralrm(bld._id, sect._id, 'overVlv')
