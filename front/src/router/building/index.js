@@ -8,7 +8,6 @@ import NotFound from '@page/404'
 import BuildOrSect from '@page/build_or_sect'
 import Service from '@page/service'
 import RouterError from '@cmp/router-error'
-import BuildOrSect2 from '@page/build_or_sect/index2'
 
 //Роутинг склада
 const building = [

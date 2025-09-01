@@ -30,9 +30,6 @@ root.render(
 		<NotificationContainer />
 		{/* Размер экрана */}
 		<View />
-		{/* {process.env.PUBLIC_DESIGN === 'v2' && (
-			<img className='build2-background-img' src='/img/v2/angar1.jpg' />
-		)} */}
 		<RouterProvider router={router} />
 	</ErrorBoundary>
 )
