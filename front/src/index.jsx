@@ -11,6 +11,7 @@ import Auth from '@cmp/auth'
 import View from '@cmp/view'
 import './style.css'
 import './style_large.css'
+import AutoLogout from './cmp/auto_logout'
 
 // Инициализируем глобальный обработчик ошибок
 globalErrorHandler.init()
@@ -30,6 +31,8 @@ root.render(
 		<NotificationContainer />
 		{/* Размер экрана */}
 		<View />
+		{/* Автоматический logout */}
+		<AutoLogout />
 		<RouterProvider router={router} />
 	</ErrorBoundary>
 )
