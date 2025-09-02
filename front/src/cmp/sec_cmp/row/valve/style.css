@@ -12,12 +12,11 @@
 }
 /* Valve */
 .sio-btn > img {
-	height: var(--fsz80) !important;
+	height: var(--fsz70) !important;
 	border: 1px solid var(--primary);
 	border-radius: 50%;
-	padding: var(--fsz16);
-	overflow-clip-margin: var(--fsz10);
-	clip-path: circle();
+	padding: var(--fsz10);
+	overflow:visible;
 }
 
 .sio-valve {
@@ -27,7 +26,7 @@
 	justify-content: space-between;
 	gap:8px;
 	& > span {
-		width: 50px;
+		width: 60px;
 	}
 }
 

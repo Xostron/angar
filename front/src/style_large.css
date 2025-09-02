@@ -101,10 +101,10 @@
 		height: var(--fsz40) !important;
 	} */
 
-	.sio-btn > img {
+	/* .sio-btn > img {
 		height: var(--fsz70) !important;
 		padding: var(--fsz10);
-	}
+	} */
 	.section-info-other > img {
 		height: var(--fsz70);
 	}
