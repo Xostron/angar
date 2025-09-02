@@ -14,7 +14,7 @@ function authLogin(data) {
 				resolve(r.data)
 			})
 			.catch((error) => {
-				console.log(`Error service_angar/${code}`, error)
+				console.log(`Error service_angar/`, error)
 				reject(error)
 			})
 	})

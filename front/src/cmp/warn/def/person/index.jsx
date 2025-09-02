@@ -5,7 +5,7 @@ import './style.css'
 
 //Авторизация
 export default function Entry({ data, entryCode }) {
-	const [form, setForm] = useReducer(reducer, { login: '', password: '' })
+	const [form, setForm] = useReducer(reducer, { name: '', login: '', password: '' })
 	return (
 		<div className='entry'>
 			<img src='/img/logo.svg' alt='logo' className='cmp-person-entry-logo' />

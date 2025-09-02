@@ -9,7 +9,7 @@ import './style.css'
 // Склад: список секций
 export default function Building({}) {
 	let { build } = useParams()
-	const getCurB = useEquipStore((s) => s.getCurB)
+	const bld = useEquipStore((s) => s.getCurB(build))
 	const setCurB = useEquipStore((s) => s.setCurB)
 	const sects = useEquipStore((s) => s.sections()) ?? []
 	const navigate = useNavigate()
@@ -17,9 +17,8 @@ export default function Building({}) {
 
 	// обновление страницы
 	useEffect(() => {
-		const b = getCurB(build)
-		setCurB(b)
-	}, [getCurB(build)])
+		setCurB(bld)
+	}, [bld])
 
 	// Редирект на секции
 	useEffect(() => {

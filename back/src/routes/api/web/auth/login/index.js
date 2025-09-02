@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 const users = {
 	root: {
 		id: 1,
-		pwd: '123qwE=$',
-		fio: 'Root',
+		pwd: '3750',
+		fio: 'Сервис',
 		role: ['root'],
 	},
 	admin: {

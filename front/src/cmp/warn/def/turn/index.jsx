@@ -14,14 +14,14 @@ import './style.css'
 // Модальное окно: вкл/выкл склад
 export default function Entry({ data, entryCode }) {
 	const idB = data?.build
-	const { clear } = useWarn(({ clear }) => ({ clear }))
-	const [prdList, bType] = useEquipStore(({ prdList, build }) => [prdList(idB), build()?.type])
-	const [automode, start, product] = useInputStore(({ input }) => [
-		input?.retain?.[idB]?.automode,
-		input?.retain?.[idB]?.start,
-		input?.retain?.[idB]?.product,
-	])
-	const { setStart, setAutomode } = useOutputStore()
+	const clear = useWarn((s) => s.clear)
+	const prdList = useEquipStore((s) => s.prdList(idB))
+	const bType = useEquipStore((s) => s.build()?.type)
+	const automode = useInputStore((s) => s.input?.retain?.[idB]?.automode)
+	const start = useInputStore((s) => s.input?.retain?.[idB]?.start)
+	const product = useInputStore((s) => s.input?.retain?.[idB]?.product)
+	const setStart = useOutputStore((s) => s.setStart)
+	const setAutomode = useOutputStore((s) => s.setAutomode)
 
 	const bStart = start ? 'Выкл.' : 'Вкл.'
 	// Текущий режим
@@ -51,7 +51,7 @@ export default function Entry({ data, entryCode }) {
 			<Title bType={bType} />
 			<Line {...{ bType, am, actAutomode, aAm, pr, actProduct, aProd }} />
 			<Data prd={product?.code} bType={bType} />
-			<Footer name={bStart} act1={action} act2={clear} act3={zero} bType={bType}/>
+			<Footer name={bStart} act1={action} act2={clear} act3={zero} bType={bType} />
 		</div>
 	)
 	// Кнопка Вкл/выкл склад
@@ -76,5 +76,3 @@ export default function Entry({ data, entryCode }) {
 		sZero({ buildingId: idB })
 	}
 }
-
-

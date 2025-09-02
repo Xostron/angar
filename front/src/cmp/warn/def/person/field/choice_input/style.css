@@ -1,0 +1,35 @@
+.cmp-choice-input-wrapper {
+	position: relative;
+}
+
+.cmp-choice-input-arrow {
+	filter: brightness(0) saturate(100%) invert(76%) sepia(45%) saturate(4012%) hue-rotate(184deg)
+		brightness(93%) contrast(100%);
+	padding: 5px !important;
+	margin-right: 10px !important;
+	height: var(--fsz30) !important;
+	cursor: pointer;
+}
+
+.cmp-choice-input-modal {
+	position: absolute;
+	top: 156px;
+	left: var(--fsz16);
+	width: calc(100% - 2 * var(--fsz16));
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(255, 255, 255);
+	/* row-gap: 0px; */
+	/* font-size: var(--fsz16); */
+
+	& > span {
+		background-color: var(--background);
+		font-size: var(--fsz20);
+		line-height: var(--fsz20);
+		padding: var(--fsz10);
+		text-align: left;
+		border-radius: 5px;
+		border-bottom: 1px solid var(--primary);
+		cursor: pointer;
+	}
+}
