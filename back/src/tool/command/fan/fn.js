@@ -1,4 +1,4 @@
-const { ctrlDO } = require('@tool/command/module_output')
+const { ctrlDO, ctrlAO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { setACmd } = require('@tool/command/set')
 const { getIdB } = require('@tool/get/building')
@@ -66,6 +66,9 @@ function stateF(fan, equip, result, retain) {
 }
 
 function arrCtrl(idB, arr, type) {
-	arr?.forEach((el) => ctrlDO(el, idB, type))
+	arr?.forEach((el) => {
+		ctrlDO(el, idB, type)
+		if (el.ao) ctrlAO(el, idB, type === 'off' ? 0 : 100)
+	})
 }
 module.exports = { fnACmd, fnFanWarm, stateEq, stateF, arrCtrl }

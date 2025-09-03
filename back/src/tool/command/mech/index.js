@@ -66,7 +66,15 @@ function mechB(bId, type, obj) {
 		data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
 	// Оборудование холодильника
 	let cold = type == 'cold' || type == 'combi' ? fnCold(bId, obj) : undefined
-	return { fanA, connect, reset, vlvIn, cold }
+	// Все вентиляторы склада
+	const fanAll = data?.fan?.filter((el) => idS.includes(el.owner.id)).map(el=>{
+		// Поиск аналогового выхода ВНО
+		const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
+		if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
+		return el
+	})
+
+	return { fanA, connect, reset, vlvIn, cold, fanAll }
 }
 
 // Получить массив ID склада и его секций

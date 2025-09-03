@@ -24,7 +24,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	const bldId = bld._id
 	const acc = init(bld, idS, obj, s, where, 'fc', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
-	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where)) return
+	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
 	console.log(
 		99003,
 		aCmd,
@@ -49,7 +49,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	checkOff.fc(off, acc)
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)
-	console.log(333,'=============', idS, where, acc)
+	console.log(333, '=============', idS, where, acc)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 }

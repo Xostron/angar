@@ -13,7 +13,6 @@ function regist(opt) {
 	// Аналоговый вывод - модуль у которого имя окончивается на "AO" и Назначение use:'w' - запись
 	if (!opt?.name?.endsWith('AO')) v = mBitTomInt(v)
 
-	// if (opt._id === '6800b92e56c6a01c90ecbc67') console.log(888, opt, i, v, vv)
 	return { i, v }
 }
 

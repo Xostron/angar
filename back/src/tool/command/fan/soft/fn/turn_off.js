@@ -11,7 +11,9 @@ const ignore = require('./ignore')
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, bdata, where = 'normal') {
+function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where = 'normal') {
+	// Запрет при окуривании
+	if (s?.smoking?.on) return true
 	// (КОМБИ) Проверка переключения с НОРМАЛЬНОГО на ХОЛОД и выход
 	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) return true
 	// Игнор работы в комби складе (Работа в НОРМ или ХОЛОД)

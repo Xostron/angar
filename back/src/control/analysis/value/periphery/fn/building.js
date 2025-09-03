@@ -23,8 +23,6 @@ function building(equip, val, retain, result) {
 		else if (am == 'cooling' && !alrAuto)
 			result.building[bld._id].bldType = bld.type + '_normal'
 		else if (am == 'cooling' && alrAuto) result.building[bld._id].bldType = bld.type + '_cold'
-
-		// console.log(888, result.building, )
 	}
 }
 

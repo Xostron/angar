@@ -37,7 +37,7 @@ function vlv(obj) {
 
 // Блокировки напорных вентиляторов (обычный склад)
 // Если склад выключен, а секция в ручном режиме - не блокировать ВНО
-function fan(obj) {
+function fan(obj, s) {
 	const { value, data, retain, output } = obj
 	for (const f of data.fan) {
 		if (f.type !== 'fan') continue
@@ -47,6 +47,8 @@ function fan(obj) {
 
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		// Игнор блокировки: вкл окуривание
+		const ignore = s[idB]?.smoking?.on
 		// Блокировки:
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrOff =
@@ -57,15 +59,17 @@ function fan(obj) {
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
-		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null
+		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !ignore
 		// Склад выключен и секция в авторежиме
-		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id]
+		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !ignore
+
+		// console.log(2, f.name, isAlrOff, localB, local, offS, alrStop, lockAuto, ignore)
 		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
-		ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
+		ao(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
 	}
 }
 // Блокировки разгонных вентиляторов (обычный склад и холодильник)
-function fanAccel(obj) {
+function fanAccel(obj, s) {
 	const { value, data, retain, output } = obj
 	for (const el of data.fan) {
 		if (el.type !== 'accel') continue
@@ -74,6 +78,8 @@ function fanAccel(obj) {
 		if (!output[mdl]) continue
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		// Игнор блокировки: вкл окуривание
+		const ignore = s[idB]?.smoking?.on
 
 		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
 		const local = isExtralrm(idB, el.owner.id, 'local') //&& !store.aCmd?.[el.owner.id]?.fan?.end
@@ -81,7 +87,7 @@ function fanAccel(obj) {
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') //&& !store.aCmd?.[el.owner.id]?.fan?.end
 		// Таймер запрета
-		const ban = store.alarm.timer?.[idB]?.accel
+		const ban = store.alarm.timer?.[idB]?.accel && !ignore
 
 		out(obj, output, el, localB, local, !!ban, alrStop)
 	}
@@ -127,13 +133,13 @@ module.exports = { vlv, fan, fanAccel, heating, device }
  * @param {object} obj Глобальные данные PC
  * @param {object} output маска выходов
  * @param {object} o Исполнительный механизм - вентилятор, клапан, обогрев клапана
- * @param  {...boolean} args сигналы блкировки
+ * @param  {...boolean} locks сигналы блоlocksкировки
  */
-function out(obj, output, o, ...args) {
+function out(obj, output, o, ...locks) {
 	const mdl = o?.module?.id
 	if (!output[mdl] || !o) return
 	const ch = o?.module?.channel - 1
-	const lock = fn(args)
+	const lock = fn(locks)
 	// Дискретный выход
 	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
 }

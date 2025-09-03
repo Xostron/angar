@@ -138,7 +138,6 @@ const useOutputStore = create((set, get) => ({
   },
   // Настройки
   setSettingAu(obj) {
-	console.log(888,obj)
     if (!obj) {
       set({ settingAu: {} });
       return;
@@ -156,13 +155,11 @@ const useOutputStore = create((set, get) => ({
       settingAu.value[name[0]] ??= {};
       settingAu.value[name[0]][name[1]] = obj.value;
     }
-    console.log(1111, settingAu)
     set({ settingAu });
   },
   sendSettingAu() {
     // Отправить на сервер
     const settingAu = get().settingAu;
-    console.log(999, settingAu);
     sSettingAu(settingAu);
     // очистить стейт
     set({ settingAu: {} });

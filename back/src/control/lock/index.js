@@ -1,4 +1,5 @@
 const { vlv, fan, fanAccel, heating, device } = require('./fn')
+const { data: store } = require('@store')
 
 /**
  * Применение блокировок к командам управления выходами
@@ -6,11 +7,12 @@ const { vlv, fan, fanAccel, heating, device } = require('./fn')
  * @returns
  */
 function writeLock(obj) {
-	vlv(obj)
-	fan(obj)
-	fanAccel(obj)
-	heating(obj)
-	device(obj)
+	const s = store.calcSetting
+	vlv(obj, s)
+	fan(obj, s)
+	fanAccel(obj, s)
+	heating(obj, s)
+	device(obj, s)
 }
 
 module.exports = writeLock

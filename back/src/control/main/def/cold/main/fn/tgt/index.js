@@ -35,7 +35,6 @@ function combiTarget(bld, obj, bdata, alr) {
 		const r = readAcc(bld._id, name)
 		const tgtTprd = r?.tgt
 		const tgtTcnl = r?.tcnl
-		// console.log(888, r)
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
 		accAuto.cold.tgtTprd = tgtTprd
 		accAuto.cold.tgtTcnl = tgtTcnl

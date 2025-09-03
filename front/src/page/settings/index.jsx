@@ -161,7 +161,6 @@ function fnAct(prd, factory, coef, retain) {
 					// Для времени ожидания (CO2)
 					let time
 					if (`${o[cf?.[1]]}`.includes(':')) time = ms(o[cf?.[1]])
-					console.log(444, o[cf?.[0]], coef[cf?.[0]], o[cf?.[1]], time, coef[cf?.[1]])
 
 					if (
 						o[cf?.[0]] == coef[cf?.[0]] &&

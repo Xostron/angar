@@ -39,7 +39,9 @@ const data = {
 			coNormal,
 		},
 		// Склад - ВЫКЛ
-		off: {},
+		off: {
+			smoking,
+		},
 		// Склад - ВКЛ, ВЫКЛ
 		always: {
 			accelOn,
