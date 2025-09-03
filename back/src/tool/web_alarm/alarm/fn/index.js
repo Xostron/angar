@@ -100,7 +100,8 @@ function signalB(r, bld, am, data) {
 	// const drain = store.alarm.extra?.[bld._id]?.drain ?? null
 	const cable = store.alarm.extra?.[bld._id]?.cable ?? null
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
-	const smoking = store.alarm.extra?.[bld._id]?.smoking ?? null
+	const smoking1 = store.alarm.extra?.[bld._id]?.smoking1 ?? null
+	const smoking2 = store.alarm.extra?.[bld._id]?.smoking2 ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 	// extralrm
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
@@ -127,7 +128,8 @@ function signalB(r, bld, am, data) {
 	if (alrClosed) r.signal[bld._id].push(alrClosed)
 	if (local) r.signal[bld._id].push(local)
 	if (drainRun) r.signal[bld._id].push(drainRun)
-	if (smoking) r.signal[bld._id].push(smoking)
+	if (smoking1) r.signal[bld._id].push(smoking1)
+		if (smoking2) r.signal[bld._id].push(smoking2)
 	if (connect) r.signal[bld._id].push(connect)
 	if (low) r.signal[bld._id].push(low)
 	if (deltaMdl) r.signal[bld._id].push(deltaMdl)
@@ -177,7 +179,7 @@ function bannerB(r, bld) {
 	// Окуривание
 	r.banner.smoking ??= {}
 	r.banner.smoking[bld._id] ??= {}
-	r.banner.smoking[bld._id] = store.alarm?.extra?.[bld._id]?.smoking ?? null
+	r.banner.smoking[bld._id] = store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }

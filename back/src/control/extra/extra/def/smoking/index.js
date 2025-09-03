@@ -12,19 +12,19 @@ const h = 3600000
  * 2 Зайти в настройки "Окуривание"
  * 3 Настроить время и в поле "ВКЛЮЧИТЬ" выбрать вкл
  * 4 Дождаться конца окуривания: сообщения о завершении попадают на страницу "СИГНАЛЫ"
- * @param {*} building 
- * @param {*} section 
- * @param {*} obj 
- * @param {*} s 
- * @param {*} se 
- * @param {*} m 
- * @param {*} alarm 
- * @param {*} acc 
- * @param {*} data 
- * @param {*} ban 
- * @param {*} resultFan 
- * @param {*} clear 
- * @returns 
+ * @param {*} building
+ * @param {*} section
+ * @param {*} obj
+ * @param {*} s
+ * @param {*} se
+ * @param {*} m
+ * @param {*} alarm
+ * @param {*} acc
+ * @param {*} data
+ * @param {*} ban
+ * @param {*} resultFan
+ * @param {*} clear
+ * @returns
  */
 function smoking(
 	building,
@@ -40,23 +40,24 @@ function smoking(
 	resultFan,
 	clear = false
 ) {
-	if (clear) return fnClear(building._id)
+	const idB = building._id
+	if (clear) return fnClear(idB)
 
 	const stg = s?.smoking
 	// Все вентиляторы склада
 	const arr = collect(m)
-	const bId = building._id
-	const doc = obj.retain?.[bId]?.smoking ?? {}
-	store.smoking[bId] = doc
+	const doc = obj.retain?.[idB]?.smoking ?? {}
+	store.smoking[idB] = doc
 	const accelMode = s.cooler?.accel ?? s.coolerCombi?.accel ?? s.accel?.mode
 	console.log(1, doc, stg)
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrl(building._id, arr, 'off')
+		if (accelMode !== 'on') arrCtrl(idB, arr, 'off')
 		delete doc.work
 		delete doc.wait
-		delExtra(building._id, null, 'smoking')
+		delExtra(idB, null, 'smoking1')
+		delExtra(idB, null, 'smoking2')
 		return
 	}
 	// Включено окуривание
@@ -65,20 +66,22 @@ function smoking(
 	// Работаем - включаются вентиляторы
 	if (!doc.work) {
 		doc.work = new Date()
-		wrExtra(building._id, null, 'smoking', msgB(building, 82, ' работа'))
+		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа'))
 	}
 	if (!compareTime(doc.work, stg.work * h)) {
-		arrCtrl(building._id, arr, 'on')
+		arrCtrl(idB, arr, 'on')
 		return
 	}
 
 	// Выключаем вентиляторы и ждем
 	if (!doc.wait) {
 		doc.wait = new Date()
-		wrExtra(building._id, null, 'smoking', msgB(building, 82, ' ожидание'))
+		delExtra(idB, null, 'smoking1')
+		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание'))
 	}
 	if (!compareTime(doc.wait, stg.wait * h)) {
-		arrCtrl(building._id, arr, 'off')
+		arrCtrl(idB, arr, 'off')
+		console.log(3, 'off fan')
 		return
 	}
 
@@ -86,6 +89,8 @@ function smoking(
 
 	doc.work = null
 	doc.wait = null
+	delExtra(idB, null, 'smoking1')
+	delExtra(idB, null, 'smoking2')
 }
 
 module.exports = smoking

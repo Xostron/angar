@@ -2,7 +2,6 @@ const { setTuneTime, setPos } = require('@tool/command/set')
 const { stateV } = require('@tool/command/valve')
 const { data: store } = require('@store')
 const { isZero } = require('@tool/zero')
-const { delExtra } = require('@tool/message/extra')
 
 // Прогресс открытия/закрытия клапана (сохранение в retain)
 function positionVlv(obj) {
@@ -111,7 +110,6 @@ function cbSmoking(obj, data) {
 		if (check(obj, build, result[build])) {
 			result[build].start = true
 			result[build].setting.smoking.on = false
-			delExtra(build._id, null, 'smoking')
 		}
 	}
 	return result
