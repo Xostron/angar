@@ -5,13 +5,13 @@ import { authLogin } from '@tool/api/auth'
 export default async function auth(form, clear) {
 	try {
 		const result = await authLogin(form)
-		useAuthStore.setState({ isAuth: true, name: result.name })
+		useAuthStore.setState({ isAuth: true, name: result.name, last: new Date() })
 		localStorage.setItem('access', result.access)
 		localStorage.setItem('name', result.name)
 		clear()
 	} catch (error) {
 		console.log(error)
-		useAuthStore.setState({ isAuth: false, name: '' })
+		useAuthStore.setState({ isAuth: false, name: '', last:null })
 		localStorage.removeItem('access')
 		localStorage.removeItem('name')
 		clear()
