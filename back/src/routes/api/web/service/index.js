@@ -38,15 +38,19 @@ function service(router) {
 	serviceRouter.get('/auto_login/:flag', autoLogin());
 	// Перезапуск сети
 	serviceRouter.get('/reload_net', reload_netmanager());
-	// Перезапуск сети
-	serviceRouter.get('/wifi', wifi_info());
-	serviceRouter.post('/wifi', wifi_manager());
-
+	// Список доступных wifi точек доступа
+	serviceRouter.get('/wifi', wifi_list());
+	// Подключение к wifi точке доступа
+	serviceRouter.post('/wifi', wifi_connect());
+	// Переключение интерфейса включение или выключение
+	serviceRouter.post('/switching', switching());
+	// Информация о сетевых интерфейсах
 	serviceRouter.get('/eth', eth_info());
+	// Управление сетевыми интерфейсами
 	serviceRouter.post('/eth', eth_manager());
 
 	// Установить файл с конфигурацией оборудования
-	serviceRouter.post('/file', file())
+	serviceRouter.post('/file', file());
 }
 
 module.exports = service;

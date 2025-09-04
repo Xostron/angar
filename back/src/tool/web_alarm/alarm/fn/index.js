@@ -129,7 +129,7 @@ function signalB(r, bld, am, data) {
 	if (local) r.signal[bld._id].push(local)
 	if (drainRun) r.signal[bld._id].push(drainRun)
 	if (smoking1) r.signal[bld._id].push(smoking1)
-		if (smoking2) r.signal[bld._id].push(smoking2)
+	if (smoking2) r.signal[bld._id].push(smoking2)
 	if (connect) r.signal[bld._id].push(connect)
 	if (low) r.signal[bld._id].push(low)
 	if (deltaMdl) r.signal[bld._id].push(deltaMdl)

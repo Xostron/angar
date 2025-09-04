@@ -1,105 +1,122 @@
-const fs = require('fs')
-const path = require('path')
-const reboot = require('@tool/scripts/reboot')
-const update = require('@tool/scripts/update')
-const pm2 = require('@tool/scripts/pm2')
-const rebuild = require('@tool/scripts/rebuild')
-const get_net_info = require('@tool/scripts/get_net_info')
-const set_new_ip = require('@tool/scripts/set_new_ip')
-const auto_login = require('@tool/scripts/auto_login')
-const reload_net = require('@tool/scripts/reload_net')
-const wifi = require('@tool/scripts/wifi')
-const eth = require('@tool/scripts/eth')
-const fsp = require('fs').promises
-const { writeConfig } = require('@tool/init')
+const fs = require('fs');
+const path = require('path');
+const reboot = require('@tool/scripts/reboot');
+const update = require('@tool/scripts/update');
+const pm2 = require('@tool/scripts/pm2');
+const rebuild = require('@tool/scripts/rebuild');
+const get_net_info = require('@tool/scripts/get_net_info');
+const set_new_ip = require('@tool/scripts/set_new_ip');
+const auto_login = require('@tool/scripts/auto_login');
+const reload_net = require('@tool/scripts/reload_net');
+const network = require('@tool/scripts/network');
+const eth = require('@tool/scripts/eth');
+const fsp = require('fs').promises;
+const { writeConfig } = require('@tool/init');
 
 function net_info() {
 	return (req, res) => {
 		get_net_info()
 			.then((r) => res.json(r))
-			.catch((err) => res.status(400).json({ txt: err.toString() }))
-	}
+			.catch((err) => res.status(400).json({ txt: err.toString() }));
+	};
 }
 
 function reload() {
-	return async (req, res) => {
-		const result = await reboot();
-		res.json(result);
+	return (req, res) => {
+		reboot().then(res.json).catch(res.status(400).json);
 	};
 }
 
 function upt_soft() {
-	return async (req, res) => {
-		const result = await update();
-		res.json(result);
+	return (req, res) => {
+		update().then(res.json).catch(res.status(400).json);
 	};
 }
 
 function pm2_cmd() {
-	return async (req, res) => {
+	return (req, res) => {
 		const { code } = req.params;
-		const result = await pm2(code);
-		res.json(result);
+		pm2(code).then(res.json).catch(res.status(400).json);
 	};
 }
 
 function set_ip() {
-	return async (req, res) => {
+	return (req, res) => {
 		const { ip } = req.body;
-		const result = await set_new_ip(ip);
-		res.json(result);
+		set_new_ip(ip).then(res.json).catch(res.status(400).json);
 	};
 }
 
 function build() {
-	return async (req, res) => {
-		const result = await rebuild();
-		res.json(result);
+	return (req, res) => {
+		rebuild().then(res.json).catch(res.status(400).json);
 	};
 }
 
 function autoLogin() {
-	return async (req, res) => {
+	return (req, res) => {
 		const { flag } = req.params;
-
-		const result = await auto_login(flag === true || flag === 'true');
-		res.json(result);
+		if (!flag) {
+			return res.status(400).json({ error: 'Не передан флаг' });
+		}
+		auto_login(flag === true || flag === 'true')
+			.then(res.json)
+			.catch(res.status(400).json);
 	};
 }
 
 function reload_netmanager() {
-	return async (req, res) => {
-		const result = await reload_net();
-		res.json(result);
+	return (req, res) => {
+		reload_net().then(res.json).catch(res.status(400).json);
 	};
 }
 
-function wifi_info() {
-	return async (req, res) => {
-		const result = await wifi.info();
-		res.json(result);
+function wifi_list() {
+	return (req, res) => {
+		network.wifi_list().then(res.json).catch(res.status(400).json);
 	};
 }
 
-function wifi_manager() {
-	return async (req, res) => {
-		const result = await wifi.manager(req.body);
-		res.json(result);
+function wifi_connect() {
+	return (req, res) => {
+		const { ssid, password } = req.body;
+		if (!ssid || !password) {
+			return res
+				.status(400)
+				.json({ error: 'SSID and password are required' });
+		}
+		network
+			.wifi_connect(ssid, password)
+			.then(res.json)
+			.catch(res.status(400).json);
+	};
+}
+
+function switching() {
+	return (req, res) => {
+		const { type, state } = req.body;
+		if (!type || !state) {
+			return res
+				.status(400)
+				.json({ error: 'Не передан тип и состояние' });
+		}
+		network
+			.switching(type, state)
+			.then(res.json)
+			.catch(res.status(400).json);
 	};
 }
 
 function eth_info() {
-	return async (req, res) => {
-		const result = await eth.info();
-		res.json(result);
+	return (req, res) => {
+		eth.info().then(res.json).catch(res.status(400).json);
 	};
 }
 
 function eth_manager() {
-	return async (req, res) => {
-		const result = await eth.manager(req.body)
-		res.json(result)
-	}
+	return (req, res) => {
+		eth.manager(req.body).then(res.json).catch(res.status(400).json);
+	};
 }
 
 function file() {
@@ -133,9 +150,10 @@ module.exports = {
 	set_ip,
 	autoLogin,
 	reload_netmanager,
-	wifi_info,
-	wifi_manager,
 	eth_info,
 	eth_manager,
 	file,
-}
+	wifi_list,
+	wifi_connect,
+	switching,
+};

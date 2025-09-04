@@ -19,6 +19,7 @@ function get_net_info() {
 						interface: iface.ifname,
 						mac: iface.address || null,
 						ip: inet ? inet.local : null,
+						state: iface.operstate,
 					};
 				});
 			// Получаем список ttyS из dmesg

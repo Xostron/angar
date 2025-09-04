@@ -101,13 +101,12 @@ module.exports = smoking
  * @returns
  */
 function collect(m) {
-	// console.log(2,m)
+	// для холодильника
 	const arr = m.fanA ?? []
 	m?.cold?.cooler.forEach(({ fan = [] }) => {
 		fan ? arr.push(...fan) : null
 	})
-	// TODO для любых складов
-
+	// для любых складов
 	return m.fanAll
 }
 

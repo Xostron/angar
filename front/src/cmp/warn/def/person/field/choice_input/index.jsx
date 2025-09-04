@@ -2,9 +2,9 @@ import './style.css'
 import { useEffect, useState } from 'react'
 import Modal from './modal'
 const list = [
-	{ code: 'admin', name: 'Админ' },
 	{ code: 'emp', name: 'Сотрудник' },
-	{ code: 'root', name: 'Сервис' },
+	{ code: 'admin', name: 'Админ' },
+	// { code: 'root', name: 'Сервис' },
 ]
 //Поле ввода
 export default function ChoiceInput({ value, setValue, style, placeholder, icon, sti, cls, title }) {
