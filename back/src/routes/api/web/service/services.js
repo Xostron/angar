@@ -73,7 +73,16 @@ function reload_netmanager() {
 
 function wifi_list() {
 	return (req, res) => {
-		network.wifi_list().then(res.json).catch(res.status(400).json);
+		network
+			.wifi_list()
+				.then((result) => {
+					console.log('r', result);
+					res.json({ result });
+				})
+				.catch((err) => {
+					console.error('wifi_list error:', err);
+					res.status(400).json({ error: err.toString() });
+				});
 	};
 }
 
@@ -87,8 +96,11 @@ function wifi_connect() {
 		}
 		network
 			.wifi_connect(ssid, password)
-			.then(res.json)
-			.catch(res.status(400).json);
+			.then((r) => {
+				console.log(r);
+				res.json(r);
+			})
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
@@ -103,7 +115,7 @@ function switching() {
 		network
 			.switching(type, state)
 			.then(res.json)
-			.catch(res.status(400).json);
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 

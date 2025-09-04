@@ -1,5 +1,4 @@
 const { exec } = require('child_process');
-const { getSecureAccessKey } = require('../security');
 
 // включение/выключение автологина
 function auto_login(flag = true) {

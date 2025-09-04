@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import Btn from '@cmp/fields/btn'
 import Input from '@cmp/fields/input'
 import useWarn from '@store/warn'

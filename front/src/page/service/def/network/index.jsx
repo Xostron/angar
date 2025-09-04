@@ -56,7 +56,9 @@ export default function Network({ props }) {
 						warn(
 							{
 								cls: 'network-modal wifi-modal',
-								onSave: () => handleWifiSave(config, req_ip, setInfo),
+								req_ip,
+								info,
+								// onSave: () => handleWifiSave(config, req_ip, info, setInfo),
 							},
 							'wifi'
 						)
@@ -91,7 +93,7 @@ export default function Network({ props }) {
 									padding: '5px',
 								}}
 							>
-								<span style={{ width: '100px' }}>{el.interface}</span>
+								<span style={{ width: '100px' }}>{el.interface} [{el.state}]</span>
 								<span style={{ width: '160px' }}>mac: {el.mac || '--'}</span>
 								<span style={{ width: '160px' }}>ip: {el.ip || '--'}</span>
 								{el.ip ? (
@@ -175,26 +177,26 @@ function handleEthernetSave(config, req_ip, setInfo) {
 		})
 }
 
-function handleWifiSave(config, req_ip, setInfo) {
-	// Валидация IP в конфигурации WiFi
-	if (config.ip && !validateIP(config.ip)) {
-		notification.warning('Некорректный IP адрес в настройках WiFi')
-		return
-	}
-	post('set_wifi', config, req_ip)
-		.then((r) => {
-			notification.success('Подключение к WiFi: ' + r.message)
-			// Обновляем информацию о сети
-			get('net_info', req_ip).then((o) => {
-				setInfo(o.net)
-			})
-		})
-		.catch((e) => {
-			notification.error(e.message || 'Ошибка подключения к WiFi', {
-				errorId: e.id,
-			})
-		})
-}
+// function handleWifiSave(config, req_ip, setInfo) {
+// 	// Валидация IP в конфигурации WiFi
+// 	if (config.ip && !validateIP(config.ip)) {
+// 		notification.warning('Некорректный IP адрес в настройках WiFi')
+// 		return
+// 	}
+// 	post('set_wifi', config, req_ip)
+// 		.then((r) => {
+// 			notification.success('Подключение к WiFi: ' + r.message)
+// 			// Обновляем информацию о сети
+// 			get('net_info', req_ip).then((o) => {
+// 				setInfo(o.net)
+// 			})
+// 		})
+// 		.catch((e) => {
+// 			notification.error(e.message || 'Ошибка подключения к WiFi', {
+// 				errorId: e.id,
+// 			})
+// 		})
+// }
 
 // Перезагрузка сети
 function onReloadNet(req_ip) {

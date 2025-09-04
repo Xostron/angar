@@ -1,7 +1,7 @@
 import Moment from 'react-moment'
 import './style.css'
 import { useEffect, useReducer, useRef, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 const CLICK = 3
 const DELTA_MS = 1000
 //Текущее время

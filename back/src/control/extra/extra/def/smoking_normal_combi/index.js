@@ -5,9 +5,7 @@ const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 const { getIdsS } = require('@tool/get/building')
 const { fnClear, collect } = require('./fn')
-const soft = require('./soft/soft')
-const { sensor } = require('@tool/command/sensor')
-// const h = 60000
+const softStart = require('./soft')
 const h = 3600000
 
 /**
@@ -111,13 +109,3 @@ function smoking(
 }
 
 module.exports = smoking
-
-function softStart(idB, idsS, fan, obj, s, start = false) {
-	idsS.forEach((idS) => {
-		// Тип управления: с ПЧ или Реле
-		const type = fan[idS].type
-		// Датчики секции
-		const se = sensor(idB, idS, obj)
-		soft[type](idB, idS, fan[idS], obj, s, se, start)
-	})
-}

@@ -9,11 +9,12 @@ const {
 	build,
 	autoLogin,
 	reload_netmanager,
-	wifi_info,
-	wifi_manager,
+	wifi_list,
+	wifi_connect,
+	switching,
 	eth_info,
 	eth_manager,
-	file
+	file,
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -39,11 +40,11 @@ function service(router) {
 	// Перезапуск сети
 	serviceRouter.get('/reload_net', reload_netmanager());
 	// Список доступных wifi точек доступа
-	// serviceRouter.get('/wifi', wifi_list());
+	serviceRouter.get('/wifi', wifi_list());
 	// Подключение к wifi точке доступа
-	// serviceRouter.post('/wifi', wifi_connect());
+	serviceRouter.post('/wifi', wifi_connect());
 	// Переключение интерфейса включение или выключение
-	// serviceRouter.post('/switching', switching());
+	serviceRouter.post('/switching', switching());
 	// Информация о сетевых интерфейсах
 	serviceRouter.get('/eth', eth_info());
 	// Управление сетевыми интерфейсами

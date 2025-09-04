@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router'
+import { NavLink } from 'react-router-dom'
 
 export default function List({ list }) {
 	if (!list) return <></>

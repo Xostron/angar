@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router'
+import { NavLink } from 'react-router-dom'
 
 export default function Item({ data }) {
 	const { icon, name, path } = data
