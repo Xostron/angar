@@ -24,6 +24,7 @@ body > div {
 	--background: white;
 	--surface: #ededed;
 	--onSurface: #1926469a;
+	--err: rgb(248, 63, 63);
 	--br: 100px;
 	--fsz10: clamp(0.3125rem, -0.2083rem + 0.6944vw, 0.625rem);
 	--fsz12: clamp(0.375rem, -0.25rem + 0.8333vw, 0.75rem);

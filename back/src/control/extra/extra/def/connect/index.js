@@ -8,12 +8,13 @@ function connect(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	m.connect.forEach((el) => {
 		// Включение выхода - Модуль в сети
 		ctrlDO(el, building._id, 'on')
-		const owner = el.owner.type === 'section' ? el.owner.id : null
-		if (!acc.flag[el._id]) {
-			const mes = fnMsg(building, owner, obj.data.section)
-			wrExtra(building._id, owner, el.type, mes)
-			acc.flag[el._id] = true
-		}
+		// TODO (сообщение "Модуль в сети" убрано по запросу)
+		// const owner = el.owner.type === 'section' ? el.owner.id : null
+		// if (!acc.flag[el._id]) {
+			// const mes = fnMsg(building, owner, obj.data.section)
+			// wrExtra(building._id, owner, el.type, mes)
+			// acc.flag[el._id] = true
+		// }
 		// TODO (всегда включен выход "модуль в работе" - раскомментировать по запросу)
 		// У склада неисправный модуль отключаем везде выход connect
 		// if (isErrM) {
