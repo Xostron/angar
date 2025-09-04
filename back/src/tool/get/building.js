@@ -32,7 +32,7 @@ function getS(id, where = []) {
 	const f = where?.find((el) => el._id === id)
 	return f?.sectionId ?? f?.owner?.id ?? null
 }
-// Получить id склада по холодильника
+// Получить id склада по испарителю
 function getIdByClr(section, clr) {
 	return section.find((el) => el._id === clr.sectionId)?.buildingId
 }
@@ -58,4 +58,11 @@ function getIdSB(section, id) {
 	return section.find((el) => el._id === id)?.buildingId
 }
 
-module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB, getOwnerClr }
+// Получить массив id секций по id склада
+function getIdsS(section, idB) {
+	return section
+		.filter((el) => el.buildingId === idB)
+		.sort((a, b) => a.order - b.order)
+		.map((el) => el._id)
+}
+module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB, getOwnerClr, getIdsS }

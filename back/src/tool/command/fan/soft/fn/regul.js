@@ -1,5 +1,4 @@
 const { compareTime } = require('@tool/command/time')
-const { data: store } = require('@store')
 const _MAX = 100
 
 /**

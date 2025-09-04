@@ -7,7 +7,7 @@ const { msgB } = require('@tool/message')
 // const h = 60000
 const h = 3600000
 /**
- * Окуривание:
+ * Окуривание для ХОЛОДИЛЬНИКА:
  * 1 Выключить склад
  * 2 Зайти в настройки "Окуривание"
  * 3 Настроить время и в поле "ВКЛЮЧИТЬ" выбрать вкл
@@ -49,7 +49,6 @@ function smoking(
 	const doc = obj.retain?.[idB]?.smoking ?? {}
 	store.smoking[idB] = doc
 	const accelMode = s.cooler?.accel ?? s.coolerCombi?.accel ?? s.accel?.mode
-	console.log(1, doc, stg)
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
@@ -81,7 +80,6 @@ function smoking(
 	}
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrl(idB, arr, 'off')
-		console.log(3, 'off fan')
 		return
 	}
 
@@ -101,13 +99,12 @@ module.exports = smoking
  * @returns
  */
 function collect(m) {
-	// для холодильника
+	// для холодильника без ПЧ
 	const arr = m.fanA ?? []
 	m?.cold?.cooler.forEach(({ fan = [] }) => {
 		fan ? arr.push(...fan) : null
 	})
-	// для любых складов
-	return m.fanAll
+	return arr
 }
 
 function fnClear(idB) {

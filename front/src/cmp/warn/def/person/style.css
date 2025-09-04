@@ -1,17 +1,5 @@
-.cmp-person-entry-logo {
+.cmp-person-entry-logo{
 	/* width: 200px; */
 	height: 80px;
 	padding: 8px;
-}
-
-.cmp-person-entry-control {
-	display: flex;
-	flex-direction: column;
-	gap: 1em;
-}
-
-.cmp-person-entry-control-error {
-	color: var(--err);
-	font-size: var(--fsz15);
-	text-align: center;
 }
