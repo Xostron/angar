@@ -1,7 +1,7 @@
 const calc = require('@tool/command/abs_humidity')
 const dewpoint = require('@tool/sensor/dewpoint')
-const {fnMsg, fnMsgs } = require('@tool/sensor/fn')
-const {state, fnState, toutVsWeather} = require('@tool/sensor/total')
+const { fnMsg, fnMsgs } = require('@tool/sensor/fn')
+const { state, fnState, toutVsWeather } = require('@tool/sensor/total')
 
 // Значения датчиков для расчетов алгоритма и отображения на панели с погодой
 module.exports = function total(equip, result, retain) {
@@ -9,12 +9,14 @@ module.exports = function total(equip, result, retain) {
 
 	const idsB = building.map((el) => el._id)
 	// Температура улицы (мин) среди всех складов данной pc
-	let flt = (el) => idsB.includes(el.owner.id) && el.type === 'tout' && result?.[el._id]?.state === 'on'
+	let flt = (el) =>
+		idsB.includes(el.owner.id) && el.type === 'tout' && result?.[el._id]?.state === 'on'
 	let fltA = (el) => idsB.includes(el.owner.id) && el.type === 'tout'
 	const tout = state(sensor, result, flt, fltA)
 
 	// Влажность улицы (макс) среди всех складов данной pc
-	flt = (el) => idsB.includes(el.owner.id) && el.type === 'hout' && result?.[el._id]?.state === 'on'
+	flt = (el) =>
+		idsB.includes(el.owner.id) && el.type === 'hout' && result?.[el._id]?.state === 'on'
 	fltA = (el) => idsB.includes(el.owner.id) && el.type === 'hout'
 	const hout = state(sensor, result, flt, fltA)
 
@@ -49,7 +51,9 @@ module.exports = function total(equip, result, retain) {
 		// let ids = []
 		if (bld.type !== 'cold') {
 			// Найти секции которые в авто
-			idsS = section.filter((el) => el.buildingId === bld._id && retain?.[bld?._id]?.mode?.[el?._id]).map((el) => el._id)
+			idsS = section
+				.filter((el) => el.buildingId === bld._id && retain?.[bld?._id]?.mode?.[el?._id])
+				.map((el) => el._id)
 			// Все секции
 			idsAll = section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
 		} else {
@@ -60,11 +64,13 @@ module.exports = function total(equip, result, retain) {
 
 		// Температура продукта (макс) по всем секциям склада
 		// если секция не в авто режиме, то абсолютная влажность продукта = null
-		flt = (el) => ids.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
+		flt = (el) =>
+			ids.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
 		fltA = (el) => ids.includes(el.owner.id) && el.type === 'tprd'
 		const tprd = state(sensor, result, flt, fltA)
 		// Темп. канала (мин) по всем секциям
-		flt = (el) => ids.includes(el.owner.id) && el.type === 'tcnl' && result?.[el._id]?.state === 'on'
+		flt = (el) =>
+			ids.includes(el.owner.id) && el.type === 'tcnl' && result?.[el._id]?.state === 'on'
 		fltA = (el) => ids.includes(el.owner.id) && el.type === 'tcnl'
 		const tcnl = state(sensor, result, flt, fltA)
 
@@ -73,10 +79,15 @@ module.exports = function total(equip, result, retain) {
 		// Аварийные сообщения для склада холодильник
 		fnMsg(bld, tin, 'tin', 'cold')
 
-		// Влажность продукта (макс)
-		flt = (el) => el.owner.id === bld._id && el.type === 'hin' && result?.[el._id]?.state !== 'alarm'
+		// Влажность продукта (макс) - поиск по рабочим датчикам
+		flt = (el) =>
+			el.owner.id === bld._id && el.type === 'hin' && result?.[el._id]?.state === 'on'
 		fltA = (el) => el.owner.id === bld._id && el.type === 'hin'
 		const hin = state(sensor, result, flt, fltA)
+		// 1. Выведены из работы
+		if (hin.max === null && hin.state === 'off') (hin.max = 80), (hin.min = 80)
+		console.log(11, hin)
+		// 2. Датчик в аварии - остается аварийным
 		// Когда склад с одним агрегатом (датччики давления могут быть привязаны к складу)
 		// Давление всасывания
 		// const pin = fnState(sensor, result, bld._id, 'pin')
@@ -85,7 +96,8 @@ module.exports = function total(equip, result, retain) {
 
 		// Для логирования
 		// Температура продукта
-		flt = (el) => ids.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
+		flt = (el) =>
+			ids.includes(el.owner.id) && el.type === 'tprd' && result?.[el._id]?.state === 'on'
 		fltA = (el) => ids.includes(el.owner.id) && el.type === 'tprd'
 		const tprdL = state(sensor, result, flt, fltA)
 
@@ -97,15 +109,26 @@ module.exports = function total(equip, result, retain) {
 		const tout = { ...result?.total?.tout } ?? {}
 		tout.min = toutVsWeather(tout.min, tweather)
 		// Абс влажность улицы
-		result.humAbs.out[bld._id] = calc(tout?.min, result.total?.hout?.max, `${bld.name}:Абс.влажность улицы`)
+		result.humAbs.out[bld._id] = calc(
+			tout?.min,
+			result.total?.hout?.max,
+			`${bld.name}:Абс.влажность улицы`
+		)
 		// const hout =
 
 		// Результат (данные с датчиков для алгоритма)
 		result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, tout }
 		// Абсолютная влажность продукта
-		result.humAbs.in[bld._id] = calc(result.total[bld._id].tprd.min, result.total[bld._id].hin.max, `${bld.name}:Абс.влажность продукта`)
+		result.humAbs.in[bld._id] = calc(
+			result.total[bld._id].tprd.min,
+			result.total[bld._id].hin.max,
+			`${bld.name}:Абс.влажность продукта`
+		)
 		// Точка росы
-		result.total[bld._id].point = dewpoint(result.total?.[bld._id]?.tout?.min, result?.total?.hout?.max)
+		result.total[bld._id].point = dewpoint(
+			result.total?.[bld._id]?.tout?.min,
+			result?.total?.hout?.max
+		)
 	}
 
 	//  По секциям
@@ -145,8 +168,3 @@ module.exports = function total(equip, result, retain) {
 
 	// console.log(8888, result.total)
 }
-
-
-
-
-

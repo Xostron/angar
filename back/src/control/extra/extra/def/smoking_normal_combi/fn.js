@@ -1,4 +1,5 @@
 const { mech } = require('@tool/command/mech')
+const { delExtra } = require('@tool/message/extra')
 
 /**
  * Распределить секционные ВНО по секциям
