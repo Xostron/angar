@@ -7,17 +7,13 @@ const periphery = require('./periphery')
  * @returns
  */
 function value(val, obj) {
-	// return new Promise((resolve, reject) => {
-	if (!val) return resolve(null)
 	// Преобразование прочитанных входов/выходов
 	const data = periphery(val, obj)
-
 	// Данные для главного цикла
 	obj.value = { ...data }
 	obj.errBuilding = val.error
 	// Данные для web клиента
 	return { ...data, retain: obj.retain, factory: obj.factory, time: new Date(), errBuilding: val.error }
-	// })
 }
 
 module.exports = value
