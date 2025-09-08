@@ -58,7 +58,7 @@ function hourlyT(level) {
 		// delete maxFiles - очистка журнала отключена
 		// maxFiles:100 - хранит последние 100 файлов журнала,
 		// maxFiles: '1001d' - Хранит файлы созданные за последние 1001 день
-		maxFiles: '1001d',
+		maxFiles: '200d',
 		// Формат лога
 		format: combine(
 			filterOnly(level), // пропускаем только нужный level
