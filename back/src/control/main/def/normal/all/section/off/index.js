@@ -12,19 +12,6 @@ function sectionOff(building, sect, obj, s, se, m, am, accAuto, resultFan, start
 		store.aCmd ??= {}
 		store.aCmd[sect._id] ??= {}
 		store.aCmd[sect._id].fan = {}
-		// TODO?
-		// m.fanS.forEach((el) => {
-		// 	store.watchdog ??= {}
-		// 	store.watchdog[el._id] = {}
-		// })
-		// Очистка расчетов плавного пуска
-		// store.watchdog.softFan[sect._id] = {}
-		// выключение испарителей
-		// obj.data.fan.filter(el=>el)
-		// fans.forEach((f, i) => {
-		// f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
-		// ctrlDO(f, bld._id, 'off')
-	// })
 	}
 }
 

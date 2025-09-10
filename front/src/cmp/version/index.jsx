@@ -32,7 +32,7 @@ function Version() {
 		<div style={stl}>
 			<Helmet title={title} />
 			<StatusWS />
-			server 4.3.0: {process.env.PUBLIC_SOCKET_URI}{' '}
+			server 4.4.0: {process.env.PUBLIC_SOCKET_URI}{' '}
 			{info && ' Сеть: ' + info.map((el) => `${el.interface}: ${el.ip || el.mac}`).join('')}
 		</div>
 	)

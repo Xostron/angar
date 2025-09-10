@@ -7,14 +7,11 @@ function vlv(obj) {
 	const { value, data, retain, output } = obj
 	for (const v of data.valve) {
 		const mdlOnId = v?.module?.on?.id
-
 		const opn = value?.[v._id]?.open
 		const cls = value?.[v._id]?.close
-
 		const idB = getIdB(mdlOnId, data.module)
-		// Защита от клапанов без привязки модулей в админпанели
-		// if (!mdlOnId || !mdlOffId || isNaN(chOn) || isNaN(chOff)) continue
 
+		// Блокировки
 		const local = isExtralrm(idB, v.sectionId[0], 'local')
 		const localB = isExtralrm(idB, null, 'local')
 		const alrStop = isExtralrm(idB, null, 'alarm')
@@ -48,7 +45,7 @@ function fan(obj, s) {
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
 		// Игнор блокировки: вкл окуривание
-		const ignore = s[idB]?.smoking?.on
+		const smoking = s[idB]?.smoking?.on
 		// Блокировки:
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrOff =
@@ -59,11 +56,11 @@ function fan(obj, s) {
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
-		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !ignore
+		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !smoking
 		// Склад выключен и секция в авторежиме
-		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !ignore
+		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !smoking
 
-		// console.log(2, f.name, isAlrOff, localB, local, offS, alrStop, lockAuto, ignore)
+		// console.log(2, f.name, isAlrOff, localB, local, offS, alrStop, lockAuto, smoking)
 		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
 		ao(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
 	}

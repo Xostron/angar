@@ -143,10 +143,14 @@ function turnOn(fan, idB, acc) {
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(idB, idS, fan, start) {
-	// РАЗРЕШЕНО ВКЛ
+function turnOff(idB, idS, fan, bStart, start) {
+	// РАЗРЕШЕНО ВКЛ: команда на окуривание вкл и секция в авто
+	console.log(1111, bStart, fan.mode)
 	if (start && fan.mode) return false
-	// ЗАПРЕЩЕНО ВКЛ
+
+	// ЗАПРЕЩЕНО ВКЛ и не блокируем ВНО если склад выключен и секция в ручном режиме
+	if (!bStart && fan.mode === false) return true
+	// Запрещено и выкл ВНО если закончилось окуривание
 	console.log(1, idS, 'ПП: Выключение ВНО')
 	fan.fans.forEach((f, i) => {
 		f?.ao?.id ? ctrlAO(f, idB, 0) : null

@@ -1,3 +1,4 @@
+const force = require('./force')
 const toAuto = require('./mode/to_auto')
 const toMan = require('./mode/to_man')
 const toOff = require('./mode/to_off')
@@ -12,6 +13,8 @@ function prepare(obj) {
 	toMan(obj)
 	// Выкл секций
 	toOff(obj)
+	// Принудительное закрытие клапанов и выключение ВНО
+	force(obj)
 }
 
 module.exports = prepare

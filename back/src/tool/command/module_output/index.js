@@ -18,6 +18,10 @@ function ctrlAO(o, bldId, value) {
  * @returns
  */
 function ctrlDO(obj, buildingId, type) {
+	if (type==='off') {
+		// console.trace()
+		// console.log(9998,obj)
+	}
 	if (!type) return null
 	const bldId = obj?._build ?? buildingId
 	const mdlId = obj?.module?.id

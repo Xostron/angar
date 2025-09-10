@@ -1,6 +1,6 @@
 const { data: store, setToAuto, setToMan, setToOffSection } = require('@store')
 const { ctrlV, ctrlDO } = require('@tool/command/module_output')
-const { stateEq} = require('@tool/command/fan/fn')
+const { stateEq } = require('@tool/command/fan/fn')
 const { stateV } = require('@tool/command/valve')
 
 /**
@@ -16,14 +16,17 @@ function controlAO(buildId, sectionId, data, value, type = 'to_auto') {
 	const { fan, valve } = data
 	const fanS = fan.filter((el) => el.owner.id === sectionId && el.type === 'fan')
 	const vlvS = valve.filter((el) => el.sectionId.includes(sectionId))
-	// Закрытие всех клапанов
-	const v = clsValves(vlvS, value, buildId)
-	// Отключение вентиляторов секции
-	const f = offEq(fanS, value, buildId)
+	// Закрытие всех клапанов при переходе в ВЫКЛ
+	let v 
+	if (type === 'to_off') v = clsValves(vlvS, value, buildId)
+	// Отключение вентиляторов секции при переходе в ВЫКЛ
+	let f
+	if (type === 'to_off') f = offEq(fanS, value, buildId)
 	// Подготовка выполнена, все клапаны закрыты (Авто)
-	if (type === 'to_auto' && v && f) setToAuto({ _build: buildId, _section: sectionId, value: true })
+	if (type === 'to_auto') setToAuto({ _build: buildId, _section: sectionId, value: true })
 	// Подготовка выполнена, все клапаны закрыты (Секция выключена)
-	if (type === 'to_off' && v && f) setToOffSection({ _build: buildId, _section: sectionId, value: true })
+	if (type === 'to_off' && v && f)
+		setToOffSection({ _build: buildId, _section: sectionId, value: true })
 }
 
 //****************************************************************

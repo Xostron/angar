@@ -14,6 +14,8 @@ const { turnOff, turnOn, checkOff_FC, checkOff_Relay, checkOn, regul } = require
  * @returns
  */
 function relay(idB, idS, fan, obj, s, se, start) {
+	// Склад включен/выключен
+	const bStart = obj.retain[idB].start
 	// Аккумулятор
 	store.heap.smoking ??= {}
 	store.heap.smoking[idS] ??= {}
@@ -28,7 +30,7 @@ function relay(idB, idS, fan, obj, s, se, start) {
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
 	// ****************** ВЫКЛ ВНО (команда || секция не в авто) ******************
-	if (turnOff(idB, idS, fan, start)) return
+	if (turnOff(idB, idS, fan, bStart, start)) return
 
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
@@ -56,6 +58,8 @@ function relay(idB, idS, fan, obj, s, se, start) {
  * @returns
  */
 function fc(idB, idS, fan, obj, s, se, start) {
+	// Склад включен/выключен
+	const bStart = obj.retain[idB].start
 	// Аккумулятор
 	store.heap.smoking ??= {}
 	store.heap.smoking[idS] ??= {}
@@ -72,7 +76,7 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
 	// ****************** ВЫКЛ ВНО (команда || секция не в авто) ******************
-	if (turnOff(idB, idS, fan, start)) return
+	if (turnOff(idB, idS, fan,bStart, start)) return
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	const { p } = se

@@ -29,4 +29,3 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 }
 
 module.exports = { oneChange }
-
