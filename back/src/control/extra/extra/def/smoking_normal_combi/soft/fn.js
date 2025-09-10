@@ -145,7 +145,6 @@ function turnOn(fan, idB, acc) {
  */
 function turnOff(idB, idS, fan, bStart, start) {
 	// РАЗРЕШЕНО ВКЛ: команда на окуривание вкл и секция в авто
-	console.log(1111, bStart, fan.mode)
 	if (start && fan.mode) return false
 
 	// ЗАПРЕЩЕНО ВКЛ и не блокируем ВНО если склад выключен и секция в ручном режиме
