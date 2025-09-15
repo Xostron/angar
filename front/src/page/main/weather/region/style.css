@@ -1,34 +1,49 @@
 .mw-region {
 	display: flex;
 	color: white;
-	padding: 8px;
-	gap: 18px;
+	padding: 1em;
+	gap: 1.5em;
 }
 /* ******************* */
 .mwr-left {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	gap: 8px;
+	gap: 0.5em;
 	font-size: var(--fsz26);
+	&.mb {
+		font-size: .75em;
+		gap: 0;
+	}
 }
 .mwrl-info {
 	display: flex;
 	align-items: center;
-	gap: 8px;
 	font-size: var(--fsz24);
 	justify-content: flex-end;
-	gap: 20px;
+	gap: 10px;
+	&.mb {
+		font-size: 1.2em;
+		flex-direction: row;
+		justify-content: flex-start;
+	}
 }
 .mwrl-info > div {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
+.mwrl-info.mb > div {
+	gap: 0px;
+	align-items: center;
+}
 .mwrl-info > span {
 	display: flex;
 	font-size: var(--fsz45);
 	align-items: center;
+}
+.mwrl-info.mb > span {
+	font-size: 1em;
 }
 /* ********************* */
 .mwr-right {
@@ -38,4 +53,7 @@
 }
 .mwr-right > img {
 	height: 90px;
+}
+.mwr-right.mb > img {
+	height: 50px;
 }

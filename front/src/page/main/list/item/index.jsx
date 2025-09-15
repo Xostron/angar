@@ -3,15 +3,18 @@ import Mode from './mode'
 import Tout from './tout'
 import Alarm from './alarm'
 import { useShallow } from 'zustand/react/shallow'
+import useViewStore from '@store/view'
 import useInputStore from '@store/input'
 import './style.css'
 
 
 export default function Item({ item, idx, buildId}) {
 	const [start] = useInputStore(useShallow(({ input }) => [input?.retain?.[buildId]?.start]))
+	const mb = useViewStore((s) => s.mb())
 	const { _id } = item
 	let cl = ['item']
 	if(!item?.on) cl.push('out')
+	if (mb) cl.push(mb)
 	cl = cl.join(' ')
     
 

@@ -1,7 +1,6 @@
 .main-weather {
 	display: flex;
 	width: 100%;
-	/* height: clamp(6.0625rem, -5.9578rem + 14.0794vw, 10.9375rem); */
 	height: 175px;
 	min-height: 175px;
 	background-color: var(--primary);
@@ -9,6 +8,10 @@
 	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 	border-radius: 10px;
 	overflow: hidden;
+	&.mb {
+		height: 60px;
+		min-height: 60px;
+	}
 }
 
 .mw-left {
@@ -16,10 +19,14 @@
 	justify-content: flex-end;
 	width: 65%;
 	position: relative;
-	background-size: cover;
+	&.mb {
+		width: 100%;
+	}
 }
 
 .mw-right {
 	width: 35%;
+	&.mb {
+		width: 0%;
+	}
 }
-

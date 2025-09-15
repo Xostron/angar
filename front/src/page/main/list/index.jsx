@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useViewStore from '@store/view'
 import Item from './item'
 import Btn from '@cmp/fields/btn'
 import './style.css'
@@ -6,7 +7,7 @@ import './style.css'
 export default function List({ list }) {
 	const [page, setPage] = useState(0)
 	const [arr, setArr] = useState(list?.slice(0, 10))
-
+	const mb = useViewStore((s) => s.mb())
 	const limit = Math.ceil(list?.length / 10) - 1
 
 	// Пейджирование
@@ -21,8 +22,8 @@ export default function List({ list }) {
 
 	if (!list?.length) return null
 	let cl = ['store-wrapper'].join(' ')
-	let clList = ['list', `count-${list.length}`].join(' ')
-
+	let clList = ['list', mb, `count-${list.length}`].join(' ')
+	if (mb) clList = ['list', mb].join(' ')
 	return (
 		<div className={cl}>
 			{limit >= 1 && <Btn icon='\img\arrow-left.svg' cls='btn-arrow l' onClick={prev} />}
