@@ -1,0 +1,9 @@
+.outdoor {
+	grid-area: 2 / 2 / 3 / 3;
+	display: flex;
+	gap: var(--fsz30);
+	&.mb{
+		grid-area: 2 / 1 / 3 / 4;
+		gap: .5em;
+	}
+}

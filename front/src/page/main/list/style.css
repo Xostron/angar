@@ -6,18 +6,19 @@
 
 .store-wrapper .list {
 	width: calc(100% - 110px);
-	min-width: 346px;
 	height: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
 	justify-content: center;
-	align-content: center;
+	align-items: center;
 	margin: auto;
 	flex-direction: row;
+	background-color: rgb(213, 210, 210);
 	&.mb {
 		flex-direction: column;
-		min-width: 280px;
+		min-width: 200px;
+		justify-content: flex-start;
 	}
 }
 
@@ -48,6 +49,7 @@
 	height: calc((100% - 20px) / 2);
 	min-height: 350px;
 	max-height: 350px;
+	min-width: 200px;
 	&.mb{
 		width: calc((100% - 0px) / 1);
 	}

@@ -84,11 +84,7 @@ img {
 }
 
 /* Склад */
-.outdoor {
-	grid-area: 2 / 2 / 3 / 3;
-	display: flex;
-	gap: var(--fsz30);
-}
+
 .weather {
 	display: flex;
 	width: calc(77% - var(--fsz30) / 2);
