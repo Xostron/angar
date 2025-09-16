@@ -14,7 +14,6 @@
 	align-items: center;
 	margin: auto;
 	flex-direction: row;
-	background-color: rgb(213, 210, 210);
 	&.mb {
 		flex-direction: column;
 		min-width: 200px;

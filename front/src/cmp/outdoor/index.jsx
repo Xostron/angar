@@ -22,7 +22,6 @@ export default function Outdoor() {
 	const getTotalBy = useInputStore((s) => s.getTotalBy)
 	const getFan = useInputStore((s) => s.getFan)
 	const humAbs = useInputStore((s) => s.input?.humAbs)
-	console.log(111, build?.fan)
 	if (!build) return null
 
 	// Внутри склада

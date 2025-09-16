@@ -5,7 +5,6 @@ function mech(obj, idS, idB) {
 	// Клапаны и обогрев (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
-
 	// Испарители (соленоид + ВНО + оттайка)
 	const coolerS = []
 	cooler.forEach((el) => {
@@ -15,8 +14,7 @@ function mech(obj, idS, idB) {
 	const fanClr = coolerS.flatMap((el) => el.fan)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
-
-	// Напорные ВНО камеры для режима холодильник
+	// Напорные ВНО секции обычного склада/камеры холодильника (только рабочие)
 	const fanSS = fan
 		.filter(
 			(el) =>
@@ -30,8 +28,7 @@ function mech(obj, idS, idB) {
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
-
-	// Напорные ВНО камеры + ВНО испарителей для обычного склада/комби склада в режиме обычного
+	// Напорные ВНО секции/камеры + ВНО испарителей: обычный/комби склад в режиме обычного
 	const fanS = [...fanSS, ...fanClr]
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
@@ -43,8 +40,11 @@ function mech(obj, idS, idB) {
 	const reset = signal.filter(
 		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset'
 	)
-
-	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS }
+	// Напорные ВНО секции для extralrm (отслеживание аварий)
+	const fanSAll = fan.filter(
+		(el) => el.owner.id === idS && el.type === 'fan' && !retain?.[idB]?.fan?.[idS]?.[el._id]
+	)
+	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS, fanSAll }
 }
 
 // Исполнительные механизмы склада
@@ -67,12 +67,14 @@ function mechB(bId, type, obj) {
 	// Оборудование холодильника
 	let cold = type == 'cold' || type == 'combi' ? fnCold(bId, obj) : undefined
 	// Все вентиляторы склада
-	const fanAll = data?.fan?.filter((el) => idS.includes(el.owner.id)).map(el=>{
-		// Поиск аналогового выхода ВНО
-		const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
-		if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
-		return el
-	})
+	const fanAll = data?.fan
+		?.filter((el) => idS.includes(el.owner.id))
+		.map((el) => {
+			// Поиск аналогового выхода ВНО
+			const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
+			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
+			return el
+		})
 
 	return { fanA, connect, reset, vlvIn, cold, fanAll }
 }

@@ -2,13 +2,13 @@ const { msgF } = require('@tool/message')
 const { isReset } = require('@tool/reset')
 const { getSignalFan } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { data: store } = require('@store')
 
 // Авария вентилятора (выключен автомат. выключатель)
 function fanCrash(building, section, obj, s, se, m, automode, acc, data) {
 	if (!m?.fanS?.length) return
 	const sumAlarm = []
-
-	for (const f of m.fanS) {
+	for (const f of m.fanSAll) {
 		acc[f._id] ??= {}
 		const sig = getSignalFan(f?._id, obj)
 		// Сброс
@@ -18,7 +18,12 @@ function fanCrash(building, section, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[f._id].alarm) {
-			wrExtralrm(building._id, section._id, 'fanCrash' + f._id, msgF(building, section, f.name, 35))
+			wrExtralrm(
+				building._id,
+				section._id,
+				'fanCrash' + f._id,
+				msgF(building, section, f.name, 35)
+			)
 			acc[f._id].alarm = true
 		}
 		sumAlarm.push(acc?.[f._id]?.alarm)

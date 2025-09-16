@@ -8,7 +8,7 @@ function getSignal(ownerId, obj, type) {
 }
 // Получить сигнал (авария двигателя) вентилятора
 function getSignalFan(fanId, obj) {
-	return obj.value?.[fanId]?.signal ?? null
+	return obj.value?.[fanId]?.state === 'alarm'
 }
 
 // Получить значения сигналов по sectionId
@@ -69,7 +69,8 @@ function sigFan(sig, val, result, module, retain, fan) {
 function sigDfl(sig, val, result) {
 	let value = null
 	if (!signaltype.output.includes(sig.type)) value = puIO(val, sig.module.id, sig.module.channel)
-	if (signaltype.output.includes(sig.type)) value = puIO(val, sig.module.id, sig.module.channel, true)
+	if (signaltype.output.includes(sig.type))
+		value = puIO(val, sig.module.id, sig.module.channel, true)
 	result[sig._id] = value === null ? value : !sig.reverse ? value : !value
 }
 
