@@ -8,7 +8,7 @@ function getSignal(ownerId, obj, type) {
 }
 // Получить сигнал (авария двигателя) вентилятора
 function getSignalFan(fanId, obj) {
-	return obj.value?.[fanId]?.state === 'alarm'
+	return obj.value?.[fanId]?.qf 
 }
 
 // Получить значения сигналов по sectionId

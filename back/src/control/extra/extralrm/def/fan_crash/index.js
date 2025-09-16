@@ -11,6 +11,7 @@ function fanCrash(building, section, obj, s, se, m, automode, acc, data) {
 	for (const f of m.fanSAll) {
 		acc[f._id] ??= {}
 		const sig = getSignalFan(f?._id, obj)
+		// console.log(111, f.name, f._id, f.owner.id, sig)
 		// Сброс
 		if (!sig || isReset(building._id)) {
 			delExtralrm(building._id, section._id, 'fanCrash' + f._id)

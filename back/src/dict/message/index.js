@@ -119,7 +119,7 @@ const data = {
 	33: { count: true, code: 'vlvLim', typeSignal: 'valve', msg: 'Нет питания концевиков' },
 	34: { count: true, code: 'vlvCrash', typeSignal: 'valve', msg: 'Авария двигателя' },
 	// Аварии вентиляторов
-	35: { count: true, code: 'fanCrash', typeSignal: 'fan', msg: 'Авария двигателя' },
+	35: { count: true, code: 'fanCrash', typeSignal: 'fan', msg: 'Авария вентилятора' },
 	// Нажат аварийный стоп
 	36: {
 		count: true,

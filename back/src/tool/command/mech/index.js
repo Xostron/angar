@@ -41,9 +41,8 @@ function mech(obj, idS, idB) {
 		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset'
 	)
 	// Напорные ВНО секции для extralrm (отслеживание аварий)
-	const fanSAll = fan.filter(
-		(el) => el.owner.id === idS && el.type === 'fan' && !retain?.[idB]?.fan?.[idS]?.[el._id]
-	)
+	const fanSAll = fan.filter((el) => el.owner.id === idS && el.type === 'fan')
+	
 	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS, fanSAll }
 }
 
