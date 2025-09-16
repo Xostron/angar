@@ -1,20 +1,27 @@
-.gr-sens {
+
+.cmp-sensor {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 	width: 100%;
+	&.mb{
+		width: 100%;
+		flex-direction: row;
+		gap: .25em;
+	}
 }
 
-.gr-sens > div {
+
+.cmp-sensor > div {
 	display: flex;
 	align-items: center;
 	gap: 7%;
 }
-.gr-sens > div:not(:first-child) {
+.cmp-sensor > div:not(:first-child) {
 	margin-top: 0;
 }
 
-.gr-sens-fan {
+.cmp-sensor-fan {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -24,7 +31,6 @@
 }
 .gr-sens-fan-img {
 	height: var(--fsz60) !important;
-	/* clip-path: circle(); */
 	padding: 6px;
 } 
 

@@ -29,6 +29,7 @@ function mech(obj, idS, idB) {
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
 	// Напорные ВНО секции/камеры + ВНО испарителей: обычный/комби склад в режиме обычного
+	// TODO fanClr отфильтровать только по рабочим
 	const fanS = [...fanSS, ...fanClr]
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
@@ -41,8 +42,7 @@ function mech(obj, idS, idB) {
 		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset'
 	)
 	// Напорные ВНО секции для extralrm (отслеживание аварий)
-	const fanSAll = fan.filter((el) => el.owner.id === idS && el.type === 'fan')
-	
+	const fanSAll = [...fan.filter((el) => el.owner.id === idS && el.type === 'fan'), ...fanClr]
 	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS, fanSAll }
 }
 

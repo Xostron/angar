@@ -1,10 +1,11 @@
-import './style.css'
+import useViewStore from '@store/view'
 import defImg from '@src/tool/icon'
 import defUn from '@src/tool/unit'
+import './style.css'
 
 //Датчик
 export default function Item({ data = {} }) {
-
+	const mb = useViewStore((s) => s.mb())
 	const { type, state, value } = data
 
 	let t
@@ -12,14 +13,14 @@ export default function Item({ data = {} }) {
 		t = 'temp'
 	} else if (['hin', 'hout'].includes(type)) {
 		t = 'mois'
-	}else if('co2' === type) {
+	} else if ('co2' === type) {
 		t = type
 	} else t = 'calcMois'
 
-	const imgS = defImg?.[t]?.['on']
+	let cls = ['cmp-sensor-item',mb]
 	const unit = defUn?.[t]
-	let cls = ['sens-item']
-	if (!imgS) cls.push('sens-item-center')
+	const imgS = defImg?.[t]?.['on']
+	if (!imgS) cls.push('center')
 	// ошибка датчика
 	if (state === 'alarm') cls.push('error')
 	if (state === 'off') cls.push('off')

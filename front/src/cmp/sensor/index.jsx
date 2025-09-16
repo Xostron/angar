@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from 'react'
+import useViewStore from '@store/view'
 import Item from './item'
 import Fan from './fan'
 import def from '@src/tool/icon'
@@ -6,9 +7,10 @@ import './style.css'
 
 //Группа датчиков склада
 export default function Sensor({ data, cls, type = 'normal', withImg = false }) {
-	let cl = ['gr-sens', cls]
-	cl = cl.join(' ')
-	if (type === 'cold') return null
+	const mb = useViewStore((s) => s.mb())
+	const cl = ['cmp-sensor', mb, cls].join(' ')
+
+	// Датчик / Датчик + разгонный
 	const row = useCallback((el, i) => {
 		const imgF = def.fan?.[el?.fan?.state]
 		const state = el?.fan?.state
@@ -20,5 +22,6 @@ export default function Sensor({ data, cls, type = 'normal', withImg = false }) 
 		)
 	}, [])
 
+	if (type === 'cold') return null
 	return <section className={cl}>{data?.length && data.map(row)}</section>
 }

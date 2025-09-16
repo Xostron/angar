@@ -2,7 +2,6 @@ const { msgF } = require('@tool/message')
 const { isReset } = require('@tool/reset')
 const { getSignalFan } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
-const { data: store } = require('@store')
 
 // Авария вентилятора (выключен автомат. выключатель)
 function fanCrash(building, section, obj, s, se, m, automode, acc, data) {

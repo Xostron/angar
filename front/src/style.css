@@ -85,15 +85,7 @@ img {
 
 /* Склад */
 
-.weather {
-	display: flex;
-	width: calc(77% - var(--fsz30) / 2);
-	aspect-ratio: 3/1;
-	background-color: var(--secondary);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
+
 .sens {
 	width: calc(23% - var(--fsz30) / 2);
 	aspect-ratio: 1/1;

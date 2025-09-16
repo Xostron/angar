@@ -4,15 +4,29 @@
 	--w-owner-gap: clamp(0.625rem, -0.4167rem + 1.3889vw, 1.25rem);
 }
 
-.w-owner {
+.cmp-weather-owner {
+	background-color: rgba(25, 38, 70, 0.5);
+	width: 30%;
 	display: flex;
 	position: relative;
 	flex-direction: column;
 	color: var(--background);
 	padding: 16px;
+	gap: 1em;
+	&.mb{
+		width: 100%;
+		flex-direction: row;
+		padding: .25em 1em;
+		align-items: center;
+		justify-content: space-between;
+	}
 }
 
-.w-owner-head {
+.cmp-weather-owner > span:first-child{
+	font-size: var(--fsz28);
+}
+
+/* .w-owner-head {
 	display: flex;
 	font-size: var(--fsz28);
 }
@@ -29,4 +43,4 @@
 	position: absolute;
 	bottom: 0px;
 	font-size: 14px;
-}
+} */

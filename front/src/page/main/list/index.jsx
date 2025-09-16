@@ -23,15 +23,17 @@ export default function List({ list }) {
 	if (!list?.length) return null
 	let cl = ['store-wrapper'].join(' ')
 	let clList = ['list', mb, `count-${list.length}`].join(' ')
-	if (mb) clList = ['list', mb].join(' ')
 	return (
 		<div className={cl}>
+			{/* left */}
 			{limit >= 1 && <Btn icon='\img\arrow-left.svg' cls='btn-arrow l' onClick={prev} />}
+			{/* Список складов */}
 			<div className={clList}>
 				{arr.map((el, i) => (
 					<Item key={i} item={el} idx={i} cls={arr.length} buildId={el._id} />
 				))}
 			</div>
+			{/* right */}
 			{limit >= 1 && <Btn icon='\img\arrow-right.svg' cls='btn-arrow r' onClick={next} />}
 		</div>
 	)

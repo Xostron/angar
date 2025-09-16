@@ -15,7 +15,6 @@
 	margin: auto;
 	flex-direction: row;
 	&.mb {
-		flex-direction: column;
 		min-width: 200px;
 		justify-content: flex-start;
 	}
