@@ -1,7 +1,12 @@
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+	display: none;
+}
 html body {
-	/* min-width: 1200px; */
 	height: 100vh;
 	width: 100vw;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
 * {
@@ -84,10 +89,6 @@ img {
 }
 
 /* Склад */
-
-
-
-
 
 /* Секция */
 .nav::-webkit-scrollbar {
@@ -243,7 +244,6 @@ a {
 	font-family: Q-SemiBold;
 	src: url('@font/Qanelas-SemiBold.ttf');
 }
-
 
 /* ===== Scrollbar CSS ===== */
 /* *::-webkit-scrollbar {

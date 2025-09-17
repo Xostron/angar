@@ -5,6 +5,12 @@ const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
 
 function readTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
+		if (!host) {
+			console.log(1234567)
+			wrDebMdl(opt._id)
+			return resolve({ error: 'Не указан IP модуля', info: opt })
+		}
+		console.log(12345, host)
 		const socket = new net.Socket()
 		const cl = new modbus.client.TCP(socket)
 		const optTCP = {
@@ -24,17 +30,16 @@ function readTCP(host, port, opt) {
 					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, 'INPUT'))
 					break
 				case 'w':
-					p.push(rhr(cl, opt.wr, 'valuesAsArray','OUTPUT'))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray', 'OUTPUT'))
 					break
 				case 'rw':
-					p.push(rhr(cl, opt.re, 'valuesAsArray', opt,'INPUT'))
-					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt,'OUTPUT'))
+					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, 'INPUT'))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt, 'OUTPUT'))
 					break
 				default:
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-
 					convAO(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
