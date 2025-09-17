@@ -1,19 +1,19 @@
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
-import useDialog from '@cmp/dialog/hook'
-import Dialog from '@cmp/dialog'
-import Entry from './entry'
+import useViewStore from '@src/store/view'
+import useWarn from '@store/warn'
 
 export default function Today({ weather, type }) {
 	const { build } = useParams()
-	const [tweather] = useInputStore(({ input }) => [input?.[build]?.tweather])
-	const { refDialog, open, close, isOpen } = useDialog()
-	const img = typeof weather.code == 'number' ? <img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} /> : null
-	const dt = new Date(weather.time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
+	const mb = useViewStore((s) => s.mb())
+	const tweather = useInputStore((s) => s.input?.[build]?.tweather)
+	const warn = useWarn((s) => s.warn)
 
+	const dt = new Date(weather.time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
+	const cls = ['cmp-weather-fore-today', mb].join(' ')
 	return (
 		<>
-			<article className='wthr' onClick={open}>
+			<article className={cls} onClick={onClick}>
 				<div>
 					<span className='status'>{weather.weather ?? ''}</span>
 					<span className='temp' title={dt}>
@@ -21,14 +21,11 @@ export default function Today({ weather, type }) {
 					</span>
 					<span>Влажность: {weather.humidity ?? '--'}%</span>
 				</div>
-				{img}
+				<img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} />
 			</article>
-			{/* Прогноз погоды на 7 дней */}
-			{weather?.forecast && (
-				<Dialog href={refDialog}>
-					<Entry close={close} weather={weather} isOpen={isOpen} type={type} />
-				</Dialog>
-			)}
 		</>
 	)
+	function onClick() {
+		warn({ weather, type }, 'forecast_analytic')
+	}
 }

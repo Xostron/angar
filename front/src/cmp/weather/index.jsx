@@ -19,7 +19,6 @@ export default function Weather({}) {
 	// ])
 	const build = useEquipStore((s) => s.build())
 	const getType = useEquipStore((s) => s.getType)
-	const weather = useEquipStore((s) => s.weather)
 	const humAbs = useInputStore((s) => s.input?.humAbs)
 	const getTotal = useInputStore((s) => s.getTotal)
 	const getTotalBy = useInputStore((s) => s.getTotalBy)
@@ -42,11 +41,12 @@ export default function Weather({}) {
 	const cls = ['cmp-weather', mb].join(' ')
 	const clsOwner = ['cmp-weather-owner', mb].join(' ')
 	const clsSens = ['cmp-weather-sens', mb].join(' ')
+	
 	return (
 		<section className={cls}>
 			<Owner data={build} cls={clsOwner} />
 			<Sensor data={sens} cls={clsSens} type={type} />
-			<Forecast address={build?.pc?.address?.value ?? ''} weather={weather} type={type} />
+			<Forecast address={build?.pc?.address?.value ?? ''} type={type} />
 		</section>
 	)
 }

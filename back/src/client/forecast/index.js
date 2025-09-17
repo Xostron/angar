@@ -29,12 +29,16 @@ async function forecast(bldId) {
 			hinAbs: humAbs?.in?.[bldId],
 			target: setting?.[bldId]?.cooling?.target,
 		}
+		if (!o[bldId]?.start) throw new Error('Ошибка: Склад выключен')
+		if (o[bldId]?.automode !== 'cooling')
+			throw new Error('Ошибка: Режим склада должен быть "Хранение"')
 		const response = await api(apiConfig(o, { bldId }))
 		console.log(553, response.data)
+		if (!response.data) throw new Error('Сервер не отвечает')
 		return response.data
 	} catch (error) {
-		console.log(error.toJSON()?.message)
-		throw error
+		console.error(error)
+		return { error: error.message }
 	}
 }
 
