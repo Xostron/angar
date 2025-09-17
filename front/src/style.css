@@ -243,3 +243,19 @@ a {
 	font-family: Q-SemiBold;
 	src: url('@font/Qanelas-SemiBold.ttf');
 }
+
+
+/* ===== Scrollbar CSS ===== */
+/* *::-webkit-scrollbar {
+	display: block;
+	width: 3px;
+}
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: #9a9a9a;
+	border-radius: 5px;
+	border: 2px solid #bababa;
+} */

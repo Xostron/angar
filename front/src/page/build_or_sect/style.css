@@ -11,7 +11,30 @@
 	overflow: hidden;
 	&.mb {
 		grid-template-columns: 1% 98% 1%;
-		grid-template-rows: auto auto auto;
+		grid-template-rows: auto auto 0vh;
 		gap: 1em 0;
+		overflow-y: scroll;
+		/* -ms-overflow-style: none; */
+		/* scrollbar-width: none; */
+		/* &::-webkit-scrollbar {
+			display: block;
+			width: 30px;
+			padding: 10px;
+			padding-left: 10px;
+		}
+		&::-webkit-scrollbar-track {
+			background: transparent;
+			padding-left: 10px;
+			width: 5px;
+			background-color: blue;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: #bb2626;
+			border-radius: 5px;
+			border: 1px solid #bababa;
+			width: 5px;
+			padding-left: 10px;
+		} */
 	}
 }
