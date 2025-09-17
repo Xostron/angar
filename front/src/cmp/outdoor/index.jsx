@@ -35,11 +35,12 @@ export default function Outdoor() {
 	if (type === 'cold') sens.push({ type: 'co2', ...getTotalBy('co2', 'min', section?._id) })
 	// Абс влажность продукта
 	else sens.push({ type: 'calcMois', value: humAbs?.in?.[build?._id] })
-	const cls = ['outdoor', mb].join(' ')
+	const cls = ['cmp-outdoor', mb].join(' ')
+	const clsSensor = ['cmp-outdoor-sensor', mb].join(' ')
 	return (
 		<section className={cls}>
 			<Weather />
-			<Sensor data={sens} cls={'sens'} withImg={true} />
+			<Sensor data={sens} cls={'cmp-outdoor-sensor'} withImg={true} />
 		</section>
 	)
 }

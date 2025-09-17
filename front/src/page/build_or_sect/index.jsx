@@ -4,6 +4,7 @@ import SubHeader from '@src/cmp/sub_header'
 import Outdoor from '@cmp/outdoor'
 import Banner from '@cmp/banner'
 import useViewStore from '@store/view'
+import './style.css'
 
 //Секции склада / Секция
 export default function BuildOrSect({}) {

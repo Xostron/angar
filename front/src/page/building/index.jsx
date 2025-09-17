@@ -4,7 +4,6 @@ import { useShallow } from 'zustand/react/shallow'
 import useEquipStore from '@store/equipment'
 import AlarmBar from '@cmp/alarm_bar'
 import Paging from './paging'
-import './style.css'
 
 // Склад: список секций
 export default function Building({}) {

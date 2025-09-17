@@ -4,13 +4,20 @@
 	--item-padV: clamp(0.3125rem, 0rem + 0.4167vw, 0.5rem);
 	--item-padH: clamp(0.5rem, 0.2917rem + 0.2778vw, 0.625rem);
 }
+.cmp-building-paging-wrapper {
+	grid-area: 3 / 2 / 4 / 3;
+	display: flex;
+	padding: 20px;
+	flex-direction: column;
+	gap: 25px;
 
-.paging {
+}
+.cmp-building-paging {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-.paging-children {
+.cmp-building-paging-item {
 	position: relative;
 	display: grid;
 	width: 100%;

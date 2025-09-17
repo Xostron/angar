@@ -15,7 +15,12 @@
 	&.mb {
 		padding: 0.25em;
 		line-height: 0;
+		font-size: 1em;
+		&>img{
+			height:25px;
+		}
 	}
 }
-.cmp-sensor-item > span {
+.cmp-sensor-item > img {
+	height: 40px;
 }

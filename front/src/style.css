@@ -86,21 +86,8 @@ img {
 /* Склад */
 
 
-.sens {
-	width: calc(23% - var(--fsz30) / 2);
-	aspect-ratio: 1/1;
-	border: 1px solid var(--primary);
-	border-radius: 20px;
-	box-sizing: border-box;
-	padding: 1%;
-}
-.sect {
-	grid-area: 3 / 2 / 4 / 3;
-	display: flex;
-	padding: 20px;
-	flex-direction: column;
-	gap: 25px;
-}
+
+
 
 /* Секция */
 .nav::-webkit-scrollbar {

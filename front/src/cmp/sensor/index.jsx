@@ -17,7 +17,7 @@ export default function Sensor({ data, cls, type = 'normal', withImg = false }) 
 		return (
 			<div key={i}>
 				<Item data={el} />
-				{withImg && <Fan img={imgF} state={state} />}
+				{withImg && <Fan className={mb} img={imgF} state={state} />}
 			</div>
 		)
 	}, [])

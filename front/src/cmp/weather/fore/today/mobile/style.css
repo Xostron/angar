@@ -4,7 +4,7 @@
 	align-items: center;
 	color: var(--background);
 	cursor: pointer;
-	font-size: 0.75em;
+	font-size:.75em;
 	gap: .5em;
 }
 

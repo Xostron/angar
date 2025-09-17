@@ -54,8 +54,8 @@ function message(data, el, level, value) {
 			break
 		case 'sensor':
 			el.owner.type == 'section' ? (secId = el.owner.id) : el.owner.type == 'cooler' ? (clrId = el.owner.id) : (bldId = el.owner.id)
-			v = value[el._id].value
-			state = value[el._id].state
+			v = value?.[el._id]?.value
+			state = value?.[el._id]?.state
 			break
 		default:
 			break
