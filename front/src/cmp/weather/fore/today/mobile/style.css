@@ -1,0 +1,20 @@
+.cmp-weather-fore-today-mb {
+	display: flex;
+	width: 50%;
+	align-items: center;
+	color: var(--background);
+	cursor: pointer;
+	font-size: 0.75em;
+	gap: .5em;
+}
+
+.cmp-weather-fore-today-mb > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+/* .cmp-weather-fore-today-mb img {
+	width: 40px;
+	height: 40px;
+} */

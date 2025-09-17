@@ -16,20 +16,22 @@ export default function Forecast({ address, type = 'normal' }) {
 	})
 	const cold = type === 'cold' ? 'cold' : ''
 	const cls = ['cmp-weather-fore', mb, cold].join(' ')
-	const clsPoint = ['point-update', mb].join(' ')
+	const clsPoint = ['cmp-weather-fore-point', mb].join(' ')
+	const clsDiv = ['cmp-weather-fore-div', mb].join(' ')
 	return (
-		<div className={cls}>
-			{address ? (
-				<article className='adr'>
-					<img src='/img/geo.svg' />
-					<span>{address ?? '--'}</span>
-				</article>
-			) : null}
-			<Today weather={weather} type={type} />
-			<article className={clsPoint}>
-				<span>Точка росы: {point ?? '--'}°C</span>
-				<span>{updateTime}</span>
+		<section className={cls}>
+			<article className='cmp-weather-fore-adr'>
+				<img src='/img/geo.svg' />
+				<span>{address ?? '--'}</span>
 			</article>
-		</div>
+			<div className={clsDiv}>
+				{/* Алиса, какая погода на сегодня? */}
+				<Today weather={weather} type={type} />
+				<article className={clsPoint}>
+					<span>Точка росы: {point ?? '--'}°C</span>
+					<span>{updateTime}</span>
+				</article>
+			</div>
+		</section>
 	)
 }

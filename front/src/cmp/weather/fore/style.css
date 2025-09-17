@@ -2,68 +2,42 @@
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	padding: .5em;
+	padding: 0.5em;
 	justify-content: space-between;
 	&.cold {
 		width: 10%;
 	}
-	&.mb{
-		padding: .25em 1em;
-		background-color: darkgreen;
-		flex-direction: row;
+	&.mb {
+		padding: 0.25em 1em;
 		justify-content: space-between;
 	}
 }
 
-.cmp-weather-fore .adr {
+.cmp-weather-fore-adr {
 	display: flex;
 	align-items: center;
 	gap: 1em;
 	font-size: var(--fsz20);
 	color: var(--background);
-	
 }
-
-.point-update {
+.cmp-weather-fore-div {
+	display: flex;
+	flex-direction: column;
+	&.mb {
+		flex-direction: row;
+	}
+}
+.cmp-weather-fore-point {
 	display: flex;
 	justify-content: space-between;
 	width: calc(100% - 16px);
 	color: var(--background);
 	font-size: var(--fsz20);
-	&.mb{
+	&.mb {
 		flex-direction: column;
-		height: fit-content;
-		width: fit-content;
+		width: 50%;
+		font-size: 0.75em;
+		text-align: end;
+		justify-content: center;
 	}
-}
-
-.cmp-weather-fore-today {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: var(--fsz28);
-	color: var(--background);
-	cursor: pointer;
-	&.mb{
-		
-	}
-}
-
-.cmp-weather-fore-today > div:first-child {
-	display: flex;
-	flex-direction: column;
-}
-
-.cmp-weather-fore-today > div:first-child > span {
-	text-align: right;
-}
-.cmp-weather-fore-today .temp {
-	font-size: var(--fsz55);
-}
-.cmp-weather-fore-today .status {
-	font-size: var(--fsz20);
-}
-.cmp-weather-fore-today img {
-	width: 100px;
-	height: 100px;
 }

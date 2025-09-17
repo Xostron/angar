@@ -1,7 +1,7 @@
 .cmp-weather {
 	display: flex;
 	width: calc(77% - var(--fsz30) / 2);
-	aspect-ratio: 3/1;
+	/* aspect-ratio: 3/1; */
 	background-color: var(--secondary);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -11,7 +11,7 @@
 	overflow: hidden;
 	&.mb{
 		width: 100%;
-		height: 200px;
+		/* height: 180px; */
 		flex-direction: column;
 	}
 }

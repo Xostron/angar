@@ -1,0 +1,26 @@
+.cmp-weather-fore-today {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: var(--fsz28);
+	color: var(--background);
+	cursor: pointer;
+}
+
+.cmp-weather-fore-today > div:first-child {
+	display: flex;
+	flex-direction: column;
+}
+
+.cmp-weather-fore-today .temp {
+	font-size: var(--fsz55);
+	text-align: right;
+}
+.cmp-weather-fore-today .status {
+	font-size: var(--fsz20);
+	text-align: right;
+}
+.cmp-weather-fore-today img {
+	width: 100px;
+	height: 100px;
+}
