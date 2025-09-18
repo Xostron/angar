@@ -40,7 +40,7 @@ function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm)
 		off(bld, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
 		// resultFan - массив ВНО секций для последовательного включения (каждая секция управляет ВНО независимо друг от друга)
 		resultFan.list.push(sect._id)
-		resultFan.fan.push(...m.fanS)
+		resultFan.fan.push(...m.solHeatS,...m.fanS)
 	}
 	// Если все секции не в авто - очистка аккумулятора
 	const isAllSectOff = sections.every((el) => !retain?.[bld._id]?.mode?.[el._id])

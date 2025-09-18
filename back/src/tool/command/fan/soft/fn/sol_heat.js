@@ -1,5 +1,5 @@
 const { compareTime } = require('@tool/command/time')
-
+const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 //
 //
 /**
@@ -13,15 +13,25 @@ const { compareTime } = require('@tool/command/time')
  * 					cold - комби склад в режиме холодильника
  * @returns true - 1 этап соленоид подогрева, false - 1 этап пройден
  */
-function fnSolHeat(acc, solHeat, on, off, s, where) {
+function fnSolHeat(idB, acc, solHeat, on, off, s, where) {
 	// Если комби склад в режиме
-	if (where != 'cold') return false
+	console.log(99009, 'where', where, solHeat)
+	if (where !== 'cold') {
+		console.log(99008, 'solHeat', solHeat)
+		solHeat.forEach((el) => {
+			ctrlDO(el, idB, 'off')
+		})
+		return false
+	}
 	// Если в системе нет соленоидов подгрева, то разрешаем регулировать ПЧ
 	if (!solHeat?.length) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
 	// Пока ПЧ не занят, актуализируем его точку отсчета, иначе он стартует со второй скорости
-	if (!acc.busy) acc.fc.date = new Date()
+	if (!acc.busy) {
+		acc.fc ??= {}
+		acc.fc.date = new Date()
+	}
 
 	// Включаем соленоид
 	if (on) {

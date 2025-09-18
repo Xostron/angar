@@ -29,6 +29,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		const fansCoo = resultFan.fan
 			.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
+		// Соленоиды подогрева
 		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ
 		const fans = resultFan.fan
@@ -51,6 +52,9 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
+		// console.log(111, fanFC)
+		// console.log(222, fans)
+		// console.log(333, resultFan.fan)
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }

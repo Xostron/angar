@@ -15,14 +15,17 @@ html body {
 	box-sizing: border-box;
 }
 
-body {
-	padding-inline: 15px;
-}
-
-body > div {
+body > #root {
 	height: 100%;
+	/* background-color: #39c571; */
 }
-
+.sect{
+	grid-area: 3 / 2 / 4 / 3;
+	display: flex;
+	padding: 20px;
+	flex-direction: column;
+	gap: 25px;
+}
 :root {
 	--primary: #192646;
 	--secondary: #65a7ee;

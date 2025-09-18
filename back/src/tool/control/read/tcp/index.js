@@ -6,11 +6,9 @@ const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
 function readTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
 		if (!host) {
-			console.log(1234567)
 			wrDebMdl(opt._id)
 			return resolve({ error: 'Не указан IP модуля', info: opt })
 		}
-		console.log(12345, host)
 		const socket = new net.Socket()
 		const cl = new modbus.client.TCP(socket)
 		const optTCP = {

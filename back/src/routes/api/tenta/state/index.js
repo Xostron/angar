@@ -7,6 +7,7 @@ const reconciliation = require('@tool/state/back')
  */
 function state() {
 	return async function (req, res) {
+		console.log(999009)
 		try {
 			const type = req.query?.type
 			const { result = [], present = [] } = await reconciliation(type)

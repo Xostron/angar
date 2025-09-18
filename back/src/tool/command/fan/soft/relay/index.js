@@ -33,7 +33,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Управление соленоидом подогрева
-	acc.busySol = fnSolHeat(acc, solHeat, on, off, s, where)
+	acc.busySol = fnSolHeat(bldId, acc, solHeat, on, off, s, where)
 	if (acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, fans.length)
@@ -41,7 +41,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// console.log(990011, on,off)
 	// Непосредственное включение
 	turnOn(null, fans, solHeat, bldId, acc)
-	console.log(3331, '==================', idS, where, acc)
+	// console.log(3331, '==================', idS, where, acc)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 }
