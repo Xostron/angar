@@ -15,9 +15,9 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
  */
 function fnSolHeat(idB, acc, solHeat, on, off, s, where) {
 	// Если комби склад в режиме
-	console.log(99009, 'where', where, solHeat)
+	// console.log(99009, 'where', where, solHeat)
 	if (where !== 'cold') {
-		console.log(99008, 'solHeat', solHeat)
+		// console.log(99008, 'solHeat', solHeat)
 		solHeat.forEach((el) => {
 			ctrlDO(el, idB, 'off')
 		})
