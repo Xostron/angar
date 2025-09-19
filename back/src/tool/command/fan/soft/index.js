@@ -26,9 +26,6 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Испарители, принадлежащие текущей секции
 		const coolerIds = cooler.filter((el) => el.sectionId == idS).map((el) => el._id)
 		// ВНО испарителей данной секции (управляем ими как обычными ВНО без ПЧ)
-		// const fansCoo = resultFan.fan
-		// 	.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
-		// 	.sort((a, b) => a?.order - b?.order)
 		// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя, а испарители изначально считались самодостаточными, но они делают что хотят, так как прога резиновая, никакой унификации и стандарта
 		let fansCoo = resultFan.fan
 			.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
@@ -40,7 +37,6 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 				return acc
 			}, {})
 		)
-		console.log(555, 'fansCoo', fansCoo)
 		// Соленоиды подогрева
 		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ
@@ -65,7 +61,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		const type = fanFC ? 'fc' : 'relay'
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
 		// console.log(111, fanFC)
-		console.log(222, fans)
+		// console.log(222, fans)
 		// console.log(333, resultFan.fan)
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})

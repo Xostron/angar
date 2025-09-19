@@ -86,7 +86,6 @@ module.exports = function total(equip, result, retain) {
 		const hin = state(sensor, result, flt, fltA)
 		// 1. Выведены из работы
 		if (hin.max === null && hin.state === 'off') (hin.max = 80), (hin.min = 80)
-		console.log(11, hin)
 		// 2. Датчик в аварии - остается аварийным
 		// Когда склад с одним агрегатом (датччики давления могут быть привязаны к складу)
 		// Давление всасывания

@@ -59,8 +59,6 @@ function fan(obj, s) {
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !smoking
 		// Склад выключен и секция в авторежиме
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !smoking
-
-		console.log(2, f.name, isAlrOff, localB, local, offS, alrStop, lockAuto, smoking)
 		out(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
 		ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
 	}
@@ -195,7 +193,6 @@ function ao(obj, output, f, localB, local, ...args) {
 	// Аналоговый выход
 	// ВНО имеет аналоговое управление?
 	const ao = getAO(obj, f)
-	console.log(3, f.name, lock, ao)
 	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = 0
 	// Местный переключатель => задание ВНО на 100%, DO выкл
 	if (ao) {

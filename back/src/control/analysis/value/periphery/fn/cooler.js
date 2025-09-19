@@ -26,10 +26,10 @@ function cooler(equip, val, retain, result) {
 			const sigId = signal.find((e) => e.owner.id === el._id)?._id
 
 			if (result?.[sigId] === undefined) {
-				console.log(
-					'src\\control\\analysis\\value\\periphery\\fn\\cooler.js',
-					'Нет сигнала от соленоида используем альтернативу'
-				)
+				// console.log(
+				// 	'src\\control\\analysis\\value\\periphery\\fn\\cooler.js',
+				// 	'Нет сигнала от соленоида используем альтернативу'
+				// )
 				result[clr._id].solenoid[el._id] = result?.outputEq?.[el._id]
 			} else result[clr._id].solenoid[el._id] = result?.[sigId]
 		})

@@ -41,7 +41,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// console.log(990011, on,off)
 	// Непосредственное включение
 	turnOn(null, fans, solHeat, bldId, acc)
-	// console.log(3331, '==================', idS, where, acc)
+	console.log(3331, 'Реле: плавный пуск', idS, where, acc)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 }
