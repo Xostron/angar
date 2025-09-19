@@ -11,7 +11,7 @@
 	&.mb {
 		grid-template-columns: 1% 98% 1%;
 		grid-template-rows: auto auto 0px;
-		background-color: rgb(150, 202, 202);
+		/* background-color: rgb(150, 202, 202); */
 		padding-inline:.25em;
 		gap: 1em 0;
 		overflow-y: scroll;
