@@ -78,7 +78,7 @@ function smoking(
 	// Работаем - включаются вентиляторы
 	if (!doc.work) {
 		doc.work = new Date()
-		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа'))
+		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 	}
 	if (!compareTime(doc.work, stg.work * h)) {
 		console.log(22, 'Окуривание работа: Включение плавного пуска')
@@ -91,7 +91,7 @@ function smoking(
 	if (!doc.wait) {
 		doc.wait = new Date()
 		delExtra(idB, null, 'smoking1')
-		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание'))
+		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	}
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrl(idB, fanA, 'off')

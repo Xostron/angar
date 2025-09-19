@@ -75,7 +75,7 @@ const data = {
 	combi: {
 		on: {},
 		off: {
-			smokingNC,
+			// smokingNC,
 		},
 		always: {
 			slaveAgg,
