@@ -29,15 +29,18 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// const fansCoo = resultFan.fan
 		// 	.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 		// 	.sort((a, b) => a?.order - b?.order)
-        // TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя, а испарители изначально считались самодостаточными, но они делают что хотят, так как прога резиновая, никакой унификации и стандарта
-        let fansCoo = resultFan.fan
+		// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя, а испарители изначально считались самодостаточными, но они делают что хотят, так как прога резиновая, никакой унификации и стандарта
+		let fansCoo = resultFan.fan
 			.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
-        fansCoo = Object.values(fansCoo.reduce((acc, el,i)=>{
-                if (acc[el.module.id+el.module.channel]) return acc    
-                acc[el.module.id+el.module.channel] = el
-                return acc
-            },{}))
+		fansCoo = Object.values(
+			fansCoo.reduce((acc, el, i) => {
+				if (acc[el.module.id + el.module.channel]) return acc
+				acc[el.module.id + el.module.channel] = el
+				return acc
+			}, {})
+		)
+		console.log(555, 'fansCoo', fansCoo)
 		// Соленоиды подогрева
 		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ

@@ -22,9 +22,17 @@ function transform(idB, idS, mS, obj, r) {
 	// Испарители, принадлежащие текущей секции
 	const coolerIds = obj.data?.cooler?.filter((el) => el.sectionId == idS).map((el) => el._id)
 	// ВНО испарителей данной секции (управляем ими как обычными ВНО без ПЧ)
-	const fansCoo = mS.fanS
+	// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя, а испарители изначально считались самодостаточными, но они делают что хотят, так как прога резиновая, никакой унификации и стандарта
+	let fansCoo = mS.fanS
 		.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 		.sort((a, b) => a?.order - b?.order)
+	fansCoo = Object.values(
+		fansCoo.reduce((acc, el, i) => {
+			if (acc[el.module.id + el.module.channel]) return acc
+			acc[el.module.id + el.module.channel] = el
+			return acc
+		}, {})
+	)
 	// ВНО без ПЧ
 	const fans = mS.fanS
 		.filter((el) => el.owner.id === idS && !el?.ao && el.type == 'fan')
