@@ -8,7 +8,12 @@ const frontCommands = [
 	'npm run build',
 ].join(' && ');
 
-const backCommands = ['cd /home/tenta/apps/back', 'npm install'].join(' && ');
+const backCommands = [
+	'cd /home/tenta/apps/back',
+	'npm install',
+	'pm2 restart /home/tenta/apps/ecosystem/ecosystem.config.js',
+	'pm2 save',
+].join(' && ');
 
 const fullCommand = `${frontCommands} && ${backCommands}`;
 // Выполняем команды от имени tenta с использованием пароля

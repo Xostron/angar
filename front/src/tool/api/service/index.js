@@ -1,9 +1,10 @@
-import api from '../config'
+import api from '../config';
 
 // Функция для обработки и форматирования ошибок API
 function formatApiError(error, endpoint) {
-	const timestamp = new Date().toISOString()
-	const errorId = Date.now().toString(36) + Math.random().toString(36).substr(2)
+	const timestamp = new Date().toISOString();
+	const errorId =
+		Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 	let formattedError = {
 		id: errorId,
@@ -13,7 +14,7 @@ function formatApiError(error, endpoint) {
 		type: 'UNKNOWN_ERROR',
 		status: null,
 		originalError: error,
-	}
+	};
 
 	if (error.response) {
 		// Сервер ответил с кодом ошибки
@@ -21,32 +22,34 @@ function formatApiError(error, endpoint) {
 			...formattedError,
 			type: 'SERVER_ERROR',
 			status: error.response.status,
-			message: error.response.data?.message || `Ошибка сервера (${error.response.status})`,
+			message:
+				error.response.data?.message ||
+				`Ошибка сервера (${error.response.status})`,
 			data: error.response.data,
-		}
+		};
 
 		switch (error.response.status) {
 			case 400:
-				formattedError.message = 'Неверный запрос к серверу'
-				break
+				formattedError.message = 'Неверный запрос к серверу';
+				break;
 			case 401:
-				formattedError.message = 'Необходима авторизация'
-				break
+				formattedError.message = 'Необходима авторизация';
+				break;
 			case 403:
-				formattedError.message = 'Доступ запрещен'
-				break
+				formattedError.message = 'Доступ запрещен';
+				break;
 			case 404:
-				formattedError.message = 'Ресурс не найден'
-				break
+				formattedError.message = 'Ресурс не найден';
+				break;
 			case 500:
-				formattedError.message = 'Внутренняя ошибка сервера'
-				break
+				formattedError.message = 'Внутренняя ошибка сервера';
+				break;
 			case 502:
-				formattedError.message = 'Сервер временно недоступен'
-				break
+				formattedError.message = 'Сервер временно недоступен';
+				break;
 			case 503:
-				formattedError.message = 'Сервис временно недоступен'
-				break
+				formattedError.message = 'Сервис временно недоступен';
+				break;
 		}
 	} else if (error.request) {
 		// Запрос был отправлен, но ответ не получен
@@ -57,30 +60,30 @@ function formatApiError(error, endpoint) {
 				'Ошибка сети или сервер недоступен ' + error.request?.url ||
 				error.request?.config?.url ||
 				'',
-		}
+		};
 	} else if (error.code === 'ECONNABORTED') {
 		// Таймаут запроса
 		formattedError = {
 			...formattedError,
 			type: 'TIMEOUT_ERROR',
 			message: 'Превышено время ожидания ответа от сервера',
-		}
+		};
 	} else {
 		// Ошибка настройки запроса
 		formattedError = {
 			...formattedError,
 			type: 'REQUEST_ERROR',
 			message: error.message || 'Ошибка при формировании запроса',
-		}
+		};
 	}
 
-	console.error(`API Error [${errorId}] ${endpoint}:`, formattedError)
-	return formattedError
+	console.error(`API Error [${errorId}] ${endpoint}:`, formattedError);
+	return formattedError;
 }
 
 function get(code, ip = '127.0.0.1') {
 	return new Promise((resolve, reject) => {
-		const endpoint = `web/service/${code}`
+		const endpoint = `web/service/${code}`;
 		const config = {
 			method: 'GET',
 			maxBodyLength: Infinity,
@@ -93,23 +96,23 @@ function get(code, ip = '127.0.0.1') {
 				Expires: '0',
 			},
 			timeout: 10000,
-		}
+		};
 
 		api(config)
 			.then((r) => {
-				console.log(`Response service_angar/${code}`, r.data)
-				resolve(r.data)
+				console.log(`Response service_angar/${code}`, r.data);
+				resolve(r.data);
 			})
 			.catch((error) => {
-				const formattedError = formatApiError(error, endpoint)
-				reject(formattedError)
-			})
-	})
+				const formattedError = formatApiError(error, endpoint);
+				reject(formattedError);
+			});
+	});
 }
 
 function post(code, data, ip = '127.0.0.1') {
 	return new Promise((resolve, reject) => {
-		const endpoint = `web/service/${code}`
+		const endpoint = `web/service/${code}`;
 		const config = {
 			method: 'POST',
 			maxBodyLength: Infinity,
@@ -122,21 +125,24 @@ function post(code, data, ip = '127.0.0.1') {
 			},
 			timeout: 10000,
 			data,
-		}
+		};
+		console.log('post', code, data, ip);
 		// Для обычных данных
-		if (code !== 'file') config.headers['Content-Type'] = 'application/json'
+		if (code !== 'file')
+			config.headers['Content-Type'] = 'application/json';
 		// Для файлов
-		else config.headers['Content-Type'] = 'multipart/form-data'
+		else config.headers['Content-Type'] = 'multipart/form-data';
 		api(config)
 			.then((r) => {
-				console.log(`Response service_angar/${code}`, r.data)
-				resolve(r.data)
+				console.log(`Response service_angar/${code}`, r.data);
+				resolve(r.data);
 			})
 			.catch((error) => {
-				const formattedError = formatApiError(error, endpoint)
-				reject(formattedError)
-			})
-	})
+				console.log('post error', error);
+				const formattedError = formatApiError(error, endpoint);
+				reject(formattedError);
+			});
+	});
 }
 
-export { get, post }
+export { get, post };

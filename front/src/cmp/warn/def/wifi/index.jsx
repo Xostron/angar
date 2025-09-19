@@ -5,11 +5,14 @@ import Radio from '@cmp/fields/radio'
 import Btn from '@cmp/fields/btn'
 import './style.css'
 import { get } from '@tool/api/service'
+import { notification } from '@cmp/notification'
+
+import { post } from '@tool/api/service'
 
 export default function Wifi({data}) {
 	const [inputMode, setInputMode] = useState('list') // 'list' или 'manual'
-	const [availableNetworks, setAvailableNetworks] = useState([])
-	const [selectedNetwork, setSelectedNetwork] = useState('')
+	const [availableNetworks, setAvailableNetworks] = useState()
+	const [selectedNetwork, setSelectedNetwork] = useState()
 	const [ssid, setSsid] = useState('')
 	const [password, setPassword] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
@@ -28,7 +31,7 @@ export default function Wifi({data}) {
 		get('wifi', data.req_ip).then((o) => {
 			setAvailableNetworks(o?.result || [])
 		}).catch((e) => {
-			alert('Ошибка сканирования WiFi сетей: ' + e.message)
+			notification.error('Ошибка сканирования WiFi сетей: ' + e.message)
 		})
 		.finally(() => {
 			setIsLoading(false)
@@ -36,25 +39,49 @@ export default function Wifi({data}) {
 	}
 
 	const switchWifi = () => {
-		post('switching', { type: 'wifi', state: status ? 'off' : 'on' }, data.req_ip).then((o) => {
-			alert(o.message)
+		post('switching', { type: 'wifi', state: status ? 'off' : 'on' }, data.req_ip)
+		.then((o) => {
+			notification.success(o.message)
+		}).catch((e) => {
+			notification.error('Ошибка переключения WiFi: ' + e.message)
+		})
+	}
+
+	const connectWifi = (doc) => {
+
+		setIsLoading(true)
+		post('wifi', doc, data.req_ip).then((o) => {
+			if (o.success !== false) {
+				notification.success('Успешно подключено к WiFi сети: ' + doc.ssid)
+				scanWifiNetworks()
+			} else {
+				notification.error('Ошибка подключения: ' + (o.message || 'Неизвестная ошибка'))
+			}
+		}).catch((e) => {
+			notification.error('Ошибка подключения к WiFi сети: ' + e.message)
+		}).finally(() => {
+			scanWifiNetworks()
+			setIsLoading(false)
+			clear()
 		})
 	}
 
 	const handleSave = () => {
+		console.log('handleSave', inputMode, selectedNetwork, ssid)
 		const finalSsid = inputMode === 'list' ? selectedNetwork : ssid
 
 		if (!finalSsid.trim()) {
-			alert('Выберите или укажите название WiFi сети')
+			notification.warning('Выберите или укажите название WiFi сети')
 			return
 		}
-
+		const bssid = availableNetworks.find(el => el.ssid === finalSsid)?.bssid
 		const wifiConfig = {
 			ssid: finalSsid,
 			password,
 		}
-		// onSave(wifiConfig)
-		clear()
+		if (bssid) wifiConfig.bssid = bssid
+		console.log('wifiConfig', wifiConfig)
+		connectWifi(wifiConfig)
 	}
 
 	const closeModal = () => {
@@ -77,7 +104,7 @@ export default function Wifi({data}) {
 
 	return (
 		<div className='network-modal-content'>
-			<h3 className='network-modal-title'>Подключение к WiFi (!!! Не доступно !!!)</h3>
+			<h3 className='network-modal-title'>Подключение к WiFi</h3>
 
 			{status && <div className='wifi-input-mode-section'>
 				<span className='network-section-title'>Выбор сети:</span>
@@ -110,18 +137,30 @@ export default function Wifi({data}) {
 						/>
 					</div>
 
-					{availableNetworks.length > 0 ? (
+					{availableNetworks?.length > 0 ? (
 						<div className='wifi-networks-list'>
-							{availableNetworks.map((el, index) => (
+							{[...availableNetworks]
+								.sort((a, b) => {
+									// Текущая сеть всегда первая
+									if (a.current && !b.current) return -1;
+									if (!a.current && b.current) return 1;
+									return 0;
+								})
+								.map((el, index) => (
 								<div
 									key={index}
 									className={`wifi-network-item ${
 										selectedNetwork === el.ssid ? 'selected' : ''
-									}`}
-									onClick={() => setSelectedNetwork(el.ssid)}
+									} ${el.current ? 'current' : ''}`}
+									onClick={el.current ? undefined : () => setSelectedNetwork(el.ssid)}
 								>
 									<div className='wifi-network-info'>
-										<span className='wifi-network-ssid'>{el.ssid}</span>
+										<div style={{display: 'flex', alignItems: 'center'}}>
+											<span className='wifi-network-ssid'>{el.ssid}</span>
+											{el.current && (
+												<span className='wifi-network-current-indicator'>Подключено</span>
+											)}
+										</div>
 									</div>
 									<span className='wifi-network-signal'>
 										{el.signal} dBm
@@ -160,11 +199,13 @@ export default function Wifi({data}) {
 					<div className='network-field'>
 						<span className='network-field-label'>Пароль:</span>
 						<Input
-							type='password'
+							name='password'
+							// type='password'
 							value={password}
 							setValue={setPassword}
 							placeholder='Пароль WiFi сети'
 							disabled={false}
+							max='9999999999999999999999999999999999999999'
 							auth={false}
 						/>
 					</div>
@@ -172,9 +213,15 @@ export default function Wifi({data}) {
 			)}
 
 			<div className='network-modal-buttons'>
-				<Btn title={`${status ? 'Выключить' : 'Включить'}`} onClick={switchWifi} />
+				{/* <Btn title={`${status ? 'Выключить' : 'Включить'}`} onClick={switchWifi} /> */}
 				{status && <Btn title='Отмена' onClick={closeModal} />}
-				{status && <Btn title="Подключиться" onClick={handleSave} />}
+				{status && (
+					<Btn
+						title={isLoading ? "Подключение..." : "Подключиться"}
+						onClick={handleSave}
+						disabled={isLoading || !((inputMode === 'list' && selectedNetwork) || (inputMode === 'manual' && ssid.trim()))}
+					/>
+				)}
 			</div>
 		</div>
 	)

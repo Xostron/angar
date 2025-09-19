@@ -75,32 +75,41 @@ function wifi_list() {
 	return (req, res) => {
 		network
 			.wifi_list()
-				.then((result) => {
-					console.log('r', result);
-					res.json({ result });
-				})
-				.catch((err) => {
-					console.error('wifi_list error:', err);
-					res.status(400).json({ error: err.toString() });
-				});
+			.then((result) => {
+				console.log('r', result);
+				res.json({ result });
+			})
+			.catch((err) => {
+				console.error('wifi_list error:', err);
+				res.status(400).json({ error: err.toString() });
+			});
 	};
 }
 
 function wifi_connect() {
 	return (req, res) => {
-		const { ssid, password } = req.body;
-		if (!ssid || !password) {
+		const { bssid, ssid, password } = req.body;
+		console.log('req.body', req.body);
+		if ((!bssid || !ssid) && !password) {
 			return res
 				.status(400)
 				.json({ error: 'SSID and password are required' });
 		}
 		network
-			.wifi_connect(ssid, password)
+			.wifi_connect(bssid, ssid, password)
 			.then((r) => {
-				console.log(r);
-				res.json(r);
+				console.log('wifi_connect3', r);
+				if (r.success) {
+					res.json(r);
+				} else {
+					res.status(400).json({ error: r.message });
+				}
 			})
-			.catch((err) => res.status(400).json({ error: err.toString() }));
+			.catch((err) => {
+				console.log('wifi_connect error:', err);
+				const errorMessage = err.message || err.toString();
+				res.status(400).json({ error: errorMessage });
+			});
 	};
 }
 
@@ -134,23 +143,26 @@ function eth_manager() {
 function file() {
 	return async (req, res) => {
 		// Получение файла
-		const f = req?.files?.file
-		if (!f) return res.status(400).json({ error: 'Нет файла' })
+		const f = req?.files?.file;
+		if (!f) return res.status(400).json({ error: 'Нет файла' });
 		// Прочитали файл
-		const ff = await fsp.readFile(f.tempFilePath, { encoding: 'utf8' })
-		if (!ff) return res.status(404).json({ error: 'Файл пуст' })
+		const ff = await fsp.readFile(f.tempFilePath, { encoding: 'utf8' });
+		if (!ff) return res.status(404).json({ error: 'Файл пуст' });
 		// Дисериализуем и сохраняем в root/data
 		try {
-			const result = JSON.parse(ff)
-			if (!result.pc) throw Error('Некорректный файл')
-			console.log(99010, 'Конфигурация из файла обработана -> Устанавливаем...')
-			writeConfig(result)
-			console.log(99011, 'Конфигурация из файла успешно установлена!')
-			res.status(200).json({ resilt: 'ok' })
+			const result = JSON.parse(ff);
+			if (!result.pc) throw Error('Некорректный файл');
+			console.log(
+				99010,
+				'Конфигурация из файла обработана -> Устанавливаем...'
+			);
+			writeConfig(result);
+			console.log(99011, 'Конфигурация из файла успешно установлена!');
+			res.status(200).json({ resilt: 'ok' });
 		} catch (error) {
-			res.status(409).json({ error: error.toString() })
+			res.status(409).json({ error: error.toString() });
 		}
-	}
+	};
 }
 
 module.exports = {

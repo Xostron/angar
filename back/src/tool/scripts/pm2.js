@@ -9,7 +9,8 @@ function pm2(code, type = 'all') {
 				// Используем полный путь к node и pm2, поскольку они установлены в nvm для root
 				// const command = `echo "${getSecureAccessKey()}" | sudo -S /root/.nvm/versions/node/v22.17.0/bin/node /root/.nvm/versions/node/v22.17.0/bin/pm2 ${code} all`;
 				// const command = `sudo -S /root/.nvm/versions/node/v22.17.0/bin/node /root/.nvm/versions/node/v22.17.0/bin/pm2 ${code} all`;
-				const command = `pm2 ${code} ${type}`;
+				// pm2 /home/tenta/apps/ecosystem/ecosystem.config.js
+				const command = `pm2 ${code} /home/tenta/apps/ecosystem/ecosystem.config.js  && pm2 save`;
 
 				exec(command, (error, stdout, stderr) => {
 					if (error) {
@@ -22,15 +23,6 @@ function pm2(code, type = 'all') {
 						console.error(`stderr: ${stderr}`);
 						return;
 					}
-					exec('pm2 save', (error, stdout, stderr) => {
-						if (error) {
-							console.error(
-								`Ошибка 2 при выполнении pm2 ${code}: ${error.message}`
-							);
-							return;
-						}
-						console.log(`stdout: ${stdout}`);
-					});
 				});
 			}, 5000);
 			resolve({

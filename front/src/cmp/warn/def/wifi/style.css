@@ -64,6 +64,29 @@
 	border-color: var(--primary);
 }
 
+.wifi-network-item.current {
+	background: rgba(0, 128, 0, 0.1);
+	border-color: #008000;
+	cursor: default;
+}
+
+.wifi-network-item.current:hover {
+	background: rgba(0, 128, 0, 0.1);
+	border-color: #008000;
+}
+
+.wifi-network-item.current.selected {
+	background: rgba(0, 128, 0, 0.2);
+	border-color: #008000;
+}
+
+.wifi-network-current-indicator {
+	font-size: var(--fsz18);
+	color: #008000;
+	font-weight: 600;
+	margin-left: var(--fsz10);
+}
+
 .wifi-network-info {
 	display: flex;
 	flex-direction: column;

@@ -10,7 +10,6 @@ export default function Forecast({ address, type = 'normal' }) {
 	const mb = useViewStore((s) => s.mb())
 	const point = useInputStore((s) => s.input?.total?.[build]?.point)
 	const weather = useEquipStore((s) => s.weather)
-	console.log(weather)
 	const updateTime = weather.update
 		? new Date(weather.update).toLocaleString('ru-RU', {
 				dateStyle: 'short',
