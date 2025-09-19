@@ -40,7 +40,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Управление соленоидом подогрева
-	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, s, where)
+	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, where)
 	// Регулирование по ПЧ после ожидания соленоида подогрева
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)
 	if (acc.busy || acc.busySol) (on = false), (off = false)

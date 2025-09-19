@@ -4,7 +4,7 @@ const { getIdByClr, getB } = require('@tool/get/building')
 
 // Испаритель
 function cooler(equip, val, retain, result) {
-	const { building, cooler, sensor, fan, heating, binding, section, signal } = equip
+	const { building, cooler, sensor, fan, heating, binding, section, signal, aggregate } = equip
 	cooler.forEach((clr) => {
 		// fan
 		result[clr._id] ??= {}
@@ -13,7 +13,14 @@ function cooler(equip, val, retain, result) {
 		result[clr._id].heating ??= {}
 		result[clr._id].sensor ??= {}
 		result[clr._id].solHeat ??= {}
+		result[clr._id].aggregate ??= {}
 
+		// Агрегат
+		aggregate
+			.filter((el) => el._id === clr.aggregateListId)
+			.forEach((el) => {
+				result[clr._id].aggregate = result[el._id]
+			})
 		// Соленоид - добавление холода
 		clr.solenoid.forEach((el) => {
 			const sigId = signal.find((e) => e.owner.id === el._id)?._id
@@ -28,9 +35,11 @@ function cooler(equip, val, retain, result) {
 		})
 
 		// Напорные вентиляторы
-		fan.filter((el) => el.owner.id === clr._id).forEach((f) => {
+		const arrFan = fan.filter((el) => el.owner.id === clr._id)
+		arrFan.forEach((f) => {
 			result[clr._id].fan[f._id] = result[f._id]
 		})
+		result[clr._id].fan.state = arrFan.every(f=>result[f._id].state==='off' || result[f._id].state==='alarm') ? 'alarm' : ''
 
 		// Оттайка испарителя
 		heating

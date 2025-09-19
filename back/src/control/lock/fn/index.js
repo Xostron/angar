@@ -60,9 +60,9 @@ function fan(obj, s) {
 		// Склад выключен и секция в авторежиме
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !smoking
 
-		// console.log(2, f.name, isAlrOff, localB, local, offS, alrStop, lockAuto, smoking)
-		out(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
-		ao(obj, output, f, isAlrOff, localB, local, offS, alrStop, lockAuto)
+		console.log(2, f.name, isAlrOff, localB, local, offS, alrStop, lockAuto, smoking)
+		out(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
+		ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
 	}
 }
 // Блокировки разгонных вентиляторов (обычный склад и холодильник)
@@ -123,7 +123,31 @@ function device(obj) {
 	}
 }
 
-module.exports = { vlv, fan, fanAccel, heating, device }
+// Соленоиды подогрева
+function fnSolHeat(obj) {
+	const { value, data, retain, output } = obj
+	const arr = data.heating.filter((el) => el.type === 'channel')
+	for (const el of arr) {
+		const mdl = el?.module?.id
+		if (!output[mdl]) continue
+		// Id cклада
+		const idB = getIdB(mdl, data.module)
+		// местный режим
+		const local = isExtralrm(idB, el.owner.id, 'local')
+		const localB = isExtralrm(idB, null, 'local')
+		// Нажат аварийный стоп
+		const alrStop = isExtralrm(idB, null, 'alarm')
+		// Состояние испарителя
+		const stateC = value[el?.owner?.id]
+		// Состояние агрегата испарителя
+		const alrAgg = stateC.aggregate.state === 'alarm'
+		// Состояние ВНО испарителя
+		const alr_offVNO = stateC.fan.state === 'alarm'
+		out(obj, output, el, localB, local, alrStop, alrAgg, alr_offVNO)
+	}
+}
+
+module.exports = { vlv, fan, fanAccel, heating, device, fnSolHeat }
 
 /**
  *
@@ -171,6 +195,7 @@ function ao(obj, output, f, localB, local, ...args) {
 	// Аналоговый выход
 	// ВНО имеет аналоговое управление?
 	const ao = getAO(obj, f)
+	console.log(3, f.name, lock, ao)
 	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = 0
 	// Местный переключатель => задание ВНО на 100%, DO выкл
 	if (ao) {

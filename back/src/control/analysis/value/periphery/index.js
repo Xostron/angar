@@ -33,10 +33,10 @@ function periphery(val, obj) {
 	valve(equip, val, retain, result)
 	// Состояние вентиляторов (предварительное)
 	fan(equip, val, retain, result)
-	// Испаритель
-	cooler(equip, val, retain, result)
 	// Агрегат
 	aggregate(equip, val, retain, result)
+	// Испаритель
+	cooler(equip, val, retain, result)
 	// Устройства (СО2, увлажнитель)
 	device(equip, val, retain, result)
 	// Состояние склада (подрежим работы)

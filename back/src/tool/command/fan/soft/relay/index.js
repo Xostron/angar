@@ -33,7 +33,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
 	// Управление соленоидом подогрева
-	acc.busySol = fnSolHeat(bldId, acc, solHeat, on, off, s, where)
+	acc.busySol = fnSolHeat(bldId, acc, solHeat, on, off, obj, s, where)
 	if (acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, fans.length)

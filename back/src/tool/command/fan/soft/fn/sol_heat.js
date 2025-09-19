@@ -11,18 +11,18 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
  * @param {object} s Настройки (web Страница Настройки)
  * @param {string} where normal - обычный склад, комби склад в режиме обычного склада
  * 					cold - комби склад в режиме холодильника
- * @returns true - 1 этап соленоид подогрева, false - 1 этап пройден
+ * @returns true - Запрет на вкл ВНО или ПЧ, false - Разрешить
  */
-function fnSolHeat(idB, acc, solHeat, on, off, s, where) {
-	// Если комби склад в режиме
-	// console.log(99009, 'where', where, solHeat)
+function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
+	// Если комби склад в режиме Обычного - выключаем соленоиды подогрева
 	if (where !== 'cold') {
-		// console.log(99008, 'solHeat', solHeat)
 		solHeat.forEach((el) => {
 			ctrlDO(el, idB, 'off')
 		})
 		return false
 	}
+
+	// 
 	// Если в системе нет соленоидов подгрева, то разрешаем регулировать ПЧ
 	if (!solHeat?.length) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
@@ -33,10 +33,10 @@ function fnSolHeat(idB, acc, solHeat, on, off, s, where) {
 		acc.fc.date = new Date()
 	}
 
-	// Включаем соленоид
+	// Команда на включение соленоида подогрева
 	if (on) {
 		acc.sol.value = true
-		// включаем и ждем (пока ждем запрещаем регулировать ПЧ)
+		// Включаем и ждем (пока ждем запрещаем регулировать ПЧ)
 		if (!compareTime(acc.sol.date, acc.delaySolHeat)) {
 			acc.busy = false
 			return true
@@ -45,7 +45,7 @@ function fnSolHeat(idB, acc, solHeat, on, off, s, where) {
 		return false
 	}
 
-	// Выкл соленоид, если все остальное выключено
+	// Команда на выключение соленоида подогрева
 	if (off) {
 		// Выключение, если все ВНО и ПЧ выключены
 		if (where == 'cold' && acc.order === -1 && acc.fc.sp < s.fan.min) {
