@@ -10,10 +10,13 @@ export default function Forecast({ address, type = 'normal' }) {
 	const mb = useViewStore((s) => s.mb())
 	const point = useInputStore((s) => s.input?.total?.[build]?.point)
 	const weather = useEquipStore((s) => s.weather)
-	const updateTime = new Date(weather.update).toLocaleString('ru-RU', {
-		dateStyle: 'short',
-		timeStyle: 'short',
-	})
+	console.log(weather)
+	const updateTime = weather.update
+		? new Date(weather.update).toLocaleString('ru-RU', {
+				dateStyle: 'short',
+				timeStyle: 'short',
+		  })
+		: '--'
 	const cold = type === 'cold' ? 'cold' : ''
 	const cls = ['cmp-weather-fore', mb, cold].join(' ')
 	const clsPoint = ['cmp-weather-fore-point', mb].join(' ')

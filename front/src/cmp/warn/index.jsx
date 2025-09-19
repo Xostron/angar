@@ -24,7 +24,6 @@ export default function Warn({}) {
 	}, [show, isOpen, open, close])
 	
 	const Entry = def[entryCode] ?? def.notfound
-	console.log(222, data)
 	return (
 		<Dialog href={refDialog} cls={data.cls ?? ''}>
 			<Entry data={data} entryCode={entryCode} />

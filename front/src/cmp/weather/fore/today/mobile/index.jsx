@@ -18,7 +18,7 @@ export default function Today({ weather, type }) {
 					<img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} />
 					{/* <span className='status'>{weather.weather ?? ''}</span> */}
 				</div>
-				<div className>
+				<div>
 					<span>Улица: {tweather?.value ?? '--'}°C</span>
 					<span>Влажность: {weather.humidity ?? '--'}%</span>
 				</div>
