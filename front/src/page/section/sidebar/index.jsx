@@ -15,7 +15,7 @@ export default function Sidebar() {
 	const cls = ['page-section-mode', mb].join(' ')
 	return (
 		<div className={cls}>
-			{/* <AlarmBar setActive={setActive} /> */}
+			<AlarmBar setActive={setActive} />
 			{type !== 'cold' ? <Cp buildId={build} sect={sect} cls={cp} /> : null}
 		</div>
 	)

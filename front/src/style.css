@@ -18,12 +18,16 @@ html body {
 body > #root {
 	height: 100%;
 }
-.sect{
+.sect {
 	grid-area: 3 / 2 / 4 / 3;
 	display: flex;
 	padding: 20px;
 	flex-direction: column;
 	gap: 25px;
+	&.mb {
+		grid-area: 5 / 1 / 5 / 4;
+		padding: 0;
+	}
 }
 :root {
 	--primary: #192646;

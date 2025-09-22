@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useOutputStore from '@store/output'
+import useViewStore from '@src/store/view'
 import useInputStore from '@store/input'
 import Item from './item'
 import def from '@tool/status/section'
@@ -17,9 +18,9 @@ export default function Cp({ buildId, sect, cls }) {
 	const [md, setMd] = useState(mode)
 
 	useEffect(() => setMd(mode), [sect, mode])
+	const mb = useViewStore((s) => s.mb())
+	let cl = ['cp', mb, cls].join(' ')
 
-	let cl = ['cp', cls]
-	cl = cl.join(' ')
 
 	return (
 		
