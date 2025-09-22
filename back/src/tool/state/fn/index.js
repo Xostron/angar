@@ -36,7 +36,10 @@ function convertSec(obj) {
 
 function convert(obj, key) {
 	const r = {}
-	for (const fld in obj) ['rh', 'ah', 'temp', 'value', 'valve'].includes(fld) ? null : (r[`${key}.${fld}`] = obj[fld])
+	for (const fld in obj)
+		['rh', 'ah', 'temp', 'value', 'valve'].includes(fld)
+			? null
+			: (r[`${key}.${fld}`] = obj[fld])
 	return r
 }
 
@@ -45,7 +48,6 @@ function convertTenta(value, pcId) {
 	const r = []
 	for (const key in value) {
 		const fld = key.split('.')
-		// console.log(fld)
 		const o = {
 			key: fld.pop(),
 			value: value[key],
@@ -62,8 +64,12 @@ function delta(present, past) {
 	for (const key in present) {
 		switch (typeof present[key]) {
 			case 'object':
-				// Объекты
-				if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) r[key] = present[key]
+				// Нет изменений - пропускаем
+				if (compareArr(present[key], past[key])) break
+				// Элементы массива и другие объекты есть изменения - фиксируем
+				if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) {
+					r[key] = present[key]
+				}
 				break
 			default:
 				// Простые данные: числа, строки, null, undefined
@@ -73,6 +79,32 @@ function delta(present, past) {
 	}
 	// console.log(5551, past)
 	return r
+}
+
+/**
+ * Сравнение массивов объектов
+ * @param {*} present
+ * @param {*} past
+ * @returns false - элементы разные, true - элементы идентичны
+ */
+function compareArr(present, past) {
+	// Если не массивы - выход из проверки
+	if (!(present instanceof Array) || !(past instanceof Array)) return false
+	// Если не равны по длине выход из проверки
+	if (present.length !== past.length) return false
+	// Проверка элементов массива
+	for (let i = 0; i < present.length; i++) {
+		const prt = JSON.parse(JSON.stringify(present[i]))
+		const pst = JSON.parse(JSON.stringify(past[i]))
+		delete prt.date
+		delete prt.uid
+		delete pst.date
+		delete pst.uid
+		// Если элемент массива не равен - останавливаем цикл и выходим
+		if (JSON.stringify(prt) !== JSON.stringify(pst)) return false
+	}
+	// Если элементы идентичны, то true
+	return true
 }
 
 /**
@@ -88,10 +120,18 @@ function deltaTol(present, past, sens, tolerance) {
 		switch (typeof present[key]) {
 			case 'object':
 				// Объекты
+				// Нет изменений - пропускаем
+				if (compareArr(present[key], past[key])) break
 				checkObj(key, present, past, sens, tolerance, r)
 				break
 			default:
 				// Простые данные: числа, строки, null, undefined
+				const fld = key.split('.')
+				const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
+				if (fldd === 'count') {
+					fnIf(key, fldd, tolerance, present, past, r)
+					break
+				}
 				if (present[key] !== past[key]) r[key] = present[key]
 				break
 		}
@@ -102,6 +142,7 @@ function deltaTol(present, past, sens, tolerance) {
 module.exports = { convertPC, convertSec, convert, convertTenta, delta, deltaTol }
 
 function checkObj(key, present, past, sens, tolerance, result) {
+	// console.log(5553, key)
 	// Обычный ключ: temp,rh,ah
 	if (key.length < _OBJECT_ID_LENGTH) {
 		fnIf(key, key, tolerance, present, past, result)
@@ -123,17 +164,18 @@ function checkObj(key, present, past, sens, tolerance, result) {
 }
 
 function fnIf(key, fld, tolerance, present, past, result) {
-	if (tolerance[fld] !== undefined) {
-		if (
-			past[key].state != present[key].state ||
-			present[key].value > +past[key].value + tolerance[fld] ||
-			present[key].value < +past[key].value - tolerance[fld]
-		) {
-			result[key] = present[key]
-			console.log(22200222, key, fld, result[key])
-		}
-	} else {
+	// Без допуска
+	if (tolerance[fld] === undefined) {
 		if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) result[key] = present[key]
-		result[key] ? console.log(333, key, fld) : null
+		return
+	}
+	// С допуском
+	if (
+		past[key].state != present[key].state ||
+		present[key].value > +past[key].value + tolerance[fld] ||
+		present[key].value < +past[key].value - tolerance[fld]
+	) {
+		result[key] = present[key]
+		console.log(22200222, key, fld, result[key])
 	}
 }

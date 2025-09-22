@@ -13,8 +13,8 @@ module.exports = async function loopState() {
 			// отправка состояния каждые 10 секунд
 			await delay(process.env?.PERIOD_STATE ?? 10000)
 		} catch (error) {
-			console.log(660001, error.message)
-			return
+			console.error('\x1b[33m%s\x1b[0m', error.message)
+			await delay(process.env?.PERIOD_STATE ?? 10000)
 		}
 	}
 }

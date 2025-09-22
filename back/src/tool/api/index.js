@@ -5,8 +5,8 @@ const api = axios.create({
 	// авто добавление кук
 	withCredentials: true,
 	// Базовый url
-	baseURL: process.env.API_URI || 'http://localhost:3200/api/',
-	// timeout: 10000,
+	baseURL: process.env.API_URI,
+	timeout: 10000,
 });
 
 // Перехват 401 ошибки Не авторизованный пользователь
