@@ -13,7 +13,6 @@ const fsp = require('fs').promises
  * @returns
  */
 module.exports = async function prepareRes(type) {
-	console.log(1111, type)
 	const past = store.past // Предыдущее состояние ангара (Вторичная - составные ключи)
 	let present = {}, // Актуальное состояние ангара (Вторичная - составные ключи)
 		diffing, // delta-изменения (Вторичная - составные ключи)

@@ -39,6 +39,7 @@ function alarm(s, seB, building, section) {
 		'-',
 		s.mois.differenceMin
 	)
+	console.log(99004,'Абс влажн улицы выше', hAbsOut, hAbsIn , s.mois.differenceMin, hAbsIn - s.mois.differenceMin, hAbsOut >= hAbsIn - s.mois.differenceMin)
 	return [
 		// Температура улицы не подходит при сушке
 		{

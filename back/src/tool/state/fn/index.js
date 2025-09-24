@@ -101,9 +101,13 @@ function compareArr(present, past) {
 		delete pst.date
 		delete pst.uid
 		// Если элемент массива не равен - останавливаем цикл и выходим
-		if (JSON.stringify(prt) !== JSON.stringify(pst)) return false
+		if (JSON.stringify(prt) !== JSON.stringify(pst)) {
+			console.log(880011, 'Проверка arr - НЕидентичны', present, past)
+			return false
+		}
 	}
 	// Если элементы идентичны, то true
+	console.log(880012, 'Проверка arr - идентичны', present, past)
 	return true
 }
 
@@ -119,12 +123,15 @@ function deltaTol(present, past, sens, tolerance) {
 	for (const key in present) {
 		switch (typeof present[key]) {
 			case 'object':
+				console.log(880001, 'object', key)
 				// Объекты
 				// Нет изменений - пропускаем
 				if (compareArr(present[key], past[key])) break
+
 				checkObj(key, present, past, sens, tolerance, r)
 				break
 			default:
+				console.log(880002, typeof present[key], key)
 				// Простые данные: числа, строки, null, undefined
 				const fld = key.split('.')
 				const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
@@ -145,12 +152,14 @@ function checkObj(key, present, past, sens, tolerance, result) {
 	// console.log(5553, key)
 	// Обычный ключ: temp,rh,ah
 	if (key.length < _OBJECT_ID_LENGTH) {
+		console.log(880021, 'Проверка obj', key, present[key], past[key])
 		fnIf(key, key, tolerance, present, past, result)
 		return
 	}
 	// Составной ключ: id.id
 	if (key.length === _OBJECT_ID_LENGTH * 2 + 1) {
 		const fld = key.split('.')
+		console.log(880022, 'Проверка obj', key, present[key], past[key])
 		fnIf(key, fld[1], sens, present, past, result)
 		return
 	}
@@ -158,6 +167,7 @@ function checkObj(key, present, past, sens, tolerance, result) {
 	if (key.length > _OBJECT_ID_LENGTH * 2 + 1) {
 		const fld = key.split('.')
 		const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
+		console.log(880023, 'Проверка obj', key, present[key], past[key])
 		fnIf(key, fldd, tolerance, present, past, result)
 		return
 	}
@@ -166,7 +176,10 @@ function checkObj(key, present, past, sens, tolerance, result) {
 function fnIf(key, fld, tolerance, present, past, result) {
 	// Без допуска
 	if (tolerance[fld] === undefined) {
-		if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) result[key] = present[key]
+		if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) {
+			result[key] = present[key]
+			console.log(880031, 'без допуска -> НЕидентичен', key, present[key])
+		}
 		return
 	}
 	// С допуском
@@ -176,6 +189,7 @@ function fnIf(key, fld, tolerance, present, past, result) {
 		present[key].value < +past[key].value - tolerance[fld]
 	) {
 		result[key] = present[key]
-		console.log(22200222, key, fld, result[key])
+		console.log(880032, 'с допуском -> НЕидентичен', key, present[key])
 	}
+	console.log(880033, 'Идентичен', key, present[key])
 }
