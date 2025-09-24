@@ -4,7 +4,7 @@
 	display: grid;
 	grid-column-gap: var(--fsz10);
 	grid-row-gap: var(--fsz10);
-	height: calc(100vh - 130px);
+	height: calc(100vh - 170px);
 	overflow-y: scroll;
 	width: calc(30% - 5px);
 	transition: 0.5s;

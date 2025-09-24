@@ -4,7 +4,7 @@
 	display: grid;
 	grid-column-gap: var(--fsz10);
 	grid-row-gap: var(--fsz10);
-	height: calc(100vh - 130px);
+	height: calc(100vh - 170px);
 	overflow-y: scroll;
 	&.mb {
 		grid-area: 3/1/3/4;
@@ -20,7 +20,7 @@
 	grid-area: 2 / 1 / 5 / 1;
 	display: flex;
 	gap: 10px;
-	height: calc(100vh - 130px);
+	height: calc(100vh - 170px);
 	&.mb {
 		grid-area: 4 / 1 / 4 / 4;
 		display: flex;
@@ -38,7 +38,7 @@
 	grid-row-gap: var(--fsz10);
 	grid-template-rows: repeat(4, var(--fsz65));
 	width: calc(70% - 5px);
-	height: calc(100vh - 130px);
+	/* height: calc(100vh - 170px); */
 	opacity: 1;
 	transition-property: opacity, width;
 	transition-duration: 0.5s;

@@ -1,6 +1,6 @@
 :root {
 	--h-weather: clamp(12rem, 3rem + 11.1111vw, 17rem);
-	--h-section: calc(100vh - var(--h-weather) - 140px);
+	--h-section: calc(100vh - var(--h-weather) - 170px);
 }
 .build {
 	height: calc(100% - 100px);
@@ -11,7 +11,6 @@
 	&.mb {
 		grid-template-columns: 1% 98% 1%;
 		grid-template-rows: auto auto auto auto auto auto;
-		/* background-color: rgb(150, 202, 202); */
 		padding-inline:.25em;
 		gap: 1em 0;
 		overflow-y: scroll;
