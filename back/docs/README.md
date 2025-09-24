@@ -31,14 +31,7 @@
 -   [Установка и запуск](docs/setup.md)
 -   [Часто задаваемые вопросы](docs/faq.md)
 
-## 🚀 Быстрый старт
-
-### 1. production
-
-`bash`
-
--   npm install
--   npm start
+## 🚀 Запуск
 
 ### 2. development
 
@@ -46,3 +39,10 @@
 
 -   npm install
 -   npm run dev
+
+### 1. production
+
+`bash`
+
+-   npm install
+-   npm start
