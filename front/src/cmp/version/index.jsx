@@ -27,12 +27,15 @@ function Version() {
 				console.log(e)
 			})
 	}, [])
-
+	const VERSION = process.env.VERSION
+	const NAME = process.env.NAME
+	console.log('VERSION', VERSION); // --> 1.0.0
+	console.log('NAME', NAME); // --> 1.0.0
 	return (
 		<div style={stl}>
 			<Helmet title={title} />
 			<StatusWS />
-			server 4.4.0: {process.env.PUBLIC_SOCKET_URI}{' '}
+			server  {VERSION}: {process.env.PUBLIC_SOCKET_URI}{' '}
 			{info && ' Сеть: ' + info.map((el) => `${el.interface}: ${el.ip || el.mac}`).join('')}
 		</div>
 	)

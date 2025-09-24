@@ -70,7 +70,7 @@
 }
 
 .state-cooler > span {
-	width: 70px;
+	width: 100px;
 	&:first-child {
 		text-align: right;
 	}

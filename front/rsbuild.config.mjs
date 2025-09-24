@@ -6,6 +6,12 @@ export default defineConfig({
 	server: {
 		port: 4010,
 	},
+	source: {
+		define: {
+			'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
+			'process.env.NAME': JSON.stringify(process.env.npm_package_name),
+		},
+	},
 	output: {
 		distPath: {
 			root: 'build',

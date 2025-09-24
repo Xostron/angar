@@ -1,6 +1,7 @@
 const path = require('path')
 var express = require('express')
 var router = express.Router()
+const version =require('../../package.json')?.version
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -11,7 +12,7 @@ router.get('/', function (req, res, next) {
 		factory: path.join(process.env.PATH_FACTORY),
 		uri: path.join(process.env.API_URI),
 		ip: path.join(process.env.IP),
-		version: path.join(process.env.VERSION),
+		version: version,
 	})
 })
 
