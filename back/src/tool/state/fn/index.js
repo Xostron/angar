@@ -101,13 +101,9 @@ function compareArr(present, past) {
 		delete pst.date
 		delete pst.uid
 		// Если элемент массива не равен - останавливаем цикл и выходим
-		if (JSON.stringify(prt) !== JSON.stringify(pst)) {
-			console.log(880011, 'Проверка arr - НЕидентичны', present, past)
-			return false
-		}
+		if (JSON.stringify(prt) !== JSON.stringify(pst)) return false
 	}
 	// Если элементы идентичны, то true
-	console.log(880012, 'Проверка arr - идентичны', present, past)
 	return true
 }
 
