@@ -11,7 +11,10 @@ function state() {
 			const type = req.query?.type
 			const { result = [], present = [] } = await reconciliation(type)
 			const pLength = Object.keys(present).length
-			console.log(`Запрос state от Admin, отправлено: ${result.length} из ${pLength} ключей`)
+			console.log(
+				'\x1b[33m%s\x1b[0m',
+				`Запрос state от Admin, отправлено: ${result.length} из ${pLength} ключей`
+			)
 			res.status(200).json(result)
 		} catch (error) {
 			console.log(error)

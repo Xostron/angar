@@ -49,17 +49,21 @@ module.exports = async function state() {
 			)
 		}
 		// Передать данные INIT или delta
-		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. Соединение с Tenta...', process.env.API_URI)
+		console.log(
+			'\x1b[33m%s\x1b[0m',
+			'POS->Tenta: 2. Соединение с Tenta...',
+			process.env.API_URI
+		)
 		const params = o?.hub?.init ? null : { type: 'init' }
 		const config = apiConfig(o.result, params)
 		const response = await api(config)
 		if (!response.data) {
 			throw new Error('POS->Tenta: 3. ❌Не удалось передать данные на Tenta')
 		}
-		// Передача POS->Tenta успешна, сохраняем результат
+		// Передача POS->Tenta успешна, обновляем прошлые значения
 		o.hub.init = new Date()
 		o.hub.last = new Date()
-		o.hub.state = o.present
+		o.hub.state = o.diffing === null ? o.present : { ...o.hub.state, ...o.diffing }
 		console.log('\x1b[33m%s\x1b[0m', '3. ✅POS->Tenta: Данные переданы', o?.result?.length)
 		console.log(4, o.result)
 		return true

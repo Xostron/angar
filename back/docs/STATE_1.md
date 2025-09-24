@@ -1,84 +1,81 @@
-# STATE: Данные передаваемы от Angar -> Tenta
-
-# Структура:
-
--   `temp - {"value":"14.9","state":"on"}` -
--   `rh - {"value":"70.7","state":"on"}` -
--   `ah - {"value":9,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e66product - "onion"` -
--   `68063bd0b77d3a35f86e0e66mode - "cooling"` -
--   `68063bd0b77d3a35f86e0e66count - 0` -
--   `68063bd0b77d3a35f86e0e66on - true` -
--   `68063bd0b77d3a35f86e0e66rh - {"value":"72.8","state":"on"}` -
--   `68063bd0b77d3a35f86e0e66min - {"value":"25.5","state":"on"}` -
--   `68063bd0b77d3a35f86e0e66max - {"value":"26.0","state":"on"}` -
--   `68063bd0b77d3a35f86e0e66crash - 0` -
--   `68063bd0b77d3a35f86e0e66alarm - []` -
--   `68063bd0b77d3a35f86e0e66note - "[ [Object] ]"` -
--   `68063bd0b77d3a35f86e0e66fan - "run"` -
--   `buildings - ["68063bd0b77d3a35f86e0e66"]` -
--   `68063bd0b77d3a35f86e0e66banner - []` -
--   `68063bd0b77d3a35f86e0e66accel - "stop"` -
--   `68063bd0b77d3a35f86e0e66ahb - {"value":17.3,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e66tempb - {"value":"undefined","state":"alarm"}` -
--   `68063bd0b77d3a35f86e0e66rhb - {"value":"72.8","state":"on"}` -
--   `68063bd0b77d3a35f86e0e66point - {"value":9.6}` -
--   `68063bd0b77d3a35f86e0e6fmode - true` -
--   `68063bd0b77d3a35f86e0e6fmin - {"value":"25.5","state":"on"}` -
--   `68063bd0b77d3a35f86e0e6fmax - {"value":"26.0","state":"on"}` -
--   `68063bd0b77d3a35f86e0e6ffan - "stop"` -
--   `68063bd0b77d3a35f86e0e6fheating - false` -
--   `680a00442341ab3e64048cc5 - {"val":"NaN","state":"cls"}` -
--   `680a22602341ab3e64048cc9 - {"val":"NaN","state":"cls"}` -
--   `6810dba6b515c20d5c5a0a77mode - true` -
--   `6810dba6b515c20d5c5a0a77min - {"value":"25.5","state":"on"}` -
--   `6810dba6b515c20d5c5a0a77max - {"value":"26.0","state":"on"}` -
--   `6810dba6b515c20d5c5a0a77fan - "run"` -
--   `6810dba6b515c20d5c5a0a77heating - false` -
--   `6810dca3b515c20d5c5a0a81 - {"val":"NaN","state":"cls"}` -
--   `6810dcedb515c20d5c5a0a85 - {"val":"NaN","state":"cls"}` -
--   `alarm - []` -
--   `sections - ["68063bd0b77d3a35f86e0e6f"]` -
--   `68063bd0b77d3a35f86e0e8b - {"value":26,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e8c - {"value":25.5,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e89 - {"value":17.2,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e8a - {"value":16.7,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e8d - {"value":115.3,"state":"on"}` -
--   `68063bd0b77d3a35f86e0e81 - {"value":"stop","ao":0}` -
--   `68063bd0b77d3a35f86e0e82 - "stop"` -
--   `680a00442341ab3e64048cc5 - {"val":"NaN","state":"cls"}` -
--   `680a22602341ab3e64048cc9 - {"val":"NaN","state":"cls"}` -
--   `68063bd0b77d3a35f86e0e6fco2 - "stop"` -
--   `68063bd0b77d3a35f86e0e6fwetting - "stop"` -
--   `68063bd0b77d3a35f86e0e6fozon - "stop"` -
--   `6812138a35705b3210c17466 - "stop"` -
--   `681855362c06733994830bb0 - "stop"` -
--   `68888d3cb78fa416c4da9183 - "stop"` -
--   `6806402fb77d3a35f86e0ebb - {"state":"on-on-off","mode":"Охлаждение","ao":100}` -
--   `6809f6852341ab3e64048cbf - {"value":0,"state":"on"}` -
--   `6811c6e07a378c338021d8a1 - {"value":0,"state":"on"}` -
--   `6811e33c146f2f27ac035990 - {"value":0,"state":"on"}` -
--   `6810ce25b515c20d5c5a0a67 - {"state":"on-on-off","mode":"Охлаждение","ao":100}` -
--   `6810cec4b515c20d5c5a0a71 - {"value":0,"state":"on"}` -
--   `6818528f6c7a6c2b8c9c140c - {"value":0,"state":"on"}` -
--   `681853a86c7a6c2b8c9c140d - {"value":0,"state":"on"}` -
--   `valve - ["680a00442341ab3e64048cc5","680a22602341ab3e64048cc9"]` -
--   `6810dbecb515c20d5c5a0a7a - {"value":25.5,"state":"on"}` -
--   `6810dbfeb515c20d5c5a0a7b - {"value":26,"state":"on"}` -
--   `6810dbb6b515c20d5c5a0a78 - {"value":15.8,"state":"on"}` -
--   `6810dbd1b515c20d5c5a0a79 - {"value":17.6,"state":"on"}` -
--   `6810dc31b515c20d5c5a0a7c - {"value":0,"state":"on"}` -
--   `6810dc4fb515c20d5c5a0a7d - {"value":"run","ao":20}` -
--   `6810dca3b515c20d5c5a0a81 - {"val":"NaN","state":"cls"}` -
--   `6810dcedb515c20d5c5a0a85 - {"val":"NaN","state":"cls"}` -
--   `6810dba6b515c20d5c5a0a77co2 - "stop"` -
--   `6810dba6b515c20d5c5a0a77wetting - "stop"` -
--   `6810dba6b515c20d5c5a0a77ozon - "stop"` -
--   `6812138a35705b3210c17466 - "stop"` -
--   `681855362c06733994830bb0 - "stop"` -
--   `68888d3cb78fa416c4da9183 - "stop"` -
--   `681855b62c06733994830bb3 - {"state":"on-on-off","mode":"Охлаждение","ao":100}` -
--   `681856d72c06733994830bc1 - {"value":0,"state":"on"}` -
--   `681856a42c06733994830bbd - {"value":0,"state":"on"}` -
--   `681856be2c06733994830bbf - {"value":0,"state":"on"}` -
--   `valve - ["6810dca3b515c20d5c5a0a81","6810dcedb515c20d5c5a0a85"]` -
+temp: { value: '26.0', state: 'on' },
+  rh: { value: '28.7', state: 'on' },
+  ah: { value: 7, state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66product': 'onion',
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66mode': 'drying',
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66count': 2.0320377546296298,
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66on': true,
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66rh': { value: '32.6', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66min': { value: '22.0', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66max': { value: '22.0', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66crash': 1,
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66alarm': [ { code: 'tout', msg: 'Температура улицы не подходит при сушке' } ],
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66note': [],
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66fan': 'stop',
+  buildings: [ '68063bd0b77d3a35f86e0e66' ],
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66banner': [ ],
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66accel': 'stop',
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66ahb': { value: 6.3, state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66tempb': { value: '22.4', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66rhb': { value: '32.6', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e66point': { value: 6.4 },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e6fmode': false,
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e6fmin': { value: '22.0', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e6fmax': { value: '22.0', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e6ffan': 'stop',
+  '68063bd0b77d3a35f86e0e66.68063bd0b77d3a35f86e0e6fheating': false,
+  '68063bd0b77d3a35f86e0e66.680a00442341ab3e64048cc5': { val: NaN, state: 'cls' },
+  '68063bd0b77d3a35f86e0e66.680a22602341ab3e64048cc9': { val: NaN, state: 'cls' },
+  '68063bd0b77d3a35f86e0e66.6810dba6b515c20d5c5a0a77mode': false,
+  '68063bd0b77d3a35f86e0e66.6810dba6b515c20d5c5a0a77min': { value: '22.0', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.6810dba6b515c20d5c5a0a77max': { value: '22.0', state: 'on' },
+  '68063bd0b77d3a35f86e0e66.6810dba6b515c20d5c5a0a77fan': 'stop',
+  '68063bd0b77d3a35f86e0e66.6810dba6b515c20d5c5a0a77heating': false,
+  '68063bd0b77d3a35f86e0e66.6810dca3b515c20d5c5a0a81': { val: NaN, state: 'cls' },
+  '68063bd0b77d3a35f86e0e66.6810dcedb515c20d5c5a0a85': { val: NaN, state: 'cls' },
+  '68063bd0b77d3a35f86e0e66.alarm': [ { code: 'tout', msg: 'Температура улицы не подходит при сушке' } ],
+  '68063bd0b77d3a35f86e0e66.sections': [ '68063bd0b77d3a35f86e0e6f' ],
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e8b': { value: 22, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e8c': { value: 22, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e89': { value: 20, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e8a': { value: 20, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e8d': { value: undefined, state: 'alarm' },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e81': { value: 'stop', ao: 0 },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e82': 'stop',
+  '68063bd0b77d3a35f86e0e6f.680a00442341ab3e64048cc5': { val: NaN, state: 'cls' },
+  '68063bd0b77d3a35f86e0e6f.680a22602341ab3e64048cc9': { val: NaN, state: 'cls' },
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e6fco2': 'stop',
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e6fwetting': 'stop',
+  '68063bd0b77d3a35f86e0e6f.68063bd0b77d3a35f86e0e6fozon': 'stop',
+  '68063bd0b77d3a35f86e0e6f.6812138a35705b3210c17466': 'stop',
+  '68063bd0b77d3a35f86e0e6f.681855362c06733994830bb0': 'stop',
+  '68063bd0b77d3a35f86e0e6f.68888d3cb78fa416c4da9183': 'stop',
+  '68063bd0b77d3a35f86e0e6f.6806402fb77d3a35f86e0ebb': { state: 'off-off-off', mode: 'Пауза', ao: 0 },
+  '68063bd0b77d3a35f86e0e6f.6809f6852341ab3e64048cbf': { value: 0, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.6811c6e07a378c338021d8a1': { value: 0, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.6811e33c146f2f27ac035990': { value: 0, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.6810ce25b515c20d5c5a0a67': { state: 'off-off-off', mode: 'Пауза', ao: 0 },
+  '68063bd0b77d3a35f86e0e6f.6810cec4b515c20d5c5a0a71': { value: 0, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.6818528f6c7a6c2b8c9c140c': { value: 0, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.681853a86c7a6c2b8c9c140d': { value: 0, state: 'on' },
+  '68063bd0b77d3a35f86e0e6f.valve': [ '680a00442341ab3e64048cc5', '680a22602341ab3e64048cc9' ],
+  '6810dba6b515c20d5c5a0a77.6810dbecb515c20d5c5a0a7a': { value: 22, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.6810dbfeb515c20d5c5a0a7b': { value: 22, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.6810dbb6b515c20d5c5a0a78': { value: 20, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.6810dbd1b515c20d5c5a0a79': { value: 20, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.6810dc31b515c20d5c5a0a7c': { value: 0, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.6810dc4fb515c20d5c5a0a7d': { value: 'stop', ao: 100 },
+  '6810dba6b515c20d5c5a0a77.6810dca3b515c20d5c5a0a81': { val: NaN, state: 'cls' },
+  '6810dba6b515c20d5c5a0a77.6810dcedb515c20d5c5a0a85': { val: NaN, state: 'cls' },
+  '6810dba6b515c20d5c5a0a77.6810dba6b515c20d5c5a0a77co2': 'stop',
+  '6810dba6b515c20d5c5a0a77.6810dba6b515c20d5c5a0a77wetting': 'stop',
+  '6810dba6b515c20d5c5a0a77.6810dba6b515c20d5c5a0a77ozon': 'stop',
+  '6810dba6b515c20d5c5a0a77.6812138a35705b3210c17466': 'stop',
+  '6810dba6b515c20d5c5a0a77.681855362c06733994830bb0': 'stop',
+  '6810dba6b515c20d5c5a0a77.68888d3cb78fa416c4da9183': 'stop',
+  '6810dba6b515c20d5c5a0a77.681855b62c06733994830bb3': { state: 'off-off-off', mode: 'Пауза', ao: 0 },
+  '6810dba6b515c20d5c5a0a77.681856d72c06733994830bc1': { value: 0, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.681856a42c06733994830bbd': { value: 0, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.681856be2c06733994830bbf': { value: 0, state: 'on' },
+  '6810dba6b515c20d5c5a0a77.valve': [ '6810dca3b515c20d5c5a0a81', '6810dcedb515c20d5c5a0a85' ]
+}

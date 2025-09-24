@@ -16,7 +16,7 @@ const tolerance = require('../fn/tolerance.json')
  * 						present Данные по датчикам (для расчета delta)
  */
 module.exports = async function prepareReq() {
-	const hub = store.hub //Аккумулятор
+	const hub = store.hub //Аккумулятор прошлых значений
 	let present = {}, // Актуальное состояние ангара (Вторичная - составные ключи)
 		diffing, // delta-изменения (Вторичная - составные ключи)
 		result // ответ для Админки
@@ -50,15 +50,17 @@ module.exports = async function prepareReq() {
 
 		// Расчет delta (первое включение прошло успешно hub.init = true)
 		// diffing = hub.init ? delta(present, hub.state) : null
-		const sens = data.sensor.reduce((acc, el, i) => {
-			acc[el._id] = el.tolerance ?? 1
-			return acc
-		}, {})
-		
+		// const sens = data.sensor.reduce((acc, el, i) => {
+		// 	acc[el._id] = el.tolerance ?? 1
+		// 	return acc
+		// }, {})
+		// Датчики id с допусками из tolerance.json
+		const sens = {}
+		data.sensor.forEach((el) => (sens[el._id] = tolerance[el.type]))
 		diffing = hub.init ? deltaTol(present, hub.state, sens, tolerance) : null
 		// Формируем данные для Tenta
 		result = convertTenta(diffing ?? present, data.pc._id)
-		return { result, hub, present }
+		return { result, hub, present, diffing }
 	} catch (error) {
 		console.error('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. ❌Ошибка подготовки данных', error)
 	}
