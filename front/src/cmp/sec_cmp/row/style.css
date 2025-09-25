@@ -101,4 +101,6 @@
 	position: absolute;
 	left: 7px;
 	bottom: -16px;
+	width: 50px;
+	text-align: left;
 }
