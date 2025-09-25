@@ -12,6 +12,7 @@ module.exports = function middleware(io, socket) {
 	socket.use((data, next) => {
 		const [code, obj] = data
 		// Логирование действий пользователя WEB
+		
 		webLog(code, obj)
 		next()
 	})

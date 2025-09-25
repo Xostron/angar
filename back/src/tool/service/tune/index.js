@@ -28,8 +28,10 @@ function tuneup(obj) {
  * @returns
  */
 function tuneVlv(vlv, value) {
-	const state = stateV(vlv?._id, value, vlv?._build, vlv?.sectionId[0])
-	def[vlv._stage](vlv, state)
+	const state = stateV(vlv?._id, value, vlv?._build, vlv?.sectionId?.[0])
+	console.log(77002, vlv._stage, def?.[vlv._stage])
+	if (!vlv._stage) return
+	def?.[vlv._stage](vlv, state)
 }
 
 module.exports = tuneup

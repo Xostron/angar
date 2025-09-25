@@ -13,8 +13,8 @@ const path = require('path')
 function webLog(code, o) {
 	// Если нет данных от клиента - выход
 	o = o ?? {}
-	console.log(5551, 'webLog', code)
 	if (!Object.keys(o)?.length || !code) return
+	console.log(5550, code, o)
 	activity(code, o)
 }
 
@@ -45,7 +45,7 @@ function mobileLog(req) {
 
 function activity(code, o) {
 	if (!def[code]) return
-	const { _id, buildingId, sectionId, clientId, cliName, fanId } = o
+	const { _id, buildingId, sectionId, clientId, cliName, fanId, name } = o
 	const _retain = path.join('retain', 'data.json')
 	readJson(['fan', 'valve', 'sensor', 'section', 'factory', 'building', _retain])
 		.then(([fan, valve, sensor, section, factory, building, retain]) => {
@@ -54,11 +54,12 @@ function activity(code, o) {
 			// Подготовка данных для лога
 			const { title, value, bId, sId, sensId, type, noLog } = def[code](code, o, oData)
 			// Блокировка лога
+			console.log(5551, 'webLog', code, noLog, name, title)
 			if (noLog) return
 			loggerEvent['activity']({
 				message: {
 					clientId,
-					name: cliName,
+					name: cliName ?? name,
 					bldId: _id ?? buildingId ?? bId,
 					secId: sectionId ?? sId,
 					id: fanId ?? sensId,
