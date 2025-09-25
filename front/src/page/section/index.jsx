@@ -10,17 +10,6 @@ import './style.css'
 //Подробная информация по секции
 export default function Sect({}) {
 	const { sect, build } = useParams()
-	// const [section, sections, getCurB, setCurB, getCurS, setCurS, getType] = useEquipStore(
-	// 	({ section, sections, getCurB, setCurB, getCurS, setCurS, getType }) => [
-	// 		section(),
-	// 		sections(),
-	// 		getCurB,
-	// 		setCurB,
-	// 		getCurS,
-	// 		setCurS,
-	// 		getType,
-	// 	]
-	// )
 	const getCurB = useEquipStore((s) => s.getCurB)
 	const getCurS = useEquipStore((s) => s.getCurS)
 	const sections = useEquipStore((s) => s.sections())

@@ -4,7 +4,8 @@ import useViewStore from '@src/store/view'
 import useInputStore from '@store/input'
 import Item from './item'
 import def from '@tool/status/section'
-import Warming from '../warming'
+import Warming from './warming'
+import './style.css'
 
 //Панель управления секции: Пуск, Стоп, Выкл
 export default function Cp({ buildId, sect, cls }) {
@@ -19,16 +20,14 @@ export default function Cp({ buildId, sect, cls }) {
 
 	useEffect(() => setMd(mode), [sect, mode])
 	const mb = useViewStore((s) => s.mb())
-	let cl = ['cp', mb, cls].join(' ')
-
+	let cl = ['page-section-sidebar-cp', mb, cls].join(' ')
 
 	return (
-		
 		<nav className={cl}>
 			{def.map((el) => (
 				<Item deactive={deactive} key={el.id} data={el} cur={md} set={set} />
 			))}
-			<Warming cls={'build-warming'} />
+			<Warming cls={'page-section-sidebar-warming'} />
 		</nav>
 	)
 

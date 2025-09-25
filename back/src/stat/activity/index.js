@@ -14,7 +14,6 @@ function webLog(code, o) {
 	// Если нет данных от клиента - выход
 	o = o ?? {}
 	if (!Object.keys(o)?.length || !code) return
-	console.log(5550, code, o)
 	activity(code, o)
 }
 

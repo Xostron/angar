@@ -1,0 +1,7 @@
+.page-section-sidebar-web {
+	position: relative;
+	grid-area: 2 / 1 / 5 / 1;
+	display: flex;
+	gap: 10px;
+	height: calc(100vh - 170px);
+}

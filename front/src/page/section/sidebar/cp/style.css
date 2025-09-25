@@ -1,0 +1,34 @@
+.page-section-sidebar-cp {
+	display: grid;
+	grid-column-gap: var(--fsz10);
+	grid-row-gap: var(--fsz10);
+	grid-template-rows: repeat(4, var(--fsz65));
+	width: calc(70% - 5px);
+	opacity: 1;
+	transition-property: opacity, width;
+	transition-duration: 0.5s;
+	transition-timing-function: ease;
+	&.mb {
+		display: flex;
+		height: 40px;
+		justify-content: center;
+		width: 100%;
+	}
+}
+
+.page-section-sidebar-cp-hide {
+	opacity: 0;
+	width: 0%;
+	pointer-events: none;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.page-section-sidebar-warming {
+	grid-area: 5/1/5/1;
+}
+
+.page-section-sidebar-cp-item {
+	width: calc(100% / 8) !important;
+}

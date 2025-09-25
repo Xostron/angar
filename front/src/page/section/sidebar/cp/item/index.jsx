@@ -1,14 +1,16 @@
+import useEquipStore from '@store/equipment'
+import useViewStore from '@src/store/view'
 import useAuthStore from '@store/auth'
 import useWarn from '@store/warn'
-import useEquipStore from '@store/equipment'
 import Btn from '@cmp/fields/btn'
+import '../style.css'
 
 // Кнопки панели управления режимами секции
 export default function Item({ data, cur, set, deactive }) {
 	const { title, value } = data
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
 	const section = useEquipStore(({ section }) => section())
-
+	const mb = useViewStore((s) => s.mb())
 	// Имя секции
 	const name = section.name
 
@@ -18,13 +20,12 @@ export default function Item({ data, cur, set, deactive }) {
 		type: 'warn',
 		title: `Режим работы. ${name}`,
 		text: `Вы действительно хотите переключить секцию в ${title.toUpperCase()} РЕЖИМ?`,
-		fnYes:()=>set(value)
+		fnYes: () => set(value),
 	}
-
 	const onClick = () =>
 		isAuth ? warn(obj, 'warn') : warn('auth', 'warn', () => warn(null, 'person'))
 
-	let cls = ['nav-item']
+	let cls = ['nav-item', mb ? 'page-section-sidebar-cp-item' : '']
 	if (cur == value) cls.push('active')
 	if (!isAuth || deactive) cls.push('auth_bg')
 	cls = cls.join(' ')
