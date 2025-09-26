@@ -10,7 +10,6 @@ export default function Prod({ change, style, show }) {
 		input?.retain?.[build]?.product,
 		input?.building?.[build]?.submode,
 	])
-	console.log(3333, product)
 	const subm = sm?.[1] ? `(${sm[1]})` : ''
 	return (
 		<div className='prod' style={style}>
