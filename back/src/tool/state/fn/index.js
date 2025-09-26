@@ -177,14 +177,34 @@ function fnIf(key, fld, tolerance, present, past, result) {
 		}
 		return
 	}
-	// С допуском
+	// С допуском для count (число дней сушки)
+	if (fld === 'count') {
+		if (
+			+present[key] >= +past[key] + tolerance[fld] ||
+			+present[key].value <= +past[key] - tolerance[fld] ||
+			Math.trunc(present[key]) !== Math.trunc(past[key])
+		)
+			result[key] = present[key]
+		return
+	}
+	// С допуском для показаний датчиков: проверяется отсечка по допуску (tolerance) и по отсчечке целого числа
 	if (
 		past[key].state != present[key].state ||
-		present[key].value > +past[key].value + tolerance[fld] ||
-		present[key].value < +past[key].value - tolerance[fld]
+		+present[key].value >= +past[key].value + tolerance[fld] ||
+		+present[key].value <= +past[key].value - tolerance[fld] ||
+		Math.trunc(present[key].value) !== Math.trunc(past[key].value)
 	) {
 		result[key] = present[key]
-		// console.log(880032, 'с допуском -> НЕидентичен', key, present[key])
+		console.log(
+			880032,
+			'с допуском -> НЕидентичен',
+			key,
+			present[key],
+			past[key],
+			+present[key].value >= +past[key].value + tolerance[fld],
+			+present[key].value <= +past[key].value - tolerance[fld],
+			Math.trunc(present[key].value) !== Math.trunc(past[key].value)
+		)
 	}
 	// console.log(880033, 'Идентичен', key, present[key])
 }

@@ -1,71 +1,89 @@
 const { msgM } = require('@tool/message')
-const { data } = require('@store')
+const { data: store } = require('@store')
 
-// Разрешить true/заблокировать false опрос модуля
-function timeout(buildingId, moduleId, ip, opt) {
-	if (!buildingId || !moduleId) return true
-	// Проверка debounce модуля: true - модуль ОК
-	if (isDebMdl(buildingId, moduleId, opt)) return true
+/**
+ * Разрешение на чтение модуля
+ * @param {*} idB Id склада
+ * @param {*} idM Id модуля
+ * @param {*} ip IP модуля
+ * @param {*} opt Конфигурация модуля
+ * @returns {boolean} true - разрешить чтение модуля, false - блокировка на чтение
+ */
+function timeout(idB, idM, ip, opt) {
+	if (!idB || !idM) return true
+	// Проверка модуль находится в списке Антидребезга
+	if (isDebMdl(idB, idM, opt)) return true
 	// Модуль исправен - разрешить опрос
-	if (!isErrM(buildingId, moduleId)) return true
+	if (!isErrM(idB, idM)) return true
 
 	// Поставить неисправный модуль в ожидание
 	// Время ожидания опроса
-	const _TIME = data.tTCP * 60 * 1000
+	const _TIME = store.tTCP * 60 * 1000
 	const now = new Date().getTime()
-	if (!data.timeout?.[moduleId]) data.timeout[moduleId] = now + _TIME
+	if (!store.timeout?.[idM]) store.timeout[idM] = now + _TIME
 	// Время не прошло - блокировать опрос модуля
-	if (now <= data.timeout?.[moduleId]) {
+	if (now <= store.timeout?.[idM]) {
 		console.log('Блокировать модуль', opt?.name, opt?.use, ip)
 		return false
 	}
-	data.timeout[moduleId] = new Date().getTime() + _TIME
+	store.timeout[idM] = new Date().getTime() + _TIME
 	console.log('Разрешить опрос', opt?.name, opt?.use, ip)
 	// Время прошло - разрешить опрос
 	return true
 }
 
 // Сохранить неисправный модуль сначала в антидребезг
-function wrDebMdl(mdlId) {
-	if (!data.debMdl?.[mdlId]) data.debMdl[mdlId] = new Date()
+function wrDebMdl(idM) {
+	if (!store.debMdl?.[idM]) store.debMdl[idM] = new Date()
 }
 
 // Удалить модуль из антидребезга
-function delDebMdl(mdlId = '') {
-	if (!mdlId) data.debMdl = {}
-	delete data.debMdl?.[mdlId]
+function delDebMdl(idM = '') {
+	if (!idM) store.debMdl = {}
+	delete store.debMdl?.[idM]
 }
 
 // Удалить модуль из списка аварий
-function delModule(buildingId, moduleId) {
-	if (!moduleId) {
-		delete data.alarm.module?.[buildingId]
+function delModule(idB, idM) {
+	if (!idM) {
+		delete store.alarm.module?.[idB]
 		return
 	}
-	delete data.alarm.module?.[buildingId]?.[moduleId]
+	delete store.alarm.module?.[idB]?.[idM]
 }
 
 // Проверка внесен ли модуль в список неисправных
-function isErrM(buildingId, moduleId) {
-	return !!data.alarm.module?.[buildingId]?.[moduleId]
+function isErrM(idB, idM) {
+	return !!store.alarm.module?.[idB]?.[idM]
 }
 
 // Сохранить неисправный модуль в список аварий
-function wrModule(buildingId, moduleId, o) {
-	data.alarm.module ??= {}
-	data.alarm.module[buildingId] ??= {}
-	if (!data.alarm.module[buildingId]?.[moduleId]) data.alarm.module[buildingId][moduleId] = o
+function wrModule(idB, idM, o) {
+	store.alarm.module ??= {}
+	store.alarm.module[idB] ??= {}
+	if (!store.alarm.module[idB]?.[idM]) store.alarm.module[idB][idM] = o
 }
 
-// Проверка внесен ли модуль в список антидребезга
-function isDebMdl(buildingId, mdlId, opt) {
-	if (!data.debMdl[mdlId]) return true
-	const time = data.debMdl[mdlId].getTime() + (data.tDebPlc ?? 20000)
+/**
+ * Антидребезг модуля
+ * Когда чтение модуля происходит с ошибкой, модуль попадает в
+ * промежуточный список "Антидребезга" на время store.tDebPlc, в течении данного времени
+ * система будет пытаться читать данные (при успешном чтении модуль немедленно удаляется из
+ * данного списка), если за это время модуль успешно не прочитается, то он попадает в
+ * список "Неисправных модулей"
+ * @param {*} idB
+ * @param {*} idM
+ * @param {*} opt
+ * @returns
+ */
+function isDebMdl(idB, idM, opt) {
+	if (!store.debMdl[idM]) return true
+	const time = store.debMdl[idM].getTime() + (store.tDebPlc ?? 20000)
 	const cur = new Date().getTime()
 	// Время прошло: авария осталась
 	if (cur >= time) {
-		wrModule(buildingId, mdlId, msgM(buildingId, opt, 110))
-		// delDebMdl(mdlId)
+		wrModule(idB, idM, msgM(idB, opt, 110))
+		// delDebMdl(idM)
 		return false
 	}
 	// Опрашиваем модуль

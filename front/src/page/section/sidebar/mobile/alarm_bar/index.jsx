@@ -17,29 +17,36 @@ export default function AlarmBar({}) {
 	else r = fnAlarmB(build, barB, timer)
 	const { alr, tmr } = r
 	const cls = ['page-section-sidebar-alarm-mobile', show ? 'show' : ''].join(' ')
-	const clsSpan = show ? 'show':''
+	const clsSpan = show ? 'show' : ''
 	return (
 		<>
 			<nav className={cls} onClick={onShow}>
 				{!!alr?.length &&
 					alr.map((el, idx) => (
-						<div >
-							<img key={idx} src={defImg[el.type]} />
+						<div key={idx}>
+							<img src={defImg[el.type]} />
+							<span className={clsSpan}>{el.msg}</span>
+						</div>
+					))}
+				{!!alr?.length &&
+					alr.map((el, idx) => (
+						<div key={idx}>
+							<img src={defImg[el.type]} />
 							<span className={clsSpan}>{el.msg}</span>
 						</div>
 					))}
 
 				{!!tmr?.length &&
 					tmr.map((el, idx) => (
-						<div>
-							<img key={idx} src={defImg[el.type]} />
+						<div key={idx}>
+							<img src={defImg[el.type]} />
 						</div>
 					))}
 			</nav>
 		</>
 	)
 	function onShow(e) {
-		console.log(e.currentTarget, e.target)
+		console.log('e.currentTarget', e.currentTarget, 'e.target', e.target)
 		setShow((s) => !s)
 	}
 }

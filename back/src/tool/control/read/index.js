@@ -3,37 +3,42 @@ const readTCP = require('./tcp')
 const { data: store } = require('@store')
 const { timeout } = require('@tool/message/plc_module')
 
-// Чтение модулей
+/**
+ * Чтение модулей
+ * @param {*} arr Массив модулей
+ * @param {*} obj Глобальные данные по складу
+ * @returns {Promise<object>} Объект: ключ-id модуля, значение-массив показаний модуля
+ */
 async function read(arr, obj) {
 	try {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
-			// Проверка модуля (антидребезг или ошибка модуля)
+			const idM = arr[i]._id
+			// Разрешение на чтение модуля
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
-			// Чтение данных в модуль
+			// Чтение данных модуля
 			const v = await make(arr[i])
 			// флаг первого запуска сервера
 			store.startup = false
-			const k = arr[i]._id
 
 			const buildingId = arr[i].buildingId
 			await pause(store.tPause)
-			// ошибка модуля
+			// Ошибка модуля -> если ответ от модуля не массив чисел => модуль не прочитан
 			if (!(v instanceof Array)) {
-				data[k] = v
+				data[idM] = v
 				data.error = buildingId
 				continue
 			}
-			// нет ошибки
+			// Модуль прочитан без ошибок
 			switch (arr[i].use) {
 				case 'r':
 				case 'w':
-					data[k] = v[0]
+					data[idM] = v[0]
 					break
 				case 'rw':
-					data[k] ??= {}
-					data[k].input = v[0]
-					data[k].output = v[1]
+					data[idM] ??= {}
+					data[idM].input = v[0]
+					data[idM].output = v[1]
 					break
 				default:
 					break
@@ -51,7 +56,11 @@ function pause(n) {
 	return new Promise((res) => setTimeout(res, n))
 }
 
-// Нет связи
+/**
+ *
+ * @param {object} o Данные о модуле
+ * @returns {Promise<[][]>} Массив значений [[...input], [...output]] модуля
+ */
 async function make(o) {
 	switch (o.interface) {
 		case 'rtu':

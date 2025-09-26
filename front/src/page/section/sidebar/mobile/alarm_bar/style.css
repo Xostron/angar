@@ -2,14 +2,17 @@
 	position: absolute;
 	display: flex;
 	flex-direction: column;
-	gap: 0.5em;
+	/* gap: 0.5em; */
 	left: 0;
-	pointer-events: visible;
+	width: 40px;
+	/* height:40px; */
+	background-color: var(--primary);
+	overflow: hidden;
 	&.show {
+		overflow: auto;
 		background-color: var(--primary);
 		width: 50%;
 		z-index: 1;
-		/* opacity: .9; */
 		border-radius: 0.5em;
 		pointer-events: all;
 	}
@@ -17,7 +20,7 @@
 
 .page-section-sidebar-alarm-mobile > div {
 	display: flex;
-	gap: 1em;
+	/* gap: 1em; */
 	color: var(--surface);
 	pointer-events: none;
 	&.show {
@@ -27,13 +30,13 @@
 	/* opacity: 0.5; */
 }
 .page-section-sidebar-alarm-mobile > div > span {
-	opacity: 0.2;
-	pointer-events: none;
-	visibility: hidden;
+	/* opacity: 0.2; */
+	/* pointer-events: none; */
+	/* visibility: hidden; */
 	/* background-color: red; */
 	&.show {
-		opacity: 1;
-		pointer-events: all;
+		/* opacity: 1; */
+		/* pointer-events: all; */
 	}
 }
 .page-section-sidebar-alarm-mobile > div > img {
