@@ -12,6 +12,11 @@ export default function Today({ weather, type }) {
 	const dt = new Date(weather.time).toLocaleString('ru', { day: '2-digit', month: '2-digit' })
 	const cls = ['cmp-weather-fore-today'].join(' ')
 	const clsTemp = ['temp'].join(' ')
+	const Img = weather.code ? (
+		<img src={`/img/weather/${weather.code}.svg`} alt={weather.weather} />
+	) : (
+		<span className='cmp-weather-fore-today-img-undefined'></span>
+	)
 	return (
 		<>
 			<article className={cls} onClick={onClick}>
@@ -22,10 +27,7 @@ export default function Today({ weather, type }) {
 					</span>
 					<span>Влажность: {weather.humidity ?? '--'}%</span>
 				</div>
-				<img
-					src={`/img/weather/${weather.code}.svg`}
-					alt={weather.weather}
-				/>
+				{Img}
 			</article>
 		</>
 	)
