@@ -33,14 +33,14 @@
 
 ## 🚀 Запуск
 
-### 2. development
+### 1. development
 
 `bash`
 
 -   npm install
 -   npm run dev
 
-### 1. production
+### 2. production
 
 `bash`
 

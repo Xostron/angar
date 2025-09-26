@@ -14,7 +14,6 @@ function tracking(out, retain) {
 				for (const channel in cmdT[build][mdl]) {
 					const idV = cmdT[build][mdl][channel]._id
 					// Задание на открытие/закрытие, сек = Текущая позиция клапана,сек - Задание, сек
-					console.log(77001, build, idV, retain[build].valvePosition[idV])
 					const sp = Math.abs(
 						retain[build].valvePosition[idV] - +cmdT[build][mdl][channel].time
 					)
