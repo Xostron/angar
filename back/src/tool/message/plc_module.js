@@ -16,8 +16,8 @@ function timeout(idB, idM, ip, opt) {
 	// Модуль исправен - разрешить опрос
 	if (!isErrM(idB, idM)) return true
 
-	// Поставить неисправный модуль в ожидание
-	// Время ожидания опроса
+	// Поставить неисправный модуль в ожидание повторного чтения
+	// Время повторного чтения (1 мин)
 	const _TIME = store.tTCP * 60 * 1000
 	const now = new Date().getTime()
 	if (!store.timeout?.[idM]) store.timeout[idM] = now + _TIME
@@ -37,13 +37,13 @@ function wrDebMdl(idM) {
 	if (!store.debMdl?.[idM]) store.debMdl[idM] = new Date()
 }
 
-// Удалить модуль из антидребезга
+// Удалить модуль из списка антидребезга
 function delDebMdl(idM = '') {
 	if (!idM) store.debMdl = {}
 	delete store.debMdl?.[idM]
 }
 
-// Удалить модуль из списка аварий
+// Удалить модуль из списка неисправных
 function delModule(idB, idM) {
 	if (!idM) {
 		delete store.alarm.module?.[idB]
@@ -57,7 +57,7 @@ function isErrM(idB, idM) {
 	return !!store.alarm.module?.[idB]?.[idM]
 }
 
-// Сохранить неисправный модуль в список аварий
+// Добавить модуль в список неисправных
 function wrModule(idB, idM, o) {
 	store.alarm.module ??= {}
 	store.alarm.module[idB] ??= {}
@@ -67,7 +67,7 @@ function wrModule(idB, idM, o) {
 /**
  * Антидребезг модуля
  * Когда чтение модуля происходит с ошибкой, модуль попадает в
- * промежуточный список "Антидребезга" на время store.tDebPlc, в течении данного времени
+ * промежуточный список "Антидребезга" на время store.tDeb, в течении данного времени
  * система будет пытаться читать данные (при успешном чтении модуль немедленно удаляется из
  * данного списка), если за это время модуль успешно не прочитается, то он попадает в
  * список "Неисправных модулей"
@@ -77,16 +77,17 @@ function wrModule(idB, idM, o) {
  * @returns
  */
 function isDebMdl(idB, idM, opt) {
-	if (!store.debMdl[idM]) return true
-	const time = store.debMdl[idM].getTime() + (store.tDebPlc ?? 20000)
+	// Если модуля нет в списке - выход
+	if (!store.debMdl[idM]) return
+	const time = store.debMdl[idM].getTime() + store.tDeb
 	const cur = new Date().getTime()
-	// Время прошло: авария осталась
+	// Время прошло: авария осталась -> добавляем модуль в список неисправных
 	if (cur >= time) {
 		wrModule(idB, idM, msgM(idB, opt, 110))
-		// delDebMdl(idM)
+		// Запрещаем читать модуль
 		return false
 	}
-	// Опрашиваем модуль
+	// Разрешаем читать модуль
 	return true
 }
 

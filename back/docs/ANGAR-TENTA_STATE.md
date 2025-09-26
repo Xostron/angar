@@ -1,4 +1,4 @@
-# STATE: Данные передаваемы от Angar -> Tenta
+# STATE: Данные передаваемыt от Angar -> Tenta
 
 # Структура:
 
