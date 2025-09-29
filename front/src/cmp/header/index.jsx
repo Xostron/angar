@@ -3,7 +3,6 @@ import Time from './time'
 import useViewStore from '@store/view'
 import Menu from '../menu'
 import Burger from './burger'
-import MainNav from '../main_nav'
 import './style.css'
 
 //Оглавление страницы
@@ -16,7 +15,6 @@ export default function Header({ menu = false }) {
 			<Logo />
 			{bmb && <Burger />}
 			{!bmb && menu && <Menu />}
-			{/* {!bmb && <MainNav/>} */}
 			{!bmb && <Time />}
 		</header>
 	)

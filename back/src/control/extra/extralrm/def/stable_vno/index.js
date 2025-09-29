@@ -88,7 +88,7 @@ function byChangeCount(building, section, acc, soft) {
 
 /**
  * Дребезг ВНО (частое изменение частоты ПЧ)
- * Принцип такоже как и function byChangeCount
+ * Принцип такой же как и function byChangeCount
  * @param {*} building Склад
  * @param {*} section Секция
  * @param {*} acc Аккумулятор

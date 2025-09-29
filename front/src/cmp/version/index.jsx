@@ -5,9 +5,11 @@ import { useShallow } from 'zustand/react/shallow'
 import { get } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import StatusWS from './status_ws'
+import useViewStore from '@src/store/view'
 
 function Version() {
 	const [title, setTitle] = useState('')
+	const mb = useViewStore((s) => s.mb())
 	const list = useEquipStore(useShallow(({ list }) => list))
 	const [info, setInfo] = useState()
 	const { name, code } = list?.[0]?.company ?? {}
@@ -29,14 +31,18 @@ function Version() {
 	}, [])
 	const VERSION = process.env.VERSION
 	const NAME = process.env.NAME
-	console.log('VERSION', VERSION); // --> 1.0.0
-	console.log('NAME', NAME); // --> 1.0.0
+	// Версия front, URL сервера
+	const V = !mb && `V${VERSION}, server: ${process.env.PUBLIC_SOCKET_URI}`
+	// Информация о сети
+	const nn = info?.map((el) => `${el.interface}: ${el.ip || el.mac}`).join('')
+	const N = !mb && nn && ` Сеть: ${nn}`
+
 	return (
 		<div style={stl}>
 			<Helmet title={title} />
-			<StatusWS />
-			server  {VERSION}: {process.env.PUBLIC_SOCKET_URI}{' '}
-			{info && ' Сеть: ' + info.map((el) => `${el.interface}: ${el.ip || el.mac}`).join('')}
+			{!mb && <StatusWS />}
+			{V}
+			{N}
 		</div>
 	)
 }

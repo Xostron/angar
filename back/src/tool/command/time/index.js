@@ -40,7 +40,7 @@ function range(o) {
 
 /**
  * Проверка на пройденное время, true - время прошло
- * @param {String||DateTime} t дата и время (начальная точка)
+ * @param {String | DateTime} t дата и время (начальная точка)
  * @param {Integer} d пройденное время, мс
  * @returns {Boolean} true - время истекло
  */
@@ -98,7 +98,9 @@ function engineHour(el, state, ehour) {
 	}
 	// Выключение
 	if (state !== 'run' && ehour[el._id]?.start) {
-		store.engineHour[el._id] = { value: engineTime(ehour[el._id].start, ehour[el._id]?.value ?? 0) }
+		store.engineHour[el._id] = {
+			value: engineTime(ehour[el._id].start, ehour[el._id]?.value ?? 0),
+		}
 	}
 }
 
@@ -116,14 +118,29 @@ function elapsedTime(date) {
 	// часы
 	const hh = Math.trunc(r / 60) < 10 ? '0' + Math.trunc(r / 60) : Math.trunc(r / 60)
 	// мин
-	const mm = Math.trunc(r % 60) < 10 ? '0' + Math.trunc(r % 60) : Math.trunc(r % 60) >= 60 ? '00' : Math.trunc(r % 60)
+	const mm =
+		Math.trunc(r % 60) < 10
+			? '0' + Math.trunc(r % 60)
+			: Math.trunc(r % 60) >= 60
+			? '00'
+			: Math.trunc(r % 60)
 	return `${hh}ч ${mm}м`
 }
 
 // Вычисляет сколько в минут работает в указанном режиме и выводит в консоль
 function onTime(code, acc) {
-	if (!acc.state[code]) acc.state[code] = new Date();
-	console.log('\t'+code, runTime(acc.state[code]));
+	if (!acc.state[code]) acc.state[code] = new Date()
+	console.log('\t' + code, runTime(acc.state[code]))
 }
 
-module.exports = { ms, delay, range, compareTime, runTime, engineTime, engineHour, elapsedTime, onTime }
+module.exports = {
+	ms,
+	delay,
+	range,
+	compareTime,
+	runTime,
+	engineTime,
+	engineHour,
+	elapsedTime,
+	onTime,
+}
