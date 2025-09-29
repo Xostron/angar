@@ -1,4 +1,6 @@
+const merge = require('./merge')
 const _OBJECT_ID_LENGTH = 24
+
 // PC  =  карточки складов
 function convertPC(obj) {
 	let r = {}
@@ -58,28 +60,6 @@ function convertTenta(value, pcId) {
 	return r
 }
 
-// Расчет delta изменений
-function delta(present, past) {
-	const r = {}
-	for (const key in present) {
-		switch (typeof present[key]) {
-			case 'object':
-				// Нет изменений - пропускаем
-				if (compareArr(present[key], past[key])) break
-				// Элементы массива и другие объекты есть изменения - фиксируем
-				if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) {
-					r[key] = present[key]
-				}
-				break
-			default:
-				// Простые данные: числа, строки, null, undefined
-				if (present[key] !== past[key]) r[key] = present[key]
-				break
-		}
-	}
-	return r
-}
-
 /**
  * Сравнение массивов объектов
  * @param {*} present
@@ -131,7 +111,7 @@ function deltaTol(present, past, sens, tolerance) {
 				const fld = key.split('.')
 				const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
 				if (fldd === 'count') {
-					fnIf(key, fldd, tolerance, present, past, r)
+					merge(key, fldd, tolerance, present, past, r)
 					break
 				}
 				if (present[key] !== past[key]) r[key] = present[key]
@@ -141,21 +121,21 @@ function deltaTol(present, past, sens, tolerance) {
 	return r
 }
 
-module.exports = { convertPC, convertSec, convert, convertTenta, delta, deltaTol }
+module.exports = { convertPC, convertSec, convert, convertTenta, deltaTol }
 
 function checkObj(key, present, past, sens, tolerance, result) {
 	// console.log(5553, key)
 	// Обычный ключ: temp,rh,ah
 	if (key.length < _OBJECT_ID_LENGTH) {
 		// console.log(880021, 'Проверка obj', key, present[key], past[key])
-		fnIf(key, key, tolerance, present, past, result)
+		merge(key, key, tolerance, present, past, result)
 		return
 	}
 	// Составной ключ: id.id
 	if (key.length === _OBJECT_ID_LENGTH * 2 + 1) {
 		const fld = key.split('.')
 		// console.log(880022, 'Проверка obj', key, present[key], past[key])
-		fnIf(key, fld[1], sens, present, past, result)
+		merge(key, fld[1], sens, present, past, result)
 		return
 	}
 	// Составной ключ: id.id+слово
@@ -163,48 +143,30 @@ function checkObj(key, present, past, sens, tolerance, result) {
 		const fld = key.split('.')
 		const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
 		// console.log(880023, 'Проверка obj', key, present[key], past[key])
-		fnIf(key, fldd, tolerance, present, past, result)
+		merge(key, fldd, tolerance, present, past, result)
 		return
 	}
 }
 
-function fnIf(key, fld, tolerance, present, past, result) {
-	// Без допуска
-	if (tolerance[fld] === undefined) {
-		if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) {
-			result[key] = present[key]
-			// console.log(880031, 'без допуска -> НЕидентичен', key, present[key])
-		}
-		return
-	}
-	// С допуском для count (число дней сушки)
-	if (fld === 'count') {
-		if (
-			+present[key] >= +past[key] + tolerance[fld] ||
-			+present[key].value <= +past[key] - tolerance[fld] ||
-			Math.trunc(present[key]) !== Math.trunc(past[key])
-		)
-			result[key] = present[key]
-		return
-	}
-	// С допуском для показаний датчиков: проверяется отсечка по допуску (tolerance) и по отсчечке целого числа
-	if (
-		past[key].state != present[key].state ||
-		+present[key].value >= +past[key].value + tolerance[fld] ||
-		+present[key].value <= +past[key].value - tolerance[fld] ||
-		Math.trunc(present[key].value) !== Math.trunc(past[key].value)
-	) {
-		result[key] = present[key]
-		console.log(
-			880032,
-			'с допуском -> НЕидентичен',
-			key,
-			present[key],
-			past[key],
-			+present[key].value >= +past[key].value + tolerance[fld],
-			+present[key].value <= +past[key].value - tolerance[fld],
-			Math.trunc(present[key].value) !== Math.trunc(past[key].value)
-		)
-	}
-	// console.log(880033, 'Идентичен', key, present[key])
-}
+
+// Расчет delta изменений
+// function delta(present, past) {
+// 	const r = {}
+// 	for (const key in present) {
+// 		switch (typeof present[key]) {
+// 			case 'object':
+// 				// Нет изменений - пропускаем
+// 				if (compareArr(present[key], past[key])) break
+// 				// Элементы массива и другие объекты есть изменения - фиксируем
+// 				if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) {
+// 					r[key] = present[key]
+// 				}
+// 				break
+// 			default:
+// 				// Простые данные: числа, строки, null, undefined
+// 				if (present[key] !== past[key]) r[key] = present[key]
+// 				break
+// 		}
+// 	}
+// 	return r
+// }
