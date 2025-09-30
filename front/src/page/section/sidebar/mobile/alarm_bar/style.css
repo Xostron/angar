@@ -1,51 +1,55 @@
 .page-section-sidebar-alarm-mobile {
-	position: absolute;
+	position: fixed;
 	display: flex;
-	flex-direction: column;
-	/* gap: 0.5em; */
-	left: 0;
-	width: 40px;
-	/* height:40px; */
-	background-color: var(--primary);
+	width: 100%;
+	justify-content: center;
+	gap: 1em;
+	left: 50%;
+	bottom: 5px;
+	transform: translateX(-50%);
 	overflow: hidden;
 	&.show {
-		overflow: auto;
-		background-color: var(--primary);
-		width: 50%;
-		z-index: 1;
+		flex-direction: column;
+		background-color: var(--primary50);
+		width: calc(100% - 2 * 5px);
 		border-radius: 0.5em;
-		pointer-events: all;
+		gap: 0;
+		z-index: 1;
 	}
 }
 
-.page-section-sidebar-alarm-mobile > div {
+.page-section-sidebar-alarm-mobile .item {
 	display: flex;
-	/* gap: 1em; */
+	align-items: center;
+	height: 40px;
+	width: 40px;
+	overflow: hidden;
 	color: var(--surface);
-	pointer-events: none;
 	&.show {
-		opacity: 1;
-		pointer-events: all;
-	}
-	/* opacity: 0.5; */
-}
-.page-section-sidebar-alarm-mobile > div > span {
-	/* opacity: 0.2; */
-	/* pointer-events: none; */
-	/* visibility: hidden; */
-	/* background-color: red; */
-	&.show {
-		/* opacity: 1; */
-		/* pointer-events: all; */
+		height: auto;
+		width: 100%;
+		gap: 1em;
+		padding: 0.5em;
 	}
 }
+
 .page-section-sidebar-alarm-mobile > div > img {
 	background-color: var(--secondary);
 	border-radius: 50%;
 	width: 40px;
 	height: 40px;
-	padding: 0.35em;
+	padding: 0.4em;
+	overflow:visible;
 	&:hover {
 		background-color: var(--primary);
 	}
+}
+.page-section-sidebar-alarm-mobile-close{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	cursor: pointer;
+	width: 50px;
+	height: 50px;
+	padding: .85em;
 }

@@ -1,13 +1,14 @@
 import useInputStore from '@store/input'
 import { useParams } from 'react-router-dom'
-import { useState } from 'react'
-import defImg from '@tool/icon/alarm'
+import { useState, useRef } from 'react'
+import Item from './item'
 import './style.css'
 
 //Панель управления - аварийные индикаторы
 export default function AlarmBar({}) {
 	const { build, sect } = useParams()
 	const [show, setShow] = useState(false)
+	const refClose = useRef()
 	const bar = useInputStore((s) => s.alarm.bar)
 	const barB = useInputStore((s) => s.alarm.barB)
 	const timer = useInputStore((s) => s.alarm.timer)
@@ -17,37 +18,28 @@ export default function AlarmBar({}) {
 	else r = fnAlarmB(build, barB, timer)
 	const { alr, tmr } = r
 	const cls = ['page-section-sidebar-alarm-mobile', show ? 'show' : ''].join(' ')
-	const clsSpan = show ? 'show' : ''
+	const clsItem = ['item', show ? 'show' : ''].join(' ')
 	return (
 		<>
 			<nav className={cls} onClick={onShow}>
-				{!!alr?.length &&
-					alr.map((el, idx) => (
-						<div key={idx}>
-							<img src={defImg[el.type]} />
-							<span className={clsSpan}>{el.msg}</span>
-						</div>
-					))}
-				{!!alr?.length &&
-					alr.map((el, idx) => (
-						<div key={idx}>
-							<img src={defImg[el.type]} />
-							<span className={clsSpan}>{el.msg}</span>
-						</div>
-					))}
-
-				{!!tmr?.length &&
-					tmr.map((el, idx) => (
-						<div key={idx}>
-							<img src={defImg[el.type]} />
-						</div>
-					))}
+				{/* Аварии авторежима, аварийное закрытие клапанов */}
+				{!!alr?.length && alr.map((el, i) => <Item kei={i} el={el} cls={clsItem} />)}
+				{/* Таймер запретов */}
+				{!!tmr?.length && tmr.map((el, i) => <Item kei={i} el={el} cls={clsItem} />)}
+				{show && (
+					<img
+						ref={refClose}
+						className='page-section-sidebar-alarm-mobile-close'
+						src='/img/close.svg'
+					/>
+				)}
 			</nav>
 		</>
 	)
+	// Скрыть/показать
 	function onShow(e) {
-		console.log('e.currentTarget', e.currentTarget, 'e.target', e.target)
-		setShow((s) => !s)
+		if (e.target === refClose.current) return setShow(false)
+		setShow(true)
 	}
 }
 

@@ -31,6 +31,7 @@ body > #root {
 }
 :root {
 	--primary: #192646;
+	--primary50: #192646e1;
 	--secondary: #65a7ee;
 	--background: white;
 	--surface: #ededed;

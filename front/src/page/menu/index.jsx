@@ -8,7 +8,7 @@ export default function Building({}) {
 		<>
 			<Header menu />
 			<Outlet />
-			<Navm />
+			{/* <Navm /> */}
 		</>
 	)
 }

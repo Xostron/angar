@@ -6,7 +6,6 @@ import Btn from '@cmp/fields/btn'
 
 //Элемент меню
 export default function Item({ data }) {
-	const { name } = useAuthStore()
 	const navigate = useNavigate()
 	const href = useHref()
 	const { link, setLink } = useWarn()
