@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useShallow } from 'zustand/react/shallow'
 import useEquipStore from '@store/equipment'
-import AlarmBar from '@cmp/alarm_bar'
+import AlarmBar from '@src/cmp/alarm_bar'
 import Paging from './paging'
 
 // Склад: список секций

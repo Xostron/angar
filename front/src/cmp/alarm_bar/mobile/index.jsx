@@ -1,6 +1,6 @@
-import useInputStore from '@store/input'
 import { useParams } from 'react-router-dom'
 import { useState, useRef } from 'react'
+import useInputStore from '@store/input'
 import Item from './item'
 import './style.css'
 
@@ -23,9 +23,9 @@ export default function AlarmBar({}) {
 		<>
 			<nav className={cls} onClick={onShow}>
 				{/* Аварии авторежима, аварийное закрытие клапанов */}
-				{!!alr?.length && alr.map((el, i) => <Item kei={i} el={el} cls={clsItem} />)}
+				{!!alr?.length && alr.map((el, i) => <Item key={i} el={el} cls={clsItem} />)}
 				{/* Таймер запретов */}
-				{!!tmr?.length && tmr.map((el, i) => <Item kei={i} el={el} cls={clsItem} />)}
+				{!!tmr?.length && tmr.map((el, i) => <Item key={i} el={el} cls={clsItem} />)}
 				{show && (
 					<img
 						ref={refClose}

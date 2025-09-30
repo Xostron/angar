@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import useEquipStore from '@store/equipment'
 import useViewStore from '@src/store/view'
-import AlarmBar from './alarm_bar'
+import AlarmBar from '@cmp/alarm_bar/mobile'
 import Cp from '../cp'
 import './style.css'
 
