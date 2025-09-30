@@ -10,25 +10,26 @@ import './style.css'
 
 export default function Warming({ cls }) {
 	const { sect, build } = useParams()
-	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
-	const [warming, setWarming] = useOutputStore(useShallow(({ warming, setWarming }) => [warming, setWarming]))
-	const [bar, getSignal] = useInputStore(useShallow(({ alarm, getSignal }) => [alarm.bar, getSignal]))
-	const [getSigByType] = useEquipStore(useShallow(({ getSigByType }) => [getSigByType]))
+	const isAuth = useAuthStore((s) => s.isAuth)
+	const warming = useOutputStore(useShallow((s) => s.warming))
+	const setWarming = useOutputStore(useShallow((s) => s.setWarming))
+	const bar = useInputStore(useShallow((s) => s.alarm.bar))
+	const resetId = useEquipStore(useShallow((s) => s.getSigByType(build, sect, 'reset')))
+	const reset = useInputStore(useShallow((s) => s.getSignal(resetId)))
 	const active = warming?.[build]?.[sect]
 	const [cur, setCur] = useState('off')
 	// Выход сброса аварии (реле безопасности)
-	const resetId = getSigByType(build, sect, 'reset')
-	const reset = getSignal(resetId)
+	// const resetId = getSigByType(build, sect, 'reset')
+	// const reset = getSignal(resetId)
 	useEffect(() => {
 		active ? setCur('on') : setCur('off')
 	}, [active])
 	// Авария низкой температуры (реле безопасности)
-	const alrClosed = bar?.[build]?.[sect]?.alrClosed ?? null
+	const alrClosed = bar?.[build]?.[sect]?.alrClosed
 	const obj = {
 		buildingId: build,
 		sectionId: sect,
 	}
-
 	if (!alrClosed && !reset && !warming?.[build]?.[sect]) return null
 
 	let cl = ['warming', cls]

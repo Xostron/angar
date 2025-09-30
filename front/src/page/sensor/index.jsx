@@ -6,28 +6,23 @@ import useWarn from '@store/warn'
 import SubHead from './sub_head'
 import List from './list'
 import Nav from '@cmp/nav'
-import { navList, sensList } from './fn'
+import { sensList } from './fn'
 import './style.css'
 
 //Информация по датчикам склада
 export default function Sensor({}) {
 	const { build: buildId, sect } = useParams()
-	const [section, sections, build, curS, getCurB, setCurB, getCurS, setCurS] = useEquipStore(
-		({ section, sections, build, curS, getCurB, setCurB, getCurS, setCurS }) => [
-			section(),
-			sections(),
-			build(),
-			curS,
-			getCurB,
-			setCurB,
-			getCurS,
-			setCurS,
-		]
-	)
-	const [setSens, sendSens, hasChangedSens] = useOutputStore(
-		({ setSens, sendSens, hasChangedSens }) => [setSens, sendSens, hasChangedSens]
-	)
-
+	const section = useEquipStore((s) => s.section())
+	const sections = useEquipStore((s) => s.sections())
+	const build = useEquipStore((s) => s.build())
+	const curS = useEquipStore((s) => s.build())
+	const getCurB = useEquipStore((s) => s.getCurB)
+	const setCurB = useEquipStore((s) => s.setCurB)
+	const getCurS = useEquipStore((s) => s.getCurS)
+	const setCurS = useEquipStore((s) => s.setCurS)
+	const setSens = useOutputStore((s) => s.setSens)
+	const sendSens = useOutputStore((s) => s.sendSens)
+	const hasChangedSens = useOutputStore((s) => s.hasChangedSens)
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
 	const setLink = useWarn((s) => s.setLink)
@@ -48,7 +43,6 @@ export default function Sensor({}) {
 			this.default()
 		},
 	}
-
 	// Обработчик вызова окна
 	function onDialog(path) {
 		warn({ ...obj, path }, 'warn')
@@ -59,27 +53,17 @@ export default function Sensor({}) {
 		setLink({ action: onDialog, hasChanged: hasChangedSens(buildId) })
 		return () => setLink(null)
 	}, [hasChangedSens(buildId)])
-
 	// обновление страницы
 	useEffect(() => {
 		setCurB(getCurB(buildId))
 		setCurS(getCurS(sect))
 	}, [sect, getCurB(buildId)])
-
-	// Список элементов навигации
-	const sec = navList(sections)
-
 	// Склад без оборудования
 	if (!build) return null
-
 	// Список датчиков из рамы
 	const data = sensList(build, section, sections, sect)
-
 	// Заголовок
 	const title = sect === 'all' ? 'Общие' : sect === 'pui' ? 'Сеть' : `Секция ${curS + 1}`
-	// Боковая панель
-	const nhs = { gridTemplateRows: `repeat(${sec.length}, var(--fsz65))` }
-	// Стили
 
 	return (
 		<main className='sen'>
@@ -88,9 +72,8 @@ export default function Sensor({}) {
 			<Nav
 				cls='nav-h-sen'
 				cur={sect}
-				data={sec}
+				//data={sec}
 				ph='sensor'
-				stl={nhs}
 				dialog={onDialog}
 				hasChanged={hasChangedSens(buildId)}
 			/>

@@ -1,24 +1,9 @@
-import { Link } from 'react-router-dom'
+import useViewStore from '@src/store/view'
+import Web from './web'
+import Mobile from './mobile'
 
 //Элемент навигации по секциям
-export default function Item({ data, cur, ph, dialog, hasChanged }) {
-	const { name, _id } = data
-	const path = cur ? `../${ph}/` + _id : `${ph}/` + _id
-
-	let cls = ['btn nav-item']
-	if (cur == _id) cls.push('active')
-	cls = cls.join(' ')
-
-	return (
-		<Link to={path} onClick={onClick} className={cls}>
-			{name}
-		</Link>
-	)
-	// Вызов окна подтверждения, если функция dialog передана в атрибутах и данные изменены
-	function onClick(e) {
-		if (dialog && hasChanged) {
-			e.preventDefault()
-			dialog(path)
-		}
-	}
+export default function Item(props) {
+	const mb = useViewStore((s) => s.mb())
+	return mb ? <Mobile {...props} /> : <Web {...props} />
 }

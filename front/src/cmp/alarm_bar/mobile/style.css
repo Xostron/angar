@@ -1,17 +1,16 @@
 .page-section-sidebar-alarm-mobile {
 	position: fixed;
 	display: flex;
-	width: 100%;
+	min-width: 330px;
+	width: calc(100% - 2 * 5px);
 	justify-content: center;
 	gap: 1em;
-	left: 50%;
+	left: 5px;
 	bottom: 5px;
-	transform: translateX(-50%);
 	overflow: hidden;
 	&.show {
 		flex-direction: column;
 		background-color: var(--primary50);
-		width: calc(100% - 2 * 5px);
 		border-radius: 0.5em;
 		gap: 0;
 		z-index: 1;
@@ -27,7 +26,7 @@
 	color: var(--surface);
 	&.show {
 		height: auto;
-		width: 100%;
+		width: calc(100% - 40px);
 		gap: 1em;
 		padding: 0.5em;
 	}
@@ -39,17 +38,17 @@
 	width: 40px;
 	height: 40px;
 	padding: 0.4em;
-	overflow:visible;
+	overflow: visible;
 	&:hover {
 		background-color: var(--primary);
 	}
 }
-.page-section-sidebar-alarm-mobile-close{
+.page-section-sidebar-alarm-mobile-close {
 	position: absolute;
 	right: 0px;
 	top: 0px;
 	cursor: pointer;
 	width: 50px;
 	height: 50px;
-	padding: .85em;
+	padding: 0.85em;
 }

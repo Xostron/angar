@@ -9,17 +9,17 @@ import './style.css'
 
 //Панель управления секции: Пуск, Стоп, Выкл
 export default function Cp({ buildId, sect, cls }) {
-	const { input } = useInputStore()
+	const mb = useViewStore((s) => s.mb())
+	const setMode = useOutputStore((s) => s.setMode)
+	const input = useInputStore((s) => s.input)
 	// Режим работы секции (авто - true, ручной - false, выкл - null || undefined)
 	const mode = input.retain?.[buildId]?.mode?.[sect]
 	// Панель неактивна (Связь с модулями потеряна, либо авария в главном цикле)
 	const deactive = Object.keys(input).length ? false : true
 
-	const { setMode } = useOutputStore()
 	const [md, setMd] = useState(mode)
 
 	useEffect(() => setMd(mode), [sect, mode])
-	const mb = useViewStore((s) => s.mb())
 	let cl = ['page-section-sidebar-cp', mb, cls].join(' ')
 
 	return (

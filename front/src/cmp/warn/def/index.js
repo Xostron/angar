@@ -8,6 +8,7 @@ import burger from './burger'
 import ethernet from './ethernet'
 import wifi from './wifi'
 import forecast_analytic from './forecast_analytic'
+import mode_mobile from './mode_mobile'
 
 export default {
 	person,
@@ -20,6 +21,7 @@ export default {
 	ethernet,
 	wifi,
 	forecast_analytic,
+	mode_mobile, 
 	notfound: ({ data, entryCode }) => (
 		<div className='entry'>Модального окна {entryCode} не существует</div>
 	),

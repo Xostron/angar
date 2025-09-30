@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import useEquipStore from '@store/equipment'
 import useViewStore from '@src/store/view'
 import AlarmBar from '@src/cmp/alarm_bar/web'
-import Cp from '../cp'
+import Cp from '@cmp/cp'
 import './style.css'
 
 export default function Web() {

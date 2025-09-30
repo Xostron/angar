@@ -3,19 +3,6 @@ const sectSens = ['tcnl', 'tprd', 'p', 'co2']
 const puiSens = ['Ua', 'Ub', 'Uc', 'Ia', 'Ib', 'Ic', 'Pa', 'Pb', 'Pc']
 
 /**
- * Сформировать список навигации
- * @param {object[]} sections рама секции
- * @returns {object[]}
- */
-export function navList(sections = []) {
-	const r = [{ _id: 'all', name: 'Общие' }, ...sections]
-	// Список устройств pui со всех секций
-	const pui = sections.flatMap((el) => el.device?.filter((d) => d?.device?.code === 'pui'))
-	if (pui.length) r.splice(1, 0, { _id: 'pui', name: 'Сеть' })
-	return r
-}
-
-/**
  * Список рамы датчиков
  * @param {object} build рама склада
  * @param {object} section рама секции

@@ -8,8 +8,8 @@ import '../style.css'
 // Кнопки панели управления режимами секции
 export default function Item({ data, cur, set, deactive }) {
 	const { title, value } = data
-	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
-	const section = useEquipStore(({ section }) => section())
+	const isAuth = useAuthStore((s) => s.isAuth)
+	const section = useEquipStore((s) => s.section())
 	const mb = useViewStore((s) => s.mb())
 	// Имя секции
 	const name = section.name

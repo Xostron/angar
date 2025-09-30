@@ -1,0 +1,22 @@
+.cmp-warn-mode-mobile {
+	display: flex;
+	width: calc(100vw - 60px);
+	height: 200px;
+	list-style: none;
+	flex-direction: row;
+	justify-content: space-between;
+	
+}
+
+.cmp-warn-mode-mobile > li {
+	border: 1px solid var(--secondary);
+	border-radius: .5em;
+	width: calc(100% / 3.5);
+	height:80px;
+	padding: 1em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+}
