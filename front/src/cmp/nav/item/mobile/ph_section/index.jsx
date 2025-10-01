@@ -6,6 +6,7 @@ import useInputStore from '@store/input'
 import useAuthStore from '@store/auth'
 import useWarn from '@store/warn'
 import def from '@tool/status/section'
+import './style.css'
 
 //Элемент навигации по секциям
 export default function Item({ data, cur, ph }) {
@@ -30,21 +31,21 @@ export default function Item({ data, cur, ph }) {
 	// Окно подтверждения
 	const warn = useWarn((s) => s.warn)
 	const obj = {
-		title: `Режим работы. ${name}`,
-		text: `Вы действительно хотите переключить секцию в ${txtMode.toUpperCase()} РЕЖИМ?`,
+		title: `Режим работы: ${name}`,
 		titleM: txtMode,
-		fnYes: () => set(value),
+		clsEntry: 'cmp-warn-mode-mobile-entry',
+		fnYes: (value) => set(value),
 	}
 
 	const path = cur ? `../${ph}/` + _id : `${ph}/` + _id
-	let cls = ['btn nav-item']
+	let cls = ['cmp-nav-item-mobile']
 	if (cur == _id) cls.push('active')
 	cls = cls.join(' ')
 
 	return (
 		<Link onClick={onClick} to={path} className={cls}>
-			<span>{name}</span>
 			<span ref={refMode}>{txtMode}</span>
+			<span>{name}</span>
 		</Link>
 	)
 	// Вызов окна подтверждения с выбором режимов
@@ -57,6 +58,6 @@ export default function Item({ data, cur, ph }) {
 	// Установить режим и передать на сервер по websocket
 	function set(value) {
 		setMd(value)
-		setMode({ buildId, _id: sect, val: value })
+		setMode({ buildId, _id, val: value })
 	}
 }

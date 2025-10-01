@@ -17,7 +17,7 @@ export default function Nav({ cur, ph, dialog, hasChanged }) {
 	// Для страницы "Склад"
 	if (ph === 'section') cl.push(...['page-section-nav', mb])
 	cl = cl.join(' ')
-	const stl = { gridTemplateRows: `repeat(${list.length}, var(--fsz65))` }
+	const stl = !mb ? { gridTemplateRows: `repeat(${list.length}, var(--fsz65))` } : {}
 
 	return (
 		<nav style={stl} className={cl}>

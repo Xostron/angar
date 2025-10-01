@@ -1,22 +1,26 @@
+.cmp-warn-mode-mobile-entry > h4 {
+	text-align: center;
+	font-family: Q-Medium;
+	color: var(--primary);
+}
 .cmp-warn-mode-mobile {
 	display: flex;
-	width: calc(100vw - 60px);
-	height: 200px;
 	list-style: none;
 	flex-direction: row;
-	justify-content: space-between;
-	
+	gap: 1em;
 }
 
 .cmp-warn-mode-mobile > li {
-	border: 1px solid var(--secondary);
-	border-radius: .5em;
-	width: calc(100% / 3.5);
-	height:80px;
-	padding: 1em;
+	border: 1px solid rgba(128, 128, 128, 0.268);
+	border-radius: 0.5em;
+	width: 100px;
+	height: 100px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-
+	color: var(--secondary);
+	/* background-color: #f0f0f3; */
+	box-shadow: 2px 2px 4px #65a7ee67, 2px -2px 4px #e6e6e6a2;
+	/* box-shadow: inset 2px 2px 4px #65a7ee67, inset 2px -2px 4px #e6e6e6a2; */
 }

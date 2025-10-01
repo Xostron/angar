@@ -26,7 +26,7 @@ body > #root {
 	flex-direction: column;
 	gap: 25px;
 	&.mb {
-		grid-area: 5 / 1 / 5 / 4;
+		grid-area: 4 / 1 / 4 / 4;
 		padding: 0;
 	}
 }
@@ -34,6 +34,8 @@ body > #root {
 	--primary: #192646;
 	--primary50: #192646e1;
 	--secondary: #65a7ee;
+	--secondary50: #65a7ee8c;
+	--secondary80: #65a7ee25;
 	--background: white;
 	--surface: #ededed;
 	--onSurface: #1926469a;
@@ -99,14 +101,7 @@ img {
 /* Склад */
 
 /* Секция */
-.nav::-webkit-scrollbar {
-	display: none;
-}
 
-.nav {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-}
 
 /*  */
 

@@ -1,0 +1,32 @@
+.cmp-nav-item-mobile {
+	display: flex;
+	color: var(--background);
+	background-color: transparent;
+	font-family: Q-Medium;
+	font-size: var(--fsz24);
+	border-radius: 8px;
+	border: 1px solid var(--secondary);
+	&.active > span:last-child {
+		background-color: var(--primary);
+		color: var(--background);
+	}
+}
+
+.cmp-nav-item-mobile > span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cmp-nav-item-mobile > span:first-child {
+	width: 50px;
+	border-radius: 8px 0 0 8px;
+	color: var(--primary);
+}
+
+.cmp-nav-item-mobile > span:last-child {
+	width: 80px;
+	border-radius: 0px 8px 8px 0px;
+	background-color: var(--secondary80);
+	color: var(--secondary);
+}

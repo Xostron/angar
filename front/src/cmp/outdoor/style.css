@@ -4,7 +4,7 @@
 	gap: var(--fsz30);
 	&.mb {
 		grid-area: 2 / 1 / 3 / 4;
-		gap: 0.5em;
+		gap: 0em;
 		flex-direction: column;
 	}
 }
@@ -17,6 +17,8 @@
 	box-sizing: border-box;
 	padding: 1%;
 	&.mb {
+		border-radius: 0 0 8px 8px;
 		aspect-ratio:initial;
+		border: 1px solid var(--onSurface);
 	}
 }

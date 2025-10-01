@@ -12,14 +12,11 @@
 	&.mb{
 		width: 100%;
 		flex-direction: column;
+		border-radius: 8px 8px 0 0;
 	}
 }
 
-/* .cmp-weather-owner {
-	background-color: rgba(25, 38, 70, 0.5);
-	width: 100%;
 
-} */
 
 .cmp-weather-sens {
 	width: 26%;

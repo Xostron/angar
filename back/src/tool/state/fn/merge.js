@@ -27,7 +27,7 @@ function merge(key, fld, tolerance, present, past, result) {
 		// Состояние
 		const isState = past[key]?.state != present[key].state
 		// Целая часть - антье (от франц.)
-		const isEntier = Math.trunc(present[key].value) !== Math.trunc(past[key].value)
+		const isEntier = Math.trunc(present[key]?.value) !== Math.trunc(past[key]?.value)
 		// Больше допуска
 		const isMore = +present[key].value >= +past[key].value + tolerance[fld]
 		// Меньше допуска
