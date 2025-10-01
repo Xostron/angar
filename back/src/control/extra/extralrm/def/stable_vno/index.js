@@ -30,6 +30,7 @@ function stableVno(building, section, obj, s, se, m, automode, acc, data) {
 		wrExtralrm(building._id, section._id, 'stableVno', msg(building, section, 40))
 		// Антидребезг: вкл ВНО и флаг дребезга (soft.stable)
 		soft.count = acc?.count
+		soft.fc ??= {}
 		soft.fc.value = 100
 		soft.stable = true
 	}
@@ -42,7 +43,8 @@ function stableVno(building, section, obj, s, se, m, automode, acc, data) {
 		acc.fcQueue = []
 	}
 	// console.log(555, 'Задание', soft)
-	// console.log(555, 'Антидребезг', acc, alrCount, alrFC)
+	console.log(555, 'Антидребезг', acc.queueFC, alrFC)
+	console.log(5551, 'Антидребезг', acc.queue, alrCount)
 }
 
 module.exports = stableVno
@@ -76,13 +78,52 @@ module.exports = stableVno
 function byChangeCount(building, section, acc, soft) {
 	// Формируем и контролируем очередь (сохранение последних 4 изменений кол-ва включенных ВНО)
 	acc.queue ??= []
-	if (acc.queue[0]?.count !== soft?.count) acc.queue.push({ count: soft?.count, date: new Date() })
+
+	if (acc.queue.at(-1)?.count !== soft?.count) {
+		console.log(
+			'++++++++++++++',
+			acc.queue.at(-1)?.count !== soft?.count,
+			acc.queue.at(-1)?.count,
+			soft?.count
+		)
+		acc.queue.push({ count: soft?.count, date: new Date() })
+		console.log(1, '++++++++++', acc.queue)
+	}
 	// Размер очереди превышен удаляем первого из очереди
 	if (acc.queue.length > _LIMIT) acc.queue.shift()
 	acc.count = Math.max(...acc.queue.map((el) => el.count))
 	// Первое и последнее изменение находится в диапазоне 2 мин? false - все ОК, true - подозрение на дребезг
-	const isTime = acc[0]?.date - acc?.[2]?.date < _LIMIT_TIME
-	if (acc.queue[0] === acc.queue[2] && acc.queue[0] !== acc.queue[1] && isTime) return true
+	const isTime = acc?.queue?.[0]?.date - acc?.queue?.[2]?.date < _LIMIT_TIME
+	console.log(
+		3,
+		'+++++++++++',
+		acc.queue[0]?.count,
+		'===',
+		acc.queue[2]?.count,
+		'=',
+		acc.queue[0]?.count === acc.queue[2]?.count,
+		'\n',
+		acc.queue[0]?.count,
+		'!==',
+		acc.queue[1]?.count,
+		'=',
+		acc.queue[0]?.count !== acc.queue[1]?.count,
+		'\n',
+		'isTime=',
+		acc.queue?.[0]?.date,
+		'-',
+		acc?.queue?.[2]?.date,
+		'<',
+		_LIMIT_TIME,
+		'=',
+		isTime
+	)
+	if (
+		acc.queue[0]?.count === acc.queue[2]?.count &&
+		acc.queue[0]?.count !== acc.queue[1]?.count &&
+		isTime
+	)
+		return true
 	return false
 }
 
@@ -98,11 +139,13 @@ function byChangeCount(building, section, acc, soft) {
 function byChangeFC(building, section, acc, soft) {
 	// Формируем и контролируем очередь (сохранение последних 4 изменений кол-ва включенных ВНО)
 	acc.fcQueue ??= []
-	if (acc.fcQueue[0]?.value !== soft?.fc?.value) acc.fcQueue.push({ value: soft?.fc?.value, date: new Date() })
+	if (acc.fcQueue.at(-1)?.value !== soft?.fc?.value)
+		acc.fcQueue.push({ value: soft?.fc?.value, date: new Date() })
 	// Размер очереди превышен удаляем первого из очереди
 	if (acc.fcQueue.length > _LIMIT) acc.fcQueue.shift()
 	// Первое и последнее изменение находится в диапазоне 2 мин? false - все ОК, true - подозрение на дребезг
-	const isTime = acc[0]?.date - acc?.[2]?.date < _LIMIT_TIME
-	if (acc.fcQueue[0] === acc.fcQueue[2] && acc.fcQueue[0] !== acc.fcQueue[1] && isTime) return true
+	const isTime = acc.fcQueue?.[0]?.date - acc.fcQueue?.[2]?.date < _LIMIT_TIME
+	if (acc.fcQueue[0]?.value === acc.fcQueue[2]?.value && acc.fcQueue[0]?.value !== acc.fcQueue[1]?.value && isTime)
+		return true
 	return false
 }
