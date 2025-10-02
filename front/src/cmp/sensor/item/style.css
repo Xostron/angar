@@ -13,7 +13,7 @@
 		justify-content: center;
 	}
 	&.mb {
-		padding: 0.25em;
+		padding: 8px 8px;
 		line-height: 0;
 		font-size: 1em;
 		&>img{

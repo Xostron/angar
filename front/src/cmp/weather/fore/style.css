@@ -16,8 +16,8 @@
 .cmp-weather-fore-adr {
 	display: flex;
 	align-items: center;
-	gap: 1em;
-	font-size: var(--fsz20);
+	gap: 8px;
+	font-size: clamp(0.75rem, 0.6rem + 0.53vw, 1rem);
 	color: var(--background);
 }
 .cmp-weather-fore-div {
