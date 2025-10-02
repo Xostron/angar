@@ -1,4 +1,4 @@
-const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 const { isReset } = require('@tool/reset')
 const { data: store } = require('@store')
 const { msg } = require('@tool/message')
@@ -7,8 +7,8 @@ const _LIMIT_TIME = 2 * 60 * 1000 //Если в течении 2 мин, кол-
 /**
  * По секциям
  * Дребезг вентиляторов ВНО
- * @param {*} building Рама склада
- * @param {*} section Рама секции
+ * @param {*} bld Рама склада
+ * @param {*} sect Рама секции
  * @param {*} obj Глобальный объект цикла
  * @param {*} s Настройки склада
  * @param {*} se Показания датчиков секции
@@ -17,34 +17,38 @@ const _LIMIT_TIME = 2 * 60 * 1000 //Если в течении 2 мин, кол-
  * @param {*} data Данные от авторежима
  * @returns
  */
-function stableVno(building, section, obj, s, se, m, automode, acc, data) {
+function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Данные о ходе плавного пуска ВНО
-	const soft = store.watchdog.softFan[section._id]
+	const soft = store.watchdog.softFan[sect._id]
 	if (!soft) return
-
-	const alrCount = byChangeCount(building, section, acc, soft)
-	const alrFC = byChangeFC(building, section, acc, soft, s)
+	// Проверка на дребезг: аварии нет -> проверяем
+	const isAlr = isExtralrm(bld._id, sect._id, 'stableVno')
+	const alrCount = !isAlr ? byChangeCount(bld, sect, acc, soft) : true
+	const alrFC = !isAlr ? byChangeFC(bld, sect, acc, soft, s) : true
 
 	// Авария
+	console.log(4, '=============', isAlr)
 	if (alrCount || alrFC) {
-		wrExtralrm(building._id, section._id, 'stableVno', msg(building, section, 40))
+		wrExtralrm(bld._id, sect._id, 'stableVno', msg(bld, sect, 40))
 		// Антидребезг: вкл ВНО и флаг дребезга (soft.stable)
-		soft.count = acc?.count
+		soft.order = acc?.count ?? 0
 		soft.fc ??= {}
-		soft.fc.value = 100
+		soft.fc.sp = 100
+		soft.fc.value = true
 		soft.stable = true
 	}
 
 	// Сброс аварии
-	if (isReset(building._id)) {
-		delExtralrm(building._id, section._id, 'stableVno')
+	if (isReset(bld._id)) {
+		delExtralrm(bld._id, sect._id, 'stableVno')
 		soft.stable = null
 		acc.queue = []
 		acc.fcQueue = []
 	}
 	// console.log(555, 'Задание', soft)
-	console.log(555, 'Антидребезг', acc.queueFC, alrFC)
-	console.log(5551, 'Антидребезг', acc.queue, alrCount)
+	console.log(555, 'Антидребезг', acc)
+	console.log(5551, 'Плавный пуск', soft)
+	// console.log(5551, 'Антидребезг', acc)
 }
 
 module.exports = stableVno
@@ -69,24 +73,24 @@ module.exports = stableVno
  *
  * Пример2: [1,2,3]: 1такт ВНО1, 2такт ВНО1+ВНО2, 3такт ВНО1+2+3 - дребезга нет
  * Сравниваем пары из массива друг с другом (queue[0]=1 != queue[2]=3 ), пары не равны - Все Ок
- * @param {*} building Склад
- * @param {*} section Секция
+ * @param {*} bld Склад
+ * @param {*} sect Секция
  * @param {*} acc Аккумулятор
  * @param {*} soft Данные о ходе плавного пуска ВНО
  * @return {boolean} true - дребезг!, false - все ОК
  */
-function byChangeCount(building, section, acc, soft) {
+function byChangeCount(bld, sect, acc, soft) {
 	// Формируем и контролируем очередь (сохранение последних 4 изменений кол-ва включенных ВНО)
 	acc.queue ??= []
 
-	if (acc.queue.at(-1)?.count !== soft?.count) {
+	if (acc.queue.at(-1)?.count !== soft?.order && soft?.order>=0) {
 		console.log(
 			'++++++++++++++',
-			acc.queue.at(-1)?.count !== soft?.count,
+			acc.queue.at(-1)?.count !== soft?.order,
 			acc.queue.at(-1)?.count,
-			soft?.count
+			soft?.order
 		)
-		acc.queue.push({ count: soft?.count, date: new Date() })
+		acc.queue.push({ count: soft?.order, date: new Date() })
 		console.log(1, '++++++++++', acc.queue)
 	}
 	// Размер очереди превышен удаляем первого из очереди
@@ -130,22 +134,28 @@ function byChangeCount(building, section, acc, soft) {
 /**
  * Дребезг ВНО (частое изменение частоты ПЧ)
  * Принцип такой же как и function byChangeCount
- * @param {*} building Склад
- * @param {*} section Секция
+ * @param {*} bld Склад
+ * @param {*} sect Секция
  * @param {*} acc Аккумулятор
  * @param {*} soft Данные о ходе плавного пуска ВНО
  * @return {boolean} true - дребезг!, false - все ОК
  */
-function byChangeFC(building, section, acc, soft) {
+function byChangeFC(bld, sect, acc, soft) {
 	// Формируем и контролируем очередь (сохранение последних 4 изменений кол-ва включенных ВНО)
 	acc.fcQueue ??= []
-	if (acc.fcQueue.at(-1)?.value !== soft?.fc?.value)
-		acc.fcQueue.push({ value: soft?.fc?.value, date: new Date() })
+	if (acc.fcQueue.at(-1)?.sp !== soft?.fc?.sp)
+		acc.fcQueue.push({ sp: soft?.fc?.sp, date: new Date() })
 	// Размер очереди превышен удаляем первого из очереди
 	if (acc.fcQueue.length > _LIMIT) acc.fcQueue.shift()
 	// Первое и последнее изменение находится в диапазоне 2 мин? false - все ОК, true - подозрение на дребезг
 	const isTime = acc.fcQueue?.[0]?.date - acc.fcQueue?.[2]?.date < _LIMIT_TIME
-	if (acc.fcQueue[0]?.value === acc.fcQueue[2]?.value && acc.fcQueue[0]?.value !== acc.fcQueue[1]?.value && isTime)
+	if (
+		acc.fcQueue[0]?.sp === acc.fcQueue[2]?.sp &&
+		acc.fcQueue[0]?.sp !== acc.fcQueue[1]?.sp &&
+		isTime
+	) {
+		acc.count = soft?.order
 		return true
+	}
 	return false
 }

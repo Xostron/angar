@@ -11,11 +11,12 @@ import './style.css'
 
 //Информация по датчикам склада
 export default function Sensor({}) {
-	const { build: buildId, sect } = useParams()
+	const { build: idB, sect } = useParams()
+	const isList = useEquipStore((s) => !!s.list.length)
 	const section = useEquipStore((s) => s.section())
 	const sections = useEquipStore((s) => s.sections())
 	const build = useEquipStore((s) => s.build())
-	const curS = useEquipStore((s) => s.build())
+	const curS = useEquipStore((s) => s.curS)
 	const getCurB = useEquipStore((s) => s.getCurB)
 	const setCurB = useEquipStore((s) => s.setCurB)
 	const getCurS = useEquipStore((s) => s.getCurS)
@@ -47,17 +48,18 @@ export default function Sensor({}) {
 	function onDialog(path) {
 		warn({ ...obj, path }, 'warn')
 	}
-
 	// Окно подтверждения
 	useEffect(() => {
-		setLink({ action: onDialog, hasChanged: hasChangedSens(buildId) })
+		setLink({ action: onDialog, hasChanged: hasChangedSens(idB) })
 		return () => setLink(null)
-	}, [hasChangedSens(buildId)])
+	}, [hasChangedSens(idB)])
+
 	// обновление страницы
 	useEffect(() => {
-		setCurB(getCurB(buildId))
+		setCurB(getCurB(idB))
 		setCurS(getCurS(sect))
-	}, [sect, getCurB(buildId)])
+	}, [sect, isList])
+
 	// Склад без оборудования
 	if (!build) return null
 	// Список датчиков из рамы
@@ -72,10 +74,9 @@ export default function Sensor({}) {
 			<Nav
 				cls='nav-h-sen'
 				cur={sect}
-				//data={sec}
 				ph='sensor'
 				dialog={onDialog}
-				hasChanged={hasChangedSens(buildId)}
+				hasChanged={hasChangedSens(idB)}
 			/>
 		</main>
 	)

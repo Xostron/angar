@@ -22,7 +22,6 @@ function turnOn(fanFC, fans, solHeat, idB, acc) {
 		// Включить ВНО
 		ctrlDO(f, idB, 'on')
 		f?.ao?.id ? ctrlAO(f, idB, 100) : null
-		acc.count = acc.order
 	})
 	solHeat.forEach((el) => {
 		ctrlDO(el, idB, acc.sol.value ? 'on' : 'off')
