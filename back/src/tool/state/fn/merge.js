@@ -29,9 +29,9 @@ function merge(key, fld, tolerance, present, past, result) {
 		// Целая часть - антье (от франц.)
 		const isEntier = Math.trunc(present[key]?.value) !== Math.trunc(past[key]?.value)
 		// Больше допуска
-		const isMore = +present[key].value >= +past[key].value + tolerance[fld]
+		const isMore = +present[key]?.value >= +past[key]?.value + tolerance[fld]
 		// Меньше допуска
-		const isLess = +present[key].value <= +past[key].value - tolerance[fld]
+		const isLess = +present[key]?.value <= +past[key]?.value - tolerance[fld]
 		if (tolerance[fld] >= 1) {
 			check(key, result, present, isState, isMore, isLess)
 		} else {
