@@ -85,6 +85,10 @@ function checkOff_FC(off, acc) {
 	if (!off) return
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	if (!compareTime(acc.date, acc.delayRelay)) return
+	// Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
+	if (acc.order >= 0) {
+		acc.fc.sp = 100
+	}
 	// Выкл следующего ВНО
 	if (--acc.order <= -1) {
 		acc.order = -1

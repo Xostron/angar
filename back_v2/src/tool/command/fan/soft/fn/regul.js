@@ -33,6 +33,7 @@ function regul(acc, fanFC, on, off, s, where) {
 		// Ограничение min задания ПЧ
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
+		console.log(5558, acc)
 	}
 
 	// Пошагово уменьшаем задание ПЧ
@@ -42,6 +43,8 @@ function regul(acc, fanFC, on, off, s, where) {
 		// Задание ПЧ дошло до min% && не все ВНО выкл  => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc.sp <= s.fan.min && acc.order >= 0) {
 			acc.fc.sp = s.fan.min
+			// // Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
+			// acc.fc.sp = 100
 			return false
 		}
 		// Ждем

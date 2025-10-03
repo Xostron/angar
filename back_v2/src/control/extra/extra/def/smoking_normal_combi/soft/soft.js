@@ -35,7 +35,7 @@ function relay(idB, idS, fan, obj, s, se, start) {
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	const { p } = se
-	let on = p < s.fan.pressure.p - s.fan.hysteresisP
+	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
 	console.log(2, idS, 'ПП: давление', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
@@ -79,7 +79,7 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	const { p } = se
-	let on = p < s.fan.pressure.p - s.fan.hysteresisP
+	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
 	console.log(2, idS, 'ПП: давление', 'on=', on, 'off=', off)
 
