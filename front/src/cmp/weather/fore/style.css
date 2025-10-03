@@ -34,7 +34,6 @@
 	color: var(--background);
 	font-size: var(--fsz20);
 	&.cold{
-		/* background-color: aqua; */
 		width: calc(100%);
 	}
 	&.mb {
