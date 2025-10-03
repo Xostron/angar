@@ -33,7 +33,7 @@ function regul(acc, fanFC, on, off, s, where) {
 		// Ограничение min задания ПЧ
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
-		console.log(5558, acc)
+		
 	}
 
 	// Пошагово уменьшаем задание ПЧ
