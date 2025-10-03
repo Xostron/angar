@@ -61,10 +61,12 @@ function regul(acc, fanFC, on, off, s) {
  * @param {number} length Кол-во вентиляторов в секции
  * @returns
  */
-function checkOn(on, acc, length) {
+function checkOn(on, acc, s, length) {
 	if (!on) return
 	// Проверка времени (время на стабилизацию давления в канале, после drk DYJ)
 	if (!compareTime(acc.date, acc.delayRelay)) return
+	// Частоту ПЧ уменьшаем до мин частоты s.fan., а ВНО релейное - отключаем
+	if (acc.order < length - 1) acc.fc.sp = s.fan.min
 	// Включаем следующий ВНО
 	if (++acc.order >= length - 1) {
 		acc.order = length - 1

@@ -25,6 +25,7 @@ function time(building, co2, value, acc, se, s) {
 		off(building._id, co2)
 		acc.wait = new Date()
 	}
+	console.log('Удаление СO2 холодильник', acc)
 }
 
 // СО2: По датчику

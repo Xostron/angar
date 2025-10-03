@@ -5,8 +5,10 @@ import useViewStore from '@store/view'
 import Today from './today'
 import './style.css'
 
-export default function Forecast({ address, type = 'normal' }) {
+export default function Forecast({ address }) {
 	const { build } = useParams()
+	// Тип склада
+	const type = useEquipStore((s) => s.getType(build))
 	const mb = useViewStore((s) => s.mb())
 	const point = useInputStore((s) => s.input?.total?.[build]?.point)
 	const weather = useEquipStore((s) => s.weather)
@@ -18,7 +20,7 @@ export default function Forecast({ address, type = 'normal' }) {
 		: '--'
 	const cold = type === 'cold' ? 'cold' : ''
 	const cls = ['cmp-weather-fore', mb, cold].join(' ')
-	const clsPoint = ['cmp-weather-fore-point', mb].join(' ')
+	const clsPoint = ['cmp-weather-fore-point', mb, cold].join(' ')
 	const clsDiv = ['cmp-weather-fore-div', mb].join(' ')
 	return (
 		<section className={cls}>

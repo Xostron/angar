@@ -1,6 +1,6 @@
 .cmp-weather-fore-today {
 	display: flex;
-	justify-content: center;
+	/* justify-content: center; */
 	align-items: center;
 	font-size: var(--fsz28);
 	color: var(--background);

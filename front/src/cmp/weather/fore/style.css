@@ -5,7 +5,7 @@
 	padding: 0.5em;
 	justify-content: space-between;
 	&.cold {
-		width: 10%;
+		width: 100%;
 	}
 	&.mb {
 		padding: 0.25em 1em;
@@ -33,6 +33,10 @@
 	width: calc(100% - 16px);
 	color: var(--background);
 	font-size: var(--fsz20);
+	&.cold{
+		/* background-color: aqua; */
+		width: calc(100%);
+	}
 	&.mb {
 		flex-direction: column;
 		width: 50%;

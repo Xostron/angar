@@ -45,7 +45,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, fans.length)
+	checkOn(on, acc, s, fans.length)
 	checkOff.fc(off, acc)
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)

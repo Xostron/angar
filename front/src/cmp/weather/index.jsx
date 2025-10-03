@@ -9,14 +9,6 @@ import { useShallow } from 'zustand/react/shallow'
 import { checkS } from '@tool/sensor'
 
 export default function Weather({}) {
-	// const [build, getType, weather] = useEquipStore(
-	// 	useShallow(({ build, getType, weather }) => [build(), getType, weather])
-	// )
-	// const [humAbs, getTotal, getTotalBy] = useInputStore(({ input, getTotal, getTotalBy }) => [
-	// 	input?.humAbs,
-	// 	getTotal,
-	// 	getTotalBy,
-	// ])
 	const build = useEquipStore((s) => s.build())
 	const getType = useEquipStore((s) => s.getType)
 	const humAbs = useInputStore((s) => s.input?.humAbs)
@@ -46,7 +38,7 @@ export default function Weather({}) {
 		<section className={cls}>
 			<Owner data={build} cls={clsOwner} />
 			<Sensor data={sens} cls={clsSens} type={type} />
-			<Forecast address={build?.pc?.address?.value ?? ''} type={type} />
+			<Forecast address={build?.pc?.address?.value ?? ''} />
 		</section>
 	)
 }
