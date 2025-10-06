@@ -21,6 +21,8 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	const { retain, factory, value } = obj
 	const { vlvS } = m
 	const extraCO2 = readAcc(building._id, 'building', 'co2')
+	// Сбрасываем подсчет при работе удаления СО2
+	if (extraCO2.start) acc.cnt = 0
 	// Настроек нет - функцию не выполняем
 	if (
 		!s.antibliz.count ||
@@ -54,7 +56,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	}
 
 	// Ловим хлопки закрытого концевика клапана
-	if (acc.lastSt !== 'cls' && state === 'cls' && !acc.alarm && validTime && !extraCO2.start) {
+	if (acc.lastSt !== 'cls' && state === 'cls' && !acc.alarm && validTime) {
 		if (++acc.cnt >= s.antibliz.count) {
 			// Авария: Сработал режим антивьюги
 			acc.alarm = true
