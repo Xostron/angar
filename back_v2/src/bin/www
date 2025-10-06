@@ -1,146 +1,171 @@
 #!/usr/bin/env node
-require('module-alias/register')
-const fs = require('fs')
-var debug = require('debug')('angar:server')
-const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-const { data: store, retainDir, accDir, dataDir } = require('@store')
-const { server, io } = require('@tool/server')
-const onConnection = require('../socket/on/def')
-const app = require('@root/app')
-const apiRouter = require('@routes/api')
+require('module-alias/register');
+const fs = require('fs');
+var debug = require('debug')('angar:server');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+const { data: store, retainDir, accDir, dataDir } = require('@store');
+const { server, io } = require('@tool/server');
+const onConnection = require('../socket/on/def');
+const app = require('@root/app');
+const apiRouter = require('@routes/api');
 const indexRouter = require('@routes/index');
-const activityMiddlew = require('@root/middleware/activity')
-const createError = require('http-errors')
-const loopInit = require('@root/client/init')
-const loopState = require('@root/client/state')
-const loop = require('@root/control')
-const { statOnTime } = require('@root/stat')
-const { delay } = require('@tool/command/time')
+const activityMiddlew = require('@root/middleware/activity');
+const createError = require('http-errors');
+const loopInit = require('@root/client/init');
+const loopState = require('@root/client/state');
+const loop = require('@root/control');
+const { statOnTime } = require('@root/stat');
+const { delay } = require('@tool/command/time');
 // const passport = require('passport');
 
 
 if (process.env.NODE_ENV === 'development') {
-	console.log('Подключение .env ', path.join(__dirname, '../../.env'))
-	require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-	console.log('NODE_ENV ', process.env?.NODE_ENV)
+	console.log('Подключение .env ', path.join(__dirname, '../../.env'));
+	require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+	console.log('NODE_ENV ', process.env?.NODE_ENV);
 }
 
 // Listen on provided port, on all network interfaces.
-var port = normalizePort(process.env.PORT || '4000')
-app.set('port', port)
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
+var port = normalizePort(process.env.PORT || '4000');
+app.set('port', port);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 // Инициализация socket
 io.on('connection', (socket) => {
-	onConnection(io, socket)
-})
+	onConnection(io, socket);
+});
 
 // Подключам api после инициализации socket.io, чтобы можно было в api вызывать emit socket.io, иначе ошибка circular dependency
 app.use('/', indexRouter);
-app.use(activityMiddlew)
-app.use('/api', apiRouter())
+app.use(activityMiddlew);
+app.use('/api', apiRouter());
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-	next(createError(404))
-})
+	next(createError(404));
+});
 // error handler
 app.use(function (err, req, res, next) {
 	// set locals, only providing error in development
-	res.locals.message = err.message
-	res.locals.error = req.app.get('env') === 'development' ? err : {}
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
 	// render the error page
-	res.status(err.status || 500)
-	res.render('error')
-})
+	res.status(err.status || 500);
+	res.render('error');
+});
 
 // Инициализация папок: data, data/retain, retain/data.json, data/acc, data/acc/acc.json
 // data/state, data/state/state.json
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir)
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 if (!fs.existsSync(retainDir)) {
-	fs.mkdirSync(retainDir)
-	fs.writeFileSync(path.join(retainDir, 'data.json'), '{}')
+	fs.mkdirSync(retainDir);
+	fs.writeFileSync(path.join(retainDir, 'data.json'), '{}');
 }
 if (!fs.existsSync(accDir)) {
-	fs.mkdirSync(accDir)
-	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}')
+	fs.mkdirSync(accDir);
+	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}');
 }
 
+// Удаление пустых файлов в директории PATH_LOG
+fs.readdir(process.env.PATH_LOG, (err, files) => {
+	console.log(
+		'Удаление пустых файлов в директории PATH_LOG: ',
+		process.env.PATH_LOG
+	);
+	if (err) return console.error(err);
+	files.forEach((file) => {
+		try {
+			const filePath = path.join(process.env.PATH_LOG, file);
+			console.log('Удаление пустого файла: ', filePath);
+			const stats = fs.statSync(filePath);
+			const isEmpty = stats.size === 0;
+			const isOlder = Date.now() - stats.birthtimeMs > 2 * 60 * 60 * 1000;
+			if (isEmpty && isOlder) fs.unlinkSync(filePath);
+		} catch (error) {
+			console.error(
+				'Ошибка удаления пустого файла в директории PATH_LOG: ',
+				error
+			);
+		}
+	});
+});
+
 // Запрос конфигурации у админ-сервера
-loopInit().then().catch(console.error)
+loopInit().then().catch(console.error);
 // Отправка состояния складов на админ-сервер
-loopState().then().catch(console.error)
+loopState().then().catch(console.error);
 // Статистика непрерывных значений
-statOnTime().then().catch(console.error)
+statOnTime().then().catch(console.error);
 // Главный цикл управления
 loop()
 	.then(() => console.log('Главный цикл остановлен'))
-	.catch(console.error)
+	.catch(console.error);
 
 // Normalize a port into a number, string, or false.
 function normalizePort(val) {
-	var port = parseInt(val, 10)
+	var port = parseInt(val, 10);
 	if (isNaN(port)) {
 		// named pipe
-		return val
+		return val;
 	}
 	if (port >= 0) {
 		// port number
-		return port
+		return port;
 	}
-	return false
+	return false;
 }
 
 // Event listener for HTTP server "error" event.
 function onError(error) {
 	if (error.syscall !== 'listen') {
-		throw error
+		throw error;
 	}
-	var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port
+	var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 	// handle specific listen errors with friendly messages
 	switch (error.code) {
 		case 'EACCES':
-			console.error(bind + ' requires elevated privileges')
-			process.exit(1)
-			break
+			console.error(bind + ' requires elevated privileges');
+			process.exit(1);
+			break;
 		case 'EADDRINUSE':
-			console.error(bind + ' is already in use')
-			process.exit(1)
-			break
+			console.error(bind + ' is already in use');
+			process.exit(1);
+			break;
 		default:
-			throw error
+			throw error;
 	}
 }
 
 // Event listener for HTTP server "listening" event.
 function onListening() {
-	var addr = server.address()
-	var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
-	debug('Listening on ' + bind)
+	var addr = server.address();
+	var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+	debug('Listening on ' + bind);
 }
 
 // Graceful Shutdown
 process.on('SIGINT', async function () {
-	console.log('\x1b[32m%s\x1b[0m', `Запуск останова системы (max ${process.env.COUNT} сек)...`)
-	store.shutdown = true
-	let count = 0
+	console.log(
+		'\x1b[32m%s\x1b[0m',
+		`Запуск останова системы (max ${process.env.COUNT} сек)...`
+	);
+	store.shutdown = true;
+	let count = 0;
 	while (!store.end) {
-		console.log('\x1b[32m%s\x1b[0m', `Ожидание ${count} сек...`)
-		await delay(1000)
+		console.log('\x1b[32m%s\x1b[0m', `Ожидание ${count} сек...`);
+		await delay(1000);
 		if (++count >= process.env.COUNT ?? 30) {
-			console.log('\x1b[35m%s\x1b[0m', 'Превышено время ожидания...')
-			break
+			console.log('\x1b[35m%s\x1b[0m', 'Превышено время ожидания...');
+			break;
 		}
 	}
 	count >= process.env.COUNT
 		? console.log('\x1b[35m%s\x1b[0m', 'Сервер принудительно остановлен')
-		: console.log('\x1b[32m%s\x1b[0m', 'Сервер успешно остановлен')
-	process.exit(0)
-})
-
-
+		: console.log('\x1b[32m%s\x1b[0m', 'Сервер успешно остановлен');
+	process.exit(0);
+});
 
 // 	if (!isHandshake) {
 // 		return next();

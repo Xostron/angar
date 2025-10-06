@@ -10,7 +10,6 @@ export default function Item({ data, show }) {
 	if (!data) return
 	const { code, msg, type } = data
 	const img = defImg.alarm?.[type] || defImg.alarm?.[code]
-	console.log(111, data, code, type, img)
 	let cls = ['indi-item-img']
 	code === 'alr' ? cls.push('indi-item-square') : {}
 
