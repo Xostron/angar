@@ -14,7 +14,6 @@ function web(code, obj, oData) {
 	nameStg = factory?.[stgCode]?._name
 	namePrd = factory?.[stgCode]?.[prdCode]?._name
 	let title = []
-	console.log(55512, obj)
 	// По линии
 	for (const line in obj.value) {
 		const lineName = factory?.[stgCode]?.[prdCode]?.[line]?._name
@@ -50,18 +49,15 @@ function mobile(code, obj, oData) {
 			factory?.[stgCode]?.[prdCode]?.[line]?._name ?? factory?.[stgCode]?.[line]?._name
 		// По полю (mark)
 		let t = ``
-		// console.log(1, line, lineName, factory?.[stgCode])
 		for (const fld in obj.val[line]) {
 			const fldVal = obj.val[line][fld]
 			const fldName =
 				line === fld ? '' : `(${factory?.[stgCode]?.[prdCode]?.[line]?.[fld]?._name}) `
 			if (!t) t += `${fldName}= ${fldVal}`
 			else t += `; ${fldName}= ${fldVal}`
-			// console.log(2, fldVal, fldName, t)
 		}
 		title.push(`${lineName} ${t}`)
 	}
-	console.log(55112, title)
 	return {
 		title:
 			`Изменение настройки "${nameStg}", продукт "${namePrd}": ` +
