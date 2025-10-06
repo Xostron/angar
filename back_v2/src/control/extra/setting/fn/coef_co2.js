@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 /**
- * @description Настройки влажности: Гистерезис абсолютной влажности в зависимости от температуры продукта
+ * @description Настройки CO2: в зависимости от температуры продукта
  * @param {object} stg настройки влажности
  * @param {object} bld склад
  * @param {object} obj глобальные данные
@@ -39,7 +39,7 @@ function coefWait(stg, bld, obj) {
 		wait = stg?.wait2
 	}
 
-	// console.log(3333, 'Коэффициенты давления', 'hin', hin, '< X;', 'Работа по давление: pressure', pressure)
+	// console.log(3333, 'Коэффициенты CO2', tprd)
 	return wait
 }
 

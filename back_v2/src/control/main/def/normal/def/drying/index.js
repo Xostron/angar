@@ -66,7 +66,7 @@ function middlewB(building, obj, s, seB, acc) {
 function valve(s, se, sectionId, acc, extraCO2) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
-	const forceOpn = (s.drying.channelMin < se.tout && s.drying.channelMax > se.tout) || extraCO2.start
+	const forceOpn = (s.drying.channelMin < se.tout && s.drying.channelMax > se.tout)
 	console.log(
 		99004,
 		'open',
@@ -75,8 +75,6 @@ function valve(s, se, sectionId, acc, extraCO2) {
 		close,
 		'forceOpn',
 		forceOpn,
-		'extraCO2',
-		extraCO2.start
 	)
 	return { open, close, forceOpn, forceCls: false }
 }

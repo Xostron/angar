@@ -3,6 +3,9 @@ const { elapsedTime } = require('@tool/command/time')
 const mes = require('@dict/message')
 const { msgB } = require('@tool/message')
 
+function isAchieve(idB, name, code) {
+	return !!store?.alarm?.achieve?.[idB]?.[name]?.[code]
+}
 // Achieve - это информационные сообщения режима: температура продукта достигла задания и т.д.
 // Записать в achieve (доп. функции)
 function wrAchieve(buildingId, name, o) {
@@ -61,4 +64,4 @@ function clearAchieve(bld, obj, accAuto, isAllSectOff, start) {
 	}
 }
 
-module.exports = { wrAchieve, delAchieve, updAchieve, clearAchieve }
+module.exports = { wrAchieve, delAchieve, updAchieve, clearAchieve, isAchieve }

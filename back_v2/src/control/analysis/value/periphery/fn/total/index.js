@@ -73,7 +73,11 @@ module.exports = function total(equip, result, retain) {
 			ids.includes(el.owner.id) && el.type === 'tcnl' && result?.[el._id]?.state === 'on'
 		fltA = (el) => ids.includes(el.owner.id) && el.type === 'tcnl'
 		const tcnl = state(sensor, result, flt, fltA)
-
+		// CO2 по всем секциям
+		flt = (el) =>
+			ids.includes(el.owner.id) && el.type === 'co2' && result?.[el._id]?.state === 'on'
+		fltA = (el) => ids.includes(el.owner.id) && el.type === 'co2'
+		const co2 = state(sensor, result, flt, fltA)
 		// Температура потолка (Температура помещения)
 		const tin = fnState(sensor, result, bld._id, 'tin')
 		// Аварийные сообщения для склада холодильник
@@ -116,7 +120,7 @@ module.exports = function total(equip, result, retain) {
 		// const hout =
 
 		// Результат (данные с датчиков для алгоритма)
-		result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, tout }
+		result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, tout, co2 }
 		// Абсолютная влажность продукта
 		result.humAbs.in[bld._id] = calc(
 			result.total[bld._id].tprd.min,

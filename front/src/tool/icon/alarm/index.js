@@ -4,6 +4,7 @@ const data = {
 	hout: '/img/alarm/mois.svg',
 	ahout: '/img/alarm/mois.svg',
 	antibliz:  '/img/alarm/wind.svg',
+	co2_work:'/img/alarm/co2_work.svg',
 
 	drying: '/img/alarm/dry.svg',
 	cure: '/img/alarm/healing.svg',

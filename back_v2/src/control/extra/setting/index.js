@@ -4,7 +4,7 @@ const { data: store } = require('@store')
 const coefVlv = require('./fn/coef_vlv')
 const coefAbs = require('./fn/coef_abs')
 const coefPress = require('./fn/coef_press')
-const coefWait = require('./fn/coef_wait')
+const coefCO2 = require('./fn/coef_co2')
 
 function setting(bld, obj) {
 	const { retain, factory } = obj
@@ -29,7 +29,7 @@ function setting(bld, obj) {
 	r.fan.pressure = coefPress(r.fan, bld, obj)
 	// Настройки СО2: Время ожидания в зависимости от температуры продукта
 	r.co2 ??= {}
-	r.co2.wait = coefWait(r.co2, bld, obj)
+	r.co2.wait = coefCO2(r.co2, bld, obj)
 	// Готовые настройки на сервере (для проверки)
 	// debugJson({ newnew: r }, ph.resolve(__dirname))
 	return r

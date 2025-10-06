@@ -21,6 +21,7 @@ function bar(r, bld, sect, am, start) {
 	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.hout2 ?? null
 	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.ahout1 ?? null
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
+	const co2Normal = store.alarm.extra?.[bld._id]?.co2?.co2_work ?? null
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
@@ -29,6 +30,7 @@ function bar(r, bld, sect, am, start) {
 
 	r.bar[bld._id][sect._id].alrClosed = alrClosed || alrClosedB
 	r.bar[bld._id][sect._id].antibliz = antibliz
+	r.bar[bld._id][sect._id].co2Normal = co2Normal
 	if (tout1) r.bar[bld._id][sect._id].tout.push(tout1)
 	if (tout2) r.bar[bld._id][sect._id].tout.push(tout2)
 	if (tout3) r.bar[bld._id][sect._id].tout.push(tout3)
@@ -49,10 +51,12 @@ function barB(r, bld) {
 		r.barB[bld._id].hout ??= []
 		r.barB[bld._id].antibliz ??= []
 		r.barB[bld._id].alrClosed ??= []
+		r.barB[bld._id].co2Normal ??= []
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
 		if (s.antibliz) r.barB[bld._id].antibliz.push(s.antibliz)
 		if (s.alrClosed) r.barB[bld._id].alrClosed.push(s.alrClosed)
+		if (s.co2Normal) r.barB[bld._id].co2Normal.push(s.co2Normal)
 	}
 }
 
@@ -95,9 +99,7 @@ function signalB(r, bld, am, data) {
 	const module = Object.values(store.alarm.module?.[bld._id] ?? {})
 	const accel = Object.values(store.alarm.extra?.[bld._id]?.accel ?? {})
 	const co2 = Object.values(store.alarm.extra?.[bld._id]?.co2 ?? {})
-	// const co2 = store.alarm.extra?.[bld._id]?.co2 ?? null
 	const drain = Object.values(store.alarm.extra?.[bld._id]?.drain ?? {})
-	// const drain = store.alarm.extra?.[bld._id]?.drain ?? null
 	const cable = store.alarm.extra?.[bld._id]?.cable ?? null
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
 	const smoking1 = store.alarm.extra?.[bld._id]?.smoking1 ?? null
@@ -179,7 +181,8 @@ function bannerB(r, bld) {
 	// Окуривание
 	r.banner.smoking ??= {}
 	r.banner.smoking[bld._id] ??= {}
-	r.banner.smoking[bld._id] = store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
+	r.banner.smoking[bld._id] =
+		store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }

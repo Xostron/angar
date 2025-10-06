@@ -3,25 +3,29 @@ const { elapsedTime } = require('@tool/command/time')
 const mes = require('@dict/message')
 const { msgB } = require('@tool/message')
 
+function isAchieve(idB, name, code) {
+	return store?.alarm?.achieve?.[idB]?.[name]?.[code]
+}
+
 // Achieve - это информационные сообщения режима: температура продукта достигла задания и т.д.
 // Записать в achieve (доп. функции)
-function wrAchieve(buildingId, name, o) {
+function wrAchieve(idB, name, o) {
 	store.alarm.achieve ??= {}
-	store.alarm.achieve[buildingId] ??= {}
-	store.alarm.achieve[buildingId][name] ??= {}
-	store.alarm.achieve[buildingId][name][o.code] = o
+	store.alarm.achieve[idB] ??= {}
+	store.alarm.achieve[idB][name] ??= {}
+	store.alarm.achieve[idB][name][o.code] = o
 }
 
 // Удалить из aciheve
-function delAchieve(buildingId, name, code) {
-	delete store?.alarm?.achieve?.[buildingId]?.[name]?.[code]
+function delAchieve(idB, name, code) {
+	delete store?.alarm?.achieve?.[idB]?.[name]?.[code]
 }
 
 // Обновить запись сообщения
-function updAchieve(buildingId, name, code, set) {
-	if (!store.alarm.achieve?.[buildingId]?.[name]?.[code]) return
+function updAchieve(idB, name, code, set) {
+	if (!store.alarm.achieve?.[idB]?.[name]?.[code]) return
 	for (const key in set) {
-		store.alarm.achieve[buildingId][name][code][key] = set[key]
+		store.alarm.achieve[idB][name][code][key] = set[key]
 	}
 }
 
@@ -61,4 +65,4 @@ function clearAchieve(bld, obj, accAuto, isAllSectOff, start) {
 	}
 }
 
-module.exports = { wrAchieve, delAchieve, updAchieve, clearAchieve }
+module.exports = { wrAchieve, delAchieve, updAchieve, clearAchieve, isAchieve }
