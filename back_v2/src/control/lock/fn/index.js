@@ -188,12 +188,13 @@ function getAO(obj, f) {
 	const ao = binding.find((el) => el.owner.id == f._id && el.type == 'ao')
 	return ao
 }
+const _MIN_SP = 20
 function ao(obj, output, f, localB, local, ...args) {
 	const lock = fn(args)
 	// Аналоговый выход
 	// ВНО имеет аналоговое управление?
 	const ao = getAO(obj, f)
-	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = 0
+	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = _MIN_SP
 	// Местный переключатель => задание ВНО на 100%, DO выкл
 	if (ao) {
 		if (local || localB) {
@@ -203,7 +204,7 @@ function ao(obj, output, f, localB, local, ...args) {
 		// Перключатель в авто, однократно сбросить АО
 		if (store.heap.fan?.[f._id] && !local && !localB) {
 			store.heap.fan[f._id] = false
-			output[ao.moduleId].value[ao.channel - 1] = 0
+			output[ao.moduleId].value[ao.channel - 1] = _MIN_SP
 		}
 	}
 }
