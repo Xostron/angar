@@ -3,7 +3,7 @@ const { isReset } = require('@tool/reset')
 const { stateV } = require('@tool/command/valve')
 const { compareTime } = require('@tool/command/time')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
-const _WAIT = 0.1 * 60 * 1000
+const _WAIT = 5 * 60 * 1000
 const _RESET = 1 * 60 * 60 * 1000
 
 /**

@@ -28,9 +28,10 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	console.log(
 		99003,
 		aCmd,
-		idS + where == 'normal' ? 'РАБОТА ПО ОБЫЧНОМУ СКЛАДУ' : 'РАБОТА ПО ХОЛОДИЛЬНИКУ'
+		idS,
+		where == 'normal' ? 'РАБОТА ПО ОБЫЧНОМУ СКЛАДУ' : 'РАБОТА ПО ХОЛОДИЛЬНИКУ'
 	)
-	
+
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
