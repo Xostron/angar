@@ -1,6 +1,7 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
-const _MAX = 100
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 /**
  * Регулирование ПЧ (Аналоговый выход ВНО)
@@ -22,13 +23,13 @@ function regul(acc, fanFC, on, off, s) {
 		acc.fc.value = true
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
-		if (acc.fc.sp >= _MAX) return false
+		if (acc.fc.sp >= _MAX_SP) return false
 		if (!compareTime(acc.fc.date, acc.delayFC)) return true
 
 		// Время стабилизации прошло
 		acc.fc.sp += s.fan.step
 		// Ограничение max задания ПЧ
-		acc.fc.sp = acc.fc.sp > _MAX ? _MAX : acc.fc.sp
+		acc.fc.sp = acc.fc.sp > _MAX_SP ? _MAX_SP : acc.fc.sp
 		// Ограничение min задания ПЧ
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
@@ -89,7 +90,7 @@ function checkOff_FC(off, acc) {
 	if (!compareTime(acc.date, acc.delayRelay)) return
 	// Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
 	if (acc.order >= 0) {
-		acc.fc.sp = 100
+		acc.fc.sp = _MAX_SP
 	}
 	// Выкл следующего ВНО
 	if (--acc.order <= -1) {
@@ -131,12 +132,12 @@ function turnOn(fan, idB, acc) {
 		// Очередь не дошла - выключить ВНО
 		if (acc.order < i) {
 			ctrlDO(f, idB, 'off')
-			f?.ao?.id ? ctrlAO(f, idB, 0) : null
+			f?.ao?.id ? ctrlAO(f, idB, _MIN_SP) : null
 			return
 		}
 		// Включить ВНО
 		ctrlDO(f, idB, 'on')
-		f?.ao?.id ? ctrlAO(f, idB, 100) : null
+		f?.ao?.id ? ctrlAO(f, idB, _MAX_SP) : null
 	})
 }
 
@@ -158,11 +159,11 @@ function turnOff(idB, idS, fan, bStart, start) {
 	// Запрещено и выкл ВНО если закончилось окуривание
 	console.log(1, idS, 'ПП: Выключение ВНО')
 	fan.fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, idB, 0) : null
+		f?.ao?.id ? ctrlAO(f, idB, _MIN_SP) : null
 		ctrlDO(f, idB, 'off')
 	})
 	if (fan.fanFC) {
-		ctrlAO(fan.fanFC, idB, 0)
+		ctrlAO(fan.fanFC, idB, _MIN_SP)
 		ctrlDO(fan.fanFC, idB, 'off')
 	}
 	return true
