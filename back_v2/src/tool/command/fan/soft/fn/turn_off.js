@@ -30,6 +30,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
+	console.log(5552, aCmd, acc)
 	return true
 }
 
@@ -60,6 +61,7 @@ function clear(idS) {
 	store.watchdog.softFan[idS].fc = undefined
 	store.watchdog.softFan[idS].sol = undefined
 	store.watchdog.softFan[idS].allStarted = undefined
+	console.log(5553, idS, 'Очистка store.watchdog.softFan')
 }
 
 // Секция выключена -> отключение всех узлов

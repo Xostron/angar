@@ -15,7 +15,7 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
 	// Отключение
-	if (typeof s.vent.add !== 'number' || typeof s.vent.max_add !== 'number' || !vlvIn) {
+	if (typeof s.vent.add !== 'number' || typeof s.vent.max_add !== 'number' || !vlvIn || acc?.byTime?.wait ) {
 		acc.byDura = {}
 		return
 	}
@@ -71,7 +71,10 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 	// Аккумулятор вычислений
 	acc.byTime ??= {}
 	// Отключение: нет настройки, аварии, бит завершения по времени, сейчас работает подхват
-	if (typeof s.vent.work !== 'number' || (Object.values(acc?.byDura ?? {}).length && !acc?.byDura.finish)) {
+	if (
+		typeof s.vent.work !== 'number' ||
+		(Object.values(acc?.byDura ?? {}).length && !acc?.byDura.finish)
+	) {
 		acc.byTime = {}
 		console.log(
 			1117,
@@ -86,7 +89,7 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 
 	// Ожидание
 	acc.byTime.wait ??= new Date()
-	let time = compareTime(acc.byTime.wait, s.vent.wait)
+	let time = compareTime(acc.byTime.wait, s.vent.wait / 2)
 
 	if (!time) {
 		wrExtra(
