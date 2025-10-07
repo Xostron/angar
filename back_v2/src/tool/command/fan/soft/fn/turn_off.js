@@ -30,7 +30,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
-	console.log(5552, aCmd, acc)
+	console.log(5552,idS, aCmd, acc)
 	return true
 }
 

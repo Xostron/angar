@@ -22,36 +22,25 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 			resultFan.force = false
 		}
 		if (acc?.byDura?.end) resultFan.start = [false]
-		acc.byDura = {}
-		acc.byTime = {}
 		acc.firstCycle = true
-		console.log(
-			1111,
-			'vent',
-			'Секция',
-			sect.name,
-			'isPermission = true: Дополнительная вентиляция неактивна'
-		)
-		delExtra(bld._id, sect._id, 'vent_on')
-		delExtra(bld._id, sect._id, 'vent_dura')
-		delExtra(bld._id, sect._id, 'vent_time_wait')
-		delExtra(bld._id, sect._id, 'vent_time')
-		return
+		clear(bld, sect, acc, 1, 1, 1, 1)
+		return console.log(1111, 'vent', 'Секция', sect.name, 'isPermission = true: Дополнительная вентиляция неактивна')
 	}
 
 	// Режим вентиляции: Вкл
 	if (s.vent.mode === 'on' || alwaysFan) {
 		mOn(s, sect._id, resultFan)
 		wrExtra(bld._id, sect._id, 'vent_on', msg(bld, sect, 85))
-		delExtra(bld._id, sect._id, 'vent_dura')
-		delExtra(bld._id, sect._id, 'vent_time_wait')
-		delExtra(bld._id, sect._id, 'vent_time')
+		clear(bld, sect, acc, 0, 1, 1, 1)
 		return
 	}
 
 	// Режим вентиляции: Авто
 	if (s.vent.mode === 'auto') {
+		delExtra(bld._id, sect._id, 'vent_on')
+		// Подхват
 		mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+		// Рециркуляция
 		if (isAccessTime(bld, obj)) {
 			mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
 			console.log(1115, 'vent byTime в работе', acc)
@@ -61,7 +50,6 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 			delExtra(bld._id, sect._id, 'vent_time')
 			console.log(1115, 'vent byTime заблокирован', acc)
 		}
-		delExtra(bld._id, sect._id, 'vent_on')
 	}
 
 	// Когда оба отработали и пропала авария- очищаем расчеты
@@ -70,12 +58,6 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 		acc.byDura = {}
 		delExtra(bld._id, sect._id, 'vent_dura')
 	}
-	// if (!alarm && isReset(bld._id)) {
-	// 	// delExtra(bld._id, sect._id, 'vent_on')
-	// 	// delExtra(bld._id, sect._id, 'vent_dura')
-	// 	// delExtra(bld._id, sect._id, 'vent_time_wait')
-	// 	// delExtra(bld._id, sect._id, 'vent_time')
-	// }
 }
 module.exports = vent
 
@@ -110,8 +92,7 @@ function isAccess(bld, sect, obj, fanS, s, ban) {
 	// Режим вентиляции: Выкл
 	if (!s?.vent?.mode || s?.vent?.mode === 'off') return false
 	// Таймер запрета, аварийное закрытие клапанов, переключатель на щите (управление от щита)
-	if (ban || isExtralrm(bld._id, sect._id, 'alrClosed') || isExtralrm(bld._id, sect._id, 'local'))
-		return false
+	if (ban || isExtralrm(bld._id, sect._id, 'alrClosed') || isExtralrm(bld._id, sect._id, 'local')) return false
 	return true
 }
 
@@ -123,6 +104,14 @@ function isAccessTime(bld, obj) {
 	return true
 }
 
+function clear(bld, sect, acc, ...args) {
+	acc.byDura = {}
+	acc.byTime = {}
+	args[0] ? delExtra(bld._id, sect._id, 'vent_on') : null
+	args[1] ? delExtra(bld._id, sect._id, 'vent_dura') : null
+	args[2] ? delExtra(bld._id, sect._id, 'vent_time_wait') : null
+	args[3] ? delExtra(bld._id, sect._id, 'vent_time') : null
+}
 // mode: выкл/вкл, авто, по времени - (приоритет: Сушка - постоянный вентилятор)
 // mode - Вкл, секция в любом авто режиме, склад запущен, вентиляторы всегда работают (аварии игнор)
 /**
