@@ -23,6 +23,11 @@ function bar(r, bld, sect, am, start) {
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
 	const co2Normal = store.alarm.extra?.[bld._id]?.co2?.co2_work ?? null
 	const openVin = store.alarm.extralrm?.[bld._id]?.openVin ?? null
+	const ventOn = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_on ?? null
+	const ventDura = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_dura ?? null
+	const ventTimeWait = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time_wait ?? null
+	const ventTime = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time ?? null
+
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
 	r.bar[bld._id][sect._id].tout ??= []
@@ -32,6 +37,10 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].antibliz = antibliz
 	r.bar[bld._id][sect._id].co2Normal = co2Normal
 	r.bar[bld._id][sect._id].openVin = openVin
+	r.bar[bld._id][sect._id].ventOn = ventOn
+	r.bar[bld._id][sect._id].ventDura = ventDura
+	r.bar[bld._id][sect._id].ventTimeWait = ventTimeWait
+	r.bar[bld._id][sect._id].ventTime = ventTime
 	if (tout1) r.bar[bld._id][sect._id].tout.push(tout1)
 	if (tout2) r.bar[bld._id][sect._id].tout.push(tout2)
 	if (tout3) r.bar[bld._id][sect._id].tout.push(tout3)
@@ -54,12 +63,20 @@ function barB(r, bld) {
 		r.barB[bld._id].alrClosed ??= []
 		r.barB[bld._id].co2Normal ??= []
 		r.barB[bld._id].openVin ??= []
+		r.barB[bld._id].ventOn ??= []
+		r.barB[bld._id].ventDura ??= []
+		r.barB[bld._id].ventTimeWait ??= []
+		r.barB[bld._id].ventTime ??= []
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
 		if (s.antibliz) r.barB[bld._id].antibliz.push(s.antibliz)
 		if (s.alrClosed) r.barB[bld._id].alrClosed.push(s.alrClosed)
 		if (s.co2Normal) r.barB[bld._id].co2Normal.push(s.co2Normal)
 		if (s.openVin) r.barB[bld._id].openVin.push(s.openVin)
+		if (s.ventOn) r.barB[bld._id].ventOn.push(s.ventOn)
+		if (s.ventDura) r.barB[bld._id].ventDura.push(s.ventDura)
+		if (s.ventTimeWait) r.barB[bld._id].ventTimeWait.push(s.ventTimeWait)
+		if (s.ventTime) r.barB[bld._id].ventTime.push(s.ventTime)
 	}
 }
 
@@ -103,6 +120,7 @@ function signalB(r, bld, am, data) {
 	const accel = Object.values(store.alarm.extra?.[bld._id]?.accel ?? {})
 	const co2 = Object.values(store.alarm.extra?.[bld._id]?.co2 ?? {})
 	const drain = Object.values(store.alarm.extra?.[bld._id]?.drain ?? {})
+	// const vent = Object.values(store.alarm.extra?.[bld._id]?.drain ?? {})
 	const cable = store.alarm.extra?.[bld._id]?.cable ?? null
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
 	const smoking1 = store.alarm.extra?.[bld._id]?.smoking1 ?? null

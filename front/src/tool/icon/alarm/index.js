@@ -3,9 +3,13 @@ const data = {
 	tout: '/img/alarm/temp.svg',
 	hout: '/img/alarm/mois.svg',
 	ahout: '/img/alarm/mois.svg',
-	antibliz:  '/img/alarm/wind.svg',
-	co2_work:'/img/alarm/co2_work.svg',
-	openVin:'/img/alarm/open_vin.svg',
+	antibliz: '/img/alarm/wind.svg',
+	co2_work: '/img/alarm/co2_work.svg',
+	openVin: '/img/alarm/open_vin.svg',
+	vent_on: '/img/alarm/intfan.svg',
+	vent_dura: '/img/alarm/intfan.svg',
+	vent_time_wait: '/img/alarm/intfan.svg',
+	vent_time: '/img/alarm/intfan.svg',
 
 	drying: '/img/alarm/dry.svg',
 	cure: '/img/alarm/healing.svg',
@@ -18,8 +22,8 @@ const data = {
 	co2: '/img/alarm/dioxide.svg',
 	wetting: '/img/alarm/wetting.svg',
 
-	connect:'/img/alarm/connect.svg',
-	local:'/img/alarm/local.svg',
-	smoking:'/img/alarm/smoking.svg'
+	connect: '/img/alarm/connect.svg',
+	local: '/img/alarm/local.svg',
+	smoking: '/img/alarm/smoking.svg',
 }
 export default data

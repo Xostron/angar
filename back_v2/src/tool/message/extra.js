@@ -1,43 +1,53 @@
 const { data } = require('@store')
 
 // Записать в extra событие
-function wrExtra(buildingId, sectionId, name, o, type) {
+function wrExtra(idB, idS, name, o, type) {
 	data.alarm.extra ??= {}
-	data.alarm.extra[buildingId] ??= {}
+	data.alarm.extra[idB] ??= {}
 	if (!type) {
-		if (!sectionId) {
-			data.alarm.extra[buildingId][name] = o
+		if (!idS) {
+			data.alarm.extra[idB][name] = o
 			return
 		}
-		data.alarm.extra[buildingId][sectionId] ??= {}
-		data.alarm.extra[buildingId][sectionId][name] = o
+		data.alarm.extra[idB][idS] ??= {}
+		data.alarm.extra[idB][idS][name] = o
 	} else {
-		if (!sectionId) {
-			data.alarm.extra[buildingId][name] ??= {}
-			data.alarm.extra[buildingId][name][type] = o
+		if (!idS) {
+			data.alarm.extra[idB][name] ??= {}
+			data.alarm.extra[idB][name][type] = o
 			return
 		}
-		data.alarm.extra[buildingId][sectionId] ??= {}
-		data.alarm.extra[buildingId][sectionId][name] ??= {}
-		data.alarm.extra[buildingId][sectionId][name][type] = o
+		data.alarm.extra[idB][idS] ??= {}
+		data.alarm.extra[idB][idS][name] ??= {}
+		data.alarm.extra[idB][idS][name][type] = o
 	}
 }
 
 // Записать в extra событие
-function delExtra(buildingId, sectionId, name, type) {
+function delExtra(idB, idS, name, type) {
 	if (!type) {
-		if (!sectionId) {
-			delete data.alarm?.extra?.[buildingId]?.[name]
+		if (!idS) {
+			delete data.alarm?.extra?.[idB]?.[name]
 			return
 		}
-		delete data.alarm?.extra?.[buildingId]?.[sectionId]?.[name]
+		delete data.alarm?.extra?.[idB]?.[idS]?.[name]
 	} else {
-		if (!sectionId) {
-			delete data.alarm?.extra?.[buildingId]?.[name]?.[type]
+		if (!idS) {
+			delete data.alarm?.extra?.[idB]?.[name]?.[type]
 			return
 		}
-		delete data.alarm?.extra?.[buildingId]?.[sectionId]?.[name]?.[type]
+		delete data.alarm?.extra?.[idB]?.[idS]?.[name]?.[type]
 	}
 }
 
-module.exports = { wrExtra, delExtra }
+function isExtra(idB, idS, code, type) {
+	if (type)
+		return idS
+			? !!data.alarm?.extralrm?.[idB]?.[idS]?.[code]?.[type]
+			: !!data.alarm?.extralrm?.[idB]?.[code]?.[type]
+	return idS
+		? !!data.alarm?.extralrm?.[idB]?.[idS]?.[code]
+		: !!data.alarm?.extralrm?.[idB]?.[code]
+}
+
+module.exports = { wrExtra, delExtra, isExtra }

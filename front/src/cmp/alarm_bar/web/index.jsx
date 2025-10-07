@@ -21,7 +21,6 @@ export default function AlarmBar({ setActive }) {
 		setShow((pr) => (pr = !pr))
 		if (!!setActive) setActive((pr) => (pr = !pr))
 	}
-console.log(333, alr)
 	const fnAction = alr.length || tmr.length ? action : null
 	// стили
 	const { cl, span, grid, cursor } = fnStyle(alr, tmr, show)

@@ -259,6 +259,10 @@ const data = {
 	56: { code: 'off', typeSignal: 'info', msg: 'Режим работы вентиляции: Выключен' },
 	57: { code: 'on', typeSignal: 'info', msg: 'Режим работы вентиляции: Включен' },
 	58: { code: 'auto', typeSignal: 'info', msg: 'Режим работы вентиляции: Авто' },
+	85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает постоянная доп. вентиляция' },
+	86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает доп. вентиляция (подхват)' },
+	87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает доп. вентиляция (ожидание' },
+	88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает доп. вентиляция (по таймеру)' },
 	// Прогрев секции
 	59: { code: 'warming', typeSignal: 'info', msg: 'Включен прогрев клапанов' },
 	//

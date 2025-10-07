@@ -4,9 +4,10 @@ const { v4: uuidv4 } = require('uuid')
 // Сообщение для журнала событий
 
 // Секции
-function msg(building, section, code) {
+function msg(building, section, code, msg = '') {
 	const o = { ...mes[code] }
 	o.title = section?.name ? `${section?.name}:` : ''
+	o.msg = msg ? o.msg + ' ' + msg : o.msg
 	o.buildingId = building._id
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
