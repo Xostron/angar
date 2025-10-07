@@ -5,6 +5,7 @@ const data = {
 	ahout: '/img/alarm/mois.svg',
 	antibliz:  '/img/alarm/wind.svg',
 	co2_work:'/img/alarm/co2_work.svg',
+	openVin:'/img/alarm/open_vin.svg',
 
 	drying: '/img/alarm/dry.svg',
 	cure: '/img/alarm/healing.svg',

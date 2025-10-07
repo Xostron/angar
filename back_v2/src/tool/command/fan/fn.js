@@ -2,6 +2,8 @@ const { ctrlDO, ctrlAO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { setACmd } = require('@tool/command/set')
 const { getIdB } = require('@tool/get/building')
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 /**
  * Команда авторежима на пуск/стоп ВНО секции
@@ -68,7 +70,7 @@ function stateF(fan, equip, result, retain) {
 function arrCtrl(idB, arr, type) {
 	arr?.forEach((el) => {
 		ctrlDO(el, idB, type)
-		if (el.ao) ctrlAO(el, idB, type === 'off' ? 0 : 100)
+		if (el.ao) ctrlAO(el, idB, type === 'off' ? _MIN_SP : _MAX_SP)
 	})
 }
 module.exports = { fnACmd, fnFanWarm, stateEq, stateF, arrCtrl }

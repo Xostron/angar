@@ -1,0 +1,422 @@
+[
+	{
+		"key": "temp",
+		"value": {
+			"value": "29.2",
+			"state": "on"
+		},
+		"owner": "680750f9201c4a1f34dce635"
+	},
+	{
+		"key": "rh",
+		"value": {
+			"value": "67.6",
+			"state": "on"
+		},
+		"owner": "680750f9201c4a1f34dce635"
+	},
+	{
+		"key": "ah",
+		"value": {
+			"value": 19.6,
+			"state": "on"
+		},
+		"owner": "680750f9201c4a1f34dce635"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5eproduct",
+		"value": "onion",
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5emode",
+		"value": "cooling2",
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5ecount",
+		"value": 6.20357650462963,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5eon",
+		"value": true,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5erh",
+		"value": {
+			"value": "75.0",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5emin",
+		"value": {
+			"value": "17.6",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5emax",
+		"value": {
+			"value": "18.1",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5ecrash",
+		"value": 0,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5ealarm",
+		"value": [
+			{
+				"code": "tout",
+				"msg": "Температура улицы выше допустимой"
+			},
+			{
+				"code": "hout",
+				"msg": "Абсолютная влажность улицы выше допустимой"
+			}
+		],
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5enote",
+		"value": [
+			{
+				"order": 2,
+				"code": "target",
+				"msg": "t задания канала = 15.6 °С, t задания продукта = 16.6 °С",
+				"buildingId": "6800b88d56c6a01c90ecbc5e",
+				"uid": "813ce9f3-8e33-4040-8bde-a811f0053ca0",
+				"date": "07.10.2025, 09:49:05"
+			}
+		],
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5efan",
+		"value": "stop",
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "buildings",
+		"value": ["6800b88d56c6a01c90ecbc5e"],
+		"owner": "680750f9201c4a1f34dce635"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5ebanner",
+		"value": [],
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5eaccel",
+		"value": "run",
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5eahb",
+		"value": {
+			"value": 11.3,
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5etempb",
+		"value": {
+			"value": "22.0",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5erhb",
+		"value": {
+			"value": "75.0",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800b88d56c6a01c90ecbc5epoint",
+		"value": {
+			"value": 22.6
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bbc056c6a01c90ecbc84mode",
+		"value": true,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bbc056c6a01c90ecbc84min",
+		"value": {
+			"value": "17.6",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bbc056c6a01c90ecbc84max",
+		"value": {
+			"value": "18.1",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bbc056c6a01c90ecbc84fan",
+		"value": "stop",
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bbc056c6a01c90ecbc84heating",
+		"value": false,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bcdd56c6a01c90ecbc90",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bd1056c6a01c90ecbc94",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bdcc05912407c0b68bd3mode",
+		"value": false,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bdcc05912407c0b68bd3min",
+		"value": {
+			"value": "19.5",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bdcc05912407c0b68bd3max",
+		"value": {
+			"value": "19.6",
+			"state": "on"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bdcc05912407c0b68bd3fan",
+		"value": "stop",
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bdcc05912407c0b68bd3heating",
+		"value": false,
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800be9d05912407c0b68bdf",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800becc05912407c0b68be3",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "alarm",
+		"value": [
+			{
+				"code": "tout",
+				"msg": "Температура улицы выше допустимой"
+			},
+			{
+				"code": "hout",
+				"msg": "Абсолютная влажность улицы выше допустимой"
+			}
+		],
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "sections",
+		"value": ["6800bbc056c6a01c90ecbc84"],
+		"owner": "6800b88d56c6a01c90ecbc5e"
+	},
+	{
+		"key": "6800bc1856c6a01c90ecbc87",
+		"value": {
+			"value": 18.1,
+			"state": "on"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bc2f56c6a01c90ecbc88",
+		"value": {
+			"value": 17.6,
+			"state": "on"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bbd556c6a01c90ecbc85",
+		"value": {
+			"value": 20,
+			"state": "on"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bbf656c6a01c90ecbc86",
+		"value": {
+			"value": 20.4,
+			"state": "on"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bc5456c6a01c90ecbc89",
+		"value": {
+			"value": 0,
+			"state": "on"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bcaa56c6a01c90ecbc8e",
+		"value": {
+			"value": "stop",
+			"ao": 0
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bc8d56c6a01c90ecbc8c",
+		"value": "stop",
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bc6a56c6a01c90ecbc8a",
+		"value": "stop",
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bcdd56c6a01c90ecbc90",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800bd1056c6a01c90ecbc94",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "valve",
+		"value": ["6800bcdd56c6a01c90ecbc90", "6800bd1056c6a01c90ecbc94"],
+		"owner": "6800bbc056c6a01c90ecbc84"
+	},
+	{
+		"key": "6800be1105912407c0b68bd6",
+		"value": {
+			"value": 19.5,
+			"state": "on"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800be2205912407c0b68bd7",
+		"value": {
+			"value": 19.6,
+			"state": "on"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800bde605912407c0b68bd4",
+		"value": {
+			"value": 17.5,
+			"state": "on"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800bdfb05912407c0b68bd5",
+		"value": {
+			"value": 17.6,
+			"state": "on"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800be3505912407c0b68bd8",
+		"value": {
+			"value": 0,
+			"state": "on"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800be4a05912407c0b68bd9",
+		"value": "stop",
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800be7305912407c0b68bdb",
+		"value": "stop",
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800be8705912407c0b68bdd",
+		"value": "stop",
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800be9d05912407c0b68bdf",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "6800becc05912407c0b68be3",
+		"value": {
+			"val": 0,
+			"state": "cls"
+		},
+		"owner": "6800bdcc05912407c0b68bd3"
+	},
+	{
+		"key": "valve",
+		"value": ["6800be9d05912407c0b68bdf", "6800becc05912407c0b68be3"],
+		"owner": "6800bdcc05912407c0b68bd3"
+	}
+]

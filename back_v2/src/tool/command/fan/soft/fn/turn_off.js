@@ -1,6 +1,8 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const ignore = require('./ignore')
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 /**
  * Выключение ВНО секции
@@ -65,11 +67,11 @@ function offAll(fanFC, fans, solHeat, bld) {
 	// Выключение всех ВНО (однократно) TODO проверить комбинированный
 	// if (acc.order !== -1  || where == 'normal') {
 	fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
+		f?.ao?.id ? ctrlAO(f, bld._id, _MIN_SP) : null
 		ctrlDO(f, bld._id, 'off')
 	})
 	if (fanFC) {
-		ctrlAO(fanFC, bld._id, 0)
+		ctrlAO(fanFC, bld._id, _MIN_SP)
 		ctrlDO(fanFC, bld._id, 'off')
 	}
 	solHeat.forEach((el) => {

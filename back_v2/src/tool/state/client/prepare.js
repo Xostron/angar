@@ -60,6 +60,8 @@ module.exports = async function prepareReq() {
 		diffing = hub.init ? deltaTol(present, hub.state, sens, tolerance) : null
 		// Формируем данные для Tenta
 		result = convertTenta(diffing ?? present, data.pc._id)
+		// result = convertTenta(present, data.pc._id)
+
 		return { result, hub, present, diffing }
 	} catch (error) {
 		console.error('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. ❌Ошибка подготовки данных', error)

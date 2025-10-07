@@ -1,5 +1,5 @@
 const { compareTime } = require('@tool/command/time')
-const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
+const { ctrlDO } = require('@tool/command/module_output')
 //
 //
 /**
