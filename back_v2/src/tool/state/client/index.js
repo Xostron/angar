@@ -65,7 +65,7 @@ module.exports = async function state() {
 		o.hub.last = new Date()
 		o.hub.state = o.diffing === null ? o.present : { ...o.hub.state, ...o.diffing }
 		console.log('\x1b[33m%s\x1b[0m', '3. ✅POS->Tenta: Данные переданы', o?.result?.length)
-		console.log(4, JSON.stringify(o.result, null, ' '))
+		console.log(4, o.result)
 		return true
 	} catch (error) {
 		throw error
