@@ -19,6 +19,7 @@ function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	// Условия СO2: достигнута темп. задания, авария авторежима
 	if (!finish && !alrAuto && !openVin) {
 		console.log('Условия удаления СО2 не обнаружены')
+		delExtra(bld._id, null, 'co2', 'co2_wait')
 		return def.clear(acc, 'work', 'wait', 'start')
 	}
 	console.log(`Условия удаления СО2: достиг задания ${finish}, авария авторежима ${alrAuto}`)
