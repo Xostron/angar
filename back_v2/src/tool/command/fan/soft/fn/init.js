@@ -1,5 +1,6 @@
 const { data: store } = require('@store')
 const _RAMP = 5000
+const _MIN_SP = 20
 
 /**
  * Инициализация аккумулятора для управления ВНО
@@ -34,14 +35,14 @@ function init(bld, secId, obj, s, where, type, fansLength) {
 		// Задание главного ВНО с ПЧ
 		a.fc ??= {}
 		a.fc.value ??= false
-		a.fc.sp ??= 0
+		a.fc.sp = !a.fc.sp ? _MIN_SP : a.fc.sp
 		a.fc.date ??= new Date()
 	}
 	if (type == 'relay') {
 		// Номер текущего ВНО
 		a.order ??= 0
 		// Задание главного ВНО с ПЧ
-		a.fc = undefined
+		a.fc = { sp: _MIN_SP, value: false }
 	}
 	if (where == 'cold') {
 		// Комби склад в режиме холодилника

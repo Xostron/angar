@@ -47,18 +47,25 @@ export default function Entry({ data = {}, entryCode }) {
 		const cmd = sel === 'run' ? 1 : 0
 		// Вывести из работы
 		if (sel === 'off' && state !== 'off')
-			setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true })
+			setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true, setpoint: 20 })
 		// Включить
 		else if (sel == 'run')
-			setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false, setpoint: spO })
+			setFan({
+				buildingId,
+				sectionId,
+				fanId: _id,
+				action: sel,
+				value: false,
+				setpoint: spO <= 0 ? 20 : spO,
+			})
 		// Выключить
-		else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })
+		else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false, setpoint: 20 })
 
 		const out = { idB: buildingId, idM: module.id, value: cmd, channel: ch }
 		const outAO = {
 			idB: buildingId,
 			idM: ao.id,
-			value: sel == 'run' ? spO : 0,
+			value: sel == 'run' ? spO : 20,
 			channel: ao.channel - 1,
 		}
 		// Блокировка включения при 0%

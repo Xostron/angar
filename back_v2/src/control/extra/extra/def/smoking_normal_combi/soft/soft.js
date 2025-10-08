@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 const { turnOff, turnOn, checkOff_FC, checkOff_Relay, checkOn, regul } = require('./fn')
-
+const _MIN_SP = 20
 /**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
@@ -26,7 +26,7 @@ function relay(idB, idS, fan, obj, s, se, start) {
 	// Номер текущего ВНО
 	acc.order ??= 0
 	// Задание главного ВНО с ПЧ
-	acc.fc = undefined
+	acc.fc = { sp: _MIN_SP, value: false }
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
 	// ****************** ВЫКЛ ВНО (команда || секция не в авто) ******************
@@ -70,7 +70,7 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	// Задание главного ВНО с ПЧ
 	acc.fc ??= {}
 	acc.fc.value ??= false
-	acc.fc.sp ??= 0
+	acc.fc.sp = !acc.fc.sp ? _MIN_SP : acc.fc.sp
 	acc.fc.date ??= new Date()
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
