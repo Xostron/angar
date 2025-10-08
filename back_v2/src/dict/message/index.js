@@ -259,10 +259,10 @@ const data = {
 	56: { code: 'off', typeSignal: 'info', msg: 'Режим работы вентиляции: Выключен' },
 	57: { code: 'on', typeSignal: 'info', msg: 'Режим работы вентиляции: Включен' },
 	58: { code: 'auto', typeSignal: 'info', msg: 'Режим работы вентиляции: Авто' },
-	85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает постоянная доп. вентиляция' },
+	85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает доп. вентиляция (постоянно)' },
 	86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает доп. вентиляция (подхват)' },
 	87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает доп. вентиляция (ожидание' },
-	88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает доп. вентиляция (по таймеру)' },
+	88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает доп. вентиляция (по таймеру' },
 	// Прогрев секции
 	59: { code: 'warming', typeSignal: 'info', msg: 'Включен прогрев клапанов' },
 	//
@@ -273,6 +273,7 @@ const data = {
 	63: { code: 'time', typeSignal: 'info', msg: 'CO2: Режим "По времени"' },
 	64: { code: 'sens', typeSignal: 'info', msg: 'CO2: Режим "По датчику"' },
 	84: { code: 'co2_work', typeSignal: 'info', msg: 'Удаление СО2 в работе' },
+	89: { code: 'co2_wait', typeSignal: 'info', msg: 'Удаление СО2 (ожидание' },
 	// ======== Оттайка слива воды ========
 	67: { code: 'off', typeSignal: 'info', msg: 'Оттайка слива воды: Режим "Выключен"' },
 	68: { code: 'on', typeSignal: 'info', msg: 'Оттайка слива воды: Режим "Включен"' },

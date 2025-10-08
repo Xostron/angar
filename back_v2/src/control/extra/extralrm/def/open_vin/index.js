@@ -27,7 +27,7 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 
 	// Есть ли хоть один открытый приточный клапан
 	const hasOpen = m.vlvIn.some(
-		(el) => stateV(el?._id, obj.value, building._id, el?.sectionId?.[0]) == 'opn'
+		(el) => stateV(el?._id, obj.value, building._id, el?.sectionId?.[0]) === 'opn'
 	)
 	// Клапан открыт и темп.канала > темп. продукта
 	const attn = hasOpen && seB.tcnl > seB.tprd

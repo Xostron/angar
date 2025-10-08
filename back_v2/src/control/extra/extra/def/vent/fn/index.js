@@ -15,7 +15,12 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
 	// Отключение: нет настройки, нет приточных клапанов, сейчас в работе рециркуляция
-	if (typeof s.vent.add !== 'number' || typeof s.vent.max_add !== 'number' || !vlvIn || acc?.byTime?.start) {
+	if (
+		typeof s.vent.add !== 'number' ||
+		typeof s.vent.max_add !== 'number' ||
+		!vlvIn ||
+		acc?.byTime?.start
+	) {
 		acc.byDura = {}
 		delExtra(bld._id, sect._id, 'vent_dura')
 		return
@@ -41,6 +46,7 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 		acc.byDura.vlvIn = true
 	}
 	// Вентиляторы собираются выключиться - расчет продолжительности подхвата
+	console.log(11141, fanOff)
 	if (fanOff && acc.byDura?.begin && !acc.byDura?.end) {
 		// Дополнительное время вентиляции
 		x = ((curTime - acc.byDura.begin) * s.vent.add) / 100
@@ -72,9 +78,17 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 	// Аккумулятор вычислений
 	acc.byTime ??= {}
 	// Отключение: нет настройки, аварии, бит завершения по времени, сейчас работает подхват
-	if (typeof s.vent.work !== 'number' || (Object.values(acc?.byDura ?? {}).length && !acc?.byDura.finish)) {
+	if (
+		typeof s.vent.work !== 'number' ||
+		(Object.values(acc?.byDura ?? {}).length && !acc?.byDura.finish)
+	) {
 		acc.byTime = {}
-		console.log(1117, 'vent reset byTime', typeof s.vent.work !== 'number', Object.values(acc?.byDura).length)
+		console.log(
+			1117,
+			'vent reset byTime',
+			typeof s.vent.work !== 'number',
+			Object.values(acc?.byDura).length
+		)
 		delExtra(bld._id, sect._id, 'vent_time_wait')
 		delExtra(bld._id, sect._id, 'vent_time')
 		return
@@ -82,17 +96,22 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 
 	// Ожидание
 	acc.byTime.wait ??= new Date()
-	let time = compareTime(acc.byTime.wait, s.vent.wait / 2)
+	let time = compareTime(acc.byTime.wait, s.vent.wait)
 	// Время не прошло
 	if (!time) {
-		wrExtra(bld._id, sect._id, 'vent_time_wait', msg(bld, sect, 87, `${s.vent.wait / 60 / 1000}мин)`))
+		wrExtra(
+			bld._id,
+			sect._id,
+			'vent_time_wait',
+			msg(bld, sect, 87, `${s.vent.wait / 60 / 1000}мин)`)
+		)
 		return console.log(1118, 'vent: Ожидание', acc.byTime.wait, s.vent.wait)
 	}
 	// Вкл вентиляции, когда истечет время ожидания
 	resultFan.start = [true]
 	acc.byTime.start = true
 	delExtra(bld._id, sect._id, 'vent_time_wait')
-	wrExtra(bld._id, sect._id, 'vent_time', msg(bld, sect, 88))
+	wrExtra(bld._id, sect._id, 'vent_time', msg(bld, sect, 88, `${s.vent.work / 60 / 1000}мин)`))
 	acc.byTime.work ??= new Date()
 	time = compareTime(acc.byTime.work, s.vent.work)
 	// Время работы прошло

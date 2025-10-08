@@ -21,7 +21,8 @@ function bar(r, bld, sect, am, start) {
 	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.hout2 ?? null
 	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.ahout1 ?? null
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
-	const co2Normal = store.alarm.extra?.[bld._id]?.co2?.co2_work ?? null
+	const co2work = store.alarm.extra?.[bld._id]?.co2?.co2_work ?? null
+	const co2wait = store.alarm.extra?.[bld._id]?.co2?.co2_wait ?? null
 	const openVin = store.alarm.extralrm?.[bld._id]?.openVin ?? null
 	const ventOn = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_on ?? null
 	const ventDura = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_dura ?? null
@@ -35,7 +36,8 @@ function bar(r, bld, sect, am, start) {
 
 	r.bar[bld._id][sect._id].alrClosed = alrClosed || alrClosedB
 	r.bar[bld._id][sect._id].antibliz = antibliz
-	r.bar[bld._id][sect._id].co2Normal = co2Normal
+	r.bar[bld._id][sect._id].co2work = co2work
+	r.bar[bld._id][sect._id].co2wait = co2wait
 	r.bar[bld._id][sect._id].openVin = openVin
 	r.bar[bld._id][sect._id].ventOn = ventOn
 	r.bar[bld._id][sect._id].ventDura = ventDura
@@ -61,7 +63,8 @@ function barB(r, bld) {
 		r.barB[bld._id].hout ??= []
 		r.barB[bld._id].antibliz ??= []
 		r.barB[bld._id].alrClosed ??= []
-		r.barB[bld._id].co2Normal ??= []
+		r.barB[bld._id].co2work ??= []
+		r.barB[bld._id].co2wait ??= []
 		r.barB[bld._id].openVin ??= []
 		r.barB[bld._id].ventOn ??= []
 		r.barB[bld._id].ventDura ??= []
@@ -71,7 +74,8 @@ function barB(r, bld) {
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
 		if (s.antibliz) r.barB[bld._id].antibliz.push(s.antibliz)
 		if (s.alrClosed) r.barB[bld._id].alrClosed.push(s.alrClosed)
-		if (s.co2Normal) r.barB[bld._id].co2Normal.push(s.co2Normal)
+		if (s.co2work) r.barB[bld._id].co2work.push(s.co2work)
+		if (s.co2wait) r.barB[bld._id].co2wait.push(s.co2wait)
 		if (s.openVin) r.barB[bld._id].openVin.push(s.openVin)
 		if (s.ventOn) r.barB[bld._id].ventOn.push(s.ventOn)
 		if (s.ventDura) r.barB[bld._id].ventDura.push(s.ventDura)

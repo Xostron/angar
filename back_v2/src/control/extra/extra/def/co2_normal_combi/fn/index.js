@@ -1,6 +1,7 @@
 const { compareTime } = require('@tool/command/time')
 const prepare = require('./prepare')
 const { data: store, readAcc } = require('@store')
+const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 /*
 Проветривание начинается с закрытых клапанов - это означает что на складе 
@@ -23,8 +24,16 @@ function time(bld, obj, acc, m, se, s) {
 	}
 	let time = compareTime(acc.wait, s.co2.wait.w)
 	// время не прошло
-	if (!time)
+	if (!time) {
+		wrExtra(
+			bld._id,
+			null,
+			'co2',
+			msgB(bld, 89, `${s.co2.wait.w / 60 / 1000}мин)`),
+			'co2_wait'
+		)
 		return console.log(99001, 'Удаление СО2 по времени: Ожидание', acc.wait, s.co2.wait.w)
+	}
 	// точка росы не подходит
 	if (o.tprd - 1 < o.point) {
 		acc.start = false
@@ -44,6 +53,7 @@ function time(bld, obj, acc, m, se, s) {
 	// Выключить удаление СО2
 	// if (o.tprd - 1 < o.point) acc.start = false
 	console.log(99001, 'Удаление СО2 по времени: Работа', acc)
+	delExtra(bld._id, null, 'co2', 'co2_wait')
 	// Время работы удаления СО2
 	acc.work ??= new Date()
 	// ожидаем

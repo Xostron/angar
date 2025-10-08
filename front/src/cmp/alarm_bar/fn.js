@@ -5,7 +5,8 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 	const hout = bar?.[buildingId]?.[sectionId]?.hout?.[0]
 	const antibz = bar?.[buildingId]?.[sectionId]?.antibliz
 	const alrClosed = bar?.[buildingId]?.[sectionId]?.alrClosed
-	const co2Normal = bar?.[buildingId]?.[sectionId]?.co2Normal
+	const co2work = bar?.[buildingId]?.[sectionId]?.co2work
+	const co2wait = bar?.[buildingId]?.[sectionId]?.co2wait
 	const openVin = bar?.[buildingId]?.[sectionId]?.openVin
 	const ventOn = bar?.[buildingId]?.[sectionId]?.ventOn
 	const ventDura = bar?.[buildingId]?.[sectionId]?.ventDura
@@ -16,7 +17,8 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 		tout,
 		hout,
 		antibz,
-		co2Normal,
+		co2work,
+		co2wait,
 		openVin,
 		ventOn,
 		ventDura,
@@ -34,7 +36,8 @@ function fnAlarmB(buildingId, barB, timer) {
 	const hout = barB?.[buildingId]?.hout?.[0]
 	const antibz = barB?.[buildingId]?.antibliz?.[0]
 	const alrClosed = barB?.[buildingId]?.alrClosed?.[0]
-	const co2Normal = barB?.[buildingId]?.co2Normal?.[0]
+	const co2work = barB?.[buildingId]?.co2work?.[0]
+	const co2wait = barB?.[buildingId]?.co2wait?.[0]
 	const openVin = barB?.[buildingId]?.openVin[0]
 	const ventOn = barB?.[buildingId]?.ventOn[0]
 	const ventDura = barB?.[buildingId]?.ventDura[0]
@@ -45,7 +48,8 @@ function fnAlarmB(buildingId, barB, timer) {
 		tout,
 		hout,
 		antibz,
-		co2Normal,
+		co2work,
+		co2wait,
 		openVin,
 		ventOn,
 		ventDura,

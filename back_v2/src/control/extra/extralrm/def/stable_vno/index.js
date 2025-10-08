@@ -27,7 +27,7 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	const alrFC = !isAlr ? byChangeFC(bld, sect, acc, soft, s) : true
 
 	// Авария
-	console.log(4, '=============', isAlr)
+	console.log(4, '============= stableVNO =', isAlr, 'alrCount=', alrCount, 'alrFC=', alrFC)
 	if (alrCount || alrFC) {
 		wrExtralrm(bld._id, sect._id, 'stableVno', msg(bld, sect, 40))
 		// Антидребезг: вкл ВНО и флаг дребезга (soft.stable)
@@ -84,20 +84,13 @@ function byChangeCount(bld, sect, acc, soft) {
 	acc.queue ??= []
 
 	if (acc.queue.at(-1)?.count !== soft?.order && soft?.order >= 0) {
-		console.log(
-			'++++++++++++++',
-			acc.queue.at(-1)?.count !== soft?.order,
-			acc.queue.at(-1)?.count,
-			soft?.order
-		)
 		acc.queue.push({ count: soft?.order, date: new Date() })
-		console.log(1, '++++++++++', acc.queue)
 	}
 	// Размер очереди превышен удаляем первого из очереди
 	if (acc.queue.length > _LIMIT) acc.queue.shift()
 	acc.count = Math.max(...acc.queue.map((el) => el.count))
 	// Первое и последнее изменение находится в диапазоне 1 мин? false - все ОК, true - подозрение на дребезг
-	const isTime = acc?.queue?.[0]?.date - acc?.queue?.[_LIMIT - 1]?.date < _LIMIT_TIME
+	const isTime = acc?.queue?.[_LIMIT - 1]?.date - acc?.queue?.[0]?.date < _LIMIT_TIME
 
 	// Анализ истории последних включенных ВНО, для определения дребезга, например:
 	// [0,1,0,1,0] сравниваем пары [([0],[1])([2],[3])] и [([1],[2])([3],[4])]
@@ -132,7 +125,7 @@ function byChangeFC(bld, sect, acc, soft) {
 		acc.fcQueue?.[0]?.sp === acc.fcQueue?.[2]?.sp &&
 		acc.fcQueue?.[1]?.sp === acc.fcQueue?.[3]?.sp
 	const q2 = acc.fcQueue?.[2]?.sp === acc.fcQueue?.[4]?.sp
-	const isTime = acc.fcQueue?.[0]?.date - acc.fcQueue?.[_LIMIT - 1]?.date < _LIMIT_TIME
+	const isTime = acc.fcQueue?.[_LIMIT - 1]?.date - acc.fcQueue?.[0]?.date < _LIMIT_TIME
 	console.log(
 		3,
 		'FC+++++++++++',
@@ -140,9 +133,9 @@ function byChangeFC(bld, sect, acc, soft) {
 		q2,
 		'isTime = ',
 		isTime,
-		acc.fcQueue?.[0]?.date,
-		'-',
 		acc.fcQueue?.[_LIMIT - 1]?.date,
+		'-',
+		acc.fcQueue?.[0]?.date,
 		'<',
 		_LIMIT_TIME
 	)

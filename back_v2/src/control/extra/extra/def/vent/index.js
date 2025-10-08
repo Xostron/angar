@@ -6,12 +6,14 @@ const { msg } = require('@tool/message')
 const { isReset } = require('@tool/reset')
 const { isAchieve } = require('@tool/message/achieve')
 const { isAlr } = require('@tool/message/auto')
+const { readAcc } = require('@store/index')
 
 // Вентиляторы секции
 function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
 	const { fanS, vlvS } = m
 	const { fanOff, alwaysFan } = data
+	console.log(1116, data)
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
 
@@ -24,7 +26,13 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 		if (acc?.byDura?.end) resultFan.start = [false]
 		acc.firstCycle = true
 		clear(bld, sect, acc, 1, 1, 1, 1)
-		return console.log(1111, 'vent', 'Секция', sect.name, 'isPermission = true: Дополнительная вентиляция неактивна')
+		return console.log(
+			1111,
+			'vent',
+			'Секция',
+			sect.name,
+			'isPermission = true: Дополнительная вентиляция неактивна'
+		)
 	}
 
 	// Режим вентиляции: Вкл
@@ -87,12 +95,20 @@ function fnMsg(bld, acc, s) {
 
 // Разрешить вентиляцию (true)
 function isAccess(bld, sect, obj, fanS, s, ban) {
+	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	// Отключение
 	if (!fanS.length) return false
 	// Режим вентиляции: Выкл
 	if (!s?.vent?.mode || s?.vent?.mode === 'off') return false
 	// Таймер запрета, аварийное закрытие клапанов, переключатель на щите (управление от щита)
-	if (ban || isExtralrm(bld._id, sect._id, 'alrClosed') || isExtralrm(bld._id, sect._id, 'local')) return false
+	if (
+		ban ||
+		isExtralrm(bld._id, sect._id, 'alrClosed') ||
+		isExtralrm(bld._id, sect._id, 'local') ||
+		extraCO2.start
+	)
+		return false
+
 	return true
 }
 
@@ -100,7 +116,8 @@ function isAccessTime(bld, obj) {
 	const am = obj.retain?.[bld._id]?.automode
 	const finish = isAchieve(bld._id, am, 'finish')
 	const alrAuto = isAlr(bld._id, am)
-	if (!finish && !alrAuto) return false
+	const openVin = isExtralrm(bld._id, null, 'openVin')
+	if (!finish && !alrAuto && !openVin) return false
 	return true
 }
 
