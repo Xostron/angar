@@ -44,7 +44,10 @@ export default function Network({ props }) {
 						warn(
 							{
 								cls: 'network-modal',
-								onSave: () => handleEthernetSave(config, req_ip, setInfo),
+								req_ip,
+								info,
+								resload: () => onNetInfo(req_ip, setInfo, setTtyS),
+
 							},
 							'ethernet'
 						)
@@ -58,7 +61,6 @@ export default function Network({ props }) {
 								cls: 'network-modal wifi-modal',
 								req_ip,
 								info,
-								// onSave: () => handleWifiSave(config, req_ip, info, setInfo),
 							},
 							'wifi'
 						)
@@ -155,54 +157,12 @@ function getResponseMessage(result, defaultMessage = 'Выполнено') {
 	return defaultMessage
 }
 
-// Настройка сети
-function handleEthernetSave(config, req_ip, setInfo) {
-	// Валидация IP в конфигурации Ethernet
-	if (config.ip && !validateIP(config.ip)) {
-		notification.warning('Некорректный IP адрес в настройках Ethernet')
-		return
-	}
-	post('set_ethernet', config, req_ip)
-		.then((r) => {
-			notification.success('Настройки Ethernet сохранены: ' + r.message)
-			// Обновляем информацию о сети
-			get('net_info', req_ip).then((o) => {
-				setInfo(o.net)
-			})
-		})
-		.catch((e) => {
-			notification.error(e.message || 'Ошибка настройки Ethernet', {
-				errorId: e.id,
-			})
-		})
-}
-
-// function handleWifiSave(config, req_ip, setInfo) {
-// 	// Валидация IP в конфигурации WiFi
-// 	if (config.ip && !validateIP(config.ip)) {
-// 		notification.warning('Некорректный IP адрес в настройках WiFi')
-// 		return
-// 	}
-// 	post('set_wifi', config, req_ip)
-// 		.then((r) => {
-// 			notification.success('Подключение к WiFi: ' + r.message)
-// 			// Обновляем информацию о сети
-// 			get('net_info', req_ip).then((o) => {
-// 				setInfo(o.net)
-// 			})
-// 		})
-// 		.catch((e) => {
-// 			notification.error(e.message || 'Ошибка подключения к WiFi', {
-// 				errorId: e.id,
-// 			})
-// 		})
-// }
-
 // Перезагрузка сети
 function onReloadNet(req_ip) {
 	get('reload_net', req_ip)
 		.then((result) => {
 			notification.success(getResponseMessage(result, 'Перезагрузка сети запущена'))
+			onNetInfo(req_ip, setInfo, setTtyS)
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка перезагрузки сети', {
@@ -223,5 +183,6 @@ function onNetInfo(req_ip, setInfo, setTtyS) {
 			notification.error(e.message || 'Ошибка обновления информации о сети', {
 				errorId: e.id,
 			})
+			setInfo(null)
 		})
 }

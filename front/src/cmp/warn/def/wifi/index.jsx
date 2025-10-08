@@ -38,14 +38,18 @@ export default function Wifi({data}) {
 		})
 	}
 
-	const switchWifi = () => {
-		post('switching', { type: 'wifi', state: status ? 'off' : 'on' }, data.req_ip)
+	const disconnectWifi = () => {
+		post('disconnect_wifi', {}, data.req_ip)
 		.then((o) => {
-			notification.success(o.message)
+			notification.success('Успешно отключено от WiFi сети')
 		}).catch((e) => {
-			notification.error('Ошибка переключения WiFi: ' + e.message)
+			notification.error('Ошибка отключения от WiFi сети: ' + e.message)
+		})
+		.finally(() => {
+			scanWifiNetworks()
 		})
 	}
+
 
 	const connectWifi = (doc) => {
 
@@ -165,6 +169,10 @@ export default function Wifi({data}) {
 									<span className='wifi-network-signal'>
 										{el.signal} dBm
 									</span>
+								{el.current && (
+									<Btn className='wifi-network-current-indicator'  title='Отключить' onClick={() => disconnectWifi()} />
+										
+								)}
 								</div>
 							))}
 						</div>

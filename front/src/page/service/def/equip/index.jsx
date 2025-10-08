@@ -2,10 +2,12 @@ import { useState } from 'react'
 import Btn from '@cmp/fields/btn'
 import { get, post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
+import useEquipStore from '@store/equipment'
 
 export default function Equip({ props }) {
 	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
 	const [file, setFile] = useState()
+	const apiInfo = useEquipStore((s) => s.apiInfo)
 
 	return (
 		<>
@@ -26,6 +28,40 @@ export default function Equip({ props }) {
 				/>
 				<Btn title='Обновить конфигурацию из файла' onClick={() => onEquipFile(file)} />
 			</div>
+			<br />
+			<hr />
+			<br />
+			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+				Информация о сервере:
+			</span>
+			<table className='page-service-info' style={{ borderCollapse: 'collapse', minWidth: '350px' }}>
+				<tbody>
+					<tr>
+						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Версия</td>
+						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.version || '??'}</td>
+					</tr>
+					<tr>
+						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>IP</td>
+						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.ip || '??'}</td>
+					</tr>
+					<tr>
+						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>API URI</td>
+						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.apiUri || '??'}</td>
+					</tr>
+					<tr>
+						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Порт</td>
+						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.port || '??'}</td>
+					</tr>
+					<tr>
+						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Период запроса рамы</td>
+						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.period || '??'} c</td>
+					</tr>
+					<tr>
+						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Период обновления данных ЦС</td>
+						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.periodState || '??'} c</td>
+					</tr>
+				</tbody>
+			</table>
 		</>
 	)
 }

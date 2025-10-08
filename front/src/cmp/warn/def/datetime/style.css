@@ -1,0 +1,72 @@
+.datetime-modal {
+	min-width: 400px;
+}
+
+.datetime-modal-content {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	padding: 10px;
+}
+
+.datetime-modal-title {
+	font-size: 18px;
+	font-weight: 600;
+	margin: 0;
+	text-align: center;
+	color: var(--color-text);
+}
+
+.datetime-field {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.datetime-field-label {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--color-text);
+}
+
+.datetime-input {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid var(--color-border);
+	border-radius: 4px;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	box-sizing: border-box;
+}
+
+.datetime-input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+}
+
+.datetime-modal-buttons {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.datetime-modal-buttons button {
+	flex: 1;
+}
+
+@media (max-width: 768px) {
+	.datetime-modal {
+		min-width: 300px;
+	}
+
+	.datetime-modal-content {
+		gap: 15px;
+	}
+
+	.datetime-input {
+		font-size: 14px;
+		padding: 8px;
+	}
+}

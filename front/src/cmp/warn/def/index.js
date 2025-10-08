@@ -1,14 +1,15 @@
-import person from './person'
-import turn from './turn'
-import warn from './warn'
-import fan from './fan'
-import fanao from './fan_ao'
-import valve from './valve'
-import burger from './burger'
-import ethernet from './ethernet'
-import wifi from './wifi'
-import forecast_analytic from './forecast_analytic'
-import mode_mobile from './mode_mobile'
+import person from './person';
+import turn from './turn';
+import warn from './warn';
+import fan from './fan';
+import fanao from './fan_ao';
+import valve from './valve';
+import burger from './burger';
+import ethernet from './ethernet';
+import wifi from './wifi';
+import forecast_analytic from './forecast_analytic';
+import mode_mobile from './mode_mobile';
+import datetime from './datetime';
 
 export default {
 	person,
@@ -21,8 +22,9 @@ export default {
 	ethernet,
 	wifi,
 	forecast_analytic,
-	mode_mobile, 
+	mode_mobile,
+	datetime,
 	notfound: ({ data, entryCode }) => (
-		<div className='entry'>Модального окна {entryCode} не существует</div>
+		<div className="entry">Модального окна {entryCode} не существует</div>
 	),
-}
+};

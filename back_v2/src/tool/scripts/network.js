@@ -14,9 +14,9 @@ function parseWifiList(str) {
 				el.shift();
 			}
 
-			obj.bssid = el[0];
-			obj.ssid = el[1];
-			obj.signal = el[5];
+			obj.bssid = el[0]?.trim();
+			obj.ssid = el[1]?.trim();
+			obj.signal = el[5]?.trim();
 			return obj;
 		})
 		.filter((el) => el.ssid !== '--');
@@ -27,6 +27,12 @@ function parseWifiList(str) {
 function wifi_list() {
 	return new Promise((resolve, reject) => {
 		try {
+			if (process.platform !== 'linux') {
+				return reject({
+					success: false,
+					message: 'Не на Linux системе',
+				});
+			}
 			console.log('step 1: list wifi start');
 			const result = execSync('nmcli device wifi list');
 			console.log('step 2: list wifi result', result);
@@ -49,6 +55,12 @@ function wifi_list() {
 function wifi_connect(bssid, ssid, password) {
 	return new Promise((resolve, reject) => {
 		try {
+			if (process.platform !== 'linux') {
+				return reject({
+					success: false,
+					message: 'Не на Linux системе',
+				});
+			}
 			// Экранируем кавычки в SSID для безопасности
 			const escapedSsid = ssid.replace(/"/g, '\\"');
 			console.log('step 1: connect wifi', ssid, password);
@@ -79,6 +91,57 @@ function wifi_connect(bssid, ssid, password) {
 				: e.stderr
 				? e.stderr.toString('utf8')
 				: e.toString();
+			reject({ success: false, message: errorMessage });
+		}
+	});
+}
+
+function disconnect_wifi() {
+	return new Promise((resolve, reject) => {
+		try {
+			if (process.platform !== 'linux') {
+				return reject({
+					success: false,
+					message: 'Не на Linux системе',
+				});
+			}
+			console.log('step 1: disconnect wifi - finding wifi interface');
+			// Находим имя WiFi интерфейса
+			const interfaceResult = execSync(
+				'nmcli -t -f DEVICE,TYPE device | grep wifi | cut -d: -f1'
+			);
+			const wifiInterface = interfaceResult.toString().trim();
+
+			if (!wifiInterface) {
+				throw new Error('WiFi интерфейс не найден');
+			}
+
+			console.log('step 2: disconnect wifi interface', wifiInterface);
+			// Используем 2>&1 для объединения stdout и stderr, и || true чтобы игнорировать ошибки
+			const result = execSync(
+				`nmcli device disconnect ${wifiInterface} 2>&1 || true`
+			);
+			const output = result.toString();
+			console.log('step 3: disconnect wifi result', output);
+
+			// Проверяем успешность по наличию "Выполнено" или "successfully" в выводе
+			const isSuccess =
+				output.includes('Выполнено') ||
+				output.includes('successfully') ||
+				output.includes('disconnected');
+
+			if (isSuccess) {
+				resolve({
+					success: true,
+					message: 'WiFi успешно отключен',
+					interface: wifiInterface,
+				});
+			} else {
+				throw new Error(output || 'Не удалось отключить WiFi');
+			}
+		} catch (e) {
+			console.log('step 4: disconnect wifi error', e);
+			const errorMessage = e.message || e.toString();
 			reject({ success: false, message: errorMessage });
 		}
 	});
@@ -135,4 +198,5 @@ module.exports = {
 	wifi_list,
 	wifi_connect,
 	switching,
+	disconnect_wifi,
 };

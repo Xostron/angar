@@ -1,25 +1,26 @@
-import axios from 'axios'
-import './style.css'
-import useSocketStore from '@store/socket'
-import useSocket from '@socket/useSocket'
-import { useEffect, useRef } from 'react'
-import { socket } from '@socket/index'
-import useEquipStore from '@store/equipment'
-import useInputStore from '@store/input'
-import useOutputStore from '@store/output'
+import axios from 'axios';
+import './style.css';
+import useSocketStore from '@store/socket';
+import useSocket from '@socket/useSocket';
+import { useEffect, useRef } from 'react';
+import { socket } from '@socket/index';
+import useEquipStore from '@store/equipment';
+import useInputStore from '@store/input';
+import useOutputStore from '@store/output';
+import uri from '@store/uri';
 
-import { useShallow } from 'zustand/react/shallow'
+import { useShallow } from 'zustand/react/shallow';
 
 const Main = () => {
-	const r = useRef()
+	const r = useRef();
 	// useSocket()
 	// const {initE} = useEquipStore()
 	// const { on } = useSocketStore(({ on }) => ({ on }))
-	const input = useInputStore(useShallow(({ input }) => input))
+	const input = useInputStore(useShallow(({ input }) => input));
 	// const output = useOutputStore(({ output }) => output)
 	// const equip = useEquipStore(({ list }) => list)
 	return (
-		<div className='content'>
+		<div className="content">
 			<h1>AngarWEB Test</h1>
 			{/* <p>Socket status: {on ? 'вкл' : 'выкл'}</p> */}
 			<p>
@@ -43,11 +44,11 @@ const Main = () => {
 				</button>
 			</p>
 		</div>
-	)
+	);
 
 	function clickOnOff() {
-		if (socket.connected) return socket.disconnect()
-		socket.connect()
+		if (socket.connected) return socket.disconnect();
+		socket.connect();
 	}
 	function clickWS() {
 		// Можно отправлять любое количество аргументов и любые сериализуемые структуры данных,
@@ -56,7 +57,9 @@ const Main = () => {
 		// Map и Set должны быть сериализованы вручную.
 
 		// Отправка произвольных данных из инпута по реф
-		socket.emit('hello', r.current.value, (res) => console.log('hello', res))
+		socket.emit('hello', r.current.value, (res) =>
+			console.log('hello', res)
+		);
 		/** Отправка произвольных данных
 		const obj = {
 			a: [1,2,3,4],
@@ -74,23 +77,22 @@ const Main = () => {
 		});
 		*/
 	}
-}
+};
 
 /**
  * HTTP запрос к локальному api сервера
  */
 function click() {
-	const uri = `${process.env.PUBLIC_LOCAL_API}test`
 	axios
-		.get(uri)
+		.get(uri.api)
 		.then((r) => {
-			if (!r.data) return alert('Пустой ответ')
-			console.log(JSON.stringify(r?.data))
-			alert(`Данные получены: ${JSON.stringify(r?.data, null, 2)}`)
+			if (!r.data) return alert('Пустой ответ');
+			console.log(JSON.stringify(r?.data));
+			alert(`Данные получены: ${JSON.stringify(r?.data, null, 2)}`);
 		})
 		.catch((error) => {
-			console.log(error)
-			alert(`Ошибка! ${error.toString()}`)
-		})
+			console.log(error);
+			alert(`Ошибка! ${error.toString()}`);
+		});
 }
-export default Main
+export default Main;

@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 const useEquipStore = create((set, get) => ({
 	list: [],
@@ -6,12 +6,14 @@ const useEquipStore = create((set, get) => ({
 	weather: {},
 	curB: null,
 	curS: null,
+	apiInfo: {},
 	// сохранить в стейт list[]
 	initE: (r) => {
-		if (!r) return
-		set({ factory: r?.factory })
-		set({ list: r?.building })
-		set({ weather: r?.weather ?? {} })
+		if (!r) return;
+		set({ factory: r?.factory });
+		set({ list: r?.building });
+		set({ weather: r?.weather ?? {} });
+		set({ apiInfo: r?.apiInfo });
 	},
 	// установить индекс массива (для навигации по стейту list[])
 	setCurB: (i) => set({ curB: i }),

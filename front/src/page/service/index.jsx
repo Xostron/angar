@@ -7,6 +7,7 @@ import Nav from './nav'
 import RadioIp from './radio_ip'
 import { notification } from '@cmp/notification'
 import { get } from '@tool/api/service'
+import {uri} from '@store/uri';
 
 function Service({ header = false }) {
 	const [req_ip, setReqIp] = useState()
@@ -17,25 +18,24 @@ function Service({ header = false }) {
 
 	// Обновление IP, MAC, COM-порты
 	useEffect(() => {
-		let api = process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API || '127.0.0.1'
-		api = api.replace('http://', '').replace('https://', '').replace(':4000/api/', '')
-		setReqIp(api)
-		get('net_info', api)
+		setReqIp(uri)
+		get('net_info', uri)
 			.then((o) => {
-				notification.success('IP для запросов установлен на ' + api)
+				notification.success('IP для запросов установлен на ' + uri)
 				setInfo(o.net)
 				setTtyS(o.ttyS)
 				notification.success('Информация о сети обновлена')
 			})
 			.catch((e) => {
 				notification.error(
-					e.message || e.error || 'Ошибка получения информации о сети от : ' + api,
+					e.message || e.error || 'Ошибка получения информации о сети от : ' + uri,
 					{
 						errorId: e.id,
 					}
 				)
+				setInfo(null)
 				setReqIp('127.0.0.1')
-				notification.success('IP для запросов установлен на ' + api)
+				notification.success('IP для запросов установлен на ' + uri)
 			})
 	}, [])
 

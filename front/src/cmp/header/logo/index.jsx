@@ -1,5 +1,6 @@
 import useViewStore from '@store/view'
 import './style.css'
+import {uri} from '@store/uri'
 
 //Логотип сайта + Перезагрузка страницы при клике
 export default function Logo({}) {
@@ -11,6 +12,10 @@ export default function Logo({}) {
 			alt=''
 			className={cls}
 			onClick={() => window.location.reload(true)}
+			onDoubleClick={() => {
+				console.log(111, uri)
+				window.location.href = uri}
+			}
 		/>
 	)
 }

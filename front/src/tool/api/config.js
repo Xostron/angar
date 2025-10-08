@@ -1,11 +1,12 @@
 const axios = require('axios');
+const uri = require('@store/uri');
 
 const api = axios.create({
 	// Axios Interceptors
 	// авто добавление кук
 	withCredentials: true,
 	// Базовый url
-	baseURL: process.env.PUBLIC_LOCAL_API || process.env.PUBLIC_API,
+	baseURL: uri.api,
 	// timeout: 10000,
 	headers: {
 		'Content-Type': 'application/json',

@@ -10,6 +10,7 @@ const def = require('./fn')
 function tuneup(obj) {
 	// задание на калибровку
 	const tune = store.tune
+	console.log(600001, tune)
 	if (!tune) return
 	for (const key in tune) {
 		// По окончанию калибровки убрать из задания
@@ -33,4 +34,8 @@ function tuneVlv(vlv, value) {
 	def?.[vlv._stage](vlv, state)
 }
 
+
+function check(obj){
+	console.log(Object.keys(obj))
+}
 module.exports = tuneup

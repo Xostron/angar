@@ -6,6 +6,7 @@ import { get } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import StatusWS from './status_ws'
 import useViewStore from '@src/store/view'
+import {uri} from '@store/uri'
 
 function Version() {
 	const [title, setTitle] = useState('')
@@ -20,21 +21,22 @@ function Version() {
 
 	// Запрос у ангар-сервера mac ethernet
 	useEffect(() => {
-		get('net_info', 'localhost')
+		get('net_info', uri)
 			.then((o) => {
 				setInfo(o.net)
 				notification.success('Сеть обновлена')
 			})
 			.catch((e) => {
+				setInfo(null)
 				console.log(e)
 			})
 	}, [])
 	const VERSION = process.env.VERSION
-	const NAME = process.env.NAME
+	// const NAME = process.env.NAME
 	// Версия front, URL сервера
-	const V = !mb && `V${VERSION}, server: ${process.env.PUBLIC_SOCKET_URI}`
+	const V = !mb && `V${VERSION}, url: ${uri}`
 	// Информация о сети
-	const nn = info?.map((el) => `${el.interface}: ${el.ip || el.mac}`).join('')
+	const nn = info?.map((el) => `${el.interface}: ${el.ip || el.mac}`).join(' ')
 	const N = !mb && nn && ` Сеть: ${nn}`
 
 	return (
