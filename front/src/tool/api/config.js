@@ -6,7 +6,7 @@ const api = axios.create({
 	// авто добавление кук
 	withCredentials: true,
 	// Базовый url
-	baseURL: uri.api,
+	baseURL: 'http://'+uri.api,
 	// timeout: 10000,
 	headers: {
 		'Content-Type': 'application/json',

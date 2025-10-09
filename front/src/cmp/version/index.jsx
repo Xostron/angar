@@ -24,7 +24,6 @@ function Version() {
 		get('net_info', uri)
 			.then((o) => {
 				setInfo(o.net)
-				notification.success('Сеть обновлена')
 			})
 			.catch((e) => {
 				setInfo(null)

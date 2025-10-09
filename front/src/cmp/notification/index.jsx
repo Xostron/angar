@@ -18,7 +18,7 @@ let notificationStore = {
 			timestamp: new Date().toISOString(),
 			...notification
 		}
-		this.notifications.unshift(newNotification)
+		this.notifications = [newNotification, ...this.notifications]
 		this.listeners.forEach(listener => listener(this.notifications))
 		
 		// Автоматически удаляем через указанное время

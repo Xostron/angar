@@ -34,6 +34,16 @@ const t = [
  * Формирование и отправка конфигурации (рамы) на web
  */
 async function init() {
+	// TODO: Пропуск инициализации на локальном хосте
+	if (['127.0.0.1', 'localhost'].includes(process.env.IP))
+	{
+		console.log(
+			'\x1b[32m%s\x1b[0m',
+			`IP ${process.env.IP} не является публичным, пропуск инициализации`
+		);
+		return Promise.resolve();
+	}
+
 	const config = {
 		method: 'GET',
 		url: 'angar/init',

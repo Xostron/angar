@@ -15,19 +15,11 @@ export default function Soft({ props }) {
 	)
 }
 
-// Функция для извлечения сообщения из ответа сервера
-function getResponseMessage(result, defaultMessage = 'Выполнено') {
-	if (typeof result === 'string' && result.trim()) return result
-	if (typeof result === 'object' && result?.message) return result.message
-	// Если result пустой, undefined, null или пустая строка
-	return defaultMessage
-}
-
 // Выполнить npm i && build
 function onNpm(req_ip) {
 	get('build', req_ip)
 		.then((result) => {
-			notification.success(getResponseMessage(result, 'Сборка проекта запущена'))
+			notification.success('Сборка проекта запущена подождите 10-20 секунд')
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка сборки проекта', {
@@ -40,7 +32,7 @@ function onNpm(req_ip) {
 function onPm2(req_ip) {
 	get('pm2/restart', req_ip)
 		.then((result) => {
-			notification.success(getResponseMessage(result, 'Перезапуск pm2 запущен'))
+			notification.success('Перезапуск pm2 запущен подождите 10-20 секунд')
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка перезапуска pm2', {
@@ -53,7 +45,7 @@ function onPm2(req_ip) {
 function onUptSoft(req_ip) {
 	get('upt_soft', req_ip)
 		.then((result) => {
-			notification.success(getResponseMessage(result, 'Обновление ПО запущено'))
+			notification.success('Обновление ПО запущено')
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка обновления ПО', {

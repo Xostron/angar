@@ -24,14 +24,6 @@ export default function Equip({ props }) {
 	)
 }
 
-// Функция для извлечения сообщения из ответа сервера
-function getResponseMessage(result, defaultMessage = 'Выполнено') {
-	if (typeof result === 'string' && result.trim()) return result
-	if (typeof result === 'object' && result?.message) return result.message
-	// Если result пустой, undefined, null или пустая строка
-	return defaultMessage
-}
-
 // Вызов модального окна для AutoLogin с подтверждением
 function onAL(enable, req_ip, warn, clear) {
 	const msg = enable ? 'включить' : 'выключить'
@@ -50,7 +42,7 @@ function onAL(enable, req_ip, warn, clear) {
 			: 'Ошибка выключения автоматического входа'
 		get(endpoint, req_ip)
 			.then((result) => {
-				notification.success(getResponseMessage(result, successMessage))
+				notification.success("AutoLogin действие выполнено")
 			})
 			.catch((e) => {
 				notification.error(e.message || errorMessage, { errorId: e.id })
@@ -65,7 +57,7 @@ function onAL(enable, req_ip, warn, clear) {
 function onReboot(req_ip) {
 	get('reboot', req_ip)
 		.then((result) => {
-			notification.success(getResponseMessage(result, 'Перезагрузка устройств запущена'))
+			notification.success('Перезагрузка устройств запущена')
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка перезагрузки устройств', {
@@ -77,7 +69,7 @@ function onReboot(req_ip) {
 function syncTime(req_ip) {
 	get('sync_time', req_ip)
 		.then((result) => {
-			notification.success(getResponseMessage(result, 'Синхронизация времени запущена'))
+			notification.success('Синхронизация времени завершена')
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка синхронизации времени', {
@@ -95,7 +87,7 @@ function onSetDateTime(req_ip, warn, clear) {
 			// Отправляем запрос на сервер
 			post('set_time', { dt: formattedDateTime }, req_ip)
 				.then((result) => {
-					notification.success(getResponseMessage(result, 'Время и дата успешно установлены'))
+					notification.success('Время и дата успешно установлены')
 				})
 				.catch((e) => {
 					notification.error(e.message || 'Ошибка установки времени и даты', {

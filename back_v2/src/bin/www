@@ -17,6 +17,7 @@ const loopState = require('@root/client/state');
 const loop = require('@root/control');
 const { statOnTime } = require('@root/stat');
 const { delay } = require('@tool/command/time');
+const logs = require('@tool/logs');
 // const passport = require('passport');
 
 
@@ -68,30 +69,8 @@ if (!fs.existsSync(accDir)) {
 	fs.writeFileSync(path.join(accDir, 'acc.json'), '{}');
 }
 
-// Удаление пустых файлов в директории PATH_LOG
-fs.readdir(process.env.PATH_LOG, (err, files) => {
-	console.log(
-		'Удаление пустых файлов в директории PATH_LOG: ',
-		process.env.PATH_LOG
-	);
-	if (err) return console.error(err);
-	files.forEach((file) => {
-		try {
-			const filePath = path.join(process.env.PATH_LOG, file);
-			console.log('Удаление пустого файла: ', filePath);
-			const stats = fs.statSync(filePath);
-			const isEmpty = stats.size === 0;
-			const isOlder = Date.now() - stats.birthtimeMs > 2 * 60 * 60 * 1000;
-			if (isEmpty && isOlder) fs.unlinkSync(filePath);
-		} catch (error) {
-			console.error(
-				'Ошибка удаления пустого файла в директории PATH_LOG: ',
-				error
-			);
-		}
-	});
-});
-
+// Удаление пустых файлов и архивация старых файлов в директории PATH_LOG
+logs().then().catch(console.error);
 // Запрос конфигурации у админ-сервера
 loopInit().then().catch(console.error);
 // Отправка состояния складов на админ-сервер

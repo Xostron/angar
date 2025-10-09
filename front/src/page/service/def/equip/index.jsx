@@ -68,6 +68,10 @@ export default function Equip({ props }) {
 
 // Выполнить обновление конфигурации оборудования через файл
 function onEquipFile(file) {
+	if(!file) {
+		notification.error('Файл не выбран')
+		return
+	}
 	const formData = new FormData()
 	formData.append('file', file)
 	post('file', formData)
@@ -87,7 +91,12 @@ function onEquipFile(file) {
 function onEquip(req_ip) {
 	get('equipment', req_ip)
 		.then((o) => {
-			notification.success('Конфигурация оборудования обновлена: ' + o.message)
+			if(o.result) {
+				const date = new Date(o.result)
+				notification.success('Конфигурация оборудования обновлена: ' + date.toLocaleString('ru-RU'))
+			} else {
+				notification.success('Конфигурация оборудования обновлена: ' + JSON.stringify(o))
+			}
 		})
 		.catch((e) => {
 			notification.error(

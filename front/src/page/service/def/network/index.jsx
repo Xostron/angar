@@ -5,6 +5,7 @@ import useWarn from '@store/warn'
 import Accordion from '@cmp/accordion'
 import { get, post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
+import axios from 'axios'
 
 export default function Network({ props }) {
 	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
@@ -66,7 +67,8 @@ export default function Network({ props }) {
 						)
 					}
 				/>
-				<Btn title='Перезагрузка сети' onClick={() => onReloadNet(req_ip)} />
+				<Btn title='Перезагрузка сети' onClick={() => onReloadNet(req_ip, setInfo, setTtyS)} />
+				<Btn title='Проверка связи' onClick={()=>checkInternet()} />
 			</div>
 
 			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
@@ -149,19 +151,11 @@ function set_ip(ip, req_ip) {
 		})
 }
 
-// Функция для извлечения сообщения из ответа сервера
-function getResponseMessage(result, defaultMessage = 'Выполнено') {
-	if (typeof result === 'string' && result.trim()) return result
-	if (typeof result === 'object' && result?.message) return result.message
-	// Если result пустой, undefined, null или пустая строка
-	return defaultMessage
-}
-
 // Перезагрузка сети
-function onReloadNet(req_ip) {
+function onReloadNet(req_ip, setInfo, setTtyS) {
 	get('reload_net', req_ip)
-		.then((result) => {
-			notification.success(getResponseMessage(result, 'Перезагрузка сети запущена'))
+		.then(() => {
+			notification.success('Перезагрузка сети запущена')
 			onNetInfo(req_ip, setInfo, setTtyS)
 		})
 		.catch((e) => {
@@ -185,4 +179,15 @@ function onNetInfo(req_ip, setInfo, setTtyS) {
 			})
 			setInfo(null)
 		})
+}
+
+
+function checkInternet() {
+	axios.get('https://tenta-api.flet.su/').then((result) => {
+		notification.success('Связь с Tenta установлена')
+	}).catch((e) => {
+		notification.error(e.message || 'Ошибка связи с Tenta', {
+			errorId: e.id,
+		})
+	})
 }

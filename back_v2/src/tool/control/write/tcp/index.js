@@ -20,7 +20,7 @@ function writeTCP(host, port, opt) {
 		socket.on('connect', (_) => {
 			const { i, v } = regist(opt)
 			cl.writeMultipleRegisters(i, v)
-				.then((_r) => {
+				.then((_) => {
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve(true)

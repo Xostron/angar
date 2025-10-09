@@ -12,5 +12,5 @@ if (process.env.NODE_ENV === 'development') {
 module.exports = {
 	uri,
 	socket: uri + ':' + apiPort,
-	api: 'http://'+uri + ':' + apiPort + '/api',
+	api: uri + ':' + apiPort + '/api/',
 };
