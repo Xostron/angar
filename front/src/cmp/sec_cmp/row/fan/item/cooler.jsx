@@ -1,7 +1,7 @@
 import defUn from '@src/tool/unit'
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
-
+import defImg from '@tool/icon'
 /**
  *
  * @param {object} data Рамаи мясо по ВНО испарителя
@@ -30,17 +30,19 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 	// Иконка состояния испарителя
 	const state = cooler?.state
-	const img = `/img/cold/cooler/cooler-${state}.svg` ?? ''
+	let icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
+	if (data.state == 'alarm') icon = '/img/cold/cooler/fan-alarm.svg'
+	
 	// Доступ разрешен
 	if (isAuth) cl.push('auth-sir')
 	// Вывод из работы ВНО
 	if (data.state == 'off') cl.push('off')
-	if (data.state == 'alarm') cl.push('alarm')
+
 	cl = cl.join(' ')
 	return (
 		<BtnCooler
 			onClick={() => onClick(data)}
-			icon={img}
+			icon={icon}
 			ltxt={ltxt}
 			rtxt={rtxt}
 			uptxt={uptxt}
