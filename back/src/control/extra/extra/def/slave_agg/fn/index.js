@@ -27,6 +27,6 @@ module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 		DO = obj.data.signal.find(el=>el.owner.id==DO?._id)
 		ctrlDO(DO, agg.buildingId, acc[cmpr._id].running ? 'on':'off')
 
-		console.log(222, agg.name, stateAgg, acc)
+		console.log(444, agg.name, stateAgg, acc)
 	}
 }
