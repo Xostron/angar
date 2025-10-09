@@ -2,12 +2,12 @@ const { msg } = require('@tool/message')
 const { isReset } = require('@tool/reset')
 const { stateV } = require('@tool/command/valve')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
-
+const { data: store, readAcc } = require('@store')
 /**
  * @description если за время time, концевик закрыто приточного клапана хлопнул (сработал)
  *  count раз, тогда генерируем аварию (Сработал режим антивьюги) и останов всей секции
  * Сброс аварии по кнопке и после времени ожидания wait
- * @param {*} buildingId
+ * @param {*} building
  * @param {*} section секция
  * @param {*} obj Данные основного цикла
  * @param {*} s Настройки склада
@@ -20,9 +20,18 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	const { retain, factory, value } = obj
 	const { vlvS } = m
-
+	const extraCO2 = readAcc(building._id, 'building', 'co2')
+	// Сбрасываем подсчет при работе удаления СО2
+	if (extraCO2.start) acc.cnt = 0
 	// Настроек нет - функцию не выполняем
-	if (!s.antibliz.count || !s.antibliz.time || !s.antibliz.wait || !s?.antibliz?.mode || s.antibliz.mode === 'off') return null
+	if (
+		!s.antibliz.count ||
+		!s.antibliz.time ||
+		!s.antibliz.wait ||
+		!s?.antibliz?.mode ||
+		s.antibliz.mode === 'off'
+	)
+		return null
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	const state = stateV(vlvIn?._id, value, building._id, vlvIn?.sectionId?.[0])
@@ -47,7 +56,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	}
 
 	// Ловим хлопки закрытого концевика клапана
-	if (acc.lastSt != 'cls' && state === 'cls' && !acc.alarm && validTime) {
+	if (acc.lastSt !== 'cls' && state === 'cls' && !acc.alarm && validTime) {
 		if (++acc.cnt >= s.antibliz.count) {
 			// Авария: Сработал режим антивьюги
 			acc.alarm = true

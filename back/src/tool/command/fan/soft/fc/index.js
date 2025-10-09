@@ -28,13 +28,14 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	console.log(
 		99003,
 		aCmd,
-		idS + where == 'normal' ? 'РАБОТА ПО ОБЫЧНОМУ СКЛАДУ' : 'РАБОТА ПО ХОЛОДИЛЬНИКУ'
+		idS,
+		where == 'normal' ? 'РАБОТА ПО ОБЫЧНОМУ СКЛАДУ' : 'РАБОТА ПО ХОЛОДИЛЬНИКУ'
 	)
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
-	// console.log(222, idS, 'on:', on, 'off:', off)
+	console.log(222, idS, 'on:', on, 'off:', off)
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
@@ -45,7 +46,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, fans.length)
+	checkOn(on, acc, s, fans.length)
 	checkOff.fc(off, acc)
 	// Непосредственное включение
 	turnOn(fanFC, fans, solHeat, bldId, acc)

@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 const { turnOff, turnOn, checkOff_FC, checkOff_Relay, checkOn, regul } = require('./fn')
-
+const _MIN_SP = 20
 /**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
@@ -26,7 +26,7 @@ function relay(idB, idS, fan, obj, s, se, start) {
 	// Номер текущего ВНО
 	acc.order ??= 0
 	// Задание главного ВНО с ПЧ
-	acc.fc = undefined
+	acc.fc = { sp: _MIN_SP, value: false }
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
 	// ****************** ВЫКЛ ВНО (команда || секция не в авто) ******************
@@ -35,11 +35,11 @@ function relay(idB, idS, fan, obj, s, se, start) {
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	const { p } = se
-	let on = p < s.fan.pressure.p - s.fan.hysteresisP
+	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
 	console.log(2, idS, 'ПП: давление', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, fan.fans.length)
+	checkOn(on, acc, s, fan.fans.length)
 	checkOff_Relay(off, acc)
 	// ВКЛ
 	turnOn(fan, idB, acc)
@@ -70,7 +70,7 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	// Задание главного ВНО с ПЧ
 	acc.fc ??= {}
 	acc.fc.value ??= false
-	acc.fc.sp ??= 0
+	acc.fc.sp = !acc.fc.sp ? _MIN_SP : acc.fc.sp
 	acc.fc.date ??= new Date()
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
@@ -79,7 +79,7 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	const { p } = se
-	let on = p < s.fan.pressure.p - s.fan.hysteresisP
+	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
 	console.log(2, idS, 'ПП: давление', 'on=', on, 'off=', off)
 
@@ -88,7 +88,7 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	if (acc.busy) (on = false), (off = false)
 	console.log(3, idS, 'окуривание ПП', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, fan.fans.length)
+	checkOn(on, acc,s, fan.fans.length)
 	checkOff_FC(off, acc)
 	// ВКЛ
 	turnOn(fan, idB, acc)

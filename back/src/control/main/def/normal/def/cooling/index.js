@@ -34,7 +34,18 @@ function valve(s, se, sectionId, acc, extraCO2) {
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
 	const forceCls = acc.finish && !extraCO2.start
-	console.log(99004, 'open', open, 'close', close, 'forceCls', forceCls)
+
+	console.log(
+		99004,
+		'open',
+		open,
+		'close',
+		close,
+		'forceCls',
+		forceCls,
+		'extraCO2.start',
+		extraCO2
+	)
 	return { open, close, forceCls, forceOpn: false }
 }
 
@@ -42,7 +53,17 @@ function fan(s, se, alr, sectionId, acc, extraCO2) {
 	// Условие пуска ВНО: нет аварии И {задание продукта не достигнуто ИЛИ удаление СО2}
 	const alright = !acc.finish || extraCO2.start
 	const start = !alr && alright
-	console.log(990041, 'start', start, 'alright', alright, 'Alarm', alr)
+	console.log(
+		990041,
+		'start',
+		start,
+		'alright',
+		alright,
+		'Alarm',
+		alr,
+		'extraCO2.start',
+		extraCO2.start
+	)
 	return { start }
 }
 

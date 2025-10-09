@@ -66,17 +66,23 @@ function middlewB(building, obj, s, seB, acc) {
 function valve(s, se, sectionId, acc, extraCO2) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
-	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
-	// console.log(1111, 'roma', 'Клапаны', `Открыть ${open}, Закрыть ${close}, Открыть форс ${forceOpn}`)
-	console.log(99004, 'open', open, 'close', close, 'forceOpn', forceOpn)
+	const forceOpn = (s.drying.channelMin < se.tout && s.drying.channelMax > se.tout)
+	console.log(
+		99004,
+		'open',
+		open,
+		'close',
+		close,
+		'forceOpn',
+		forceOpn,
+	)
 	return { open, close, forceOpn, forceCls: false }
 }
 function fan(s, se, alr, sectionId, acc, extraCO2) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	const force = s.drying.ventilation || forceByTout
 	const start = (!alr && extraCO2.start) || force || !alr
-	// console.log(2222, `Вентиляторы в работе = ${start} |`, `Нет аварий ${!alr}, force ${forceRun}, Вент всегда в работе ${s.drying.ventilation}`)
-	console.log(990041, 'start', start, 'force', force, 'extraCO2', extraCO2.start, 'alr',alr)
+	console.log(990041, 'start', start, 'force', force, 'extraCO2', extraCO2.start, 'alr', alr)
 	return { start }
 }
 module.exports = data

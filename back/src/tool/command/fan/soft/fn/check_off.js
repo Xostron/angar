@@ -12,6 +12,10 @@ function fc(off, acc) {
 
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	if (!compareTime(acc.date, acc.delayRelay)) return
+	// Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
+	if (acc.order >= 0) {
+		acc.fc.sp = 100
+	}
 	// Выкл следующего ВНО
 	if (--acc.order <= -1) {
 		acc.order = -1
@@ -22,7 +26,7 @@ function fc(off, acc) {
 }
 
 // Последовательное выключение - Релейная схема
-function relay(off, acc,  where) {
+function relay(off, acc, where) {
 	if (!off) return
 
 	// Проверка времени (время на стабилизацию давления/темп в канале, после выкл ВНО)

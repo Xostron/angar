@@ -1,38 +1,63 @@
 const { compareTime } = require('@tool/command/time')
 const prepare = require('./prepare')
 const { data: store, readAcc } = require('@store')
-
+const { delExtra, wrExtra } = require('@tool/message/extra')
+const { msgB } = require('@tool/message')
 /*
 Проветривание начинается с закрытых клапанов - это означает что на складе 
 либо продукт достиг температуры задания или авария авторежима
 (уличные условия не подходят)
 При проветривании открываются клпана как в авторежиме и включаются ВНО
-Поэтому acc.start = true - отключает блокировки авторежима и он начинает работать как будто в автомате
+Поэтому acc.start = true - отключает блокировки авторежима и он начинает 
+работать как будто в автомате
 */
 
 // СО2: По времени
 function time(bld, obj, acc, m, se, s) {
 	const o = prepare(bld, obj, acc, m, se, s)
-	console.log(99001, 'Удаление СО2 по времени', JSON.stringify(acc))
 	// Ожидание: Клапаны закрыты в течении времени wait
-	if (!acc?.work) {
-		if (!o.vlvClose) return clear(acc, 'work', 'wait', 'start')
-		if (!acc.wait) acc.wait = new Date()
-		// ожидаем
-		const time = compareTime(acc.wait, s.co2.wait)
-		// время не прошло
-		if (!time) return
+	acc.wait ??= new Date()
+
+	if (!o.vlvClose && !acc.work && !acc.start) {
+		console.log(99001, 'Удаление СО2 по времени: заблокировано (открыт клапан)')
+		return clear(acc, 'work', 'wait', 'start')
 	}
+	let time = compareTime(acc.wait, s.co2.wait.w)
+	// время не прошло
+	if (!time) {
+		wrExtra(
+			bld._id,
+			null,
+			'co2',
+			msgB(bld, 89, `${s.co2.wait.w / 60 / 1000}мин)`),
+			'co2_wait'
+		)
+		return console.log(99001, 'Удаление СО2 по времени: Ожидание', acc.wait, s.co2.wait.w)
+	}
+	// точка росы не подходит
+	if (o.tprd - 1 < o.point) {
+		acc.start = false
+		// Время когда встали на паузу из-за точки росы
+		acc.pause ??= new Date()
+		// Оставшееся время работы удаления СО2
+		acc.work ??= new Date()
+		acc.remaining ??= s.co2.work - (acc.pause - acc.work)
+		acc.work = acc.remaining + +new Date()
+		acc.work = new Date(acc.work)
+		return console.log(99001, 'Удаление СО2 по времени: точка росы не подходит')
+	}
+	clear(acc, 'pause', 'remaining')
 	// Проветривание:
 	// Включить удаление СО2
 	if (o.tprd - 1.5 > o.point) acc.start = true
 	// Выключить удаление СО2
-	if (o.tprd - 1 < o.point) acc.start = false
-
+	// if (o.tprd - 1 < o.point) acc.start = false
+	console.log(99001, 'Удаление СО2 по времени: Работа', acc)
+	delExtra(bld._id, null, 'co2', 'co2_wait')
 	// Время работы удаления СО2
-	if (!acc.work) acc.work = new Date()
+	acc.work ??= new Date()
 	// ожидаем
-	const time = compareTime(acc.work, s.co2.work)
+	time = compareTime(acc.work, s.co2.work)
 	// Время работы прошло
 	if (time) clear(acc, 'work', 'wait', 'start')
 }
@@ -40,25 +65,34 @@ function time(bld, obj, acc, m, se, s) {
 // СО2: По датчику
 function sensor(bld, obj, acc, m, se, s) {
 	const o = prepare(bld, obj, acc, m, se, s)
-	console.log(99001, 'Удаление СО2 по датчику', JSON.stringify(acc))
-	if (o.co2 === null || o.co2 === undefined) return clear(acc, 'work', 'start')
-	// Ожидание: Клапаны закрыты, co2 превышает уровень ->* Проветриваем
-	if (!acc.work) {
-		if (!o.vlvClose) return clear(acc, 'work', 'start')
-		if (co2 < s.co2.sp) return
+	if (o.co2 === null || o.co2 === undefined) {
+		console.log(99001, 'Удаление СО2 по датчику: показание CO2 = null | undefined')
+		return clear(acc, 'work', 'start')
 	}
-	// ->* Проветриваем по времени s.co2.work
+	if (!o.vlvClose && !acc.start) {
+		console.log(99001, 'Удаление СО2 по датчику: клапаны открыты')
+		return clear(acc, 'work', 'start')
+	}
+	if (o.co2 < s.co2.sp - s.co2.hysteresis) {
+		console.log(
+			99001,
+			'Удаление СО2 по датчику: датчик СО2 не достиг критического уровня СО2',
+			o.co2,
+			s.co2.sp,
+			s.co2.hysteresis
+		)
+		return clear(acc, 'work', 'start')
+	}
 	// Включить удаление СО2
-	if (o.tprd - 1.5 > o.point) acc.start = true
+	if (o.tprd - 1.5 > o.point) {
+		console.log(99001, 'Удаление СО2 по датчику: работа')
+		acc.start = true
+	}
 	// Выключить удаление СО2
-	if (o.tprd - 1 < o.point) acc.start = false
-
-	// Время работы удаления СО2
-	if (!acc.work) acc.work = new Date()
-	// ожидаем
-	const time = compareTime(acc.work, s.co2.work)
-	// Время работы прошло
-	if (time) clear(acc, 'work', 'start')
+	if (o.tprd - 1 < o.point) {
+		console.log(99001, 'Удаление СО2 по датчику: точка росы не подходит')
+		acc.start = false
+	}
 }
 
 /**
@@ -73,12 +107,10 @@ function sensor(bld, obj, acc, m, se, s) {
 function on(bld, obj, acc, m, se, s) {
 	console.log(99001, 'Удаление СО2 режим вкл', JSON.stringify(acc))
 	const o = prepare(bld, obj, acc, m, se, s)
-	// ->* Проветриваем по времени s.co2.work
 	// Включить удаление СО2
 	if (o.tprd - 1.5 > o.point) acc.start = true
 	// Выключить удаление СО2
 	if (o.tprd - 1 < o.point) acc.start = false
-	acc.sol = fnSol(bld, obj, acc)
 }
 
 // СО2: Выкл
@@ -123,9 +155,36 @@ module.exports = {
 	sensor,
 	off,
 	fnSol,
+	clear,
 }
 
 // const { data: store, readAcc } = require('@store')
 // // Удаление СО2: логика холодильника -> логика обычного
 // const extraCO2 = readAcc(bld._id, 'building', 'co2')
 // if (extraCO2.start) return true
+
+// function time(bld, obj, acc, m, se, s) {
+// 	const o = prepare(bld, obj, acc, m, se, s)
+// 	console.log(99001, 'Удаление СО2 по времени', acc, s.co2.wait, s.co2.work)
+// 	// Ожидание: Клапаны закрыты в течении времени wait
+// 	if (!acc?.work) {
+// 		if (!o.vlvClose && acc.start) return clear(acc, 'work', 'wait', 'start')
+// 		if (!acc.wait) acc.wait = new Date()
+// 		// ожидаем
+// 		const time = compareTime(acc.wait, s.co2.wait.w)
+// 		// время не прошло
+// 		if (!time) return
+// 	}
+// 	// Проветривание:
+// 	// Включить удаление СО2
+// 	if (o.tprd - 1.5 > o.point) acc.start = true
+// 	// Выключить удаление СО2
+// 	if (o.tprd - 1 < o.point) acc.start = false
+
+// 	// Время работы удаления СО2
+// 	if (!acc.work) acc.work = new Date()
+// 	// ожидаем
+// 	const time = compareTime(acc.work, s.co2.work)
+// 	// Время работы прошло
+// 	if (time) clear(acc, 'work', 'wait', 'start')
+// }

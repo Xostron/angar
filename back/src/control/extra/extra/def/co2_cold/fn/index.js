@@ -14,7 +14,7 @@ function off(building, co2, value) {
 // СО2: По времени
 function time(building, co2, value, acc, se, s) {
 	// Фиксируем время работы, вентиляторы - вкл
-	if (!acc?.work || compareTime(acc.wait, s.co2.wait)) {
+	if (!acc?.work || compareTime(acc.wait, s.co2?.wait?.w ?? 60000)) {
 		acc.work = new Date()
 		delete acc.wait
 		on(building._id, co2)
@@ -25,6 +25,7 @@ function time(building, co2, value, acc, se, s) {
 		off(building._id, co2)
 		acc.wait = new Date()
 	}
+	console.log('Удаление СO2 холодильник', acc, s.co2.wait)
 }
 
 // СО2: По датчику

@@ -53,7 +53,7 @@ function activity(code, o) {
 			// Подготовка данных для лога
 			const { title, value, bId, sId, sensId, type, noLog } = def[code](code, o, oData)
 			// Блокировка лога
-			console.log(5551, 'webLog', code, noLog, name, title)
+			console.log(55511, 'webLog', code, o, title)
 			if (noLog) return
 			loggerEvent['activity']({
 				message: {

@@ -1,5 +1,5 @@
 const { compareTime } = require('@tool/command/time')
-const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
+const { ctrlDO } = require('@tool/command/module_output')
 //
 //
 /**
@@ -47,8 +47,8 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 
 	// Команда на выключение соленоида подогрева
 	if (off) {
-		// Выключение, если все ВНО и ПЧ выключены
-		if (where == 'cold' && acc.order === -1 && acc.fc.sp < s.fan.min) {
+		// Выключение, если все ВНО и ПЧ выключены && acc.fc.sp < s.fan.min
+		if (where == 'cold' && acc.order === -1 && !acc.fc.value) {
 			// Ждем и выключаем соленоид подогрева
 			if (!compareTime(acc.sol.date, acc.delaySolHeat)) {
 				acc.busy = false

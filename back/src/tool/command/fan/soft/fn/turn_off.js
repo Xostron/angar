@@ -1,6 +1,8 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const ignore = require('./ignore')
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 /**
  * Выключение ВНО секции
@@ -28,6 +30,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
+	console.log(5552,idS, aCmd, acc)
 	return true
 }
 
@@ -58,6 +61,7 @@ function clear(idS) {
 	store.watchdog.softFan[idS].fc = undefined
 	store.watchdog.softFan[idS].sol = undefined
 	store.watchdog.softFan[idS].allStarted = undefined
+	console.log(5553, idS, 'Очистка store.watchdog.softFan')
 }
 
 // Секция выключена -> отключение всех узлов
@@ -65,11 +69,11 @@ function offAll(fanFC, fans, solHeat, bld) {
 	// Выключение всех ВНО (однократно) TODO проверить комбинированный
 	// if (acc.order !== -1  || where == 'normal') {
 	fans.forEach((f, i) => {
-		f?.ao?.id ? ctrlAO(f, bld._id, 0) : null
+		f?.ao?.id ? ctrlAO(f, bld._id, _MIN_SP) : null
 		ctrlDO(f, bld._id, 'off')
 	})
 	if (fanFC) {
-		ctrlAO(fanFC, bld._id, 0)
+		ctrlAO(fanFC, bld._id, _MIN_SP)
 		ctrlDO(fanFC, bld._id, 'off')
 	}
 	solHeat.forEach((el) => {

@@ -1,4 +1,4 @@
-const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
+const { ctrlDO } = require('@tool/command/module_output')
 // Ступенчатое управление соленоидами испарителя
 // Комби склад в режиме холодильник:
 // 1. Сразу все соленоиды включаются/выключаются,

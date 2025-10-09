@@ -19,6 +19,14 @@ const apiConfig = (data, params) => ({
  */
 module.exports = async function state() {
 	try {
+		// TODO: Пропуск отправки данных на локальном хосте
+		if (['127.0.0.1', 'localhost'].includes(process.env.IP)) {
+			console.log(
+				'\x1b[32m%s\x1b[0m',
+				`IP ${process.env.IP} не является публичным, пропуск отправки данных на Tenta`
+			);
+			return false;
+		}
 		// Формирование state (значения данных по PC)
 		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. Подготовка данных...')
 		const o = await prepare()

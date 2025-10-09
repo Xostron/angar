@@ -1,4 +1,6 @@
 const { setCmd } = require('@tool/command/set')
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 // Записть в аналоговый выход
 function ctrlAO(o, bldId, value) {
@@ -6,7 +8,7 @@ function ctrlAO(o, bldId, value) {
 	// console.log(999, o.name, `Аналоговый выходв ${value} %`)
 	const mdlId = o?.ao?.id
 	const ch = o?.ao?.channel - 1
-	const r = { [bldId]: { [mdlId]: { [ch]: value } } }
+	const r = { [bldId]: { [mdlId]: { [ch]: value || _MIN_SP } } }
 	setCmd(r)
 }
 

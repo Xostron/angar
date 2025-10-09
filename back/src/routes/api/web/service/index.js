@@ -11,10 +11,12 @@ const {
 	reload_netmanager,
 	wifi_list,
 	wifi_connect,
-	switching,
 	eth_info,
 	eth_manager,
 	file,
+	sync_time,
+	set_time,
+	disconnect_wifi,
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -43,12 +45,18 @@ function service(router) {
 	serviceRouter.get('/wifi', wifi_list());
 	// Подключение к wifi точке доступа
 	serviceRouter.post('/wifi', wifi_connect());
+	// Отключение от wifi точки доступа
+	serviceRouter.post('/disconnect_wifi', disconnect_wifi());
 	// Переключение интерфейса включение или выключение
-	serviceRouter.post('/switching', switching());
+	// serviceRouter.post('/switching', switching());
 	// Информация о сетевых интерфейсах
 	serviceRouter.get('/eth', eth_info());
 	// Управление сетевыми интерфейсами
 	serviceRouter.post('/eth', eth_manager());
+	// Синхронизировать время через интернет
+	serviceRouter.get('/sync_time', sync_time());
+	// Установить время и дату вручную
+	serviceRouter.post('/set_time', set_time());
 
 	// Установить файл с конфигурацией оборудования
 	serviceRouter.post('/file', file());

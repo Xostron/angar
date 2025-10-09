@@ -15,10 +15,16 @@ async function write(obj) {
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль
+			// if (obj[i].ip === '192.168.21.127') {
+			// 	console.log(777,'not active write', obj[i].ip, obj[i].value )
+			// 	continue
+			// }
 			const v = await make(obj[i])
 			await pause(100)
 			const k = obj[i].name + ' Порт ' + obj[i].port
 			ok[k] = v
+			// if (obj[i].ip === '192.168.21.127')
+			// 	console.log(999, 'write', obj[i].ip, obj[i].value, v !== true ? 'FUCKUP' : v)
 		}
 		return ok
 	} catch (error) {

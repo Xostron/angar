@@ -10,6 +10,7 @@ const auto_login = require('@tool/scripts/auto_login');
 const reload_net = require('@tool/scripts/reload_net');
 const network = require('@tool/scripts/network');
 const eth = require('@tool/scripts/eth');
+const time = require('@tool/scripts/time');
 const fsp = require('fs').promises;
 const { writeConfig } = require('@tool/init');
 
@@ -23,33 +24,43 @@ function net_info() {
 
 function reload() {
 	return (req, res) => {
-		reboot().then(res.json).catch(res.status(400).json);
+		reboot()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function upt_soft() {
 	return (req, res) => {
-		update().then(res.json).catch(res.status(400).json);
+		update()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function pm2_cmd() {
 	return (req, res) => {
 		const { code } = req.params;
-		pm2(code).then(res.json).catch(res.status(400).json);
+		pm2(code)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function set_ip() {
 	return (req, res) => {
 		const { ip } = req.body;
-		set_new_ip(ip).then(res.json).catch(res.status(400).json);
+		set_new_ip(ip)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function build() {
 	return (req, res) => {
-		rebuild().then(res.json).catch(res.status(400).json);
+		rebuild()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
@@ -60,14 +71,16 @@ function autoLogin() {
 			return res.status(400).json({ error: 'Не передан флаг' });
 		}
 		auto_login(flag === true || flag === 'true')
-			.then(res.json)
-			.catch(res.status(400).json);
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function reload_netmanager() {
 	return (req, res) => {
-		reload_net().then(res.json).catch(res.status(400).json);
+		reload_net()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
@@ -113,30 +126,28 @@ function wifi_connect() {
 	};
 }
 
-function switching() {
+function disconnect_wifi() {
 	return (req, res) => {
-		const { type, state } = req.body;
-		if (!type || !state) {
-			return res
-				.status(400)
-				.json({ error: 'Не передан тип и состояние' });
-		}
 		network
-			.switching(type, state)
-			.then(res.json)
+			.disconnect_wifi()
+			.then((r) => res.json(r))
 			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function eth_info() {
 	return (req, res) => {
-		eth.info().then(res.json).catch(res.status(400).json);
+		eth.info()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
 function eth_manager() {
 	return (req, res) => {
-		eth.manager(req.body).then(res.json).catch(res.status(400).json);
+		eth.manager(req.body)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
 }
 
@@ -165,6 +176,22 @@ function file() {
 	};
 }
 
+function sync_time() {
+	return (req, res) => {
+		time.sync()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
+function set_time() {
+	return (req, res) => {
+		time.set(req.body.dt)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
 module.exports = {
 	reload,
 	upt_soft,
@@ -179,5 +206,7 @@ module.exports = {
 	file,
 	wifi_list,
 	wifi_connect,
-	switching,
+	sync_time,
+	set_time,
+	disconnect_wifi,
 };

@@ -1,5 +1,5 @@
 const { mech } = require('@tool/command/mech')
-const { ctrlV, ctrlDO, ctrlAO } = require('@tool/command/module_output')
+const { ctrlV } = require('@tool/command/module_output')
 const { arrCtrl } = require('@tool/command/fan/fn')
 
 // Принудительный останов когда склад выключен и секция в авто или выкл

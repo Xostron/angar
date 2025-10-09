@@ -1,5 +1,6 @@
 const { compareTime } = require('@tool/command/time')
-const _MAX = 100
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 /**
  * Регулирование ПЧ (Аналоговый выход ВНО)
@@ -23,16 +24,17 @@ function regul(acc, fanFC, on, off, s, where) {
 		acc.fc.value = true
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
-		if (acc.fc.sp >= _MAX) return false
+		if (acc.fc.sp >= _MAX_SP) return false
 		if (!compareTime(acc.fc.date, acc.delayFC)) return true
 
 		// Время стабилизации прошло
 		acc.fc.sp += s.fan.step
 		// Ограничение max задания ПЧ
-		acc.fc.sp = acc.fc.sp > _MAX ? _MAX : acc.fc.sp
+		acc.fc.sp = acc.fc.sp > _MAX_SP ? _MAX_SP : acc.fc.sp
 		// Ограничение min задания ПЧ
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
+		
 	}
 
 	// Пошагово уменьшаем задание ПЧ
@@ -42,6 +44,8 @@ function regul(acc, fanFC, on, off, s, where) {
 		// Задание ПЧ дошло до min% && не все ВНО выкл  => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc.sp <= s.fan.min && acc.order >= 0) {
 			acc.fc.sp = s.fan.min
+			// // Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
+			// acc.fc.sp = 100
 			return false
 		}
 		// Ждем
@@ -56,10 +60,10 @@ function regul(acc, fanFC, on, off, s, where) {
 	return true
 }
 
-// Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
+// Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min && acc.fc.sp < s.fan.min
 function magic(acc, s, where) {
-	if (where == 'cold' && acc.order === -1 && acc.fc.sp < s.fan.min) {
-		acc.fc.sp = 0
+	if (where == 'cold' && acc.order === -1 && !acc.fc.value) {
+		acc.fc.sp = _MIN_SP
 		acc.fc.value = false
 		acc.fc.date = new Date()
 		return true

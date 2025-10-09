@@ -20,13 +20,15 @@ const _RESET = 1 * 60 * 60 * 1000
  * @returns {boolean} авария
  */
 module.exports = function openVin(building, section, obj, s, seB, m, automode, acc, data) {
-	// Только для режима храненния || Нет приточных клапанов
+	// Только для режима храненния || Нет приточных клапанов - не выполняем
 	if (automode !== 'cooling' || !m?.vlvIn?.length) return false
 	// Нажата кнопка сброса аварии
 	if (isReset(building._id) && acc?.alarm) fnReset(building, acc)
 
 	// Есть ли хоть один открытый приточный клапан
-	const hasOpen = m.vlvIn.some((el) => stateV(el?._id, obj.value, building._id, el?.sectionId?.[0]) == 'opn')
+	const hasOpen = m.vlvIn.some(
+		(el) => stateV(el?._id, obj.value, building._id, el?.sectionId?.[0]) === 'opn'
+	)
 	// Клапан открыт и темп.канала > темп. продукта
 	const attn = hasOpen && seB.tcnl > seB.tprd
 
@@ -46,9 +48,6 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 	// Время ожидания сброса аварии закончилось
 	const hasReset = compareTime(acc?.reset, _RESET)
 	if (hasReset && acc?.alarm) fnReset(building, acc)
-
-	// console.log(333, 'openVin', building._id, acc)
-
 	return acc?.alarm ?? false
 }
 

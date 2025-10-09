@@ -1,5 +1,7 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { softsol } = require('./soft_solenoid')
+const _MAX_SP = 100
+const _MIN_SP = 20
 
 function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	const { start, s, se, m, accAuto } = bdata
@@ -14,7 +16,7 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 		// f = null - означает игнорирование ВНО испарителя, разрешение на работу в обычном режиме комби склада
 		if (f === null) return
 		ctrlDO(el, idB, f ? 'on' : 'off')
-		if (el?.ao?.id) f ? ctrlAO(el, idB, 100) : ctrlAO(el, idB, 0)
+		if (el?.ao?.id) f ? ctrlAO(el, idB, _MAX_SP) : ctrlAO(el, idB, _MIN_SP)
 	})
 	// Оттайка
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
