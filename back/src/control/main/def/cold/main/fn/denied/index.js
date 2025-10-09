@@ -46,9 +46,9 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
 	// Готов ли агрегат
 	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId)
-
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
 	const alrAuto = isAlr(bld._id, automode)
+
 	// Выведен ли из работы ВНО испарителя
 	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
 	store.denied[bld._id][clr._id] =
@@ -60,9 +60,18 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 		!store.toAuto?.[bld._id]?.[sect._id] ||
 		!alrAuto ||
 		automode != 'cooling' ||
-		fansOff
-
-	console.log(55, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id], 'Агрегат готов =', aggr)
+		fansOff ||
+		// TODO Авария ВНО испарителя
+		stateCooler.fan.state === 'alarm'
+	console.log(
+		55,
+		clr.name,
+		sect.name,
+		'работа запрещена combi',
+		store.denied[bld._id][clr._id],
+		'Агрегат готов =',
+		aggr
+	)
 
 	// Работа испарителя запрещена?
 	if (!store.denied[bld._id][clr._id]) {
@@ -104,6 +113,7 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 		!store.toAuto?.[bld._id]?.[sect._id] ||
 		!alrAuto ||
 		automode != 'cooling'
+
 	console.log(
 		55,
 		sect.name,
