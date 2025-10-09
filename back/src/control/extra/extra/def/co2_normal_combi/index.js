@@ -18,13 +18,13 @@ function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	const alrAuto = isAlr(bld._id, am)
 	const openVin = isExtralrm(bld._id, null, 'openVin')
 	// Условия СO2: достигнута темп. задания, авария авторежима
-	if ((!finish && !alrAuto && !openVin) || am === 'cooling') {
+	if ((!finish && !alrAuto && !openVin) || (am === 'cooling' && bld.type === 'combi')) {
 		console.log('Условия удаления СО2: не соблюдены', am)
 		delExtra(bld._id, null, 'co2', 'co2_wait')
 		return def.clear(acc, 'work', 'wait', 'start')
 	}
 	console.log(
-		`Условия удаления СО2- соблюдены: достиг задания ${finish}, авария авторежима ${alrAuto}, ${am}`
+		`Условия удаления СО2- соблюдены: достиг задания ${finish}, авария авторежима ${alrAuto}, ${am}, ${bld.type}`
 	)
 	def[s?.co2?.mode](bld, obj, acc, m, se, s)
 	def.fnSol(bld, obj, acc)
