@@ -23,8 +23,8 @@ function writeTCP(host, port, opt) {
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
-					if (opt.ip === '192.168.21.126')
-					console.log(666, 'write', opt.ip, opt.value)
+					// if (opt.ip === '192.168.21.126')
+					// console.log(666, 'write', opt.ip, opt.value)
 					resolve(true)
 				})
 				.catch((e) => {

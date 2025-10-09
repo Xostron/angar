@@ -35,6 +35,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	if (isAuth) cl.push('auth-sir')
 	// Вывод из работы ВНО
 	if (data.state == 'off') cl.push('off')
+	if (data.state == 'alarm') cl.push('alarm')
 	cl = cl.join(' ')
 	return (
 		<BtnCooler

@@ -18,8 +18,8 @@ async function read(arr, obj) {
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
 			// Чтение данных модуля
 			const v = await make(arr[i])
-			if (arr[i].ip === '192.168.21.126')
-			console.log(555, 'read', arr[i].ip, arr[i].name, v)
+			// if (arr[i].ip === '192.168.21.126')
+			// console.log(555, 'read', arr[i].ip, arr[i].name, v)
 			// флаг первого запуска сервера
 			store.startup = false
 
