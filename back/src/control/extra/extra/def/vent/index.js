@@ -13,7 +13,7 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
 	const { fanS, vlvS } = m
 	const { fanOff, alwaysFan } = data
-	console.log(1116, data)
+	// console.log(1116, data)
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
 
@@ -26,13 +26,13 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 		if (acc?.byDura?.end) resultFan.start = [false]
 		acc.firstCycle = true
 		clear(bld, sect, acc, 1, 1, 1, 1)
-		return console.log(
-			1111,
-			'vent',
-			'Секция',
-			sect.name,
-			'isPermission = true: Дополнительная вентиляция неактивна'
-		)
+		// return console.log(
+		// 	1111,
+		// 	'vent',
+		// 	'Секция',
+		// 	sect.name,
+		// 	'isPermission = true: Дополнительная вентиляция неактивна'
+		// )
 	}
 
 	// Режим вентиляции: Вкл
@@ -62,7 +62,7 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 
 	// Когда оба отработали и пропала авария- очищаем расчеты
 	if (acc.byDura?.finish) {
-		console.log(1116, 'vent byDura выполнился', acc, 'далее byDura очистится')
+		// console.log(1116, 'vent byDura выполнился', acc, 'далее byDura очистится')
 		acc.byDura = {}
 		delExtra(bld._id, sect._id, 'vent_dura')
 	}

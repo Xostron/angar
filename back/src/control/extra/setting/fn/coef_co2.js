@@ -43,7 +43,7 @@ function coefWait(stg, bld, obj) {
 		// console.log(4, heap.co2.t1, '&&', tprd, '-', hyst, '>', stg?.wait1?.p)
 	}
 
-	console.log(3333, 'Коэффициенты CO2', wait)
+	// console.log(3333, 'Коэффициенты CO2', wait)
 	return wait
 }
 

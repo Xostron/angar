@@ -14,7 +14,7 @@ const { ctrlDO } = require('@tool/command/module_output')
 module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 	if (!agg.compressorList.length) return
 	for (const cmpr of agg.compressorList) {
-		console.log(111, 'Агрегат', agg.name, stateAgg.compressor[cmpr._id].beep, 'давление на всасе', pin)
+		// console.log(111, 'Агрегат', agg.name, stateAgg.compressor[cmpr._id].beep, 'давление на всасе', pin)
 		if (!Object.keys(stateAgg.compressor[cmpr._id].beep).length) continue
 		if (pin.state == 'alarm') continue
 		acc[cmpr._id] ??= {}
@@ -27,6 +27,6 @@ module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 		DO = obj.data.signal.find(el=>el.owner.id==DO?._id)
 		ctrlDO(DO, agg.buildingId, acc[cmpr._id].running ? 'on':'off')
 
-		console.log(444, agg.name, stateAgg, acc)
+		// console.log(444, agg.name, stateAgg, acc)
 	}
 }

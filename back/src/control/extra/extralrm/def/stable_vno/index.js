@@ -27,7 +27,7 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	const alrFC = !isAlr ? byChangeFC(bld, sect, acc, soft, s) : true
 
 	// Авария
-	console.log(4, '============= stableVNO =', isAlr, 'alrCount=', alrCount, 'alrFC=', alrFC)
+	// console.log(4, '============= stableVNO =', isAlr, 'alrCount=', alrCount, 'alrFC=', alrFC)
 	if (alrCount || alrFC) {
 		wrExtralrm(bld._id, sect._id, 'stableVno', msg(bld, sect, 40))
 		// Антидребезг: вкл ВНО и флаг дребезга (soft.stable)
@@ -45,10 +45,8 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 		acc.queue = []
 		acc.fcQueue = []
 	}
-	// console.log(555, 'Задание', soft)
-	console.log(555, 'Антидребезг', acc)
-	console.log(5551, 'Плавный пуск', soft)
-	// console.log(5551, 'Антидребезг', acc)
+	// console.log(555, sect._id, 'Антидребезг', acc)
+	// console.log(5551, sect._id, 'Плавный пуск', soft)
 }
 
 module.exports = stableVno
@@ -99,7 +97,7 @@ function byChangeCount(bld, sect, acc, soft) {
 		acc.queue?.[0]?.count === acc.queue?.[2]?.count &&
 		acc.queue?.[1]?.count === acc.queue?.[3]?.count
 	const q2 = acc.queue?.[2]?.count === acc.queue?.[4]?.count
-	console.log(3, 'Relay+++++++++++', q1, q2, isTime)
+	// console.log(3, 'Relay+++++++++++', q1, q2, isTime)
 	if (q1 && q2 && isTime) return true
 	return false
 }
@@ -126,19 +124,19 @@ function byChangeFC(bld, sect, acc, soft) {
 		acc.fcQueue?.[1]?.sp === acc.fcQueue?.[3]?.sp
 	const q2 = acc.fcQueue?.[2]?.sp === acc.fcQueue?.[4]?.sp
 	const isTime = acc.fcQueue?.[_LIMIT - 1]?.date - acc.fcQueue?.[0]?.date < _LIMIT_TIME
-	console.log(
-		3,
-		'FC+++++++++++',
-		q1,
-		q2,
-		'isTime = ',
-		isTime,
-		acc.fcQueue?.[_LIMIT - 1]?.date,
-		'-',
-		acc.fcQueue?.[0]?.date,
-		'<',
-		_LIMIT_TIME
-	)
+	// console.log(
+	// 	3,
+	// 	'FC+++++++++++',
+	// 	q1,
+	// 	q2,
+	// 	'isTime = ',
+	// 	isTime,
+	// 	acc.fcQueue?.[_LIMIT - 1]?.date,
+	// 	'-',
+	// 	acc.fcQueue?.[0]?.date,
+	// 	'<',
+	// 	_LIMIT_TIME
+	// )
 	if (q1 && q2 && isTime) {
 		acc.count = soft?.order
 		return true
