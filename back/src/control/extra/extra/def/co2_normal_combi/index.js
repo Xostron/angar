@@ -1,32 +1,21 @@
 const def = require('./fn')
 const { fnAlarm, delUnused } = require('@tool/command/extra')
-const { isAchieve } = require('@tool/message/achieve')
-const { isAlr } = require('@tool/message/auto')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
-const { isExtralrm } = require('@tool/message/extralrm')
+const prepare = require('./fn/prepare')
+const check = require('./fn/check')
+
 // Для обычного и комбинированного склада
 // Удаление СО2 для всего склада
-
 function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
-	const am = obj.retain?.[bld._id]?.automode
-
-	const finish = isAchieve(bld._id, am, 'finish')
-	const alrAuto = isAlr(bld._id, am)
-	const openVin = isExtralrm(bld._id, null, 'openVin')
-	// Условия СO2: достигнута темп. задания, авария авторежима
-	if ((!finish && !alrAuto && !openVin) || (am === 'cooling' && bld.type === 'combi')) {
-		console.log('Условия удаления СО2: не соблюдены', am)
-		delExtra(bld._id, null, 'co2', 'co2_wait')
-		return def.clear(acc, 'work', 'wait', 'start')
-	}
-	console.log(
-		`Условия удаления СО2- соблюдены: достиг задания ${finish}, авария авторежима ${alrAuto}, ${am}, ${bld.type}`
-	)
-	def[s?.co2?.mode](bld, obj, acc, m, se, s)
+	// Точка росы, закрыты ли клапаны, показание СО2
+	const o = prepare(bld, obj, acc, m, se, s)
+	// Разрешение на удаление СО2
+	if (!check(bld, obj, acc, o)) return
+	def[s?.co2?.mode](bld, obj, acc, m, se, s, o)
 	def.fnSol(bld, obj, acc)
 }
 

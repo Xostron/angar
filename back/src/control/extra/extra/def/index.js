@@ -16,7 +16,7 @@ const slaveAgg = require('./slave_agg')
 const coNormal = require('./co2_normal_combi')
 
 const data = {
-	// Обычный склад - Доп функции для секции
+	// Обычный склад и комби склад - Доп функции для секции
 	section: {
 		// Секция - АВТО
 		on: {
@@ -71,12 +71,10 @@ const data = {
 			slaveAgg,
 		},
 	},
-	// Комбинированный склад = {...обычный склад, комбинированный}
+	// Комбинированный склад
 	combi: {
 		on: {},
-		off: {
-			// smokingNC,
-		},
+		off: {},
 		always: {
 			slaveAgg,
 		},

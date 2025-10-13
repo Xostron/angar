@@ -15,5 +15,7 @@ module.exports = function prepare(bld, obj, acc, m, se, s) {
 	const tprd = obj.value.total[bld._id].tprd.min
 	// Показание со2
 	const co2 = obj.value.total[bld._id]?.co2?.max
+	// Относительная влажность улицы
+	
 	return { vlvClose: vlv, point, tprd, co2 }
 }

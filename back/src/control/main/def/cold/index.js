@@ -25,7 +25,6 @@ function runExtra(building, obj, bdata) {
 	let alr = false
 	// Тип склада cold - холодильник, combi - комбинированный
 	const type = building?.type
-	
 	// Всегда
 	alr = alr || extralrm(building, null, obj, s, se, m, null, null, type, 'always')
 	extra(building, null, obj, s, se, m, null, null, null, type, 'always')

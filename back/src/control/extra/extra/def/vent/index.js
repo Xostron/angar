@@ -51,12 +51,12 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 		// Рециркуляция
 		if (isAccessTime(bld, obj)) {
 			mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
-			console.log(1115, 'vent byTime в работе', acc)
+			// console.log(1115, 'vent byTime в работе', acc)
 		} else {
 			acc.byTime = {}
 			delExtra(bld._id, sect._id, 'vent_time_wait')
 			delExtra(bld._id, sect._id, 'vent_time')
-			console.log(1115, 'vent byTime заблокирован', acc)
+			// console.log(1115, 'vent byTime заблокирован', acc)
 		}
 	}
 

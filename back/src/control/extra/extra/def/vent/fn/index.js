@@ -46,7 +46,7 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 		acc.byDura.vlvIn = true
 	}
 	// Вентиляторы собираются выключиться - расчет продолжительности подхвата
-	console.log(11141, fanOff)
+	// console.log(11141, fanOff)
 	if (fanOff && acc.byDura?.begin && !acc.byDura?.end) {
 		// Дополнительное время вентиляции
 		x = ((curTime - acc.byDura.begin) * s.vent.add) / 100
@@ -70,7 +70,7 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 		acc.byDura.finish = true
 	}
 	if (acc.byDura.finish) delExtra(bld._id, sect._id, 'vent_dura')
-	console.log(11141, 'vent Время отключения подхвата', acc, fanOff, alarm)
+	// console.log(11141, 'vent Время отключения подхвата', acc, fanOff, alarm)
 }
 
 // Режим вентиляции: Авто - по времени
@@ -83,12 +83,12 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 		(Object.values(acc?.byDura ?? {}).length && !acc?.byDura.finish)
 	) {
 		acc.byTime = {}
-		console.log(
-			1117,
-			'vent reset byTime',
-			typeof s.vent.work !== 'number',
-			Object.values(acc?.byDura).length
-		)
+		// console.log(
+		// 	1117,
+		// 	'vent reset byTime',
+		// 	typeof s.vent.work !== 'number',
+		// 	Object.values(acc?.byDura).length
+		// )
 		delExtra(bld._id, sect._id, 'vent_time_wait')
 		delExtra(bld._id, sect._id, 'vent_time')
 		return
@@ -105,7 +105,8 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 			'vent_time_wait',
 			msg(bld, sect, 87, `${s.vent.wait / 60 / 1000}мин)`)
 		)
-		return console.log(1118, 'vent: Ожидание', acc.byTime.wait, s.vent.wait)
+		// console.log(1118, 'vent: Ожидание', acc.byTime.wait, s.vent.wait)
+		return 
 	}
 	// Вкл вентиляции, когда истечет время ожидания
 	resultFan.start = [true]

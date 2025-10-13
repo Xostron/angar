@@ -13,8 +13,7 @@ const { msgB } = require('@tool/message')
 */
 
 // СО2: По времени
-function time(bld, obj, acc, m, se, s) {
-	const o = prepare(bld, obj, acc, m, se, s)
+function time(bld, obj, acc, m, se, s, o) {
 	// Ожидание: Клапаны закрыты в течении времени wait
 	acc.wait ??= new Date()
 
@@ -63,8 +62,7 @@ function time(bld, obj, acc, m, se, s) {
 }
 
 // СО2: По датчику
-function sensor(bld, obj, acc, m, se, s) {
-	const o = prepare(bld, obj, acc, m, se, s)
+function sensor(bld, obj, acc, m, se, s, o) {
 	if (o.co2 === null || o.co2 === undefined) {
 		console.log(99001, 'Удаление СО2 по датчику: показание CO2 = null | undefined')
 		return clear(acc, 'work', 'start')
@@ -104,9 +102,8 @@ function sensor(bld, obj, acc, m, se, s) {
  * @param {*} se Датчики склада
  * @param {*} s Настройки
  */
-function on(bld, obj, acc, m, se, s) {
+function on(bld, obj, acc, m, se, s, o) {
 	console.log(99001, 'Удаление СО2 режим вкл', JSON.stringify(acc))
-	const o = prepare(bld, obj, acc, m, se, s)
 	// Включить удаление СО2
 	if (o.tprd - 1.5 > o.point) acc.start = true
 	// Выключить удаление СО2
@@ -114,7 +111,7 @@ function on(bld, obj, acc, m, se, s) {
 }
 
 // СО2: Выкл
-function off(bld, obj, acc, m, se, s) {
+function off(bld, obj, acc, m, se, s, o) {
 	console.log(99001, 'Удаление СО2 режим выкл', JSON.stringify(acc))
 	acc.start = false
 }
@@ -157,34 +154,3 @@ module.exports = {
 	fnSol,
 	clear,
 }
-
-// const { data: store, readAcc } = require('@store')
-// // Удаление СО2: логика холодильника -> логика обычного
-// const extraCO2 = readAcc(bld._id, 'building', 'co2')
-// if (extraCO2.start) return true
-
-// function time(bld, obj, acc, m, se, s) {
-// 	const o = prepare(bld, obj, acc, m, se, s)
-// 	console.log(99001, 'Удаление СО2 по времени', acc, s.co2.wait, s.co2.work)
-// 	// Ожидание: Клапаны закрыты в течении времени wait
-// 	if (!acc?.work) {
-// 		if (!o.vlvClose && acc.start) return clear(acc, 'work', 'wait', 'start')
-// 		if (!acc.wait) acc.wait = new Date()
-// 		// ожидаем
-// 		const time = compareTime(acc.wait, s.co2.wait.w)
-// 		// время не прошло
-// 		if (!time) return
-// 	}
-// 	// Проветривание:
-// 	// Включить удаление СО2
-// 	if (o.tprd - 1.5 > o.point) acc.start = true
-// 	// Выключить удаление СО2
-// 	if (o.tprd - 1 < o.point) acc.start = false
-
-// 	// Время работы удаления СО2
-// 	if (!acc.work) acc.work = new Date()
-// 	// ожидаем
-// 	const time = compareTime(acc.work, s.co2.work)
-// 	// Время работы прошло
-// 	if (time) clear(acc, 'work', 'wait', 'start')
-// }
