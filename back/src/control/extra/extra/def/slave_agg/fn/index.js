@@ -14,19 +14,20 @@ const { ctrlDO } = require('@tool/command/module_output')
 module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 	if (!agg.compressorList.length) return
 	for (const cmpr of agg.compressorList) {
-		// console.log(111, 'Агрегат', agg.name, stateAgg.compressor[cmpr._id].beep, 'давление на всасе', pin)
+		console.log(111, 'Агрегат', agg.name, agg._id, stateAgg.compressor[cmpr._id].beep)
 		if (!Object.keys(stateAgg.compressor[cmpr._id].beep).length) continue
 		if (pin.state == 'alarm') continue
-		acc[cmpr._id] ??= {}
+		const owner = agg._id + '_' + cmpr._id
+		acc[owner] ??= {}
 		// Условие пуска
-		fnRunning(bld, cmpr, stateAgg, acc, pin.value, s)
+		fnRunning(bld, owner, cmpr, stateAgg, acc, pin.value, s)
 		// Наличие аварий и создание сообщений
-		fnAlarm(agg, cmpr, cmpr.beep, stateAgg.compressor[cmpr._id].beep, acc)
+		fnAlarm(agg, owner, cmpr, cmpr.beep, stateAgg.compressor[cmpr._id].beep, acc)
 		// Пуск-Стоп
 		let DO = cmpr.beep.find((el) => el.code == 'run')
-		DO = obj.data.signal.find(el=>el.owner.id==DO?._id)
-		ctrlDO(DO, agg.buildingId, acc[cmpr._id].running ? 'on':'off')
+		DO = obj.data.signal.find((el) => el.owner.id == DO?._id)
+		ctrlDO(DO, agg.buildingId, acc[owner].running ? 'on' : 'off')
 
-		// console.log(444, agg.name, stateAgg, acc)
+		console.log(444, agg.name, stateAgg, acc)
 	}
 }

@@ -1,22 +1,25 @@
 const def = require('./fn')
-const { fnAlarm, delUnused } = require('@tool/command/extra')
 const { delExtra, wrExtra } = require('@tool/message/extra')
+const { delUnused } = require('@tool/command/extra')
+const { checkMain } = require('./fn/check')
 const { msgB } = require('@tool/message')
 const prepare = require('./fn/prepare')
-const check = require('./fn/check')
 
 // Для обычного и комбинированного склада
 // Удаление СО2 для всего склада
-function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
+function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
+	console.log('УДАЛЕНИЕ СО2: норм-комби', resultFan)
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
 	// Точка росы, закрыты ли клапаны, показание СО2
 	const o = prepare(bld, obj, acc, m, se, s)
-	// Разрешение на удаление СО2
-	if (!check(bld, obj, acc, o)) return
-	def[s?.co2?.mode](bld, obj, acc, m, se, s, o)
+	console.log('\tПодготовка данных', JSON.stringify(o))
+	// Проверка открыт ли клапан
+	if (!checkMain(bld, obj, acc, o)) return
+	def[s?.co2?.mode](bld, obj, acc, m, se, s, o, resultFan)
 	def.fnSol(bld, obj, acc)
+	console.log('\tresultFan', resultFan, 'Аккумулятор', JSON.stringify(acc))
 }
 
 module.exports = coNormal

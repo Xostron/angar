@@ -62,9 +62,11 @@ function createAndModify(obj, filename, ph, cb) {
  */
 function readOne(filename, ph = dataDir) {
 	return new Promise((resolve, reject) => {
-		const filepath = filename.includes('.json') ? path.join(ph, filename) : path.join(ph, filename + '.json')
+		const filepath = filename.includes('.json')
+			? path.join(ph, filename)
+			: path.join(ph, filename + '.json')
 		if (!filename || !fs.existsSync(filepath)) return resolve(null)
-		fsp.readFile(filepath)
+		fsp.readFile(filepath, { encoding: 'utf-8' })
 			.then((doc) => {
 				if (!!String(doc) === false) {
 					return resolve(null)
@@ -74,7 +76,7 @@ function readOne(filename, ph = dataDir) {
 			})
 			.catch((err) => {
 				resolve(null)
-				console.log('@@@@', err)
+				console.log('@@@@', filename, err)
 			})
 	})
 }

@@ -16,18 +16,18 @@ const def = require('@control/main/def/normal/def')
  * @param {*} accAuto 
  * @returns 
  */
-function build(start, building, obj, s, se, m, am, accAuto) {
+function build(start, building, obj, s, se, m, am, accAuto, resultFan) {
 	let alrBld = false,
 		alrAm = false
 	// Доп. аварии и доп. функции (always - всегда выполняются)
 	alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'always')
-	extra(building, null, obj, s, se, m, null, null, null, 'building', 'always')
+	extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'always')
 
 	if (start) {
 		// Склад включен
 		// Доп. аварии и доп. функции (on - выполнение при включенном складе)
 		alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'on')
-		extra(building, null, obj, s, se, m, null, null, null, 'building', 'on')
+		extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'on')
 		// Промежуточные расчеты
 		def[am]?.middlewB(building, obj, s, se, accAuto)
 		// Аварии авторежима (Склад включен, )
@@ -36,7 +36,7 @@ function build(start, building, obj, s, se, m, am, accAuto) {
 	} else {
 		// Склад выключен
 		// Доп функции склада (off - выполнение при выключенном складе)
-		extra(building, null, obj, s, se, m, null, null, null, 'building', 'off')
+		extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'off')
 	}
 
 	// Калибровка клапанов

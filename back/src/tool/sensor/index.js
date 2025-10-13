@@ -42,6 +42,7 @@ function vSensor(equip, val, retain, result) {
 function valid(sens, val, equip, retain) {
 	// Владельцы датчика (склад и секция)
 	const { building, section } = getBS(sens, equip)
+	if (!building) return
 	// Настройки датчика: on - вкл датчик, corr - коррекция
 	const corr = retain?.[building._id]?.[sens._id]?.corr ?? 0
 	const on = retain?.[building._id]?.[sens._id]?.on ?? true
@@ -79,7 +80,8 @@ function valid(sens, val, equip, retain) {
  */
 function stateWeather(bId, weather, retain, key, fld) {
 	// Состояние: вкл/выкл на экране датчиков (on|off)
-	let state = retain?.[bId]?.[key]?.on === undefined || retain?.[bId]?.[key]?.on === true ? 'on' : 'off'
+	let state =
+		retain?.[bId]?.[key]?.on === undefined || retain?.[bId]?.[key]?.on === true ? 'on' : 'off'
 	// Авария - alarm
 	// Если нет показания или времени обновления
 	if (typeof weather?.[fld] != 'number') state = 'alarm'
@@ -89,7 +91,8 @@ function stateWeather(bId, weather, retain, key, fld) {
 	// const raw = state == 'alarm' ? null : +weather?.[fld].toFixed(1)
 	const raw = +weather?.[fld]?.toFixed(1)
 	// Значение с коррекцией
-	const value = typeof raw == 'number' ? +(raw + (+retain?.[bId]?.[key]?.corr || 0)).toFixed(1) : null
+	const value =
+		typeof raw == 'number' ? +(raw + (+retain?.[bId]?.[key]?.corr || 0)).toFixed(1) : null
 	return { raw, value, state }
 }
 

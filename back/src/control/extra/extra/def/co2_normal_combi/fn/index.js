@@ -1,96 +1,80 @@
-const { compareTime } = require('@tool/command/time')
-const prepare = require('./prepare')
-const { data: store, readAcc } = require('@store')
 const { delExtra, wrExtra } = require('@tool/message/extra')
+const { compareTime } = require('@tool/command/time')
+const { data: store, readAcc } = require('@store')
 const { msgB } = require('@tool/message')
-/*
-Проветривание начинается с закрытых клапанов - это означает что на складе 
-либо продукт достиг температуры задания или авария авторежима
-(уличные условия не подходят)
-При проветривании открываются клпана как в авторежиме и включаются ВНО
-Поэтому acc.start = true - отключает блокировки авторежима и он начинает 
-работать как будто в автомате
-*/
+const { checkNow, clear } = require('./check')
 
 // СО2: По времени
-function time(bld, obj, acc, m, se, s, o) {
+function time(bld, obj, acc, m, se, s, o, resultFan) {
 	// Ожидание: Клапаны закрыты в течении времени wait
 	acc.wait ??= new Date()
-
-	if (!o.vlvClose && !acc.work && !acc.start) {
-		console.log(99001, 'Удаление СО2 по времени: заблокировано (открыт клапан)')
-		return clear(acc, 'work', 'wait', 'start')
-	}
 	let time = compareTime(acc.wait, s.co2.wait.w)
-	// время не прошло
+	// Ждем
 	if (!time) {
-		wrExtra(
-			bld._id,
-			null,
-			'co2',
-			msgB(bld, 89, `${s.co2.wait.w / 60 / 1000}мин)`),
-			'co2_wait'
+		wrExtra(bld._id, null, 'co2', msgB(bld, 89, `${s.co2.wait.w / 60 / 1000}мин)`), 'co2_wait')
+		return console.log(
+			`\t3-Ожидание по таймеру ${s.co2.wait.w / 60 / 1000}мин)`,
+			acc.wait,
+			s.co2.wait.w
 		)
-		return console.log(99001, 'Удаление СО2 по времени: Ожидание', acc.wait, s.co2.wait.w)
 	}
-	// точка росы не подходит
-	if (o.tprd - 1 < o.point) {
-		acc.start = false
-		// Время когда встали на паузу из-за точки росы
-		acc.pause ??= new Date()
-		// Оставшееся время работы удаления СО2
-		acc.work ??= new Date()
-		acc.remaining ??= s.co2.work - (acc.pause - acc.work)
-		acc.work = acc.remaining + +new Date()
-		acc.work = new Date(acc.work)
-		return console.log(99001, 'Удаление СО2 по времени: точка росы не подходит')
-	}
-	clear(acc, 'pause', 'remaining')
-	// Проветривание:
-	// Включить удаление СО2
-	if (o.tprd - 1.5 > o.point) acc.start = true
-	// Выключить удаление СО2
-	// if (o.tprd - 1 < o.point) acc.start = false
-	console.log(99001, 'Удаление СО2 по времени: Работа', acc)
-	delExtra(bld._id, null, 'co2', 'co2_wait')
-	// Время работы удаления СО2
+	// Ожидание прошло -> Время работы и проверка условий
 	acc.work ??= new Date()
-	// ожидаем
+	// Условия не подходят -> встать на паузу по удалению СО2
+	if (!checkNow(bld, obj, acc, o)) {
+		acc.start = false
+		// Время когда встали на паузу
+		acc.pause ??= new Date()
+		// Оставшееся время работы
+		acc.remaining ??= s.co2.work - (acc.pause - acc.work)
+		acc.work = new Date(acc.remaining + +new Date())
+		resultFan.start.push(false)
+		return console.log('\t3-Работа по таймеру (Пауза): условия не подходят')
+	}
+	// Условия подходят -> включить удаление СО2
+	clear(acc, 'pause', 'remaining')
+	acc.start = true
+	resultFan.start.push(true)
+
+	console.log('\t3-Работа по таймеру')
+	delExtra(bld._id, null, 'co2', 'co2_wait')
+	// Ждем время работы
 	time = compareTime(acc.work, s.co2.work)
 	// Время работы прошло
 	if (time) clear(acc, 'work', 'wait', 'start')
 }
 
 // СО2: По датчику
-function sensor(bld, obj, acc, m, se, s, o) {
-	if (o.co2 === null || o.co2 === undefined) {
-		console.log(99001, 'Удаление СО2 по датчику: показание CO2 = null | undefined')
-		return clear(acc, 'work', 'start')
+function sensor(bld, obj, acc, m, se, s, o, resultFan) {
+	// Условия не подходят
+	if (!checkNow(bld, obj, acc, o)) {
+		resultFan.start.push(false)
+		return clear(acc, 'work', 'wait', 'start')
 	}
-	if (!o.vlvClose && !acc.start) {
-		console.log(99001, 'Удаление СО2 по датчику: клапаны открыты')
-		return clear(acc, 'work', 'start')
-	}
+	// CO2 не подходит
 	if (o.co2 < s.co2.sp - s.co2.hysteresis) {
 		console.log(
-			99001,
-			'Удаление СО2 по датчику: датчик СО2 не достиг критического уровня СО2',
+			'\t3-Запрещено удаление СО2 по датчику: низкий уровень СО2',
 			o.co2,
+			'<',
 			s.co2.sp,
+			'-',
 			s.co2.hysteresis
 		)
-		return clear(acc, 'work', 'start')
+		resultFan.start.push(false)
+		return clear(acc, 'wait', 'work', 'start')
 	}
-	// Включить удаление СО2
-	if (o.tprd - 1.5 > o.point) {
-		console.log(99001, 'Удаление СО2 по датчику: работа')
-		acc.start = true
-	}
-	// Выключить удаление СО2
-	if (o.tprd - 1 < o.point) {
-		console.log(99001, 'Удаление СО2 по датчику: точка росы не подходит')
-		acc.start = false
-	}
+	console.log(
+		'\t3-Разрешено удаление СО2 по датчику: высокий уровень СО2',
+		o.co2,
+		'>',
+		s.co2.sp,
+		'-',
+		s.co2.hysteresis
+	)
+	acc.start = true
+	acc.work = true
+	resultFan.start.push(true)
 }
 
 /**
@@ -102,27 +86,19 @@ function sensor(bld, obj, acc, m, se, s, o) {
  * @param {*} se Датчики склада
  * @param {*} s Настройки
  */
-function on(bld, obj, acc, m, se, s, o) {
-	console.log(99001, 'Удаление СО2 режим вкл', JSON.stringify(acc))
-	// Включить удаление СО2
-	if (o.tprd - 1.5 > o.point) acc.start = true
-	// Выключить удаление СО2
-	if (o.tprd - 1 < o.point) acc.start = false
+function on(bld, obj, acc, m, se, s, o, resultFan) {
+	if (checkNow(bld, obj, acc, o))
+		(acc.start = true), (acc.work = true), resultFan.start.push(true)
+	else clear(acc, 'work', 'wait', 'start'), resultFan.start.push(false)
+	console.log('\tРежим: ВКЛ')
 }
 
 // СО2: Выкл
-function off(bld, obj, acc, m, se, s, o) {
-	console.log(99001, 'Удаление СО2 режим выкл', JSON.stringify(acc))
-	acc.start = false
-}
-
-/**
- * Очистка аккумулятора
- * @param {*} acc
- * @param  {...any} args
- */
-function clear(acc, ...args) {
-	args.forEach((key) => (acc[key] = null))
+function off(bld, obj, acc, m, se, s, o, resultFan) {
+	clear(acc, 'work', 'wait', 'start')
+	delExtra(bld._id, null, 'co2', 'co2_wait')
+	resultFan.start.push(false)
+	console.log('\tРежим: ВЫКЛ')
 }
 
 /**
@@ -152,5 +128,4 @@ module.exports = {
 	sensor,
 	off,
 	fnSol,
-	clear,
 }

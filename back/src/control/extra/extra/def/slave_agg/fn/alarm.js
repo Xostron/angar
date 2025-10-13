@@ -12,28 +12,28 @@ const delayOilAlarm = 60000
  * @param {object} acc acc
  * @returns {boolean} true - авария, false - нет аварии
  */
-function fnAlarm(agg, cmpr, beep, state, acc) {
+function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 	// Создание аварийных сообщений
-	acc[cmpr._id] ??= {}
+	acc[owner] ??= {}
 	beep.forEach((el) => {
 		if (['oil', 'run'].includes(el.code)) return
 		const be = state[el.code]?.value
-		const owner = agg._id + ' ' + cmpr._id
+		const owner = agg._id + '_' + cmpr._id
 		// Сброс аварии
 		if (!be && isReset(agg.buildingId)) {
 			delExtralrm(agg.buildingId, owner, el.code)
-			acc[cmpr._id][el.code] = false
+			acc[owner][el.code] = false
 		}
 		// Установить аварию
-		if (be && !acc[cmpr._id][el.code]) {
+		if (be && !acc?.[owner]?.[el.code]) {
 			const name = `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, el.code, msgBeep({ _id: agg.buildingId }, el, name))
-			acc[cmpr._id][el.code] = true
+			acc[owner][el.code] = true
 		}
 	})
 	// Авария низкого уровня масла
 	const oilD = beep.find((el) => el.code == 'oil')
-	oilAlarm(agg, cmpr, oilD, state.oil, acc)
+	oilAlarm(agg, owner, cmpr, oilD, state.oil, acc)
 }
 
 /**
@@ -42,16 +42,15 @@ function fnAlarm(agg, cmpr, beep, state, acc) {
  * @param {*} oil Аварийный сигнал
  * @param {*} acc Аккумулятор
  */
-function oilAlarm(agg, cmpr, oil, stateOil, acc) {
+function oilAlarm(agg, owner, cmpr, oil, stateOil, acc) {
 	if (!oil) return
-	const owner = agg._id + ' ' + cmpr._id
 	// Установка аварии
-	if (acc[cmpr._id].running) {
+	if (acc[owner].running) {
 		if (!acc.date) acc.date = new Date()
-		if (compareTime(acc.date, delayOilAlarm) && stateOil.value) {
+		if (compareTime(acc.date, delayOilAlarm) && stateOil?.value) {
 			const name = `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, 'oil', msgBeep({ _id: agg.buildingId }, oil, name))
-			acc[cmpr._id][oil.code] = true
+			acc[owner][oil.code] = true
 		}
 	} else {
 		acc.date = undefined
@@ -59,9 +58,9 @@ function oilAlarm(agg, cmpr, oil, stateOil, acc) {
 	// Сброс аварии
 	if (isReset(agg.buildingId)) {
 		delExtralrm(agg.buildingId, owner, oil.code)
-		acc[cmpr._id][oil.code] = false
+		acc[owner][oil.code] = false
 	}
-	return acc[cmpr._id][oil.code]
+	return acc[owner][oil.code]
 }
 
 module.exports = { fnAlarm }

@@ -59,7 +59,7 @@ function smoking(
 	const fan = collect(m.fanAll, idB, idsS, obj)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	console.log(11, doc, stg, idsS)
+	// console.log(11, doc, stg, idsS)
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		console.log(44, 'Окуривание выключено: Выключение плавного пуска')
