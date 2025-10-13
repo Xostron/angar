@@ -4,7 +4,7 @@ const { ctrlDO } = require('@tool/command/module_output')
 
 /**
  * Логика управления агрегатом
- * @param {*} agg Рама агрегата
+ * @param {*} agg Рама агрегата aggregateList
  * @param {*} stateAgg Мясо агрегата
  * @param {*} pin Значение давления всасывания
  * @param {*} bld Склад
@@ -14,9 +14,12 @@ const { ctrlDO } = require('@tool/command/module_output')
 module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 	if (!agg.compressorList.length) return
 	for (const cmpr of agg.compressorList) {
-		console.log(111, 'Агрегат', agg.name, agg._id, stateAgg.compressor[cmpr._id].beep)
+		console.log(111, 'Агрегат', agg.name, agg._id, JSON.stringify(stateAgg, null, ' '))
+		// console.log(111, 'Агрегат', agg.name, agg._id, stateAgg.compressor[cmpr._id].beep)
+        // Если ниодного сигнала на компрессор нету, то пропускаем
 		if (!Object.keys(stateAgg.compressor[cmpr._id].beep).length) continue
-		if (pin.state == 'alarm') continue
+        // Если авария датчика всасывания, то пропускаем
+		if (pin.state === 'alarm') continue
 		const owner = agg._id + '_' + cmpr._id
 		acc[owner] ??= {}
 		// Условие пуска
@@ -26,7 +29,7 @@ module.exports = function fnAgg(agg, stateAgg, pin, bld, obj, s, acc) {
 		// Пуск-Стоп
 		let DO = cmpr.beep.find((el) => el.code == 'run')
 		DO = obj.data.signal.find((el) => el.owner.id == DO?._id)
-		ctrlDO(DO, agg.buildingId, acc[owner].running ? 'on' : 'off')
+		ctrlDO(DO, agg.buildingId, acc[owner].run ? 'on' : 'off')
 
 		console.log(444, agg.name, stateAgg, acc)
 	}

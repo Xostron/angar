@@ -100,7 +100,7 @@ function signal(r, bld, sect, am) {
 // Аварии на странице "Сигналы" (собираем по складу и суммируем с секциями)
 function signalB(r, bld, am, data) {
 	r.signal[bld._id] ??= []
-	// CO2
+	// CO2 Склад холодильник
 	const idS = data.section.filter((el) => el.buildingId === bld._id).map((el) => el._id)
 	const idDvc = data.device.filter((el) => idS.includes(el.sectionId)).map((el) => el._id)
 	idDvc.forEach((el) => {
@@ -111,7 +111,7 @@ function signalB(r, bld, am, data) {
 	const agg = data.aggregate.filter((el) => el.buildingId === bld._id)
 	agg.forEach((doc) => {
 		doc.compressorList
-			.map((el) => doc._id + ' ' + el._id)
+			.map((el) => doc._id + '_' + el._id)
 			.forEach((e) => {
 				const arr = Object.values(store.alarm?.extralrm?.[bld._id]?.[e] ?? [])
 				if (arr.length) r.signal[bld._id].push(...arr)

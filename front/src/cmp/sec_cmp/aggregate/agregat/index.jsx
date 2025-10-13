@@ -1,6 +1,12 @@
 import './style.css'
 
 // Отображение Агрегатов
+/**
+ *
+ * @param {*} state рама
+ * @param {*} data мясо
+ * @returns
+ */
 export default function Agregat({ state, data, cl = '' }) {
 	if (!state || !data) return null
 	const aggregate = data?.state
@@ -13,13 +19,9 @@ export default function Agregat({ state, data, cl = '' }) {
 	}
 	const compressor = getState(data.compressor)
 	return (
-		<div className={cls} title={`Агрегат: ${aggregate ?? ''}`} style={stl}>
+		<div className={cls} title={`Агрегат:${state.aggregate._id} ${aggregate ?? ''}`} style={stl}>
 			{compressor.state !== 'alarm' ? (
-				<img
-					className={compressor.state}
-					title={`Компрессор: ${compressor.state ?? ''}`}
-					src='/img/periphery/fan/stop.svg'
-				/>
+				<img className={compressor.state} title={`Компрессор:  ${compressor.state ?? ''}`} src='/img/periphery/fan/stop.svg' />
 			) : (
 				<img src='/img/periphery/fan/alr.svg' />
 			)}
