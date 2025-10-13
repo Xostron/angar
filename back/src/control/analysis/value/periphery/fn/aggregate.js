@@ -43,7 +43,7 @@ function aggB(bld, agg, equip, val, retain, result) {
 				}
 			})
 			// Состояние компрессора на основе beep управляемый/неуправляемый
-			const owner = doc._id + ' ' + el._id
+			const owner = doc._id + '_' + el._id
 			if (!doc.aggregate?.slave)
 				result[doc._id].compressor[el._id].state = stateC(
 					result[doc._id].compressor[el._id].beep
@@ -95,7 +95,7 @@ function stateCSlave(o = {}, bldId, owner) {
 	// Фильтр аварий
 	const arr = []
 	for (const code in o) {
-		if (o[code]?.alarm || code == 'oil') arr.push(code)
+		if (o[code]?.alarm || code === 'oil') arr.push(code)
 	}
 	// Для управляемых агрегатов
 	const r = arr.find((code) => isExtralrm(bldId, owner, code))
