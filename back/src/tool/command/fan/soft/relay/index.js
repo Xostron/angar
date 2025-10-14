@@ -38,7 +38,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, fans.length)
 	checkOff.relay(off, acc, where)
-	// console.log(990011, on,off)
+	console.log(990011, acc)
 	// Непосредственное включение
 	turnOn(null, fans, solHeat, bldId, acc)
 	// console.log(3331, 'Реле: плавный пуск', idS, where, acc, fans.length)

@@ -15,6 +15,7 @@ const { ctrlDO } = require('@tool/command/module_output')
  */
 function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 	// Если комби склад в режиме Обычного - выключаем соленоиды подогрева
+	console.log(444, where)
 	if (where !== 'cold') {
 		solHeat.forEach((el) => {
 			ctrlDO(el, idB, 'off')
@@ -22,7 +23,7 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 		return false
 	}
 
-	// 
+	//
 	// Если в системе нет соленоидов подгрева, то разрешаем регулировать ПЧ
 	if (!solHeat?.length) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
@@ -47,10 +48,13 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 
 	// Команда на выключение соленоида подогрева
 	if (off) {
+		console.log(4441, where, '===', 'cold', acc.order, '===', -1, !acc.fc.value)
 		// Выключение, если все ВНО и ПЧ выключены && acc.fc.sp < s.fan.min
-		if (where == 'cold' && acc.order === -1 && !acc.fc.value) {
+		if (where === 'cold' && acc.order === -1 && !acc.fc.value) {
+			console.log(4442)
 			// Ждем и выключаем соленоид подогрева
 			if (!compareTime(acc.sol.date, acc.delaySolHeat)) {
+				console.log(4442, 'ждем...', acc.delaySolHeat)
 				acc.busy = false
 				return true
 			}

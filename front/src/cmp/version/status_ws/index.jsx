@@ -6,7 +6,7 @@ export default function StatusWS() {
 	const on = useSocketStore((s) => s.on)
 	useEffect(() => {
 		const date = new Date().toLocaleString('ru-RU')
-		notification.info('Соединение с сервером: ' + (on ? 'вкл '+ date	 : 'выкл '+ date))
+		notification.info('РЎРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј: ' + (on ? 'РІРєР» '+ date	 : 'РІС‹РєР» '+ date))
 	}, [on])
 	return (
 		<div

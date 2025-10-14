@@ -1,5 +1,6 @@
 const { isExtralrm } = require('@tool/message/extralrm')
 const { data: store } = require('@store')
+const { isErrM } = require('@tool/message/plc_module')
 // Агрегат
 function fnAggregate(equip, val, retain, result) {
 	const { aggregate, building } = equip
@@ -49,11 +50,12 @@ function aggB(bld, agg, equip, val, retain, result) {
 					result[doc._id].compressor[el._id].beep
 				)
 			else {
-				console.log(5552, '========', doc._id, result[doc._id].compressor[el._id].beep)
 				result[doc._id].compressor[el._id].state = stateCSlave(
 					result[doc._id].compressor[el._id].beep,
 					bld._id,
-					owner
+					owner,
+					signal,
+					doc
 				)
 			}
 		})
@@ -93,19 +95,19 @@ function stateC(o = {}) {
 	return 'stop'
 }
 // Состояние компрессора управляемый
-function stateCSlave(o = {}, bldId, owner) {
-	// Фильтр аварий
+function stateCSlave(o = {}, bldId, owner, signal, agg) {
+	// 1. Модули ПЛК агрегата неисправны?
+	const alrM = isAlrM(agg, signal)
+	if (alrM) return 'alarm'
+	// 2. Авария питания, перегрев двигателя, высокое давление, уровень масла
 	const arr = []
-	for (const code in o) {
-		if (o[code]?.alarm || code === 'oil') arr.push(code)
-	}
-	// Для управляемых агрегатов
+	for (const code in o) if (o[code]?.alarm || code === 'oil') arr.push(code)
+	// Поиск аварии агрегата
 	const r = arr.find((code) => isExtralrm(bldId, owner, code))
-	// Найден -> компрессор в аварии
 	if (r) return 'alarm'
-	// run - beep: неуправляемый (дискретный вход - в работе), управляемый (дискретный выход - управляющий сигнал)
+	// 3. run - beep: дискретный выход - управляющий сигнал
 	if (o?.run?.value) return 'run'
-	// Состояние Стоп (по-умолчанию)
+	// 4. Состояние Стоп (по-умолчанию)
 	return 'stop'
 }
 // Состояние агрегата
@@ -132,4 +134,29 @@ function sum(bld, aggregate, result) {
 	})
 
 	result.total[bld._id].aggregate.state = stateA(result.total[bld._id].aggregate.agg, true)
+}
+
+/**
+ * Модули ПЛК агрегата неисправны?
+ * @param {*} agg Рама агрегата
+ * @param {*} obj Глобальные данные
+ * @param {*} acc Аккумулятор
+ * @returns true Неисправны / false Модули ОК
+ */
+function isAlrM(agg, signal) {
+	const arrM = new Set()
+	// Найти модули, к которым подключен агрегат
+	agg.compressorList.forEach((cmpr) => {
+		cmpr.beep.forEach((beep) => {
+			const sig = signal.find((el) => el.owner.id === beep._id && el.extra.id === agg._id)
+			sig?.module?.id && sig?.module?.channel ? arrM.add(sig.module.id) : null
+		})
+	})
+	console.log(`Агрегат ${agg._id} подключен к модулям:`, arrM)
+	// Модуль неисправен?
+	return [...arrM].some((idM) => {
+		const t = isErrM(agg.buildingId, idM)
+		console.log(`\tМодуль ${idM}, авария=${t}`)
+		return t
+	})
 }

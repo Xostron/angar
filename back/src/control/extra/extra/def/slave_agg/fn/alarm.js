@@ -20,13 +20,15 @@ function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 		if (['oil', 'run'].includes(el.code)) return
 		const be = state[el.code]?.value
 		// Сброс аварии
-		if (!be && isReset(agg.buildingId)) {
+		if ((!be && isReset(agg.buildingId)) || (!el.alarm && !be)) {
 			delExtralrm(agg.buildingId, owner, el.code)
 			acc[owner][el.code] = false
 		}
 		// Установить аварию
 		if (be && !acc?.[owner]?.[el.code]) {
-			const name = `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
+			const name = el.alarm
+				? `Авария: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
+				: `Предупреждение: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, el.code, msgBeep({ _id: agg.buildingId }, el, name))
 			acc[owner][el.code] = true
 		}
@@ -61,5 +63,7 @@ function oilAlarm(agg, owner, cmpr, oil, stateOil, acc) {
 		acc[owner].oil = false
 	}
 }
+
+
 
 module.exports = { fnAlarm }

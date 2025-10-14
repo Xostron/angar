@@ -14,7 +14,16 @@ const defOnOff = {
 		const { p } = sensor(idB, idS, obj)
 		let on = seS.tcnl < accAuto.cold.tgtTcnl - s.cooling.hysteresisIn && p <= s.fan.maxp
 		let off = seS.tcnl > accAuto.cold.tgtTcnl + s.cooling.hysteresisIn
-		// console.log(99009, p, s.fan.maxp, p <= 200, 'on=', on, 'off=', off)
+		console.log(
+			99009,
+			'on=',
+			on,
+			'off=',
+			off,
+			seS.tcnl,
+			accAuto.cold.tgtTcnl,
+			s.cooling.hysteresisIn
+		)
 		return { on, off }
 	},
 }
