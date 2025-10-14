@@ -20,6 +20,7 @@ const isAllStarted = require('../fn/all_started')
  * @returns
  */
 function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
+	
 	const bldId = bld._id
 	const acc = init(bld, idS, obj, s, where, 'relay', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************

@@ -3,6 +3,7 @@ const checkSupply = require('../supply')
 const { isReadyAgg, clear, clearCombi } = require('./fn')
 const { isAlr } = require('@tool/message/auto')
 const { clearAchieve } = require('@tool/message/achieve')
+const { isExtralrm } = require('@tool/message/extralrm')
 
 /**
  * @description Склад Холодильник: Запрет работы испарителя
@@ -63,15 +64,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 		fansOff ||
 		// TODO Авария ВНО испарителя
 		stateCooler.fan.state === 'alarm'
-	console.log(
-		55,
-		clr.name,
-		sect.name,
-		'работа запрещена combi',
-		store.denied[bld._id][clr._id],
-		'Агрегат готов =',
-		aggr
-	)
+	console.log(55, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
 	if (!store.denied[bld._id][clr._id]) {
@@ -105,14 +98,17 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
 	// Наличие аварии авторежима
 	const alrAuto = isAlr(bld._id, automode)
-
+	// Местный режим секции
+	const local = isExtralrm(bld._id, sect._id, 'local')
+console.log(553, local)
 	store.denied[bld._id][sect._id] =
 		!start ||
 		alr ||
 		!sectM ||
 		!store.toAuto?.[bld._id]?.[sect._id] ||
 		!alrAuto ||
-		automode != 'cooling'
+		automode != 'cooling' ||
+		local
 
 	console.log(
 		55,
@@ -125,7 +121,8 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 		!sectM,
 		!store.toAuto?.[bld._id]?.[sect._id],
 		!alrAuto,
-		automode != 'cooling'
+		automode != 'cooling',
+		local
 	)
 	return store.denied[bld._id][sect._id]
 }

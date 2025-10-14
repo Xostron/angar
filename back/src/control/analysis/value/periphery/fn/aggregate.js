@@ -22,9 +22,13 @@ module.exports = fnAggregate
 function aggB(bld, agg, equip, val, retain, result) {
 	// Нет агрегатов
 	if (!agg.length) return
-	const { signal, module } = equip
-	// По агрегату
+	const { signal, module, cooler, sensor } = equip
+	// По агрегату doc-aggregateList
 	agg.forEach((doc) => {
+		const clr = cooler.find((el) => el.aggregateListId === doc._id)
+		const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
+		console.log(331, clr, pin)
+
 		result[doc._id] ??= {}
 		result[doc._id].compressor ??= {}
 		// Компрессоры

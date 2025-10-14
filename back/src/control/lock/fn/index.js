@@ -141,7 +141,12 @@ function fnSolHeat(obj) {
 		const alrAgg = stateC.aggregate.state === 'alarm'
 		// Состояние ВНО испарителя
 		const alr_offVNO = stateC.fan.state === 'alarm'
-		out(obj, output, el, localB, local, alrStop, alrAgg, alr_offVNO)
+		// Склад выключен
+		const offB = retain?.[idB]?.start == false
+		// Секция выключена
+		const idS = data.cooler.find((clr) => clr._id === el.owner.id)?.sectionId
+		let offS = (retain?.[idB]?.mode?.[idS] ?? null) === null
+		out(obj, output, el, localB, local, alrStop, alrAgg, alr_offVNO, offB, offS)
 	}
 }
 

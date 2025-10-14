@@ -62,7 +62,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
 		// console.log(111, fanFC)
 		// console.log(222, idS, fans)
-		// console.log(333, resultFan.fan)
+		console.log(444, `Плавный пуск: секция ${idS}, тип ${type}`)
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }
