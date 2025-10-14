@@ -35,8 +35,7 @@ const t = [
  */
 async function init() {
 	// TODO: Пропуск инициализации на локальном хосте
-	if (['127.0.0.1', 'localhost'].includes(process.env.IP))
-	{
+	if (['127.0.0.1', 'localhost'].includes(process.env.IP)) {
 		console.log(
 			'\x1b[32m%s\x1b[0m',
 			`IP ${process.env.IP} не является публичным, пропуск инициализации`

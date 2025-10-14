@@ -1,7 +1,13 @@
+import { useEffect } from 'react'
 import useSocketStore from '@store/socket'
+import { notification } from '@cmp/notification'
 
 export default function StatusWS() {
 	const on = useSocketStore((s) => s.on)
+	useEffect(() => {
+		const date = new Date().toLocaleString('ru-RU')
+		notification.info('Соединение с сервером: ' + (on ? 'вкл '+ date	 : 'выкл '+ date))
+	}, [on])
 	return (
 		<div
 			style={{

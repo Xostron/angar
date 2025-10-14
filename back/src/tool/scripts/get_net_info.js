@@ -4,10 +4,8 @@ const { execSync } = require('child_process');
 function get_net_info() {
 	return new Promise((resolve, reject) => {
 		try {
-			console.log('process.platform', process.platform);
-			if (process.platform !== 'linux') {
+			if (process.platform !== 'linux')
 				return resolve({ error: 'Not a Linux system' });
-			}
 			// Получаем вывод команды ip -j addr (json формат)
 			const output = execSync('ip -j addr', { encoding: 'utf8' });
 			const data = JSON.parse(output);

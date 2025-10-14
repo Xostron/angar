@@ -48,12 +48,14 @@ function aggB(bld, agg, equip, val, retain, result) {
 				result[doc._id].compressor[el._id].state = stateC(
 					result[doc._id].compressor[el._id].beep
 				)
-			else
+			else {
+				console.log(5552, '========', doc._id, result[doc._id].compressor[el._id].beep)
 				result[doc._id].compressor[el._id].state = stateCSlave(
 					result[doc._id].compressor[el._id].beep,
 					bld._id,
 					owner
 				)
+			}
 		})
 		// Конденсаторы
 		result[doc._id].condenser ??= {}
