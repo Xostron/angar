@@ -60,7 +60,6 @@ function oilAlarm(agg, owner, cmpr, oil, stateOil, acc) {
 		delExtralrm(agg.buildingId, owner, oil.code)
 		acc[owner].oil = false
 	}
-	// return acc[owner][oil.code]
 }
 
 module.exports = { fnAlarm }

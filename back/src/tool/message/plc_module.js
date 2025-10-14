@@ -91,4 +91,4 @@ function isDebMdl(idB, idM, opt) {
 	return true
 }
 
-module.exports = { wrDebMdl, delDebMdl, timeout, delModule }
+module.exports = { wrDebMdl, delDebMdl, timeout, delModule,isErrM }
