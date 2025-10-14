@@ -15,8 +15,8 @@ function equipment() {
 			.then(([r, info = {}]) => {
 				info.apiUri = process.env.API_URI;
 				info.port = process.env.PORT;
-				info.period = process.env.PERIOD;
-				info.periodState = process.env.PERIOD_STATE;
+				info.period = process.env.PERIOD/1000;
+				info.periodState = process.env.PERIOD_STATE/1000;
 				r.apiInfo = info;
 				resolve(r);
 			})

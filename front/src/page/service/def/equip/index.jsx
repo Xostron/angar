@@ -5,13 +5,34 @@ import { notification } from '@cmp/notification'
 import useEquipStore from '@store/equipment'
 
 export default function Equip({ props }) {
-	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
+	const { req_ip } = props
 	const [file, setFile] = useState()
 	const apiInfo = useEquipStore((s) => s.apiInfo)
 
+	// Стили для таблицы
+	const tableStyles = {
+		borderCollapse: 'collapse',
+		minWidth: '350px'
+	}
+
+	const cellStyles = {
+		padding: '4px 8px',
+		border: '1px solid #ccc'
+	}
+
+	const headerCellStyles = {
+		...cellStyles,
+		fontWeight: 'bold'
+	}
+
+	const titleStyles = {
+		fontSize: '20px',
+		fontWeight: 'bold'
+	}
+
 	return (
 		<>
-			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+			<span style={titleStyles}>
 				Управление проектом и оборудованием:
 			</span>
 			<div className='page-service-row'>
@@ -31,34 +52,46 @@ export default function Equip({ props }) {
 			<br />
 			<hr />
 			<br />
-			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+			<span style={titleStyles}>
 				Информация о сервере:
 			</span>
-			<table className='page-service-info' style={{ borderCollapse: 'collapse', minWidth: '350px' }}>
+			<table className='page-service-info' style={tableStyles}>
 				<tbody>
 					<tr>
-						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Версия</td>
-						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.version || '??'}</td>
+						<td style={headerCellStyles}>Версия API</td>
+						<td style={cellStyles}>{apiInfo?.back || '??'}</td>
 					</tr>
 					<tr>
-						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>IP</td>
-						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.ip || '??'}</td>
+						<td style={headerCellStyles}>Версия WEB</td>
+						<td style={cellStyles}>{apiInfo?.front || '??'}</td>
 					</tr>
 					<tr>
-						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>API URI</td>
-						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.apiUri || '??'}</td>
+						<td style={headerCellStyles}>IP</td>
+						<td style={cellStyles}>{apiInfo?.ip || '??'}</td>
 					</tr>
 					<tr>
-						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Порт</td>
-						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.port || '??'}</td>
+						<td style={headerCellStyles}>API URI</td>
+						<td style={cellStyles}>{apiInfo?.apiUri || '??'}</td>
 					</tr>
 					<tr>
-						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Период запроса рамы</td>
-						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.period || '??'} c</td>
+						<td style={headerCellStyles}>Порт</td>
+						<td style={cellStyles}>{apiInfo?.port || '??'}</td>
 					</tr>
 					<tr>
-						<td style={{ fontWeight: 'bold', padding: '4px 8px', border: '1px solid #ccc' }}>Период обновления данных ЦС</td>
-						<td style={{ padding: '4px 8px', border: '1px solid #ccc' }}>{apiInfo?.periodState || '??'} c</td>
+						<td style={headerCellStyles}>Период запроса рамы</td>
+						<td style={cellStyles}>{apiInfo?.period || '??'} c</td>
+					</tr>
+					<tr>
+						<td style={headerCellStyles}>Период обновления данных ЦС</td>
+						<td style={cellStyles}>{apiInfo?.periodState || '??'} c</td>
+					</tr>
+					<tr>
+						<td style={headerCellStyles}>Батарея</td>
+						<td style={cellStyles}>{apiInfo?.battery || '??'} %</td>
+					</tr>
+					<tr>
+						<td style={headerCellStyles}>Дата</td>
+						<td style={cellStyles}>{apiInfo?.date ? new Date(apiInfo?.date).toLocaleString('ru-RU') : '??'}</td>
 					</tr>
 				</tbody>
 			</table>
