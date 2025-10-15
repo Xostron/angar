@@ -1,14 +1,28 @@
 const { data: store } = require('@store')
+const s_auto_mode = require('./s_auto_mode')
+const s_fan = require('./s_fan')
+const s_mode = require('./s_mode')
+const s_product = require('./s_product')
+const s_sens = require('./s_sens')
+const s_setting_au = require('./s_setting_au')
+const cb = {
+	s_auto_mode,
+	s_fan,
+	s_mode,
+	s_product,
+	s_sens,
+	s_setting_au,
+}
 
 function fnWeb(result) {
 	console.log(4101, store.web)
 	for (const key in store.web) {
-		for (const idB in store.web[key]) {
-			for (const idS in store.web[key][idB]) {
-				result[idB] = { ...result[idB] }
-			}
-		}
-		store.web[key]
+		// for (const idB in store.web[key]) {
+		// 	for (const idS in store.web[key][idB]) {
+		// 		result[idB] = { ...result[idB] }
+		// 	}
+		// }
+		// store.web[key]
 	}
 	// Очистить аккумулятор
 	store.web = {}
@@ -22,3 +36,4 @@ function fnWeb(result) {
 // 13. Настройки
 
 module.exports = fnWeb
+
