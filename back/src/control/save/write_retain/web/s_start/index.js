@@ -1,13 +1,11 @@
 /**
  *
- * @param {*} obj данные от web клиента {_id:buildId, value: true/false}
- * @param {*} data данные из файла json
+ * @param {*} acc данные от web клиента {_id:buildId, value: true/false}
+ * @param {*} result данные из файла json
  */
-function cb(obj, data) {
-	let result = data ? data : {}
-	// Создать или сохранить изменения в json
-	result = { ...result, [obj._id]: { ...result[obj._id], start: obj.val } }
-	return result
+function cb(acc, result) {
+	const { _id, val, name } = acc
+	result[_id].start = val
 }
 
 module.exports = cb

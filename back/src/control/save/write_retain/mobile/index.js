@@ -1,36 +1,40 @@
 const { data: store } = require('@store')
-const s_auto_mode = require('./s_auto_mode')
-const s_fan = require('./s_fan')
-const s_mode = require('./s_mode')
-const s_product = require('./s_product')
-const s_sens = require('./s_sens')
-const s_setting_au = require('./s_setting_au')
-const s_start = require('./s_start')
-
+const section = require('./section')
+const automode = require('./automode')
+const start = require('./start')
+const product = require('./product')
+const sensor = require('./sensor')
+const setting = require('./setting')
 const cb = {
 	// Авторежимы склада
-	s_auto_mode,
+
 	// Ввод/вывод из работы ВНО
-	s_fan,
+
 	// Режимы секции
-	s_mode,
+	
 	// Продукт
-	s_product,
+
 	// Датчики
-	s_sens,
+
 	// Настройки
-	s_setting_au,
+
 	// Вкл/выкл склад
-	s_start,
+
+	section,
+	automode,
+	start,
+	product,
+	sensor,
+	setting,
 }
 
-function fnWeb(result) {
-	console.log(4101, store.web)
-	for (const code in store.web) {
-		if (cb?.[code]) cb[code](store.web[code], result)
+function fnMobile(result) {
+	console.log(4102, store.mobile)
+	for (const code in store.mobile) {
+		if (cb?.[code]) cb[code](store.mobile[code], result)
 	}
 	// Очистить аккумулятор
-	store.web = {}
+	store.mobile = {}
 }
 
 // 8. Режимы секции

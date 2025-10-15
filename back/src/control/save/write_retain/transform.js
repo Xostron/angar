@@ -32,6 +32,8 @@ function transform(obj, result) {
 	fnDryingCount(obj.data.building, result)
 	// web - команды управления
 	fnWeb(result)
+	// mobile - команды
+	// fnMobile(result)
 }
 
 module.exports = transform
