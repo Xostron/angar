@@ -1,15 +1,15 @@
 /**
- *
- * @param {*} obj данные от web клиента
- * @param {*} data данные из файла json
+ * Режим секции
+ * @param {*} acc данные от web клиента
+ * @param {*} result данные из файла json
  */
-function cb(obj, data) {
-	const result = data ? data : {}
-	for (const key in obj) {
-		for (const i in obj[key]) {
-			result[key] = { ...result[key], mode: { ...result?.[key]?.['mode'], [i]: obj[key][i] } }
+function cb(acc, result) {
+	for (const idB in acc) {
+		if (idB==='name') continue
+		for (const idS in acc[idB]) {
+			result[idB].mode ??= {}
+			result[idB].mode[idS] = acc[idB][idS]
 		}
 	}
-	return result
 }
 module.exports = cb

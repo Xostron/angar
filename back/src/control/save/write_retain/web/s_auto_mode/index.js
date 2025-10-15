@@ -1,13 +1,13 @@
-
 /**
- *
- * @param {*} obj данные от web клиента
- * @param {*} data данные из файла json
+ * Авторежим склада
+ * @param {*} acc данные от web клиента
+ * @param {*} result данные из файла json
  */
-function cb(obj, data) {
-	let result = data ? data : {}
-	result = { ...result, [obj._id]: { ...result[obj._id], automode: obj.val } }
-	return result
+function cb(acc, result) {
+	const { _id, val, name } = acc
+	if (!_id) return
+	if (!val) return
+	result[_id].automode = val
 }
 
 module.exports = cb

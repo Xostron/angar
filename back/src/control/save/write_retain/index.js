@@ -19,9 +19,9 @@ async function writeRetain(obj) {
 	// Проверка файла/восстановление файла
 	const prime = await recovery()
 	// Собираем здесь данные на запись в retain
-	const result = prime
-	transform(obj, result)
-	console.log(410, result)
+	// store.retain = store.prime
+	transform(obj, store.retain)
+	console.log(410, store.retain)
 }
 
 async function writeRetainOld(obj) {

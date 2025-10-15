@@ -16,16 +16,11 @@ const cb = {
 
 function fnWeb(result) {
 	console.log(4101, store.web)
-	for (const key in store.web) {
-		// for (const idB in store.web[key]) {
-		// 	for (const idS in store.web[key][idB]) {
-		// 		result[idB] = { ...result[idB] }
-		// 	}
-		// }
-		// store.web[key]
+	for (const code in store.web) {
+		if (cb?.[code]) cb[code](store.web[code], result)
 	}
 	// Очистить аккумулятор
-	store.web = {}
+	// store.web = {}
 }
 
 // 8. Режимы секции
@@ -36,4 +31,3 @@ function fnWeb(result) {
 // 13. Настройки
 
 module.exports = fnWeb
-

@@ -1,12 +1,10 @@
-
 /**
- *
- * @param {*} obj данные от web клиента
- * @param {*} data данные из файла json
+ * Продукт
+ * @param {*} acc данные от web клиента
+ * @param {*} result данные из файла json
  */
-function cb(obj, data) {
-	let result = data ? data : {}
-	if (obj.buildingId) result[obj.buildingId].product = { _id: obj._id, name: obj.name , code: obj.code}
-	return result
+function cb(acc, result) {
+	const { buildingId, _id, code, name } = acc
+	result[buildingId].product = { _id, code }
 }
 module.exports = cb

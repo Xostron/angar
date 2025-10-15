@@ -1,16 +1,12 @@
-
 /**
- *
- * @param {*} obj данные от web клиента
- * @param {*} data данные из файла json
+ * Ввод/вывод из работы ВНО
+ * @param {*} acc данные от web клиента
+ * @param {*} result данные из файла json
  */
-function cb(obj, data) {
-	const { buildingId, sectionId, fanId, value } = obj
-	data[buildingId] ??= {}
-	data[buildingId].fan ??= {}
-	data[buildingId].fan[sectionId] ??= {}
-	data[buildingId].fan[sectionId][fanId] = value
-
-	return data
+function cb(acc, result) {
+	const { buildingId, sectionId, fanId, value, name } = acc
+	result[buildingId].fan ??= {}
+	result[buildingId].fan[sectionId] ??= {}
+	result[buildingId].fan[sectionId][fanId] = value
 }
 module.exports = cb
