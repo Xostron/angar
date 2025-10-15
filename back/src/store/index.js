@@ -1,6 +1,12 @@
 const path = require('path')
 
 const data = {
+	// Данные из файла retain
+	retain: {},
+	// Данные от web сохраняемы в retain
+	web: {},
+	// Данные от mobile
+	mobile: {},
 	// graceful shutdown
 	shutdown: false,
 	end: false,

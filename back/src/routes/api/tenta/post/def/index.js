@@ -1,4 +1,4 @@
-const { retainDir } = require('@store')
+const { data: store, retainDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
 const section = require('./section')
 const automode = require('./automode')
@@ -13,6 +13,7 @@ const tune = require('./tune')
 const warming = require('./warming')
 const zero = require('./zero')
 
+// Данные от мобилки
 // callback формирование данных на запись в retain.json
 const cb = {
 	section,
@@ -46,6 +47,8 @@ module.exports = data
 function fn(code) {
 	return async function (obj) {
 		try {
+			store.mobile[code] ??= {}
+			store.mobile[code] = { ...store.mobile[code], ...obj }
 			await createAndModifySync(obj, 'data', retainDir, cb[code])
 			return true
 		} catch (error) {

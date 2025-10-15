@@ -1,4 +1,3 @@
-
 /**
  *
  * @param {*} obj данные от web клиента
@@ -6,8 +5,8 @@
  */
 function cb(obj, data) {
 	const result = data ? data : {}
-	for (key in obj) {
-		for (i in obj[key]) {
+	for (const key in obj) {
+		for (const i in obj[key]) {
 			result[key] = { ...result[key], mode: { ...result?.[key]?.['mode'], [i]: obj[key][i] } }
 		}
 	}
