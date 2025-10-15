@@ -1,3 +1,5 @@
+const { data: store } = require('@store')
+
 function fnWeb(result) {
 	console.log(4101, store.web)
 	for (const key in store.web) {
