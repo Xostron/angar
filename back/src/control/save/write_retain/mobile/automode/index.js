@@ -1,14 +1,11 @@
 /**
- * @param {*} obj данные от web клиента
- * @param {*} data данные из файла json
+ * Авторежим
+ * @param {*} acc данные от web клиента
+ * @param {*} result данные из файла json
  */
-function cb(obj, data) {
-	data[obj.buildingId] ??= {}
-	data[obj.buildingId].automode = obj.value
-	return data
+function cb(acc, result) {
+	const {pcId, buildingId, value} = acc
+	result[buildingId].automode = value
 }
-/* 
-obj = { "buildingId": "65d4aed4b47bb93c40100fd5", "value": "drying" }
-*/
 
 module.exports = cb

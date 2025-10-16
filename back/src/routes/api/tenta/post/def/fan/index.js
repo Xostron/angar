@@ -1,6 +1,6 @@
 const { createAndModifySync, findOne } = require('@tool/json')
 const { setCmd } = require('@tool/command/set')
-const { retainDir } = require('@store')
+const { data: store, retainDir } = require('@store')
 
 async function cmd(obj) {
 	try {
@@ -10,11 +10,15 @@ async function cmd(obj) {
 		// Вывести из работы
 		if (value === 'off') {
 			const o = { buildingId, sectionId, fanId, value: true }
+			store.mobile ??= {}
+			store.mobile.fan = o
 			await createAndModifySync(o, 'data', retainDir, cb)
 			return true
 		}
 		// ввод/вывод в/из работы
 		const o = { buildingId, sectionId, fanId, value: false }
+		store.mobile ??= {}
+		store.mobile.fan = o
 		await createAndModifySync(o, 'data', retainDir, cb)
 		// Пуск/стоп - дискретный выход
 		const moduleId = fan.module.id
@@ -29,7 +33,7 @@ async function cmd(obj) {
 		// Аналоговый выход
 		const binding = await findOne('binding', { key: ['owner', 'id'], v: fanId })
 		if (!binding) return true
-		
+
 		// Блокировка включения с 0%
 		if (ao !== null && Number(ao) <= 0 && value == 'run') {
 			const val = { [channel]: 0 }

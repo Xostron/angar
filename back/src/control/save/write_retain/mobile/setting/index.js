@@ -2,54 +2,50 @@ const { data: store } = require('@store')
 
 /**
  * Обновление данных в настройках retain.json
- * @param {*} obj Данные от web клиента (obj.value - основные данные)
- * @param {*} data Данные из файла json
+ * @param {*} acc Данные от web клиента (obj.value - основные данные)
+ * @param {*} result Данные из файла json
  * @return {object} Данные retain + данные от клиента
  */
-function cb(obj, data) {
-	const { buildingId, code, product, value, date = null } = obj
+function cb(acc, result) {
+	const { pcId, buildingId, code, product, value, date = null } = acc
 	// Данная настройка относится к настройкам без продукта ?
 	const isWithout = store.stgWithout.includes(code)
-	if (!check(obj, data, isWithout)) return data
+	if (!check(acc, result, isWithout)) return
 	// Запись разрешена
-	data[buildingId] ??= {}
-	data[buildingId].setting ??= {}
-	data[buildingId].setting[code] ??= {}
-	data[buildingId].update ??= {}
-	data[buildingId].update.setting ??= {}
+	result[buildingId].setting ??= {}
+	result[buildingId].setting[code] ??= {}
+	result[buildingId].update ??= {}
+	result[buildingId].update.setting ??= {}
 
 	// С продуктом
 	if (!isWithout) {
-		data[buildingId].update.setting[code] ??= {}
-		data[buildingId].update.setting[code][product] = new Date()
-		data[buildingId].setting[code][product] ??= {}
+		result[buildingId].update.setting[code] ??= {}
+		result[buildingId].update.setting[code][product] = new Date()
+		result[buildingId].setting[code][product] ??= {}
 		for (const fld in value) {
 			const val = value[fld]
 			if (typeof val != 'object' || val == null)
-				data[buildingId].setting[code][product][fld] = val
+				result[buildingId].setting[code][product][fld] = val
 			else
-				data[buildingId].setting[code][product][fld] = {
-					...data[buildingId].setting[code][product][fld],
+				result[buildingId].setting[code][product][fld] = {
+					...result[buildingId].setting[code][product][fld],
 					...val,
 				}
 		}
-
-		return data
+		return
 	}
 	// Без продукта
-	data[buildingId].setting[code] ??= {}
-	data[buildingId].update.setting[code] = new Date()
+	result[buildingId].setting[code] ??= {}
+	result[buildingId].update.setting[code] = new Date()
 	for (const fld in value) {
 		const val = value[fld]
-		if (typeof val != 'object' || val == null) data[buildingId].setting[code][fld] = val
+		if (typeof val != 'object' || val == null) result[buildingId].setting[code][fld] = val
 		else
-			data[buildingId].setting[code][fld] = {
-				...data[buildingId].setting[code][fld],
+			result[buildingId].setting[code][fld] = {
+				...result[buildingId].setting[code][fld],
 				...val,
 			}
 	}
-
-	return data
 }
 
 module.exports = cb
@@ -57,19 +53,19 @@ module.exports = cb
 /**
  * Проверка временных меток изменения настроек
  * @param {object} obj Данные из запроса
- * @param {object} data Данные из retain.json (пользовательские настройки)
+ * @param {object} result Данные из retain.json (пользовательские настройки)
  * @param {boolean} isWithout Настройка с продуктом false / без true
  * @return {boolean} true - разрешить запись, false - запретить запись
  */
-function check(obj, data, isWithout) {
+function check(obj, result, isWithout) {
 	// date Временная метка новых данных от мобильного приложения
 	const { buildingId, code, product, value, date = null } = obj
 
 	// Дата последнего изменения настройки
 	isWithout
 	let lastUpd = isWithout
-		? data?.[buildingId]?.update?.setting?.[code]
-		: data?.[buildingId]?.update?.setting?.[code]?.[product]
+		? result?.[buildingId]?.update?.setting?.[code]
+		: result?.[buildingId]?.update?.setting?.[code]?.[product]
 	lastUpd = lastUpd ? new Date(lastUpd) : undefined
 	// Разрешить запись: нет времени последней записи настроек
 	if (!lastUpd) {

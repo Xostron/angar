@@ -1,7 +1,7 @@
 const { data: store } = require('@store')
 const { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount } = require('./fn')
 const fnWeb = require('./web')
-// const fnMobile = require('./mobile')
+const fnMobile = require('./mobile')
 
 /**
  * Агрегируем данные для сохранения в retain
@@ -33,7 +33,7 @@ function transform(obj, result) {
 	// web - команды управления
 	fnWeb(result)
 	// mobile - команды
-	// fnMobile(result)
+	fnMobile(result)
 }
 
 module.exports = transform

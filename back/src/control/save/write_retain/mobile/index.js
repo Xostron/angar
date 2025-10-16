@@ -1,35 +1,31 @@
 const { data: store } = require('@store')
-const section = require('./section')
 const automode = require('./automode')
-const start = require('./start')
+const fan = require('./fan')
+const section = require('./section')
 const product = require('./product')
 const sensor = require('./sensor')
 const setting = require('./setting')
+const start = require('./start')
+
 const cb = {
 	// Авторежимы склада
-
-	// Ввод/вывод из работы ВНО
-
-	// Режимы секции
-	
-	// Продукт
-
-	// Датчики
-
-	// Настройки
-
-	// Вкл/выкл склад
-
-	section,
 	automode,
-	start,
+	// Ввод/вывод из работы ВНО
+	fan,
+	// Режимы секции
+	section,
+	// Продукт
 	product,
+	// Датчики
 	sensor,
+	// Настройки
 	setting,
+	// Вкл/выкл склад + доп настройки
+	start,
 }
 
 function fnMobile(result) {
-	console.log(4102, store.mobile)
+	console.log(4102, 'mobile', store.mobile)
 	for (const code in store.mobile) {
 		if (cb?.[code]) cb[code](store.mobile[code], result)
 	}
@@ -37,11 +33,4 @@ function fnMobile(result) {
 	store.mobile = {}
 }
 
-// 8. Режимы секции
-// 9. Авторежимы склада
-// 10. Вкл/выкл склад
-// 11. Продукт
-// 12. Датчики
-// 13. Настройки
-
-module.exports = fnWeb
+module.exports = fnMobile

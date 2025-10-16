@@ -25,7 +25,7 @@ const cb = {
 }
 
 function fnWeb(result) {
-	console.log(4101, store.web)
+	console.log(4101, 'web', store.web)
 	for (const code in store.web) {
 		if (cb?.[code]) cb[code](store.web[code], result)
 	}

@@ -1,27 +1,16 @@
-
 /**
- * @param {*} o данные от web клиента
- * @param {*} data данные из файла json
+ * @param {*} acc данные от web клиента
+ * @param {*} result данные из файла json
  */
-function cb(o, data) {
-	const { buildingId, obj } = o
-	data[buildingId] ??= {}
-	for (const sensorId in obj) {
-		data[buildingId][sensorId] = { ...data[buildingId][sensorId], ...obj[sensorId] }
+function cb(acc, result) {
+	const { pcId, buildingId, obj } = acc
+	for (const idSens in obj) {
+		result[buildingId][idSens] ??= {}
+		result[buildingId][idSens] = { ...result[buildingId][idSens], ...obj[idSens] }
 	}
-
-	return data
 }
 
 /* 
-obj = {"65d4aed4b47bb93c40100fd5": {
-    "65d4af00b47bb93c40100fd7": {  "corr": 0 },
-    "65d4af0cb47bb93c40100fd8": { "on": false, "corr": 1 },
-    "65d4af64b47bb93c40100fd9": {  },
-    "65d4af7db47bb93c40100fda": { "on": false, "corr": 0 },
-    "65d4af9cb47bb93c40100fdb": { "on": true, "corr": 1 }
-  }}
-
 obj={
 "buildingId":"65d4aed4b47bb93c40100fd5",
 "obj": {
