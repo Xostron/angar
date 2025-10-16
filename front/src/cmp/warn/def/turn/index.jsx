@@ -63,7 +63,7 @@ export default function Entry({ data, entryCode }) {
 	function actProduct(val) {
 		const prod = prdList?.find((el) => el.code === val)
 		setPr(val)
-		sProduct({ buildingId: idB, ...prod })
+		sProduct({ buildingId: idB, ...prod, prdName: prod.name })
 	}
 	// Кнопка выбрать режим автоуправления
 	function actAutomode(val) {

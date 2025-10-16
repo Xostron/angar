@@ -30,9 +30,9 @@ function transform(obj, result) {
 	fnDateBuild(obj.data.building, result)
 	// 7. Счетчик дней в авторежиме сушки
 	fnDryingCount(obj.data.building, result)
-	// web - команды управления
+	// 8. web - команды управления
 	fnWeb(result)
-	// mobile - команды
+	// 9. mobile - команды
 	fnMobile(result)
 }
 

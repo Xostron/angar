@@ -8,7 +8,6 @@ const { writeSync } = require('@tool/json')
  */
 function transformF(factory, phF) {
 	if (!factory || !phF) return
-	// writeSync(fct, phF, t)
 	const fct = {}
 
 	// По настройкам

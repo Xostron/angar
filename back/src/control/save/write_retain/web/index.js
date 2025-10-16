@@ -25,19 +25,12 @@ const cb = {
 }
 
 function fnWeb(result) {
-	console.log(4101, 'web', store.web)
+	// console.log(4101, 'web', store.web)
 	for (const code in store.web) {
 		if (cb?.[code]) cb[code](store.web[code], result)
 	}
 	// Очистить аккумулятор
 	store.web = {}
 }
-
-// 8. Режимы секции
-// 9. Авторежимы склада
-// 10. Вкл/выкл склад
-// 11. Продукт
-// 12. Датчики
-// 13. Настройки
 
 module.exports = fnWeb

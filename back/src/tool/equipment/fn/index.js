@@ -20,8 +20,6 @@
 factory:{}
 }*/
 
-const { writeSync } = require('../../json')
-
 // Рама для web
 function equip(data) {
 	const result = {}
@@ -43,7 +41,9 @@ function equip(data) {
 		const inTemp = data.sensor.filter((t) => t.owner.id === bld._id && ['tin'].includes(t.type))
 		result.building[idx].inTemp = inTemp.length ? inTemp : null
 		// Внешняя
-		const outTemp = data.sensor.filter((t) => t.owner.id === bld._id && ['tout'].includes(t.type))
+		const outTemp = data.sensor.filter(
+			(t) => t.owner.id === bld._id && ['tout'].includes(t.type)
+		)
 		result.building[idx].outTemp = outTemp.length ? outTemp : null
 
 		// Влажность
@@ -51,7 +51,9 @@ function equip(data) {
 		const inMois = data.sensor.filter((m) => m.owner.id === bld._id && ['hin'].includes(m.type))
 		result.building[idx].inMois = inMois.length ? inMois : null
 		// Внешняя
-		const outMois = data.sensor.filter((m) => m.owner.id === bld._id && ['hout'].includes(m.type))
+		const outMois = data.sensor.filter(
+			(m) => m.owner.id === bld._id && ['hout'].includes(m.type)
+		)
 		result.building[idx].outMois = outMois.length ? outMois : null
 
 		// Расчетная влажность
@@ -74,11 +76,17 @@ function equip(data) {
 				// Датчики давления
 				const p = data.sensor.filter((t) => t.owner.id === s._id && ['p'].includes(t.type))
 				// Температура продукта
-				const tprd = data.sensor.filter((t) => t.owner.id === s._id && ['tprd'].includes(t.type))
+				const tprd = data.sensor.filter(
+					(t) => t.owner.id === s._id && ['tprd'].includes(t.type)
+				)
 				// Температура канала
-				const tcnl = data.sensor.filter((t) => t.owner.id === s._id && ['tcnl'].includes(t.type))
+				const tcnl = data.sensor.filter(
+					(t) => t.owner.id === s._id && ['tcnl'].includes(t.type)
+				)
 				// Датчики влажности секции
-				const mois = data.sensor.filter((m) => m.owner.id === s._id && ['hin'].includes(m.type))
+				const mois = data.sensor.filter(
+					(m) => m.owner.id === s._id && ['hin'].includes(m.type)
+				)
 				// Вентиляторы
 				const fan = data.fan.filter((f) => f.owner.id === s._id)
 				// Клапаны
@@ -163,7 +171,6 @@ function equip(data) {
 			result.factory[key].list.sort((a, b) => a._order - b._order)
 		}
 	}
-	// writeSync({ equip_factory: result.factory }, 'D:/Work/Projects/All/angar/v2/back/data/factory')
 	return result
 }
 

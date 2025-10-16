@@ -1,10 +1,10 @@
-require('module-alias/register');
+require('module-alias/register')
 const fs = require('fs')
 const path = require('path')
 const fsp = require('fs').promises
 const { readOne } = require('@tool/json')
-const { data:store, retainDir } = require('@store')
-const retainFile = path.join(retainDir, 'data1.json')
+const { data: store, retainDir } = require('@store')
+const retainFile = path.join(retainDir, 'data.json')
 
 /**
  * Проверка и создание папки и файла retain

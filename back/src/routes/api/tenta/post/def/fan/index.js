@@ -1,6 +1,6 @@
-const { createAndModifySync, findOne } = require('@tool/json')
+const { findOne } = require('@tool/json')
 const { setCmd } = require('@tool/command/set')
-const { data: store, retainDir } = require('@store')
+const { data: store } = require('@store')
 
 async function cmd(obj) {
 	try {
@@ -12,14 +12,12 @@ async function cmd(obj) {
 			const o = { buildingId, sectionId, fanId, value: true }
 			store.mobile ??= {}
 			store.mobile.fan = o
-			await createAndModifySync(o, 'data', retainDir, cb)
 			return true
 		}
 		// ввод/вывод в/из работы
 		const o = { buildingId, sectionId, fanId, value: false }
 		store.mobile ??= {}
 		store.mobile.fan = o
-		await createAndModifySync(o, 'data', retainDir, cb)
 		// Пуск/стоп - дискретный выход
 		const moduleId = fan.module.id
 		const channel = fan.module.channel - 1
@@ -70,19 +68,6 @@ Fan
 
 module.exports = cmd
 
-/**
- * Вентиляторы - вывод из работы
- * @param {*} obj данные от web клиента
- * @param {*} data данные из файла json
- */
-function cb(obj, data) {
-	const { buildingId, sectionId, fanId, value } = obj
-	data[buildingId] ??= {}
-	data[buildingId].fan ??= {}
-	data[buildingId].fan[sectionId] ??= {}
-	data[buildingId].fan[sectionId][fanId] = value
-	return data
-}
 /* 
 obj = {"buildingId":"65d4aed4b47bb93c40100fd5", "sectionId":"65d4aee3b47bb93c40100fd6", "fanId":"65d73cda52921647f4994d59", "value":false}
 

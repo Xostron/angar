@@ -1,28 +1,11 @@
-const { data: store, retainDir } = require('@store')
-const { createAndModifySync } = require('@tool/json')
-const section = require('./section')
-const automode = require('./automode')
-const start = require('./start')
-const product = require('./product')
+const { data: store } = require('@store')
 const fan = require('./fan')
 const valve = require('./valve')
 const reset = require('./reset')
-const sensor = require('./sensor')
-const setting = require('./setting')
 const tune = require('./tune')
 const warming = require('./warming')
 const zero = require('./zero')
 
-// Данные от мобилки
-// callback формирование данных на запись в retain.json
-const cb = {
-	section,
-	automode,
-	start,
-	product,
-	sensor,
-	setting,
-}
 
 const data = {
 	// Команды по изменению retain.json
@@ -49,7 +32,6 @@ function fn(code) {
 		try {
 			store.mobile[code] ??= {}
 			store.mobile[code] = { ...store.mobile[code], ...obj }
-			await createAndModifySync(obj, 'data', retainDir, cb[code])
 			return true
 		} catch (error) {
 			throw new Error('Мобильный клиент: Запись данных не успешна!')

@@ -156,11 +156,9 @@ function writeSync(data, ph = dataDir, ref, toRetain) {
 		for (const name of a) {
 			const filepath = path.join(ph, name + '.json')
 			const d = JSON.stringify(data?.[name] ?? [], null, ' ')
+			if (ph===retainDir) console.log('\x1b[36m%s\x1b[0m', `${retainDir} файл сохранен!`)
 			fs.writeFileSync(filepath, d)
 		}
-		// toRetain
-		// ? console.log('\x1b[32m%s\x1b[0m', `Данные успешно сохранены в data/retain`)
-		// : console.log('\x1b[32m%s\x1b[0m', `Файл(ы) json успешно сохранены в ${ph}`)
 	} catch (error) {
 		console.log('\x1b[31m%s\x1b[0m', 'Ошибка сохранение json: ', error)
 	}
