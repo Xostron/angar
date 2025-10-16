@@ -1,8 +1,9 @@
+require('module-alias/register');
 const fs = require('fs')
 const path = require('path')
 const fsp = require('fs').promises
-const {  readOne } = require('@tool/json')
-const { retainDir } = require('@store')
+const { readOne } = require('@tool/json')
+const { data:store, retainDir } = require('@store')
 const retainFile = path.join(retainDir, 'data1.json')
 
 /**
@@ -22,20 +23,30 @@ function isExist() {
 }
 
 /**
- * Проверка целостности файла и восстановление
+ * Проверка целостности файла и восстановление + чтение файла retain
  * @returns {object} данные файла retain JSON-объект
  */
 async function recovery() {
 	// Чтение файла (prime - данные файла)
-	let data = await readOne('data1.json', retainDir)
+	let data = await readOne('data.json', retainDir)
 	// Файл поврежден -> восстанавливаем файл (пока запишем пустой объект, в дальнейшем, от резервной копии)
 	if (data === null) {
 		fs.writeFileSync(retainFile, '{}')
 		// Перечитываем
-		data = await readOne('data1.json', retainDir)
+		data = await readOne('data.json', retainDir)
 		console.log('\tВосстановление файла')
 	}
 	return data
 }
 
-module.exports = { isExist, recovery }
+/**
+ * // Проверка файла/восстановление файла + чтение файла в аккумулятор store.retain
+	// -> далее в цикле ПЛК дозаписываем retain и сохраняем в файл retain
+ */
+async function readRetain() {
+	// Проверка и создание папки и файла retain
+	isExist()
+	store.retain = await recovery()
+}
+
+module.exports = readRetain

@@ -1,5 +1,4 @@
-const { isExist, recovery } = require('./recovery')
-const { createAndModifySync } = require('@tool/json')
+const { createAndModifySync, writeSync } = require('@tool/json')
 const { data: store, retainDir } = require('@store')
 const transform = require('./transform')
 const {
@@ -13,14 +12,12 @@ const {
 	cbDryingCount,
 } = require('../fn')
 
-async function writeRetain(obj) {
-	// Проверка и создание папки и файла retain
-	isExist()
-	// Проверка файла/восстановление файла
-	const prime = await recovery()
-	// Собираем здесь данные на запись в retain
-	// store.retain = store.prime
+function writeRetain(obj) {
+	// Собираем здесь данные на запись в аккумуляторе store.retain
 	transform(obj, store.retain)
+	// Записываем файл retain
+	const filename = 'data1'
+	writeSync({ [filename]: store.retain }, retainDir, null)
 	console.log(410, store.retain)
 }
 

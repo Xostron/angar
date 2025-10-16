@@ -11,6 +11,7 @@ const { data: store } = require('@store')
 async function analysis(obj) {
 	// файлы json - оборудование, пользовательские настройки, заводские настройки
 	await readAll(obj)
+	obj.retain = store.retain
 	// Опрос модулей по сети
 	let v = await read(obj)
 	// Анализ - данные для клиента и работы алгоритма
@@ -51,7 +52,9 @@ const calcSetting = (v, obj) => {
 			if (!s) continue
 			const [_, field1, field2] = s
 			// console.log(77, key, field1, field2)
-			v.coef[bld._id][key] = !field2 ? store.calcSetting[bld._id][key][field1] : store.calcSetting[bld._id][key][field1][field2]
+			v.coef[bld._id][key] = !field2
+				? store.calcSetting[bld._id][key][field1]
+				: store.calcSetting[bld._id][key][field1][field2]
 		}
 	})
 }

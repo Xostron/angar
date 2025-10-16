@@ -63,10 +63,10 @@ function smoking(
 	const fan = collect(m.fanAll, idB, idsS, obj)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	console.log(11, doc, stg, idsS)
+	console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
-		console.log(44, 'Окуривание выключено: Выключение плавного пуска')
+		console.log('\t',44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrl(idB, fanA, 'off')
 		softStart(idB, idsS, fan, obj, s, false)
