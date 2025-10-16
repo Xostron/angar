@@ -140,6 +140,7 @@ function signalB(r, bld, am, data) {
 	const low = store.alarm?.extralrm?.[bld._id]?.low ?? null
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
 	const openVin = store.alarm?.extralrm?.[bld._id]?.openVin ?? null
+	const notTune = store.alarm?.extralrm?.[bld._id]?.notTune ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
@@ -161,7 +162,7 @@ function signalB(r, bld, am, data) {
 	if (low) r.signal[bld._id].push(low)
 	if (deltaMdl) r.signal[bld._id].push(deltaMdl)
 	if (openVin) r.signal[bld._id].push(openVin)
-
+	if (notTune) r.signal[bld._id].push(notTune)
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
@@ -208,6 +209,9 @@ function bannerB(r, bld) {
 	r.banner.smoking[bld._id] ??= {}
 	r.banner.smoking[bld._id] =
 		store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
+	// Склад не работает: требуется калибровка клапанов
+	r.banner.notTune ??= {}
+	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }

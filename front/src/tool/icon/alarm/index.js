@@ -26,5 +26,6 @@ const data = {
 	connect: '/img/alarm/connect.svg',
 	local: '/img/alarm/local.svg',
 	smoking: '/img/alarm/smoking.svg',
+	notTune:'/img/alarm/notTune.svg',
 }
 export default data

@@ -188,6 +188,14 @@ const data = {
 		{ count: true, code: 'off', typeSignal: 'critical', msg: 'Отключен автомат питания' },
 		{ count: true, code: 'stator', typeSignal: 'critical', msg: 'Перегрев обмотки двигателя' },
 	],
+	// Склад не работает: требуется калибровка клапанов
+	90: {
+		count: true,
+		code: 'notTune',
+		type: 'alr',
+		typeSignal: 'critical',
+		msg: 'Требуется калибровка клапанов',
+	},
 	// ======== Неисправность датчика ========
 	93: {
 		count: true,

@@ -20,6 +20,7 @@ const banTimer = require('./ban_timer')
 const deltaMdl = require('./delta_mdl')
 const openVin = require('./open_vin')
 const stableVno = require('./stable_vno')
+const notTune = require('./not_tune')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -53,6 +54,7 @@ const def = {
 			alrClosedB,
 			localB,
 			deltaMdl,
+			notTune,
 		},
 	},
 	// Доп. аварии холодильника
@@ -65,7 +67,7 @@ const def = {
 	combi: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate },
+		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, notTune },
 	},
 }
 
