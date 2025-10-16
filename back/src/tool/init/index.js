@@ -37,15 +37,15 @@ async function init() {
 		console.log(
 			'\x1b[32m%s\x1b[0m',
 			`IP ${process.env.IP} не является публичным, пропуск инициализации`
-		)
-		return Promise.resolve()
+		);
+		return Promise.resolve();
 	}
 
 	const config = {
 		method: 'GET',
 		url: 'angar/init',
 		headers: { ip: process.env.IP },
-	}
+	};
 	return (
 		api(config)
 			.then((r) => {
@@ -53,8 +53,8 @@ async function init() {
 					console.log(
 						'\x1b[32m%s\x1b[0m',
 						`AdminServer ${process.env.API_URI} не отвечает для ${process.env.IP}`
-					)
-					return
+					);
+					return;
 				}
 				console.log(
 					'\x1b[32m%s\x1b[0m',
@@ -67,16 +67,16 @@ async function init() {
 			// отправка рамы на клиент
 			.then((data) => cEquip(data))
 			.catch(console.log)
-	)
+	);
 }
 
 function writeConfig(result) {
 	// Сохранение конфигурации в json
-	writeSync(result, dataDir, t)
+	writeSync(result, dataDir, t);
 	// Заводские настройки в json
-	transformF(result.factory, factoryDir)
+	transformF(result.factory, factoryDir);
 	// Первичные данные retain
-	initRetain(result)
+	initRetain(result);
 }
 
-module.exports = { init, writeConfig }
+module.exports = { init, writeConfig };

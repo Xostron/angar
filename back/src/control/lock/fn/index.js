@@ -144,7 +144,7 @@ function fnSolHeat(obj) {
 		// Склад выключен
 		const offB = retain?.[idB]?.start == false
 		// Секция выключена
-		const idS = data.cooler.find((clr) => clr._id === el.owner.id)?.sectionId
+		const idS = data.cooler?.find((clr) => clr._id === el.owner.id)?.sectionId
 		let offS = (retain?.[idB]?.mode?.[idS] ?? null) === null
 		out(obj, output, el, localB, local, alrStop, alrAgg, alr_offVNO, offB, offS)
 	}
