@@ -16,13 +16,11 @@ function notTune(bld, _, obj, s, se, m, automode, acc, data) {
 	let isOK = true
 	for (const id of idVlv) {
 		// Клапан откалиброван
-		console.log('=======', id, retainVlv[id])
 		if (retainVlv[id] > 0) continue
 		// Клапан не откалиброван -> Ошибка
 		isOK = false
 		break
 	}
-	console.log('******', isOK)
 	// Регистрация ошибки
 	if (!isOK && !acc.alarm) {
 		wrExtralrm(bld._id, null, 'notTune', msgB(bld, 90))

@@ -125,13 +125,15 @@ function device(obj) {
 function fnSolHeat(obj) {
 	const { value, data, retain, output } = obj
 	const arr = data.heating.filter((el) => el.type === 'channel')
+	// По соленоидам подогрева -> owner испаритель -> owner секция
 	for (const el of arr) {
+		const idS = data.cooler?.find(({ _id }) => _id === el.owner.id)?.sectionId
 		const mdl = el?.module?.id
 		if (!output[mdl]) continue
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
 		// местный режим
-		const local = isExtralrm(idB, el.owner.id, 'local')
+		const local = isExtralrm(idB, idS, 'local')
 		const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
@@ -144,7 +146,6 @@ function fnSolHeat(obj) {
 		// Склад выключен
 		const offB = retain?.[idB]?.start == false
 		// Секция выключена
-		const idS = data.cooler?.find((clr) => clr._id === el.owner.id)?.sectionId
 		let offS = (retain?.[idB]?.mode?.[idS] ?? null) === null
 		out(obj, output, el, localB, local, alrStop, alrAgg, alr_offVNO, offB, offS)
 	}

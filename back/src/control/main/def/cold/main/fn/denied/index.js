@@ -49,9 +49,10 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId)
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
 	const alrAuto = isAlr(bld._id, automode)
-
 	// Выведен ли из работы ВНО испарителя
 	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
+	// Местный режим секции
+	const local = isExtralrm(bld._id, sect._id, 'local')
 	store.denied[bld._id][clr._id] =
 		!start ||
 		alr ||
@@ -63,7 +64,8 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 		automode != 'cooling' ||
 		fansOff ||
 		// TODO Авария ВНО испарителя
-		stateCooler.fan.state === 'alarm'
+		stateCooler.fan.state === 'alarm' ||
+		local
 	console.log(55, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
@@ -100,7 +102,7 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 	const alrAuto = isAlr(bld._id, automode)
 	// Местный режим секции
 	const local = isExtralrm(bld._id, sect._id, 'local')
-console.log(553, local)
+
 	store.denied[bld._id][sect._id] =
 		!start ||
 		alr ||

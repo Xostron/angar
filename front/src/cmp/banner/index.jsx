@@ -14,7 +14,6 @@ export default function Banner({ type = 'building' }) {
 	useEffect(() => {
 		open()
 	}, [])
-	console.log(444, b, s)
 	const ws = `banner-${s?.length}`
 	const wb = `banner-${b?.length}`
 

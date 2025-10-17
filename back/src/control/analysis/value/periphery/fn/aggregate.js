@@ -25,10 +25,6 @@ function aggB(bld, agg, equip, val, retain, result) {
 	const { signal, module, cooler, sensor } = equip
 	// По агрегату doc-aggregateList
 	agg.forEach((doc) => {
-		const clr = cooler.find((el) => el.aggregateListId === doc._id)
-		const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
-		console.log(331, clr, pin)
-
 		result[doc._id] ??= {}
 		result[doc._id].compressor ??= {}
 		// Компрессоры
@@ -58,8 +54,8 @@ function aggB(bld, agg, equip, val, retain, result) {
 					result[doc._id].compressor[el._id].beep,
 					bld._id,
 					owner,
-					signal,
-					doc
+					doc,
+					equip
 				)
 			}
 		})
@@ -98,11 +94,19 @@ function stateC(o = {}) {
 	// Состояние Стоп (по-умолчанию)
 	return 'stop'
 }
-// Состояние компрессора управляемый
-function stateCSlave(o = {}, bldId, owner, signal, agg) {
+
+/**
+ * Состояние управляемого компрессора
+ * @param {*} o Результат состояния
+ * @param {*} bldId ИД склада
+ * @param {*} owner aggregateListID_beepID
+ * @param {*} agg Рама агрегата
+ * @param {*} equip Рама оборудования
+ * @returns
+ */
+function stateCSlave(o = {}, bldId, owner, agg, equip) {
 	// 1. Модули ПЛК агрегата неисправны?
-	const alrM = isAlrM(agg, signal)
-	if (alrM) return 'alarm'
+	if (isAlrmByAgg(agg, equip)) return 'alarm'
 	// 2. Авария питания, перегрев двигателя, высокое давление, уровень масла
 	const arr = []
 	for (const code in o) if (o[code]?.alarm || code === 'oil') arr.push(code)
@@ -142,25 +146,36 @@ function sum(bld, aggregate, result) {
 
 /**
  * Модули ПЛК агрегата неисправны?
- * @param {*} agg Рама агрегата
- * @param {*} obj Глобальные данные
- * @param {*} acc Аккумулятор
+ * Сигналы агрегата привязаны к неким модулям ПЛК, данная функция ищет эти модули
+ * и проверяет их на неисправность
+ * @param {*} doc Рама агрегата
+ * @param {*} equip Рама оборудования
  * @returns true Неисправны / false Модули ОК
  */
-function isAlrM(agg, signal) {
+function isAlrmByAgg(doc, equip) {
+	const { signal, cooler, sensor, module } = equip
+	// Коллекция модулей
 	const arrM = new Set()
-	// Найти модули, к которым подключен агрегат
-	agg.compressorList.forEach((cmpr) => {
+	// Найти модули, к которым подключен агрегат (beep)
+	doc.compressorList.forEach((cmpr) => {
 		cmpr.beep.forEach((beep) => {
-			const sig = signal.find((el) => el.owner.id === beep._id && el.extra.id === agg._id)
+			const sig = signal.find((el) => el.owner.id === beep._id && el.extra.id === doc._id)
 			sig?.module?.id && sig?.module?.channel ? arrM.add(sig.module.id) : null
 		})
 	})
-	console.log(`Агрегат ${agg._id} подключен к модулям:`, arrM)
+	// Найти модуль к оторому привязан датчик всасывания
+	// Испаритель - агрегат
+	const clr = cooler.find((el) => el.aggregateListId === doc._id)
+	// Датчик всасывания - испарителя
+	const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
+	// Аналогвый модуль - датчик всасывания
+	pin.module.id ? arrM.add(pin.module.id) : null
+	// console.log(`Агрегат ${doc._id} подключен к модулям:`, arrM)
 	// Модуль неисправен?
 	return [...arrM].some((idM) => {
-		const t = isErrM(agg.buildingId, idM)
-		console.log(`\tМодуль ${idM}, авария=${t}`)
+		const t = isErrM(doc.buildingId, idM)
+		const mdl = module.find((el) => el._id === idM)
+		console.log(`Агрегат${doc.order} ${doc._id}, Модуль ${idM} ${mdl.ip}, авария=${t}`)
 		return t
 	})
 }

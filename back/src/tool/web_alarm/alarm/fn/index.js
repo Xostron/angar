@@ -212,7 +212,6 @@ function bannerB(r, bld) {
 	// Склад не работает: требуется калибровка клапанов
 	r.banner.notTune ??= {}
 	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune
-	console.log('----------------', r.banner)
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }
