@@ -31,7 +31,7 @@ function alarm(obj) {
 	for (const bld of data.building) {
 		// Склад запущен
 		const start = retain?.[bld._id]?.start
-		// Склад запущен
+		// Авторежим
 		const am = retain?.[bld._id]?.automode
 		// События достижения задания в авторежиме
 		r.achieve ??= {}
@@ -58,7 +58,6 @@ function alarm(obj) {
 	}
 	// Счетчик текущих аварий (карточка склада)
 	count(r, value.total, data.building)
-
 	// История для логов
 	history(r)
 	// Мониторинг: критические аварии

@@ -9,14 +9,15 @@ import Item from './item'
 export default function Banner({ type = 'building' }) {
 	let { build, sect } = useParams()
 	const { refBanner, open } = useBanner()
-	const [b, s] = useInputStore(({ bannerB, bannerS }) => [bannerB(build), bannerS(build, sect)])
+	const b = useInputStore((s) => s.bannerB(build))
+	const s = useInputStore((s) => s.bannerS(build, sect))
 	useEffect(() => {
 		open()
 	}, [])
-
+	console.log(444, b, s)
 	const ws = `banner-${s?.length}`
 	const wb = `banner-${b?.length}`
-	
+
 	// для секции
 	return type === 'section' ? (
 		<Dialog cls={`banner ${ws}`} href={refBanner}>

@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 
-
 // Данные от сервера: датчики, режимы, настройки
 const useInputStore = create((set, get) => ({
 	input: {
@@ -85,7 +84,11 @@ const useInputStore = create((set, get) => ({
 		return { state: o?.state, value: o?.[type] }
 	},
 	getFan(fan) {
-		return { ...fan, state: get()?.input?.[fan?._id]?.state, sp: get()?.input?.[fan?._id]?.value }
+		return {
+			...fan,
+			state: get()?.input?.[fan?._id]?.state,
+			sp: get()?.input?.[fan?._id]?.value,
+		}
 	},
 	factory: () => get()?.input?.factory?.setting,
 	// Процент открытия клапана
@@ -124,9 +127,11 @@ const useInputStore = create((set, get) => ({
 		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const local = Object.values(get()?.alarm?.banner?.local?.[idB] ?? {}).filter((el) => el)
 		const smoking = get()?.alarm?.banner?.smoking?.[idB]
+		const notTune = get()?.alarm?.banner?.notTune?.[idB]
 		connect ? arr.push(connect) : null
 		local.length ? arr.push(local[0]) : null
 		smoking ? arr.push(smoking) : null
+		notTune ? arr.push(notTune) : null
 		return arr
 	},
 	// Вернуть массив аварий-баннеров для секции
@@ -134,11 +139,14 @@ const useInputStore = create((set, get) => ({
 		if (!idB || !idS) return []
 		const arr = []
 		const connect = get()?.alarm?.banner?.connect?.[idB]
-		const local = get()?.alarm?.banner?.local?.[idB]?.[idS] ?? get()?.alarm?.banner?.local?.[idB]?.[idB]
+		const local =
+			get()?.alarm?.banner?.local?.[idB]?.[idS] ?? get()?.alarm?.banner?.local?.[idB]?.[idB]
 		const smoking = get()?.alarm?.banner?.smoking?.[idB]
+		const notTune = get()?.alarm?.banner?.notTune?.[idB]
 		connect ? arr.push(connect) : null
 		local ? arr.push(local) : null
 		smoking ? arr.push(smoking) : null
+		notTune ? arr.push(notTune) : null
 		return arr
 	},
 }))
