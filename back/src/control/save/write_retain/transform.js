@@ -1,5 +1,5 @@
 const { data: store } = require('@store')
-const { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount } = require('./fn')
+const { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount, fnResultValve } = require('./fn')
 const fnWeb = require('./web')
 const fnMobile = require('./mobile')
 
@@ -17,7 +17,7 @@ function transform(obj, result) {
 	// 0. Расчет положения клпанов
 	positionVlv(obj)
 	// 1. Калибровка клапанов
-	fnResult(store.tuneTime, result, 'valve')
+	fnResultValve(store.tuneTime, result, 'valve')
 	// 2. Положения клапанов
 	fnResult(store.vlvPos, result, 'valvePosition')
 	// 3. Потеря питания

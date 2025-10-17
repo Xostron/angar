@@ -13,8 +13,6 @@ function merge(key, fld, tolerance, present, past, result) {
 	if (fld === 'count') {
 		// Целая часть - антье (от франц.)
 		const isEntier = Math.trunc(present[key]) !== Math.trunc(past[key])
-		// const isMore = +present[key] >= +past[key] + tolerance[fld]
-		// const isLess = +present[key]?.value <= +past[key] - tolerance[fld]
 		check(key, result, present, isEntier)
 	}
 	// Проверка полей у которых нет отсечек (режимы, тип продукта и др. не числовые значения)
@@ -41,75 +39,9 @@ function merge(key, fld, tolerance, present, past, result) {
 }
 
 function check(key, result, present, ...conditions) {
-	// if (conditions.some((el) => el === true)) result[key] = present[key]
 	if (!conditions.includes(true)) return
-	console.log(88000, key, present[key], conditions)
+	// console.log(88000, key, present[key], conditions)
 	result[key] = present[key]
 }
 
 module.exports = merge
-
-
-// function merge(key, fld, tolerance, present, past, result) {
-// console.log(880033, 'ДАВЛЕНИЕ', key, fld, present[key], past[key])
-// Без допуска
-// 	if (tolerance[fld] === undefined) {
-// 		if (JSON.stringify(present[key]) !== JSON.stringify(past[key])) {
-// 			result[key] = present[key]
-// 			// console.log(880031, 'без допуска -> НЕидентичен', key, present[key])
-// 		}
-// 		return
-// 	}
-// 	// С допуском для count (число дней сушки)
-// 	if (fld === 'count') {
-// 		if (
-// 			+present[key] >= +past[key] + tolerance[fld] ||
-// 			+present[key].value <= +past[key] - tolerance[fld] ||
-// 			Math.trunc(present[key]) !== Math.trunc(past[key])
-// 		)
-// 			result[key] = present[key]
-// 		return
-// 	}
-// 	// С допуском для показаний датчиков: проверяется отсечка по допуску (tolerance) и по отсчечке целого числа
-// 	// для отсчечек больше 1 (давление p, pin, pout, co2)
-// 	if (tolerance[fld] >= 1) {
-// 		if (
-// 			past[key].state != present[key].state ||
-// 			+present[key].value >= +past[key].value + tolerance[fld] ||
-// 			+present[key].value <= +past[key].value - tolerance[fld]
-// 		) {
-// 			console.log(
-// 				880000,
-// 				'с допуском -> НЕидентичен',
-// 				key,
-// 				tolerance[fld],
-// 				present[key],
-// 				past[key],
-// 				+present[key].value >= +past[key].value + tolerance[fld],
-// 				+present[key].value <= +past[key].value - tolerance[fld]
-// 			)
-// 			result[key] = present[key]
-// 		}
-// 	} else {
-// 		if (
-// 			past[key].state != present[key].state ||
-// 			+present[key].value >= +past[key].value + tolerance[fld] ||
-// 			+present[key].value <= +past[key].value - tolerance[fld] ||
-// 			Math.trunc(present[key].value) !== Math.trunc(past[key].value)
-// 		) {
-// 			result[key] = present[key]
-// 			console.log(
-// 				880032,
-// 				'с допуском -> НЕидентичен',
-// 				key,
-// 				present[key],
-// 				past[key],
-// 				+present[key].value >= +past[key].value + tolerance[fld],
-// 				+present[key].value <= +past[key].value - tolerance[fld],
-// 				Math.trunc(present[key].value) !== Math.trunc(past[key].value)
-// 			)
-// 		}
-// 	}
-
-// 	// console.log(880033, 'Идентичен', key, present[key])
-// }

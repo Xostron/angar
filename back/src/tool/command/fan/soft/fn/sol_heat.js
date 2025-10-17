@@ -15,7 +15,6 @@ const { ctrlDO } = require('@tool/command/module_output')
  */
 function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 	// Если комби склад в режиме Обычного - выключаем соленоиды подогрева
-	console.log(444, where)
 	if (where !== 'cold') {
 		solHeat.forEach((el) => {
 			ctrlDO(el, idB, 'off')

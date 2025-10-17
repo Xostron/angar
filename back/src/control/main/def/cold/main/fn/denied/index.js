@@ -22,7 +22,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
 
 	store.denied[bld._id][clr._id] = !start || alr || !aggr || !supplySt
-	console.log(55, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
+	console.log(410, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
 	clearAchieve(bld, obj, accAuto, false, start)
 
 	// Работа испарителя запрещена?
@@ -66,7 +66,7 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 		// TODO Авария ВНО испарителя
 		stateCooler.fan.state === 'alarm' ||
 		local
-	console.log(55, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
+	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
 	if (!store.denied[bld._id][clr._id]) {

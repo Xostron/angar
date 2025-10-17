@@ -29,21 +29,34 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
 	// console.log(2221, idS, 'on:', on, 'off:', off)
 	// Прогрев клапанов
-	if (aCmd.warming) (on = true), (off = false)
+	if (aCmd.warming) {
+		on = true
+		off = false
+		console.log('\tВключен прогрев клапанов')
+	}
 	// Антидребезг ВНО
-	if (acc.stable) (on = false), (off = false)
+	if (acc.stable) {
+		on = false
+		off = false
+		console.log('\tВключен Антидребезг, поэтому ВНО работают на постоянке')
+	}
 	// Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(bldId, acc, solHeat, on, off, obj, s, where)
-	if (acc.busySol) (on = false), (off = false)
+	if (acc.busySol) {
+		on = false
+		off = false
+		console.log(
+			'\tЖдем соленоиды подогрева (Настройка ВНО:Время подключения доп. вентилятора (Т канала))'
+		)
+	}
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, fans.length)
 	checkOff.relay(off, acc, where)
-	console.log(990011, acc)
 	// Непосредственное включение
 	turnOn(null, fans, solHeat, bldId, acc)
-	// console.log(3331, 'Реле: плавный пуск', idS, where, acc, fans.length)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
+	console.table(acc)
 }
 
 module.exports = relay

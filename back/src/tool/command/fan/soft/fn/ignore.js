@@ -19,10 +19,11 @@ function normal(bld, obj, acc, bdata) {
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 
 	if (bld.type == 'normal' || bdata.automode != 'cooling' || extraCO2.start) {
-		console.log('Работает алгоритм ВНО простого склада')
+		console.log('\tИгнор (normal) false')
 		return false
 	}
 	const alrAuto = isAlr(bld._id, bdata.automode)
+	console.log('\tИгнор (normal)', alrAuto)
 	return alrAuto
 }
 function cold(bld, obj, acc, bdata, solHeat) {
@@ -31,11 +32,12 @@ function cold(bld, obj, acc, bdata, solHeat) {
 	if (extraCO2.start) {
 		// Отключение соленоидов подогрева
 		fnSol(bld._id, extraCO2, solHeat)
-		console.log(99002, 'Соленоиды отключены, алгоритм ВНО холодильника отключен')
+		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')
 		return true
 	}
 	// Если есть авария авторежима, то логика обычного -> логика холодильника
 	const alrAuto = isAlr(bld._id, bdata.automode)
+	console.log('\tИгнор (cold)', !alrAuto)
 	return !alrAuto
 }
 

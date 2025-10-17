@@ -19,7 +19,7 @@ async function analysis(obj) {
 	// Настройки складов (обработанные для расчетов)
 	calcSetting(v, obj)
 	// Передача мяса по Socket.io на web-клиент
-	console.log('Коэффициенты:', v.coef)
+	console.table(v.coef)
 	await cValue(v)
 }
 

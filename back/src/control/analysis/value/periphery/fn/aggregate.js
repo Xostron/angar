@@ -168,7 +168,7 @@ function isAlrmByAgg(doc, equip) {
 	const clr = cooler.find((el) => el.aggregateListId === doc._id)
 	// Датчик всасывания - испарителя
 	const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
-	// Аналогвый модуль - датчик всасывания
+	// Аналоговый модуль - датчик всасывания
 	pin.module.id ? arrM.add(pin.module.id) : null
 	// console.log(`Агрегат ${doc._id} подключен к модулям:`, arrM)
 	// Модуль неисправен?

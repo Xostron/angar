@@ -58,7 +58,14 @@ function fnResult(data, result, key) {
 		result[idB][key] = data[idB]
 		// Правило для окуривания (key==='cooling')
 		finishSmoking(data[idB], result[idB], key)
-		// Правило для калибровки клапанов (key===valve)
+	}
+}
+
+function fnResultValve(data, result, key) {
+	if (!data) return
+	for (const idB in data) {
+		result[idB][key] ??= {}
+		result[idB][key] = { ...result[idB][key], ...data[idB] }
 		if (key === 'valve') setTuneTime(null)
 	}
 }
@@ -159,5 +166,4 @@ function fnDryingCount(building, result) {
 	}
 }
 
-
-module.exports = { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount }
+module.exports = { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount, fnResultValve }

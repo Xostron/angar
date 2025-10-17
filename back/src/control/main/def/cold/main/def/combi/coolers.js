@@ -55,6 +55,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				clr
 			)
 	}
+	console.log('-----------------------------------------------------------------------')
 }
 
 module.exports = coolers

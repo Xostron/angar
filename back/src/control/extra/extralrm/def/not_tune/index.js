@@ -28,7 +28,7 @@ function notTune(bld, _, obj, s, se, m, automode, acc, data) {
 	}
 	// Сброс ошибки: все клапаны откалиброваны
 	if (isOK) {
-		delExtralrm(bld._id, null, 'not_tune')
+		delExtralrm(bld._id, null, 'notTune')
 		acc.alarm = false
 	}
 }

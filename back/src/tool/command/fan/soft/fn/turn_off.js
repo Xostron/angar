@@ -15,22 +15,35 @@ const _MIN_SP = 20
  */
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where = 'normal') {
 	// Запрет при окуривании
-	if (s?.smoking?.on) return true
+	if (s?.smoking?.on) {
+		console.log('\tПлавный пуск: TurnOff (Окуривание)', idS, where)
+		return true
+	}
 	// (КОМБИ) Проверка переключения с НОРМАЛЬНОГО на ХОЛОД и выход
-	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) return true
+	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) {
+		console.log('\tПлавный пуск: TurnOff (переключения с НОРМАЛЬНОГО на ХОЛОД)', idS, where)
+		return true
+	}
 	// Игнор работы в комби складе (Работа в НОРМ или ХОЛОД)
-	if (ignore[where](bld, obj, acc, bdata, solHeat)) return true
+	if (ignore[where](bld, obj, acc, bdata, solHeat)) {
+		console.log('\tПлавный пуск: TurnOff (ИГНОР РАБОТЫ)', idS, where)
+		return true
+	}
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть (aCmd.type=off и секция в ручном)
-	if (aCmd.type == 'off' && bdata.mode?.[idS] === false) {
+	if (aCmd.type === 'off' && bdata.mode?.[idS] === false) {
 		clear(idS)
+		console.log('\tПлавный пуск: TurnOff (Ручной режим)', idS, where)
 		return true
 	}
 	// aCmd - задание на вкл активно
-	if (aCmd.type == 'on') return false
+	if (aCmd.type == 'on') {
+		console.log('\tПлавный пуск: TurnOff = false -> Разрешить работу ВНО', idS, where)
+		return false
+	}
 	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
-	// console.log(5552,idS, aCmd, acc)
+	console.log('\tПлавный пуск: TurnOff (По-умолчанию - все выключить)', idS, where)
 	return true
 }
 
