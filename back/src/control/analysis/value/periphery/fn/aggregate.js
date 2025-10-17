@@ -27,7 +27,7 @@ function aggB(bld, agg, equip, val, retain, result) {
 	agg.forEach((doc) => {
 		const clr = cooler.find((el) => el.aggregateListId === doc._id)
 		const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
-		// console.log(331, clr, pin)
+		console.log(331, clr, pin)
 
 		result[doc._id] ??= {}
 		result[doc._id].compressor ??= {}

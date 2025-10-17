@@ -29,10 +29,10 @@ function alarm(idB, idS, data) {
 		.filter((el) => !!el)
 
 	// let notTune = data?.alarm?.banner?.notTune[idB]
-	let notTune = store.alarm?.extralrm?.[idB]?.notTune
-	notTune = { code: notTune.code, msg: notTune.msg, date: notTune.date }
+	// let notTune = store.alarm?.extralrm?.[idB]?.notTune
+	// notTune = { code: notTune.code, msg: notTune.msg, date: notTune.date }
 	// console.log(1, '**************', notTune)
-	a.push(notTune)
+	// a.push(notTune)
 	a.push(...timer)
 	return a
 }
