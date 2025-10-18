@@ -9,13 +9,16 @@ function drain(fnChange, accCold, acc, se, s, bld, clr) {
 	const time = compareTime(acc.state.drain, s.coolerCombi.water)
 	const tmp = se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
 	console.log(7771, 'drain', time, tmp)
-	// время вышло
+	// Время не прошло
 	if (!time) return
-	// Повтор
-	if (tmp) return fnChange(0, 0, 1, 0, 'defrost', clr)
 	// Ждем пока все испарители не закончат процесс оттайка-слив воды
-	acc.state.drainAll = new Date()
-	acc.state.add=false
+	acc.state.add = false
+	// Время прошло, а температура всасывания не уменьшилась -> повтор оттайки
+	if (tmp) {
+        accCold.defrostAll = new Date()
+		return fnChange(0, 0, 1, 0, 'defrost', clr)
+	}
+	// acc.state.drainAll = new Date()
 	check.combi(fnChange, 'drain', accCold, acc, se, s, bld, clr)
 }
 
