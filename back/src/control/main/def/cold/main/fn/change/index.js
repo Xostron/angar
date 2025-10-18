@@ -21,11 +21,12 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	// Оттайка
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
 	// Доп состояние слива воды
-	accAuto[clr._id] ??= {}
-	accAuto[clr._id].state ??= {}
-	accAuto[clr._id].state.add = add ? new Date() : false
+	accAuto.cold ??= {}
+	accAuto.cold[clr._id] ??= {}
+	accAuto.cold[clr._id].state ??= {}
+	accAuto.cold[clr._id].state.add = add ? new Date() : false
 	// Обновление времени включения состояния
-	if (code) accAuto[clr._id].state[code] = new Date()
+	if (code) accAuto.cold[clr._id].state[code] = new Date()
 
 	console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
 }

@@ -10,10 +10,8 @@ import defImg from '@tool/icon'
 export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const { build } = useParams()
 	// [Состояния и показания испарителя], [склад вкл/выкл]
-	const [cooler, start] = useInputStore(({ input }) => [
-		input?.[data.el?._id],
-		input?.retain?.[build]?.start,
-	])
+	const cooler = useInputStore((s) => s?.input?.[data.el?._id])
+	const start = useInputStore((s) => s?.input?.retain?.[build]?.start)
 	// Стадия испарителя - режим
 	const uptxt = start ? cooler.name : ''
 	// Задание ПЧ
@@ -32,7 +30,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const state = cooler?.state
 	let icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
 	if (data.state == 'alarm') icon = '/img/cold/cooler/fan-alarm.svg'
-	
+
 	// Доступ разрешен
 	if (isAuth) cl.push('auth-sir')
 	// Вывод из работы ВНО
@@ -41,6 +39,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	cl = cl.join(' ')
 	return (
 		<BtnCooler
+			title={data.el?._id}
 			onClick={() => onClick(data)}
 			icon={icon}
 			ltxt={ltxt}
@@ -55,6 +54,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 
 // Кнопка Испаритель
 function BtnCooler({
+	title = '',
 	icon,
 	onClick,
 	ltxt = '',
@@ -76,7 +76,7 @@ function BtnCooler({
 	)
 
 	return (
-		<button onClick={onClick} className={cl} style={style}>
+		<button onClick={onClick} className={cl} style={style} title={title}>
 			<div className='state-extra'>
 				{solHeat !== undefined && Sh}
 				<span>{level}</span>

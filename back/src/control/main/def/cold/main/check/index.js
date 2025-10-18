@@ -78,25 +78,25 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 
 	// Достиг задания => выкл испаритель
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
+		console.log('\n\tДостиг задания продукта')
 		if (code === 'off') return
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	}
 
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
 	// let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
-
 	// условия включения соленоида
 	let sol = 1
 
-	// Условия включения вентилятора испарителя
+	// Вкл испаритель + включенный соленоид => Охлаждение
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
+	// Выкл испаритель => набор холода
 	if (se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
 
-	// console.log(666, clr.name, code, sol, ven)
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
-		if (code == 'drain' && !accAuto.drainAll) return
+		if (code === 'drain' && !accCold?.drainAll) return
 		return fnChange(1, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return

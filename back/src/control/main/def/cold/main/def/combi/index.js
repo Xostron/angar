@@ -38,6 +38,9 @@ function main(bld, obj, bdata, alr) {
 		// console.log(999)
 		target.combi(bld, obj, bdata, alr)
 	}
+	console.log(88, 'Аккумулятор холодильника')
+	console.log(accAuto.cold)
+	// console.table(accAuto.cold)
 }
 
 module.exports = main

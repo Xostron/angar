@@ -39,7 +39,11 @@ function cooler(equip, val, retain, result) {
 		arrFan.forEach((f) => {
 			result[clr._id].fan[f._id] = result[f._id]
 		})
-		result[clr._id].fan.state = arrFan.every(f=>result[f._id].state==='off' || result[f._id].state==='alarm') ? 'alarm' : ''
+		result[clr._id].fan.state = arrFan.every(
+			(f) => result[f._id].state === 'off' || result[f._id].state === 'alarm'
+		)
+			? 'alarm'
+			: ''
 
 		// Оттайка испарителя
 		heating
@@ -97,7 +101,12 @@ function state(o, clr, building, section) {
 	const state = [s, f, h].map((el) => (el ? 'on' : 'off'))
 	// Слив воды
 	const accAuto = readAcc(idB, typeB)
-	if (accAuto?.[clr._id]?.state?.add) state.push('add')
+	// console.log('============',accAuto)
+	if (typeB === 'combi') {
+		if (accAuto?.cold?.[clr._id]?.state?.add) state.push('add')
+	} else {
+		if (accAuto?.[clr._id]?.state?.add) state.push('add')
+	}
 	return state.join('-')
 }
 

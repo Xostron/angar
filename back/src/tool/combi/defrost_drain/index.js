@@ -8,12 +8,20 @@
  */
 function defrostAll(accCold, cooler, obj) {
 	const skip = ['off-off-on', 'off-off-off-add']
-	// Фильтр: только рабочие испарители
+	// Только рабочие испарители
 	cooler = cooler.filter((el) => Object.keys(accCold[el._id]?.state ?? {}).length)
+	// Флаг оттайка закончена на всех испарителях данной секции
+	accCold.defrostAllFinish = cooler.every((el) => accCold?.[el._id]?.state?.waitDefrost)
 	// Флаг входа в оттайку всех испарителей
-	accCold.defrostAll = cooler.some((el) => skip.includes(obj.value[el._id]?.state))
+	if (accCold.defrostAllFinish) accCold.defrostAll=null
 	// Флаг выхода из слива воды всех испарителей
-	accCold.drainAll = cooler.every((el) => accCold[el._id]?.state?.drainAll)
+	accCold.drainAll = cooler.every((el) => accCold[el._id]?.state?.add)
+	
+	console.log('********defrostALL')
+	console.table(
+		[{ Флаг_отайки: accCold.defrostAll, Флаг_слив_воды: accCold.drainAll }],
+		['Флаг_отайки', 'Флаг_слив_воды']
+	)
 }
 
 module.exports = defrostAll

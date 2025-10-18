@@ -115,7 +115,7 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 	console.log(
 		55,
 		sect.name,
-		'работа секции запрещена',
+		'работа запрещена',
 		store.denied[bld._id][sect._id],
 		'==',
 		!start,
