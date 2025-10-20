@@ -16,7 +16,7 @@ function notTune(bld, _, obj, s, se, m, automode, acc, data) {
 	let isOK = true
 	for (const id of idVlv) {
 		// Клапан откалиброван
-		if (retainVlv[id] > 0) continue
+		if (retainVlv?.[id] > 0) continue
 		// Клапан не откалиброван -> Ошибка
 		isOK = false
 		break
