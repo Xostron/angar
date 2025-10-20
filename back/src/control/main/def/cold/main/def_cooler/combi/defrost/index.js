@@ -13,7 +13,7 @@ function defrost(fnChange, accCold, acc, se, s, bld, clr) {
 				'defrost',
 				`Достигнута  целевая тмп.  дт. всасывания ${se.cooler.tmpCooler} >= ${s.coolerCombi.defrostOff}`
 			)
-		// Отключаем оттайку и ждем остальных испарителей
+		// Отключаем оттайку и ждем остальных испарителей для перехода в слив воды
 		// -> перекинет на off-off-off (обработчик src\control\main\def\cold\main\def_cooler\combi\off\index.js)
 		fnChange(0, 0, 0, 0, null, clr)
 		// Флаг ожидания пока все остальные пройдут оттайку

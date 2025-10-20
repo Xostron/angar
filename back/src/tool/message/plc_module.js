@@ -57,6 +57,10 @@ function isErrM(idB, idM) {
 	return !!store.alarm.module?.[idB]?.[idM]
 }
 
+// Есть ли неисправные модули в системе
+function isErrMs(idB) {
+	return Object.keys(store.alarm?.module?.[idB] ?? {}).length ? true : false
+}
 // Добавить модуль в список неисправных
 function wrModule(idB, idM, o) {
 	store.alarm.module ??= {}
@@ -91,4 +95,4 @@ function isDebMdl(idB, idM, opt) {
 	return true
 }
 
-module.exports = { wrDebMdl, delDebMdl, timeout, delModule,isErrM }
+module.exports = { wrDebMdl, delDebMdl, timeout, delModule, isErrM, isErrMs }

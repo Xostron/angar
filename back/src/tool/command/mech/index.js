@@ -57,6 +57,9 @@ function mechB(bId, type, obj) {
 	// Выход "Модуль в работе" для реле безопасности
 	const connect =
 		data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'connect') ?? []
+	// Выход "Модуль в работе" для реле безопасности
+	const connectLost =
+		data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'connect_lost') ?? []
 	// Выход Сброс аварии для реле безопасности
 	const reset =
 		data?.signal?.filter((el) => idS.includes(el.owner.id) && el.type == 'reset') ?? []
@@ -75,7 +78,7 @@ function mechB(bId, type, obj) {
 			return el
 		})
 
-	return { fanA, connect, reset, vlvIn, cold, fanAll }
+	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost }
 }
 
 // Получить массив ID склада и его секций

@@ -66,4 +66,16 @@ function ctrlV(vlv, buildingId, type) {
 	if (r) setCmd(r)
 }
 
-module.exports = { ctrlAO, ctrlDO, ctrlV }
+/**
+ * Вкл/выкл множество механизмов
+ * @param {object[]} arr Массив механизмов
+ * @param {string} idB ИД склада
+ * @param {string} type Тип команды: 'on'|'off'
+ */
+function arrCtrlDO(arr, idB, type) {
+	arr.forEach((el) => {
+		ctrlDO(el, idB, type)
+	})
+}
+
+module.exports = { ctrlAO, ctrlDO, ctrlV, arrCtrlDO }

@@ -14,6 +14,7 @@ const { accelCOn, accelCAuto } = require('./accel_cold')
 const tChannel = require('./t_channel')
 const slaveAgg = require('./slave_agg')
 const coNormal = require('./co2_normal_combi')
+const connectLost = require('./connect_lost')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
@@ -49,6 +50,7 @@ const data = {
 			connect,
 			reset,
 			cableB,
+			connectLost,
 		},
 	},
 	// Склад холодильник
@@ -69,6 +71,7 @@ const data = {
 			coOn,
 			drainOn,
 			slaveAgg,
+			connectLost,
 		},
 	},
 	// Комбинированный склад

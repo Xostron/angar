@@ -130,6 +130,7 @@ function signalB(r, bld, am, data) {
 	const smoking1 = store.alarm.extra?.[bld._id]?.smoking1 ?? null
 	const smoking2 = store.alarm.extra?.[bld._id]?.smoking2 ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
+	const connectLost = store.alarm.extra?.[bld._id]?.connectLost ?? null
 	// extralrm
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
 	const vlvLim = store.alarm?.extralrm?.[bld._id]?.vlvLim ?? null
@@ -159,6 +160,7 @@ function signalB(r, bld, am, data) {
 	if (smoking1) r.signal[bld._id].push(smoking1)
 	if (smoking2) r.signal[bld._id].push(smoking2)
 	if (connect) r.signal[bld._id].push(connect)
+	if (connectLost) r.signal[bld._id].push(connectLost)
 	if (low) r.signal[bld._id].push(low)
 	if (deltaMdl) r.signal[bld._id].push(deltaMdl)
 	if (openVin) r.signal[bld._id].push(openVin)

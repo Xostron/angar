@@ -7,7 +7,7 @@
  * @param {*} obj глобальные данные склада
  */
 function defrostAll(accCold, cooler, obj) {
-	const skip = ['off-off-on', 'off-off-off-add']
+	// const skip = ['off-off-on', 'off-off-off-add']
 	// Только рабочие испарители
 	cooler = cooler.filter((el) => Object.keys(accCold[el._id]?.state ?? {}).length)
 	// Флаг оттайка закончена на всех испарителях данной секции
