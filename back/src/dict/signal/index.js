@@ -1,5 +1,5 @@
 const data = {
-	output: ['connect', 'reset'],
+	output: ['connect', 'reset', 'connect_lost'],
 }
 
 module.exports = data
