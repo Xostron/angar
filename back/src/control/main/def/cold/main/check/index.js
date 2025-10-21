@@ -14,8 +14,11 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		delAchieve(bld._id, bld.type, mes[81].code)
 		if (code === 'off') return
 		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accAuto.target} тмп. задания`)
+		acc.state.off = new Date()
+		if (!accAuto.finishTarget) accAuto.finishTarget = new Date()
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	} else {
+		accAuto.finishTarget = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 		const txt = `Температура задания ${accAuto.target ?? '--'} °C, продукта ${se.tprd} °C`
 		wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
@@ -92,7 +95,6 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
 	// Выкл испаритель => набор холода
 	if (se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
-
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return

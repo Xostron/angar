@@ -12,11 +12,11 @@ function off(fnChange, accAuto, acc, se, s, bld, clr) {
 	// Время работы в текущем режиме
 	onTime('off', acc)
 
-	//Выключен по достижению задания
-	const time = compareTime(acc?.state?.off, s?.cooler?.stop)
+	//Выключен по достижению задания compareTime(acc?.state?.off, s?.cooler?.stop)
+	const time = accAuto.finishTarget && compareTime(accAuto.finishTarget, s?.cooler?.stop)
 	console.log(77, '\toff', 'Выключен по достижению задания', time)
 	// вкл обдув: напорный вентилятор - 1, соленоид - 0, обогрев - 0
-	if (time && !acc?.state?.waitDefrost) return fnChange(0, 1, 0, 0, 'blow', clr)
+	if (time) return fnChange(0, 1, 0, 0, 'blow', clr)
 
 	// Проверка ожидания оттайки всех испарителей
 	if (acc?.state?.waitDefrost) {
