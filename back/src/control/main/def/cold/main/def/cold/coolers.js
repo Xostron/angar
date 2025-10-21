@@ -2,7 +2,6 @@ const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
 const denied = require('../../fn/denied')
 
-
 /**
  * Склад Холодильник: Логика испарителей
  * @param {object} bld Склад
@@ -42,7 +41,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				s,
 				stateCooler.state,
 				clr
-			)
+			) &&
+			cooler.cold?.[stateCooler?.state]
 		)
 			cooler.cold?.[stateCooler.state](
 				fnChange,
@@ -53,8 +53,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				bld,
 				clr
 			)
-		
 	}
+	console.log('-----------------------------------------------------------------------')
 }
 
 module.exports = coolers

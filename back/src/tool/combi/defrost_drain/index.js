@@ -19,7 +19,7 @@ function defrostAll(accCold, cooler, obj, s) {
 	// Флаг входа в оттайку всех испарителей
 	if (accCold.defrostAllFinish) accCold.defrostAll = null
 	// Флаг выхода из слива воды всех испарителей
-	accCold.drainAll = cooler.every((el) => accCold[el._id]?.state?.add)
+	accCold.drainAll = cooler?.length && cooler.every((el) => accCold[el._id]?.state?.add)
 	// Флаг время после слива воды
 	if (accCold.drainAll) accCold.afterD = new Date()
 	/* 
@@ -28,7 +28,19 @@ function defrostAll(accCold, cooler, obj, s) {
 	По достижению времени разрешаем оттайку, флаги сбрасываем
 	*/
 	if (accCold.timeAD) (accCold.afterD = null), (accCold.timeAD = null)
-	if (accCold.afterD) accCold.timeAD = compareTime(accCold.afterD, s.coolerCombi.afterDrain)
+	if (accCold.afterD)
+		accCold.timeAD = compareTime(
+			accCold.afterD,
+			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
+		)
+	console.log(
+		'******Время после слива afterDrain=',
+		s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain,
+		'accCold.timeAD',
+		accCold.timeAD,
+		'accCold.afterD',
+		accCold.afterD
+	)
 	console.log('********defrostALL')
 	console.table(
 		[{ Флаг_отайки: accCold.defrostAll, Флаг_слив_воды: accCold.drainAll }],

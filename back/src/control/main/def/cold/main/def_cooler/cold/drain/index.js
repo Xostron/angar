@@ -1,21 +1,25 @@
-const { compareTime, onTime } = require('@tool/command/time');
-const check = require('../../../check');
+const { compareTime, onTime } = require('@tool/command/time')
+const check = require('../../../check')
 
 // Слив конденсата
 function drain(fnChange, accAuto, acc, se, s, bld, clr) {
-	if (!acc.state.drain) acc.state.drain = new Date();
+	if (!acc.state.drain) acc.state.drain = new Date()
 	delete acc.state.drainAll
-	onTime('drain', acc);
-	const time = compareTime(acc.state.drain, s.cooler.water);
-	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn;
-	console.log(4443, 'drain', 'time', time, 'tmp', tmp);
+	onTime('drain', acc)
+	const time = compareTime(acc.state.drain, s.cooler.water)
+	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn
+	console.log(7771, 'drain', time, tmp)
 	// время не окончено
-	if (!time) return;
-	// Повтор
-	if (tmp) return fnChange(0, 0, 1, 0, 'defrost', clr);
-	// Ждем пока все испарители не закончат процесс оттайка-слив воды
-	acc.state.drainAll = true
-	check.cold(fnChange, 'drain', accAuto, acc, se, s, bld, clr);
+	if (!time) return
+	// Время прошло -> выключаем слив воды
+	acc.state.add = false
+	// Время прошло, а температура всасывания не уменьшилась -> повтор оттайки
+	if (tmp) {
+		// Флаг включения оттайки на всех испарителях
+        accAuto.defrostAll = new Date()
+		return fnChange(0, 0, 1, 0, 'defrost', clr)
+	}
+	check.cold(fnChange, 'drain', accAuto, acc, se, s, bld, clr)
 }
 
-module.exports = drain;
+module.exports = drain

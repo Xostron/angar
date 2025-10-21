@@ -26,7 +26,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		accAuto.cold[clr._id].state ??= {}
 
 		const stateCooler = obj.value?.[clr._id]
-		
+
 		// Режим секции true-Авто
 		const sectM = retain?.[bld._id]?.mode?.[sect._id]
 		// Запрет работы испарителя
@@ -44,7 +44,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				s,
 				stateCooler.state,
 				clr
-			) && cooler.combi?.[stateCooler?.state]
+			) &&
+			cooler.combi?.[stateCooler?.state]
 		)
 			cooler.combi?.[stateCooler?.state](
 				fnChange,

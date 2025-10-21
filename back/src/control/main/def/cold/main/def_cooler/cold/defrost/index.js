@@ -10,8 +10,10 @@ function defrost(fnChange, accAuto, acc, se, s, bld, clr) {
 	if (time || t) {
 		if (time) console.log('defrost', 'Истекло отведенное время')
 		else console.log('defrost', `Достигнута  целевая тмп.  дт. всасывания ${se.cooler.tmpCooler} >= ${s.cooler.defrostOff}`)
-		accAuto.targetDT = new Date()
-		fnChange(0, 0, 0, 1, 'drain', clr)
+		// accAuto.targetDT = new Date()
+		fnChange(0, 0, 0, 0, null, clr)
+		// Флаг ожидания пока все остальные пройдут оттайку
+		if (!acc?.state?.waitDefrost) acc.state.waitDefrost = new Date()
 	}
 }
 

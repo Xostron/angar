@@ -1,7 +1,7 @@
 const defrostAll = require('@tool/combi/defrost_drain')
 const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
-const { oneChange } = require('../../fn/change')
+const { oneChangeCombi } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
 const denied = require('../../fn/denied')
 const target = require('../../fn/tgt')
@@ -15,7 +15,7 @@ function main(bld, obj, bdata, alr) {
 
 	// Управление испарителем
 	const fnChange = (sl, f, h, add, code, clr) =>
-		oneChange(bdata, bld._id, sl, f, h, add, code, clr)
+		oneChangeCombi(bdata, bld._id, sl, f, h, add, code, clr)
 
 	// Синхронизация оттайки-слива_воды испарителей
 	defrostAll(accAuto.cold, m.cold.cooler, obj, s)
@@ -44,4 +44,3 @@ function main(bld, obj, bdata, alr) {
 }
 
 module.exports = main
-

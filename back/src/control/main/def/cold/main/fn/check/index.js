@@ -6,7 +6,7 @@ const maxCombi = 3
 // Проверка на включение оттайки
 function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
-	if (skip.includes(stateCooler)) {
+	if (skip.includes(stateCooler) || acc?.state?.waitDefrost) {
 		// Инициализация счетчика
 		if (!acc.state.defrostCount) acc.state.defrostCount = 1
 		// TODO Авария при достижение максимума
@@ -18,13 +18,21 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
 	}
 
 	// Температура на всасывании испарителя
-	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn
+	const tmp =
+		accAuto.timeAD === null
+			? se.cooler.tmpCooler <= s?.cooler?.defrostOn
+			: se.cooler.tmpCooler <= s?.cooler?.defrostOn && accAuto.timeAD
 	const time = compareTime(accAuto.targetDT, s.cooler.defrostWait)
+	console.log(
+				`\t Условия Оттайки ${tmp} || ${time} || ${accAuto.defrostAll}`
+			)
 	// Запуск оттайки по температуре и времени
 	if (tmp || time || accAuto.defrostAll) {
 		acc.state.defrostCount ??= 0
 		acc.state.defrostCount += 1
 		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')
+		// Флаг входа в оттайку всех испарителей
+		accAuto.defrostAll = new Date()
 		fnChange(0, 0, 1, 0, 'defrost', clr)
 		return true
 	}

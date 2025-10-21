@@ -5,16 +5,16 @@ const { oneChange } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
-const denied = require('../../fn/denied')
 
 // Холодильник - алгоритм управления
 function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj
 	const { start, s, se: seB, m, accAuto, supply } = bdata
 
-	const fnChange = (sl, f, h, add, code, clr) => oneChange(bdata, bld._id, sl, f, h, add, code, clr)
+	const fnChange = (sl, f, h, add, code, clr) =>
+		oneChange(bdata, bld._id, sl, f, h, add, code, clr)
 	// Синхронизация оттайки-слива_воды испарителей
-	defrostAll(accAuto, m.cold.cooler, obj)
+	defrostAll(accAuto, m.cold.cooler, obj, s)
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
@@ -29,6 +29,8 @@ function main(bld, obj, bdata, alr) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.cold(bld, obj, bdata, alr)
 	}
+	console.log(88, 'Аккумулятор холодильника')
+	console.log(accAuto)
 }
 
 module.exports = main
