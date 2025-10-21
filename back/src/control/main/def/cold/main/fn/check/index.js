@@ -57,9 +57,11 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
 			)
 		return false
 	}
-
 	// Температура на всасывании<=Температура включения цикла разморозки -> вкл оттайки
-	const tmp = se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
+	const tmp =
+		accCold.timeAD === null
+			? se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
+			: se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn && accCold.timeAD
 	// Время между циклами разморозками -> если оттайки не было более Х часов -> вкл оттайки
 	const time = compareTime(accCold.targetDT, s.coolerCombi.defrostWait)
 	// console.log(777, se.cooler.tmpCooler ,  s?.coolerCombi?.defrostOn, accCold.targetDT, )

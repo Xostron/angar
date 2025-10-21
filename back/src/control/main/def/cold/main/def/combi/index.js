@@ -18,7 +18,7 @@ function main(bld, obj, bdata, alr) {
 		oneChange(bdata, bld._id, sl, f, h, add, code, clr)
 
 	// Синхронизация оттайки-слива_воды испарителей
-	defrostAll(accAuto.cold, m.cold.cooler, obj)
+	defrostAll(accAuto.cold, m.cold.cooler, obj, s)
 
 	// По камере
 	for (sect of data.section) {

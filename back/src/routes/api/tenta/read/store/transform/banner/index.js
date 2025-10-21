@@ -10,7 +10,6 @@ function banner(idB, data) {
 			switch (k) {
 				case 'local':
 					return ba?.length ? { code: k, msg: ba?.[0]?.msg } : null
-
 				case 'connect':
 					return ba ? { code: k, msg: ba.msg } : null
 				case 'notTune':
