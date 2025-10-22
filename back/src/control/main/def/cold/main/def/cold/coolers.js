@@ -23,7 +23,6 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		accAuto[clr._id].state ??= {}
 		// Состояние испарителя
 		const stateCooler = obj.value?.[clr._id]
-		console.log('Режим:', stateCooler?.state, stateCooler?.name)
 		// Работа склада запрещена
 
 		if (denied.cold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj)) continue

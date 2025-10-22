@@ -5,6 +5,12 @@ const maxCombi = 3
 const def = require('../../def_cooler')
 // Проверка на включение оттайки
 function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
+	console.log('\t', 5551, 'состояние испарителя', stateCooler, !!def.cold[stateCooler])
+	// Проверка состояния
+	if (!def.cold[stateCooler]) {
+		fnChange(0, 0, 0, 0, null, clr)
+		return true
+	}
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
 	if (skip.includes(stateCooler) || acc?.state?.waitDefrost) {
 		// Инициализация счетчика
