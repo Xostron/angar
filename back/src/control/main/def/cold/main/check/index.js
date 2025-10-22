@@ -7,7 +7,7 @@ const { data: store } = require('@store')
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log('\n\tПроверка условий принятия решений')
+	console.log('\n\tПроверка условий принятия решений, tprd =', se.tprd, 'target=', accAuto.target)
 	// Выключение (Температура задания достигнута)
 	if (se.tprd <= accAuto.target) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.target ?? '--'} °C`))
@@ -77,7 +77,7 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log('\n\tПроверка условий принятия решений')
+	console.log('\n\tПроверка условий принятия решений, tprd =', se.tprd, 'target=', accCold.tgtTprd)
 
 	// Достиг задания => выкл испаритель
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {

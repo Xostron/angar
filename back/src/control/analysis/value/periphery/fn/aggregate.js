@@ -146,32 +146,33 @@ function sum(bld, aggregate, result) {
 
 /**
  * Модули ПЛК агрегата неисправны?
- * Сигналы агрегата привязаны к неким модулям ПЛК, данная функция ищет эти модули
- * и проверяет их на неисправность
+ * Поиск модулей к которым привязан управляемый агрегат
+ * Проверка найденных модулей на неисправность
+ * Если какой-либо модуль неисправен -> агрегат (компрессор) в аварии
  * @param {*} doc Рама агрегата
  * @param {*} equip Рама оборудования
  * @returns true Неисправны / false Модули ОК
  */
 function isAlrmByAgg(doc, equip) {
 	const { signal, cooler, sensor, module } = equip
-	// Коллекция модулей
+	// Коллекция модулей ПЛК
 	const arrM = new Set()
-	// Найти модули, к которым подключен агрегат (beep)
+	// 1. Найти модули, к которым подключен компрессор (beep)
 	doc.compressorList.forEach((cmpr) => {
 		cmpr.beep.forEach((beep) => {
 			const sig = signal.find((el) => el.owner.id === beep._id && el.extra.id === doc._id)
 			sig?.module?.id && sig?.module?.channel ? arrM.add(sig.module.id) : null
 		})
 	})
-	// Найти модуль к оторому привязан датчик всасывания
+	// 2. Найти модуль к которому привязан датчик всасывания
 	// Испаритель - агрегат
 	const clr = cooler.find((el) => el.aggregateListId === doc._id)
 	// Датчик всасывания - испарителя
 	const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
 	// Аналоговый модуль - датчик всасывания
 	pin.module.id ? arrM.add(pin.module.id) : null
-	// console.log(`Агрегат ${doc._id} подключен к модулям:`, arrM)
-	// Модуль неисправен?
+
+	// Проверка
 	return [...arrM].some((idM) => {
 		const t = isErrM(doc.buildingId, idM)
 		const mdl = module.find((el) => el._id === idM)

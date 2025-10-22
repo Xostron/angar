@@ -27,7 +27,9 @@ function defrostAll(accCold, cooler, obj, s) {
 	Игнорируем переход в оттайку после слива воды
 	По достижению времени разрешаем оттайку, флаги сбрасываем
 	*/
+	// Время прошло -> сбрасываем время ожидания
 	if (accCold.timeAD) (accCold.afterD = null), (accCold.timeAD = null)
+		// Время ожидания после слива воды установилось (слив воды был закончен)
 	if (accCold.afterD)
 		accCold.timeAD = compareTime(
 			accCold.afterD,

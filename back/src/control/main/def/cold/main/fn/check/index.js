@@ -2,7 +2,7 @@ const { compareTime } = require('@tool/command/time')
 const skip = ['off-off-on', 'off-off-off-add']
 const max = 2
 const maxCombi = 3
-
+const def = require('../../def_cooler')
 // Проверка на включение оттайки
 function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
@@ -23,9 +23,7 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
 			? se.cooler.tmpCooler <= s?.cooler?.defrostOn
 			: se.cooler.tmpCooler <= s?.cooler?.defrostOn && accAuto.timeAD
 	const time = compareTime(accAuto.targetDT, s.cooler.defrostWait)
-	console.log(
-				`\t Условия Оттайки ${tmp} || ${time} || ${accAuto.defrostAll}`
-			)
+	console.log(`\t Условия Оттайки ${tmp} || ${time} || ${accAuto.defrostAll}`)
 	// Запуск оттайки по температуре и времени
 	if (tmp || time || accAuto.defrostAll) {
 		acc.state.defrostCount ??= 0
@@ -53,7 +51,12 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
  * @returns {boolean} true-заблокировать ()
  */
 function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
-	console.log('\t', 5551, 'состояние испарителя', stateCooler)
+	console.log('\t', 5551, 'состояние испарителя', stateCooler, !!def.combi[stateCooler])
+	// Проверка состояния
+	if (!def.combi[stateCooler]) {
+		fnChange(0, 0, 0, 0, null, clr)
+		return true
+	}
 	// Уже в оттайке (ожидание) или сливе. Пропускаем и + проверка на повторы
 	if (skip.includes(stateCooler) || acc?.state?.waitDefrost) {
 		// Инициализация счетчика
