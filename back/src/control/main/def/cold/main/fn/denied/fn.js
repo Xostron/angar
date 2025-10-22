@@ -41,8 +41,8 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
  * @returns
  */
 function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) {
-	delete accAuto?.cold?.[clr._id]?.state?.off
-
+	delete accAuto?.cold?.[clr._id]
+console.log('*****************************CLEAR')
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 
@@ -52,7 +52,7 @@ function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) 
 	// Если работает как холодильник, то выключаем весь испаритель
 	else fnChange(0, 0, 0, 0, null, clr)
 
-	delete accAuto?.cold?.[clr._id]?.state?.off
+	delete accAuto?.cold?.[clr._id]
 }
 
 // Очистка аккумулятора холодильника

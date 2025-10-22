@@ -40,7 +40,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 }
 
 // Склад Комби: Запрет работы испарителя
-function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange, obj) {
+function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 	store.denied[bld._id] ??= {}
 	// Проверка питания
@@ -53,19 +53,22 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
 	// Местный режим секции
 	const local = isExtralrm(bld._id, sect._id, 'local')
+	// Режим секции true-Авто
+	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
+
 	store.denied[bld._id][clr._id] =
 		!start ||
 		alr ||
 		!aggr ||
 		!supplySt ||
-		!sectMode ||
 		!store.toAuto?.[bld._id]?.[sect._id] ||
 		!alrAuto ||
 		automode != 'cooling' ||
 		fansOff ||
 		// TODO Авария ВНО испарителя
 		stateCooler.fan.state === 'alarm' ||
-		local
+		local ||
+		!sectM
 	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 
 	// Работа испарителя запрещена?
@@ -74,17 +77,18 @@ function deniedCombi(bld, sect, clr, sectMode, bdata, alr, stateCooler, fnChange
 		return false
 	}
 	// true - Да
-	clearCombi(bld._id, clr, accAuto.cold, fnChange, stateCooler, store, alrAuto)
+	clearCombi(bld._id, clr, accAuto, fnChange, stateCooler, store, alrAuto)
 
 	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
 	// console.log('\t\tСклад в работе:', start)
 	// console.log('\t\tНет аварий комбинированного склада:', !alr)
 	// console.log('\t\tАгрегат готов к работе', aggr)
 	// console.log('\t\tОжидание после включения питания пройдено', supplySt)
-	// console.log('\t\tСекция в Авто', sectMode)
+	// console.log('\t\tСекция в Авто', sectM)
 	// console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
 	// console.log('\t\tАвария авторежима активна, можно работать', alrAuto)
 	// console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
+
 
 	return true
 }
@@ -96,21 +100,11 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 	store.denied[bld._id] ??= {}
 	store.denied[bld._id][sect._id] ??= {}
 
-	// Режим секции true-Авто
-	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
 	// Наличие аварии авторежима
 	const alrAuto = isAlr(bld._id, automode)
-	// Местный режим секции
-	const local = isExtralrm(bld._id, sect._id, 'local')
 
 	store.denied[bld._id][sect._id] =
-		!start ||
-		alr ||
-		!sectM ||
-		!store.toAuto?.[bld._id]?.[sect._id] ||
-		!alrAuto ||
-		automode != 'cooling' ||
-		local
+		!start || alr || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
 
 	console.log(
 		55,
@@ -120,11 +114,9 @@ function deniedSection(bld, sect, bdata, alr, obj) {
 		'==',
 		!start,
 		alr,
-		!sectM,
 		!store.toAuto?.[bld._id]?.[sect._id],
 		!alrAuto,
-		automode != 'cooling',
-		local
+		automode != 'cooling'
 	)
 	return store.denied[bld._id][sect._id]
 }

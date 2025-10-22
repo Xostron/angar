@@ -27,7 +27,7 @@ function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 		// Установить аварию
 		if (be && !acc?.[owner]?.[el.code]) {
 			const name = el.alarm
-				? `Авария: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
+				? `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 				: `Предупреждение: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, el.code, msgBeep({ _id: agg.buildingId }, el, name))
 			acc[owner][el.code] = true
