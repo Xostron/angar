@@ -15,10 +15,15 @@ async function write(obj) {
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль
-			// if (obj[i].ip === '192.168.21.127') {
-			// 	console.log(777,'not active write', obj[i].ip, obj[i].value )
-			// 	continue
-			// }
+			// if (obj[i].ip === '192.168.21.125')
+			console.log(
+				'\x1b[44m',
+				'Запись модулей DO',
+				obj[i].ip,
+				obj[i].value,
+				'\x1b[0m'
+			)
+
 			const v = await make(obj[i])
 			await pause(100)
 			const k = obj[i].name + ' Порт ' + obj[i].port
