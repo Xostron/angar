@@ -16,13 +16,13 @@ async function write(obj) {
 			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 			// Запись данных в модуль
 			// if (obj[i].ip === '192.168.21.125')
-			console.log(
-				'\x1b[44m',
-				'Запись модулей DO',
-				obj[i].ip,
-				obj[i].value,
-				'\x1b[0m'
-			)
+			// console.log(
+			// 	'\x1b[44m',
+			// 	'Запись модулей DO',
+			// 	obj[i].ip,
+			// 	obj[i].value,
+			// 	'\x1b[0m'
+			// )
 
 			const v = await make(obj[i])
 			await pause(100)
