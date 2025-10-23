@@ -21,12 +21,13 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 
 	// console.log(111, accAuto.cold.softSol)
 	for (const clr of mS.coolerS) {
-		console.log('-----------------------------------------------------------------------')
+		console.log(
+			`\n----------------------------------${bld?.name} begin----------------------------------\n`
+		)
 		accAuto.cold[clr._id] ??= {}
 		accAuto.cold[clr._id].state ??= {}
 
 		const stateCooler = obj.value?.[clr._id]
-
 
 		// Запрет работы испарителя
 		if (denied.combi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj)) continue
@@ -56,7 +57,9 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				clr
 			)
 	}
-	console.log('-----------------------------------------------------------------------')
+	console.log(
+		`\n----------------------------------${bld?.name} end----------------------------------`
+	)
 }
 
 module.exports = coolers

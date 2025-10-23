@@ -6,7 +6,6 @@ const { isErrMs } = require('@tool/message/plc_module')
 // Потеря связи с автоматикой (для склада Холодильник)
 function connectLost(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	if (!m.connectLost?.length) return
-	console.log('===============', m.connectLost)
 	acc.flag ??= {}
 	if (isErrMs(bld._id)) {
 		// Есть неисправный модуль -> выключаем данные выхода

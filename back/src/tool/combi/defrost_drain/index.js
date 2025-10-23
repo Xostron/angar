@@ -16,10 +16,9 @@ function defrostAll(accCold, cooler, obj, s) {
 	cooler = cooler.filter((el) => Object.keys(accCold[el._id]?.state ?? {}).length)
 	// Флаг оттайка закончена на всех испарителях данной секции
 	accCold.defrostAllFinish = cooler.every((el) => accCold?.[el._id]?.state?.waitDefrost)
-	// Флаг входа в оттайку всех испарителей
 	if (accCold.defrostAllFinish) accCold.defrostAll = null
 	// Флаг выхода из слива воды всех испарителей
-	accCold.drainAll = cooler?.length && cooler.every((el) => accCold[el._id]?.state?.add)
+	accCold.drainAll = !!cooler?.length && cooler.every((el) => accCold[el._id]?.state?.add)
 	// Флаг время после слива воды
 	if (accCold.drainAll) accCold.afterD = new Date()
 	/* 
@@ -29,24 +28,35 @@ function defrostAll(accCold, cooler, obj, s) {
 	*/
 	// Время прошло -> сбрасываем время ожидания
 	if (accCold.timeAD) (accCold.afterD = null), (accCold.timeAD = null)
-		// Время ожидания после слива воды установилось (слив воды был закончен)
-	if (accCold.afterD)
-		accCold.timeAD = compareTime(
-			accCold.afterD,
-			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
-		)
+	// Время ожидания после слива воды установилось (слив воды был закончен)
+	accCold.timeAD =
+		accCold.afterD &&
+		compareTime(accCold.afterD, s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain)
+
 	console.log(
-		'******Время после слива afterDrain=',
-		s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain,
-		'accCold.timeAD',
-		accCold.timeAD,
-		'accCold.afterD',
-		accCold.afterD
+		'\n---------------------------------------defrostALL---------------------------------------',
+		`timeAD = compareTime(${accCold.afterD}, ${
+			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
+		})`
 	)
-	console.log('********defrostALL')
 	console.table(
-		[{ Флаг_отайки: accCold.defrostAll, Флаг_слив_воды: accCold.drainAll }],
-		['Флаг_отайки', 'Флаг_слив_воды']
+		[
+			{
+				'defrostAll(Оттайка_начало)': accCold.defrostAll,
+				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
+			},
+		],
+		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)']
+	)
+	console.table(
+		[
+			{
+				'drainAll(Слив_воды_окончен)': accCold.drainAll,
+				'afterD(Ожидание_после_слива)': accCold.afterD,
+				'timeAD(Время_после_слива)': accCold.timeAD,
+			},
+		],
+		['drainAll(Слив_воды_окончен)', 'afterD(Ожидание_после_слива)', 'timeAD(Время_после_слива)']
 	)
 }
 

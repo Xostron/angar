@@ -19,14 +19,22 @@ function isReadyAgg(value, idB, aggListId) {
  * @param {*} store
  */
 function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
-	delete accAuto?.[clr._id]?.state?.off
-
+	console.log(
+		'\x1b[33m%s\x1b[0m',
+		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе'
+	)
+	delete accAuto?.[clr._id]
+	delete accAuto?.afterD
+	delete accAuto?.timeAD
+	delete accAuto?.defrostAllFinish
+	delete accAuto?.drainAll
+	delete accAuto?.defrostAll
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store?.smoking?.[bldId]?.work) return
 	// Выключение всех узлов испарителя
 	fnChange(0, 0, 0, 0, null, clr)
 
-	delete accAuto?.[clr._id]?.state?.off
+	delete accAuto?.[clr._id]
 }
 
 /**
@@ -41,8 +49,16 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
  * @returns
  */
 function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) {
+	console.log(
+		'\x1b[33m%s\x1b[0m',
+		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе'
+	)
 	delete accAuto?.cold?.[clr._id]
-console.log('*****************************CLEAR')
+	delete accAuto?.afterD
+	delete accAuto?.timeAD
+	delete accAuto?.defrostAllFinish
+	delete accAuto?.drainAll
+	delete accAuto?.defrostAll
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
 

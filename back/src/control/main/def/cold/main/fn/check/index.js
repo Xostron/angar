@@ -7,7 +7,8 @@ const def = require('../../def_cooler')
 function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
 	console.log('\t', 5551, 'состояние испарителя', stateCooler, !!def.cold[stateCooler])
 	// Проверка состояния
-	if (!def.cold[stateCooler]) {
+	if (!def?.cold?.[stateCooler]) {
+		console.log('\tПроверка состояния - bad',stateCooler)
 		fnChange(0, 0, 0, 0, null, clr)
 		return true
 	}
@@ -59,7 +60,7 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
 function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
 	console.log('\t', 5551, 'состояние испарителя', stateCooler, !!def.combi[stateCooler])
 	// Проверка состояния
-	if (!def.combi[stateCooler]) {
+	if (!def?.combi?.[stateCooler]) {
 		fnChange(0, 0, 0, 0, null, clr)
 		return true
 	}

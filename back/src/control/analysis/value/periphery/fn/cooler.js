@@ -104,11 +104,11 @@ function state(o, clr, equip, arrM) {
 	const idB = getIdByClr(section, clr)
 	const typeB = getB(building, idB)?.type
 	// Модули ПЛК испраителя неисправны?
-	if (isAlrmByClr(clr, idB, equip, arrM)) {
-		o.status = 'alarm'
-		return 'off-off-off'
-	}
-	delete o?.status
+	// if (isAlrmByClr(clr, idB, equip, arrM)) {
+	// 	o.status = 'alarm'
+	// 	return 'off-off-off'
+	// }
+	// delete o?.status
 	// Вычисление состояния
 	// Соленоид - ВНО - Оттайка испарителя (off-off-off)
 	const s = Object.values(solenoid ?? {}).some((el) => !!el) ?? false
