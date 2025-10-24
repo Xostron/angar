@@ -14,7 +14,6 @@ function positionVlv(obj) {
 		const section = data.section.find((s) => vlv.sectionId.includes(s._id))
 		const total = retain?.[section?.buildingId]?.valve?.[vlv._id]
 		const state = stateV(vlv._id, value, section?.buildingId, vlv.sectionId[0])
-		// console.log('\x1b[44m', '@@@@@@@@@@@@@@@@@@', state)
 		// Текущее положение клапана из retain
 		let vlvPos
 		for (const idB in retain) {
