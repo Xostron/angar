@@ -14,14 +14,24 @@ function positionVlv(obj) {
 		const section = data.section.find((s) => vlv.sectionId.includes(s._id))
 		const total = retain?.[section?.buildingId]?.valve?.[vlv._id]
 		const state = stateV(vlv._id, value, section?.buildingId, vlv.sectionId[0])
+		// console.log('\x1b[44m', '@@@@@@@@@@@@@@@@@@', state)
 		// Текущее положение клапана из retain
 		let vlvPos
 		for (const idB in retain) {
-			console.log('\x1b[44m', '@@@@@@@@@@@@@@@@@@')
-			console.log(idB)
-			console.log('\x1b[0m', '@@@@@@@@@@@@@@@@@@')
+			// console.log('\x1b[0m', '@@@@@@@@@@@@@@@@@@')
 			if (!retain?.[idB]?.valvePosition) continue
+			// console.log('idB', idB)
 			vlvPos = { ...vlvPos, [idB]: { ...retain[idB].valvePosition } }
+		}
+
+		// Частично открыт (Клапан остановлен и находится в промежуточном положении)
+		if (state==='popn'){
+			const cur = vlvPos?.[buildingId][vlv._id]
+			// ограничение диапазона хода
+			let value = cur > total ? total : cur
+			value = cur < 0 ? 0 : cur
+			// Сохранить в стор
+			setPos({ _id: vlv._id, _build: buildingId, value })
 		}
 
 		// открывается
