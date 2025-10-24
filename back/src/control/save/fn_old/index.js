@@ -17,6 +17,7 @@ function positionVlv(obj) {
 		// Текущее положение клапана из retain
 		let vlvPos
 		for (const build in retain) {
+
 			if (!retain?.[build]?.valvePosition) continue
 			vlvPos = { ...vlvPos, [build]: { ...retain[build].valvePosition } }
 		}

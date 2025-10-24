@@ -1,7 +1,7 @@
 const { data: store, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
 const { readOne } = require('@tool/json')
-const { cbAcc } = require('../fn')
+const cbAcc = require('./fn')
 const { isReset } = require('@tool/reset')
 
 /**

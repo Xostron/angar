@@ -16,9 +16,12 @@ function positionVlv(obj) {
 		const state = stateV(vlv._id, value, section?.buildingId, vlv.sectionId[0])
 		// Текущее положение клапана из retain
 		let vlvPos
-		for (const build in retain) {
-			if (!retain?.[build]?.valvePosition) continue
-			vlvPos = { ...vlvPos, [build]: { ...retain[build].valvePosition } }
+		for (const idB in retain) {
+			console.log('\x1b[44m', '@@@@@@@@@@@@@@@@@@')
+			console.log(idB)
+			console.log('\x1b[0m', '@@@@@@@@@@@@@@@@@@')
+			if (!retain?.[idB]?.valvePosition) continue
+			vlvPos = { ...vlvPos, [idB]: { ...retain[idB].valvePosition } }
 		}
 
 		// открывается
