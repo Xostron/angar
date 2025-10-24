@@ -6,7 +6,6 @@ import { get } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import StatusWS from './status_ws'
 import useViewStore from '@src/store/view'
-import useEquipStore from '@store/equipment'
 import {uri} from '@store/uri'
 
 function Version() {

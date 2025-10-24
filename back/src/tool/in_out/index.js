@@ -32,4 +32,16 @@ function uniDO(data, val) {
 	return r
 }
 
-module.exports = { biDO, uniDO, puIO }
+/**
+ * Имеется аналоговое управление (ВНО)
+ * @param {*} obj Глобальный объект с информацией о PC
+ * @param {*} f Рама исполнительного механизма
+ */
+function getAO(binding = [], f) {
+	if (!binding || !f) return
+
+	const ao = binding.find((el) => el.owner.id == f._id && el.type == 'ao')
+	return ao
+}
+
+module.exports = { biDO, uniDO, puIO, getAO }

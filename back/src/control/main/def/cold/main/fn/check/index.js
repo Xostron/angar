@@ -5,10 +5,18 @@ const maxCombi = 3
 const def = require('../../def_cooler')
 // Проверка на включение оттайки
 function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
-	console.log('\t', 5551, 'состояние испарителя', stateCooler, !!def.cold[stateCooler])
+	console.log(
+		'\t',
+		5551,
+		'состояние испарителя',
+		stateCooler,
+		!!def.cold[stateCooler],
+		'Неисправность модулей=',
+		stateCooler?.status === 'alarm'
+	)
 	// Проверка состояния
 	if (!def?.cold?.[stateCooler]) {
-		console.log('\tПроверка состояния - bad',stateCooler)
+		console.log('\tПроверка состояния - bad', stateCooler)
 		fnChange(0, 0, 0, 0, null, clr)
 		return true
 	}
@@ -58,7 +66,15 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
  * @returns {boolean} true-заблокировать ()
  */
 function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
-	console.log('\t', 5551, 'состояние испарителя', stateCooler, !!def.combi[stateCooler])
+	console.log(
+		'\t',
+		5551,
+		'состояние испарителя',
+		stateCooler,
+		!!def.combi[stateCooler],
+		'Неисправность модулей=',
+		stateCooler?.status === 'alarm'
+	)
 	// Проверка состояния
 	if (!def?.combi?.[stateCooler]) {
 		fnChange(0, 0, 0, 0, null, clr)

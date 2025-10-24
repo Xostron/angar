@@ -1,5 +1,6 @@
 const { isExtralrm } = require('@tool/message/extralrm')
 const { getIdB } = require('@tool/get/building')
+const { getAO } = require('@tool/in_out')
 const { data: store } = require('@store')
 
 // Блокировки задвижки (клапана)
@@ -182,25 +183,17 @@ function fn(args) {
 	return args.some((el) => el === true)
 }
 
-/**
- * Имеется аналоговое управление (ВНО)
- * @param {*} obj Глобальный объект с информацией о PC
- * @param {*} f Рама исполнительного механизма
- */
-function getAO(obj, f) {
-	const binding = obj?.data?.binding
-	if (!binding || !f) return
-
-	const ao = binding.find((el) => el.owner.id == f._id && el.type == 'ao')
-	return ao
-}
 const _MIN_SP = 20
 function ao(obj, output, f, localB, local, ...args) {
 	const lock = fn(args)
 	// Аналоговый выход
 	// ВНО имеет аналоговое управление?
-	const ao = getAO(obj, f)
-	if (ao && lock) output[ao.moduleId].value[ao.channel - 1] = _MIN_SP
+	const ao = getAO(obj?.data?.binding, f)
+	if (ao && lock) {
+		output[ao.moduleId]??={}
+		output[ao.moduleId].value??={}
+		output[ao.moduleId].value[ao.channel - 1] = _MIN_SP
+	}
 	// Местный переключатель => задание ВНО на 100%, DO выкл
 	if (ao) {
 		if (local || localB) {

@@ -2,6 +2,7 @@ const { stateF } = require('@tool/command/fan/fn')
 const { data: store, readAcc } = require('@store')
 const { getIdByClr, getB } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')
+const { getAO } = require('@tool/in_out')
 
 // Испаритель
 function cooler(equip, val, retain, result) {
@@ -39,8 +40,12 @@ function cooler(equip, val, retain, result) {
 		// Напорные вентиляторы
 		const arrFan = fan.filter((el) => el.owner.id === clr._id)
 		arrFan.forEach((f) => {
+			// DO
 			arrM.add(f?.module?.id)
 			result[clr._id].fan[f._id] = result[f._id]
+			// AO
+			const ao = getAO(binding, f)
+			ao ? arrM.add(ao?.moduleId) : null
 		})
 		result[clr._id].fan.state = arrFan.every(
 			(f) => result[f._id].state === 'off' || result[f._id].state === 'alarm'
@@ -92,10 +97,10 @@ module.exports = cooler
 
 /**
  * Состояние испарителя
- * @param {*} o
- * @param {*} clr
- * @param {*} building
- * @param {*} section
+ * @param {object} o Состояние испарителя
+ * @param {object} clr Рама испарителя
+ * @param {object[]} building Рама складов
+ * @param {object[]} section Рама секций
  * @returns
  */
 function state(o, clr, equip, arrM) {
@@ -104,11 +109,11 @@ function state(o, clr, equip, arrM) {
 	const idB = getIdByClr(section, clr)
 	const typeB = getB(building, idB)?.type
 	// Модули ПЛК испраителя неисправны?
-	// if (isAlrmByClr(clr, idB, equip, arrM)) {
-	// 	o.status = 'alarm'
-	// 	return 'off-off-off'
-	// }
-	// delete o?.status
+	if (isAlrmByClr(clr, idB, equip, arrM)) {
+		o.status = 'alarm'
+		return 'off-off-off'
+	}
+	delete o?.status
 	// Вычисление состояния
 	// Соленоид - ВНО - Оттайка испарителя (off-off-off)
 	const s = Object.values(solenoid ?? {}).some((el) => !!el) ?? false
@@ -149,12 +154,19 @@ const coolerDef = {
  * @returns {boolean} true Неисправны / false Модули ОК
  */
 function isAlrmByClr(clr, idB, equip, arrM) {
-	return [...arrM].filter(el=>el).some((idM) => {
-		const t = isErrM(idB, idM)
+	const a = [...arrM].filter((el) => el)
+	a.forEach((idM) => {
 		const mdl = equip.module.find((el) => el._id === idM)
-		console.log(
-			`${clr.name} секции ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}, авария=${t}`
-		)
+		console.log(`${clr.name} секции ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}`)
+	})
+	return a.some((idM) => {
+		const t = isErrM(idB, idM)
+		if (t) {
+			const mdl = equip.module.find((el) => el._id === idM)
+			console.log(
+				`${clr.name} секции ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}, авария=${t}`
+			)
+		}
 		return t
 	})
 }

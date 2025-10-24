@@ -21,8 +21,10 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
 	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
 
-	store.denied[bld._id][clr._id] = !start || alr || !aggr || !supplySt
+	store.denied[bld._id][clr._id] =
+		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm'
 	console.log(410, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
+	console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
 	clearAchieve(bld, obj, accAuto, false, start)
 
 	// Работа испарителя запрещена?
@@ -68,9 +70,10 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		// TODO Авария ВНО испарителя
 		stateCooler.fan.state === 'alarm' ||
 		local ||
-		!sectM
+		!sectM ||
+		stateCooler?.status === 'alarm'
 	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
-
+	console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
 	// Работа испарителя запрещена?
 	if (!store.denied[bld._id][clr._id]) {
 		//false - Нет - работаем испарителем
@@ -88,7 +91,6 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
 	// console.log('\t\tАвария авторежима активна, можно работать', alrAuto)
 	// console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
-
 
 	return true
 }
