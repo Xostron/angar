@@ -17,9 +17,7 @@ function positionVlv(obj) {
 		// Текущее положение клапана из retain
 		let vlvPos
 		for (const idB in retain) {
-			// console.log('\x1b[0m', '@@@@@@@@@@@@@@@@@@')
 			if (!retain?.[idB]?.valvePosition) continue
-			// console.log('idB', idB)
 			vlvPos = { ...vlvPos, [idB]: { ...retain[idB].valvePosition } }
 		}
 

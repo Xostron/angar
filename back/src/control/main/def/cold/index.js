@@ -28,7 +28,6 @@ function runExtra(building, obj, bdata) {
 	// Всегда
 	alr = alr || extralrm(building, null, obj, s, se, m, null, null, type, 'always')
 	extra(building, null, obj, s, se, m, null, null, null, type, 'always')
-	console.log('@@@@@@@@@@@@@@@@@@ alr=', alr)
 
 	// Склад выключен
 	if (!start) {
