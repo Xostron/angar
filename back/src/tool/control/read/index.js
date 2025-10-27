@@ -1,7 +1,6 @@
-const readRTU = require('./rtu')
-const readTCP = require('./tcp')
 const { data: store } = require('@store')
 const { timeout } = require('@tool/message/plc_module')
+const make = require('../make')
 
 /**
  * Чтение модулей
@@ -16,13 +15,12 @@ async function read(arr, obj) {
 			const idM = arr[i]._id
 			// Разрешение на чтение модуля
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
-			// Чтение данных модуля
+
+			// Чтение
 			const v = await make(arr[i])
-			// if (arr[i].ip === '192.168.21.126')
-			// console.log(555, 'read', arr[i].ip, arr[i].name, v)
+
 			// флаг первого запуска сервера
 			store.startup = false
-
 			const buildingId = arr[i].buildingId
 			await pause(store.tPause)
 			// Ошибка модуля -> если ответ от модуля не массив чисел => модуль не прочитан
@@ -49,7 +47,6 @@ async function read(arr, obj) {
 		return data
 	} catch (error) {
 		console.error('ERROR', error)
-		throw Error('Чтение: связь RTU/TCP потеряна')
 	}
 }
 
@@ -58,18 +55,18 @@ function pause(n) {
 	return new Promise((res) => setTimeout(res, n))
 }
 
-/**
- *
- * @param {object} o Данные о модуле
- * @returns {Promise<[][]>} Массив значений [[...input], [...output]] модуля
- */
-async function make(o) {
-	switch (o.interface) {
-		case 'rtu':
-			return await readRTU(o.ip, o.port, o)
-		case 'tcp':
-			return await readTCP(o.ip, o.port, o)
-	}
-}
-
 module.exports = read
+
+// /**
+//  *
+//  * @param {object} o Данные о модуле
+//  * @returns {Promise<[][]>} Массив значений [[...input], [...output]] модуля
+//  */
+// async function makeOld(o, { signal } = {}) {
+// 	switch (o.interface) {
+// 		case 'rtu':
+// 			return await readRTU(o.ip, o.port, o)
+// 		case 'tcp':
+// 			return await readTCP(o.ip, o.port, o)
+// 	}
+// }
