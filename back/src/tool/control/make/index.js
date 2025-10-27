@@ -33,7 +33,9 @@ async function make(elem, type = 'read') {
  */
 function fnMake(o, type = 'read') {
 	// Автоматическая отмена чтения модули через 5сек
-	const signal = AbortSignal.timeout(5000)
+	const t = (o?.timeout ?? 10) * 1000
+	if (o.ip === '192.168.21.132') console.log('======timeout===========', t)
+	const signal = AbortSignal.timeout(t)
 
 	// 1. Проверяем, не отменён ли сигнал сразу
 	if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')

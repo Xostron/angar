@@ -18,15 +18,17 @@ function timeout(idB, idM, ip, opt) {
 
 	// Поставить неисправный модуль в ожидание повторного чтения
 	// Время повторного чтения (1 мин)
-	const _TIME = store.tTCP * 60 * 1000
+	const repeat = (opt?.repeat ?? store.tTCP) * 60_000
+
+	if (opt.ip === '192.168.21.132') console.log('======repeat===========', repeat)
 	const now = new Date().getTime()
-	if (!store.timeout?.[idM]) store.timeout[idM] = now + _TIME
+	if (!store.timeout?.[idM]) store.timeout[idM] = now + repeat
 	// Время не прошло - блокировать опрос модуля
 	if (now <= store.timeout?.[idM]) {
 		console.log('Блокировать модуль', opt?.name, opt?.use, ip)
 		return false
 	}
-	store.timeout[idM] = new Date().getTime() + _TIME
+	store.timeout[idM] = new Date().getTime() + repeat
 	console.log('Разрешить опрос', opt?.name, opt?.use, ip)
 	// Время прошло - разрешить опрос
 	return true
@@ -83,7 +85,9 @@ function wrModule(idB, idM, o) {
 function isDebMdl(idB, idM, opt) {
 	// Если модуля нет в списке - выход
 	if (!store.debMdl[idM]) return
-	const time = store.debMdl[idM].getTime() + store.tDeb
+	const debounce = (opt?.debounce ?? store.tDeb) * 60_000
+	if (opt.ip === '192.168.21.132') console.log('======debounce===========', debounce)
+	const time = store.debMdl[idM].getTime() + debounce
 	const cur = new Date().getTime()
 	// Время прошло: авария осталась -> добавляем модуль в список неисправных
 	if (cur >= time) {

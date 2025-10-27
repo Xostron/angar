@@ -11,9 +11,10 @@ function extralrm(building, sect, obj, s, se, m, automode, data, type = 'section
 		// Логика
 		if (!def?.[type]?.[state]?.[key]) continue
 		const r = def[type][state][key](building, sect, obj, s, se, m, automode, acc, data)
+		console.log('$$$$$$$$ key', key, r)
 		if (r) alr.push(r)
 	}
-
+console.log('!!!!!!!!!!!!!alr=',alr)
 	return alr.includes(true)
 }
 
