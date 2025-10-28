@@ -170,7 +170,7 @@ function isAlrmByAgg(doc, equip) {
 	// Датчик всасывания - испарителя
 	const pin = clr ? sensor.find((el) => el.owner.id === clr._id && el.type === 'pin') : null
 	// Аналоговый модуль - датчик всасывания
-	pin.module.id ? arrM.add(pin.module.id) : null
+	pin?.module?.id ? arrM.add(pin.module.id) : null
 
 	// Проверка
 	return [...arrM].some((idM) => {
