@@ -84,10 +84,10 @@ function detection(aTprd) {
 
 // Состояние датчика: выключен-off или авария-alarm
 function state(raw, on) {
-	// Выведен из работы
-	if (on === false) return 'off'
 	// Неисправность датчика
 	if (raw === null) return 'alarm'
+	// Выведен из работы
+	if (on === false) return 'off'
 	return 'on'
 }
 
@@ -123,7 +123,10 @@ function range(r, sens) {
 // Аварийные сообщения о неисправности датчика
 function webAlarm(r, bld, sect, sens) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
-	if (r.state === 'alarm' && !store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id]) {
+	if (
+		r.state === 'alarm' &&
+		!store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id]
+	) {
 		sect?.name
 			? wrExtralrm(bld._id, sect?._id, sens._id, msgBS(bld, sect, sens, 100))
 			: wrExtralrm(bld._id, 'sensor', sens._id, msgBS(bld, 'sensor', sens, 100))
@@ -151,8 +154,15 @@ function fnMsgs(building, val, type, bType) {
 	}
 	// Датчик выключен или в аварии - создание сообщения
 	bld.forEach((b) => {
-		val.state === 'off' ? delExtralrm(b._id, 'sensor', type + 'alarm') : delExtralrm(b._id, 'sensor', type + 'off')
-		wrExtralrm(b._id, 'sensor', type + val.state, msgBS(b, 'sensor', null, code[type][val.state]))
+		val.state === 'off'
+			? delExtralrm(b._id, 'sensor', type + 'alarm')
+			: delExtralrm(b._id, 'sensor', type + 'off')
+		wrExtralrm(
+			b._id,
+			'sensor',
+			type + val.state,
+			msgBS(b, 'sensor', null, code[type][val.state])
+		)
 	})
 }
 
@@ -165,7 +175,12 @@ function fnMsg(bld, val, type, bType) {
 			return
 		}
 		// Датчик выключен или в аварии - создание сообщения
-		wrExtralrm(bld._id, 'sensor', type + val.state, msgBS(bld, 'sensor', null, code[type][val.state]))
+		wrExtralrm(
+			bld._id,
+			'sensor',
+			type + val.state,
+			msgBS(bld, 'sensor', null, code[type][val.state])
+		)
 	}
 }
 
@@ -182,7 +197,17 @@ function isValidWeather(weather) {
 	if (!updateTime) return false
 	return now - updateTime >= expire ? false : true
 }
-module.exports = { getRaw, fnDetection, detection, state, range, webAlarm, fnMsgs, fnMsg, isValidWeather }
+module.exports = {
+	getRaw,
+	fnDetection,
+	detection,
+	state,
+	range,
+	webAlarm,
+	fnMsgs,
+	fnMsg,
+	isValidWeather,
+}
 
 // Коды сообщений
 const code = {

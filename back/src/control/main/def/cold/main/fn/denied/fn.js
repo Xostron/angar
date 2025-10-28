@@ -45,10 +45,11 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
  * @param {*} fnChange
  * @param {*} stateCooler
  * @param {*} store
- * @param {} alrAuto
+ * @param {} alrAuto авария авторежима
+ * @param {boolean | null} sectM Режим секции
  * @returns
  */
-function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) {
+function clearCombi(bldId, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM) {
 	console.log(
 		'\x1b[33m%s\x1b[0m',
 		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе'
@@ -61,11 +62,13 @@ function clearCombi(bldId, clr, accAuto, fnChange, stateCooler, store, alrAuto) 
 	delete accAuto?.defrostAll
 	// Пропуск: Испаритель выключен или окуривание запущено
 	if (stateCooler?.state === 'off-off-off' || store.smoking[bldId]?.work) return
-
-	// Выключение всех узлов испарителя
-	// Если комбинированный склад работает как обычный, то разрешаем ВНО испарителя, остальные компоненты испарителя выключаем
-	if (!alrAuto) fnChange(0, null, 0, 0, null, clr)
-	// Если работает как холодильник, то выключаем весь испаритель
+	// solenoid-fan-heating
+	// Блокировка ВНО испарителя
+	// Испаритель запрещен к работе, но ВНО испарителя не блокируется при:
+	// 1. в режиме обычного склада (нет аварий авторежима)
+	// 2. Секция в ручном режиме
+	// 3. Включено окуривание
+	if (!alrAuto || sectM === false || s.smoking.on) fnChange(0, null, 0, 0, null, clr)
 	else fnChange(0, 0, 0, 0, null, clr)
 
 	delete accAuto?.cold?.[clr._id]

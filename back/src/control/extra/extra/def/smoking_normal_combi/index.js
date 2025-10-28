@@ -1,5 +1,5 @@
 const { compareTime, runTime } = require('@tool/command/time')
-const { delExtra, wrExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { arrCtrl } = require('@tool/command/fan/fn')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
@@ -10,9 +10,9 @@ const h = 3600000
 
 /**
  * Окуривание для Обычного и Комби склада:
- * 1 ВЫКЛЮЧИТЬ склад, переключить секции для окуривания в АВТО!!! 
+ * 1 ВЫКЛЮЧИТЬ склад, переключить секции для окуривания в АВТО!!!
  * (если секции будут в ручном или выключены, ВНО не включатся)
- * 2 Зайти в настройки "Окуривание": Настроить время окуривания, 
+ * 2 Зайти в настройки "Окуривание": Настроить время окуривания,
  * в поле "ВКЛЮЧИТЬ" выбрать ВКЛ -> Сохранить настройки -> Окуривание включено
  * 3. Окуривание в работе (1 этап из 2) - это работают ВНО
  * 4. По истечению времени работы окуривания -> выкл ВНО
@@ -49,6 +49,7 @@ function smoking(
 	clear = false
 ) {
 	const idB = building._id
+	console.log(111, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', clear)
 	if (clear) return fnClear(idB)
 	// id всех секций данного склада
 	const idsS = getIdsS(obj.data.section, idB)
@@ -60,14 +61,14 @@ function smoking(
 	// Настройка режим работы разгонного вент
 	const accelMode = s.coolerCombi?.accel ?? s.accel?.mode
 	// Рабочие ВНО по секциям
-	const fan = collect(m.fanAll, idB, idsS, obj)
+	const fan = collect(idB, idsS, obj, stg)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
 	console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
-	// Выключено окуривание
+	// Запрет окуривания: нет настроек окуривания, окуривание выкл, склад вкл,
 	if (!stg || !stg?.on) {
-		console.log('\t',44, 'Окуривание выключено: Выключение плавного пуска')
-		// Если режим разгонных вент. ВКЛ - то блокируем выключение
+		console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
+		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrl(idB, fanA, 'off')
 		softStart(idB, idsS, fan, obj, s, false)
 		delete doc.work
@@ -84,9 +85,15 @@ function smoking(
 		doc.work = new Date()
 		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 	}
+	// Повтор сообщения, если наш посик ребутнулся ночью аккурат находясь в окуривании
+	if (doc.work && !doc.wait && !isExtra(idB, null, 'smoking1'))
+		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
+
 	if (!compareTime(doc.work, stg.work * h)) {
 		console.log(22, 'Окуривание работа: Включение плавного пуска')
+		// Вкл разгонные
 		arrCtrl(idB, fanA, 'on')
+		// Вкл ВНО секции
 		softStart(idB, idsS, fan, obj, s, true)
 		return
 	}
@@ -97,6 +104,9 @@ function smoking(
 		delExtra(idB, null, 'smoking1')
 		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	}
+	// Повтор сообщения, если наш посик ребутнулся ночью аккурат находясь в окуривании
+	if (doc.wait && !isExtra(idB, null, 'smoking2'))
+		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrl(idB, fanA, 'off')
 		softStart(idB, idsS, fan, obj, s, false)
@@ -105,9 +115,10 @@ function smoking(
 	}
 
 	console.log('Режим окуривания завершен')
-
 	doc.work = null
 	doc.wait = null
+	// Удаляем аккумулятор плавного пуска по завершению окуривания
+	delete store?.heap?.smoking
 	delExtra(idB, null, 'smoking1')
 	delExtra(idB, null, 'smoking2')
 }

@@ -53,6 +53,9 @@ function stateEq(id, value) {
 // Состояние вентилятора (секции, разгонного, испарителя)
 function stateF(fan, equip, result, retain) {
 	const idB = getIdB(fan.module?.id, equip.module)
+	// Авария ВНО: По автоматическому выключателю, перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
+	const alr = isAlrmByFan(idB, fan, equip, retain)
+	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr) return 'alarm'
 	// Выведен из работы для секционных ВНО и ВНО испарителей
 	let off
 	if (fan.owner.type == 'section') off = retain?.[idB]?.fan?.[fan.owner.id]?.[fan._id]
@@ -61,9 +64,6 @@ function stateF(fan, equip, result, retain) {
 		off = retain?.[idB]?.fan?.[secId]?.[fan._id]
 	}
 	if (off) return 'off'
-	// Авария ВНО: По автоматическому выключателю, перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
-	const alr = isAlrmByFan(idB, fan, equip, retain)
-	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr) return 'alarm'
 	// В работе
 	const out = result?.outputEq?.[fan._id]
 	if (out) return 'run'

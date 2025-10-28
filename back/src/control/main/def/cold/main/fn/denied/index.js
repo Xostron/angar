@@ -106,7 +106,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		return false
 	}
 	// true - Да
-	clearCombi(bld._id, clr, accAuto, fnChange, stateCooler, store, alrAuto)
+	clearCombi(bld._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
 
 	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
 	// console.log('\t\tСклад в работе:', start)

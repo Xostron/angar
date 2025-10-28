@@ -1,28 +1,29 @@
 const { mech } = require('@tool/command/mech')
 const { delExtra } = require('@tool/message/extra')
+const { data: store } = require('@store')
 
 /**
  * Распределить секционные ВНО по секциям
  * @param {object} fan Все ВНО склада
  * @returns
  */
-function collect(fan, idB, idsS, obj) {
+function collect(idB, idsS, obj, stg) {
 	const r = {}
 	idsS.forEach((idS) => {
 		r[idS] = { fanFC: null, fans: null, mode: obj.retain?.[idB]?.mode?.[idS] ?? null }
 		// Получить ВНО
 		const mS = mech(obj, idS, idB)
 		// Преобразовать для плавного пуска
-		transform(idB, idS, mS, obj, r)
+		transform(idB, idS, mS, obj, stg, r)
 	})
 	return r
 }
 // Собираем
-function transform(idB, idS, mS, obj, r) {
+function transform(idB, idS, mS, obj, stg, r) {
 	// Испарители, принадлежащие текущей секции
 	const coolerIds = obj.data?.cooler?.filter((el) => el.sectionId == idS).map((el) => el._id)
 	// ВНО испарителей данной секции (управляем ими как обычными ВНО без ПЧ)
-	// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя, а испарители изначально считались самодостаточными, но они делают что хотят, так как прога резиновая, никакой унификации и стандарта
+	// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2ух испарителях
 	let fansCoo = mS.fanS
 		.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 		.sort((a, b) => a?.order - b?.order)
@@ -33,34 +34,48 @@ function transform(idB, idS, mS, obj, r) {
 			return acc
 		}, {})
 	)
-	// ВНО без ПЧ
+	// ВНО без ПЧ секции
 	const fans = mS.fanS
 		.filter((el) => el.owner.id === idS && !el?.ao && el.type == 'fan')
 		.sort((a, b) => a?.order - b?.order)
-	// ВНО с ПЧ
+	// ВНО с ПЧ секции
 	const fansFC = mS.fanS
 		.filter((el) => el.owner.id === idS && el?.ao)
 		.sort((a, b) => a?.order - b?.order)
-	// Выделяем главный ВНО с ПЧ (fanFC) и все остальные ВНО
+
+	// Выделяем главный ВНО с ПЧ (fanFC)
 	const fanFC = fansFC?.[0]
+	// Выделяем остальные ВНО: обычные ВНО, ВНО испарителей, ВНО+ПЧ (если fansFC>1)
 	if (fansFC.length > 1) {
 		fans.push(...fansFC.slice(1, fansFC.length))
 		fans.sort((a, b) => a?.order - b?.order)
 	}
-	// Обычные ВНО + ВНО испарителей
 	fans.push(...fansCoo)
+
 	// Тип управления: с ПЧ или реле
 	const type = fanFC ? 'fc' : 'relay'
 	// Результат
 	r[idS].fanFC = fanFC
 	r[idS].fans = fans
 	r[idS].type = type
+	// Настройка максимальное количество ВНО в окуривании
+	fnLimit(r[idS], stg?.max ?? 3)
+	console.log('@@@@@@@@@@@@@ОКУРИВАНИЕ', idS, [r[idS].fanFC, ...r[idS].fans].length)
 	return r
 }
 
 function fnClear(idB) {
 	delExtra(idB, null, 'smoking1')
 	delExtra(idB, null, 'smoking2')
+	// Удаляем аккумулятор плавного пуска по завершению окуривания
+	delete store?.heap?.smoking
 }
 
 module.exports = { fnClear, collect }
+
+function fnLimit(r, max) {
+	// Проверка, найден ли ВНО+ПЧ (count - оставшееся кол-во ВНО)
+	let count = r.fanFC ? max - 1 : max
+	// Берем оставшиеся ВНО
+	r.fans = r.fans.slice(0, count)
+}
