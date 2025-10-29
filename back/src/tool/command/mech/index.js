@@ -11,7 +11,7 @@ function mech(obj, idS, idB) {
 		if (el.sectionId != idS) return
 		coolerS.push(transformClr(el, data))
 	})
-	// ВНО испарителей (только рабочие и исключая дубляжи)
+	// ВНО испарителей (только рабочие и исключая дубляжи: 1 ВНО на 2 и более испарителя)
 	let fanClr = coolerS
 		.flatMap((el) => el.fan)
 		.filter((el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id])
