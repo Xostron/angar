@@ -10,8 +10,11 @@ import '../style.css'
 //Управление клапаном
 export default function Entry({ data = {}, entryCode }) {
 	const { vlv, state, build, refSp, sp } = data
-	const { setO, setT, setTune, sendTune } = useOutputStore()
-	const { clear } = useWarn()
+	const setO = useOutputStore((s) => s.setO)
+	const setT = useOutputStore((s) => s.setT)
+	const setTune = useOutputStore((s) => s.setTune)
+	const sendTune = useOutputStore((s) => s.sendTune)
+	const clear = useWarn((s) => s.clear)
 	// Текущее значение выходов
 	const chOn = vlv?.module?.on?.channel - 1
 	const chOff = vlv?.module?.off?.channel - 1

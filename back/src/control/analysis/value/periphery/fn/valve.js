@@ -15,7 +15,7 @@ function valve(equip, val, retain, result) {
 		// Текущее положение в %
 		result[vlv._id].val = cur !== null && full !== null ? +((cur / full) * 100).toFixed(0) : null
 		// Состояние клапана
-		result[vlv._id].state = stateV(vlv._id, result, buildingId, sectionId)
+		result[vlv._id].state = stateV(vlv, result, buildingId, sectionId, equip, retain)
 	})
 }
 

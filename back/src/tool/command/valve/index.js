@@ -1,8 +1,9 @@
 const { isExtralrm } = require('@tool/message/extralrm')
+const { isErrM } = require('@tool/message/plc_module')
 
 /**
  * Состояние клапана
- * @param {*} vlvId Id Клапана
+ * @param {*} vlv Id Клапана
  * @param {*} value Опрос модулей + анализ
  * @returns
  *  iopn: 'Открывается',
@@ -12,15 +13,17 @@ const { isExtralrm } = require('@tool/message/extralrm')
 	popn: 'Частично открыт',
 	alr: 'Неисправность',
  */
-function stateV(vlvId, value, buildingId, sectionId) {
-	if (!vlvId) return null
-	const vlvLim = isExtralrm(buildingId, sectionId, 'vlvLim')
-	const vlvLimB = isExtralrm(buildingId, null, 'vlvLim')
-	const crash = isExtralrm(buildingId, sectionId, 'vlvCrash' + vlvId)
-	const iopn = value?.outputEq?.[vlvId]?.open
-	const icls = value?.outputEq?.[vlvId]?.close
-	const opn = value?.[vlvId]?.open
-	const cls = value?.[vlvId]?.close
+function stateV(vlv, value, idB, idS, equip, retain) {
+	if (!vlv._id) return null
+	const alr = isAlrmByVlv(idB, vlv, equip, retain)
+	if (alr) return 'alr'
+	const vlvLim = isExtralrm(idB, idS, 'vlvLim')
+	const vlvLimB = isExtralrm(idB, null, 'vlvLim')
+	const crash = isExtralrm(idB, idS, 'vlvCrash' + vlv._id)
+	const iopn = value?.outputEq?.[vlv._id]?.open
+	const icls = value?.outputEq?.[vlv._id]?.close
+	const opn = value?.[vlv._id]?.open
+	const cls = value?.[vlv._id]?.close
 	if ((opn && cls) || (iopn && icls) || crash || vlvLim || vlvLimB) return 'alr'
 	if (!opn && !cls && !iopn && !icls) return 'popn'
 	if (iopn) return 'iopn'
@@ -31,5 +34,50 @@ function stateV(vlvId, value, buildingId, sectionId) {
 }
 
 module.exports = {
-	stateV
+	stateV,
+}
+
+/**
+ * Модули ПЛК ВНО неисправны?
+ * Поиск модулей к которым привязан ВНО
+ * Проверка найденных модулей на неисправность
+ * Если какой-либо модуль неисправен -> ВНО в аварии
+ * Примечание:
+ * 1. Разгонные ВНО, наблюдаем за всеми модулями
+ * 2. Секционные ВНО и ВНО испарителей: когда склад ВКЛ и секция НЕ В РУЧ РЕЖИМЕ
+ * наблюдаем за всеми модулями, иначе учитываем только модули ВЫХОДОВ
+ *
+ * @param {string} idB ИД склада
+ * @param {object} fan Рама ВНО
+ * @param {object} equip Рама оборудования
+ * @param {object} retain Сохраненные данные
+ * @returns true Неисправны / false Модули ОК
+ */
+function isAlrmByVlv(idB, vlv, equip, retain) {
+	const { signal, module } = equip
+	// Включен ли склад
+	// const start = retain?.[idB]?.start
+	// Режим секции: авто true, ручной false, выкл null
+	// const mode = retain?.[idB]?.mode?.[idS]
+	// console.log(start, mode, start && mode !== false)
+	// Коллекция модулей ПЛК
+	const arrM = new Set()
+	// 1. Найти модули обратной связи Клапана (концевики, авария двигателя)
+
+	signal
+		.filter((el) => el?.owner?.id === vlv._id)
+		.forEach((el) => {
+			arrM.add(el?.module?.id)
+		})
+	// 2. Найти модули дискретных выходов
+	arrM.add(vlv?.module?.on?.id)
+	arrM.add(vlv?.module?.off?.id)
+	// 3. Проверка модулей
+
+	return [...arrM].some((idM) => {
+		const t = isErrM(idB, idM)
+		const mdl = module.find((el) => el._id === idM)
+		console.log(`Клапан${vlv.type} ${vlv._id}, Модуль ${idM} ${mdl.ip}, авария=${t}`)
+		return t
+	})
 }
