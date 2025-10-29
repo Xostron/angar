@@ -97,19 +97,19 @@ function fanOff(idB, fan, cooler, retain) {
 function isAlrmByFan(idB, fan, equip, retain) {
 	const { signal, module, binding, cooler } = equip
 	// Включен ли склад
-	const start = retain?.[idB]?.start
+	// const start = retain?.[idB]?.start
 	// Режим секции: авто true, ручной false, выкл null
-	const mode = fnMode(idB, fan, cooler, retain)
-	console.log(start, mode, start && mode !== false)
+	// const mode = fnMode(idB, fan, cooler, retain)
+	// console.log(start, mode, start && mode !== false)
 	// Коллекция модулей ПЛК
 	const arrM = new Set()
 	// 1. Найти модули обратной связи ВНО (учитываем неисправность данных модулей только когда склад включен и секция не в ручном режиме)
-	if ((start && mode !== false) || fan?.type === 'accel')
-		signal
-			.filter((el) => el?.owner?.id === fan._id)
-			.forEach((el) => {
-				arrM.add(el?.module?.id)
-			})
+	// if ((start && mode !== false) || fan?.type === 'accel')
+	signal
+		.filter((el) => el?.owner?.id === fan._id)
+		.forEach((el) => {
+			arrM.add(el?.module?.id)
+		})
 	// 2. Найти модули дискретных выходов
 	arrM.add(fan?.module?.id)
 	// 3. Найти аналоговый модуль выходов (для ВНО + ПЧ)
@@ -134,22 +134,22 @@ function arrCtrl(idB, arr, type) {
 
 module.exports = { fnACmd, fnFanWarm, stateEq, stateF, arrCtrl }
 
-/**
- * Режим секции данного ВНО
- * @param {*} fan Рама ВНО
- * @return {boolean | null} авто true, ручной false, выкл null
- */
-function fnMode(idB, fan, cooler, retain) {
-	switch (fan?.owner?.type) {
-		case 'building':
-			// Для разгонных ВНО все равно какой режим у секции, он принадлежит складу
-			return true
-		case 'section':
-			return retain?.[idB]?.mode?.[fan?.owner?.id]
-		case 'cooler':
-			const idS = cooler.find((el) => el._id === fan.owner.id)?.sectionId
-			return retain?.[idB]?.mode?.[idS]
-		default:
-			true
-	}
-}
+// /**
+//  * Режим секции данного ВНО
+//  * @param {*} fan Рама ВНО
+//  * @return {boolean | null} авто true, ручной false, выкл null
+//  */
+// function fnMode(idB, fan, cooler, retain) {
+// 	switch (fan?.owner?.type) {
+// 		case 'building':
+// 			// Для разгонных ВНО все равно какой режим у секции, он принадлежит складу
+// 			return true
+// 		case 'section':
+// 			return retain?.[idB]?.mode?.[fan?.owner?.id]
+// 		case 'cooler':
+// 			const idS = cooler.find((el) => el._id === fan.owner.id)?.sectionId
+// 			return retain?.[idB]?.mode?.[idS]
+// 		default:
+// 			true
+// 	}
+// }
