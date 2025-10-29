@@ -49,7 +49,6 @@ function smoking(
 	clear = false
 ) {
 	const idB = building._id
-	console.log(111, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', clear)
 	if (clear) return fnClear(idB)
 	// id всех секций данного склада
 	const idsS = getIdsS(obj.data.section, idB)

@@ -10,13 +10,20 @@ import Input from '@cmp/fields/input'
  * @param {*} change Переключение радиокнопок
  * @returns
  */
-export default function Field({ sel, change, active, state, spO, setSpO }) {
-	const title = state !== 'off' ? 'Вывести из работы' : 'Ввести в работу'
+export default function Field({ sel, change, active, state, spO, setSpO, off }) {
+	const title = off ? 'Ввести в работу' : 'Вывести из работы'
 	const styleIn = active ? 'run' : 'off'
 	return (
 		<fieldset className='ef-field'>
 			<span className={active && state !== 'run' ? '' : 'off'}>
-				<Radio value='run' selected={active ? sel : ''} name='fan' title='Включить' change={change} disabled={state === 'run'} />
+				<Radio
+					value='run'
+					selected={active ? sel : ''}
+					name='fan'
+					title='Включить'
+					change={change}
+					disabled={state === 'run'}
+				/>
 				{/* {active && ( */}
 				<>
 					<Input

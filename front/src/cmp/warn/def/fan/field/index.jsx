@@ -10,8 +10,8 @@ import { useEffect } from 'react'
  * @param {*} change Переключение радиокнопок
  * @returns
  */
-export default function Field({ sel, change, active, state }) {
-	const title = state !== 'off' ? 'Вывести из работы' : 'Ввести в работу'
+export default function Field({ sel, change, active, state, off }) {
+	const title = off ? 'Ввести в работу' : 'Вывести из работы'
 	return (
 		<fieldset className='ef-field'>
 			<Radio
@@ -32,13 +32,7 @@ export default function Field({ sel, change, active, state }) {
 				change={change}
 				disabled={state === 'stop'}
 			/>
-			<Radio
-				value='off'
-				selected={sel}
-				name='fan'
-				title={title}
-				change={change}
-			/>
+			<Radio value='off' selected={sel} name='fan' title={title} change={change} />
 		</fieldset>
 	)
 }

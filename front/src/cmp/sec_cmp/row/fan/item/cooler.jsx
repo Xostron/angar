@@ -15,7 +15,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	// Стадия испарителя - режим
 	const uptxt = start ? cooler.name : ''
 	// Задание ПЧ
-	let ltxt = data.sp
+	let ltxt = data.value
 	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : ltxt + '%'
 	else ltxt = '-- %'
 	// Температура всасывания
@@ -28,13 +28,14 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 	// Иконка состояния испарителя
 	const state = cooler?.state
-	let icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
-	if (data.state == 'alarm') icon = '/img/cold/cooler/fan-alarm.svg'
+	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
+	// if (data.state == 'alarm') icon = '/img/cold/cooler/fan-alarm.svg'
 
 	// Доступ разрешен
 	if (isAuth) cl.push('auth-sir')
 	// Вывод из работы ВНО
 	if (data.state == 'off') cl.push('off')
+	if (data.state === 'alarm') cl.push('alarm')
 
 	cl = cl.join(' ')
 	return (
@@ -55,7 +56,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 // Кнопка Испаритель
 function BtnCooler({
 	title = '',
-	icon,
+	icon = '',
 	onClick,
 	ltxt = '',
 	rtxt = '',

@@ -53,22 +53,30 @@ function stateEq(id, value) {
 // Состояние вентилятора (секции, разгонного, испарителя)
 function stateF(fan, equip, result, retain) {
 	const idB = getIdB(fan.module?.id, equip.module)
+	// Выведен из работы для секционных ВНО и ВНО испарителей
+	result[fan._id].off = fanOff(idB, fan, equip.cooler, retain)
+
 	// Авария ВНО: По автоматическому выключателю, перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
 	const alr = isAlrmByFan(idB, fan, equip, retain)
 	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr) return 'alarm'
-	// Выведен из работы для секционных ВНО и ВНО испарителей
-	let off
-	if (fan.owner.type == 'section') off = retain?.[idB]?.fan?.[fan.owner.id]?.[fan._id]
-	else if (fan.owner.type == 'cooler') {
-		const secId = equip.cooler.find((el) => el._id == fan.owner.id)?.sectionId
-		off = retain?.[idB]?.fan?.[secId]?.[fan._id]
-	}
-	if (off) return 'off'
+	// Выведен из работы
+	if (result[fan._id].off) return 'off'
 	// В работе
 	const out = result?.outputEq?.[fan._id]
 	if (out) return 'run'
 
 	return 'stop'
+}
+
+// Выведен из работы для секционных ВНО и ВНО испарителей
+function fanOff(idB, fan, cooler, retain) {
+	let off
+	if (fan.owner.type == 'section') off = retain?.[idB]?.fan?.[fan.owner.id]?.[fan._id]
+	else if (fan.owner.type == 'cooler') {
+		const secId = cooler.find((el) => el._id == fan.owner.id)?.sectionId
+		off = retain?.[idB]?.fan?.[secId]?.[fan._id]
+	}
+	return off
 }
 /**
  * Модули ПЛК ВНО неисправны?

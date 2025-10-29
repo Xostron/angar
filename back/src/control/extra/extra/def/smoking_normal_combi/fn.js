@@ -73,6 +73,12 @@ function fnClear(idB) {
 
 module.exports = { fnClear, collect }
 
+
+/**
+ * Настройка максимальное количество ВНО в окуривании
+ * @param {*} r Конфиг для плавного пуска
+ * @param {*} max Настройка окуривания: Максимальное количество ВНО
+ */
 function fnLimit(r, max) {
 	// Проверка, найден ли ВНО+ПЧ (count - оставшееся кол-во ВНО)
 	let count = r.fanFC ? max - 1 : max

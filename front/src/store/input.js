@@ -84,11 +84,8 @@ const useInputStore = create((set, get) => ({
 		return { state: o?.state, value: o?.[type] }
 	},
 	getFan(fan) {
-		return {
-			...fan,
-			state: get()?.input?.[fan?._id]?.state,
-			sp: get()?.input?.[fan?._id]?.value,
-		}
+		const r = get()?.input?.[fan?._id] ?? {}
+		return { ...fan, ...r }
 	},
 	factory: () => get()?.input?.factory?.setting,
 	// Процент открытия клапана
