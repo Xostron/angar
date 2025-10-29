@@ -60,7 +60,6 @@ function transform(idB, idS, mS, obj, stg, r) {
 	r[idS].type = type
 	// Настройка максимальное количество ВНО в окуривании
 	fnLimit(r[idS], stg?.max ?? 3)
-	console.log('@@@@@@@@@@@@@ОКУРИВАНИЕ', idS, [r[idS].fanFC, ...r[idS].fans].length)
 	return r
 }
 

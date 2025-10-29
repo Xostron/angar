@@ -14,5 +14,3 @@ function fan(equip, val, retain, result) {
 }
 
 module.exports = fan
-
-
