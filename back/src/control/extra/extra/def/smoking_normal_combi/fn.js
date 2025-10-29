@@ -27,13 +27,13 @@ function transform(idB, idS, mS, obj, stg, r) {
 	let fansCoo = mS.fanS
 		.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 		.sort((a, b) => a?.order - b?.order)
-	fansCoo = Object.values(
-		fansCoo.reduce((acc, el, i) => {
-			if (acc[el.module.id + el.module.channel]) return acc
-			acc[el.module.id + el.module.channel] = el
-			return acc
-		}, {})
-	)
+	// fansCoo = Object.values(
+	// 	fansCoo.reduce((acc, el, i) => {
+	// 		if (acc[el.module.id + el.module.channel]) return acc
+	// 		acc[el.module.id + el.module.channel] = el
+	// 		return acc
+	// 	}, {})
+	// )
 	// ВНО без ПЧ секции
 	const fans = mS.fanS
 		.filter((el) => el.owner.id === idS && !el?.ao && el.type == 'fan')
@@ -71,7 +71,6 @@ function fnClear(idB) {
 }
 
 module.exports = { fnClear, collect }
-
 
 /**
  * Настройка максимальное количество ВНО в окуривании

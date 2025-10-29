@@ -5,13 +5,24 @@ function mech(obj, idS, idB) {
 	// Клапаны и обогрев (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
-	// Испарители (соленоид + ВНО + оттайка)
+	// Испарители секции(соленоид + ВНО + оттайка)
 	const coolerS = []
 	cooler.forEach((el) => {
 		if (el.sectionId != idS) return
 		coolerS.push(transformClr(el, data))
 	})
-	const fanClr = coolerS.flatMap((el) => el.fan)
+	// ВНО испарителей (только рабочие и исключая дубляжи)
+	let fanClr = coolerS
+		.flatMap((el) => el.fan)
+		.filter((el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id])
+	fanClr = Object.values(
+		fanClr.reduce((acc, el, i) => {
+			if (acc[el.module.id + el.module.channel]) return acc
+			acc[el.module.id + el.module.channel] = el
+			return acc
+		}, {})
+	)
+	console.log(6767, fanClr)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
 	// Напорные ВНО секции обычного склада/камеры холодильника (только рабочие)

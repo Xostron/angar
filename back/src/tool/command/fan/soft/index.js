@@ -26,17 +26,17 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Испарители, принадлежащие текущей секции
 		const coolerIds = cooler.filter((el) => el.sectionId == idS).map((el) => el._id)
 		// ВНО испарителей данной секции (управляем ими как обычными ВНО без ПЧ)
-		// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя, а испарители изначально считались самодостаточными, но они делают что хотят, так как прога резиновая, никакой унификации и стандарта
+		// TODO* убираем ВНО дублеров, т.к. 1 сцуко ВНО на 2 испарителя
 		let fansCoo = resultFan.fan
 			.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
-		fansCoo = Object.values(
-			fansCoo.reduce((acc, el, i) => {
-				if (acc[el.module.id + el.module.channel]) return acc
-				acc[el.module.id + el.module.channel] = el
-				return acc
-			}, {})
-		)
+		// fansCoo = Object.values(
+		// 	fansCoo.reduce((acc, el, i) => {
+		// 		if (acc[el.module.id + el.module.channel]) return acc
+		// 		acc[el.module.id + el.module.channel] = el
+		// 		return acc
+		// 	}, {})
+		// )
 		// Соленоиды подогрева
 		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ
