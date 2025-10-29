@@ -1,11 +1,10 @@
 const { compareTime, runTime } = require('@tool/command/time')
-const { delExtra, wrExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { arrCtrl } = require('@tool/command/fan/fn')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
-
-// const h = 60000
 const h = 3600000
+
 /**
  * Окуривание для ХОЛОДИЛЬНИКА:
  * 1 Выключить склад
@@ -65,8 +64,12 @@ function smoking(
 	// Работаем - включаются вентиляторы
 	if (!doc.work) {
 		doc.work = new Date()
-		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа'))
+		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 	}
+	// Повтор сообщения, если наш посик ребутнулся ночью аккурат находясь в окуривании
+	if (doc.work && !doc.wait && !isExtra(idB, null, 'smoking1'))
+		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
+
 	if (!compareTime(doc.work, stg.work * h)) {
 		arrCtrl(idB, arr, 'on')
 		return
@@ -76,8 +79,11 @@ function smoking(
 	if (!doc.wait) {
 		doc.wait = new Date()
 		delExtra(idB, null, 'smoking1')
-		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание'))
+		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	}
+	// Повтор сообщения, если наш посик ребутнулся ночью аккурат находясь в окуривании
+	if (doc.wait && !isExtra(idB, null, 'smoking2'))
+		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrl(idB, arr, 'off')
 		return

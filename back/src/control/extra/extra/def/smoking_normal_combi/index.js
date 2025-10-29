@@ -72,6 +72,8 @@ function smoking(
 		softStart(idB, idsS, fan, obj, s, false)
 		delete doc.work
 		delete doc.wait
+		// Удаляем аккумулятор плавного пуска по завершению окуривания
+		delete store?.heap?.smoking
 		delExtra(idB, null, 'smoking1')
 		delExtra(idB, null, 'smoking2')
 		return
