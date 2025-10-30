@@ -12,7 +12,7 @@ module.exports = data = {
 
 	get(name, key) {
 		return {
-			date: new Date()+'',
+			date: new Date().toLocaleString('ru'),
 			type: key,
 			typeSignal: 'timer',
 			msg: this?.[key] ?? `Таймер: ${name}, ${key}`,

@@ -22,7 +22,7 @@ function mech(obj, idS, idB) {
 			return acc
 		}, {})
 	)
-	console.log(6767, fanClr)
+	// console.log(6767, fanClr)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
 	// Напорные ВНО секции обычного склада/камеры холодильника (только рабочие)

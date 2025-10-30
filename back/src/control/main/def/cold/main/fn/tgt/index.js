@@ -26,18 +26,16 @@ function combiTarget(bld, obj, bdata, alr) {
 
 	// console.log(999,accAuto.cold)
 
-	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Уменьшение темп в день, минимальное задание)
-	if (!accAuto.cold.targetDT || accAuto.cold.targetDT.getDate() !== new Date().getDate() || accAuto.cold?.isChange(s.cooling.target, s.cooling.decrease)) {
+	const name = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
+	const r = readAcc(bld._id, name)
+	accAuto.cold.tgtTcnl = r?.tcnl
+	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Т задания, Уменьшение температуры в день)
+	if (!accAuto.cold.targetDT || accAuto.cold.targetDT.getDate() !== new Date().getDate() || accAuto.cold?.isChange(s.cooling.decrease, s.cooling.target)) {
 		// Указанные настройки изменились?
-		accAuto.cold.isChange = isChange(s.cold.decrease, s.cold.target)
-		const name = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
+		accAuto.cold.isChange = isChange(s.cooling.decrease, s.cooling.target)
 		// Температура задания продукта с нормального склада
-		const r = readAcc(bld._id, name)
-		const tgtTprd = r?.tgt
-		const tgtTcnl = r?.tcnl
 		// Температура задания на сутки (decrease мб равен 0) по минимальной тмп. продукта
-		accAuto.cold.tgtTprd = tgtTprd
-		accAuto.cold.tgtTcnl = tgtTcnl
+		accAuto.cold.tgtTprd = r?.tgt
 		// Время создания задания
 		accAuto.cold.targetDT = new Date()
 	}
