@@ -54,7 +54,7 @@ function mech(obj, idS, idB) {
 	)
 	// Напорные ВНО секции для extralrm (отслеживание аварий)
 	const fanSAll = [...fan.filter((el) => el.owner.id === idS && el.type === 'fan'), ...fanClr]
-	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS, fanSAll }
+	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS, fanSAll, fanClr }
 }
 
 // Исполнительные механизмы склада

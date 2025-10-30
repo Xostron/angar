@@ -1,4 +1,5 @@
 const { compareTime } = require('@tool/command/time')
+const { data: store } = require('@store')
 /**
  * Синхронизация оттайки-слива_воды испарителей
  * Хотя бы один испаритель перешел в оттайку, все остальные переходят
@@ -7,18 +8,19 @@ const { compareTime } = require('@tool/command/time')
  * @param {*} cooler список испарителей
  * @param {*} obj глобальные данные склада
  */
-function defrostAll(accCold, cooler, obj, s) {
+function defrostAll(idB, accCold, cooler, obj, s) {
 	// const skip = ['off-off-on', 'off-off-off-add']
 	// Флаг время после слива воды
 	accCold.afterD ??= null
 	accCold.timeAD ??= null
 	// Только рабочие испарители
-	cooler = cooler.filter((el) => Object.keys(accCold[el._id]?.state ?? {}).length)
+	const clrs = cooler.filter((el) => !store?.denied?.[idB]?.[el._id])
+	// console.log('@@@@@@@@@@@@@@@@@@@', clrs)
 	// Флаг оттайка закончена на всех испарителях данной секции
-	accCold.defrostAllFinish = cooler.every((el) => accCold?.[el._id]?.state?.waitDefrost)
+	accCold.defrostAllFinish = clrs.every((el) => accCold?.[el._id]?.state?.waitDefrost)
 	if (accCold.defrostAllFinish) accCold.defrostAll = null
 	// Флаг выхода из слива воды всех испарителей
-	accCold.drainAll = !!cooler?.length && cooler.every((el) => accCold[el._id]?.state?.add)
+	accCold.drainAll = !!clrs?.length && clrs.every((el) => accCold[el._id]?.state?.add)
 	// Флаг время после слива воды
 	if (accCold.drainAll) accCold.afterD = new Date()
 	/* 

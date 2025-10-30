@@ -2,6 +2,7 @@ const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
 const denied = require('../../fn/denied')
 const { initSoftsol } = require('../../fn/change/soft_solenoid')
+const { isAlr } = require('@tool/message/auto')
 /**
  * Склад Комби: Логика испарителей
  * @param {object} bld Склад
@@ -21,17 +22,15 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 
 	// console.log(111, accAuto.cold.softSol)
 	for (const clr of mS.coolerS) {
-		console.log(
-			`\n----------------------------------${bld?.name} begin----------------------------------\n`
-		)
+		console.log(`\n------------------------${bld?.name} begin-----------------------\n`)
+		// Аккумулятор испарителя
 		accAuto.cold[clr._id] ??= {}
 		accAuto.cold[clr._id].state ??= {}
-
+		// Состояние испарителя
 		const stateCooler = obj.value?.[clr._id]
-
-		// Запрет работы испарителя
+		// Проверка: Запрет работы испарителя
 		if (denied.combi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj)) continue
-
+		// Датчики секции и испарителя
 		const seClr = { ...seS, cooler: {} }
 		seClr.cooler = seS.cooler[clr._id]
 		// Проверка выключена ли оттайка -> оттайка выключена -> управление испарителем
@@ -57,9 +56,13 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				clr
 			)
 	}
-	console.log(
-		`\n----------------------------------${bld?.name} end----------------------------------`
-	)
+	// Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
+	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
+	const alrAuto = isAlr(bld._id, automode)
+	// Режим секции true-Авто
+	const sectM = retain?.[bld._id]?.mode?.[sect._id]
+	denied.off(bld._id, mS, s, fnChange, accAuto, alrAuto, sectM)
+	console.log(`\n-----------------------------${bld?.name} end-----------------------------`)
 }
 
 module.exports = coolers

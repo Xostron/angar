@@ -15,7 +15,7 @@ const { ctrlDO } = require('@tool/command/module_output')
 // -> выдаем предупреждение "Низкая температура канала"
 const { data: store, readAcc } = require('@store')
 
-function softsol(idB, solenoid, sl, clr, accAuto) {
+function softsol(idB, solenoid, sl, f, h, clr, accAuto) {
 	const extraCO2 = readAcc(idB, 'building', 'co2')
 	if (extraCO2.sol) return fnSol(idB, extraCO2, solenoid)
 	const secId = clr.sectionId
@@ -24,7 +24,16 @@ function softsol(idB, solenoid, sl, clr, accAuto) {
 	const allStarted = store?.watchdog?.softFan?.[secId]?.allStarted
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
-
+	//Выключение соленоидов испарителя у запрещенного испарителя
+	if (store?.denied?.[idB]?.[clr._id]) {
+		solenoid.forEach((el) => ctrlDO(el, idB, 'off'))
+		return
+	}
+	// если включается оттайка
+	if (h) {
+		solenoid.forEach((el) => ctrlDO(el, idB, 'off'))
+		return
+	}
 	solenoid.forEach((el) => {
 		// Вкл/выкл соленоидов в обычном режиме
 		if (!allStarted) return ctrlDO(el, idB, sl ? 'on' : 'off')

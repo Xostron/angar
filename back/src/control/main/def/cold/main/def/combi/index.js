@@ -3,7 +3,7 @@ const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
 const { oneChangeCombi } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
-const denied = require('../../fn/denied')
+// const denied = require('../../fn/denied')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
 const fanCombi = require('./fan')
@@ -18,7 +18,7 @@ function main(bld, obj, bdata, alr) {
 		oneChangeCombi(bdata, bld._id, sl, f, h, add, code, clr)
 
 	// Синхронизация оттайки-слива_воды испарителей
-	defrostAll(accAuto.cold, m.cold.cooler, obj, s)
+	defrostAll(bld._id, accAuto.cold, m.cold.cooler, obj, s)
 
 	// По камере
 	for (sect of data.section) {
@@ -29,7 +29,7 @@ function main(bld, obj, bdata, alr) {
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
-		if (denied.section(bld, sect, bdata, alr, obj)) continue
+		// if (denied.section(bld, sect, bdata, alr, obj)) continue
 		// Работа ВНО секции и соленоида подогрева (регулирование температурой канала)
 		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}

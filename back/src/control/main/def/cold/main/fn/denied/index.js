@@ -57,6 +57,8 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const local = isExtralrm(bld._id, sect._id, 'local')
 	// Режим секции true-Авто
 	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
+	// Настройка "Испаритель холодильного оборудования" = true/false
+	const off = (s?.coolerCombi?.on ?? true) === false
 
 	store.denied[bld._id][clr._id] =
 		!start ||
@@ -71,7 +73,8 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		stateCooler.fan.state === 'alarm' ||
 		local ||
 		!sectM ||
-		stateCooler?.status === 'alarm'
+		stateCooler?.status === 'alarm' ||
+		off
 	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 	console.log(
 		'\t',
@@ -100,12 +103,10 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		'stateCooler?.status === alarm',
 		stateCooler?.status === 'alarm'
 	)
-	// Работа испарителя запрещена?
-	if (!store.denied[bld._id][clr._id]) {
-		//false - Нет - работаем испарителем
-		return false
-	}
-	// true - Да
+	// Работа испарителя запрещена? false: работаем испарителем
+	if (!store.denied[bld._id][clr._id]) return false
+
+	// true - Да (очищаем аккумулятор по испарителю и выключаем его)
 	clearCombi(bld._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
 
 	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
@@ -121,31 +122,91 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	return true
 }
 
-// Склад Комби: Первичный запрет работы от секции
-function deniedSection(bld, sect, bdata, alr, obj) {
-	const { start, s, se, m, accAuto, supply, automode } = bdata
+// Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
+function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
+	const couple = coupleClr(mS)
+	console.log(couple)
+	// Итог по всем испарителям (для полной очистки аккумулятора секции)
+	const allDeniedSect = []
+	// Проходим по парам испарителей и одиночкам
+	couple.forEach((pair) => {
+		const denied = []
+		if (!pair?.length) return
+		// 1. Если один испаритель в паре, то просто выключаем при запрете работы
+		if (pair.length < 2 && store?.denied?.[idB]?.[pair[0]]) {
+			allDeniedSect.push(store?.denied?.[idB]?.[pair[0]])
+			const clr = mS.coolerS.find((el) => el._id === pair[0])
+			fnChange(0, 0, 0, 0, null, clr)
+			return
+		}
+		// 2. Для парных испарителей (1 ВНО на двоих и более испарителей)
+		pair.forEach((idClr) => {
+			denied.push(store?.denied?.[idB]?.[idClr])
+		})
+		allDeniedSect.push(...denied)
+		// Частичное или Полное отключение пары испарителей
+		// 2.1. Полное отключение пары
+		if (denied.every((el) => el)) {
+			// Испаритель запрещен к работе, но ВНО испарителя не блокируется при:
+			// 1. в режиме обычного склада (нет аварий авторежима)
+			// 2. Секция в ручном режиме
+			// 3. Включено окуривание
+			pair.forEach((idClr) => {
+				const clr = mS.coolerS.find((el) => el._id === idClr)
+				if (!alrAuto || sectM === false || s.smoking.on) {
+					fnChange(0, null, 0, 0, null, clr)
+				} else fnChange(0, 0, 0, 0, null, clr)
+			})
+		}
+		// 2.2. Частичное отключение пары
+		denied.forEach((el, i) => {
+			// Если разрешен к работе не отключаем
+			if (el === false) return
+			// Запрещен отключаем
+			const idClr = pair[i]
+			const clr = mS.coolerS.find((el) => el._id === idClr)
+			fnChange(0, null, 0, 0, null, clr)
+		})
+	})
 
-	store.denied[bld._id] ??= {}
-	store.denied[bld._id][sect._id] ??= {}
-
-	// Наличие аварии авторежима
-	const alrAuto = isAlr(bld._id, automode)
-
-	store.denied[bld._id][sect._id] =
-		!start || alr || !store.toAuto?.[bld._id]?.[sect._id] || !alrAuto || automode != 'cooling'
-
-	console.log(
-		55,
-		sect.name,
-		'работа запрещена',
-		store.denied[bld._id][sect._id],
-		'==',
-		!start,
-		alr,
-		!store.toAuto?.[bld._id]?.[sect._id],
-		!alrAuto,
-		automode != 'cooling'
-	)
-	return store.denied[bld._id][sect._id]
+	// Полная очистка секции (Все испарители секции запрещены)
+	if (allDeniedSect.every((el) => el)) {
+		// delete accAuto?.cold?.afterD
+		// delete accAuto?.cold?.timeAD
+		// delete accAuto?.cold?.defrostAllFinish
+		// delete accAuto?.cold?.defrostAll
+		// delete accAuto?.cold?.drainAll
+	}
 }
-module.exports = { cold: deniedCold, combi: deniedCombi, section: deniedSection }
+
+module.exports = { cold: deniedCold, combi: deniedCombi, off: offDenied }
+
+/**
+ *
+ * @param {*} mS механизмы секции
+ * @returns {string[][]} ИД испарителей объединенные в пары по одинаковому ВНО
+ */
+function coupleClr(mS) {
+	const hashClr = mS.coolerS.reduce((rlt, el) => {
+		rlt[el._id] = el
+		return rlt
+	}, {})
+	// Разбиваем испарители секции на пары по признаку одинаковых ВНО
+	const couple = mS.fanClr.reduce((rlt, el, i) => {
+		// el - ВНО какого-то испарителя
+		const uid = el.module.id + '' + el.module.channel
+		// Испарители с одинаковыми ВНО
+		const pairC = []
+		// Берем испаритель и его ВНО (hashClr[idClr].fan) проверяем на схожесть с el по uid
+		for (const idClr in hashClr) {
+			const f = hashClr[idClr].fan.find((ff) => ff.module.id + '' + ff.module.channel === uid)
+			if (f) {
+				pairC.push(idClr)
+				delete hashClr[idClr]
+			}
+		}
+		rlt.push(pairC)
+		return rlt
+	}, [])
+	return couple
+}
