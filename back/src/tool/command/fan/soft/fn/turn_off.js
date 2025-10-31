@@ -25,7 +25,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 		return true
 	}
 	// Игнор работы в комби складе (Работа в НОРМ или ХОЛОД)
-	if (ignore[where](bld, obj, acc, bdata, solHeat)) {
+	if (ignore[where](bld, obj,s, acc, bdata, solHeat)) {
 		console.log('\tПлавный пуск: TurnOff (ИГНОР РАБОТЫ)', idS, where)
 		return true
 	}

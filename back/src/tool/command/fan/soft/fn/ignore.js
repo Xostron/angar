@@ -14,7 +14,7 @@ const { ctrlDO } = require('@tool/command/module_output')
  * @param {*} bdata Результат функции scan()
  * @returns false - разрешить управление, true - запрет управления
  */
-function normal(bld, obj, acc, bdata) {
+function normal(bld, obj, s, acc, bdata) {
 	// Удаление СО2
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 
@@ -26,7 +26,7 @@ function normal(bld, obj, acc, bdata) {
 	console.log('\tИгнор (normal)', alrAuto)
 	return alrAuto
 }
-function cold(bld, obj, acc, bdata, solHeat) {
+function cold(bld, obj, s, acc, bdata, solHeat) {
 	// Удаление СО2: логика холодильника -> логика обычного
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	if (extraCO2.start) {
@@ -35,9 +35,9 @@ function cold(bld, obj, acc, bdata, solHeat) {
 		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')
 		return true
 	}
-	// Если есть авария авторежима, то логика обычного -> логика холодильника
+	// Если есть авария авторежима то - разрешить управление
 	const alrAuto = isAlr(bld._id, bdata.automode)
-	console.log('\tИгнор (cold)', !alrAuto)
+	console.log('\t!alrAuto=', !alrAuto)
 	return !alrAuto
 }
 

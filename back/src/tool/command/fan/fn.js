@@ -1,5 +1,6 @@
 const { ctrlDO, ctrlAO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
+const { isAlr } = require('@tool/message/auto')
 const { isErrM } = require('@tool/message/plc_module')
 const { setACmd } = require('@tool/command/set')
 const { getIdB } = require('@tool/get/building')
@@ -8,19 +9,31 @@ const _MIN_SP = 20
 
 /**
  * Команда авторежима на пуск/стоп ВНО секции
- * @param {*} idB Id склада
+ * @param {*} bld Id склада
  * @param {*} resultFan Задание на включение ВНО
  * @param {*} s Настройки склада
  * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
-function fnACmd(idB, resultFan, s, start, obj) {
+function fnACmd(bld, resultFan, s, start, obj, bdata) {
+	const idB = bld._id
+	const type = bld?.type
 	const delay = s.fan.delay * 1000
+	const localB = isExtralrm(idB, null, 'local')
+	// Комби склад: в режиме холодильника, при хранении и настройка "Испаритель холодильного оборудования"
+	let coolerCombiOn = true
+	const alrAuto = isAlr(bld._id, bdata.automode)
+	if (type === 'combi' && bdata?.automode === 'cooling' && alrAuto)
+		coolerCombiOn = s?.coolerCombi?.on ?? true
+
+	console.log('***********FNACMD', coolerCombiOn, s?.coolerCombi?.on)
+
 	resultFan.list.forEach((idS) => {
 		const sectOn = obj?.retain?.[idB]?.mode?.[idS]
 		const local = isExtralrm(idB, idS, 'local')
-		const localB = isExtralrm(idB, null, 'local')
-		if (local || localB || !sectOn) setACmd('fan', idS, { delay, type: 'off' })
-		else
+		if (local || localB || !sectOn || !coolerCombiOn) {
+			console.log('fnACmd: ВНО выключены из-за:', local, localB, !sectOn, !coolerCombiOn)
+			setACmd('fan', idS, { delay, type: 'off' })
+		} else
 			!resultFan?.force
 				? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' })
 				: setACmd('fan', idS, { delay, type: 'on' })

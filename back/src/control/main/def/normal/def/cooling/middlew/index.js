@@ -57,7 +57,6 @@ function submode(building, obj, s, seB, acc) {
  * Расчет задания
  */
 function target(building, obj, s, seB, acc) {
-	console.log('\x1b[36m%s\x1b[0m', '==========ПЕРЕСЧЕТ ЗАДАНИЯ ОБЫЧНЫЙ СКЛАД', )
 	// Температура задания канала
 	acc.tcnl = seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel

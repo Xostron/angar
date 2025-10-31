@@ -73,7 +73,7 @@ function valve(s, se, sectionId, acc, extraCO2) {
 function fan(s, se, alr, sectionId, acc) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	const force = s.drying.ventilation || forceByTout
-	const start = !alr || force || !alr
+	const start = !alr || force 
 	return { start }
 }
 module.exports = data
