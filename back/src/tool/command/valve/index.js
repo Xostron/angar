@@ -2,9 +2,9 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { isErrM } = require('@tool/message/plc_module')
 
 /**
- * Состояние клапана
- * @param {*} vlv Id Клапана
- * @param {*} value Опрос модулей + анализ
+ * Анализ сигналов: Состояние клапана
+ * @param {object} vlv Id Клапана
+ * @param {object} value Опрос модулей + анализ
  * @returns
  *  iopn: 'Открывается',
 	icls: 'Закрывается',
@@ -13,9 +13,9 @@ const { isErrM } = require('@tool/message/plc_module')
 	popn: 'Частично открыт',
 	alr: 'Неисправность',
  */
-function stateV(vlv, value, idB, idS, equip, retain) {
+function stateV(vlv, value, idB, idS, equip) {
 	if (!vlv._id) return null
-	const alr = isAlrmByVlv(idB, vlv, equip, retain)
+	const alr = isAlrmByVlv(idB, vlv, equip)
 	if (alr) return 'alr'
 	const vlvLim = isExtralrm(idB, idS, 'vlvLim')
 	const vlvLimB = isExtralrm(idB, null, 'vlvLim')
@@ -33,8 +33,20 @@ function stateV(vlv, value, idB, idS, equip, retain) {
 	return null
 }
 
+/**
+ * Текущее состояние клапана
+ * @param {string} vlvId ИД клапана
+ * @param {object} value Опрос модулей + анализ
+ * @returns
+ */
+function curStateV(vlvId, value) {
+	if (!vlvId) return null
+	return value?.[vlvId]?.state ?? null
+}
+
 module.exports = {
 	stateV,
+	curStateV,
 }
 
 /**
@@ -53,7 +65,7 @@ module.exports = {
  * @param {object} retain Сохраненные данные
  * @returns true Неисправны / false Модули ОК
  */
-function isAlrmByVlv(idB, vlv, equip, retain) {
+function isAlrmByVlv(idB, vlv, equip) {
 	const { signal, module } = equip
 	// Включен ли склад
 	// const start = retain?.[idB]?.start

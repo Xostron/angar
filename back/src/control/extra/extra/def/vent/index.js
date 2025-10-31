@@ -47,10 +47,10 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	if (s.vent.mode === 'auto') {
 		delExtra(bld._id, sect._id, 'vent_on')
 		// Подхват
-		mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+		mAutoByDura(obj,s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
 		// Рециркуляция
 		if (isAccessTime(bld, obj)) {
-			mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+			mAutoByTime(obj,s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
 			// console.log(1115, 'vent byTime в работе', acc)
 		} else {
 			acc.byTime = {}

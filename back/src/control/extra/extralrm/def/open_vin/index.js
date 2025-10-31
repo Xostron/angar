@@ -1,6 +1,6 @@
 const { msgB } = require('@tool/message')
 const { isReset } = require('@tool/reset')
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 const { compareTime } = require('@tool/command/time')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const _WAIT = 5 * 60 * 1000
@@ -26,9 +26,7 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 	if (isReset(building._id) && acc?.alarm) fnReset(building, acc)
 
 	// Есть ли хоть один открытый приточный клапан
-	const hasOpen = m.vlvIn.some(
-		(el) => stateV(el?._id, obj.value, building._id, el?.sectionId?.[0]) === 'opn'
-	)
+	const hasOpen = m.vlvIn.some((el) => curStateV(el._id, obj.value) === 'opn')
 	// Клапан открыт и темп.канала > темп. продукта
 	const attn = hasOpen && seB.tcnl > seB.tprd
 

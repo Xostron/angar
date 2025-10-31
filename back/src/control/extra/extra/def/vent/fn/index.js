@@ -1,5 +1,5 @@
 const { stateEq } = require('@tool/command/fan/fn')
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 const { msg } = require('@tool/message')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
@@ -10,7 +10,7 @@ function mOn(s, sect, resultFan) {
 }
 
 // Режим вентиляции: Авто - доп вентиляция (подхват)
-function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
+function mAutoByDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
@@ -26,7 +26,7 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 		return
 	}
 	// Состояние приточного клапана секции
-	const state = stateV(vlvIn._id, value, bld._id, vlvIn.sectionId[0])
+	const state = curStateV(vlvIn._id, value)
 	// Состояние напорных вентиляторов
 	const run = fanS.some((f) => stateEq(f._id, value))
 
@@ -74,7 +74,7 @@ function mAutoByDura(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 }
 
 // Режим вентиляции: Авто - по времени
-function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
+function mAutoByTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
 	// Аккумулятор вычислений
 	acc.byTime ??= {}
 	// Отключение: нет настройки, аварии, бит завершения по времени, сейчас работает подхват
@@ -106,7 +106,7 @@ function mAutoByTime(s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, res
 			msg(bld, sect, 87, `${s.vent.wait / 60 / 1000}мин)`)
 		)
 		// console.log(1118, 'vent: Ожидание', acc.byTime.wait, s.vent.wait)
-		return 
+		return
 	}
 	// Вкл вентиляции, когда истечет время ожидания
 	resultFan.start = [true]

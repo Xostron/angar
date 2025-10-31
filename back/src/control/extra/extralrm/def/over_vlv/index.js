@@ -1,6 +1,6 @@
 const { msg } = require('@tool/message')
 const { isReset } = require('@tool/reset')
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 const { stateEq } = require('@tool/command/fan/fn')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
@@ -31,7 +31,7 @@ function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
-	const state = stateV(vlvIn?._id, value, bld._id, vlvIn?.sectionId?.[0])
+	const state = curStateV(vlvIn._id, value)
 	// Хотя бы один вентилятор запущен
 	const run = fanS.some((f) => stateEq(f._id, value))
 

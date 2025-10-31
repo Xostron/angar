@@ -1,4 +1,3 @@
-const { stateF } = require('@tool/command/fan/fn')
 const { data: store, readAcc } = require('@store')
 const { getIdByClr, getB } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')

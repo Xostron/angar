@@ -156,6 +156,7 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 					fnChange(0, null, 0, 0, null, clr)
 				} else fnChange(0, 0, 0, 0, null, clr)
 			})
+			return
 		}
 		// 2.2. Частичное отключение пары
 		denied.forEach((el, i) => {

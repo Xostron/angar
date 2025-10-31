@@ -1,7 +1,7 @@
 const { data: store, setToAuto, setToMan, setToOffSection } = require('@store')
 const { ctrlV, ctrlDO } = require('@tool/command/module_output')
 const { stateEq } = require('@tool/command/fan/fn')
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 
 /**
  * При переходе в авто, выкл, останов склада:
@@ -17,7 +17,7 @@ function controlAO(buildId, sectionId, data, value, type = 'to_auto') {
 	const fanS = fan.filter((el) => el.owner.id === sectionId && el.type === 'fan')
 	const vlvS = valve.filter((el) => el.sectionId.includes(sectionId))
 	// Закрытие всех клапанов при переходе в ВЫКЛ
-	let v 
+	let v
 	if (type === 'to_off') v = clsValves(vlvS, value, buildId)
 	// Отключение вентиляторов секции при переходе в ВЫКЛ
 	let f
@@ -42,15 +42,15 @@ function controlM(buildId, sectionId, data, value) {
 	const { fan, valve } = data
 	const vlvS = valve.filter((v) => v.sectionId.includes(sectionId))
 	// Останов клапанов
-	const v = stopValves(vlvS, value, buildId)
+	const v = stopValves(vlvS, value, buildId, data)
 	// Подготовка выполнена, все клапаны закрыты
 	if (v) setToMan({ _build: buildId, _section: sectionId, value: true })
 }
 
-function stopValves(vlvS, value, buildingId) {
+function stopValves(vlvS, value, buildingId, data) {
 	let count = vlvS.length
 	for (const vlv of vlvS) {
-		const state = stateV(vlv._id, value, buildingId, vlv.sectionId[0])
+		const state = curStateV(vlv._id, value)
 		ctrlV(vlv, buildingId, 'stop')
 		if (state !== 'iopn' && state !== 'icls') --count
 	}
@@ -72,7 +72,7 @@ function controlB(buildId, sectionId, data, value) {
 	const vlvS = valve.filter((v) => v.sectionId.includes(sectionId))
 	// const heatS = heating.filter((h) => h.sectionId === sectionId)
 	// Закрытие всех клапанов
-	const v = clsValves(vlvS, value, buildId)
+	const v = clsValves(vlvS, value, buildId, data)
 	// Отключение вентиляторов секции
 	const f = offEq(fanS, value, buildId)
 	// Отключение обогревателей клапанов
@@ -81,10 +81,10 @@ function controlB(buildId, sectionId, data, value) {
 }
 
 // Закрыть группу клапанов
-function clsValves(vlvS, value, buildingId) {
+function clsValves(vlvS, value, buildingId, data) {
 	let count = vlvS.length
 	for (const vlv of vlvS) {
-		const state = stateV(vlv._id, value, buildingId, vlv.sectionId[0])
+		const state = curStateV(vlv._id, value)
 		if (state === 'icls') continue
 		if (state !== 'cls') {
 			ctrlV(vlv, buildingId, 'close')

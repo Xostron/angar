@@ -1,5 +1,5 @@
 const { setTuneTime, setPos } = require('@tool/command/set')
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 const { isZero } = require('@tool/zero')
 const { data: store } = require('@store')
 
@@ -9,11 +9,10 @@ function positionVlv(obj) {
 	data.valve?.forEach((vlv) => {
 		const idOn = vlv?.module?.on?.id
 		if (!idOn) return
-		// console.log(333, output, idOn)
 		const buildingId = output[idOn].buildingId
 		const section = data.section.find((s) => vlv.sectionId.includes(s._id))
 		const total = retain?.[section?.buildingId]?.valve?.[vlv._id]
-		const state = stateV(vlv._id, value, section?.buildingId, vlv.sectionId[0])
+		const state = curStateV(vlv._id, value)
 		// Текущее положение клапана из retain
 		let vlvPos
 		for (const idB in retain) {
@@ -22,7 +21,7 @@ function positionVlv(obj) {
 		}
 
 		// Частично открыт (Клапан остановлен и находится в промежуточном положении)
-		if (state==='popn'){
+		if (state === 'popn') {
 			const cur = vlvPos?.[buildingId][vlv._id]
 			// ограничение диапазона хода
 			let value = cur > total ? total : cur

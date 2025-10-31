@@ -1,6 +1,6 @@
 const { msg } = require('@tool/message')
 const { isReset } = require('@tool/reset')
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { data: store, readAcc } = require('@store')
 /**
@@ -34,8 +34,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 		return null
 	// Приточный клапан секции
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
-	const state = stateV(vlvIn?._id, value, building._id, vlvIn?.sectionId?.[0])
-
+	const state = curStateV(vlvIn._id, value)
 	// Логика
 	// Текущее время
 	const curTime = +new Date().getTime()

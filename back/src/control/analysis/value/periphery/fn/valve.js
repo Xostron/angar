@@ -1,6 +1,6 @@
 const { stateV } = require('@tool/command/valve')
 
-// Состояние клапанов
+// Анализ сигналов: Состояние клапанов
 function valve(equip, val, retain, result) {
 	const { signal, module, valve, section } = equip
 	// valve
@@ -13,11 +13,11 @@ function valve(equip, val, retain, result) {
 		// Время полного открытия, мс
 		const full = +retain?.[buildingId]?.valve?.[vlv._id] ?? null
 		// Текущее положение в %
-		result[vlv._id].val = cur !== null && full !== null ? +((cur / full) * 100).toFixed(0) : null
+		result[vlv._id].val =
+			cur !== null && full !== null ? +((cur / full) * 100).toFixed(0) : null
 		// Состояние клапана
-		result[vlv._id].state = stateV(vlv, result, buildingId, sectionId, equip, retain)
+		result[vlv._id].state = stateV(vlv, result, buildingId, sectionId, equip)
 	})
 }
-
 
 module.exports = valve

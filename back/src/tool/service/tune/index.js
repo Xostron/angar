@@ -1,4 +1,4 @@
-const { stateV } = require('@tool/command/valve')
+const { curStateV } = require('@tool/command/valve')
 const { data: store } = require('@store')
 const def = require('./fn')
 
@@ -18,7 +18,7 @@ function tuneup(obj) {
 			delete tune[key]
 			continue
 		}
-		tuneVlv(tune[key], obj.value)
+		tuneVlv(tune[key], obj.value, obj.data)
 	}
 }
 
@@ -28,14 +28,13 @@ function tuneup(obj) {
  * @param {*} value Показания модулей (входа, выхода)
  * @returns
  */
-function tuneVlv(vlv, value) {
-	const state = stateV(vlv?._id, value, vlv?._build, vlv?.sectionId?.[0])
+function tuneVlv(vlv, value, equip) {
+	const state = curStateV(vlv._id, value)
 	if (!vlv._stage) return
 	def?.[vlv._stage](vlv, state)
 }
 
-
-function check(obj){
+function check(obj) {
 	console.log(Object.keys(obj))
 }
 module.exports = tuneup
