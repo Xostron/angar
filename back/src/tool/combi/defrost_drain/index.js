@@ -34,7 +34,14 @@ function defrostAll(idB, accCold, cooler, obj, s) {
 		accCold.afterD &&
 		compareTime(accCold.afterD, s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain)
 
+	consoleTable(accCold, s)
+}
+
+module.exports = defrostAll
+
+function consoleTable(accCold, s) {
 	console.log(
+		'\x1b[35m%s\x1b[0m',
 		'\n---------------------------------------defrostALL---------------------------------------',
 		`timeAD = compareTime(${accCold.afterD}, ${
 			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
@@ -60,5 +67,3 @@ function defrostAll(idB, accCold, cooler, obj, s) {
 		['drainAll(Слив_воды_окончен)', 'afterD(Ожидание_после_слива)', 'timeAD(Время_после_слива)']
 	)
 }
-
-module.exports = defrostAll
