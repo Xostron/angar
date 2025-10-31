@@ -3,7 +3,6 @@ const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
 const { oneChangeCombi } = require('../../fn/change')
 const { mech } = require('@tool/command/mech')
-// const denied = require('../../fn/denied')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
 const fanCombi = require('./fan')
@@ -29,61 +28,52 @@ function main(bld, obj, bdata, alr) {
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
-		// if (denied.section(bld, sect, bdata, alr, obj)) continue
 		// Работа ВНО секции и соленоида подогрева (регулирование температурой канала)
 		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
-
-		mS.coolerS.forEach((el) => {
-			console.table(accAuto?.cold?.[el._id])
-		})
 	}
 	if (clearBuild(bld, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
-		// console.log(999)
 		target.combi(bld, obj, bdata, alr)
 	}
 	console.log(88, 'Аккумулятор холодильника')
-
 	console.log('asd', accAuto.cold)
-
-	// consoleTable(accAuto.cold, m, data.section)
 }
 
 module.exports = main
 
-function consoleTable(accCold, m, section) {
-	console.table(
-		[
-			{
-				'defrostAll(Оттайка_начало)': accCold.defrostAll,
-				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
-			},
-		],
-		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)']
-	)
-	console.table(
-		[
-			{
-				'drainAll(Слив_воды_окончен)': accCold.drainAll,
-				'afterD(Ожидание_после_слива)': accCold.afterD,
-				'timeAD(Время_после_слива)': accCold.timeAD,
-			},
-		],
-		['drainAll(Слив_воды_окончен)', 'afterD(Ожидание_после_слива)', 'timeAD(Время_после_слива)']
-	)
-	console.table(
-		[
-			{
-				tgtTcnl: accCold.tgtTcnl,
-				tgtTprd: accCold.tgtTprd,
-				targetDT: accCold.targetDT,
-			},
-		],
-		['tgtTcnl', 'tgtTprd', 'targetDT']
-	)
-	m.cold.cooler.forEach((el) => {
-		const sect = section.find((sec) => sec._id === el.sectionId)
-		console.log('\x1b[36m%s\x1b[0m', el.name, sect.name)
-		console.table(accCold?.[el._id])
-	})
-}
+// function consoleTable(accCold, m, section) {
+// 	console.table(
+// 		[
+// 			{
+// 				'defrostAll(Оттайка_начало)': accCold.defrostAll,
+// 				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
+// 			},
+// 		],
+// 		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)']
+// 	)
+// 	console.table(
+// 		[
+// 			{
+// 				'drainAll(Слив_воды_окончен)': accCold.drainAll,
+// 				'afterD(Ожидание_после_слива)': accCold.afterD,
+// 				'timeAD(Время_после_слива)': accCold.timeAD,
+// 			},
+// 		],
+// 		['drainAll(Слив_воды_окончен)', 'afterD(Ожидание_после_слива)', 'timeAD(Время_после_слива)']
+// 	)
+// 	console.table(
+// 		[
+// 			{
+// 				tgtTcnl: accCold.tgtTcnl,
+// 				tgtTprd: accCold.tgtTprd,
+// 				targetDT: accCold.targetDT,
+// 			},
+// 		],
+// 		['tgtTcnl', 'tgtTprd', 'targetDT']
+// 	)
+// 	m.cold.cooler.forEach((el) => {
+// 		const sect = section.find((sec) => sec._id === el.sectionId)
+// 		console.log('\x1b[36m%s\x1b[0m', el.name, sect.name)
+// 		console.table(accCold?.[el._id])
+// 	})
+// }

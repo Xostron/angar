@@ -169,13 +169,14 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 	})
 
 	// Полная очистка секции (Все испарители секции запрещены)
-	if (allDeniedSect.every((el) => el)) {
-		// delete accAuto?.cold?.afterD
-		// delete accAuto?.cold?.timeAD
-		// delete accAuto?.cold?.defrostAllFinish
-		// delete accAuto?.cold?.defrostAll
-		// delete accAuto?.cold?.drainAll
-	}
+	// console.log('@@@@@@@@@@@@@@',allDeniedSect)
+	// if (allDeniedSect.every((el) => el)) {
+	// 	delete accAuto?.cold?.afterD
+	// 	delete accAuto?.cold?.timeAD
+	// 	delete accAuto?.cold?.defrostAllFinish
+	// 	delete accAuto?.cold?.drainAll
+	// 	delete accAuto?.cold?.defrostAll
+	// }
 }
 
 module.exports = { cold: deniedCold, combi: deniedCombi, off: offDenied }
