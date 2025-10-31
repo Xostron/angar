@@ -135,7 +135,10 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 		if (pair.length < 2 && store?.denied?.[idB]?.[pair[0]]) {
 			allDeniedSect.push(store?.denied?.[idB]?.[pair[0]])
 			const clr = mS.coolerS.find((el) => el._id === pair[0])
-			fnChange(0, 0, 0, 0, null, clr)
+			if (!clr) return
+			if (!alrAuto || sectM === false || s.smoking.on) {
+				fnChange(0, null, 0, 0, null, clr)
+			} else fnChange(0, 0, 0, 0, null, clr)
 			return
 		}
 		// 2. Для парных испарителей (1 ВНО на двоих и более испарителей)
