@@ -14,17 +14,17 @@ const _MIN_SP = 20
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where = 'normal') {
-	// Запрет при окуривании
+	// Запрет управления при окуривании
 	if (s?.smoking?.on) {
 		console.log('\tПлавный пуск: TurnOff (Окуривание)', idS, where)
 		return true
 	}
-	// (КОМБИ) Проверка переключения с НОРМАЛЬНОГО на ХОЛОД и выход
+	// (КОМБИ)Запрет управления: Проверка переключения с НОРМАЛЬНОГО на ХОЛОД
 	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) {
 		console.log('\tПлавный пуск: TurnOff (переключения с НОРМАЛЬНОГО на ХОЛОД)', idS, where)
 		return true
 	}
-	// Игнор работы в комби складе (Работа в НОРМ или ХОЛОД)
+	// Запрет управления (Работа в НОРМ или ХОЛОД)
 	if (ignore[where](bld, obj,s, acc, bdata, solHeat)) {
 		console.log('\tПлавный пуск: TurnOff (ИГНОР РАБОТЫ)', idS, where)
 		return true
@@ -35,7 +35,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 		console.log('\tПлавный пуск: TurnOff (Ручной режим)', idS, where)
 		return true
 	}
-	// aCmd - задание на вкл активно
+	// aCmd - задание на вкл активно - Разрешить управление
 	if (aCmd.type == 'on') {
 		console.log('\tПлавный пуск: TurnOff = false -> Разрешить работу ВНО', idS, where)
 		return false
