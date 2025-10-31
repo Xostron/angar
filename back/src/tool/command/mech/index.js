@@ -1,7 +1,12 @@
 // Исполнительные механизмы секции
 function mech(obj, idS, idB) {
-	const { data, retain, value } = obj
-	const { valve, fan, heating, signal, binding, cooler } = data
+	const { data, retain, value } = obj;
+	const { valve, fan, heating, signal, binding, cooler, device } = data;
+
+	// Увлажнитель
+	const wettingS = device.filter(
+		(el) => el?.device.code === 'wetting' && el?.sectionId === idS
+	);
 	// Клапаны и обогрев (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
@@ -77,6 +82,7 @@ function mech(obj, idS, idB) {
 		solHeatS,
 		fanSAll,
 		fanClr,
+		wettingS,
 		allFanClr,
 	}
 }
