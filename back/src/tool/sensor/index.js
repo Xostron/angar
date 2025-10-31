@@ -21,6 +21,9 @@ function vSensor(equip, val, retain, result) {
 		// антидребезг датчика
 		const hold = debounce(owner?.building?._id, s._id, r, store.holdSensor?.[s._id], retain, s)
 		result[s._id] = hold ? hold : r
+		console.log(result[s._id])
+		// Аварийные сообщения датчика
+		webAlarm(result[s._id], owner?.building, owner?.section, s)
 		store.holdSensor[s._id] = result?.[s._id]
 	}
 	// Добавление прогноза погоды на экран настроек датчиков
@@ -64,9 +67,8 @@ function valid(sens, val, equip, retain) {
 
 	// Проверка диапазонов
 	range(r, sens)
-	console.log('@@@@@@@@@@@@@@@@@@',sens.name, sens.owner.type, r)
-	// Аварийные сообщения датчика
-	webAlarm(r, building, section, sens)
+	console.log('@@@@@@@@@@@@@@@@@@', sens.name, sens.owner.type, r)
+
 	return r
 }
 
