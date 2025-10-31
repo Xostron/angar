@@ -37,7 +37,7 @@ function cold(bld, obj, s, acc, bdata, solHeat) {
 	}
 	// Если есть авария авторежима то - разрешить управление
 	const alrAuto = isAlr(bld._id, bdata.automode)
-	console.log('\t!alrAuto=', !alrAuto)
+	console.log('\tИгнор (cold)', !alrAuto)
 	return !alrAuto
 }
 
