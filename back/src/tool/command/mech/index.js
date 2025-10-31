@@ -12,11 +12,23 @@ function mech(obj, idS, idB) {
 		coolerS.push(transformClr(el, data))
 	})
 	// ВНО испарителей (только рабочие и исключая дубляжи: 1 ВНО на 2 и более испарителя)
-	let fanClr = coolerS
-		.flatMap((el) => el.fan)
-		.filter((el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id])
+	// Вно испарителей (все вно, включая дубляжи)
+	const fanClrRaw = coolerS.flatMap((el) => el.fan)
+	// Вно испарителей (только рабочие state!=alarm и state!=off)
+	let fanClr = fanClrRaw.filter(
+		(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id]
+	)
+	// Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
 	fanClr = Object.values(
 		fanClr.reduce((acc, el, i) => {
+			if (acc[el.module.id + el.module.channel]) return acc
+			acc[el.module.id + el.module.channel] = el
+			return acc
+		}, {})
+	)
+	// Вно испарителей с людим state, но исключая дубляжи
+	let allFanClr = Object.values(
+		fanClrRaw.reduce((acc, el, i) => {
 			if (acc[el.module.id + el.module.channel]) return acc
 			acc[el.module.id + el.module.channel] = el
 			return acc
@@ -54,7 +66,19 @@ function mech(obj, idS, idB) {
 	)
 	// Напорные ВНО секции для extralrm (отслеживание аварий)
 	const fanSAll = [...fan.filter((el) => el.owner.id === idS && el.type === 'fan'), ...fanClr]
-	return { vlvS, fanS, fanSS, heatS, connect, reset, coolerS, solHeatS, fanSAll, fanClr }
+	return {
+		vlvS,
+		fanS,
+		fanSS,
+		heatS,
+		connect,
+		reset,
+		coolerS,
+		solHeatS,
+		fanSAll,
+		fanClr,
+		allFanClr,
+	}
 }
 
 // Исполнительные механизмы склада

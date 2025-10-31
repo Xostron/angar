@@ -15,7 +15,6 @@ function defrostAll(idB, accCold, cooler, obj, s) {
 	accCold.timeAD ??= null
 	// Только рабочие испарители
 	const clrs = cooler.filter((el) => !store?.denied?.[idB]?.[el._id])
-	// console.log('@@@@@@@@@@@@@@@@@@@', clrs)
 	// Флаг оттайка закончена на всех испарителях данной секции
 	accCold.defrostAllFinish = clrs.every((el) => accCold?.[el._id]?.state?.waitDefrost)
 	if (accCold.defrostAllFinish) accCold.defrostAll = null

@@ -38,7 +38,7 @@ function oneChangeCombi(bdata, idB, sl, f, h, add, code, clr) {
 	// Управление механизмами
 	// solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	// Ступенчатое управление соленоидами
-	console.log('@@@@@@@@@@@1', solenoid)
+	// console.log('@@@@@@@@@@@1', solenoid)
 	softsol(idB, solenoid, sl, f, h, clr, accAuto)
 	// ВНО испарителя
 	fan.forEach((el) => {

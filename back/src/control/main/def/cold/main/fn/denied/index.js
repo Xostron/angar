@@ -125,7 +125,6 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 // Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
 function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 	const couple = coupleClr(mS)
-	console.log(couple)
 	// Итог по всем испарителям (для полной очистки аккумулятора секции)
 	const allDeniedSect = []
 	// Проходим по парам испарителей и одиночкам
@@ -162,7 +161,7 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 		denied.forEach((el, i) => {
 			// Если разрешен к работе не отключаем
 			if (el === false) return
-			// Запрещен отключаем
+			// Запрещен - отключаем
 			const idClr = pair[i]
 			const clr = mS.coolerS.find((el) => el._id === idClr)
 			fnChange(0, null, 0, 0, null, clr)
@@ -192,7 +191,7 @@ function coupleClr(mS) {
 		return rlt
 	}, {})
 	// Разбиваем испарители секции на пары по признаку одинаковых ВНО
-	const couple = mS.fanClr.reduce((rlt, el, i) => {
+	const couple = mS.allFanClr.reduce((rlt, el, i) => {
 		// el - ВНО какого-то испарителя
 		const uid = el.module.id + '' + el.module.channel
 		// Испарители с одинаковыми ВНО

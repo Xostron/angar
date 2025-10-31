@@ -91,7 +91,6 @@ function signal(r, bld, sect, am) {
 	// const auto = store.alarm.auto?.[bld._id]?.[am]
 	const extralrm = store.alarm.extralrm?.[bld._id]?.[sect?._id]
 	const extra = store.alarm?.extra?.[bld._id]?.[sect._id]
-
 	// if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
 	if (extra) r.signal[bld._id].push(...Object.values(extra))
