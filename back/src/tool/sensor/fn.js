@@ -84,10 +84,10 @@ function detection(aTprd) {
 
 // Состояние датчика: выключен-off или авария-alarm
 function state(raw, on) {
-	// Неисправность датчика
-	if (raw === null) return 'alarm'
 	// Выведен из работы
 	if (on === false) return 'off'
+	// Неисправность датчика
+	if (raw === null) return 'alarm'
 	return 'on'
 }
 
