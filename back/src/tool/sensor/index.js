@@ -64,7 +64,7 @@ function valid(sens, val, equip, retain) {
 
 	// Проверка диапазонов
 	range(r, sens)
-
+	console.log('@@@@@@@@@@@@@@@@@@',sens.name, sens.owner.type, r)
 	// Аварийные сообщения датчика
 	webAlarm(r, building, section, sens)
 	return r
