@@ -121,7 +121,6 @@ function mechB(bId, type, obj) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
-
 	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost, wettingS }
 }
 
@@ -161,7 +160,9 @@ function fnCold(idB, obj) {
 		device[code] ??= []
 		device[code].push(el)
 	})
-	return { signal: sigB, aggregate: aggr, cooler, heating, device, slaveAgg }
+	// ВНО испарителей
+	const fan = cooler.flatMap((el) => el.fan)
+	return { signal: sigB, aggregate: aggr, cooler, heating, device, slaveAgg, fan }
 }
 
 function transformClr(doc, data) {

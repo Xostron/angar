@@ -24,7 +24,7 @@ export default function Cold() {
 				<div className='top'>
 					<ListCooler />
 					<CO2 data={co2} />
-					<Wetting data={wetting} />
+					{/* <Wetting data={wetting} /> */}
 				</div>
 				<Tprd data={tprd} input={input} />
 			</div>
