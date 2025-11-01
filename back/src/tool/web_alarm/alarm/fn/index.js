@@ -93,7 +93,12 @@ function signal(r, bld, sect, am) {
 	const extra = store.alarm?.extra?.[bld._id]?.[sect._id]
 	// if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
-	if (extra) r.signal[bld._id].push(...Object.values(extra))
+
+	if (extra)
+		Object.values(extra).forEach((el) =>
+			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el))
+		)
+
 }
 
 // Аварии на странице "Сигналы" (собираем по складу и суммируем с секциями)

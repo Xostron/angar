@@ -75,6 +75,8 @@ const data = {
 			drainOn,
 			slaveAgg,
 			connectLost,
+			// Увлажнение
+			wetting,
 		},
 	},
 	// Комбинированный склад

@@ -1,12 +1,11 @@
 // Исполнительные механизмы секции
 function mech(obj, idS, idB) {
-	const { data, retain, value } = obj;
-	const { valve, fan, heating, signal, binding, cooler, device } = data;
+	const { data, retain, value } = obj
+	const { valve, fan, heating, signal, binding, cooler, device } = data
 
 	// Увлажнитель
-	const wettingS = device.filter(
-		(el) => el?.device.code === 'wetting' && el?.sectionId === idS
-	);
+	const wettingS = device.filter((el) => el?.device?.code === 'wetting' && el?.sectionId === idS)
+
 	// Клапаны и обогрев (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
@@ -39,7 +38,6 @@ function mech(obj, idS, idB) {
 			return acc
 		}, {})
 	)
-	// console.log(6767, fanClr)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
 	// Напорные ВНО секции обычного склада/камеры холодильника (только рабочие)
@@ -91,8 +89,13 @@ function mech(obj, idS, idB) {
 function mechB(bId, type, obj) {
 	// (поиск по складу и секциям)
 	const { data } = obj
+
 	//ID склада и секций
 	let idS = getId(data?.section, bId)
+	// Увлажнитель
+	const wettingS = data.device.filter(
+		(el) => el?.device?.code === 'wetting' && idS.includes(el.sectionId)
+	)
 	// Разгонные вентиляторы
 	const fanA = data?.fan?.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
 	// Выход "Модуль в работе" для реле безопасности
@@ -119,7 +122,7 @@ function mechB(bId, type, obj) {
 			return el
 		})
 
-	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost }
+	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost, wettingS }
 }
 
 // Получить массив ID склада и его секций
