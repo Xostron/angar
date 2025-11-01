@@ -271,6 +271,21 @@ const data = {
 	86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
 	87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
 	88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
+	// Увлажнение
+	130: {code: 'off', typeSignal: 'info', msg: 'Увлажнитель. Режим работы : Выключен.'},
+	131: {code: 'on', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Включен.'},
+	132: {code: 'sensor', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Датчик.'},
+	133: {code: 'auto', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Авто.'},
+	134: {code: 'time', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Время.'},
+	
+	135: {code: 'info1', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.'},
+	136: {code: 'info2', typeSignal: 'info', msg: 'Увлажнитель запущен.'},
+	137: {code: 'info3', typeSignal: 'info', msg: 'Увлажнитель остановлен.'},
+	138: {code: 'info4', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.'},
+	139: {code: 'info5', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.'},
+	139: {code: 'info6', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.'},
+
+
 	// Прогрев секции
 	59: { code: 'warming', typeSignal: 'info', msg: 'Включен прогрев клапанов' },
 	//

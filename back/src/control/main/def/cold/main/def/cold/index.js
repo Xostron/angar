@@ -14,7 +14,7 @@ function main(bld, obj, bdata, alr) {
 	const fnChange = (sl, f, h, add, code, clr) =>
 		oneChange(bdata, bld._id, sl, f, h, add, code, clr)
 	// Синхронизация оттайки-слива_воды испарителей
-	defrostAll(accAuto, m.cold.cooler, obj, s)
+	defrostAll(bld._id, accAuto, m.cold.cooler, obj, s)
 	// По камере
 	for (sect of data.section) {
 		if (sect.buildingId != bld._id) continue
