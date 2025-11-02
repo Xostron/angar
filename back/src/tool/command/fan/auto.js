@@ -12,7 +12,7 @@ const soft = require('./soft')
 function normal(bld, obj, s, seB, m, resultFan, bdata) {
 	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	fnACmd(bld, resultFan, s, start, obj, bdata)
+	fnACmd(bld, resultFan, start, obj, bdata)
 	// Формирование aCmd: Прогрев клапанов
 	if (!start) fnFanWarm(resultFan, s)
 	// Плавный пуск/стоп ВНО склада
@@ -23,7 +23,7 @@ function normal(bld, obj, s, seB, m, resultFan, bdata) {
 function combi(bld, obj, s, seB, seS, m,  resultFan, bdata) {
 	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	fnACmd(bld, resultFan, s, start, obj, bdata)
+	fnACmd(bld, resultFan, start, obj, bdata)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, seS, m, resultFan, bdata, 'cold')
 }

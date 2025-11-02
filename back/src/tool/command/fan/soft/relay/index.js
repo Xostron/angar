@@ -27,7 +27,6 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления/темп в канале (сигнал на вкл/откл вентиляторов)
 	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
-	// console.log(2221, idS, 'on:', on, 'off:', off)
 	// Прогрев клапанов
 	if (aCmd.warming) {
 		on = true

@@ -26,7 +26,7 @@ const defOnOff = {
 	cold: (idB, idS, accAuto, obj, seS, s) => {
 		const { p } = sensor(idB, idS, obj)
 		let on = seS.tcnl < accAuto.cold.tgtTcnl - s.cooling.hysteresisIn && p <= s.fan.maxp
-		let off = seS.tcnl > accAuto.cold.tgtTcnl + s.cooling.hysteresisIn
+		let off = seS.tcnl >= accAuto.cold.tgtTcnl
 		console.log('\tТаблица. Режим Холодильник: Сигнал на вкл/выкл ВНО, Секция', idS)
 		console.table(
 			[

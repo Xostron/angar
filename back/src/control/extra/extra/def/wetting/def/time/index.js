@@ -3,7 +3,7 @@ const { msg } = require('@tool/message');
 const { compareTime } = require('@tool/command/time');
 
 // По таймеру
-function time(obj, ctrlDO) {
+function time(obj, ctrlWet) {
 	const { status, wetting, run, bld, sect, acc } = obj;
 	// проверить состояние напорных вентиляторов
 	// console.log('Увлажнитель (Время): ', wetting);
@@ -30,7 +30,7 @@ function time(obj, ctrlDO) {
 		console.log(
 			'Увлажнитель (Время): Увлажнитель еще не запускался. Начинаем с ожидания'
 		);
-		ctrlDO(false, 'Увлажнитель еще не запускался. Ожидаем');
+		ctrlWet(false, 'Увлажнитель еще не запускался. Ожидаем');
 		return;
 	}
 
@@ -40,7 +40,7 @@ function time(obj, ctrlDO) {
 			'Увлажнитель (Время): Время работы увлажнителя истекло. Выключаем',
 			new Date().toLocaleString()
 		);
-		ctrlDO(false, 'Время работы истекло');
+		ctrlWet(false, 'Время работы истекло');
 		return;
 	}
 	// Выключен, но время простоя увлажнителя истекло
@@ -49,7 +49,7 @@ function time(obj, ctrlDO) {
 			'Увлажнитель (Время): Время простоя увлажнителя истекло. Запускаем',
 			new Date().toLocaleString()
 		);
-		ctrlDO(true, 'Время ожидания истекло.');
+		ctrlWet(true, 'Время ожидания истекло.');
 		return;
 	}
 	console.log(

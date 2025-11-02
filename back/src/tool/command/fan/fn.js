@@ -4,6 +4,7 @@ const { isAlr } = require('@tool/message/auto')
 const { isErrM } = require('@tool/message/plc_module')
 const { setACmd } = require('@tool/command/set')
 const { getIdB } = require('@tool/get/building')
+const { mech } = require('@tool/command/mech')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
@@ -14,30 +15,85 @@ const _MIN_SP = 20
  * @param {*} s Настройки склада
  * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
-function fnACmd(bld, resultFan, s, start, obj, bdata) {
+function fnACmd(bld, resultFan, start, obj, bdata) {
 	const idB = bld._id
-	const type = bld?.type
-	const delay = s.fan.delay * 1000
+	const delay = bdata.s.fan.delay * 1000
 	const localB = isExtralrm(idB, null, 'local')
-	// Комби склад: в режиме холодильника, при хранении и настройка "Испаритель холодильного оборудования"
-	let coolerCombiOn = true
-	const alrAuto = isAlr(bld._id, bdata.automode)
-	if (type === 'combi' && bdata?.automode === 'cooling' && alrAuto)
-		coolerCombiOn = s?.coolerCombi?.on ?? true
-
-	console.log('***********FNACMD', coolerCombiOn, s?.coolerCombi?.on)
+	const coolerCombiOn = isCoolerCombiOn(bld, bdata)
 
 	resultFan.list.forEach((idS) => {
 		const sectOn = obj?.retain?.[idB]?.mode?.[idS]
 		const local = isExtralrm(idB, idS, 'local')
-		if (local || localB || !sectOn || !coolerCombiOn) {
-			console.log('fnACmd: ВНО выключены из-за:', local, localB, !sectOn, !coolerCombiOn)
+		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
+		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
+			console.log(
+				'fnACmd: ВНО выключены из-за:',
+				local,
+				localB,
+				!sectOn,
+				!coolerCombiOn,
+				!goVNO
+			)
 			setACmd('fan', idS, { delay, type: 'off' })
 		} else
 			!resultFan?.force
 				? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' })
 				: setACmd('fan', idS, { delay, type: 'on' })
 	})
+}
+
+/**
+ * 	Комби склад в режиме холодильника, при хранении
+ *  и настройке "Испаритель холодильного оборудования"=false
+ * => испарители и ВНО должны выключиться
+ * @param {*} bld Рама склада
+ * @param {*} bdata Собранные данные
+ * @param {*} s Настройки
+ * @returns {boolean} false - испаритель выключен
+ */
+function isCoolerCombiOn(bld, bdata) {
+	const { automode, s } = bdata
+	let coolerCombiOn = true
+	const alrAuto = isAlr(bld._id, automode)
+	if (bld?.type === 'combi' && automode === 'cooling' && alrAuto)
+		coolerCombiOn = s?.coolerCombi?.on ?? true
+
+	console.log(
+		'Настройка "Испаритель холодильного оборудования" =',
+		s?.coolerCombi?.on,
+		coolerCombiOn
+	)
+	if (coolerCombiOn === false)
+		console.log(
+			'Комби склад. Испарители и ВНО выключены. Настройка "Испаритель холодильного оборудования" ВЫКЛ'
+		)
+	return coolerCombiOn
+}
+
+/**
+ * Для комби склада в режиме холодильника
+ * Запрет работы ВНО, если в секции выключены ВНО испарителей
+ * @param {*} bld Рама склада
+ * @param {*} idS ИД секции
+ * @param {*} obj Глобальные данные
+ * @param {*} bdata Данные склада
+ * @returns
+ */
+function isСoolerCombiVNO(bld, idS, obj, bdata) {
+	const alrAuto = isAlr(bld._id, bdata.automode)
+	let state = true
+	if (bld?.type === 'combi' && bdata?.automode === 'cooling' && alrAuto) {
+		const mS = mech(obj, idS, bld._id)
+		// Агрегированное состояние по испарителям секций
+		state = mS.coolerS.some((clr) => {
+			const stateClr = obj?.value?.[clr._id]?.state
+			return stateClr === 'off-on-off' || stateClr === 'on-on-off'
+		})
+		// Если имеется хотя бы один испаритель у которого включен ВНО, то разрешаем работу ВНО
+		console.log('state', state)
+		return state
+	}
+	return state
 }
 
 /**
