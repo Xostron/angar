@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid')
+
 module.exports = data = {
 	drying: 'Сушка запрещена',
 	cure: 'Лечение запрещено',
@@ -10,12 +12,15 @@ module.exports = data = {
 	co2: 'Удаление СО2 запрещено',
 	wetting: 'Увлажнитель запрещен',
 
-	get(name, key) {
+	get(bld, name, key) {
 		return {
 			date: new Date().toLocaleString('ru'),
 			type: key,
+			buildingId: bld._id,
 			typeSignal: 'timer',
 			msg: this?.[key] ?? `Таймер: ${name}, ${key}`,
+			uid: uuidv4(),
+			title: '',
 		}
 	},
 }

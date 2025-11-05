@@ -2,11 +2,11 @@ const mesTimer = require('@dict/ban_timer')
 const { data } = require('@store')
 
 // Записать в Таймеры запретов
-function wrTimer(buildingId, key, name) {
+function wrTimer(bld, key, name) {
 	// data.alarm ??= {}
 	data.alarm.timer ??= {}
-	data.alarm.timer[buildingId] ??= {}
-	data.alarm.timer[buildingId][key] = mesTimer.get(name, key)
+	data.alarm.timer[bld._id] ??= {}
+	data.alarm.timer[bld._id][key] = mesTimer.get(bld, name, key)
 }
 // Удалить из Таймеров запретов
 function delTimer(buildingId, key) {

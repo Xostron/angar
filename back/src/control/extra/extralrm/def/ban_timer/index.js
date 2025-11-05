@@ -17,7 +17,7 @@ function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 		// Включение запрета
 		if (check && !acc?.[key]?.flag) {
 			acc[key].flag = true
-			wrTimer(building._id, key, name)
+			wrTimer(building, key, name)
 		}
 		// Удаление запрета
 		if (!check) {
