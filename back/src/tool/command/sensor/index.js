@@ -66,37 +66,7 @@ function sensorBuilding(idB, obj) {
 	return o
 }
 
-// Склад: Датчики по камере и испарителю для расчетов авторежимов
-// function coolerB(idB, obj) {
-// 	const { value, data } = obj
-// 	const idS = data.section.filter((el) => el.buildingId === idB).map((el) => el._id)
-
-// 	let r = {}
-// 	idS.forEach((sec) => {
-// 		// Датчики испарителя и агрегата
-// 		r = data.cooler.reduce((acc, clr) => {
-// 			if (clr.sectionId != sec) return acc
-// 			acc[sec] = {
-// 				[clr._id]: {
-// 					// Темп. всасывания
-// 					tmpCooler: value?.total?.[sec]?.cooler?.[clr._id]?.tmpCooler?.max,
-// 					// Давление агрегата
-// 					pin: value?.total?.[sec]?.cooler?.[clr._id]?.pin?.max,
-// 					pout: value?.total?.[sec]?.cooler?.[clr._id]?.pout?.max,
-// 				},
-// 			}
-// 			return acc
-// 		}, {})
-// 		// Температура продукта
-// 		r[sec].tprd = value?.total?.[sec]?.tprd?.min
-// 		// Датчик СО2
-// 		r[sec].co2 = value?.total?.[sec]?.co2?.max
-// 	})
-// 	return r
-// }
-
-// Секция: Датчики по камере и испарителю для расчетов авторежимов
-
+// Секция: Датчики по испарителю 
 function coolerS(idB, idS, obj) {
 	const { value, data } = obj
 	const r = data.cooler.reduce((acc, clr) => {
