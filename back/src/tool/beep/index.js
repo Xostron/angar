@@ -1,14 +1,14 @@
 const { msgBeep } = require('@tool/message')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
-// beep Устройств
+// beep Устройств (Увлажнитель, удаление СО2 (склад холодильник), озонатор, электросчетчик)
 function beepD(devc, arr, obj, building, acc, codeMsg) {
 	acc.beep ??= {}
 	// По beep устройства (аварийные beep)
 	arr.filter((el) => el?.alarm)?.forEach((el) => {
 		// Значение beep
 		const be = obj?.value?.[devc._id]?.beep?.[el.code]?.value
-		const name = `CO2 №${devc?.order}`
+		const name = `${dict?.[devc.type]} №${devc?.order}`
 		// Сбросить аварию
 		if (!be) {
 			delExtralrm(building._id, devc._id, el.code)
@@ -47,3 +47,10 @@ function beepA(agg, cl, arr, obj, building, acc, codeMsg) {
 }
 
 module.exports = { beepD, beepA }
+
+const dict = {
+	co2: 'CO2',
+	wetting: 'Увлажнитель',
+	pui: 'Электросчетчик',
+	ozon: 'Озонатор',
+}
