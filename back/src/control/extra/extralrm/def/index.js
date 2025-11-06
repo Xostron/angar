@@ -21,6 +21,7 @@ const deltaMdl = require('./delta_mdl')
 const openVin = require('./open_vin')
 const stableVno = require('./stable_vno')
 const notTune = require('./not_tune')
+const debounce = require('./debounce')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -55,6 +56,7 @@ const def = {
 			localB,
 			deltaMdl,
 			notTune,
+			debounce,
 		},
 	},
 	// Доп. аварии холодильника

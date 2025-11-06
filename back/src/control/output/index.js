@@ -44,8 +44,6 @@ function convCmd(obj) {
 				}
 			}
 		}
-	// console.log('\x1b[32m%s\x1b[0m', 'Выхода: ', JSON.stringify(out))
-	// console.log(8884,cmd)
 	// Команды управления с таймером
 	tracking(out, retain)
 
@@ -56,7 +54,6 @@ function convCmd(obj) {
 	for (const o of m) {
 		if (out[o._id]) output[o._id] = { ...o, value: out[o._id] }
 	}
-	// console.log(333, out['6800b8dc56c6a01c90ecbc63'])
 }
 
 module.exports = convCmd

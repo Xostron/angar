@@ -1,28 +1,29 @@
 const { data:store } = require('@store')
 
 // Получить extralrm аварию
-function isExtralrm(bldId, secId, code) {
-	return secId ? !!store.alarm?.extralrm?.[bldId]?.[secId]?.[code] : !!store.alarm?.extralrm?.[bldId]?.[code]
+function isExtralrm(idB, idS, code) {
+	return idS ? !!store.alarm?.extralrm?.[idB]?.[idS]?.[code] : !!store.alarm?.extralrm?.[idB]?.[code]
 }
 
 // Записать в extralrm (доп. аварии)
-function wrExtralrm(buildingId, sectionId, name, o) {
+function wrExtralrm(buildingId, idS, name, o) {
 	store.alarm.extralrm ??= {}
 	store.alarm.extralrm[buildingId] ??= {}
-	if (!sectionId) {
+	if (!idS) {
 		store.alarm.extralrm[buildingId][name] = o
 		return
 	}
-	store.alarm.extralrm[buildingId][sectionId] ??= {}
-	store.alarm.extralrm[buildingId][sectionId][name] = o
+	store.alarm.extralrm[buildingId][idS] ??= {}
+	store.alarm.extralrm[buildingId][idS][name] = o
 }
 // Удалить из extralrm (доп. аварии)
-function delExtralrm(buildingId, sectionId, name) {
-	if (!sectionId) {
-		delete store.alarm?.extralrm?.[buildingId]?.[name]
+function delExtralrm(idB, idS, name) {
+	if (!idS) {
+		delete store.alarm?.extralrm?.[idB]?.[name]
 		return
 	}
-	delete store.alarm?.extralrm?.[buildingId]?.[sectionId]?.[name]
+	
+	delete store.alarm?.extralrm?.[idB]?.[idS]?.[name]
 }
 
 /**

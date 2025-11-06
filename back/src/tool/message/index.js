@@ -55,7 +55,8 @@ function msgBS(building, section, sensor, code) {
 // Модули
 function msgM(buildingId, mdl, code) {
 	const o = { ...mes[code] }
-	if (mdl.interface == 'tcp') o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}):`
+	if (mdl.interface == 'tcp')
+		o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}):`
 	else o.title = `Модуль ${mdl.name} (${mdl.ip ?? ''}-${mdl.port ?? ''}):`
 	o.buildingId = buildingId
 	o.uid = uuidv4()
@@ -75,4 +76,15 @@ function msgBeep(building, beep, name = '', alarm = true) {
 	return o
 }
 
-module.exports = { msg, msgB, msgV, msgF, msgBS, msgM, msgBeep }
+function msgBB(building, code, msgBeg = '', msgEnd = '') {
+	const o = { ...mes[code] }
+	o.title = ``
+	o.buildingId = building._id
+	o.msg = msgBeg ? msgBeg + ' ' + o.msg : o.msg
+	o.msg = msgEnd ? o.msg + ' ' + msgEnd : o.msg
+	o.uid = uuidv4()
+	o.date = new Date().toLocaleString('ru')
+	return o
+}
+
+module.exports = { msg, msgB, msgV, msgF, msgBS, msgM, msgBeep, msgBB }

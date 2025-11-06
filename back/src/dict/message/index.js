@@ -235,6 +235,7 @@ const data = {
 	},
 	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
 	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
+	102: { code: 'debounce', typeSignal: 'critical', msg: 'Авария по антидребезгу' },
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
 	111: {

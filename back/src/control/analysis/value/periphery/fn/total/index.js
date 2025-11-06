@@ -156,18 +156,6 @@ module.exports = function total(equip, result, retain) {
 			}
 			return acc
 		}, {})
-
-		// const clr = fnState(sensor, result, idClr, 'cooler')
-
-		// Когда склад с несколькими агрегатами (датчики давления привязаны к испарителю,
-		// также как и агрегат привязан к испарителю)
-		// Давление всасывания
-		// const pin = fnState(sensor, result, idClr, 'pin')
-		// Давление нагнетания
-		// const pout = fnState(sensor, result, idClr, 'pout')
-
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
-
-	// console.log(8888, result.total)
 }

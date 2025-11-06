@@ -13,10 +13,13 @@ const convCmd = require('./output')
 const main = require('./main')
 const save = require('./save')
 const data = require('./data')
+const battery = require('@tool/scripts/battery')
 
 // Контроль работы склада
 async function control() {
 	try {
+		// Проверка состояния батареи
+		battery()
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент

@@ -21,7 +21,6 @@ function main(bld, obj, bdata, alr) {
 		const seS = sensor(bld._id, sect._id, obj)
 		// Исполнительные механизмы камеры
 		const mS = mech(obj, sect._id, sect.buildingId)
-		// console.log(1111, seS, 11112, seB)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
 	}
@@ -30,8 +29,8 @@ function main(bld, obj, bdata, alr) {
 		target.cold(bld, obj, bdata, alr)
 	}
 	console.log(88, 'Аккумулятор холодильника')
-	console.log(accAuto)
-	console.log('\n')
+	// console.log(accAuto)
+	// console.log('\n')
 }
 
 module.exports = main

@@ -98,7 +98,6 @@ function deltaTol(present, past, sens, tolerance) {
 	for (const key in present) {
 		switch (typeof present[key]) {
 			case 'object':
-				// console.log(880001, 'object', key)
 				// Объекты
 				// Нет изменений - пропускаем
 				if (compareArr(present[key], past[key])) break
@@ -106,7 +105,6 @@ function deltaTol(present, past, sens, tolerance) {
 				checkObj(key, present, past, sens, tolerance, r)
 				break
 			default:
-				// console.log(880002, typeof present[key], key)
 				// Простые данные: числа, строки, null, undefined
 				const fld = key.split('.')
 				const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
@@ -124,17 +122,14 @@ function deltaTol(present, past, sens, tolerance) {
 module.exports = { convertPC, convertSec, convert, convertTenta, deltaTol }
 
 function checkObj(key, present, past, sens, tolerance, result) {
-	// console.log(5553, key)
 	// Обычный ключ: temp,rh,ah
 	if (key.length < _OBJECT_ID_LENGTH) {
-		// console.log(880021, 'Проверка obj', key, present[key], past[key])
 		merge(key, key, tolerance, present, past, result)
 		return
 	}
 	// Составной ключ: id.id
 	if (key.length === _OBJECT_ID_LENGTH * 2 + 1) {
 		const fld = key.split('.')
-		// console.log(880022, 'Проверка obj', key, present[key], past[key])
 		merge(key, fld[1], sens, present, past, result)
 		return
 	}
@@ -142,7 +137,6 @@ function checkObj(key, present, past, sens, tolerance, result) {
 	if (key.length > _OBJECT_ID_LENGTH * 2 + 1) {
 		const fld = key.split('.')
 		const fldd = fld[1].slice(_OBJECT_ID_LENGTH, fld[1].length)
-		// console.log(880023, 'Проверка obj', key, present[key], past[key])
 		merge(key, fldd, tolerance, present, past, result)
 		return
 	}

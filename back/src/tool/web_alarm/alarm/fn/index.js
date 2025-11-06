@@ -92,13 +92,15 @@ function signal(r, bld, sect, am) {
 	const extralrm = store.alarm.extralrm?.[bld._id]?.[sect?._id]
 	const extra = store.alarm?.extra?.[bld._id]?.[sect._id]
 	// if (auto) r.signal[bld._id].push(...Object.values(auto))
-	if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
-
+	// if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
+	if (extralrm)
+		Object.values(extralrm).forEach((el) =>
+			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el))
+		)
 	if (extra)
 		Object.values(extra).forEach((el) =>
 			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el))
 		)
-
 }
 
 // Аварии на странице "Сигналы" (собираем по складу и суммируем с секциями)
@@ -148,6 +150,7 @@ function signalB(r, bld, am, data) {
 	const notTune = store.alarm?.extralrm?.[bld._id]?.notTune ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
+	const debounce = store.alarm?.extralrm?.[bld._id]?.debounce ?? null
 
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
@@ -170,9 +173,9 @@ function signalB(r, bld, am, data) {
 	if (openVin) r.signal[bld._id].push(openVin)
 	if (notTune) r.signal[bld._id].push(notTune)
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
+	if (debounce) r.signal[bld._id].push(...Object.values(debounce))
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
-
 	r.signal[bld._id].sort((a, b) => {
 		const [d1, m1, o1] = a.date.split('.')
 		const aa = [m1, d1, o1].join('.')

@@ -8,7 +8,7 @@ const cooler = require('./fn/cooler')
 const aggregate = require('./fn/aggregate')
 const device = require('./fn/device')
 const building = require('./fn/building')
-const debDO = require('@tool/debounce')
+
 
 /**
  * Преобразование прочитанных входов/выходов (коррекция, точность, клапан(концевики))
@@ -41,8 +41,7 @@ function periphery(val, obj) {
 	device(equip, val, retain, result)
 	// Состояние склада (подрежим работы)
 	building(equip, val, retain, result)
-	// Антидребезг исполнительных механизмов
-	debDO(obj, result.outputEq)
+
 	return result
 }
 

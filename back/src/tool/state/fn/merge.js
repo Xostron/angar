@@ -40,7 +40,6 @@ function merge(key, fld, tolerance, present, past, result) {
 
 function check(key, result, present, ...conditions) {
 	if (!conditions.includes(true)) return
-	// console.log(88000, key, present[key], conditions)
 	result[key] = present[key]
 }
 

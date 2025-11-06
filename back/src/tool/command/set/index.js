@@ -40,7 +40,6 @@ function setCmd(obj) {
 			data.command[build][mdl] ??= {}
 			for (const channel in obj[build][mdl]) {
 				const val = obj[build][mdl][channel]
-				// if (mdl=='68063bd0b77d3a35f86e0e69') console.log(8881, obj,val)
 				data.command[build][mdl][channel] = val
 			}
 		}

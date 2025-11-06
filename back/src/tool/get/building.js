@@ -65,4 +65,16 @@ function getIdsS(section, idB) {
 		.sort((a, b) => a.order - b.order)
 		.map((el) => el._id)
 }
-module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB, getOwnerClr, getIdsS }
+
+/**
+ * Получить Id склада от любого исполнительного механизма
+ * @param {object} el Рама исполнительного механизма
+ * @param {object[]} section Рама секций
+ * @returns {string} idB ИД склада
+ */
+function getIDB(el, section) {
+	if (!section || !section?.length) return null
+	return el?.buildingId ?? section.find((sect) => sect._id === el.sectionId)?.buildingId
+}
+
+module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB, getOwnerClr, getIdsS, getIDB }
