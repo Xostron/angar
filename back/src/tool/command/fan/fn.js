@@ -125,9 +125,11 @@ function stateF(fan, equip, result, retain) {
 	// Выведен из работы для секционных ВНО и ВНО испарителей
 	result[fan._id].off = fanOff(idB, fan, equip.cooler, retain)
 
-	// Авария ВНО: По автоматическому выключателю, перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
 	const alr = isAlrmByFan(idB, fan, equip, retain)
-	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr) return 'alarm'
+	const alrDeb = isExtralrm(idB, 'debounce', fan._id)
+	// Авария ВНО: По автоматическому выключателю, 
+	// перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
+	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr || alrDeb) return 'alarm'
 	// Выведен из работы
 	if (result[fan._id].off) return 'off'
 	// В работе

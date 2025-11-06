@@ -2,8 +2,7 @@ const { data: store } = require('@store')
 const { msgBB } = require('@tool/message')
 const { isReset } = require('@tool/reset')
 const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
-// Кол-во замеров
-const _LEN = 4
+const { compareTime } = require('@tool/command/time')
 
 /**
  * Антидребезг исполнительных механизмов:
@@ -21,30 +20,33 @@ const _LEN = 4
  * @returns
  */
 function debounce(building, section, obj, s, se, m, automode, acc, data) {
+	const threshold = (s?.sys?.debDO ?? 20) * 1000
+	const count = s?.sys?.debCount ?? 4
+	const defaultWait = 30 * 60 * 1000 //30 мин
 	// напорные ВНО канала + разгонные
-	fn(building, m.fanAll, obj, s, store.debounce, acc)
+	fn(building, m.fanAll, obj, s, store.debounce, acc, threshold, count)
 
-	// Сброс аварийных сообщений
-	if (isReset(building._id)) {
+	const wait = s?.sys?.debWait === 0 ? false : compareTime(s?.sys?.debWait ?? defaultWait)
+	// Сброс аварии: если нажат reset, настройки1 и 2 равны 0, время ожидания истекло
+	if (isReset(building._id) || !threshold || !count || wait) {
+		// Сброс аварийных сообщений
 		delExtralrm(building._id, null, 'debounce')
 		acc.alarm = false
 	}
-	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', acc.alarm)
 	return acc?.alarm ?? false
 }
 
 module.exports = debounce
 
 /**
- *
+ * Функция слежения и генерации аварии дребезга
  * @param {object[]} arr Массив исполнительных механизмов
  * @param {object} value Глобальные состояния
  * @param {object} s Настройки
  * @param {object} accDeb Аккумулятор антидребезга
  */
-function fn(bld, arr, obj, s, accDeb, acc) {
+function fn(bld, arr, obj, accDeb, acc, threshold, count) {
 	if (!obj?.value?.outputEq) return
-	const threshold = (s.sys.debDO ?? 20) * 1000
 	arr.forEach((el) => {
 		accDeb[el._id] ??= []
 		acc[el._id] ??= {}
@@ -63,10 +65,10 @@ function fn(bld, arr, obj, s, accDeb, acc) {
 		}
 		if (last?.DO !== cur) accDeb[el._id].push({ DO: cur, date: new Date() })
 		// Размер очереди превышен
-		if (accDeb[el._id].length > _LEN) accDeb[el._id].shift()
+		if (accDeb[el._id].length > count) accDeb[el._id].shift()
 
-		// Проверка на дребезг, после _LEN переключений
-		if (accDeb[el._id].length < _LEN) return
+		// Проверка на дребезг, после count переключений
+		if (accDeb[el._id].length < count) return
 
 		const delta = accDeb[el._id].at(-1).date - accDeb[el._id][0].date
 		// Время между последними состояниями больше порога дребезга -> ОК
