@@ -8,8 +8,8 @@ const { compareTime } = require('@tool/command/time')
  * Антидребезг исполнительных механизмов:
  * ВНО (fan, accel), клапаны (in,out), подогрев клапанов (heating),
  * оттайка испарителя(cooler), обогрев слива воды(water)
- * @param {*} building
- * @param {*} section
+ * @param {*} bld
+ * @param {*} sect
  * @param {*} obj
  * @param {*} s
  * @param {*} se
@@ -19,18 +19,18 @@ const { compareTime } = require('@tool/command/time')
  * @param {*} data
  * @returns
  */
-function debounce(building, section, obj, s, se, m, automode, acc, data) {
+function debounce(bld, sect, obj, s, se, m, automode, acc, data) {
 	const threshold = (s?.sys?.debDO ?? 20) * 1000
 	const count = s?.sys?.debCount ?? 4
 	const defaultWait = 30 * 60 * 1000 //30 мин
 	// напорные ВНО канала + разгонные
-	fn(building, m.fanAll, obj, s, store.debounce, acc, threshold, count)
+	fn(bld, m.fanAll, obj, store.debounce, acc, threshold, count)
 
 	const wait = s?.sys?.debWait === 0 ? false : compareTime(s?.sys?.debWait ?? defaultWait)
 	// Сброс аварии: если нажат reset, настройки1 и 2 равны 0, время ожидания истекло
-	if (isReset(building._id) || !threshold || !count || wait) {
+	if (isReset(bld._id) || !threshold || !count || wait) {
 		// Сброс аварийных сообщений
-		delExtralrm(building._id, null, 'debounce')
+		delExtralrm(bld._id, null, 'debounce')
 		acc.alarm = false
 	}
 	return acc?.alarm ?? false
@@ -56,7 +56,8 @@ function fn(bld, arr, obj, accDeb, acc, threshold, count) {
 		const cur = obj?.value?.outputEq?.[el._id]
 		const last = accDeb[el._id].at(-1)
 		const isAlr = isExtralrm(bld._id, 'debounce', el._id)
-		console.log(2, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@', el.name, accDeb[el._id], isAlr)
+		console.log(2, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@', el.name, el._id, accDeb[el._id], isAlr)
+		if (el.type === 'accel') console.log(3, el._id, cur, last?.DO, last?.DO !== cur)
 		// Фиксируем изменение состояния
 		if (isAlr) {
 			acc[el._id].alarm = true

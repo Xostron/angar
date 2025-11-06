@@ -22,6 +22,7 @@ const openVin = require('./open_vin')
 const stableVno = require('./stable_vno')
 const notTune = require('./not_tune')
 const debounce = require('./debounce')
+const relayVolt = require('./relay_volt')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -57,13 +58,14 @@ const def = {
 			deltaMdl,
 			notTune,
 			debounce,
+			relayVolt,
 		},
 	},
 	// Доп. аварии холодильника
 	cold: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate },
+		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, debounce, relayVolt },
 	},
 	// Комбинированный склад (холодильник)
 	combi: {

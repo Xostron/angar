@@ -151,6 +151,7 @@ function signalB(r, bld, am, data) {
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 	const debounce = store.alarm?.extralrm?.[bld._id]?.debounce ?? null
+	const battery = store.alarm?.extralrm?.[bld._id]?.battery ?? null
 
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
@@ -174,6 +175,7 @@ function signalB(r, bld, am, data) {
 	if (notTune) r.signal[bld._id].push(notTune)
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
 	if (debounce) r.signal[bld._id].push(...Object.values(debounce))
+	if (battery) r.signal[bld._id].push(battery)
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
 	r.signal[bld._id].sort((a, b) => {
