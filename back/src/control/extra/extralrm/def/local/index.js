@@ -1,5 +1,4 @@
 const { msg } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
@@ -7,7 +6,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 function local(building, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(section?._id, obj, 'local')
 	// Сброс
-	if (sig === true || isReset(building._id)) {
+	if (sig === true) {
 		delExtralrm(building._id, section._id, 'local')
 		acc.alarm = false
 	}

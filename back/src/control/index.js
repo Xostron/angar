@@ -39,8 +39,6 @@ async function control() {
 		const alr = await webAlarm(obj)
 		// Статистика
 		statOnChange(obj, alr.history)
-		// Обнулить команду reset (кнопка сброса аварии)
-		reset(null, false)
 		// обнулить счетчик сушки
 		zero(null, false)
 		// await delay(5000)

@@ -1,5 +1,4 @@
 const { msgF } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { getSignalFan } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
@@ -12,7 +11,7 @@ function fanCrash(building, section, obj, s, se, m, automode, acc, data) {
 		const sig = getSignalFan(f?._id, obj)
 		// console.log(111, f.name, f._id, f.owner.id, sig)
 		// Сброс
-		if (!sig || isReset(building._id)) {
+		if (!sig) {
 			delExtralrm(building._id, section._id, 'fanCrash' + f._id)
 			acc[f._id].alarm = false
 		}

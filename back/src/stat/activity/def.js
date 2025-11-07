@@ -9,6 +9,10 @@ const sensor = require('./sens')
 const setting = require('./setting')
 const valve = require('./valve')
 
+/**
+ * Типы activity.log (type): automode,fan,mode,product,reset,sens.setting,start,valve, tune, warming
+ */
+
 module.exports = {
 	// Web клиент
 	// Сброс аварии
@@ -42,7 +46,7 @@ module.exports = {
 			bId = bld._id
 			title = `${bld.name} ${bld.code}: Калибровка клапанов`
 		}
-		return title ? { bId, title, type: code } : { noLog: true }
+		return title ? { bId, title, type: 'tune' } : { noLog: true }
 	},
 	// Прогрев клапанов
 	s_warming: (code, obj, oData) => {
@@ -53,10 +57,10 @@ module.exports = {
 		const title = cmd
 			? `${bld.name} ${bld.code}. ${sec.name}: Прогрев клапанов включен`
 			: `${bld.name} ${bld.code}. ${sec.name}: Прогрев клапанов выключен`
-		return { bId: bld._id, sId: sec._id, type: code, title, value: cmd }
+		return { bId: bld._id, sId: sec._id, type: 'warming', title, value: cmd }
 	},
 	// Управление клапаном
-	s_output:valve,
+	s_output: valve,
 
 	// Мобильный клиент
 	reset,
@@ -67,5 +71,6 @@ module.exports = {
 	fan,
 	sensor,
 	setting,
-	valve
+	valve,
 }
+

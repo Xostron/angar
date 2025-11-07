@@ -34,7 +34,7 @@ function defrostAll(idB, accCold, cooler, obj, s) {
 		accCold.afterD &&
 		compareTime(accCold.afterD, s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain)
 
-	consoleTable(accCold, s)
+	// consoleTable(accCold, s)
 }
 
 module.exports = defrostAll

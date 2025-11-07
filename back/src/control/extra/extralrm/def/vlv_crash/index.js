@@ -1,5 +1,4 @@
 const { msgV } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
@@ -14,13 +13,18 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 		const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
 
 		// Сброс
-		if (!sig || isReset(building._id)) {
+		if (!sig) {
 			delExtralrm(building._id, section._id, 'vlvCrash' + v._id)
 			acc[v._id].alarm = false
 		}
 		// Установка
 		if (sig && !acc[v._id].alarm) {
-			wrExtralrm(building._id, section._id, 'vlvCrash' + v._id, msgV(building, section, typeV, 34))
+			wrExtralrm(
+				building._id,
+				section._id,
+				'vlvCrash' + v._id,
+				msgV(building, section, typeV, 34)
+			)
 			acc[v._id].alarm = true
 		}
 	}

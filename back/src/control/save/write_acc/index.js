@@ -2,7 +2,6 @@ const { data: store, accDir } = require('@store')
 const { createAndModifySync } = require('@tool/json')
 const { readOne } = require('@tool/json')
 const cbAcc = require('./fn')
-const { isReset } = require('@tool/reset')
 
 /**
  * Сохраняемые аварии для фиксации момента возникновения аварии и отображения
@@ -20,17 +19,10 @@ async function accAlarm(obj) {
 	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }
 
-// Очистка неактуальных аварий (модулей) и при сбросе модулей
+// Очистка неактуальных аварий (модулей)
 function clear(data, acc) {
 	const { building, module } = data
 	for (const bld of building) {
-		// Сброс ошибок неисправного модуля
-		if (isReset(bld._id)) {
-			acc ??= {}
-			acc.module ??= {}
-			acc.module[bld._id] = {}
-			store.alarm.module = {}
-		}
 		for (const mdlId in acc?.module?.[bld._id]) {
 			if (module.find((el) => el._id === mdlId)) continue
 			// Модуль не найден (удалить из аварий)

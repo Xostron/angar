@@ -28,7 +28,6 @@ function convertSec(obj) {
 			r[`${bldId}.sections`].push(secId)
 		}
 		// Полное описание секции
-		// console.log(22, obj[secId].valve?.[secId])
 		r = { ...r, ...convert(obj[secId].value, `${secId}`) }
 		if (obj[secId].valve?.[secId]) r = { ...r, [secId + '.valve']: obj[secId].valve?.[secId] }
 	}

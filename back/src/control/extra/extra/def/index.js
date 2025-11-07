@@ -51,9 +51,9 @@ const data = {
 		always: {
 			accelOn,
 			connect,
-			reset,
 			cableB,
 			connectLost,
+			reset,
 		},
 	},
 	// Склад холодильник

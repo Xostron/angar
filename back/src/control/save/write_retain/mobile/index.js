@@ -25,7 +25,6 @@ const cb = {
 }
 
 function fnMobile(result) {
-	// console.log(4102, 'mobile', store.mobile)
 	for (const code in store.mobile) {
 		if (cb?.[code]) cb[code](store.mobile[code], result)
 	}

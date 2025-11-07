@@ -10,7 +10,9 @@ function fnPrev(id, val, level) {
 		case 'watt':
 			store.prev[id] = [val.Pa, val.Pb, val.Pc]
 			break
-
+		case 'cooler':
+			store.prev[id] = val?.state
+			break
 		default:
 			store.prev[id] = val
 			break
@@ -53,7 +55,11 @@ function message(data, el, level, value) {
 			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
 			break
 		case 'sensor':
-			el.owner.type == 'section' ? (secId = el.owner.id) : el.owner.type == 'cooler' ? (clrId = el.owner.id) : (bldId = el.owner.id)
+			el.owner.type == 'section'
+				? (secId = el.owner.id)
+				: el.owner.type == 'cooler'
+				? (clrId = el.owner.id)
+				: (bldId = el.owner.id)
 			v = value?.[el._id]?.value
 			state = value?.[el._id]?.state
 			break
@@ -91,12 +97,16 @@ function check(val, prev, level) {
 			v = [val?.open, val?.close]
 			vprev = [prev?.open, prev?.close]
 			break
+		case 'cooler':
+			v = val.state
+			vprev = prev
+			break
 		default:
 			v = val
 			vprev = prev
 	}
 	// Состояние не изменилось
-	// if (level === 'valve') console.log(7772, JSON.stringify(v) === JSON.stringify(vprev), v, vprev)
+	// if (level === 'cooler') console.log(7772, JSON.stringify(v) === JSON.stringify(vprev), v, vprev)
 	if (JSON.stringify(v) === JSON.stringify(vprev)) return false
 	// Состояние изменилось
 	return true

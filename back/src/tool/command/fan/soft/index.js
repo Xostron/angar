@@ -52,11 +52,11 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
-		console.log('******НАЧАЛО Плавный пуск ВНО')
-		console.table(
-			[{ Секция: idS, 'Тип ВНО': type, 'Тип управления': where }],
-			['Секция', 'Тип ВНО', 'Тип управления']
-		)
+		// console.log('******НАЧАЛО Плавный пуск ВНО')
+		// console.table(
+		// 	[{ Секция: idS, 'Тип ВНО': type, 'Тип управления': where }],
+		// 	['Секция', 'Тип ВНО', 'Тип управления']
+		// )
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }

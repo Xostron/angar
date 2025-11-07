@@ -1,5 +1,4 @@
 const { msgB } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { curStateV } = require('@tool/command/valve')
 const { compareTime } = require('@tool/command/time')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
@@ -22,9 +21,7 @@ const _RESET = 1 * 60 * 60 * 1000
 module.exports = function openVin(building, section, obj, s, seB, m, automode, acc, data) {
 	// Только для режима храненния || Нет приточных клапанов - не выполняем
 	if (automode !== 'cooling' || !m?.vlvIn?.length) return false
-	// Нажата кнопка сброса аварии
-	if (isReset(building._id) && acc?.alarm) fnReset(building, acc)
-
+	
 	// Есть ли хоть один открытый приточный клапан
 	const hasOpen = m.vlvIn.some((el) => curStateV(el._id, obj.value) === 'opn')
 	// Клапан открыт и темп.канала > темп. продукта

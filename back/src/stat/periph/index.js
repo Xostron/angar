@@ -22,7 +22,7 @@ function pLog(data, arr, value, level, force) {
 		// фиксируем состояние по изменению
 		fnPrev(_id, value[_id], level)
 		// Лог
-		// if (level === 'heating') console.log(111)
+		// if (level === 'cooler') console.log(111,_id, value[_id])
 		logger[level]({ message: message(data, el, level, value) })
 	})
 }

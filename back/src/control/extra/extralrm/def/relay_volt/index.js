@@ -1,6 +1,5 @@
 const { data: store } = require('@store')
 const { msgBB } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 
@@ -27,8 +26,8 @@ function relayVolt(bld, sect, obj, s, se, m, automode, acc, data) {
 	fn(bld, store.battery, obj, store.debounce, acc, watch, count)
 
 	const wait = s?.sys?.rwait === 0 ? false : compareTime(s?.sys?.rwait ?? defaultWait)
-	// Сброс аварии: если нажат reset, настройки1 и 2 равны 0, время ожидания истекло
-	if (isReset(bld._id) || !watch || !count || wait) {
+	// Сброс аварии: настройки1 и 2 равны 0, время ожидания истекло
+	if ( !watch || !count || wait) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'battery')
 		acc.alarm = false
@@ -49,7 +48,7 @@ function fn(bld, battery, obj, accDeb, acc, watch, count) {
 	accDeb.battery ??= []
 	const last = accDeb.battery.at(-1)
 	const isAlr = isExtralrm(bld._id, null, 'battery')
-	console.log(22, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@', accDeb.battery, isAlr)
+	// console.log(22, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@', accDeb.battery, isAlr)
 	if (isAlr) {
 		acc.alarm = true
 		return

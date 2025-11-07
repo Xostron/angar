@@ -1,5 +1,4 @@
 const { msg } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { curStateV } = require('@tool/command/valve')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { data: store, readAcc } = require('@store')
@@ -68,7 +67,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	acc.lastSt = state
 
 	// Сброс аварии - По времени ожидания
-	if (curTime >= acc.endWait || isReset(building._id)) {
+	if (curTime >= acc.endWait) {
 		delete acc.alarm
 		delete acc.beginTime
 		delete acc.endTime

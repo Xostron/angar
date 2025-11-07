@@ -1,5 +1,4 @@
 const { msg } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
@@ -8,7 +7,7 @@ function vlvLim(building, section, obj, s, se, m, automode, acc, data) {
 	// Сигнал
 	const sig = getSignal(section?._id, obj, 'vlvLim')
 	// Сброс
-	if (!sig || isReset(building._id)) {
+	if (!sig) {
 		delExtralrm(building._id, section._id, 'vlvLim')
 		acc.alarm = false
 	}

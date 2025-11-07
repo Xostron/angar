@@ -9,7 +9,6 @@ function alarm(idB, idS, data) {
 	// Аварии секции
 	if (idS) {
 		// Аварии авторежима секции
-		// console.log(222,data?.alarm?.bar?.[idB]?.[idS], Object.keys(data?.alarm?.bar?.[idB]?.[idS] ?? {}))
 		const a = Object.keys(data?.alarm?.bar?.[idB]?.[idS] ?? {})
 			.map((code) => {
 				let alr = data?.alarm?.bar?.[idB]?.[idS]?.[code]?.[0]

@@ -55,7 +55,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	turnOn(null, fans, solHeat, bldId, acc)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
-	console.table(acc)
+	// console.table(acc)
 }
 
 module.exports = relay

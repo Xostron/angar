@@ -6,7 +6,7 @@ function extralrm(building, sect, obj, s, se, m, automode, data, type = 'section
 	let alr = []
 	// console.log('ALARM B')
 	for (const key in def[type][state]) {
-		// Аккумулятор для хранения промежуточных вычислений (аварий склада)
+		// Аккумулятор для хранения промежуточных вычислений
 		const acc = readAcc(building._id, sect?._id ?? 'building', key)
 		// Логика
 		if (!def?.[type]?.[state]?.[key]) continue

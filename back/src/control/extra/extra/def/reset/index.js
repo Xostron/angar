@@ -1,53 +1,43 @@
 const { ctrlDO } = require('@tool/command/module_output')
 const { getSignal } = require('@tool/command/signal')
 const { data: store } = require('@store')
-const { isReset } = require('@tool/reset')
+const { isReset, reset } = require('@tool/reset')
+const { compareTime } = require('@tool/command/time')
 
-// Нажата кнопка "Сброс аварии"
-function reset(building, section, obj, s, se, m, alarm, acc, data, ban) {
-	const cur = +new Date().getTime()
-	// Неисправность модулей
-	const isErrm = Object.keys(store.alarm?.module?.[building._id] ?? {}).length ? true : false
-	// Аварийное закрытие клапанов (сигнал Склада)
-	const acBld = getSignal(building?._id, obj, 'low')
-	// Аварийное закрытие клапанов (сигналы секций)
-	const acSec = obj.data.section
-		.filter((el) => el.buildingId === building._id)
-		.reduce((acc, el) => {
-			acc.push(getSignal(el._id, obj, 'low'))
-			return acc
-		}, [])
-		.some((el) => !!el)
-
-	const alrClosed = acSec || acBld
-
-	// Нажали на кнопку, выход сброса установится на 3сек
-	if (isReset(building._id) || !acc.firstFlag || (!isErrm && se.tcnl > 0.5 && alrClosed)) {
-		acc.end = cur + 3000
+// Нажата кнопка "Сброс аварии" (mobile, web)
+function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
+	// Условия включения DO сброс аварии
+	// 1. нажатие на кнопку сброс аварии в мобильном или web
+	// 2. Однократное срабатывание при рестарте
+	// 3. При аварийном закрытии клапанов: если нет неисправных модулей
+	//  И темп канала >=0.5 И есть авария закр клапанов
+	// 4. При потере сигнала модуль в сети
+	if (isReset(bld._id) || !acc.firstFlag || alrClosed(bld, obj, se)) {
+		acc.wait = new Date()
 		acc.firstFlag = true
+		// Обнулить флаг reset (кнопка сброса аварии)
+		reset(null, false)
 	}
-
 	// Сброс аварии при потери связи
-	connect(obj, building, m, acc, cur)
+	connect(obj, bld, m, acc)
 
-	// Включить выход
-	if (!!acc.end && cur < acc.end) {
-		// console.log(2233, 'Выход сброса аварии включен')
-		fnReset(m.reset, building, 'on')
+	// Включить выход на 3 сек
+	const time = acc.wait && compareTime(acc.wait, 3000)
+	if (acc.wait && !time) {
+		DOReset(m.reset, bld, 'on')
 	}
-
-	// Выключить выход
-	if (!!acc.end && cur >= acc.end) {
-		fnReset(m.reset, building, 'off')
-		delete acc.end
+	// По истечению 3 сек -> Выключить выход
+	if (time) {
+		DOReset(m.reset, bld, 'off')
+		delete acc.wait
 	}
 }
-module.exports = reset
+module.exports = resetDO
 
 // Включение выходов (сброс аварии)
-function fnReset(arr, building, type) {
+function DOReset(arr, bld, type) {
 	arr.forEach((el) => {
-		ctrlDO(el, building._id, type)
+		ctrlDO(el, bld._id, type)
 	})
 }
 
@@ -57,19 +47,37 @@ function fnReset(arr, building, type) {
  * которое все отключает
  * Реле безопасности у каждой секции
  */
-
 // Если сигнал "Модуль в сети" пропадал, то включаем выход сброса аварии
-function connect(obj, building, m, acc, cur) {
+function connect(obj, bld, m, acc) {
+	if (!m?.connect?.length) return
 	acc.reset ??= {}
 	m.connect.forEach((el) => {
 		const sig = obj.value?.[el._id]
 		const mdlId = el.module?.id
-		const isErr = store.alarm?.module?.[building._id]?.[mdlId]
+		const isErr = store.alarm?.module?.[bld._id]?.[mdlId]
 		if (isErr || !sig) acc.reset[mdlId] = true
 		if (sig && acc.reset?.[mdlId]) {
-			acc.end = cur + 3000
+			acc.wait = new Date()
 			acc.firstFlag = true
 			delete acc.reset?.[mdlId]
 		}
 	})
+}
+
+function alrClosed(bld, obj, se) {
+	// Неисправность модулей
+	const isErrm = Object.keys(store.alarm?.module?.[bld._id] ?? {}).length ? true : false
+	// Аварийное закрытие клапанов (сигнал Склада)
+	const acBld = getSignal(bld?._id, obj, 'low')
+	// Аварийное закрытие клапанов (сигналы секций)
+	const acSec = obj.data.section
+		.filter((el) => el.buildingId === bld._id)
+		.reduce((acc, el) => {
+			acc.push(getSignal(el._id, obj, 'low'))
+			return acc
+		}, [])
+		.some((el) => !!el)
+
+	const alr = acSec || acBld
+	return !isErrm && se.tcnl >= 0.5 && alr
 }

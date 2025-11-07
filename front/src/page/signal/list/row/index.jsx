@@ -26,7 +26,7 @@ export default function Row({ data, i }) {
 function img(type) {
 	switch (type) {
 		case 'critical':
-			return '/img/signal/critical.svg'
+			return '/img/signal/critical4.svg'
 		case 'fan':
 			return '/img/signal/fan.svg'
 		case 'info':

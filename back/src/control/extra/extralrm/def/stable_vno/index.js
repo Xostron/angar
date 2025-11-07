@@ -1,5 +1,4 @@
-const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
-const { isReset } = require('@tool/reset')
+const { wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 const { data: store } = require('@store')
 const { msg } = require('@tool/message')
 const _LIMIT = 5 // размер очереди, история последних включенных ВНО,
@@ -19,7 +18,7 @@ const _LIMIT = 5 // размер очереди, история последни
  */
 function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Если в течении 30 сек, кол-во ВНО прыгало 1-2-1-2, то Авария Дребезг
-	const LIMIT_TIME = s?.fan?.debSoft ?? 30 * 100
+	const LIMIT_TIME = (s?.fan?.debSoft ?? 30) * 1000
 	// Данные о ходе плавного пуска ВНО
 	const soft = store.watchdog.softFan[sect._id]
 	if (!soft) return
@@ -29,7 +28,6 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	const alrFC = !isAlr ? byChangeFC(bld, sect, acc, soft, s, LIMIT_TIME) : true
 
 	// Авария
-	// console.log(4, '============= stableVNO =', isAlr, 'alrCount=', alrCount, 'alrFC=', alrFC)
 	if (alrCount || alrFC) {
 		wrExtralrm(bld._id, sect._id, 'stableVno', msg(bld, sect, 40))
 		// Антидребезг: вкл ВНО и флаг дребезга (soft.stable)
@@ -38,16 +36,17 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 		soft.fc.sp = 100
 		soft.fc.value = true
 		soft.stable = true
+		acc.alarm = true
 	}
 
-	// Сброс аварии
-	if (isReset(bld._id)) {
-		delExtralrm(bld._id, sect._id, 'stableVno')
+	// Если была сброшена авария -> обнуляем аккумулятор
+	if (acc.alarm && !isExtralrm(bld._id, sect._id, 'stableVno')) {
 		soft.stable = null
 		acc.queue = []
 		acc.fcQueue = []
+		acc.alarm = false
 	}
-	// console.log(555, sect._id, 'Антидребезг', acc)
+	console.log(555, sect._id, 'Антидребезг', acc, LIMIT_TIME)
 	// console.log(5551, sect._id, 'Плавный пуск', soft)
 }
 
@@ -125,7 +124,7 @@ function byChangeFC(bld, sect, acc, soft, s, LIMIT_TIME) {
 		acc.fcQueue?.[0]?.sp === acc.fcQueue?.[2]?.sp &&
 		acc.fcQueue?.[1]?.sp === acc.fcQueue?.[3]?.sp
 	const q2 = acc.fcQueue?.[2]?.sp === acc.fcQueue?.[4]?.sp
-	const isTime = acc.fcQueue?.[_LIMIT - 1]?.date - acc.fcQueue?.[0]?.date < LIMIT_TIME
+	const isTime = acc.fcQueue.at(-1)?.date - acc.fcQueue?.[0]?.date < LIMIT_TIME
 
 	if (q1 && q2 && isTime) {
 		acc.count = soft?.order

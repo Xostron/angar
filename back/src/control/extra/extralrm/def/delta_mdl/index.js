@@ -1,5 +1,4 @@
 const { msgB } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
@@ -8,7 +7,7 @@ function deltaMdl(building, section, obj, s, se, m, automode, acc, data) {
 	const val = getSignal(building?._id, obj, 'deltaMdl')
 	const comment = obj.data.signal.find((el) => el.type === 'deltaMdl')?.comment
 	// Сброс
-	if (val === false || isReset(building._id)) {
+	if (val === false) {
 		delExtralrm(building._id, null, 'deltaMdl')
 		acc.alarm = false
 	}

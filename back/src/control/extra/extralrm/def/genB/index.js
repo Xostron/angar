@@ -1,5 +1,4 @@
 const { msgB } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
@@ -8,7 +7,7 @@ function genB(building, section, obj, s, se, m, automode, acc, data) {
 	// Сигнал "Работа от генератора"
 	const sig = getSignal(building?._id, obj, 'gen')
 	// Сброс
-	if (sig === true || isReset(building._id)) {
+	if (sig === true) {
 		delExtralrm(building._id, null, 'gen')
 		acc.alarm = false
 	}

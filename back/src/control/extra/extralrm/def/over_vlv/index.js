@@ -1,5 +1,4 @@
 const { msg } = require('@tool/message')
-const { isReset } = require('@tool/reset')
 const { curStateV } = require('@tool/command/valve')
 const { stateEq } = require('@tool/command/fan/fn')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
@@ -54,7 +53,7 @@ function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 	}
 
 	// Ожидание сброса аварии или нажата кнопка "Сброс аварии" или склад комби-холод
-	if (compareTime(acc.end, s.overVlv.wait) || isReset(bld._id) || bldType !== 'normal') {
+	if (compareTime(acc.end, s.overVlv.wait) || bldType !== 'normal') {
 		delete acc.begin
 		delete acc.end
 		delExtralrm(bld._id, sect._id, 'overVlv')

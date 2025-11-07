@@ -23,8 +23,8 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 
 	store.denied[bld._id][clr._id] =
 		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm'
-	console.log(410, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
-	console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
+	// console.log(410, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
+	// console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
 	clearAchieve(bld, obj, accAuto, false, start)
 
 	// Работа испарителя запрещена?
@@ -32,11 +32,11 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	if (!store.denied[bld._id][clr._id]) return false
 	// Да
 	clear(bld._id, clr, accAuto, fnChange, stateCooler, store)
-	console.log('\tОстановка из-за ошибок:')
-	console.log('\t\tСклад остановлен:', !start)
-	console.log('\t\tАвария:', alr)
-	console.log('\t\tАгрегат готов к работ', aggr)
-	console.log('\t\tОжидание после включения питания', !supplySt)
+	// console.log('\tОстановка из-за ошибок:')
+	// console.log('\t\tСклад остановлен:', !start)
+	// console.log('\t\tАвария:', alr)
+	// console.log('\t\tАгрегат готов к работ', aggr)
+	// console.log('\t\tОжидание после включения питания', !supplySt)
 
 	return true
 }
@@ -75,34 +75,34 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		!sectM ||
 		stateCooler?.status === 'alarm' ||
 		off
-	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
-	console.log(
-		'\t',
-		'start',
-		!start,
-		'alr',
-		alr,
-		'aggr',
-		!aggr,
-		'supplySt',
-		!supplySt,
-		'!store.toAuto?.[bld._id]?.[sect._id]',
-		!store.toAuto?.[bld._id]?.[sect._id],
-		'!alrAuto',
-		!alrAuto,
-		'automode != cooling',
-		automode != 'cooling',
-		'fansOff',
-		fansOff,
-		'stateCooler.fan.state === alarm',
-		stateCooler.fan.state === 'alarm',
-		'local',
-		local,
-		'!sectM',
-		!sectM,
-		'stateCooler?.status === alarm',
-		stateCooler?.status === 'alarm'
-	)
+	// console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
+	// console.log(
+	// 	'\t',
+	// 	'start',
+	// 	!start,
+	// 	'alr',
+	// 	alr,
+	// 	'aggr',
+	// 	!aggr,
+	// 	'supplySt',
+	// 	!supplySt,
+	// 	'!store.toAuto?.[bld._id]?.[sect._id]',
+	// 	!store.toAuto?.[bld._id]?.[sect._id],
+	// 	'!alrAuto',
+	// 	!alrAuto,
+	// 	'automode != cooling',
+	// 	automode != 'cooling',
+	// 	'fansOff',
+	// 	fansOff,
+	// 	'stateCooler.fan.state === alarm',
+	// 	stateCooler.fan.state === 'alarm',
+	// 	'local',
+	// 	local,
+	// 	'!sectM',
+	// 	!sectM,
+	// 	'stateCooler?.status === alarm',
+	// 	stateCooler?.status === 'alarm'
+	// )
 	// Работа испарителя запрещена? false: работаем испарителем
 	if (!store.denied[bld._id][clr._id]) return false
 

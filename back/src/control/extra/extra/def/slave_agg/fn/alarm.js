@@ -1,6 +1,5 @@
 const { msgBeep } = require('@tool/message')
-const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
-const { isReset } = require('@tool/reset')
+const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const delayOilAlarm = 60000
 /**
@@ -14,13 +13,13 @@ const delayOilAlarm = 60000
  * @returns {boolean} true - авария, false - нет аварии
  */
 function fnAlarm(agg, owner, cmpr, beep, state, acc) {
-	// Создание аварийных сообщений
+	// Создание аварийных сообщений от beep компрессоров
 	acc[owner] ??= {}
 	beep.forEach((el) => {
 		if (['oil', 'run'].includes(el.code)) return
 		const be = state[el.code]?.value
-		// Сброс аварии
-		if ((!be && isReset(agg.buildingId)) || (!el.alarm && !be)) {
+		// Сброс аварийных сообщений от предупреждающих beep
+		if (!el.alarm && !be) {
 			delExtralrm(agg.buildingId, owner, el.code)
 			acc[owner][el.code] = false
 		}
@@ -30,8 +29,8 @@ function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 				? `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 				: `Предупреждение: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, el.code, msgBeep({ _id: agg.buildingId }, el, name))
-			acc[owner][el.code] = true
 		}
+		acc[owner][el.code] = isExtralrm(agg.buildingId, owner, el.code)
 	})
 	// Авария низкого уровня масла
 	const oilD = beep.find((el) => el.code === 'oil')
@@ -52,18 +51,12 @@ function oilAlarm(agg, owner, cmpr, oil, stateOil, acc) {
 		if (compareTime(acc[owner].date, delayOilAlarm) && stateOil?.value) {
 			const name = `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 			wrExtralrm(agg.buildingId, owner, 'oil', msgBeep({ _id: agg.buildingId }, oil, name))
-			acc[owner].oil = true
+			// acc[owner].oil = true
 		}
 	} else {
 		acc[owner].date = null
 	}
-	// Сброс аварии
-	if (isReset(agg.buildingId)) {
-		delExtralrm(agg.buildingId, owner, oil.code)
-		acc[owner].oil = false
-	}
+	acc[owner].oil = isExtralrm(agg.buildingId, owner, 'oil')
 }
-
-
 
 module.exports = { fnAlarm }

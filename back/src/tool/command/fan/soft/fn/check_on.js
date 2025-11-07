@@ -10,16 +10,16 @@ const { compareTime } = require('@tool/command/time')
  */
 function checkOn(on, acc, s, length) {
 	if (!on) {
-		console.log('\tCheckON: (on=false) кол-во работающих ВНО => без изменений')
+		// console.log('\tCheckON: (on=false) кол-во работающих ВНО => без изменений')
 		return
 	}
 	// Проверка времени (время на стабилизацию давления в канале, после вкл ВНО)
 	if (!compareTime(acc.date, acc.delayRelay)) {
-		console.log(
-			'\tCheckON: (on=true) кол-во работающих ВНО => Ожидание',
-			acc.delayRelay / 1000,
-			'сек'
-		)
+		// console.log(
+		// 	'\tCheckON: (on=true) кол-во работающих ВНО => Ожидание',
+		// 	acc.delayRelay / 1000,
+		// 	'сек'
+		// )
 		return
 	}
 	// Частоту ПЧ уменьшаем до мин частоты s.fan., а ВНО релейное - отключаем
@@ -27,12 +27,12 @@ function checkOn(on, acc, s, length) {
 	// Включаем следующий ВНО
 	if (++acc.order >= length - 1) {
 		acc.order = length - 1
-		console.log('\tCheckON: (on=true) кол-во работающих ВНО => достигло МАКС')
+		// console.log('\tCheckON: (on=true) кол-во работающих ВНО => достигло МАКС')
 		return
 	}
 	// Новая точка отсчета
 	acc.date = new Date()
-	console.log('\tCheckON: (on=true) кол-во работающих ВНО => увеличиваем +1 ВНО')
+	// console.log('\tCheckON: (on=true) кол-во работающих ВНО => увеличиваем +1 ВНО')
 }
 
 module.exports = checkOn

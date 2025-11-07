@@ -27,7 +27,7 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
 		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
 			console.log(
-				'fnACmd: ВНО выключены из-за:',
+				'Плавный пуск: ВНО выключены из-за:',
 				local,
 				localB,
 				!sectOn,

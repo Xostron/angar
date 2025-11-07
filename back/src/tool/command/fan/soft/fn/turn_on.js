@@ -12,7 +12,7 @@ function turnOn(fanFC, fans, solHeat, idB, acc) {
 	if (fanFC) {
 		ctrlAO(fanFC, idB, acc.fc.sp)
 		ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
-		console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
+		// console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
 	}
 
 	fans.forEach((f, i) => {
@@ -20,17 +20,17 @@ function turnOn(fanFC, fans, solHeat, idB, acc) {
 		if (acc.order < i) {
 			ctrlDO(f, idB, 'off')
 			f?.ao?.id ? ctrlAO(f, idB, _MIN_SP) : null
-			console.log('\tDO ВНО', f.name, 'ВЫКЛ')
+			// console.log('\tDO ВНО', f.name, 'ВЫКЛ')
 			return
 		}
 		// Включить ВНО
 		ctrlDO(f, idB, 'on')
 		f?.ao?.id ? ctrlAO(f, idB, _MAX_SP) : null
-		console.log('\tDO ВНО', f.name, 'ВКЛ')
+		// console.log('\tDO ВНО', f.name, 'ВКЛ')
 	})
 	solHeat.forEach((el) => {
 		ctrlDO(el, idB, acc.sol.value ? 'on' : 'off')
-		console.log('\tDO соленоиды подгрева', el.name, acc.sol.value ? 'ВКЛ' : 'ВЫКЛ')
+		// console.log('\tDO соленоиды подгрева', el.name, acc.sol.value ? 'ВКЛ' : 'ВЫКЛ')
 	})
 }
 

@@ -1,6 +1,4 @@
 const { msgB } = require('@tool/message')
-const { isReset } = require('@tool/reset')
-const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Tребуется калибровка клапанов
