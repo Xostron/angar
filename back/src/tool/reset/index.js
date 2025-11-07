@@ -41,18 +41,16 @@ module.exports = { reset, isReset }
 function clearExtralrm() {
 	for (const idB in store.alarm.extralrm) {
 		let extralrm = store.alarm.extralrm?.[idB]
-		let acc = store.acc?.[idB]
-		// console.log(222, acc)
+
 		// idS, debounce, local ...
 		for (const key in extralrm) {
 			extralrm = extralrm?.[key]
-			acc = acc?.[key]
 
 			if (isExtralrm(idB, key, 'stableVno')) {
-				console.log(111, idB, key, acc)
-				delete acc?.stableVno
+				console.log(111, idB, key, store.acc?.[idB]?.stableVno?.[key])
+				delete store.acc?.[idB]?.stableVno?.[key]
 			}
-			console.log(222, idB, key, acc)
+			console.log(222, idB, key, store.acc?.[idB])
 		}
 	}
 }
