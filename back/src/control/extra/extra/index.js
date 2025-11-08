@@ -22,7 +22,7 @@ function extra(
 		else code = key
 		const acc = readAcc(building._id, section?._id ?? 'building', code)
 
-		// Таймер запретов
+		// Таймер запретов TODO вентиляция, увлажнитель
 		let ban = store.alarm.timer?.[building._id]?.[key]
 		if (key === 'accelOn' || key === 'accelAuto') ban = store.alarm.timer?.[building._id]?.accel
 		else if (key === 'coOn' || key === 'coAuto' || key === 'coNormal')

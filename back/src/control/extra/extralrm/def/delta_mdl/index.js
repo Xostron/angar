@@ -9,14 +9,14 @@ function deltaMdl(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (val === false) {
 		delExtralrm(building._id, null, 'deltaMdl')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (val === true && !acc.alarm) {
+	if (val === true && !acc._alarm) {
 		wrExtralrm(building._id, null, 'deltaMdl', msgB(building, 111, comment))
-		acc.alarm = true
+		acc._alarm = true
 	}
-	return acc?.alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = deltaMdl

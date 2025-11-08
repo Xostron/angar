@@ -8,12 +8,12 @@ function local(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (sig === true) {
 		delExtralrm(building._id, section._id, 'local')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig === false && !acc.alarm) {
+	if (sig === false && !acc._alarm) {
 		wrExtralrm(building._id, section._id, 'local', msg(building, section, 27))
-		acc.alarm = true
+		acc._alarm = true
 	}
 }
 

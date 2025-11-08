@@ -30,9 +30,9 @@ function relayVolt(bld, sect, obj, s, se, m, automode, acc, data) {
 	if ( !watch || !count || wait) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'battery')
-		acc.alarm = false
+		acc._alarm = false
 	}
-	return acc?.alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = relayVolt
@@ -50,7 +50,7 @@ function fn(bld, battery, obj, accDeb, acc, watch, count) {
 	const isAlr = isExtralrm(bld._id, null, 'battery')
 	// console.log(22, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@', accDeb.battery, isAlr)
 	if (isAlr) {
-		acc.alarm = true
+		acc._alarm = true
 		return
 	}
 	// Фиксируем изменение состояния
@@ -66,5 +66,5 @@ function fn(bld, battery, obj, accDeb, acc, watch, count) {
 	if (delta > watch) return
 	//Время меньше порога -> установка аварии
 	wrExtralrm(bld._id, null, 'battery', msgBB(bld, 103))
-	acc.alarm = true
+	acc._alarm = true
 }

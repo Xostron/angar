@@ -12,15 +12,15 @@ function tChannel(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	const warning = map?.get('warning')
 	if (!warning) {
 		delExtra(bld._id, sect._id, 't_channel')
-		acc.alarm = false
+		acc.flag = false
 	}
 	// Установка
-	if (warning && !acc.alarm) {
+	if (warning && !acc.flag) {
 		wrExtra(bld._id, sect._id, 't_channel', {
 			date: new Date(),
 			...msg(bld, sect, 41),
 		})
-		acc.alarm = true
+		acc.flag = true
 	}
 }
 module.exports = tChannel

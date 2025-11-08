@@ -6,16 +6,16 @@ function connect(bld, section, obj, s, se, m, automode, acc, data) {
 	const isErrM = !!Object.keys(store.alarm?.module?.[bld._id] ?? {}).length
 
 	// Модули неисправны
-	if (isErrM) acc.alarm = true
+	if (isErrM) acc._alarm = true
 
 	// Нет неисправностей модулей или сброс аварии - выкл аварии
 	if (!isErrM) {
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Для обычного склада и комби в режиме обычного неисправный модуль -> останов
 	const x = bld.type === 'normal'
 	const y = bld.type === 'combi' && isAlr(bld._id, automode)
-	if (x || y) return acc?.alarm ?? false
+	if (x || y) return acc?._alarm ?? false
 	// Для склада холодильника и комбинированного в режиме холода
 	// т.к. их агрегаты и испарители отслеживают свои модули на неисправность
 	return false

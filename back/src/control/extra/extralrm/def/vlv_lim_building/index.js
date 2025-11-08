@@ -9,12 +9,12 @@ function vlvLimB(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (!sig) {
 		delExtralrm(building._id, null, 'vlvLim')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig && !acc.alarm) {
+	if (sig && !acc._alarm) {
 		wrExtralrm(building._id, null, 'vlvLim', msgB(building, 33))
-		acc.alarm = true
+		acc._alarm = true
 	}
 }
 

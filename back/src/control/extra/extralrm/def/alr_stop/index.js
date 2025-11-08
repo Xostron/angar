@@ -8,14 +8,14 @@ function alrStop(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (sig === true) {
 		delExtralrm(building._id, null, 'alarm')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig === false && !acc.alarm) {
+	if (sig === false && !acc._alarm) {
 		wrExtralrm(building._id, null, 'alarm', msgB(building, 36))
-		acc.alarm = true
+		acc._alarm = true
 	}
-	return acc?.alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = alrStop

@@ -7,12 +7,12 @@ function cableS(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	const sig = getSignal(section?._id, obj, 'cable')
 	if (!sig) {
 		delExtra(building._id, section._id, 'cable')
-		acc.alarm = false
+		acc.flag = false
 	}
 	// Установка
-	if (sig && !acc.alarm) {
+	if (sig && !acc.flag) {
 		wrExtra(building._id, section._id, 'cable', msg(building, section, 60))
-		acc.alarm = true
+		acc.flag = true
 	}
 }
 module.exports = cableS

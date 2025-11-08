@@ -7,8 +7,5 @@ module.exports = function sStart(io, socket) {
 		// Вкл сброс аварий
 		console.log('s_reset', obj)
 		reset(obj)
-		// Очистка аккумулятора аварий
-		// store.alarm.auto[obj.buildingId] = {}
-		// store.alarm.extralrm[obj.buildingId] = {}
 	})
 }

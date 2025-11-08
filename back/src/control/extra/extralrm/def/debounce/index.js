@@ -29,13 +29,13 @@ function debounce(bld, sect, obj, s, se, m, automode, acc, data) {
 	const wait = s?.sys?.debWait === 0 ? false : compareTime(s?.sys?.debWait ?? defaultWait)
 	// Сброс аварии:  настройки1 и 2 равны 0, время ожидания истекло
 	// если была сброшена авария
-	if (!threshold || !count || wait || (acc.alarm && !isExtralrm(bld._id, null, 'debounce'))) {
+	if (!threshold || !count || wait || (acc._alarm && !isExtralrm(bld._id, null, 'debounce'))) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'debounce')
-		acc.alarm = false
+		acc._alarm = false
 	}
 
-	return acc?.alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = debounce
@@ -64,7 +64,7 @@ function fn(bld, arr, obj, accDeb, acc, threshold, count) {
 		if (acc[el._id]?.alarm && !isAlr) {
 			delete acc[el._id]?.alarm
 			accDeb[el._id] = []
-			acc.alarm = false
+			acc._alarm = false
 		}
 
 		// Уже в аварии - выходим из итерации
@@ -85,7 +85,7 @@ function fn(bld, arr, obj, accDeb, acc, threshold, count) {
 		//Время меньше порога -> установка аварии
 		const mesBeg = sect?.name ? bld.name + '. ' + sect?.name + '. ' : bld.name + '. '
 		wrExtralrm(bld._id, 'debounce', el._id, msgBB(bld, 102, mesBeg, el.name))
-		acc.alarm = true
+		acc._alarm = true
 		acc[el._id].alarm = true
 	})
 }

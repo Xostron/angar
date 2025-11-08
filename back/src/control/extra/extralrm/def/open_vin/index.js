@@ -28,7 +28,7 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 	const attn = hasOpen && seB.tcnl > seB.tprd
 
 	// Условие аварии отрицательно или нажата кнопка сброса аварии
-	if (!attn && !acc?.alarm) fnReset(building, acc)
+	if (!attn && !acc?._alarm) fnReset(building, acc)
 	// Условие аварии положительно
 	// Фиксируем время возникновения условий аварии и ждем 5 мин
 	if (attn && !acc?.open) acc.open = new Date()
@@ -38,12 +38,12 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 	if (hasWait && !acc?.reset) {
 		wrExtralrm(building._id, null, 'openVin', msgB(building, 39))
 		acc.reset = new Date()
-		acc.alarm = true
+		acc._alarm = true
 	}
 	// Время ожидания сброса аварии закончилось
 	const hasReset = compareTime(acc?.reset, _RESET)
-	if (hasReset && acc?.alarm) fnReset(building, acc)
-	return acc?.alarm ?? false
+	if (hasReset && acc?._alarm) fnReset(building, acc)
+	return acc?._alarm ?? false
 }
 
 /**
@@ -54,6 +54,6 @@ module.exports = function openVin(building, section, obj, s, seB, m, automode, a
 function fnReset(building, acc) {
 	delExtralrm(building._id, null, 'openVin')
 	delete acc.reset
-	delete acc.alarm
+	delete acc._alarm
 	delete acc.open
 }

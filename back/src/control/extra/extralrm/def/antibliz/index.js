@@ -40,7 +40,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 	// Проверка диапазона времени
 	const validTime = curTime > acc.beginTime && curTime <= acc.endTime
 	// Инициализация функции: по истечению времени слежения и/или время слежения еще не задано
-	if (!validTime && !acc.alarm) {
+	if (!validTime && !acc._alarm) {
 		// Временной интервал слежения за клапаном
 		acc.beginTime = +new Date().getTime()
 		acc.endTime = acc.beginTime + s.antibliz.time
@@ -49,15 +49,15 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 		// Счетчик хлопков
 		acc.cnt = 0
 		// Сигнал аварии
-		acc.alarm = false
+		acc._alarm = false
 		delExtralrm(building._id, section._id, 'antibliz')
 	}
 
 	// Ловим хлопки закрытого концевика клапана
-	if (acc.lastSt !== 'cls' && state === 'cls' && !acc.alarm && validTime) {
+	if (acc.lastSt !== 'cls' && state === 'cls' && !acc._alarm && validTime) {
 		if (++acc.cnt >= s.antibliz.count) {
 			// Авария: Сработал режим антивьюги
-			acc.alarm = true
+			acc._alarm = true
 			acc.beginWait = +new Date().getTime()
 			acc.endWait = acc.beginWait + s.antibliz.wait
 			wrExtralrm(building._id, section._id, 'antibliz', msg(building, section, 13))
@@ -68,7 +68,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 
 	// Сброс аварии - По времени ожидания
 	if (curTime >= acc.endWait) {
-		delete acc.alarm
+		delete acc._alarm
 		delete acc.beginTime
 		delete acc.endTime
 		delete acc.beginWait
@@ -77,7 +77,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 		delete acc.cnt
 		delExtralrm(building._id, section._id, 'antibliz')
 	}
-	return acc?.alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = antibliz

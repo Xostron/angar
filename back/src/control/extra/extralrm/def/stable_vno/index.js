@@ -36,15 +36,15 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 		soft.fc.sp = 100
 		soft.fc.value = true
 		soft.stable = true
-		acc.alarm = true
+		acc._alarm = true
 	}
 
 	// Если была сброшена авария -> обнуляем аккумулятор
-	if (acc.alarm && !isExtralrm(bld._id, sect._id, 'stableVno')) {
+	if (acc._alarm && !isExtralrm(bld._id, sect._id, 'stableVno')) {
 		soft.stable = null
 		acc.queue = []
 		acc.fcQueue = []
-		acc.alarm = false
+		acc._alarm = false
 	}
 	console.log(555, sect._id, 'Антидребезг', acc, LIMIT_TIME)
 	// console.log(5551, sect._id, 'Плавный пуск', soft)

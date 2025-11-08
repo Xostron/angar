@@ -9,14 +9,14 @@ function alrClosedB(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (!sig) {
 		delExtralrm(building._id, null, 'alrClosed')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig && !acc.alarm) {
+	if (sig && !acc._alarm) {
 		wrExtralrm(building._id, null, 'alrClosed', msgB(building, 26))
-		acc.alarm = true
+		acc._alarm = true
 	}
-	return acc.alarm ?? null
+	return acc._alarm ?? null
 }
 
 module.exports = alrClosedB

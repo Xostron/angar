@@ -8,14 +8,14 @@ function localB(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (sig === true) {
 		delExtralrm(building._id, null, 'local')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig === false && !acc.alarm) {
+	if (sig === false && !acc._alarm) {
 		wrExtralrm(building._id, null, 'local', msgB(building, 27))
-		acc.alarm = true
+		acc._alarm = true
 	}
-	return acc?.alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = localB

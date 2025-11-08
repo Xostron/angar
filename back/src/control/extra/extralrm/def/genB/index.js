@@ -9,14 +9,14 @@ function genB(building, section, obj, s, se, m, automode, acc, data) {
 	// Сброс
 	if (sig === true) {
 		delExtralrm(building._id, null, 'gen')
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig === false && !acc.alarm) {
+	if (sig === false && !acc._alarm) {
 		wrExtralrm(building._id, null, 'gen', msgB(building, 29))
-		acc.alarm = true
+		acc._alarm = true
 	}
-	return acc.alarm ?? null
+	return acc._alarm ?? null
 }
 
 module.exports = genB

@@ -35,11 +35,9 @@ function all(obj = {}, data = {}, prev, key) {
 		// Ключ есть в файле (пересечение obj c data)
 		if (k in data) {
 			if (typeof obj[k] !== 'object') {
-				// console.log(555, key, prev, data)
 				prev[key] = data
 				return
 			}
-			// console.log(444, k, obj)
 			all(obj[k], data[k], obj, k)
 		}
 	}

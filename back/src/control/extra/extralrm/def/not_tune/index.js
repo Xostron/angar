@@ -20,14 +20,14 @@ function notTune(bld, _, obj, s, se, m, automode, acc, data) {
 		break
 	}
 	// Регистрация ошибки
-	if (!isOK && !acc.alarm) {
+	if (!isOK && !acc._alarm) {
 		wrExtralrm(bld._id, null, 'notTune', msgB(bld, 90))
-		acc.alarm = true
+		acc._alarm = true
 	}
 	// Сброс ошибки: все клапаны откалиброваны
 	if (isOK) {
 		delExtralrm(bld._id, null, 'notTune')
-		acc.alarm = false
+		acc._alarm = false
 	}
 }
 

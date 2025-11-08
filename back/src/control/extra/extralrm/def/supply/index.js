@@ -9,15 +9,15 @@ function supply(building, section, obj, s, se, m, automode, acc, data) {
 	if (!sig && !acc.on) {
 		delExtralrm(building._id, null, 'supply')
 		acc.on = true
-		acc.alarm = false
+		acc._alarm = false
 	}
 	// Питания нет
-	if (sig === true && !acc.alarm) {
+	if (sig === true && !acc._alarm) {
 		wrExtralrm(building._id, null, 'supply', { date: new Date(), ...msgB(building, 38) })
 		acc.on = false
-		acc.alarm = true
+		acc._alarm = true
 	}
-	// return acc?.alarm ?? false
+	// return acc?._alarm ?? false
 }
 
 module.exports = supply
