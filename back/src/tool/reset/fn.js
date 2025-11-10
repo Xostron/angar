@@ -1,3 +1,26 @@
+const { data: store } = require('@store')
+const { delDebMdl } = require('@tool/message/plc_module')
+
+/**
+ * Очистить аварийные сообщения по складу (extralrm) и аварии модулей
+ * Информационные сообщения, аварии авторежима - не сбрасываются
+ */
+function clearAlarm() {
+	// По складу: на каком складе была нажата кнопка сброса аварии
+	store.reset.forEach((idB) => {
+		// Очистка сообщений неисправности модулей
+		store.alarm.module[idB] = {}
+		delDebMdl()
+		// Очистка аварийных сообщений extralrm
+		store.alarm ??= {}
+		store.alarm.extralarm ??= {}
+		store.alarm.extralarm[idB] = {}
+		// Очистка аккумуляторов extralrm для того чтобы они не блокировали работу
+		const acc = store.acc?.[idB]
+		clearAcc(acc, ['stableVno'])
+	})
+}
+
 /**
  * Рекурсивная очистка аккумулятора склада store.acc[idB]
  * 1. Сброс ключ-значение _alarm (флаги _alarm используются в extralrm для фиксации срабатывания аварии)
@@ -38,52 +61,4 @@ function clearAcc(acc, arr, pKey, pAcc) {
 	}
 }
 
-const mock = {
-	q1: 1,
-	id1: {
-		q2: 2,
-		q3: 3,
-		_alarm: false,
-	},
-	id2: {
-		q4: 4,
-		id2_1: {
-			_alarm: true,
-			id2_1_1: {
-				q: 1,
-				id2_1_1_3: {
-					_alarm: true,
-					stableVno: {
-						w: 1,
-						r: 2,
-						_alarm: true,
-					},
-				},
-			},
-		},
-		_alarm: true,
-	},
-	alarm: {
-		t: 5,
-		_alarm: true,
-	},
-	finish: true,
-	www: {
-		tt: 12,
-		_alarm: true,
-	},
-	vvv: {
-		t: 10,
-		_alarm: false,
-	},
-	zzz: {
-		X: 1,
-		Y: 2,
-		Z: 3,
-		_alarm: undefined,
-	},
-}
-
-console.log('INPUT', mock)
-clearAcc(mock, ['stableVno', 'www', 'vvv', 'zzz'])
-console.log('OUTPUT', JSON.stringify(mock, null, ' '))
+module.exports = clearAlarm
