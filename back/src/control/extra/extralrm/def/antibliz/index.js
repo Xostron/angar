@@ -46,7 +46,7 @@ function antibliz(building, section, obj, s, se, m, automode, acc, data) {
 		acc._alarm = false
 		acc.wait = null
 	}
-	console.log(99, acc)
+	// console.log(99, acc)
 	return acc?._alarm ?? false
 }
 

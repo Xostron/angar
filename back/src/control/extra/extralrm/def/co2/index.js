@@ -6,7 +6,6 @@ function co2(building, section, obj, s, se, m, automode, acc, data) {
 	m?.cold?.device?.co2?.forEach((el) => {
 		beepD(el, el.beep, obj, building, acc, 65)
 	})
-	// return acc?.alarm ?? false
 }
 
 
