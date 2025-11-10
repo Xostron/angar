@@ -15,17 +15,17 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 		// Сброс
 		if (!sig) {
 			delExtralrm(building._id, section._id, 'vlvCrash' + v._id)
-			acc[v._id].alarm = false
+			acc[v._id]._alarm = false
 		}
 		// Установка
-		if (sig && !acc[v._id].alarm) {
+		if (sig && !acc[v._id]._alarm) {
 			wrExtralrm(
 				building._id,
 				section._id,
 				'vlvCrash' + v._id,
 				msgV(building, section, typeV, 34)
 			)
-			acc[v._id].alarm = true
+			acc[v._id]._alarm = true
 		}
 	}
 }
