@@ -9,7 +9,7 @@ const clearAlarm = require('./fn')
  * @param {boolean} type
  * @returns
  */
-function reset(obj, type = true) {
+function reset(idB, type = true) {
 	// Сбросить флаг
 	if (!type) return store.reset.clear()
 	// Установить флаг

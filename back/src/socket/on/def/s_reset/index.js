@@ -6,6 +6,6 @@ module.exports = function sStart(io, socket) {
 		if (!obj?.buildingId) return
 		// Вкл сброс аварий
 		console.log('s_reset', obj)
-		reset(obj)
+		reset(obj.buildingId)
 	})
 }

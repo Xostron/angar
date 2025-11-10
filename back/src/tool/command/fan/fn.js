@@ -9,7 +9,7 @@ const _MAX_SP = 100
 const _MIN_SP = 20
 
 /**
- * Команда авторежима на пуск/стоп ВНО секции
+ * Команда авторежима на плавный пуск/стоп ВНО секции
  * @param {*} bld Id склада
  * @param {*} resultFan Задание на включение ВНО
  * @param {*} s Настройки склада
@@ -27,6 +27,8 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
 		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
 			console.log(
+				'Секция',
+				idS,
 				'Плавный пуск: ВНО выключены из-за:',
 				local,
 				localB,
@@ -43,8 +45,8 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 }
 
 /**
- * 	Комби склад в режиме холодильника, при хранении
- *  и настройке "Испаритель холодильного оборудования"=false
+ * Комби склад в режиме холодильника, при хранении
+ * и настройке "Испаритель холодильного оборудования"=false
  * => испарители и ВНО должны выключиться
  * @param {*} bld Рама склада
  * @param {*} bdata Собранные данные
@@ -127,7 +129,7 @@ function stateF(fan, equip, result, retain) {
 
 	const alr = isAlrmByFan(idB, fan, equip, retain)
 	const alrDeb = isExtralrm(idB, 'debounce', fan._id)
-	// Авария ВНО: По автоматическому выключателю, 
+	// Авария ВНО: По автоматическому выключателю,
 	// перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
 	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr || alrDeb) return 'alarm'
 	// Выведен из работы
@@ -204,23 +206,3 @@ function arrCtrl(idB, arr, type) {
 }
 
 module.exports = { fnACmd, fnFanWarm, stateEq, stateF, arrCtrl }
-
-// /**
-//  * Режим секции данного ВНО
-//  * @param {*} fan Рама ВНО
-//  * @return {boolean | null} авто true, ручной false, выкл null
-//  */
-// function fnMode(idB, fan, cooler, retain) {
-// 	switch (fan?.owner?.type) {
-// 		case 'building':
-// 			// Для разгонных ВНО все равно какой режим у секции, он принадлежит складу
-// 			return true
-// 		case 'section':
-// 			return retain?.[idB]?.mode?.[fan?.owner?.id]
-// 		case 'cooler':
-// 			const idS = cooler.find((el) => el._id === fan.owner.id)?.sectionId
-// 			return retain?.[idB]?.mode?.[idS]
-// 		default:
-// 			true
-// 	}
-// }

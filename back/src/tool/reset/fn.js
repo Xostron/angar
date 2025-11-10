@@ -13,8 +13,8 @@ function clearAlarm() {
 		delDebMdl()
 		// Очистка аварийных сообщений extralrm
 		store.alarm ??= {}
-		store.alarm.extralarm ??= {}
-		store.alarm.extralarm[idB] = {}
+		store.alarm.extralrm ??= {}
+		store.alarm.extralrm[idB] = {}
 		// Очистка аккумуляторов extralrm для того чтобы они не блокировали работу
 		const acc = store.acc?.[idB]
 		clearAcc(acc, ['stableVno'])

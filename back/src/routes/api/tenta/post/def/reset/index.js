@@ -3,7 +3,7 @@ const { reset } = require('@tool/reset')
 function cmd(obj) {
 	return new Promise((resolve, reject) => {
 		// Вкл сброс аварий
-		reset(obj)
+		reset(obj.buildingId)
 		resolve(true)
 	})
 }

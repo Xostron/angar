@@ -4,9 +4,7 @@ const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm'
 const { compareTime } = require('@tool/command/time')
 
 /**
- * Антидребезг исполнительных механизмов:
- * ВНО (fan, accel), клапаны (in,out), подогрев клапанов (heating),
- * оттайка испарителя(cooler), обогрев слива воды(water)
+ * Авария питания. Дальнейшая работа невозможна
  * @param {*} bld
  * @param {*} sect
  * @param {*} obj
@@ -18,24 +16,27 @@ const { compareTime } = require('@tool/command/time')
  * @param {*} data
  * @returns
  */
-function relayVolt(bld, sect, obj, s, se, m, automode, acc, data) {
-	const defaultWait = 30 * 60 * 1000 //30 мин
-	const watch = s?.sys?.rwatch ?? defaultWait
+function battery(bld, sect, obj, s, se, m, automode, acc, data) {
+	const watch = s?.sys?.rwatch ?? 30 * 60 * 100
 	const count = s?.sys?.rcount ?? 3
 
 	fn(bld, store.battery, obj, store.debounce, acc, watch, count)
 
-	const wait = s?.sys?.rwait === 0 ? false : compareTime(s?.sys?.rwait ?? defaultWait)
-	// Сброс аварии: настройки1 и 2 равны 0, время ожидания истекло
-	if ( !watch || !count || wait) {
+	if (acc._alarm) acc.flag = true
+	// Сброс аварии:
+	// 1. нет настроек
+	// 2. Авария была сброшена оператором
+	if (!watch || !count ) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'battery')
 		acc._alarm = false
+		store.debounce.battery = []
 	}
+	// console.log(77, store.battery, acc, store.debounce.battery, store.debounce?.battery?.length)
 	return acc?._alarm ?? false
 }
 
-module.exports = relayVolt
+module.exports = battery
 
 /**
  * Функция слежения и генерации аварии дребезга
@@ -45,14 +46,18 @@ module.exports = relayVolt
  * @param {object} accDeb Аккумулятор антидребезга
  */
 function fn(bld, battery, obj, accDeb, acc, watch, count) {
+	if (!count || !watch) return
 	accDeb.battery ??= []
 	const last = accDeb.battery.at(-1)
 	const isAlr = isExtralrm(bld._id, null, 'battery')
-	// console.log(22, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@', accDeb.battery, isAlr)
-	if (isAlr) {
-		acc._alarm = true
-		return
+
+	if (acc.flag && !acc._alarm) {
+		store.debounce.battery = []
+		acc.flag = false
 	}
+	// Уже в аварии - выходим из итерации
+	if (isAlr) return
+
 	// Фиксируем изменение состояния
 	if (last?.state !== battery) accDeb.battery.push({ state: battery, date: new Date() })
 	// Размер очереди превышен
