@@ -29,7 +29,7 @@ const def = {
 	section: {
 		on: {
 			overVlv,
-			antibliz,
+			
 			genS,
 			stableVno,
 		},
@@ -41,6 +41,7 @@ const def = {
 			vlvLim,
 			vlvCrash,
 			fanCrash,
+			antibliz,
 		},
 	},
 	building: {

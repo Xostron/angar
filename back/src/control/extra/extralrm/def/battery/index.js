@@ -23,15 +23,7 @@ function battery(bld, sect, obj, s, se, m, automode, acc, data) {
 	fn(bld, store.battery, obj, store.debounce, acc, watch, count)
 
 	if (acc._alarm) acc.flag = true
-	// Сброс аварии:
-	// 1. нет настроек
-	// 2. Авария была сброшена оператором
-	if (!watch || !count ) {
-		// Сброс аварийных сообщений
-		delExtralrm(bld._id, null, 'battery')
-		acc._alarm = false
-		store.debounce.battery = []
-	}
+
 	// console.log(77, store.battery, acc, store.debounce.battery, store.debounce?.battery?.length)
 	return acc?._alarm ?? false
 }
@@ -50,7 +42,7 @@ function fn(bld, battery, obj, accDeb, acc, watch, count) {
 	accDeb.battery ??= []
 	const last = accDeb.battery.at(-1)
 	const isAlr = isExtralrm(bld._id, null, 'battery')
-
+	// При сбросе аварии: очистка аккумулятора
 	if (acc.flag && !acc._alarm) {
 		store.debounce.battery = []
 		acc.flag = false

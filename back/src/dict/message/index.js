@@ -153,7 +153,7 @@ const data = {
 	39: {
 		count: true,
 		code: 'openVin',
-		typeSignal: 'valve',
+		typeSignal: 'critical',
 		msg: 'Температура канала выше температуры продукта',
 	},
 	40: {
