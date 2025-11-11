@@ -1,4 +1,6 @@
+const { curStateV } = require('@tool/command/valve')
 const { set, reset, fnCheck } = require('./fn')
+
 /**
  * @description Авария склада: Температура канала выше температуры продукта
  * @param {object} bld Склад

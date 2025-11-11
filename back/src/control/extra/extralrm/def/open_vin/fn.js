@@ -1,5 +1,4 @@
 const { msgB } = require('@tool/message')
-const { curStateV } = require('@tool/command/valve')
 const { compareTime } = require('@tool/command/time')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
