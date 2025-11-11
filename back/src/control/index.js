@@ -41,6 +41,7 @@ async function control() {
 		// обнулить счетчик сушки
 		zero(null, false)
 		// await delay(5000)
+		store.battery = !store.battery
 		if (store._cycle_ms_ < 50) await delay(1000)
 		return true
 	} catch (error) {

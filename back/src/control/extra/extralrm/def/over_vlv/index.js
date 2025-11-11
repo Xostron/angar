@@ -16,9 +16,10 @@ const { set, reset, fnCheck } = require('./fn')
  */
 function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Состояние приточного клапана
+	console.log(22, 'overVlv', acc)
 	const vlvIn = m.vlvS.find((vlv) => vlv.type === 'in')
 	if (!fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc)) return false
-	
+
 	const state = curStateV(vlvIn._id, obj.value)
 	// Хотя бы один вентилятор запущен
 	const run = m.fanS.some((f) => stateEq(f._id, obj.value))

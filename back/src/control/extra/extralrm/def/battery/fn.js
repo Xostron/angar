@@ -31,7 +31,7 @@ function set(bld, battery, obj, accDeb, acc, watch, count) {
 	acc._alarm = true
 }
 
-function reset(acc) {
+function reset(acc, accDeb) {
 	if (acc._alarm) acc.flag = true
 	// При сбросе аварии: очистка аккумулятора
 	if (acc.flag && !acc._alarm) {

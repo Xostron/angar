@@ -21,7 +21,7 @@ module.exports = cold
  * @returns {boolean} true - авария, false - ОК: нет аварий
  */
 function runExtra(bld, obj, bdata) {
-	const { start, s, se, m, accAuto } = bdata
+	const { start, s, se, m, accAuto, automode } = bdata
 	let alr = false
 	// Тип склада cold - холодильник, combi - комбинированный
 	const type = bld?.type
@@ -29,7 +29,7 @@ function runExtra(bld, obj, bdata) {
 	let sect = null
 	if (type === 'cold') sect = obj?.data?.section?.find((el) => el.buildingId === bld._id)
 	// Всегда
-	alr = alr || extralrm(bld, null, obj, s, se, m, null, null, type, 'always')
+	alr = alr || extralrm(bld, null, obj, s, se, m, automode, null, type, 'always')
 	extra(bld, sect, obj, s, se, m, null, null, null, type, 'always')
 
 	// Склад выключен
@@ -40,6 +40,6 @@ function runExtra(bld, obj, bdata) {
 
 	// Склад включен
 	extra(bld, null, obj, s, se, m, null, null, null, type, 'on')
-	alr = alr || extralrm(bld, null, obj, s, se, m, null, null, type, 'on')
+	alr = alr || extralrm(bld, null, obj, s, se, m, automode, null, type, 'on')
 	return alr
 }

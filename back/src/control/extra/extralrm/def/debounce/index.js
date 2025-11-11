@@ -66,8 +66,6 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		// Уже в аварии - выходим из итерации
 		if (isAlr) return
 
-		if (el.type === 'accel') console.log(3, el._id, cur, last?.DO, last?.DO !== cur)
-
 		// При сбросе аварийного сообщения, очищаем аккумулятор данного ВНО
 		if (acc[el._id]?.alarm && !isAlr) {
 			delete acc?.[el._id]?.alarm

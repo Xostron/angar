@@ -21,7 +21,7 @@ function set(bld, sect, obj, m, s, acc, term) {
 function reset(bld, sect, s, acc, term) {
 	// Cброс аварии и аккумулятора:
 	// 1. Был сброс аварии
-	if (acc.flag && !acc.alarm) return fnReset(bld, sect, acc)
+	if (acc.flag && !acc._alarm) return fnReset(bld, sect, acc)
 	// 2. Если еще нет аварии, и условия для аварии прошли за время s.overVlv.time
 	if (!term && !acc._alarm) return fnReset(bld, sect, acc)
 	// 3. Время автосброса аварии закончилось
@@ -46,7 +46,7 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 		!vlvIn ||
 		!s.overVlv.time ||
 		!s.overVlv.wait ||
-		(automode === 'drying' && s.drying.ventillation) ||
+		(automode === 'drying' && s.drying.ventilation) ||
 		s.vent.mode === 'on' ||
 		bld?.type === 'cold' ||
 		(bld?.type === 'combi' && automode === 'cooling' && alrAuto)
