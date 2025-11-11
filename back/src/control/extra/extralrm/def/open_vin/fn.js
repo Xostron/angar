@@ -4,17 +4,11 @@ const { compareTime } = require('@tool/command/time')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Установка аварии
-function set(bld, obj, seB, s, m, acc) {
-	// Есть ли хоть один открытый приточный клапан
-	const hasOpen = m.vlvIn.some((el) => curStateV(el._id, obj.value) === 'opn')
-	// Клапан открыт и темп.канала > темп. продукта
-	const attn = hasOpen && seB.tcnl > seB.tprd
-	// Если еще нет аварии, а условия для аварии прошли за время s.cooling.watch
-	// То сброс аккумулятора
-	if (!attn && !acc._alarm) fnReset(bld, acc)
-
+function set(bld, s, acc, term) {
+	// Уже в аварии - выходим из итерации
+	if (acc._alarm) return
 	// Условия аварии возникли засекаем время s.cooling.watch
-	if (attn && !acc?.watch) acc.watch = new Date()
+	if (term && !acc?.watch) acc.watch = new Date()
 	// Время ожидания 5 мин закончилось
 	const watch = compareTime(acc?.watch, s.cooling.watch)
 	// Вкл аварии и засекаем время для сброса аварии 1 час
@@ -24,11 +18,15 @@ function set(bld, obj, seB, s, m, acc) {
 		acc._alarm = true
 	}
 }
+
 // Автосброс аварии
-function reset(bld, s, acc) {
-	// Время автосброса аварии закончилось
+function reset(bld, s, acc, term) {
+	// Cброс аварии и аккумулятора:
+	// 1. Если еще нет аварии, а условия для аварии прошли за время s.cooling.watch
+	// 2. Был сброс аварии и условий для аварии уже нет
+	if (!term && !acc._alarm) return fnReset(bld, acc)
+	// 3. Время автосброса аварии закончилось
 	const wait = compareTime(acc?.wait, s.cooling.wait)
-	// Время закончилось
 	if (wait) fnReset(bld, acc)
 }
 
@@ -48,7 +46,8 @@ function fnCheck(bld, obj, s, automode, m, acc) {
 	// 2. Нет приточных клапанов
 	// 3. Нет секции в авто
 	// 4. Нет настроек watch|wait
-	
+	// 5. Склад выключен
+
 	// Поиск по секциям, хотя бы 1 в авто => true
 	const modeS = obj?.data?.section
 		?.filter((el) => el.buildingId === bld._id)
@@ -58,7 +57,8 @@ function fnCheck(bld, obj, s, automode, m, acc) {
 		!m?.vlvIn?.length ||
 		!modeS ||
 		!s.cooling.wait ||
-		!s.cooling.watch
+		!s.cooling.watch ||
+		!obj.retain[bld._id].start
 	) {
 		fnReset(bld, acc)
 		return false

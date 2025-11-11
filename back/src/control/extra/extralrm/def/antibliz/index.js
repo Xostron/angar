@@ -17,12 +17,13 @@ function antibliz(bld, sect, obj, s, se, m, automode, acc, data) {
 	// const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	// Сбрасываем подсчет при работе удаления СО2
 	// if (extraCO2.start) acc.queue = []
-	console.log(99, acc)
 	if (!fnCheck(bld, sect, obj, m, s, acc)) return false
-	// Установка аварии
-	set(bld, sect, obj.value, m.vlvS, acc, s)
+	
 	// Автосброс аварии
 	reset(bld, sect, s, acc)
+	// Установка аварии
+	set(bld, sect, obj.value, m.vlvS, acc, s)
+	
 	return acc?._alarm ?? false
 }
 

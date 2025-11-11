@@ -28,8 +28,6 @@ const def = {
 	// Доп. аварии обычного склада
 	section: {
 		on: {
-			overVlv,
-			
 			genS,
 			stableVno,
 		},
@@ -42,13 +40,14 @@ const def = {
 			vlvCrash,
 			fanCrash,
 			antibliz,
+			overVlv,
 		},
 	},
 	building: {
 		on: {
 			banTimer,
 			genB,
-			openVin,
+			
 		},
 		off: {},
 		always: {
@@ -60,6 +59,7 @@ const def = {
 			notTune,
 			debounce,
 			battery,
+			openVin,
 		},
 	},
 	// Доп. аварии холодильника

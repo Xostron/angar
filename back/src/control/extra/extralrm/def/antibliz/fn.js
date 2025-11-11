@@ -4,38 +4,32 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 
 function set(bld, sect, value, vlvS, acc, s) {
+	// Уже в аварии - выходим из итерации
+	if (acc._alarm) return
 	// Размер очереди для фиксации состояний клапана
 	const count = (s.antibliz.count ?? 0) * 2
+	// ['cls', 'other','cls', 'other','cls]
 	acc.queue ??= []
 	// Состояние приточного клапана
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	const state = curStateV(vlvIn._id, value) === 'cls' ? 'cls' : 'other'
 
-	// Сброс аварии
-	if (acc.flag && !acc._alarm) {
-		acc.queue = []
-		acc.wait = null
-		acc.flag = false
-	}
-
-	// Уже в аварии - выходим из итерации
-	if (acc._alarm) return
-
 	// Логика
-	// Фиксируем состояние клапана
+	// Фиксируем состояние клапана в очереди
 	if (acc.queue.at(-1)?.state !== state) acc.queue.push({ state, date: new Date() })
-	// Размер очереди превышен
+	// Размер очереди превышен -> удаляем первый элемент
 	if (acc.queue.length > count) {
 		acc.queue.shift()
 	}
+	// Из очереди отфильтровываем только состояния "клапан закрыт"
 	const onlyCls = acc.queue.filter((el) => el.state === 'cls')
 	// Очередь не заполнена - выходим
 	if (onlyCls.length < s.antibliz.count) return
-
+	// Очередь заполнена -> проверяем время
 	const delta = onlyCls.at(-1).date - onlyCls[0].date
-	// Время между последними состояниями больше  -> ОК
+	// Время между последними состояниями больше  -> Авария false
 	if (delta > s.antibliz.time) return
-	//Время меньше порога -> установка аварии
+	//Время меньше порога -> Авария true
 	wrExtralrm(bld._id, sect._id, 'antibliz', msg(bld, sect, 13))
 	acc._alarm = true
 }
@@ -46,17 +40,20 @@ function reset(bld, sect, s, acc) {
 		acc.wait = new Date()
 		acc.flag = true
 	}
+	// Был сброс аварии
+	if (acc.flag && !acc._alarm) fnReset(bld, sect, acc)
+
 	// Время автосброса аварии закончилось
 	const wait = compareTime(acc?.wait, s.antibliz.wait)
-	// Время закончилось
 	if (wait) fnReset(bld, sect, acc)
 }
 
 function fnReset(bld, sect, acc) {
 	delExtralrm(bld._id, sect._id, 'antibliz')
 	acc.queue = []
-	acc._alarm = false
-	acc.wait = null
+	delete acc.wait
+	delete acc.flag
+	delete acc._alarm
 }
 
 /**
