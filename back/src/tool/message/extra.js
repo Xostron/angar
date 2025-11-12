@@ -43,11 +43,11 @@ function delExtra(idB, idS, name, type) {
 function isExtra(idB, idS, code, type) {
 	if (type)
 		return idS
-			? !!data.alarm?.extralrm?.[idB]?.[idS]?.[code]?.[type]
-			: !!data.alarm?.extralrm?.[idB]?.[code]?.[type]
+			? !!data.alarm?.extra?.[idB]?.[idS]?.[code]?.[type]
+			: !!data.alarm?.extra?.[idB]?.[code]?.[type]
 	return idS
-		? !!data.alarm?.extralrm?.[idB]?.[idS]?.[code]
-		: !!data.alarm?.extralrm?.[idB]?.[code]
+		? !!data.alarm?.extra?.[idB]?.[idS]?.[code]
+		: !!data.alarm?.extra?.[idB]?.[code]
 }
 
 module.exports = { wrExtra, delExtra, isExtra }

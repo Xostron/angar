@@ -66,7 +66,7 @@ function smoking(
 		doc.work = new Date()
 		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 	}
-	// Повтор сообщения, если наш посик ребутнулся ночью аккурат находясь в окуривании
+	// Повтор сообщения, если наш пос ребутнулся ночью аккурат находясь в окуривании
 	if (doc.work && !doc.wait && !isExtra(idB, null, 'smoking1'))
 		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 
@@ -81,7 +81,7 @@ function smoking(
 		delExtra(idB, null, 'smoking1')
 		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	}
-	// Повтор сообщения, если наш посик ребутнулся ночью аккурат находясь в окуривании
+	// Повтор сообщения, если наш пос ребутнулся ночью аккурат находясь в окуривании
 	if (doc.wait && !isExtra(idB, null, 'smoking2'))
 		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	if (!compareTime(doc.wait, stg.wait * h)) {

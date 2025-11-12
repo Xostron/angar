@@ -8,11 +8,15 @@ export default function ListCooler({}) {
 	const input = useInputStore(({ input }) => input)
 	const start = input?.retain?.[build]?.start
 	const { cooler } = useEquipStore(({ section }) => section())
-
+	let cls = ['row-cooler']
+	cls = cls.join(' ')
 	return (
-		<div className='row-cooler'>
+		<div className={cls}>
 			{/* Испарители + Температура [] */}
-			{!!cooler.length && cooler?.map((el, i) => <Cooler key={i} state={el} data={input?.[el?._id]} start={start} />)}
+			{!!cooler.length &&
+				cooler?.map((el, i) => (
+					<Cooler key={i} state={el} data={input?.[el?._id]} start={start} />
+				))}
 		</div>
 	)
 }

@@ -1,7 +1,7 @@
 const { stateEq } = require('@tool/command/fan/fn')
 const { curStateV } = require('@tool/command/valve')
 const { msg } = require('@tool/message')
-const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
 // Режим вентиляции: Вкл - принудительное включение

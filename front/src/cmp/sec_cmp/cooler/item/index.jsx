@@ -4,8 +4,9 @@ import './style.css'
 // Отображение Испарителя type=cold Холодильник, = combi - Комбинированный
 export default function Cooler({ state, data, start }) {
 	if (!state || !data) return null
-	// console.log('Cooler',state, data)
+	console.log('Cooler',state, data)
 	let cls = ['cmp-sec-cooler-item']
+	if (data?.status==='alarm') cls.push('alarm')
 	cls = cls.join(' ')
 	const img = `/img/cold/cooler/cooler-${data.state}.svg` ?? ''
 	const sen = state.sensor ?? []

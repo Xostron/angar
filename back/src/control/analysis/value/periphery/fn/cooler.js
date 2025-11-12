@@ -2,6 +2,7 @@ const { data: store, readAcc } = require('@store')
 const { getIdByClr, getB } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')
 const { getAO } = require('@tool/in_out')
+const { isExtra } = require('@tool/message/extra')
 
 // Испаритель
 function cooler(equip, val, retain, result) {
@@ -36,15 +37,16 @@ function cooler(equip, val, retain, result) {
 				result[clr._id].solenoid[el._id] = result?.outputEq?.[el._id]
 			else result[clr._id].solenoid[el._id] = result?.[sig?._id]
 		})
-		// Напорные вентиляторы
+		// Напорные вентиляторы (модули не добавляю, потому что в
+		// состоянии ВНО уже учтены неисправности модулей)
 		const arrFan = fan.filter((el) => el.owner.id === clr._id)
 		arrFan.forEach((f) => {
-			// DO
-			arrM.add(f?.module?.id)
 			result[clr._id].fan[f._id] = result[f._id]
+			// DO
+			// arrM.add(f?.module?.id)
 			// AO
-			const ao = getAO(binding, f)
-			ao ? arrM.add(ao?.moduleId) : null
+			// const ao = getAO(binding, f)
+			// ao ? arrM.add(ao?.moduleId) : null
 		})
 		result[clr._id].fan.state = arrFan.every(
 			(f) => result[f._id].state === 'off' || result[f._id].state === 'alarm'
@@ -82,6 +84,7 @@ function cooler(equip, val, retain, result) {
 		)?.value
 		//Добавление читаемого названия состояния
 		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? ''
+		console.log(8800, 'Статус испарителя', result[clr._id].status)
 		// Кол-во запущенных ступеней (соленоидов охлаждения)
 		const arr = Object.values(result[clr._id].solenoid)
 		if (arr.length < 2) return
@@ -107,8 +110,13 @@ function state(o, clr, equip, arrM) {
 	const { building, section } = equip
 	const idB = getIdByClr(section, clr)
 	const typeB = getB(building, idB)?.type
-	// Модули ПЛК испраителя неисправны?
-	if (isAlrmByClr(clr, idB, equip, arrM)) {
+	// Модули ПЛК испраителя неисправны? или ВНО испарителя неисправны?
+	//  или появилось сообщение extra "Потеря связи с автоматикой"
+	const alrMdl = isAlrmByClr(clr, idB, equip, arrM)
+	const alrFan = o?.fan?.state === 'alarm' ? true : false
+	const connectLost = isExtra(idB, null, 'connectLost')
+	console.log(7700, idB,  alrMdl, alrFan, connectLost, '===', alrMdl || alrFan || connectLost)
+	if (alrMdl || alrFan || connectLost) {
 		o.status = 'alarm'
 		return 'off-off-off'
 	}
@@ -142,7 +150,14 @@ const coolerDef = {
 }
 
 /**
- * Модули ПЛК испарителя неисправны?
+ * Модули ПЛК испарителя неисправны:
+ * 1. Модули соленоидов
+ * 2. Модули напорных вентиляторов не учитываются
+ * (потому что берем от них готовое состояние,
+ * где уже проверяется неисправность модуля)
+ * 3. Модули оттайки испарителя и соленоидов подогрева
+ * 4. Модуль датчика температуры испарителя
+ *
  * Поиск модулей к которым привязан испаритель
  * Проверка найденных модулей на неисправность
  * Если какой-либо модуль неисправен -> испаритель в аварии
@@ -156,14 +171,14 @@ function isAlrmByClr(clr, idB, equip, arrM) {
 	const a = [...arrM].filter((el) => el)
 	a.forEach((idM) => {
 		const mdl = equip.module.find((el) => el._id === idM)
-		console.log(`${clr.name} секции ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}`)
+		console.log(`${clr.name} секции: ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}`)
 	})
 	return a.some((idM) => {
 		const t = isErrM(idB, idM)
 		if (t) {
 			const mdl = equip.module.find((el) => el._id === idM)
 			console.log(
-				`${clr.name} секции ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}, авария=${t}`
+				`${clr.name} секции: ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}, авария=${t}`
 			)
 		}
 		return t

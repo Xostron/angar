@@ -235,7 +235,7 @@ const data = {
 	},
 	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
 	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
-	102: { count: true, code: 'debounce', typeSignal: 'critical', msg: 'Авария по антидребезгу' },
+	102: { count: true, code: 'debdo', typeSignal: 'critical', msg: 'Авария по антидребезгу' },
 	103: { count: true, code: 'battery', typeSignal: 'critical', msg: 'Авария питания. Дальнейшая работа невозможна' },
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },

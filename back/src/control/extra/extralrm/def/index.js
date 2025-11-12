@@ -21,7 +21,7 @@ const deltaMdl = require('./delta_mdl')
 const openVin = require('./open_vin')
 const stableVno = require('./stable_vno')
 const notTune = require('./not_tune')
-const debounce = require('./debounce')
+const debdo = require('./deb_do')
 const battery = require('./battery')
 
 const def = {
@@ -47,7 +47,6 @@ const def = {
 		on: {
 			banTimer,
 			genB,
-			
 		},
 		off: {},
 		always: {
@@ -57,7 +56,7 @@ const def = {
 			localB,
 			deltaMdl,
 			notTune,
-			debounce,
+			debdo,
 			battery,
 			openVin,
 		},
@@ -66,7 +65,7 @@ const def = {
 	cold: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, debounce, battery },
+		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, debdo, battery },
 	},
 	// Комбинированный склад (холодильник)
 	combi: {

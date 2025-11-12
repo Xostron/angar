@@ -2,7 +2,6 @@ const { data: store } = require('@store')
 const { msgBB } = require('@tool/message')
 const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
-const { isReset } = require('@tool/reset')
 
 /**
  * Антидребезг исполнительных механизмов:
@@ -19,10 +18,11 @@ const { isReset } = require('@tool/reset')
  * @param {*} data
  * @returns
  */
-function debounce(bld, sect, obj, s, se, m, automode, acc, data) {
-	const watch = (s?.sys?.debDO ?? 20) * 1000
-	const count = s?.sys?.debCount ?? 4
+function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
+	const watch = (s?.sys?.debDO ?? s?.cooler?.debDO ?? 20) * 1000
+	const count = s?.sys?.debCount ?? s?.cooler?.debCount ?? 4
 	const dflWait = 30 * 60 * 1000 // 30 мин
+	console.log()
 	// напорные ВНО канала + разгонные
 	fn(bld, m.fanAll, obj, store.debounce, acc, watch, count)
 	// Время автосброса аварии
@@ -33,7 +33,7 @@ function debounce(bld, sect, obj, s, se, m, automode, acc, data) {
 	// 2. Время автосброса истекло,
 	if (!watch || !count || wait) {
 		// Сброс аварийных сообщений
-		delExtralrm(bld._id, null, 'debounce')
+		delExtralrm(bld._id, null, 'debdo')
 		acc._alarm = false
 		acc.wait = null
 	}
@@ -41,7 +41,7 @@ function debounce(bld, sect, obj, s, se, m, automode, acc, data) {
 	return acc?._alarm ?? false
 }
 
-module.exports = debounce
+module.exports = debdo
 
 /**
  * Функция слежения и генерации аварии дребезга
@@ -62,7 +62,7 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		const cur = obj?.value?.outputEq?.[el._id]
 		const last = accDeb[el._id].at(-1)
 		// Есть ли авария по текущему ВНО
-		const isAlr = isExtralrm(bld._id, 'debounce', el._id)
+		const isAlr = isExtralrm(bld._id, 'debdo', el._id)
 		// Уже в аварии - выходим из итерации
 		if (isAlr) return
 
@@ -85,7 +85,7 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		if (delta > watch) return
 		// Время меньше порога -> установка аварии
 		const mesBeg = sect?.name ? bld.name + '. ' + sect?.name + '. ' : bld.name + '. '
-		wrExtralrm(bld._id, 'debounce', el._id, msgBB(bld, 102, mesBeg, el.name))
+		wrExtralrm(bld._id, 'debdo', el._id, msgBB(bld, 102, mesBeg, el.name))
 		acc._alarm = true
 		acc[el._id].alarm = true
 	})

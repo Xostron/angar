@@ -15,9 +15,9 @@ const { set, reset } = require('./fn')
  * @returns
  */
 function battery(bld, sect, obj, s, se, m, automode, acc, data) {
-	const watch = s?.sys?.rwatch ?? 30 * 60 * 100
-	const count = s?.sys?.rcount ?? 3
-	console.log(44, 'battery', acc, store.debounce.battery)
+	const watch = s?.sys?.rwatch ?? s?.cooler?.rwatch ?? 30 * 60 * 100
+	const count = s?.sys?.rcount ?? s?.cooler?.rcount ?? 3
+	console.log(44, 'battery', acc, store.debounce.battery, watch, count)
 
 	reset(acc, store.debounce)
 	set(bld, store.battery, obj, store.debounce, acc, watch, count)

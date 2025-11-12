@@ -129,6 +129,7 @@ function stateF(fan, equip, result, retain) {
 
 	const alr = isAlrmByFan(idB, fan, equip, retain)
 	const alrDeb = isExtralrm(idB, 'debounce', fan._id)
+
 	// Авария ВНО: По автоматическому выключателю,
 	// перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
 	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr || alrDeb) return 'alarm'
