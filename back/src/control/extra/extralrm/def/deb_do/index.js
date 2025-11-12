@@ -36,7 +36,7 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'debdo')
 		acc._alarm = false
-		acc.wait = null
+		delete acc.wait 
 	}
 	// console.log(66,  'wait=', wait)
 	return acc?._alarm ?? false
