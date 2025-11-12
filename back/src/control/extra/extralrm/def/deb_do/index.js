@@ -5,7 +5,7 @@ const { compareTime } = require('@tool/command/time')
 
 /**
  * Антидребезг исполнительных механизмов:
- * ВНО (fan, accel), клапаны (in,out), подогрев клапанов (heating),
+ * ВНО (fan, accel, cooler), клапаны (in,out), подогрев клапанов (heating),
  * оттайка испарителя(cooler), обогрев слива воды(water)
  * @param {*} bld
  * @param {*} sect
@@ -21,17 +21,18 @@ const { compareTime } = require('@tool/command/time')
 function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 	const watch = (s?.sys?.debDO ?? s?.cooler?.debDO ?? 20) * 1000
 	const count = s?.sys?.debCount ?? s?.cooler?.debCount ?? 4
-	const dflWait = 30 * 60 * 1000 // 30 мин
-	console.log()
+	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
+
+	console.log(44, 'Частое вкл ВНО debdo', acc, store.debounce)
 	// напорные ВНО канала + разгонные
 	fn(bld, m.fanAll, obj, store.debounce, acc, watch, count)
 	// Время автосброса аварии
 	if (acc._alarm && !acc.wait) acc.wait = new Date()
-	const wait = s?.sys?.debWait === 0 ? false : compareTime(acc.wait, s?.sys?.debWait ?? dflWait)
+	const waitCom = compareTime(acc.wait, wait)
 	// Сброс аварии:
 	// 1. Системные настройки (кол-во переключений, время подсчета) равны нулю,
 	// 2. Время автосброса истекло,
-	if (!watch || !count || wait) {
+	if (!watch || !count || waitCom) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'debdo')
 		acc._alarm = false
@@ -57,8 +58,15 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		acc[el._id] ??= {}
 		// Определяем владельцев ВНО
 		const idS = el?.owner.type === 'section' ? el?.owner?.id : null
-		const sect = obj?.data?.section?.find((sec) => sec._id === idS)
 		const clrId = el?.owner.type === 'cooler' ? el?.owner?.id : null
+		let ownerName = ''
+		if (idS) ownerName = obj?.data?.section?.find((sec) => sec._id === idS)?.name
+		if (clrId) {
+			const clr = obj?.data?.cooler?.find((cl) => cl._id === clrId)
+			const sect = obj?.data?.section?.find((sec) => sec._id === clr.sectionId)
+			ownerName = sect?.name ?? '' + ' ' + clr?.name ?? ''+':'
+		}
+
 		const cur = obj?.value?.outputEq?.[el._id]
 		const last = accDeb[el._id].at(-1)
 		// Есть ли авария по текущему ВНО
@@ -69,6 +77,7 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		// При сбросе аварийного сообщения, очищаем аккумулятор данного ВНО
 		if (acc[el._id]?.alarm && !isAlr) {
 			delete acc?.[el._id]?.alarm
+			delete acc.wait
 			accDeb[el._id] = []
 		}
 
@@ -84,8 +93,8 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		// Время между последними состояниями больше порога дребезга -> ОК
 		if (delta > watch) return
 		// Время меньше порога -> установка аварии
-		const mesBeg = sect?.name ? bld.name + '. ' + sect?.name + '. ' : bld.name + '. '
-		wrExtralrm(bld._id, 'debdo', el._id, msgBB(bld, 102, mesBeg, el.name))
+		
+		wrExtralrm(bld._id, 'debdo', el._id, msgBB(bld, 102, ownerName, el.name))
 		acc._alarm = true
 		acc[el._id].alarm = true
 	})

@@ -1,15 +1,16 @@
 const { data: store } = require('@store')
 const { isAlr } = require('@tool/message/auto')
+const { isErrMs } = require('@tool/message/plc_module')
 
 // Авария "Модуль не в сети" для склада
 function connect(bld, section, obj, s, se, m, automode, acc, data) {
-	const isErrM = !!Object.keys(store.alarm?.module?.[bld._id] ?? {}).length
+	const isErr = isErrMs(bld._id)
 
 	// Модули неисправны
-	if (isErrM) acc._alarm = true
+	if (isErr) acc._alarm = true
 
 	// Нет неисправностей модулей или сброс аварии - выкл аварии
-	if (!isErrM) {
+	if (!isErr) {
 		acc._alarm = false
 	}
 	// Для обычного склада и комби в режиме обычного неисправный модуль -> останов

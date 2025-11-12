@@ -128,7 +128,7 @@ function stateF(fan, equip, result, retain) {
 	result[fan._id].off = fanOff(idB, fan, equip.cooler, retain)
 
 	const alr = isAlrmByFan(idB, fan, equip, retain)
-	const alrDeb = isExtralrm(idB, 'debounce', fan._id)
+	const alrDeb = isExtralrm(idB, 'debdo', fan._id)
 
 	// Авария ВНО: По автоматическому выключателю,
 	// перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО

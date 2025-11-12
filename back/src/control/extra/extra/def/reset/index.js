@@ -3,6 +3,7 @@ const { getSignal } = require('@tool/command/signal')
 const { data: store } = require('@store')
 const { isReset, reset } = require('@tool/reset')
 const { compareTime } = require('@tool/command/time')
+const { isErrMs, isErrM } = require('@tool/message/plc_module')
 
 // Нажата кнопка "Сброс аварии" (mobile, web)
 function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -53,20 +54,20 @@ function connect(obj, bld, m, acc) {
 	acc.reset ??= {}
 	m.connect.forEach((el) => {
 		const sig = obj.value?.[el._id]
-		const mdlId = el.module?.id
-		const isErr = store.alarm?.module?.[bld._id]?.[mdlId]
-		if (isErr || !sig) acc.reset[mdlId] = true
-		if (sig && acc.reset?.[mdlId]) {
+		const idM = el.module?.id
+		const isErr = isErrM(bld._id, idM)
+		if (isErr || !sig) acc.reset[idM] = true
+		if (sig && acc.reset?.[idM]) {
 			acc.wait = new Date()
 			acc.firstFlag = true
-			delete acc.reset?.[mdlId]
+			delete acc.reset?.[idM]
 		}
 	})
 }
 
 function alrClosed(bld, obj, se) {
 	// Неисправность модулей
-	const isErrm = Object.keys(store.alarm?.module?.[bld._id] ?? {}).length ? true : false
+	const isErrm = isErrMs(bld._id)
 	// Аварийное закрытие клапанов (сигнал Склада)
 	const acBld = getSignal(bld?._id, obj, 'low')
 	// Аварийное закрытие клапанов (сигналы секций)

@@ -11,6 +11,8 @@ const data = {
 	vent_dura: '/img/alarm/intfan.svg',
 	vent_time_wait: '/img/alarm/intfan.svg',
 	vent_time: '/img/alarm/intfan.svg',
+	debdo: '/img/alarm/debdo.svg',
+	stableVno: '/img/alarm/stable_vno.svg',
 
 	drying: '/img/alarm/dry.svg',
 	cure: '/img/alarm/healing.svg',
@@ -25,7 +27,8 @@ const data = {
 
 	connect: '/img/alarm/connect.svg',
 	local: '/img/alarm/local.svg',
+	notTune: '/img/alarm/notTune.svg',
 	smoking: '/img/alarm/smoking.svg',
-	notTune:'/img/alarm/notTune.svg',
+	battery: '/img/alarm/battery.svg',
 }
 export default data

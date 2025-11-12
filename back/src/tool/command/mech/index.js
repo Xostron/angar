@@ -112,7 +112,7 @@ function mechB(bId, type, obj) {
 		data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
 	// Оборудование холодильника
 	let cold = type == 'cold' || type == 'combi' ? fnCold(bId, obj) : undefined
-	// Все вентиляторы склада
+	// Все вентиляторы склада: напорные, разгонные вно испарителей
 	const fanAll = data?.fan
 		?.filter((el) => idS.includes(el.owner.id))
 		.map((el) => {
@@ -121,6 +121,7 @@ function mechB(bId, type, obj) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
+	fanAll.push(...cold.fan)
 	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost, wettingS }
 }
 

@@ -121,29 +121,35 @@ const useInputStore = create((set, get) => ({
 	bannerB(idB, code) {
 		if (!idB) return []
 		const arr = []
-		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const local = Object.values(get()?.alarm?.banner?.local?.[idB] ?? {}).filter((el) => el)
-		const smoking = get()?.alarm?.banner?.smoking?.[idB]
+		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const notTune = get()?.alarm?.banner?.notTune?.[idB]
-		connect ? arr.push(connect) : null
+		const smoking = get()?.alarm?.banner?.smoking?.[idB]
+		const battery = get()?.alarm?.banner?.battery?.[idB]
+
 		local.length ? arr.push(local[0]) : null
-		smoking ? arr.push(smoking) : null
+		connect ? arr.push(connect) : null
 		notTune ? arr.push(notTune) : null
+		smoking ? arr.push(smoking) : null
+		battery ? arr.push(battery) : null
 		return arr
 	},
 	// Вернуть массив аварий-баннеров для секции
 	bannerS(idB, idS) {
 		if (!idB || !idS) return []
 		const arr = []
-		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const local =
 			get()?.alarm?.banner?.local?.[idB]?.[idS] ?? get()?.alarm?.banner?.local?.[idB]?.[idB]
-		const smoking = get()?.alarm?.banner?.smoking?.[idB]
+		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const notTune = get()?.alarm?.banner?.notTune?.[idB]
-		connect ? arr.push(connect) : null
+		const smoking = get()?.alarm?.banner?.smoking?.[idB]
+		const battery = get()?.alarm?.banner?.battery?.[idB]
+
 		local ? arr.push(local) : null
-		smoking ? arr.push(smoking) : null
+		connect ? arr.push(connect) : null
 		notTune ? arr.push(notTune) : null
+		smoking ? arr.push(smoking) : null
+		battery ? arr.push(battery) : null
 		return arr
 	},
 }))

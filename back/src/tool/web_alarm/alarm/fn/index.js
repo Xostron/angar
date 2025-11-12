@@ -1,5 +1,6 @@
 const { data: store } = require('@store')
 const mes = require('@dict/message')
+const { isErrMs } = require('@tool/message/plc_module')
 
 // Аварии на боковой колонке на странице "внутренности" Секции
 function bar(r, bld, sect, am, start) {
@@ -28,6 +29,8 @@ function bar(r, bld, sect, am, start) {
 	const ventDura = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_dura ?? null
 	const ventTimeWait = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time_wait ?? null
 	const ventTime = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time ?? null
+	const stableVno = store.alarm.extra?.[bld._id]?.[sect._id]?.stableVno ?? null
+	const debdo = store.alarm.extralrm?.[bld._id]?.debdo?.[0] ?? null
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
@@ -43,6 +46,9 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].ventDura = ventDura
 	r.bar[bld._id][sect._id].ventTimeWait = ventTimeWait
 	r.bar[bld._id][sect._id].ventTime = ventTime
+	r.bar[bld._id][sect._id].stableVno = stableVno
+	r.bar[bld._id][sect._id].debdo = debdo
+
 	if (tout1) r.bar[bld._id][sect._id].tout.push(tout1)
 	if (tout2) r.bar[bld._id][sect._id].tout.push(tout2)
 	if (tout3) r.bar[bld._id][sect._id].tout.push(tout3)
@@ -70,6 +76,9 @@ function barB(r, bld) {
 		r.barB[bld._id].ventDura ??= []
 		r.barB[bld._id].ventTimeWait ??= []
 		r.barB[bld._id].ventTime ??= []
+		r.barB[bld._id].stableVno ??= []
+		r.barB[bld._id].debdo ??= []
+
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
 		if (s.antibliz) r.barB[bld._id].antibliz.push(s.antibliz)
@@ -81,6 +90,8 @@ function barB(r, bld) {
 		if (s.ventDura) r.barB[bld._id].ventDura.push(s.ventDura)
 		if (s.ventTimeWait) r.barB[bld._id].ventTimeWait.push(s.ventTimeWait)
 		if (s.ventTime) r.barB[bld._id].ventTime.push(s.ventTime)
+		if (s.stableVno) r.barB[bld._id].stableVno.push(s.stableVno)
+		if (s.debdo) r.barB[bld._id].stableVno.push(s.debdo)
 	}
 }
 
@@ -150,7 +161,7 @@ function signalB(r, bld, am, data) {
 	const notTune = store.alarm?.extralrm?.[bld._id]?.notTune ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
-	const debounce = store.alarm?.extralrm?.[bld._id]?.debounce ?? null
+	const debdo = store.alarm?.extralrm?.[bld._id]?.debdo ?? null
 	const battery = store.alarm?.extralrm?.[bld._id]?.battery ?? null
 
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
@@ -174,7 +185,7 @@ function signalB(r, bld, am, data) {
 	if (openVin) r.signal[bld._id].push(openVin)
 	if (notTune) r.signal[bld._id].push(notTune)
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
-	if (debounce) r.signal[bld._id].push(...Object.values(debounce))
+	if (debdo) r.signal[bld._id].push(...Object.values(debdo))
 	if (battery) r.signal[bld._id].push(battery)
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
@@ -213,8 +224,7 @@ function bannerB(r, bld) {
 	r.banner.local[bld._id][bld._id] = store.alarm?.extralrm?.[bld._id]?.local ?? null
 	// Обратитесь в сервисный центр (пропала связь с модулем)
 	r.banner.connect ??= {}
-	const isErrM = !!Object.keys(store.alarm?.module?.[bld._id] ?? {}).length
-	r.banner.connect[bld._id] = isErrM ? mes[28] : null
+	r.banner.connect[bld._id] = isErrMs(bld._id) ? mes[28] : null
 	// Окуривание
 	r.banner.smoking ??= {}
 	r.banner.smoking[bld._id] ??= {}
@@ -223,6 +233,9 @@ function bannerB(r, bld) {
 	// Склад не работает: требуется калибровка клапанов
 	r.banner.notTune ??= {}
 	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune
+	// Авария питания
+	r.banner.battery ??= {}
+	r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }
