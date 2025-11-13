@@ -30,7 +30,10 @@ function bar(r, bld, sect, am, start) {
 	const ventTimeWait = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time_wait ?? null
 	const ventTime = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time ?? null
 	const stableVno = store.alarm.extra?.[bld._id]?.[sect._id]?.stableVno ?? null
-	const debdo = store.alarm.extralrm?.[bld._id]?.debdo?.[0] ?? null
+	const debdo = JSON.parse(
+		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
+	)
+	if (debdo) debdo.msg = mes[102].msg
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
@@ -91,7 +94,7 @@ function barB(r, bld) {
 		if (s.ventTimeWait) r.barB[bld._id].ventTimeWait.push(s.ventTimeWait)
 		if (s.ventTime) r.barB[bld._id].ventTime.push(s.ventTime)
 		if (s.stableVno) r.barB[bld._id].stableVno.push(s.stableVno)
-		if (s.debdo) r.barB[bld._id].stableVno.push(s.debdo)
+		if (s.debdo) r.barB[bld._id].debdo.push(s.debdo)
 	}
 }
 

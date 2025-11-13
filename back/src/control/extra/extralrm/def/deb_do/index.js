@@ -23,7 +23,7 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 	const count = s?.sys?.debCount ?? s?.cooler?.debCount ?? 4
 	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
 
-	console.log(44, 'Частое вкл ВНО debdo', acc, store.debounce)
+	console.log(44, 'Частое вкл ВНО debdo', acc)
 	// напорные ВНО канала + разгонные
 	fn(bld, m.fanAll, obj, store.debounce, acc, watch, count)
 	// Время автосброса аварии
