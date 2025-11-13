@@ -92,7 +92,7 @@ function mechB(bId, type, obj) {
 
 	//ID склада и секций
 	let idS = getId(data?.section, bId)
-	// Увлажнитель
+	// Увлажнители склада
 	const wettingS = data.device.filter(
 		(el) => el?.device?.code === 'wetting' && idS.includes(el.sectionId)
 	)
@@ -110,8 +110,21 @@ function mechB(bId, type, obj) {
 	// Приточные клапаны склада
 	const vlvIn =
 		data?.valve?.filter((el) => idS.includes(el.sectionId[0]) && el.type == 'in') ?? []
+	// Все клапаны склада
+	const vlvAll = data?.valve?.filter((el) => idS.includes(el.sectionId[0])) ?? []
+	// Все обогревы клапанов
+	const heatingAll =
+		data?.heating?.filter((el) => idS.includes(el.owner.id) && el.type === 'heating') ?? []
+	// Все оттайки слива воды
+	const heatingWAll =
+		data?.heating?.filter((el) => idS.includes(el.owner.id) && el.type === 'water') ?? []
 	// Оборудование холодильника
-	let cold = type == 'cold' || type == 'combi' ? fnCold(bId, obj) : undefined
+	let cold = type == 'cold' || type === 'combi' ? fnCold(bId, obj) : undefined
+	// Все оттайки испарителей
+	const clrsId = cold?.cooler?.map((el) => el._id) ?? []
+	const heatingClrAll =
+		data?.heating?.filter((el) => clrsId.includes(el.owner.id) && el.type === 'cooler') ?? []
+
 	// Все вентиляторы склада: напорные, разгонные вно испарителей
 	const fanAll = data?.fan
 		?.filter((el) => idS.includes(el.owner.id))
@@ -123,7 +136,20 @@ function mechB(bId, type, obj) {
 		})
 	// Если склад типа холодильник
 	if (cold) fanAll.push(...cold.fan)
-	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost, wettingS }
+	return {
+		fanA,
+		connect,
+		reset,
+		vlvIn,
+		cold,
+		fanAll,
+		connectLost,
+		wettingS,
+		vlvAll,
+		heatingAll,
+		heatingWAll,
+		heatingClrAll,
+	}
 }
 
 // Получить массив ID склада и его секций

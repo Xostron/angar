@@ -21,10 +21,25 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 	const watch = (s?.sys?.debDO ?? s?.cooler?.debDO ?? 20) * 1000
 	const count = s?.sys?.debCount ?? s?.cooler?.debCount ?? 4
 	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
+	const { heatingAll, heatingWAll, heatingClrAll, fanAll } = m
+	console.log(
+		66,
+		'debdo',
+		acc,
+		'heatingAll',
+		heatingAll,
+		'heatingWAll',
+		heatingWAll,
+		'heatingClrAll',
+		heatingClrAll
+	)
+	// 1. напорные ВНО канала + разгонные + ВНО испарителей
+	fn(bld, fanAll, obj, store.debounce, acc, watch, count)
+	// 2. Клапаны
+	// 3. Обогрев клапанов
+	// 4. Оттайка слива воды
+	// 3. Оттайка испарителя
 
-	console.log(66, 'debdo', acc)
-	// напорные ВНО канала + разгонные + ВНО испарителей
-	fn(bld, m.fanAll, obj, store.debounce, acc, watch, count)
 	// Время автосброса аварии
 	if (acc._alarm && !acc.wait) acc.wait = new Date()
 	const waitCom = compareTime(acc.wait, wait)
