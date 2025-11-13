@@ -18,6 +18,7 @@ const _LIMIT = 5 // размер очереди, история последни
  */
 function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Если в течении 30 сек, кол-во ВНО прыгало 1-2-1-2, то Авария Дребезг
+	console.log(55, 'stableVno', acc)
 	const LIMIT_TIME = (s?.fan?.debSoft ?? 30) * 1000
 	// Данные о ходе плавного пуска ВНО
 	const soft = store.watchdog.softFan[sect._id]

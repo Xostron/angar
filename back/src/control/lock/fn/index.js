@@ -84,8 +84,9 @@ function fanAccel(obj, s) {
 		const alrStop = isExtralrm(idB, null, 'alarm') //&& !store.aCmd?.[el.owner.id]?.fan?.end
 		// Таймер запрета
 		const ban = store.alarm.timer?.[idB]?.accel && !ignore
-
-		out(obj, output, el, localB, local, !!ban, alrStop)
+		// Состояние вентилятора: авария / выведен из работы
+		const isAlrState = value?.[el._id]?.state === 'alarm' ? true : false
+		out(obj, output, el, localB, local, !!ban, alrStop, isAlrState)
 	}
 }
 
@@ -190,8 +191,8 @@ function ao(obj, output, f, localB, local, ...args) {
 	// ВНО имеет аналоговое управление?
 	const ao = getAO(obj?.data?.binding, f)
 	if (ao && lock) {
-		output[ao.moduleId]??={}
-		output[ao.moduleId].value??={}
+		output[ao.moduleId] ??= {}
+		output[ao.moduleId].value ??= {}
 		output[ao.moduleId].value[ao.channel - 1] = _MIN_SP
 	}
 	// Местный переключатель => задание ВНО на 100%, DO выкл
