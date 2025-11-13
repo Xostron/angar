@@ -24,7 +24,7 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
 
 	console.log(44, 'Частое вкл ВНО debdo', acc)
-	// напорные ВНО канала + разгонные
+	// напорные ВНО канала + разгонные + ВНО испарителей
 	fn(bld, m.fanAll, obj, store.debounce, acc, watch, count)
 	// Время автосброса аварии
 	if (acc._alarm && !acc.wait) acc.wait = new Date()
@@ -32,11 +32,11 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Сброс аварии:
 	// 1. Системные настройки (кол-во переключений, время подсчета) равны нулю,
 	// 2. Время автосброса истекло,
-	if (!watch || !count || waitCom) {
+	if (!watch || !count || !wait || waitCom) {
 		// Сброс аварийных сообщений
 		delExtralrm(bld._id, null, 'debdo')
 		acc._alarm = false
-		delete acc.wait 
+		delete acc.wait
 	}
 	// console.log(66,  'wait=', wait)
 	return acc?._alarm ?? false
@@ -64,7 +64,7 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		if (clrId) {
 			const clr = obj?.data?.cooler?.find((cl) => cl._id === clrId)
 			const sect = obj?.data?.section?.find((sec) => sec._id === clr.sectionId)
-			ownerName = sect?.name ?? '' + ' ' + clr?.name ?? ''+':'
+			ownerName = sect?.name ?? '' + ' ' + clr?.name ?? '' + ':'
 		}
 
 		const cur = obj?.value?.outputEq?.[el._id]
@@ -93,7 +93,7 @@ function fn(bld, arr, obj, accDeb, acc, watch, count) {
 		// Время между последними состояниями больше порога дребезга -> ОК
 		if (delta > watch) return
 		// Время меньше порога -> установка аварии
-		
+
 		wrExtralrm(bld._id, 'debdo', el._id, msgBB(bld, 102, ownerName, el.name))
 		acc._alarm = true
 		acc[el._id].alarm = true

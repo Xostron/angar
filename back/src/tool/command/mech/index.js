@@ -121,7 +121,8 @@ function mechB(bId, type, obj) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
-	fanAll.push(...cold.fan)
+	// Если склад типа холодильник
+	if (cold) fanAll.push(...cold.fan)
 	return { fanA, connect, reset, vlvIn, cold, fanAll, connectLost, wettingS }
 }
 
