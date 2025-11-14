@@ -239,6 +239,12 @@ function bannerB(r, bld) {
 	// Авария питания
 	r.banner.battery ??= {}
 	r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery
+	// r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery?.msg
+	// 	? { ...store.alarm?.extralrm?.[bld._id]?.battery }
+	// 	: null
+	// r.banner.battery?.[bld._id]?.msg
+	// 	? (r.banner.battery[bld._id].msg = mes[103].msg + ' (Ручной сброс)')
+	// 	: null
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }

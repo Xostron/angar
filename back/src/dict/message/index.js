@@ -236,7 +236,7 @@ const data = {
 	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
 	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
 	102: { count: true, code: 'debdo', typeSignal: 'critical', msg: 'Частое включение' },
-	103: { count: true, code: 'battery', typeSignal: 'critical', msg: 'Авария питания. Дальнейшая работа невозможна' },
+	103: { count: true, code: 'battery', typeSignal: 'critical', msg: 'Авария питания (Ручной сброс)' },
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
 	111: {

@@ -1,7 +1,5 @@
-const { delExtralrm } = require('@tool/message/extralrm')
-const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store')
-const fn = require('./fn')
+const { set, reset, fnCheck } = require('./fn')
 /**
  * Антидребезг исполнительных механизмов:
  * ВНО (fan, accel, cooler), клапаны (in,out), подогрев клапанов (heating),
@@ -18,41 +16,37 @@ const fn = require('./fn')
  * @returns
  */
 function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
-	const watch = (s?.sys?.debDO ?? s?.cooler?.debDO ?? 20) * 1000
-	const count = s?.sys?.debCount ?? s?.cooler?.debCount ?? 4
-	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
 	const { heatingAll, heatingWAll, heatingClrAll, fanAll } = m
+	const watch = (s?.sys?.debDO ?? s?.cooler?.debDO ?? 10) * 1000
+	let count = s?.sys?.debCount ?? s?.cooler?.debCount ?? 3
+	count += 1
+	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
+	const arr = [...fanAll]
 	console.log(
 		66,
+		count,
 		'debdo',
 		acc,
-		'heatingAll',
-		heatingAll,
-		'heatingWAll',
-		heatingWAll,
-		'heatingClrAll',
-		heatingClrAll
+		store.debounce
+		// 'heatingAll',
+		// heatingAll,
+		// 'heatingWAll',
+		// heatingWAll,
+		// 'heatingClrAll',
+		// heatingClrAll
 	)
+	// Разрешение на работу
+	if (!fnCheck(bld, watch, count, wait, arr, acc, store.debounce)) return false
+
+	// Автосброс аварии
+	reset(bld, wait, arr, acc, store.debounce)
 	// 1. напорные ВНО канала + разгонные + ВНО испарителей
-	fn(bld, fanAll, obj, store.debounce, acc, watch, count)
+	set(bld, fanAll, obj, store.debounce, acc, watch, count)
 	// 2. Клапаны
 	// 3. Обогрев клапанов
 	// 4. Оттайка слива воды
 	// 3. Оттайка испарителя
 
-	// Время автосброса аварии
-	if (acc._alarm && !acc.wait) acc.wait = new Date()
-	const waitCom = compareTime(acc.wait, wait)
-	// Сброс аварии:
-	// 1. Системные настройки (кол-во переключений, время подсчета) равны нулю,
-	// 2. Время автосброса истекло,
-	if (!watch || !count || !wait || waitCom) {
-		// Сброс аварийных сообщений
-		delExtralrm(bld._id, null, 'debdo')
-		acc._alarm = false
-		delete acc.wait
-	}
-	// console.log(66,  'wait=', wait)
 	return acc?._alarm ?? false
 }
 
