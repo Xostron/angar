@@ -3,7 +3,6 @@ const { compareTime, onTime } = require('@tool/command/time')
 // Оттайка
 function defrost(fnChange, accAuto, acc, se, s, bld, clr) {
 	onTime('defrost', acc)
-	delete acc?.state?.off
 	const time = compareTime(acc.state.defrost, s.cooler.defrostWork)
 	const t = se.cooler.tmpCooler >= s.cooler.defrostOff
 	if (!acc.state.defrost) acc.state.defrost = new Date()

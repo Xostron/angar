@@ -4,7 +4,6 @@ const check = require('../../../check')
 // Слив конденсата
 function drain(fnChange, accAuto, acc, se, s, bld, clr) {
 	if (!acc.state.drain) acc.state.drain = new Date()
-	delete acc?.state?.off
 	delete acc.state.drainAll
 	onTime('drain', acc)
 	const time = compareTime(acc.state.drain, s.cooler.water)
