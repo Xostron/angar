@@ -29,7 +29,7 @@ function bar(r, bld, sect, am, start) {
 	const ventDura = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_dura ?? null
 	const ventTimeWait = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time_wait ?? null
 	const ventTime = store.alarm.extra?.[bld._id]?.[sect._id]?.vent_time ?? null
-	const stableVno = store.alarm.extra?.[bld._id]?.[sect._id]?.stableVno ?? null
+	const stableVno = store.alarm.extralrm?.[bld._id]?.[sect._id]?.stableVno ?? null
 	const debdo = JSON.parse(
 		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
 	)
@@ -239,12 +239,6 @@ function bannerB(r, bld) {
 	// Авария питания
 	r.banner.battery ??= {}
 	r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery
-	// r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery?.msg
-	// 	? { ...store.alarm?.extralrm?.[bld._id]?.battery }
-	// 	: null
-	// r.banner.battery?.[bld._id]?.msg
-	// 	? (r.banner.battery[bld._id].msg = mes[103].msg + ' (Ручной сброс)')
-	// 	: null
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }
