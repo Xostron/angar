@@ -16,9 +16,16 @@ const def = {
 		// Выключен
 		'off-off-off': off,
 		// Набор холода
-		'on-off-off': (fnChange, accAuto, acc, se, s, bld, clr) => check.cold(fnChange, 'frost',accAuto, acc, se, s, bld, clr),
+		'on-off-off': (fnChange, accAuto, acc, se, s, bld, clr) => {
+			delete acc?.state?.off
+			check.cold(fnChange, 'frost', accAuto, acc, se, s, bld, clr)
+		},
 		// Охлаждение
-		'on-on-off': (fnChange,accAuto, acc, se, s, bld, clr) => check.cold(fnChange, 'cooling', accAuto, acc, se, s, bld, clr),
+		'on-on-off': (fnChange, accAuto, acc, se, s, bld, clr) => {
+			delete acc?.state?.off
+			console.log(55, acc)
+			check.cold(fnChange, 'cooling', accAuto, acc, se, s, bld, clr)
+		},
 		// Обдув
 		'off-on-off': blow,
 		// Оттайка
@@ -31,11 +38,14 @@ const def = {
 		// Выключен
 		'off-off-off': offCombi,
 		// Набор холода
-		'on-off-off': (fnChange, accCold,acc, se, s, bld, clr) => check.combi(fnChange, 'frost', accCold, acc, se, s, bld, clr),
+		'on-off-off': (fnChange, accCold, acc, se, s, bld, clr) =>
+			check.combi(fnChange, 'frost', accCold, acc, se, s, bld, clr),
 		// Охлаждение
-		'on-on-off': (fnChange, accCold,acc, se, s, bld, clr) => check.combi(fnChange, 'cooling', accCold, acc, se, s, bld, clr),
+		'on-on-off': (fnChange, accCold, acc, se, s, bld, clr) =>
+			check.combi(fnChange, 'cooling', accCold, acc, se, s, bld, clr),
 		// Обдув
-		'off-on-off': (fnChange, accCold,acc, se, s, bld, clr) => check.combi(fnChange, 'blow', accCold, acc, se, s, bld, clr),
+		'off-on-off': (fnChange, accCold, acc, se, s, bld, clr) =>
+			check.combi(fnChange, 'blow', accCold, acc, se, s, bld, clr),
 		// Комбинированный - что оттайка и стекание блокирует полностью склад?
 		// Оттайка
 		'off-off-on': defrostCombi,

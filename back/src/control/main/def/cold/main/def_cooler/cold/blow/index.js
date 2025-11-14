@@ -4,6 +4,7 @@ const check = require('../../../check')
 // Обдув
 function blow(fnChange, accAuto, acc, se, s, bld, clr) {
 	onTime('blow', acc)
+	// delete acc?.state?.off
 	// Отсутсвует время включения обдува
 	if (!acc.state.blow) {
 		console.log('\tblow', 'Отсутсвует время включения обдува')
