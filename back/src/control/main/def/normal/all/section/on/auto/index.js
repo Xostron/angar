@@ -19,7 +19,22 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада
 	// const alr = alrS || alrAm || ban || alrBld || alrAlw || alrSe
 	const alr = alrS || (alrAm && !extraCO2.start) || ban || alrBld || alrAlw || alrSe
-	// console.log(666, sect?.name, 'alr = ' + alr + ' = ', alrS, '||', alrAm, '||', ban, '||', alrBld, '||', '||', alrAlw, '||', alrSe)
+	console.log(
+		666,
+		sect?.name,
+		'alr ' + alr + ' = ',
+		alrS,
+		'||',
+		alrAm,
+		'||',
+		ban,
+		'||',
+		alrBld,
+		'||',
+		alrAlw,
+		'||',
+		alrSe
+	)
 	//********** Логика авто **********
 	// Пользовательские расчеты
 	if (def[am]?.middlew) def[am]?.middlew(bld, sect, obj, s, se, seB, alr, acc)

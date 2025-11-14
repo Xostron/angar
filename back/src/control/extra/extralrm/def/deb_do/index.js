@@ -27,7 +27,7 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 		count,
 		'debdo',
 		acc,
-		store.debounce
+		// store.debounce
 		// 'heatingAll',
 		// heatingAll,
 		// 'heatingWAll',

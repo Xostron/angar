@@ -9,7 +9,7 @@ const retainFile = path.join(retainDir, 'data.json')
 /**
  * Проверка и создание папки и файла retain
  */
-function isExist() {
+function fnExist() {
 	const exist = fs.existsSync(retainDir)
 	const existFile = fs.existsSync(retainFile)
 	if (!exist) {
@@ -45,7 +45,7 @@ async function recovery() {
  */
 async function readRetain() {
 	// Проверка и создание папки и файла retain
-	isExist()
+	fnExist()
 	store.retain = await recovery()
 }
 
