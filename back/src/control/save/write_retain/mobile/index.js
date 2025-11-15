@@ -24,9 +24,9 @@ const cb = {
 	start,
 }
 
-function fnMobile(result) {
+function fnMobile() {
 	for (const code in store.mobile) {
-		if (cb?.[code]) cb[code](store.mobile[code], result)
+		if (cb?.[code]) cb[code](store.mobile[code], store.retain)
 	}
 	// Очистить аккумулятор
 	store.mobile = {}

@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 
-// Если файл retain был пуст, то инициализируем его
+// Если аккумулятор retain был пуст, то инициализируем его: записываем авторежим склада и продукт
 async function initRetain(equip) {
 	const { building, product } = equip
 	const onion = product?.find((el) => el.code == 'onion')

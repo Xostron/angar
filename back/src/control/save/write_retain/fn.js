@@ -55,26 +55,25 @@ function positionVlv(obj) {
 }
 
 /**
- * Собираем данные в result
+ * Собираем данные в store.retain
  * @param {*} data Текущее состояние процесса
- * @param {*} result Данные на сохранение
  * @param {string} key Ключ по которому хранится инфа(например, valvePosition - позиции клапана)
  * @param {object} prime Данные из файла
  */
-function fnResult(data, result, key) {
+function fnResult(data, key) {
 	if (!data) return
 	for (const idB in data) {
-		result[idB][key] = data[idB]
+		store.retain[idB][key] = data[idB]
 		// Правило для окуривания (key==='cooling')
-		finishSmoking(data[idB], result[idB], key)
+		finishSmoking(data[idB], store.retain[idB], key)
 	}
 }
 
-function fnResultValve(data, result, key) {
+function fnResultValve(data, key) {
 	if (!data) return
 	for (const idB in data) {
-		result[idB][key] ??= {}
-		result[idB][key] = { ...result[idB][key], ...data[idB] }
+		store.retain[idB][key] ??= {}
+		store.retain[idB][key] = { ...store.retain[idB][key], ...data[idB] }
 		if (key === 'valve') setTuneTime(null)
 	}
 }
@@ -100,34 +99,31 @@ function finishSmoking(dataB, resultB, key) {
 /**
  * Данные режима хранения
  * @param {*} data Текущее состояние процесса
- * @param {*} result Данные на сохранение
  * @returns
  */
-function fnCooling(data, result) {
+function fnCooling(data) {
 	if (!data) return
 	for (const idB in data) {
-		result[idB].cooling ??= {}
+		store.retain[idB].cooling ??= {}
 		// Мин. темп. продукта в режиме хранения
-		result[idB].cooling.tprdMin =
-			result[idB].automode === 'cooling' ? data?.[idB]?.cooling?.tprdMin ?? null : null
+		store.retain[idB].cooling.tprdMin = store.retain[idB].automode === 'cooling' ? data?.[idB]?.cooling?.tprdMin ?? null : null
 		// Дата и время: продукт достиг задания в режиме хранения
-		result[idB].cooling.finish = data?.[idB]?.cooling?.finish
+		store.retain[idB].cooling.finish = data?.[idB]?.cooling?.finish
 	}
 }
 
 /**
  * Дата и время: вкл/выкл склада
  * @param {object[]} building Массив складов
- * @param {object} result Данные на сохранение
  */
-function fnDateBuild(building, result) {
+function fnDateBuild(building) {
 	for (const { _id: idB } of building) {
-		if (result?.[idB]?.start && !result[idB]?.datestart) {
-			result[idB].datestop = null
-			result[idB].datestart = new Date()
-		} else if (!result?.[idB]?.start && !result[idB]?.datestop) {
-			result[idB].datestop = new Date()
-			result[idB].datestart = null
+		if (store.retain?.[idB]?.start && !store.retain[idB]?.datestart) {
+			store.retain[idB].datestop = null
+			store.retain[idB].datestart = new Date()
+		} else if (!store.retain?.[idB]?.start && !store.retain[idB]?.datestop) {
+			store.retain[idB].datestop = new Date()
+			store.retain[idB].datestart = null
 		}
 	}
 }
@@ -135,43 +131,34 @@ function fnDateBuild(building, result) {
 /**
  * Счетчик дней в авторежиме сушки
  * @param {object[]} building Массив складов
- * @param {object} result Данные на сохранение
  */
-function fnDryingCount(building, result) {
+function fnDryingCount(building) {
 	for (const { _id: idB } of building) {
-		result[idB].drying ??= {}
-		result[idB].drying.acc ??= 0
+		store.retain[idB].drying ??= {}
+		store.retain[idB].drying.acc ??= 0
 
 		// Фиксируем точку отсчета работы сушки
-		if (
-			result?.[idB]?.start &&
-			result[idB]?.automode == 'drying' &&
-			!result[idB]?.drying?.date
-		) {
-			result[idB].drying.date = new Date()
+		if (store.retain?.[idB]?.start && store.retain[idB]?.automode == 'drying' && !store.retain[idB]?.drying?.date) {
+			store.retain[idB].drying.date = new Date()
 		}
 		// Сушка выключена / склад выключен - сохраняем в аккумулятор
-		if (
-			(!result?.[idB]?.start || result[idB]?.automode !== 'drying') &&
-			result?.[idB]?.drying?.date
-		) {
-			result[idB].drying.acc = result[idB].drying.count
-			delete result?.[idB]?.drying?.date
-			delete result?.[idB]?.drying?.count
+		if ((!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') && store.retain?.[idB]?.drying?.date) {
+			store.retain[idB].drying.acc = store.retain[idB].drying.count
+			delete store.retain?.[idB]?.drying?.date
+			delete store.retain?.[idB]?.drying?.count
 		}
 
-		const dt = result?.[idB]?.drying?.date
+		const dt = store.retain?.[idB]?.drying?.date
 
 		// Нажата кнопка обнулить
 		if (isZero(idB)) {
-			result[idB].drying = { acc: 0 }
+			store.retain[idB].drying = { acc: 0 }
 		}
 
 		// Подсчет дней
 		if (dt) {
 			const dd = typeof dt == 'string' ? new Date(dt) : dt
-			result[idB].drying.count =
-				result[idB].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
+			store.retain[idB].drying.count = store.retain[idB].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
 		}
 	}
 }

@@ -6,11 +6,12 @@ const setting = require('@control/extra/setting')
 const { data: store } = require('@store')
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
- * @param {*} obj объект данных для работы основного цикла
+ * @param {*} obj Глобальные данные - каждый цикл новый объект
  */
 async function analysis(obj) {
 	// файлы json - оборудование, пользовательские настройки, заводские настройки
 	await readAll(obj)
+    // Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
 	// Опрос модулей по сети
 	let v = await read(obj)

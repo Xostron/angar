@@ -5,7 +5,6 @@ const writeRetain = require('./write_retain')
 // Сохранение в файл retain (Настройки, режимы работы и т.д.)
 async function save(obj) {
 	try {
-		// await writeRetainOld(obj)
 		writeRetain(obj)
 	} catch (error) {
 		console.error(`Ошибка записи файла ${retainDir}/data.json`, error)

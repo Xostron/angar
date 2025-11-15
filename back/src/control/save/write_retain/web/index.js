@@ -24,9 +24,9 @@ const cb = {
 	s_start,
 }
 
-function fnWeb(result) {
+function fnWeb() {
 	for (const code in store.web) {
-		if (cb?.[code]) cb[code](store.web[code], result)
+		if (cb?.[code]) cb[code](store.web[code], store.retain)
 	}
 	// Очистить аккумулятор
 	store.web = {}
