@@ -63,14 +63,14 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
-		if (code == 'drain' && !accAuto.drainAll) return
+		if (code === 'drain' && !accAuto.drainAll) return
 		return fnChange(1, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
 		acc.state.frost = new Date()
 		return fnChange(0, 1, 0, 0, 'blow', clr)
 	} else {
-		if (code === 'cooling') return
+		// if (code === 'cooling') return
 		return fnChange(1, 1, 0, 0, 'cooling', clr)
 	}
 }

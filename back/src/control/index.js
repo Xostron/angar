@@ -13,6 +13,7 @@ const main = require('./main')
 const save = require('./save')
 const data = require('./data')
 const battery = require('@tool/scripts/battery')
+const Aboc = require('@tool/abort_controller')
 
 // Контроль работы склада
 async function control() {
@@ -21,25 +22,30 @@ async function control() {
 		battery()
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
-		// Анализ данных с модулей ПЛК и отправка на Web-клиент
-		await analysis(obj)
-		// console.log(obj.data.fan)
-		// Логика
-		main(obj)
-		// Выхода: Команды управления
-		convCmd(obj)
-		// Выхода: Блокировки
-		writeLock(obj)
-		// Выхода: Запись в модули
-		await writeVal(obj.output)
-		// Сохранение пользовательских настроек склада retain/data.json
-		await save(obj)
+		// Было прерывание?
+		if (!Aboc.check()) {
+			// нет
+			// Анализ данных с модулей ПЛК и отправка на Web-клиент
+			await analysis(obj)
+			// console.log(obj.data.fan)
+			// Логика
+			main(obj)
+			// Выхода: Команды управления
+			convCmd(obj)
+			// Выхода: Блокировки
+			writeLock(obj)
+			// Выхода: Запись в модули
+			await writeVal(obj.output)
+		}
 		// Аварии для web
 		const alr = await webAlarm(obj)
 		// Статистика
 		statOnChange(obj, alr.history)
 		// обнулить счетчик сушки
 		zero(null, false)
+		// Сохранение пользовательских настроек склада retain/data.json
+		await save(obj)
+		Aboc.refresh()
 		// await delay(5000)
 		// store.battery = !store.battery
 		if (store._cycle_ms_ < 50) await delay(1000)

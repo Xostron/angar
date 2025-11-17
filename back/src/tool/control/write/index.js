@@ -1,6 +1,6 @@
 const { timeout } = require('@tool/message/plc_module')
 const make = require('../make')
-
+const Aboc = require('@tool/abort_controller')
 /**
  * Записать данные в модули
  * @param {*} obj Глобальные данные о складе
@@ -11,6 +11,7 @@ async function write(obj) {
 		if (!obj) return null
 		const ok = {}
 		for (const i in obj) {
+			if (Aboc.check()) return
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i])) continue
 

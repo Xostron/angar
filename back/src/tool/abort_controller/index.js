@@ -34,8 +34,8 @@ const data = {
 	},
 	// Обновление контроллера после срабатывания
 	refresh() {
-		if (this.check) this.controller = new AbortController()
+		if (this.check()) this.controller = new AbortController()
 	},
 }
-
+console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',data)
 module.exports = data

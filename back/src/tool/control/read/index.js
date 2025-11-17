@@ -2,7 +2,7 @@ const { data: store } = require('@store')
 const { timeout } = require('@tool/message/plc_module')
 const make = require('../make')
 const fnCacheDO = require('./fn/cache')
-
+const Aboc = require('@tool/abort_controller')
 /**
  * Чтение модулей
  * @param {*} arr Массив модулей
@@ -13,6 +13,8 @@ async function read(arr, obj) {
 	try {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
+			if (Aboc.check()) return
+
 			const idM = arr[i]._id
 			// Разрешение на чтение модуля
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue

@@ -4,14 +4,17 @@ const read = require('./read')
 const value = require('./value')
 const setting = require('@control/extra/setting')
 const { data: store } = require('@store')
+const Aboc = require('@tool/abort_controller')
+
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
  * @param {*} obj Глобальные данные - каждый цикл новый объект
  */
 async function analysis(obj) {
+	if (Aboc.check()) return
 	// файлы json - оборудование, пользовательские настройки, заводские настройки
 	await readAll(obj)
-    // Копирование аккумулятора retain в obj.retain
+	// Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
 	// Опрос модулей по сети
 	let v = await read(obj)
