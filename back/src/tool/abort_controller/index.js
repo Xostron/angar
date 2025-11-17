@@ -25,17 +25,22 @@ const data = {
 		return this.controller.signal
 	},
 	// Сигнал на прерывание
-	abort() {
+	set() {
+		console.log('................ABOC SET')
 		this.controller.abort()
 	},
 	// Проверка: произошло прерывание
 	check() {
+		console.log('...............ABOC RETURN',this.controller.signal.aborted)
 		return this.controller.signal.aborted
 	},
 	// Обновление контроллера после срабатывания
 	refresh() {
-		if (this.check()) this.controller = new AbortController()
+		if (this.check()) {
+			this.controller = new AbortController()
+			console.log('...................ABOC NEW')
+		}
 	},
 }
-console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',data)
+console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', data)
 module.exports = data

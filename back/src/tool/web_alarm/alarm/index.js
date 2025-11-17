@@ -41,7 +41,8 @@ function alarm(obj) {
 				? Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
 				: Object.values(store.alarm?.achieve?.[bld._id]?.[am] ?? {})
 		// Для всех складов: сообщение Склад выключен
-		if (store.alarm?.achieve?.[bld._id]?.building?.datestop) r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.datestop)
+		if (store.alarm?.achieve?.[bld._id]?.building?.datestop)
+			r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.datestop)
 		r.achieve[bld._id].sort((a, b) => a.order - b.order)
 
 		// аварии по секции
@@ -57,7 +58,7 @@ function alarm(obj) {
 		bannerB(r, bld)
 	}
 	// Счетчик текущих аварий (карточка склада)
-	count(r, value.total, data.building)
+	count(r)
 	// История для логов
 	history(r)
 	// Мониторинг: критические аварии
@@ -83,7 +84,11 @@ function critical(r) {
 		// Замена нескольких сообщений не в сети на одно сообщение (Пропала связь)
 		const m = r.signal[bld].filter((el) => el.code === 'module')
 		if (m.length > 1) {
-			const o = { ...m[0], title: '', msg: 'Обратитесь в сервисный центр (пропала связь с модулем)' }
+			const o = {
+				...m[0],
+				title: '',
+				msg: 'Обратитесь в сервисный центр (пропала связь с модулем)',
+			}
 			t.push(o)
 		} else {
 			m.length ? t.push(m[0]) : null

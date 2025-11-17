@@ -1,6 +1,7 @@
 const { findOne } = require('@tool/json')
 const { setCmd } = require('@tool/command/set')
 const { data: store } = require('@store')
+const Aboc = require('@tool/abort_controller')
 
 async function cmd(obj) {
 	try {
@@ -53,6 +54,7 @@ async function cmd(obj) {
 		}
 		console.log(333, s)
 		setCmd(s)
+		Aboc.set()
 		return true
 	} catch (error) {
 		return error
@@ -60,11 +62,11 @@ async function cmd(obj) {
 }
 
 /**
-Fan
-{"buildingId":"65d4aed4b47bb93c40100fd5", "fanId":"65d73c5fa9730d2218d419ed", "value":"stop"} 
-{"buildingId":"65d4aed4b47bb93c40100fd5", "fanId":"65d73c5fa9730d2218d419ed", "value":"start"} 
-{"buildingId":"65d4aed4b47bb93c40100fd5", "fanId":"65d73c5fa9730d2218d419ed", "value":"off"} 
-*/
+ Fan
+ {"buildingId":"65d4aed4b47bb93c40100fd5", "fanId":"65d73c5fa9730d2218d419ed", "value":"stop"} 
+ {"buildingId":"65d4aed4b47bb93c40100fd5", "fanId":"65d73c5fa9730d2218d419ed", "value":"start"} 
+ {"buildingId":"65d4aed4b47bb93c40100fd5", "fanId":"65d73c5fa9730d2218d419ed", "value":"off"} 
+ */
 
 module.exports = cmd
 

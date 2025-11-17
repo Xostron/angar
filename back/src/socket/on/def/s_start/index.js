@@ -7,6 +7,6 @@ module.exports = function sStart(io, socket) {
 		store.web ??= {}
 		store.web.s_start = { ...store.web.s_start, ...obj }
 		console.log('s_start', obj)
-		Aboc.abort()
+		Aboc.set()
 	})
 }

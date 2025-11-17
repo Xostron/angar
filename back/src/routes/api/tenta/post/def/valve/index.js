@@ -1,6 +1,7 @@
 const { setTune } = require('@tool/command/set')
 const { findOne } = require('@tool/json')
 const fnVlv = require('./fn')
+const Aboc = require('@tool/abort_controller')
 
 async function valve(obj) {
 	try {
@@ -11,6 +12,7 @@ async function valve(obj) {
 		// console.log(1111, obj)
 		// Команда управления
 		fnVlv(vlv, obj)
+		Aboc.set()
 		return true
 	} catch (error) {
 		return error

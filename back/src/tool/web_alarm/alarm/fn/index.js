@@ -202,7 +202,7 @@ function signalB(r, bld, am, data) {
 }
 
 // Счетчик аварий на карточке склада (стр. Склады)
-function count(r, total, building) {
+function count(r) {
 	// По складу
 	for (const bId in r.signal) {
 		// По всем аварийным сообщениям

@@ -5,7 +5,7 @@ const reset = require('./reset')
 const tune = require('./tune')
 const warming = require('./warming')
 const zero = require('./zero')
-
+const Aboc = require('@tool/abort_controller')
 
 const data = {
 	// Команды по изменению retain.json
@@ -32,6 +32,7 @@ function fn(code) {
 		try {
 			store.mobile[code] ??= {}
 			store.mobile[code] = { ...store.mobile[code], ...obj }
+			Aboc.set()
 			return true
 		} catch (error) {
 			throw new Error('Мобильный клиент: Запись данных не успешна!')
