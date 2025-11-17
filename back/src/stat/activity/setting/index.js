@@ -13,25 +13,30 @@ function web(code, obj, oData) {
 	prdCode = obj.prdCode
 	nameStg = factory?.[stgCode]?._name
 	namePrd = factory?.[stgCode]?.[prdCode]?._name
+	console.log(5500, namePrd)
 	let title = []
+
+	const source = namePrd ? factory?.[stgCode]?.[prdCode] : factory?.[stgCode]
+
 	// По линии
 	for (const line in obj.value) {
-		const lineName = factory?.[stgCode]?.[prdCode]?.[line]?._name
+		const lineName = source?.[line]?._name
 		// По полю (mark)
 		let t = ``
 		for (const fld in obj.value[line]) {
 			const fldVal = obj.value[line][fld]
-			const fldName =
-				line === fld ? '' : `(${factory?.[stgCode]?.[prdCode]?.[line]?.[fld]?._name}) `
+			const fldName = line === fld ? '' : `(${source?.[line]?.[fld]?._name}) `
 			if (!t) t += `${fldName}= ${fldVal}`
 			else t += `; ${fldName}= ${fldVal}`
 		}
 		title.push(`${lineName} ${t}`)
 	}
 	return {
-		title:
-			`Изменение настройки "${nameStg}", продукт "${namePrd}": ` +
-			(title.length > 1 ? title.join('; ') : title.join('')),
+		title: namePrd
+			? `Изменение настройки "${nameStg}", продукт "${namePrd}": ` +
+			  (title.length > 1 ? title.join('; ') : title.join(''))
+			: `Изменение настройки "${nameStg}": ` +
+			  (title.length > 1 ? title.join('; ') : title.join('')),
 	}
 }
 
@@ -43,24 +48,25 @@ function mobile(code, obj, oData) {
 	nameStg = factory?.[stgCode]?._name
 	namePrd = factory?.[stgCode]?.[prdCode]?._name
 	let title = []
+	const source = namePrd ? factory?.[stgCode]?.[prdCode] : factory?.[stgCode]
 	// По линии
 	for (const line in obj.val) {
-		const lineName =
-			factory?.[stgCode]?.[prdCode]?.[line]?._name ?? factory?.[stgCode]?.[line]?._name
+		const lineName = source?.[line]?._name
 		// По полю (mark)
 		let t = ``
 		for (const fld in obj.val[line]) {
 			const fldVal = obj.val[line][fld]
-			const fldName =
-				line === fld ? '' : `(${factory?.[stgCode]?.[prdCode]?.[line]?.[fld]?._name}) `
+			const fldName = line === fld ? '' : `(${source?.[line]?.[fld]?._name}) `
 			if (!t) t += `${fldName}= ${fldVal}`
 			else t += `; ${fldName}= ${fldVal}`
 		}
 		title.push(`${lineName} ${t}`)
 	}
 	return {
-		title:
-			`Изменение настройки "${nameStg}", продукт "${namePrd}": ` +
-			(title.length > 1 ? title.join('; ') : title.join('')),
+		title: namePrd
+			? `Изменение настройки "${nameStg}", продукт "${namePrd}": ` +
+			  (title.length > 1 ? title.join('; ') : title.join(''))
+			: `Изменение настройки "${nameStg}": ` +
+			  (title.length > 1 ? title.join('; ') : title.join('')),
 	}
 }
