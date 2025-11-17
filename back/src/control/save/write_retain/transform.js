@@ -1,7 +1,15 @@
 const { data: store } = require('@store')
-const { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount, fnResultValve } = require('./fn')
+const {
+	positionVlv,
+	fnResult,
+	fnCooling,
+	fnDateBuild,
+	fnDryingCount,
+	fnResultValve,
+} = require('./fn')
 const fnWeb = require('./web')
 const fnMobile = require('./mobile')
+const Aboc = require('@tool/abort_controller')
 
 /**
  * Агрегируем данные для сохранения в retain
@@ -29,9 +37,9 @@ function transform(obj) {
 	// 7. Счетчик дней в авторежиме сушки
 	fnDryingCount(obj.data.building)
 	// 8. web - команды управления
-	fnWeb()
+	Aboc.call(fnWeb)()
 	// 9. mobile - команды
-	fnMobile()
+	Aboc.call(fnMobile)()
 }
 
 module.exports = transform

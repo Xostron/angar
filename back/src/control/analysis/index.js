@@ -11,7 +11,6 @@ const Aboc = require('@tool/abort_controller')
  * @param {*} obj Глобальные данные - каждый цикл новый объект
  */
 async function analysis(obj) {
-	if (Aboc.check()) return
 	// файлы json - оборудование, пользовательские настройки, заводские настройки
 	await readAll(obj)
 	// Копирование аккумулятора retain в obj.retain
@@ -19,12 +18,12 @@ async function analysis(obj) {
 	// Опрос модулей по сети
 	let v = await read(obj)
 	// Анализ - данные для клиента и работы алгоритма
-	v = value(v, obj)
+	v = Aboc.call(value)(v, obj)
 	// Настройки складов (обработанные для расчетов)
-	calcSetting(v, obj)
+	Aboc.call(calcSetting)(v, obj)
 	// Передача мяса по Socket.io на web-клиент
-	console.table(v.coef)
-	await cValue(v)
+	await Aboc.asycall(cValue)(v)
+	console.table(v?.coef)
 }
 
 module.exports = analysis
@@ -47,6 +46,7 @@ const _STG = [
  * @returns
  */
 const calcSetting = (v, obj) => {
+	if (!v) return
 	obj.data.building.forEach((bld) => {
 		store.calcSetting[bld._id] = setting(bld, obj)
 		v.coef ??= {}

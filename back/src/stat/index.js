@@ -11,6 +11,7 @@ const { readTO } = require('@tool/json')
  * @param {object[]} alr данные для логирования неисправностей
  */
 function statOnChange(obj, alr) {
+	if (!alr || !obj?.value) return
 	const { data, value } = obj
 	const { critical, event } = alr
 	const force = TT.check()

@@ -8,7 +8,7 @@ function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 	const name = `Склад ${building.code ?? ''}`
 	const exclude = am.filter((el) => el != automode)
 	// По таймерам запрета
-	for (const key in s.idle) {
+	for (const key in s?.idle) {
 		acc[key] ??= {}
 		// Проверка диапазона
 		const check = checkRange(s?.idle?.[key]?.begin, s?.idle?.[key]?.end, exclude.includes(key))

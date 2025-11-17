@@ -1,10 +1,11 @@
-const on = require('./on')
+// const on = require('./on')
 const off = require('./off')
 const always = require('./always')
 const { mech } = require('@tool/command/mech')
 const { sensor } = require('@tool/command/sensor')
 const { sumExtralrmSection } = require('@tool/message/extralrm')
 const clear = require('@tool/clear')
+const tmp = require('./on')
 /**
  *
  * @param {*} start Вкл/выкл склад
@@ -35,7 +36,8 @@ function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm)
 		// sumExtralrmSection(building, section) - Аварии возникающие в секции, но останавливающие работу всего склада
 		sumAlrS = sumExtralrmSection(bld, obj)
 		// Склад включен, секция в авто
-		on(bld, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)
+		// on(bld, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)
+		 tmp(bld, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)
 		// Склад выключен, секция не в авто
 		off(bld, sect, obj, s, se, m, am, accAuto, resultFan, start, alrBld)
 		// resultFan - массив ВНО секций для последовательного включения (каждая секция управляет ВНО независимо друг от друга)

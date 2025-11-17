@@ -15,6 +15,7 @@ const _MIN_SP = 20
  */
 
 function init(bld, secId, obj, s, where, type, fansLength) {
+	if (!s) return
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
 	// Тип склада + режим: normal, cold, combi_normal, combi_cold

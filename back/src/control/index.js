@@ -22,32 +22,27 @@ async function control() {
 		battery()
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
-		// Было прерывание?
-		if (!Aboc.check()) {
-			// нет
-			// Анализ данных с модулей ПЛК и отправка на Web-клиент
-			await analysis(obj)
-			// console.log(obj.data.fan)
-			// Логика
-			main(obj)
-			// Выхода: Команды управления
-			convCmd(obj)
-			// Выхода: Блокировки
-			writeLock(obj)
-			// Выхода: Запись в модули
-			await writeVal(obj.output)
-		}
+		// Анализ данных с модулей ПЛК и отправка на Web-клиент
+		await Aboc.asycall(analysis)(obj)
+		// Логика
+		Aboc.call(main)(obj)
+		// Выхода: Команды управления
+		Aboc.call(convCmd)(obj)
+		// Выхода: Блокировки
+		Aboc.call(writeLock)(obj)
+		// Выхода: Запись в модули
+		await writeVal(obj.output)
 		// Аварии для web
-		const alr = await webAlarm(obj)
+		const alr = await Aboc.asycall(webAlarm)(obj)
 		// Статистика
-		statOnChange(obj, alr.history)
+		Aboc.call(statOnChange)(obj, alr?.history)
 		// обнулить счетчик сушки
-		zero(null, false)
+		Aboc.call(zero)(null, false)
 		// Сохранение пользовательских настроек склада retain/data.json
-		await save(obj)
-		Aboc.refresh()
+		await Aboc.asycall(save)(obj)
 		// await delay(5000)
 		// store.battery = !store.battery
+		Aboc.refresh()
 		if (store._cycle_ms_ < 50) await delay(1000)
 		return true
 	} catch (error) {

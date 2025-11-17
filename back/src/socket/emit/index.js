@@ -1,8 +1,10 @@
 const { io } = require('@tool/server')
+const Aboc = require('@tool/abort_controller')
 
 // Широковещательные сообщения (всем клиентам)
 // значения сигналов
 function cValue(data) {
+	if (Aboc.check()) return
 	io.volatile.emit('c_input', data)
 }
 

@@ -31,7 +31,7 @@ const data = {
 	},
 	// Проверка: произошло прерывание
 	check() {
-		console.log('...............ABOC RETURN',this.controller.signal.aborted)
+		// console.log('...............ABOC RETURN', this.controller.signal.aborted)
 		return this.controller.signal.aborted
 	},
 	// Обновление контроллера после срабатывания
@@ -39,6 +39,22 @@ const data = {
 		if (this.check()) {
 			this.controller = new AbortController()
 			console.log('...................ABOC NEW')
+		}
+	},
+	// Обертка для вызываемой функции - если сигнал не взведен, то вызов функции fn
+	// Иначе пропускаем вызов функции
+	call(fn) {
+		const self = this
+		return (...arg) => {
+			if (self.check()) return
+			return fn.apply(this, arg)
+		}
+	},
+	asycall(fn) {
+		const self = this
+		return async (...arg) => {
+			if (self.check()) return
+			return fn.apply(this, arg)
 		}
 	},
 }

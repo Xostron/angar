@@ -3,6 +3,7 @@ const { data: store, readAcc } = require('@store')
 
 // Дополнительные аварии авторежимов
 function extralrm(building, sect, obj, s, se, m, automode, data, type = 'section', state = 'on') {
+	if (!s) return
 	let alr = []
 	// console.log('ALARM B')
 	for (const key in def[type][state]) {

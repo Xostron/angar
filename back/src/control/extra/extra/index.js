@@ -15,6 +15,7 @@ function extra(
 	type = 'section',
 	state = 'on'
 ) {
+	if (!s) return
 	for (const key in def[type][state]) {
 		// Аккумулятор для хранения промежуточных вычислений доп функций
 		let code = key

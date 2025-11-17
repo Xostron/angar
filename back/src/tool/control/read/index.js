@@ -14,7 +14,6 @@ async function read(arr, obj) {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
 			if (Aboc.check()) return
-
 			const idM = arr[i]._id
 			// Разрешение на чтение модуля
 			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue

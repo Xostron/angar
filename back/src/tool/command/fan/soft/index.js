@@ -19,7 +19,7 @@ const data = {
  */
 function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 	const { section, cooler } = obj.data
-	if (!resultFan.list?.length) return
+	if (!resultFan.list?.length || !s) return
 	// Управление цепочкой ВНО - По секциям
 	resultFan.list.forEach((idS, idx) => {
 		const aCmd = store.aCmd?.[idS]?.fan

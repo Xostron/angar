@@ -24,7 +24,8 @@ function set(bld, arr, obj, accDeb, acc, watch, count) {
 		const last = accDeb[el._id].at(-1)
 
 		// Фиксируем изменение состояния
-		if (last?.DO !== cur) accDeb[el._id].push({ DO: cur, date: new Date() })
+		if (last?.DO !== cur && typeof cur === 'boolean')
+			accDeb[el._id].push({ DO: cur, date: new Date() })
 		// Размер очереди превышен
 		if (accDeb[el._id].length > count) accDeb[el._id].shift()
 

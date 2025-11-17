@@ -16,6 +16,7 @@ const _MIN_SP = 20
  * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
 function fnACmd(bld, resultFan, start, obj, bdata) {
+	if (!bdata?.s) return
 	const idB = bld._id
 	const delay = bdata.s.fan.delay * 1000
 	const localB = isExtralrm(idB, null, 'local')
