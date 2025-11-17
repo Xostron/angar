@@ -49,7 +49,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 		)
 	}
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, fans.length)
+	checkOn(on, acc, s, fans.length)
 	checkOff.relay(off, acc, where)
 	// Непосредственное включение
 	turnOn(null, fans, solHeat, bldId, acc)

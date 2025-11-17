@@ -84,8 +84,8 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 		console.log(
 			'Запуск увлажнителя не возможен. Cекция выключена',
 			secStatus,
-			retain[bld._id]?.[sect._id],
-			retain[bld._id]
+			// retain[bld._id]?.[sect._id],
+			// retain[bld._id]
 		)
 		wrExtra(bld._id, sect._id, 'wetting', msg(bld, sect, 138, `Cекция выключена`), 'info4')
 		return ctrlWet(false)
