@@ -36,7 +36,7 @@ function img(type) {
 		case 'timer':
 			return '/img/signal/timer.svg'
 		case 'valve':
-			return '/img/signal/valve.svg'
+			return '/img/signal/valve-crash.svg'
 		case 'weather':
 			return '/img/signal/weather.svg'
 		default:

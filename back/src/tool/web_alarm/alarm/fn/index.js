@@ -15,6 +15,7 @@ function bar(r, bld, sect, am, start) {
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed ?? null
 	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
+	const overVlv = store.alarm.extralrm[bld._id]?.[sect._id]?.overVlv ?? null
 	const tout1 = store.alarm.auto?.[bld._id]?.[am]?.tout1 ?? null
 	const tout2 = store.alarm.auto?.[bld._id]?.[am]?.tout2 ?? null
 	const tout3 = store.alarm.auto?.[bld._id]?.[am]?.tout3 ?? null
@@ -42,6 +43,7 @@ function bar(r, bld, sect, am, start) {
 
 	r.bar[bld._id][sect._id].alrClosed = alrClosed || alrClosedB
 	r.bar[bld._id][sect._id].antibliz = antibliz
+	r.bar[bld._id][sect._id].overVlv = overVlv
 	r.bar[bld._id][sect._id].co2work = co2work
 	r.bar[bld._id][sect._id].co2wait = co2wait
 	r.bar[bld._id][sect._id].openVin = openVin
@@ -71,6 +73,7 @@ function barB(r, bld) {
 		r.barB[bld._id].tout ??= []
 		r.barB[bld._id].hout ??= []
 		r.barB[bld._id].antibliz ??= []
+		r.barB[bld._id].overVlv ??= []
 		r.barB[bld._id].alrClosed ??= []
 		r.barB[bld._id].co2work ??= []
 		r.barB[bld._id].co2wait ??= []
@@ -85,6 +88,7 @@ function barB(r, bld) {
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
 		if (s.antibliz) r.barB[bld._id].antibliz.push(s.antibliz)
+		if (s.overVlv) r.barB[bld._id].overVlv.push(s.overVlv)
 		if (s.alrClosed) r.barB[bld._id].alrClosed.push(s.alrClosed)
 		if (s.co2work) r.barB[bld._id].co2work.push(s.co2work)
 		if (s.co2wait) r.barB[bld._id].co2wait.push(s.co2wait)

@@ -12,7 +12,8 @@ const data = {
 	vent_time_wait: '/img/alarm/intfan.svg',
 	vent_time: '/img/alarm/intfan.svg',
 	debdo: '/img/alarm/debdo.svg',
-	stableVno: '/img/alarm/stable_vno.svg',
+	stableVno: '/img/alarm/hysteresis-fan.svg',
+	overVlv:'/img/alarm/valve-crash.svg',
 
 	drying: '/img/alarm/dry.svg',
 	cure: '/img/alarm/healing.svg',

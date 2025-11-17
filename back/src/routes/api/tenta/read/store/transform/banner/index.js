@@ -14,6 +14,8 @@ function banner(idB, data) {
 					return ba ? { code: k, msg: ba.msg } : null
 				case 'notTune':
 					return ba ? { code: k, msg: ba.msg } : null
+				case 'battery':
+					return ba ? { code: k, msg: ba.msg } : null
 			}
 		})
 		.filter((el) => !!el)
