@@ -46,7 +46,6 @@ const { arrCtrlDO } = require('@tool/command/module_output')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msg } = require('@tool/message')
 const def = require('./def')
-const { data: store } = require('@store')
 
 // Увлажнение секции
 // TODO Останавливать увлажнитель при температуре помещения +0.5С
@@ -187,15 +186,14 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 			acc.work = null
 			console.log(`Увлажнитель выключен ${acc.stop?.toLocaleString()}`)
 		}
-		delExtra(bld._id, sect._id, 'wetting', 'info2')
-		delExtra(bld._id, sect._id, 'wetting', 'info3')
-		wrExtra(
-			bld._id,
-			sect._id,
-			'wetting',
-			msg(bld, sect, flag ? 136 : 137, str ?? ''),
-			flag ? 'info2' : 'info3'
-		)
+
+		if (flag) {
+			delExtra(bld._id, sect._id, 'wetting', 'info3')
+			wrExtra(bld._id, sect._id, 'wetting', msg(bld, sect, 136, str ?? ''), 'info2')
+		} else {
+			delExtra(bld._id, sect._id, 'wetting', 'info2')
+			wrExtra(bld._id, sect._id, 'wetting', msg(bld, sect, 137, str ?? ''), 'info3')
+		}
 	}
 
 	// Сообщения для выбранного режима
