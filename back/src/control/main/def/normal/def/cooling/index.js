@@ -34,8 +34,8 @@ function valve(s, se, sectionId, acc, extraCO2) {
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
 	const forceCls = acc.finish && !extraCO2.start
-	// console.log('\tКлапаны, режим хранение, секция', sectionId)
-	// console.table([{ open, close, forceCls }], ['open', 'close', 'forceCls'])
+	console.log('\tКлапаны, режим хранение, секция', sectionId)
+	console.table([{ open, close, forceCls }], ['open', 'close', 'forceCls'])
 	return { open, close, forceCls, forceOpn: false }
 }
 
