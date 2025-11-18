@@ -21,9 +21,7 @@ async function read(arr, obj) {
 			// Чтение
 			let v = await make(arr[i])
 			// TODO Кэш для модулей DO
-			// if (arr[i].ip === '192.168.21.125') console.log(8800, v)
 			v = fnCacheDO(v, arr[i])
-			// if (arr[i].ip === '192.168.21.125') console.log(8811, v)
 			// флаг первого запуска сервера
 			store.startup = false
 			const buildingId = arr[i].buildingId

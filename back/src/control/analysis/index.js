@@ -23,6 +23,7 @@ async function analysis(obj) {
 	Aboc.call(calcSetting)(v, obj)
 	// Передача мяса по Socket.io на web-клиент
 	await Aboc.asycall(cValue)(v)
+	console.log("Коэффициенты")
 	console.table(v?.coef)
 }
 
