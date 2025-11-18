@@ -43,9 +43,10 @@ n минут работы истекли
  */
 const { stateEq } = require('@tool/command/fan/fn')
 const { arrCtrlDO } = require('@tool/command/module_output')
-const { delExtra, wrExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msg } = require('@tool/message')
 const def = require('./def')
+const { data: store } = require('@store')
 
 // Увлажнение секции
 // TODO Останавливать увлажнитель при температуре помещения +0.5С
@@ -53,7 +54,13 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 	const { retain, value } = obj
 	const { wettingS } = m
 	if (!wettingS?.length) {
-		wrExtra(bld._id, sect._id, 'wetting', msg(bld, sect, 139, `Устройство отсутствует.`), 'info7')
+		wrExtra(
+			bld._id,
+			sect._id,
+			'wetting',
+			msg(bld, sect, 139, `Устройство отсутствует.`),
+			'info7'
+		)
 		msgMode('')
 		delExtra(bld._id, sect._id, 'wetting', 'info1')
 		delExtra(bld._id, sect._id, 'wetting', 'info2')
@@ -66,8 +73,14 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 	const fanS = bld?.type === 'cold' ? m.cold.fan : m.fanS
 	// Входные данные
 	// Температура помещения
-	if(se.tin<0.5) {
-		wrExtra(bld._id, sect._id, 'wetting', msg(bld, sect, 139, `Температура помещения ниже 0.5 °C.`), 'info8')
+	if (se.tin < 0.5) {
+		wrExtra(
+			bld._id,
+			sect._id,
+			'wetting',
+			msg(bld, sect, 139, `Температура помещения ниже 0.5 °C.`),
+			'info8'
+		)
 		ctrlWet(false, 'Не подходящие условия')
 		return
 	} else delExtra(bld._id, sect._id, 'wetting', 'info8')
@@ -83,7 +96,7 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 	if (secStatus === undefined || secStatus === null) {
 		console.log(
 			'Запуск увлажнителя не возможен. Cекция выключена',
-			secStatus,
+			secStatus
 			// retain[bld._id]?.[sect._id],
 			// retain[bld._id]
 		)

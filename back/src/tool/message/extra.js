@@ -6,20 +6,20 @@ function wrExtra(idB, idS, name, o, type) {
 	data.alarm.extra[idB] ??= {}
 	if (!type) {
 		if (!idS) {
-			data.alarm.extra[idB][name] = o
+			!isExtra(idB, idS, name, type) ? (data.alarm.extra[idB][name] = o) : null
 			return
 		}
 		data.alarm.extra[idB][idS] ??= {}
-		data.alarm.extra[idB][idS][name] = o
+		!isExtra(idB, idS, name, type) ? (data.alarm.extra[idB][idS][name] = o) : null
 	} else {
 		if (!idS) {
 			data.alarm.extra[idB][name] ??= {}
-			data.alarm.extra[idB][name][type] = o
+			!isExtra(idB, idS, name, type) ? (data.alarm.extra[idB][name][type] = o) : null
 			return
 		}
 		data.alarm.extra[idB][idS] ??= {}
 		data.alarm.extra[idB][idS][name] ??= {}
-		data.alarm.extra[idB][idS][name][type] = o
+		!isExtra(idB, idS, name, type) ? (data.alarm.extra[idB][idS][name][type] = o) : null
 	}
 }
 
@@ -45,9 +45,7 @@ function isExtra(idB, idS, code, type) {
 		return idS
 			? !!data.alarm?.extra?.[idB]?.[idS]?.[code]?.[type]
 			: !!data.alarm?.extra?.[idB]?.[code]?.[type]
-	return idS
-		? !!data.alarm?.extra?.[idB]?.[idS]?.[code]
-		: !!data.alarm?.extra?.[idB]?.[code]
+	return idS ? !!data.alarm?.extra?.[idB]?.[idS]?.[code] : !!data.alarm?.extra?.[idB]?.[code]
 }
 
 module.exports = { wrExtra, delExtra, isExtra }
