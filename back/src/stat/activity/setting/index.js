@@ -13,7 +13,6 @@ function web(code, obj, oData) {
 	prdCode = obj.prdCode
 	nameStg = factory?.[stgCode]?._name
 	namePrd = factory?.[stgCode]?.[prdCode]?._name
-	console.log(5500, namePrd)
 	let title = []
 
 	const source = namePrd ? factory?.[stgCode]?.[prdCode] : factory?.[stgCode]

@@ -17,7 +17,7 @@ export default function Switch({ value, setValue, style = {}, cls }) {
 	}
 	const title = check ? 'Вкл' : 'Выкл'
 
-	if (!isAuth) return <Text cls={cls} data={{ value: title }} />
+	if (!isAuth) return <Text style={style} cls={cls} data={{ value: title }} />
 	return (
 		<label className='switch' style={style}>
 			<input type='checkbox' checked={check} onChange={onClick} />

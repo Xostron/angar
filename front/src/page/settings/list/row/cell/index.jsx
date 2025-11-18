@@ -44,6 +44,8 @@ export default function Cell({ data, i, j }) {
   cl = cl.join(" ");
   const st = { gridArea: `${1 + i}/${1 + j}/${2 + i}/${2 + j}` };
   const field = data.field;
+  if (field==='text') console.log(data)
+	if (field!=='text') console.log(field, data)
   switch (field) {
     case "text":
       return <Text cls="cell-w" data={data} style={st} />;
