@@ -193,21 +193,28 @@ function fnCold(idB, obj) {
 	return { signal: sigB, aggregate: aggr, cooler, heating, device, slaveAgg, fan }
 }
 
+// Рама испарителя
 function transformClr(doc, data) {
 	return {
 		...doc,
+		// Соленоиды холода
 		solenoid: doc.solenoid.map((el) => {
 			const b = data.binding.find((e) => e.owner.id === el._id)
 			return { ...el, module: { id: b.moduleId, channel: b.channel } }
 		}),
+		// ВНО
 		fan: data.fan
 			.filter((el) => el.owner.id === doc._id)
 			.map((el) => {
 				const ao = data?.binding.find((b) => b.owner.id === el._id)
 				return !ao ? el : { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			}),
+		// Оттайка
 		heating: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'cooler'),
+		// Соленоиды подогрева
 		solHeat: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'channel'),
+		// Заслонка оттайки
+		flap: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'flap'),
 	}
 }
 

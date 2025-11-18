@@ -3,6 +3,7 @@ const { softsol } = require('./soft_solenoid')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
+// Склад холодильник (пока без ступеней и без заслонки оттайки на 18.11.2025)
 function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	const { start, s, se, m, accAuto } = bdata
 	const { solenoid, fan, heating } = clr
@@ -31,14 +32,13 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
 }
 
+// Для комбинированного (ступенчатое, заслонка оттайки)
 function oneChangeCombi(bdata, idB, sl, f, h, add, code, clr) {
 	const { start, s, se, m, accAuto } = bdata
-	const { solenoid, fan, heating } = clr
+	const { solenoid, fan, heating, flap = [] } = clr
 
 	// Управление механизмами
-	// solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	// Ступенчатое управление соленоидами
-	// console.log('@@@@@@@@@@@1', solenoid)
 	softsol(idB, solenoid, sl, f, h, clr, accAuto)
 	// ВНО испарителя
 	fan.forEach((el) => {
@@ -49,6 +49,10 @@ function oneChangeCombi(bdata, idB, sl, f, h, add, code, clr) {
 	})
 	// Оттайка
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
+	// Заслонка оттайки (работает при оттайке и сливе воды)
+	const flapOn = accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll
+	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
+
 	// Доп состояние слива воды
 	accAuto.cold ??= {}
 	accAuto.cold[clr._id] ??= {}

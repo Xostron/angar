@@ -9,27 +9,25 @@ const { data: store } = require('@store')
  * @param {*} obj глобальные данные склада
  */
 function defrostAll(idB, accCold, cooler, obj, s) {
-	// const skip = ['off-off-on', 'off-off-off-add']
-	// Флаг время после слива воды
-	accCold.afterD ??= null
-	accCold.timeAD ??= null
 	// Только рабочие испарители
 	const clrs = cooler.filter((el) => !store?.denied?.[idB]?.[el._id])
-	// Флаг оттайка закончена на всех испарителях данной секции
+	// const skip = ['off-off-on', 'off-off-off-add']
+	// Флаг время после слива воды - Начальная точка
+	accCold.afterD ??= null
+	// Флаг время после слива воды - конечная точка (время ожидания после слива воды)
+	accCold.timeAD ??= null
+	// Флаг оттайка закончена на всех испарителях по складу
 	accCold.defrostAllFinish = clrs.every((el) => accCold?.[el._id]?.state?.waitDefrost)
+	// Сброс флага "Всем испарителям начать оттайку"
 	if (accCold.defrostAllFinish) accCold.defrostAll = null
-	// Флаг выхода из слива воды всех испарителей
+	// Флаг сейчас идет слив воды у всех испарителей
 	accCold.drainAll = !!clrs?.length && clrs.every((el) => accCold[el._id]?.state?.add)
-	// Флаг время после слива воды
+	// Обновляем время - начальной точки (время ожидания после слива воды)
 	if (accCold.drainAll) accCold.afterD = new Date()
-	/* 
-	Флаг время после слива воды:
-	Игнорируем переход в оттайку после слива воды
-	По достижению времени разрешаем оттайку, флаги сбрасываем
-	*/
+
 	// Время прошло -> сбрасываем время ожидания
 	if (accCold.timeAD) (accCold.afterD = null), (accCold.timeAD = null)
-	// Время ожидания после слива воды установилось (слив воды был закончен)
+	// Время ожидания после слива воды (конечная точка)(слив воды был закончен)
 	accCold.timeAD =
 		accCold.afterD &&
 		compareTime(accCold.afterD, s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain)

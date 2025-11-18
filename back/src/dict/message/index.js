@@ -285,7 +285,7 @@ const data = {
 	137: { code: 'info3', typeSignal: 'info', msg: 'Увлажнитель остановлен.' },
 	138: { code: 'info4', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
 	139: { code: 'info5', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
-	139: { code: 'info6', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
+	140: { code: 'info6', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
 
 	// Прогрев секции
 	59: { code: 'warming', typeSignal: 'info', msg: 'Включен прогрев клапанов' },
