@@ -34,6 +34,8 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	}
 	// "Температура задания достигнута" ожидаем выход из гистерезиса
 	if (accCold.flagFinish && se.tprd <= accCold.target + s.cooling.hysteresisIn) {
+		// Точка отсчета для обдува датчиков по достижению задания
+		accAuto.finishTarget ??= new Date()
 		if (code === 'off') return true
 		fnChange(0, 0, 0, 0, 'off', clr)
 		return true
@@ -41,7 +43,8 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 
 	// Сброс "Температура задания достигнута" по гистерезису
 	if (accCold.flagFinish && se.tprd > accCold.target + s.cooling.hysteresisIn) {
-		accCold.flagFinish = null
+		accAuto.flagFinish = null
+		accAuto.finishTarget = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
 	const txt = `Температура задания ${accCold.target ?? '--'} °C, продукта ${se.tprd} °C`
