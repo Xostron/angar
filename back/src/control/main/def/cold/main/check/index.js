@@ -8,7 +8,7 @@ const { data: store } = require('@store')
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)
 	console.log('\n\tПроверка условий принятия решений, tprd =', se.tprd, 'target=', accAuto.target)
-	// Выключение (Температура задания достигнута)
+	// Выключение испарителя по "Температура задания достигнута"
 	if (se.tprd <= accAuto.target) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.target ?? '--'} °C`))
 		delAchieve(bld._id, bld.type, mes[81].code)
@@ -17,12 +17,20 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		acc.state.off = new Date()
 		if (!accAuto.finishTarget) accAuto.finishTarget = new Date()
 		return fnChange(0, 0, 0, 0, 'off', clr)
-	} else {
+	}
+	// "Температура задания достигнута" ожидаем выход из гистерезиса
+	if (accAuto.finishTarget && se.tprd <= accAuto.target + s.cold.hysteresis) {
+		if (code === 'off') return
+		return fnChange(0, 0, 0, 0, 'off', clr)
+	}
+
+	// Сброс "Температура задания достигнута" по гистерезису
+	if (accAuto.finishTarget && se.tprd > accAuto.target + s.cold.hysteresis) {
 		accAuto.finishTarget = null
 		delAchieve(bld._id, bld.type, mes[80].code)
-		const txt = `Температура задания ${accAuto.target ?? '--'} °C, продукта ${se.tprd} °C`
-		wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	}
+	const txt = `Температура задания ${accAuto.target ?? '--'} °C, продукта ${se.tprd} °C`
+	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 
 	let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
@@ -77,7 +85,12 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log('\n\tПроверка условий принятия решений, tprd =', se.tprd, 'target=', accCold.tgtTprd)
+	console.log(
+		'\n\tПроверка условий принятия решений, tprd =',
+		se.tprd,
+		'target=',
+		accCold.tgtTprd
+	)
 
 	// Достиг задания => выкл испаритель
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) {
