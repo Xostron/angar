@@ -15,18 +15,21 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		if (code === 'off') return
 		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accAuto.target} тмп. задания`)
 		acc.state.off = new Date()
+		// Точка отсчета для обдува датчиков по достижению задания
 		if (!accAuto.finishTarget) accAuto.finishTarget = new Date()
+		// Флаг продукт достиг задания для гистерезиса
+		accAuto.flagFinish = new Date()
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	}
 	// "Температура задания достигнута" ожидаем выход из гистерезиса
-	if (accAuto.finishTarget && se.tprd <= accAuto.target + s.cold.hysteresis) {
+	if (accAuto.flagFinish && se.tprd <= accAuto.target + s.cold.hysteresis) {
 		if (code === 'off') return
 		return fnChange(0, 0, 0, 0, 'off', clr)
 	}
 
 	// Сброс "Температура задания достигнута" по гистерезису
-	if (accAuto.finishTarget && se.tprd > accAuto.target + s.cold.hysteresis) {
-		accAuto.finishTarget = null
+	if (accAuto.flagFinish && se.tprd > accAuto.target + s.cold.hysteresis) {
+		accAuto.flagFinish = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
 	const txt = `Температура задания ${accAuto.target ?? '--'} °C, продукта ${se.tprd} °C`
