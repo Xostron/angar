@@ -5,7 +5,7 @@ const alarm = require('../../alarm')
 function normal(result, idS, idB, obj) {
 	const { data, heating, sensor, fan, valve } = obj
 	const value = result.value
-	// Аварии авторежима секции
+	// Аварии авторежима секции (TODO удалить result.alarm) 
 	result.alarm = alarm(idB, idS, data)
 
 	// Температура продукта секции

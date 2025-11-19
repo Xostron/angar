@@ -3,14 +3,15 @@ const { elapsedTime } = require('@tool/command/time')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
+const isCombiCold = require('@tool/combi/is')
 
 /**
  * Определение подрежима
  */
-function submode(building, obj, s, seB, acc) {
+function submode(bld, obj, s, seB, acc) {
 	if (!s) return
 	// Минимальная температура продукта (ограничение по температуре задания)
-	acc.tprdMin = obj.retain?.[building._id]?.cooling?.tprdMin ?? null
+	acc.tprdMin = obj.retain?.[bld._id]?.cooling?.tprdMin ?? null
 
 	// ========= Доп. Охлаждение =========
 	const x2 = acc.tprdMin + s.mois.max
@@ -70,7 +71,7 @@ function submode(building, obj, s, seB, acc) {
 /**
  * Расчет задания
  */
-function target(building, obj, s, seB, acc) {
+function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
 	// Температура задания канала
 	acc.tcnl = seB.tprd - acc.setting.cooling.differenceValue
@@ -104,30 +105,32 @@ function target(building, obj, s, seB, acc) {
 }
 
 /**
- * Сообщения
+ * Сообщения достиг температуры
  */
-function message(building, obj, s, seB, acc) {
+function message(bld, obj, s, seB, am, acc) {
+	// Если склад комби в режиме холода выходим из проверки по достижению Тзадания
+	// Для данного склада проверка происходит в src\control\main\def\cold\main\check\index.js
+	if (isCombiCold(bld, am, s)) return 
 	if (!s) return
 	// Продукт достиг температуры задания*****************************************
 	// В режиме лечения - Продукт достиг не активен
 	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
 		// Истекшее время "Продукт достиг задания"
-		const elapsed = elapsedTime(obj.retain?.[building._id]?.cooling?.finish ?? null)
+		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
 		// Защита против потери счетчика при перезагрузке pos
-		if (elapsed) acc.finish = obj.retain?.[building._id]?.cooling?.finish
+		if (elapsed) acc.finish = obj.retain?.[bld._id]?.cooling?.finish
 		else acc.finish = new Date()
-
-		wrAchieve(building._id, 'cooling', msgB(building, 15))
+		wrAchieve(bld._id, 'cooling', msgB(bld, 15))
 	}
 
 	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
 	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
 		acc.finish = null
-		delAchieve(building._id, 'cooling', mes[15].code)
+		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
 
-	wrAchieve(building._id, 'cooling', {
-		...msgB(building, 150),
+	wrAchieve(bld._id, 'cooling', {
+		...msgB(bld, 150),
 		msg: `t задания канала = ${acc.tcnl.toFixed(1)} °С, t задания продукта = ${acc.tgt.toFixed(
 			1
 		)} °С`,
@@ -136,10 +139,10 @@ function message(building, obj, s, seB, acc) {
 	// Обновление времени в сообщении "Продукт достиг температуры"
 	if (acc.finish) {
 		// Истекшее время "Продукт достиг задания"
-		const elapsed = elapsedTime(obj.retain?.[building._id]?.cooling?.finish ?? null)
+		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
 		const msg = elapsed ? mes[15].msg + ' ' + elapsed : null
 		if (!msg) return
-		updAchieve(building._id, 'cooling', 'finish', { msg })
+		updAchieve(bld._id, 'cooling', 'finish', { msg })
 	}
 }
 

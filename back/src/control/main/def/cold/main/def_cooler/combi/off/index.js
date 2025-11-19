@@ -8,8 +8,6 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 		acc.state.off = new Date()
 		console.log('\toff', 'Не выключался, решаем что делать дальше')
 	}
-	// Время работы в текущем режиме
-	onTime('off', acc)
 	// Проверка ожидания оттайки всех испарителей
 	if (acc?.state?.waitDefrost) {
 		// Все испарители закончили оттайку
@@ -21,6 +19,27 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 		}
 		console.log('\tНе все испарители закончили оттайку, ждем')
 		// Не все испарители закончили оттайку, ждем дальше в паузе
+		return
+	}
+	// Время работы в текущем режиме
+	onTime('off', acc)
+
+	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова по достижению задания
+	if (accAuto.finishTarget) {
+		const time = compareTime(accAuto.finishTarget, s?.coolerCombi?.stop)
+		// Время ожидания прошло
+		if (time) {
+			accAuto.finishTarget = null
+			return check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
+		}
+		// Время ожидания не прошло
+		return
+	}
+	console.log('\toff', 'Выключен по достижению задания', time, s?.coolerCombi?.stop)
+	// вкл обдув: все ВНО с регулированием по давлению канала
+	if (time) {
+		accAuto.finishTarget = null
+		// return fnChange(0, 1, 0, 0, 'blow', clr)
 		return
 	}
 

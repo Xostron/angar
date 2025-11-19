@@ -22,7 +22,7 @@ const data = {
 	middlewB,
 }
 
-function middlewB(building, obj, s, seB, acc) {
+function middlewB(building, obj, s, seB, am, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
 
 	// ************************************************

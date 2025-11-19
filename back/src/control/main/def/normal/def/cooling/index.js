@@ -20,14 +20,14 @@ const data = {
 	middlewB,
 }
 
-function middlewB(building, obj, s, seB, acc) {
+function middlewB(building, obj, s, seB, am, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
 	// Вычисление подрежима
 	submode(building, obj, s, seB, acc)
 	// Вычисления
 	target(building, obj, s, seB, acc)
 	// Сообщения
-	message(building, obj, s, seB, acc)
+	message(building, obj, s, seB, am, acc)
 }
 
 function valve(s, se, sectionId, acc, extraCO2) {
