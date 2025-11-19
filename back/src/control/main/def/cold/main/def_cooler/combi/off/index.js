@@ -25,23 +25,23 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	onTime('off', acc)
 
 	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова по достижению задания
-	if (accAuto.finishTarget) {
-		const time = compareTime(accAuto.finishTarget, s?.coolerCombi?.stop)
+	if (accCold.finishTarget) {
+		const time = compareTime(accCold.finishTarget, s?.coolerCombi?.stop)
+		console.log('\toff', 'Выключен по достижению задания', time, s?.coolerCombi?.stop)
 		// Время ожидания прошло
 		if (time) {
-			accAuto.finishTarget = null
+			accCold.finishTarget = null
 			return check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
 		}
 		// Время ожидания не прошло
 		return
 	}
-	console.log('\toff', 'Выключен по достижению задания', time, s?.coolerCombi?.stop)
 	// вкл обдув: все ВНО с регулированием по давлению канала
-	if (time) {
-		accAuto.finishTarget = null
-		// return fnChange(0, 1, 0, 0, 'blow', clr)
-		return
-	}
+	// if (time) {
+	// 	accAuto.finishTarget = null
+	// 	// return fnChange(0, 1, 0, 0, 'blow', clr)
+	// 	return
+	// }
 
 	check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
 	//Выключен по достижению задания
