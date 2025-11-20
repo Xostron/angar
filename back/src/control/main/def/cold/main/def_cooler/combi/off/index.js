@@ -28,20 +28,17 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	if (accCold.finishTarget) {
 		const time = compareTime(accCold.finishTarget, s?.coolerCombi?.stop)
 		console.log('\toff', 'Выключен по достижению задания', time, s?.coolerCombi?.stop)
-		// Время ожидания прошло
 		if (time) {
 			accCold.finishTarget = null
+			acc.state.off = null
+			// Время ожидания прошло -> проверка вышли из задания ->
+			// если нет инициализируем заново accCold.finishTarget и снова ждем
 			return check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
 		}
-		// Время ожидания не прошло
+		// Время ожидания не прошло просто остаемся выключенным
+		// в этом времени ожидания периодически включается внутренняя вентиляция
 		return
 	}
-	// вкл обдув: все ВНО с регулированием по давлению канала
-	// if (time) {
-	// 	accAuto.finishTarget = null
-	// 	// return fnChange(0, 1, 0, 0, 'blow', clr)
-	// 	return
-	// }
 
 	check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
 	//Выключен по достижению задания

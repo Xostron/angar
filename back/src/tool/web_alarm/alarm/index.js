@@ -36,10 +36,12 @@ function alarm(obj) {
 		// События достижения задания в авторежиме
 		r.achieve ??= {}
 		r.achieve[bld._id] ??= {}
-		r.achieve[bld._id] =
-			bld.type == 'cold'
-				? Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
-				: Object.values(store.alarm?.achieve?.[bld._id]?.[am] ?? {})
+		if (bld.type === 'cold')
+			r.achieve[bld._id] = Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
+		if (bld.type === 'normal')
+			r.achieve[bld._id] = Object.values(store.alarm?.achieve?.[bld._id]?.[am] ?? {})
+		if (bld.type === 'combi')
+			r.achieve[bld._id] = Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
 		// Для всех складов: сообщение Склад выключен
 		if (store.alarm?.achieve?.[bld._id]?.building?.datestop)
 			r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.datestop)

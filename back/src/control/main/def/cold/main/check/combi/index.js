@@ -19,35 +19,50 @@ const { data: store } = require('@store')
  */
 function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// "Температура задания достигнута"
-	if (se.tprd <= accCold.target && se.hin <= s.mois.humidity) {
-		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.target ?? '--'} °C`))
+	console.log(
+		1100,
+		se.tprd,
+		accCold.tgtTprd,
+		se.hin,
+		s.mois.humidity,
+		se.tprd <= accCold.tgtTprd && se.hin <= s.mois.humidity,
+		s.cooling.hysteresisIn,
+		bld._id,
+		bld.type,
+		store.alarm.achieve?.[bld._id]?.[bld.type]
+	)
+	if (se.tprd <= accCold.tgtTprd && se.hin <= s.mois.humidity) {
 		delAchieve(bld._id, bld.type, mes[81].code)
-		if (code === 'off') return true
-		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accCold.target} тмп. задания`)
-		acc.state.off = new Date()
+		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.tgtTprd ?? '--'} °C`))
 		// Точка отсчета для обдува датчиков по достижению задания
-		if (!accCold.finishTarget) accCold.finishTarget = new Date()
+		accCold.finishTarget ??= new Date()
+		acc.state.off ??= new Date()
+		console.log(11001, code, `Продукт достиг темп задания`)
+		if (code === 'off') return true
 		// Флаг продукт достиг задания для гистерезиса
 		accCold.flagFinish = new Date()
 		fnChange(0, 0, 0, 0, 'off', clr)
 		return true
 	}
 	// "Температура задания достигнута" ожидаем выход из гистерезиса
-	if (accCold.flagFinish && se.tprd <= accCold.target + s.cooling.hysteresisIn) {
+	if (accCold.flagFinish && se.tprd <= accCold.tgtTprd + s.cooling.hysteresisIn) {
+		console.log(2200, 'Температура задания достигнута ожидаем выход из гистерезиса')
 		// Точка отсчета для обдува датчиков по достижению задания
-		accAuto.finishTarget ??= new Date()
+		accCold.finishTarget ??= new Date()
 		if (code === 'off') return true
 		fnChange(0, 0, 0, 0, 'off', clr)
 		return true
 	}
-
+	console.log(3300, 'Сброс Температура задания достигнута по гистерезису')
 	// Сброс "Температура задания достигнута" по гистерезису
-	if (accCold.flagFinish && se.tprd > accCold.target + s.cooling.hysteresisIn) {
-		accAuto.flagFinish = null
-		accAuto.finishTarget = null
+	if (accCold.flagFinish && se.tprd > accCold.tgtTprd + s.cooling.hysteresisIn) {
+		accCold.flagFinish = null
+		accCold.finishTarget = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
-	const txt = `Температура задания ${accCold.target ?? '--'} °C, продукта ${se.tprd} °C`
+	const txt = `Задание продукта: ${accCold.tgtTprd ?? '--'}°C, ${
+		s?.mois?.humidity ?? '--'
+	}%. Продукт: ${se.tprd ?? '--'}°C, ${se.hin ?? '--'}%`
 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	// Не блокировать
 	return false
