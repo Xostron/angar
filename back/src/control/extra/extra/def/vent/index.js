@@ -6,8 +6,9 @@ const { msg } = require('@tool/message')
 const { isAchieve } = require('@tool/message/achieve')
 const { isAlr } = require('@tool/message/auto')
 const { readAcc } = require('@store/index')
+const { isAccess } = require('./fn/fn')
 
-// Вентиляторы секции
+// Внутренняя вентиляция секции
 function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
 	const { fanS, vlvS } = m
@@ -46,10 +47,10 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	if (s.vent.mode === 'auto') {
 		delExtra(bld._id, sect._id, 'vent_on')
 		// Подхват
-		mAutoByDura(obj,s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+		mAutoByDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
 		// Рециркуляция
 		if (isAccessTime(bld, obj)) {
-			mAutoByTime(obj,s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+			mAutoByTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
 			// console.log(1115, 'vent byTime в работе', acc)
 		} else {
 			acc.byTime = {}
@@ -90,25 +91,6 @@ function fnMsg(bld, acc, s) {
 		const arr = [null, 'off', 'on', 'auto']
 		delUnused(arr, s?.vent?.mode, bld, code, 'vent')
 	}
-}
-
-// Разрешить вентиляцию (true)
-function isAccess(bld, sect, obj, fanS, s, ban) {
-	const extraCO2 = readAcc(bld._id, 'building', 'co2')
-	// Отключение
-	if (!fanS.length) return false
-	// Режим вентиляции: Выкл
-	if (!s?.vent?.mode || s?.vent?.mode === 'off') return false
-	// Таймер запрета, аварийное закрытие клапанов, переключатель на щите (управление от щита)
-	if (
-		ban ||
-		isExtralrm(bld._id, sect._id, 'alrClosed') ||
-		isExtralrm(bld._id, sect._id, 'local') ||
-		extraCO2.start
-	)
-		return false
-
-	return true
 }
 
 function isAccessTime(bld, obj) {

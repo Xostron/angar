@@ -27,5 +27,7 @@ module.exports = function openVin(bld, section, obj, s, seB, m, automode, acc, d
 	reset(bld, s, acc, term)
 	// Установка аварии
 	set(bld, s, acc, term)
+	// TODO информационный сигнал от 20.11.2025
+	return false
 	return acc?._alarm ?? false
 }

@@ -37,6 +37,7 @@ function coldAchieve(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		// Точка отсчета для обдува датчиков по достижению задания
 		accAuto.finishTarget ??= new Date()
 		if (code === 'off') return true
+		acc.state.off = new Date()
 		fnChange(0, 0, 0, 0, 'off', clr)
 		return true
 	}
