@@ -1,12 +1,7 @@
-const { mAutoByTime, mAutoByDura, mOn } = require('./fn')
-const { delUnused } = require('@tool/command/extra')
-const { isExtralrm } = require('@tool/message/extralrm')
+const { isAccess, fnMsg, isAccessTime, clear } = require('./fn/fn')
 const { delExtra, wrExtra } = require('@tool/message/extra')
+const { mAutoByTime, mAutoByDura, mOn } = require('./fn')
 const { msg } = require('@tool/message')
-const { isAchieve } = require('@tool/message/achieve')
-const { isAlr } = require('@tool/message/auto')
-const { readAcc } = require('@store/index')
-const { isAccess } = require('./fn/fn')
 
 // Внутренняя вентиляция секции
 function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
@@ -69,47 +64,6 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 }
 module.exports = vent
 
-function fnMsg(bld, acc, s) {
-	if (acc.lastMode != s?.vent?.mode) {
-		acc.lastMode = s?.vent?.mode
-		let code
-		switch (s?.vent?.mode) {
-			case null:
-			case 'off':
-				code = 56
-				break
-			case 'on':
-				code = 57
-				break
-			case 'auto':
-				code = 58
-				break
-			default:
-				code = 399
-				break
-		}
-		const arr = [null, 'off', 'on', 'auto']
-		delUnused(arr, s?.vent?.mode, bld, code, 'vent')
-	}
-}
-
-function isAccessTime(bld, obj) {
-	const am = obj.retain?.[bld._id]?.automode
-	const finish = isAchieve(bld._id, am, 'finish')
-	const alrAuto = isAlr(bld._id, am)
-	const openVin = isExtralrm(bld._id, null, 'openVin')
-	if (!finish && !alrAuto && !openVin) return false
-	return true
-}
-
-function clear(bld, sect, acc, ...args) {
-	acc.byDura = {}
-	acc.byTime = {}
-	args[0] ? delExtra(bld._id, sect._id, 'vent_on') : null
-	args[1] ? delExtra(bld._id, sect._id, 'vent_dura') : null
-	args[2] ? delExtra(bld._id, sect._id, 'vent_time_wait') : null
-	args[3] ? delExtra(bld._id, sect._id, 'vent_time') : null
-}
 // mode: выкл/вкл, авто, по времени - (приоритет: Сушка - постоянный вентилятор)
 // mode - Вкл, секция в любом авто режиме, склад запущен, вентиляторы всегда работают (аварии игнор)
 /**

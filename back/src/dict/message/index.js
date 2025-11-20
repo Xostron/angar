@@ -151,9 +151,9 @@ const data = {
 	},
 	// Приточный клапан открыт, темп канала > темп продукта
 	39: {
-		count: true,
+		count: false,
 		code: 'openVin',
-		typeSignal: 'critical',
+		typeSignal: 'info',
 		msg: 'Температура канала выше температуры продукта',
 	},
 	40: {
