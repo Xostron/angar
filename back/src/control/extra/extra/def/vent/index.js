@@ -1,6 +1,6 @@
-const { isAccess, fnMsg, isAccessTime, clear } = require('./fn/fn')
+const { exit, fnMsg, isAccessTime, clear, fnPrepare, fnSelect } = require('./fn/fn')
 const { delExtra, wrExtra } = require('@tool/message/extra')
-const { mAutoByTime, mAutoByDura, mOn } = require('./fn')
+const def = require('./def')
 const { msg } = require('@tool/message')
 
 // Внутренняя вентиляция секции
@@ -8,59 +8,48 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
 	const { fanS, vlvS } = m
 	const { fanOff, alwaysFan } = data
-	// console.log(1116, data)
+	// Входные данные
+	const prepare = fnPrepare(bld, obj, s)
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
+	// Выбор алгоритма ВВ
+	const code = fnSelect(prepare, acc)
+	// Проверка разрешения ВВ и очистка аккумулятора
+	exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan)
 
-	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (!isAccess(bld, sect, obj, fanS, s, ban)) {
-		if (s.vent.mode === 'on') {
-			if (!acc?.firstCycle) resultFan.start = [false]
-			resultFan.force = false
-		}
-		if (acc?.byDura?.end) resultFan.start = [false]
-		acc.firstCycle = true
-		clear(bld, sect, acc, 1, 1, 1, 1)
-		// return console.log(
-		// 	1111,
-		// 	'vent',
-		// 	'Секция',
-		// 	sect.name,
-		// 	'isPermission = true: Дополнительная вентиляция неактивна'
-		// )
-	}
+	def[code](obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
 
-	// Режим вентиляции: Вкл
-	if (s.vent.mode === 'on' || alwaysFan) {
-		mOn(s, sect._id, resultFan)
-		wrExtra(bld._id, sect._id, 'vent_on', msg(bld, sect, 85))
-		clear(bld, sect, acc, 0, 1, 1, 1)
-		return
-	}
+	// // Режим вентиляции: Вкл
+	// if (s.vent.mode === 'on' || alwaysFan) {
+	// 	mOn(s, sect._id, resultFan)
+	// 	wrExtra(bld._id, sect._id, 'vent_on', msg(bld, sect, 85))
+	// 	clear(bld, sect, acc, 0, 1, 1, 1)
+	// 	return
+	// }
 
-	// Режим вентиляции: Авто
-	if (s.vent.mode === 'auto') {
-		delExtra(bld._id, sect._id, 'vent_on')
-		// Подхват
-		mAutoByDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
-		// Рециркуляция
-		if (isAccessTime(bld, obj)) {
-			mAutoByTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
-			// console.log(1115, 'vent byTime в работе', acc)
-		} else {
-			acc.byTime = {}
-			delExtra(bld._id, sect._id, 'vent_time_wait')
-			delExtra(bld._id, sect._id, 'vent_time')
-			// console.log(1115, 'vent byTime заблокирован', acc)
-		}
-	}
+	// // Режим вентиляции: Авто
+	// if (s.vent.mode === 'auto') {
+	// 	delExtra(bld._id, sect._id, 'vent_on')
+	// 	// Подхват
+	// 	mAutoByDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+	// 	// Рециркуляция
+	// 	if (isAccessTime(bld, obj)) {
+	// 		mAutoByTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan)
+	// 		// console.log(1115, 'vent byTime в работе', acc)
+	// 	} else {
+	// 		acc.byTime = {}
+	// 		delExtra(bld._id, sect._id, 'vent_time_wait')
+	// 		delExtra(bld._id, sect._id, 'vent_time')
+	// 		// console.log(1115, 'vent byTime заблокирован', acc)
+	// 	}
+	// }
 
-	// Когда оба отработали и пропала авария- очищаем расчеты
-	if (acc.byDura?.finish) {
-		// console.log(1116, 'vent byDura выполнился', acc, 'далее byDura очистится')
-		acc.byDura = {}
-		delExtra(bld._id, sect._id, 'vent_dura')
-	}
+	// // Когда оба отработали и пропала авария- очищаем расчеты
+	// if (acc.byDura?.finish) {
+	// 	// console.log(1116, 'vent byDura выполнился', acc, 'далее byDura очистится')
+	// 	acc.byDura = {}
+	// 	delExtra(bld._id, sect._id, 'vent_dura')
+	// }
 }
 module.exports = vent
 

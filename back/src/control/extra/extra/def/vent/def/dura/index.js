@@ -4,13 +4,8 @@ const { msg } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
-// Режим вентиляции: Вкл - принудительное включение
-function mOn(s, sect, resultFan) {
-	if (resultFan) resultFan.force = true
-}
-
-// Режим вентиляции: Авто - доп вентиляция (подхват)
-function mAutoByDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
+// Режим вентиляции: Авто - Доп вентиляция выравнивания температуры
+function fnDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
@@ -73,56 +68,4 @@ function mAutoByDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff
 	// console.log(11141, 'vent Время отключения подхвата', acc, fanOff, alarm)
 }
 
-// Режим вентиляции: Авто - по времени
-function mAutoByTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
-	// Аккумулятор вычислений
-	acc.byTime ??= {}
-	// Отключение: нет настройки, аварии, бит завершения по времени, сейчас работает подхват
-	if (
-		typeof s.vent.work !== 'number' ||
-		(Object.values(acc?.byDura ?? {}).length && !acc?.byDura.finish)
-	) {
-		acc.byTime = {}
-		// console.log(
-		// 	1117,
-		// 	'vent reset byTime',
-		// 	typeof s.vent.work !== 'number',
-		// 	Object.values(acc?.byDura).length
-		// )
-		delExtra(bld._id, sect._id, 'vent_time_wait')
-		delExtra(bld._id, sect._id, 'vent_time')
-		return
-	}
-
-	// Ожидание
-	acc.byTime.wait ??= new Date()
-	let time = compareTime(acc.byTime.wait, s.vent.wait)
-	// Время не прошло
-	if (!time) {
-		wrExtra(
-			bld._id,
-			sect._id,
-			'vent_time_wait',
-			msg(bld, sect, 87, `${s.vent.wait / 60 / 1000}мин)`)
-		)
-		// console.log(1118, 'vent: Ожидание', acc.byTime.wait, s.vent.wait)
-		return
-	}
-	// Вкл вентиляции, когда истечет время ожидания
-	resultFan.start = [true]
-	acc.byTime.start = true
-	delExtra(bld._id, sect._id, 'vent_time_wait')
-	wrExtra(bld._id, sect._id, 'vent_time', msg(bld, sect, 88, `${s.vent.work / 60 / 1000}мин)`))
-	acc.byTime.work ??= new Date()
-	time = compareTime(acc.byTime.work, s.vent.work)
-	// Время работы прошло
-	if (time) {
-		delete acc.byTime?.work
-		delete acc.byTime?.wait
-		// delete acc.byTime?.start
-		resultFan.start = [false]
-		delExtra(bld._id, sect._id, 'vent_time')
-	}
-}
-
-module.exports = { mAutoByTime, mAutoByDura, mOn }
+module.exports = fnDura

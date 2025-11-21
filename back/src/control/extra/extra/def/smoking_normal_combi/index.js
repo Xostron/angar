@@ -5,7 +5,7 @@ const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 const { getIdsS } = require('@tool/get/building')
 const { fnClear, collect } = require('./fn')
-const softStart = require('./soft')
+const soft = require('./soft')
 const h = 3600000
 
 /**
@@ -69,7 +69,7 @@ function smoking(
 		console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrl(idB, fanA, 'off')
-		softStart(idB, idsS, fan, obj, s, false)
+		soft(idB, idsS, fan, obj, s, false)
 		delete doc.work
 		delete doc.wait
 		// Удаляем аккумулятор плавного пуска по завершению окуривания
@@ -95,7 +95,7 @@ function smoking(
 		// Вкл разгонные
 		arrCtrl(idB, fanA, 'on')
 		// Вкл ВНО секции
-		softStart(idB, idsS, fan, obj, s, true)
+		soft(idB, idsS, fan, obj, s, true)
 		return
 	}
 
@@ -110,7 +110,7 @@ function smoking(
 		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrl(idB, fanA, 'off')
-		softStart(idB, idsS, fan, obj, s, false)
+		soft(idB, idsS, fan, obj, s, false)
 		console.log(33, 'Окуривание ожидание: Выключение плавного пуска')
 		return
 	}

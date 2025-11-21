@@ -45,13 +45,13 @@ function fnAlarmB(buildingId, barB, timer) {
 	const alrClosed = barB?.[buildingId]?.alrClosed?.[0]
 	const co2work = barB?.[buildingId]?.co2work?.[0]
 	const co2wait = barB?.[buildingId]?.co2wait?.[0]
-	const openVin = barB?.[buildingId]?.openVin[0]
-	const ventOn = barB?.[buildingId]?.ventOn[0]
-	const ventDura = barB?.[buildingId]?.ventDura[0]
-	const ventTime = barB?.[buildingId]?.ventTime[0]
-	const ventTimeWait = barB?.[buildingId]?.ventTimeWait[0]
-	const debdo = barB?.[buildingId]?.debdo[0]
-	const stableVno = barB?.[buildingId]?.stableVno[0]
+	const openVin = barB?.[buildingId]?.openVin?.[0]
+	const ventOn = barB?.[buildingId]?.ventOn?.[0]
+	const ventDura = barB?.[buildingId]?.ventDura?.[0]
+	const ventTime = barB?.[buildingId]?.ventTime?.[0]
+	const ventTimeWait = barB?.[buildingId]?.ventTimeWait?.[0]
+	const debdo = barB?.[buildingId]?.debdo?.[0]
+	const stableVno = barB?.[buildingId]?.stableVno?.[0]
 	const alr = [
 		alrClosed,
 		tout,
