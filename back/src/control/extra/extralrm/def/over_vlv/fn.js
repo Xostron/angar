@@ -36,7 +36,7 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 	// 3. Нет приточных клапанов
 	// 4. Нет настроек
 	// 5. Авторежим сушка && Настройки.Сушка.Постоянный вент=true
-	// 6. Настройки.Вентиляция.Управление вент=ВКЛ('on')
+	// 6. Настройки.Вентиляция.Управление вент=ВКЛ('on') или авто
 	// 7. Склад холодильник
 	// 8. Склад Комби в режиме холодильника
 	const alrAuto = isAlr(bld._id, automode)
@@ -48,6 +48,7 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 		!s.overVlv.wait ||
 		(automode === 'drying' && s.drying.ventilation) ||
 		s.vent.mode === 'on' ||
+		s.vent.mode === 'auto' ||
 		bld?.type === 'cold' ||
 		(bld?.type === 'combi' && automode === 'cooling' && alrAuto)
 	) {

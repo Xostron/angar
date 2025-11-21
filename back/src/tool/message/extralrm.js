@@ -1,4 +1,4 @@
-const { data:store } = require('@store')
+const { data: store } = require('@store')
 
 // Получить extralrm аварию
 function isExtralrm(idB, idS, code) {
@@ -6,15 +6,15 @@ function isExtralrm(idB, idS, code) {
 }
 
 // Записать в extralrm (доп. аварии)
-function wrExtralrm(buildingId, idS, name, o) {
+function wrExtralrm(idB, idS, name, o) {
 	store.alarm.extralrm ??= {}
-	store.alarm.extralrm[buildingId] ??= {}
+	store.alarm.extralrm[idB] ??= {}
 	if (!idS) {
-		store.alarm.extralrm[buildingId][name] = o
+		!isExtralrm(idB, idS, name) ? (store.alarm.extralrm[idB][name] = o) : null
 		return
 	}
-	store.alarm.extralrm[buildingId][idS] ??= {}
-	store.alarm.extralrm[buildingId][idS][name] = o
+	store.alarm.extralrm[idB][idS] ??= {}
+	!isExtralrm(idB, idS, name) ? (store.alarm.extralrm[idB][idS][name] = o) : null
 }
 // Удалить из extralrm (доп. аварии)
 function delExtralrm(idB, idS, name) {
@@ -22,7 +22,7 @@ function delExtralrm(idB, idS, name) {
 		delete store.alarm?.extralrm?.[idB]?.[name]
 		return
 	}
-	
+
 	delete store.alarm?.extralrm?.[idB]?.[idS]?.[name]
 }
 
@@ -37,7 +37,7 @@ function sumExtralrmSection(building, obj) {
 	const section = data.section.filter((el) => el.buildingId == building._id)
 	let alrS = false
 	//Список аварий: Аварийное закрытие клапанов
-	const list = ['alrClosed','overVlv', 'antibliz']
+	const list = ['alrClosed', 'overVlv', 'antibliz']
 	// id секций склада
 	const secIds = section.map((el) => el._id)
 	// аварии склада
@@ -59,4 +59,4 @@ function sumExtralrmSection(building, obj) {
 	return alrS
 }
 
-module.exports = {isExtralrm, wrExtralrm, delExtralrm, sumExtralrmSection}
+module.exports = { isExtralrm, wrExtralrm, delExtralrm, sumExtralrmSection }
