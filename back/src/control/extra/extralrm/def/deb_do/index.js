@@ -26,8 +26,7 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 		66,
 		count,
 		'debdo',
-		acc,
-		store.debounce
+		acc
 		// 'heatingAll',
 		// heatingAll,
 		// 'heatingWAll',
@@ -35,6 +34,7 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 		// 'heatingClrAll',
 		// heatingClrAll
 	)
+	// arr.forEach((el) => console.log('store.debounce', el.name, el._id, store.debounce?.[el._id]))
 	// Разрешение на работу
 	if (!fnCheck(bld, watch, count, wait, arr, acc, store.debounce)) return false
 

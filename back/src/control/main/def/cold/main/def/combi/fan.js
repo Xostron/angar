@@ -1,5 +1,6 @@
-const fan = require('@tool/command/fan/auto')
+const fanAu = require('@tool/command/fan/auto')
 const { data: store, readAcc } = require('@store')
+const { isCombiCold } = require('@tool/combi/is')
 
 /**
  * Для секции
@@ -21,10 +22,12 @@ function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
 	const start = checkStart(bld)
 	resultFan.start.push(start)
 	resultFan.list.push(sect._id)
-	// Последовательное вкл/выкл соленоида подогрева и ВНО
-	resultFan.fan.push(...mS.solHeatS, ...mS.fanSS)
+	// Последовательное вкл/выкл соленоида подогрева и ВНО секций
+	const { sol, fan } = mFan(bld, mS, bdata)
+	resultFan.fan.push(...sol, ...fan)
+
 	// console.log(994, resultFan)
-	fan.combi(bld, obj, s, seB, seS, m, resultFan, bdata)
+	fanAu.combi(bld, obj, s, seB, seS, m, resultFan, bdata)
 }
 
 /**
@@ -43,6 +46,17 @@ function checkStart(bld) {
 	if (store.alarm.achieve?.[bld._id]?.cooling?.finish) return false
 	// По-умолчанию вкл
 	return true
+}
+
+function mFan(bld, mS, bdata) {
+	const isCCFin = isCombiCold(bld, bdata?.automode, bdata?.s) && bdata.accAuto.cold?.flagFinish
+
+	// Комби склад в режиме холодильника + достиг температуры задания:
+	// соленоиды и fanS - ВНО секции+ВНО испарителей
+	if (isCCFin) return { sol: [], fan: mS.fanS ?? [] }
+
+	// Комби склад в режиме холодильника: соленоиды и ВНО секции
+	return { sol: mS.solHeatS ?? [], fan: mS.fanSS ?? [] }
 }
 
 module.exports = fanCombi

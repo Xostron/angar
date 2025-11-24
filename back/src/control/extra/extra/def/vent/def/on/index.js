@@ -5,7 +5,7 @@ const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
 // Режим вентиляции: Вкл - принудительное включение
-function fnOn(s, sect, resultFan) {
+function fnOn(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) {
 	if (resultFan) resultFan.force = true
 }
 

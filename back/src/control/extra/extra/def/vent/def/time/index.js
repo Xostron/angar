@@ -5,7 +5,7 @@ const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
 // Режим вентиляции: Авто - по времени
-function fnTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, fanOff, resultFan) {
+function fnTime(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) {
 	// Аккумулятор вычислений
 	acc.byTime ??= {}
 	// Отключение: нет настройки, аварии, бит завершения по времени, сейчас работает подхват

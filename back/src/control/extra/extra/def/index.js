@@ -22,7 +22,7 @@ const data = {
 	section: {
 		// Секция - АВТО
 		on: {
-			vent,
+			
 			tChannel,
 		},
 		// Секция - ВЫКЛ
@@ -34,6 +34,7 @@ const data = {
 			cableS,
 			// Увлажнение
 			wetting,
+			vent,
 		},
 	},
 	// Обычный склад - Доп функции для склада

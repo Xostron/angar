@@ -2,6 +2,9 @@ const { onTime } = require('@tool/command/time')
 const coldAchieve = require('./cold')
 const combiAchieve = require('./combi')
 
+// check - позволяет испарителю не зациклиться на каком-то одном режиме
+// он дает испарителю выбор действий.
+
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)

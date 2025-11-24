@@ -89,7 +89,7 @@ function isAlrmByVlv(idB, vlv, equip) {
 	return [...arrM].some((idM) => {
 		const t = isErrM(idB, idM)
 		const mdl = module.find((el) => el._id === idM)
-		console.log(`Клапан${vlv.type} ${vlv._id}, Модуль ${idM} ${mdl.ip}, авария=${t}`)
+		// console.log(1, `Клапан ${vlv.type} ${vlv._id}, Модуль ${idM} ${mdl.ip}, авария=${t}`)
 		return t
 	})
 }

@@ -25,7 +25,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 		return true
 	}
 	// Запрет управления (Работа в НОРМ или ХОЛОД)
-	if (ignore[where](bld, obj,s, acc, bdata, solHeat)) {
+	if (ignore[where](bld, obj, s, acc, bdata, solHeat)) {
 		console.log('\tПлавный пуск: TurnOff (ИГНОР РАБОТЫ)', idS, where)
 		return true
 	}
@@ -37,13 +37,13 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 	}
 	// aCmd - задание на вкл активно - Разрешить управление
 	if (aCmd.type == 'on') {
-		console.log('\tПлавный пуск: TurnOff = false -> Разрешить работу ВНО', idS, where)
+		console.log('\tПлавный пуск: TurnOff = false -> Разрешить работу ВНО', idS, aCmd, where)
 		return false
 	}
 	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
-	console.log('\tПлавный пуск: TurnOff (По-умолчанию - все выключить)', idS, where)
+	console.log('\tПлавный пуск: TurnOff (По-умолчанию - все выключить)', idS, aCmd, where)
 	return true
 }
 

@@ -45,12 +45,9 @@ function sectionOn(
 		alrAlw
 	)
 	// Секция: Дополнительные функции авторежимов
-	extra(building, sect, obj, s, se, m, alr, resultFan, def[am].toExtra(s, alr, sect._id, accAuto))
+	extra(building, sect, obj, s, se, m, alr, resultFan, def[am].toExtra(s, alr))
 	// Приточный клапан (шаговое управление)
 	valve(building, sect, m.vlvS, m.fanS, obj, alr, v, accAuto, s)
 }
 
 module.exports = sectionOn
-
-
-

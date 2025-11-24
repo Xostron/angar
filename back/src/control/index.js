@@ -40,7 +40,7 @@ async function control() {
 		Aboc.call(zero)(null, false)
 		// Сохранение пользовательских настроек склада retain/data.json
 		await Aboc.asycall(save)(obj)
-		// await delay(5000)
+		await delay(5000)
 		// store.battery = !store.battery
 		Aboc.refresh()
 		if (store._cycle_ms_ < 50) await delay(1000)

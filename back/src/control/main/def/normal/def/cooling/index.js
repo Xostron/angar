@@ -13,7 +13,7 @@ const data = {
 	// Данные от охлаждения на Доп. аварии (Антивьюга, работа клапанов и т.д.)
 	toAlrS: (s, sectionId, acc) => ({ exclude: '' }),
 	// Данные от охлаждения на Доп. функции (контроль вентиляции, обогрев клапанов и т.д.)
-	toExtra: (s, alarm, sectionId, acc) => ({ fanOff: alarm, alwaysFan: null }),
+	toExtra: (s, alarm) => ({ fanOff: alarm, alwaysFan: null }),
 	// Промежуточные расчеты по секции (если такие возникнут)
 	middlew: (building, section, obj, s, se, seB, alr, acc) => {},
 	// Промежуточные расчеты по складу

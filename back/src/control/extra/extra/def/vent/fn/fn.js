@@ -4,9 +4,9 @@ const { delExtra } = require('@tool/message/extra')
 const { isAchieve } = require('@tool/message/achieve')
 const { isAlr } = require('@tool/message/auto')
 const { readAcc } = require('@store/index')
-const isCombiCold = require('@tool/combi/is')
+const { isCombiCold } = require('@tool/combi/is')
 
-function fnPrepare(bld, obj, s) {
+function fnPrepare(bld, sect, obj, s) {
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	const am = obj.retain?.[bld._id]?.automode
 	// Комби склад в режиме холодильника
@@ -15,22 +15,37 @@ function fnPrepare(bld, obj, s) {
 	const isCN = !isCC
 	// Обычный склад
 	const isN = bld.type === 'normal'
-	return { extraCO2, am, isCC, isCN, isN }
+	// Склад выключен
+	const start = obj.retain[bld._id].start
+	// Секция в авто
+	const secAuto = obj.retain[bld._id].mode?.[sect._id]
+	// Комби склад в режиме холодильника - флаг выкл по достижению задания
+	const cFlagFinish = readAcc(bld._id, 'combi')?.cold?.flagFinish
+	return { extraCO2, am, isCC, isCN, isN, start, secAuto, cFlagFinish }
 }
 
+/**
+ * Проверка разрешения работы ВВ
+ * Если проверка не прошла выключение ВВ и очистка аккумуляторов и соообщений
+ * @param {*} bld
+ * @param {*} sect
+ * @param {*} code
+ * @param {*} fanS
+ * @param {*} s
+ * @param {*} ban
+ * @param {*} prepare
+ * @param {*} acc
+ * @param {*} resultFan
+ * @returns {boolean} true - разрешить работу, false - запрет работы
+ */
 function exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
 	if (!fnCheck(bld, sect, code, fanS, s, ban, prepare)) {
-		// // Если режим ВВ = Вкл, то однократно выключаем ВНО
-		// if (s.vent.mode === 'on') {
-		// 	if (!acc?.firstCycle) resultFan.start = [false]
-		// 	resultFan.force = false
-		// }
-		// // Если сейчас работает вы
-		// if (acc?.byDura?.end) resultFan.start = [false]
-		// acc.firstCycle = true
+		resultFan.force = false
 		clear(bld, sect, acc, 1, 1, 1, 1)
+		return false
 	}
+	return true
 }
 
 /**
@@ -44,6 +59,8 @@ function exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan) {
  * 6. Работает удаление СО2
  * 7. Алгоритм ВВ не определен = null
  * 8. Настройка "Кол-во ВНО = 0"
+ * 9. Склад выключен, секция не в авто
+ * 10. Комби склад в режиме холодильника: нет настроек
  * Разрешено: обычному складу и комби складу в обычном/холодильном режимах
  * @param {*} bld
  * @param {*} sect
@@ -54,42 +71,53 @@ function exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan) {
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
 function fnCheck(bld, sect, code, fanS, s, ban, prepare) {
-	const { extraCO2, am, isCC, isCN, isN } = prepare
+	const { extraCO2, am, isCC, isCN, isN, start, secAuto, cFlagFinish } = prepare
 	const reason = [
 		ban,
 		!fanS.length,
-		(!s?.vent?.mode || s?.vent?.mode === 'off') && isN,
-		(!s?.vent?.mode || s?.vent?.mode === 'off') && isCN,
+		(!s?.vent?.mode || s?.vent?.mode === 'off' || !s?.vent?.max) && isN,
+		(!s?.vent?.mode || s?.vent?.mode === 'off' || !s?.vent?.max) && isCN,
 		isExtralrm(bld._id, sect._id, 'alrClosed'),
 		isExtralrm(bld._id, sect._id, 'local'),
-		extraCO2.start,
+		extraCO2?.start,
 		code === null,
+		!start,
+		!secAuto,
+		(!s?.coolerCombi?.wait || !s?.coolerCombi?.work || !s?.coolerCombi?.max || !cFlagFinish) &&
+			code === 'combiCold',
 	]
+
 	if (reason.some((el) => el)) {
 		// Запретить ВВ
-		console.log(5500, 'Запрет ВВ по причине')
+		console.log(77, sect.name, 'Условия ВВ не подходят по причине')
 		console.table(
 			[
 				{
 					ban: reason[0],
-					Нет_ВНО: reason[1],
-					Обычный_выкл: reason[2],
-					Комби_выкл: reason[3],
-					Авар_закр_клап: reason[4],
-					Перекл_на_щите: reason[5],
-					Удаление_СО2: reason[6],
-					'Режим не определен': reason[7],
+					ВНО_0: reason[1],
+					Выкл_Обыч: reason[2],
+					Выкл_Комби: reason[3],
+					alrClosed: reason[4],
+					local: reason[5],
+					CО2: reason[6],
+					def_null: reason[7],
+					not_start: reason[8],
+					not_secAuto: reason[9],
+					combiCold: reason[10],
 				},
 			],
 			[
 				'ban',
-				'Нет_ВНО',
-				'Обычный_выкл',
-				'Комби_выкл',
-				'Авар_закр_клап',
-				'Перекл_на_щите',
-				'Удаление_СО2',
-				'Режим не определен',
+				'ВНО_0',
+				'Выкл_Обыч',
+				'Выкл_Комби',
+				'alrClosed',
+				'local',
+				'СО2',
+				'def_null',
+				'not_start',
+				'not_secAuto',
+				'combiCold',
 			]
 		)
 		return false

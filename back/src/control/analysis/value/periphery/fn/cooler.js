@@ -115,7 +115,7 @@ function state(o, clr, equip, arrM) {
 	const alrMdl = isAlrmByClr(clr, idB, equip, arrM)
 	const alrFan = o?.fan?.state === 'alarm' ? true : false
 	const connectLost = isExtra(idB, null, 'connectLost')
-	console.log(7700, idB, alrMdl, alrFan, connectLost, '===', alrMdl || alrFan || connectLost)
+	// console.log(7700, idB, alrMdl, alrFan, connectLost, '===', alrMdl || alrFan || connectLost)
 	if (alrMdl || alrFan || connectLost) {
 		o.status = 'alarm'
 		return 'off-off-off'

@@ -3,7 +3,7 @@ const { elapsedTime } = require('@tool/command/time')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
-const isCombiCold = require('@tool/combi/is')
+const { isCombiCold } = require('@tool/combi/is')
 
 /**
  * Определение подрежима
@@ -110,7 +110,7 @@ function target(bld, obj, s, seB, acc) {
 function message(bld, obj, s, seB, am, acc) {
 	// Если склад комби в режиме холода выходим из проверки по достижению Тзадания
 	// Для данного склада проверка происходит в src\control\main\def\cold\main\check\index.js
-	if (isCombiCold(bld, am, s)) return 
+	if (isCombiCold(bld, am, s)) return
 	if (!s) return
 	// Продукт достиг температуры задания*****************************************
 	// В режиме лечения - Продукт достиг не активен
