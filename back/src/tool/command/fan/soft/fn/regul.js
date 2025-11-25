@@ -25,8 +25,10 @@ function regul(acc, fanFC, on, off, s, where) {
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc.sp >= _MAX_SP) return false
-		if (!compareTime(acc.fc.date, acc.delayFC)) return true
-
+		const time = compareTime(acc.fc.date, acc.delayFC)
+		// Время шага ПЧ не прошло -> выходим
+		if (!time) return true
+		// Время шага прошло -> увеличиваем частоту
 		// Время стабилизации прошло
 		acc.fc.sp += s.fan.step
 		// Ограничение max задания ПЧ
@@ -34,7 +36,6 @@ function regul(acc, fanFC, on, off, s, where) {
 		// Ограничение min задания ПЧ
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
-		
 	}
 
 	// Пошагово уменьшаем задание ПЧ

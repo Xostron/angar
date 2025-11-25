@@ -21,30 +21,35 @@ const isAllStarted = require('../fn/all_started')
  * @returns
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
+	const who = aCmd.force ? 'normal' : where
 	const bldId = bld._id
-	const acc = init(bld, idS, obj, s, where, 'fc', fans.length)
+	const acc = init(bld, idS, obj, s, who, 'fc', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
 
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
-	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
+	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)
+	console.log(110, 'on', on, 'off', off)
 	// Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
 	// Антидребезг ВНО
 	if (acc.stable) (on = false), (off = false)
+	console.log(111, 'on', on, 'off', off, who)
 	// Управление соленоидом подогрева
-	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, where)
+	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
+
 	// Регулирование по ПЧ после ожидания соленоида подогрева
-	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, where)
+	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, who)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, s, fans.length)
 	checkOff.fc(off, acc)
 	// Непосредственное включение
-	turnOn(fanFC, fans, solHeat, bldId, acc)
+	turnOn(fanFC, fans, solHeat, bldId, acc, aCmd)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
+	console.table(acc)
 }
 
 module.exports = fc

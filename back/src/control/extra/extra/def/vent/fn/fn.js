@@ -41,7 +41,7 @@ function fnPrepare(bld, sect, obj, s) {
 function exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
 	if (!fnCheck(bld, sect, code, fanS, s, ban, prepare)) {
-		resultFan.force = false
+		resultFan.force.push(false)
 		clear(bld, sect, acc, 1, 1, 1, 1)
 		return false
 	}
@@ -140,7 +140,7 @@ function fnCheck(bld, sect, code, fanS, s, ban, prepare) {
  * @param {*} prepare
  * @param {*} acc
  */
-function fnSelect(prepare, acc) {
+function fnSelect(prepare, s, acc) {
 	const { extraCO2, am, isCC, isCN, isN } = prepare
 	if ((isN || isCN) && s?.vent?.mode === 'on') return 'on'
 	if ((isN || isCN) && s?.vent?.mode === 'auto' && s?.vent?.add && s?.vent?.max_add) return 'dura'

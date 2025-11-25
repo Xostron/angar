@@ -5,29 +5,25 @@ const { isCombiCold } = require('@tool/combi/is')
 /**
  * Для секции
  * @param {*} bld
- * @param {*} sect
  * @param {*} bdata
  * @param {*} obj
  * @param {*} s
  * @param {*} seB
- * @param {*} seS
  * @param {*} m
- * @param {*} mS
  * @param {*} alr
  * @param {*} acc
  */
-function fanCombi(bld, sect, bdata, obj, s, seB, seS, m, mS, alr, acc) {
-	const resultFan = { start: [], list: [], fan: [] }
+function fanCombi(bld, bdata, obj, s, seB, m, alr, acc) {
+	// const resultFan = { start: [], list: [], fan: [], force:[] }
+	const { resultFan } = bdata
 	// Логика включения ВНО в комбинированном складе в режиме холодильник
 	const start = checkStart(bld)
 	resultFan.start.push(start)
-	resultFan.list.push(sect._id)
+	// resultFan.list.push(sect._id)
 	// Последовательное вкл/выкл соленоида подогрева и ВНО секций
-	const { sol, fan } = mFan(bld, mS, bdata)
-	resultFan.fan.push(...sol, ...fan)
-
-	// console.log(994, resultFan)
-	fanAu.combi(bld, obj, s, seB, seS, m, resultFan, bdata)
+	const { sol, fan } = mFan(bld, m, bdata)
+	resultFan.fan = [...sol, ...fan]
+	fanAu.combi(bld, obj, s, seB, m, resultFan, bdata)
 }
 
 /**
@@ -48,15 +44,26 @@ function checkStart(bld) {
 	return true
 }
 
-function mFan(bld, mS, bdata) {
+function mFan(bld, m, bdata) {
 	const isCCFin = isCombiCold(bld, bdata?.automode, bdata?.s) && bdata.accAuto.cold?.flagFinish
+	const r = { sol: [], fan: [] }
 
 	// Комби склад в режиме холодильника + достиг температуры задания:
 	// соленоиды и fanS - ВНО секции+ВНО испарителей
-	if (isCCFin) return { sol: [], fan: mS.fanS ?? [] }
+	if (isCCFin) {
+		for (const idS in m.sect) {
+			r.sol.push(...(m?.sect?.[idS]?.solHeatS ?? []))
+			r.fan.push(...(m?.sect?.[idS]?.fanS ?? []))
+		}
+		return r
+	}
 
 	// Комби склад в режиме холодильника: соленоиды и ВНО секции
-	return { sol: mS.solHeatS ?? [], fan: mS.fanSS ?? [] }
+	for (const idS in m.sect) {
+		r.sol.push(...(m?.sect?.[idS]?.solHeatS ?? []))
+		r.fan.push(...(m?.sect?.[idS]?.fanSS ?? []))
+	}
+	return r
 }
 
 module.exports = fanCombi

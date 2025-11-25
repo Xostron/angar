@@ -28,9 +28,10 @@ function main(bld, obj, bdata, alr) {
 		const seS = sensor(bld._id, sect._id, obj)
 		// Работа испарителей
 		coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj)
-		// Работа ВНО секции и соленоида подогрева (регулирование температурой канала)
-		fanCombi(bld, sect, bdata, obj, s, se, seS, m, mS, alr, accAuto.cold)
 	}
+	// Управление ВНО
+	fanCombi(bld, bdata, obj, s, se, m, alr, accAuto.cold)
+	//
 	if (clearBuild(bld, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.combi(bld, obj, bdata, alr)

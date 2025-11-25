@@ -1,6 +1,5 @@
 const { ctrlDO, ctrlAO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
-const { isAlr } = require('@tool/message/auto')
 const { isErrM } = require('@tool/message/plc_module')
 const { setACmd } = require('@tool/command/set')
 const { getIdB } = require('@tool/get/building')
@@ -42,10 +41,27 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 				!goVNO
 			)
 			setACmd('fan', idS, { delay, type: 'off' })
-		} else
-			!resultFan?.force
-				? setACmd('fan', idS, { delay, type: start ? 'on' : 'off' })
-				: setACmd('fan', idS, { delay, type: 'on' })
+		}
+		// stg - везде где делаем включение force, указываем настройку ВВ
+		// force - принудительное включение
+		// Источники force: Настройки сушки: "Постоянная вентиляция"
+		// Настройки Вентиляции. В зависимости от режима ВВ
+		// Удаление СО2
+		else {
+			!resultFan.force.includes(true)
+				? setACmd('fan', idS, {
+						delay,
+						type: start ? 'on' : 'off',
+						force: null,
+						max: null,
+				  })
+				: setACmd('fan', idS, {
+						delay,
+						type: 'on',
+						force: true,
+						max: bdata?.s?.[resultFan?.stg]?.max,
+				  })
+		}
 	})
 }
 

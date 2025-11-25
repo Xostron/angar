@@ -135,6 +135,15 @@ function mechB(bId, type, obj) {
 		})
 	// Если склад типа холодильник
 	if (cold) fanAll.push(...cold.fan)
+
+	// ИМ секции
+	const sect = {}
+	data?.section
+		.filter((el) => el.buildingId === bId)
+		.forEach((el) => {
+			sect[el._id] = mech(obj, el._id, bId)
+		})
+
 	return {
 		fanA,
 		connect,
@@ -148,6 +157,7 @@ function mechB(bId, type, obj) {
 		heatingAll,
 		heatingWAll,
 		heatingClrAll,
+		sect,
 	}
 }
 

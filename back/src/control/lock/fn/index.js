@@ -25,7 +25,7 @@ function vlv(obj) {
 			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
 			cls
 
-		// console.log(3333, 'lock', v.type, local, vlvLim, vlvLimB, vlvCrash, longOC, offS)
+		console.log(3333, 'lock', v.type, local,localB,alrStop, vlvLim, vlvLimB, vlvCrash, longOC, offS)
 		// блокировка открытия
 		outV('on', output, v, opn, localB, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
 		// // блокировка закрытия

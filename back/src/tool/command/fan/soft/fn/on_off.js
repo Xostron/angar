@@ -2,7 +2,7 @@ const { sensor } = require('@tool/command/sensor')
 
 // Команды Вкл/выкл ВНО в зависимости от показателей давления/температуры канала
 const defOnOff = {
-	// Для обычного склада и комби(обычный режим)
+	// Для обычного склада и комби(обычный режим), комби-холод (tprd достигла задания)
 	normal: (idB, idS, accAuto, obj, seS, s) => {
 		const { p } = sensor(idB, idS, obj)
 		let on = p < s.fan.pressure.p

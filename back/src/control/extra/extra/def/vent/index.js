@@ -10,12 +10,12 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
 	// Выбор алгоритма ВВ
-	const code = fnSelect(prepare, acc)
+	const code = fnSelect(prepare, s, acc)
 	// Проверка разрешения ВВ и очистка аккумулятора
 	if (!exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan))
 		return console.log(77, 'Условия ВВ не подходят')
 	// Алгоритм ВВ
-	console.log(77, sect.name, 'code', code)
+	console.log(77, sect.name, 'code', code, resultFan)
 	def[code](obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan)
 }
 module.exports = vent

@@ -6,7 +6,8 @@ const { compareTime } = require('@tool/command/time')
 
 function fnCC(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) {
 	console.log(77, 'ВВ комби склада в режиме холодильника в работе')
-	resultFan.force=true
+	resultFan.force.push(true)
+	resultFan.stg = 'coolerCombi'
 }
 
 module.exports = fnCC

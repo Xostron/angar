@@ -1,4 +1,5 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
+const { fnLimit } = require('./vent')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
@@ -8,16 +9,18 @@ const _MIN_SP = 20
  * @param {*} idB Склад Id
  * @param {*} acc Аккумулятор
  */
-function turnOn(fanFC, fans, solHeat, idB, acc) {
+function turnOn(fanFC, fans, solHeat, idB, acc, aCmd) {
+	const max = fnLimit(fanFC, fans, aCmd)
 	if (fanFC) {
 		ctrlAO(fanFC, idB, acc.fc.sp)
 		ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
+		if (max === -1) ctrlDO(fanFC, idB, 'off')
 		// console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
 	}
 
 	fans.forEach((f, i) => {
 		// Очередь не дошла - выключить ВНО
-		if (acc.order < i) {
+		if (acc.order < i || max <= 0 || (max > 0 && i >= max)) {
 			ctrlDO(f, idB, 'off')
 			f?.ao?.id ? ctrlAO(f, idB, _MIN_SP) : null
 			// console.log('\tDO ВНО', f.name, 'ВЫКЛ')

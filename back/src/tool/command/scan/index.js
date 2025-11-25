@@ -2,15 +2,13 @@ const { sensorBuilding } = require('@tool/command/sensor')
 const { data: store, readAcc } = require('@store')
 const { mechB } = require('@tool/command/mech')
 
-
-
 /**
  * Собрать первичные данные по складу
  * @param {object} bld Рама склада
  * @param {object} obj Глобальные данные
- * @returns {object} bdata = { start (склад запущен), automode (авторежим: сушка, харенение), 
- * mode (режимы работ секций), s (настройки), se (датчики склада, не по секции), m (механизмы склада), 
- * accAuto (аккумулятор авторежима), resultFan (аккумулятор плавного пуска ВНО), 
+ * @returns {object} bdata = { start (склад запущен), automode (авторежим: сушка, харенение),
+ * mode (режимы работ секций), s (настройки), se (датчики склада, не по секции), m (механизмы склада),
+ * accAuto (аккумулятор авторежима), resultFan (аккумулятор плавного пуска ВНО),
  * supply (для холодильника - флаг питания) }
  */
 function scan(bld, obj) {
@@ -41,9 +39,11 @@ function scan(bld, obj) {
 		list: [],
 		fan: [],
 		warming: {},
+		force: [],
+		stg: null,
 	}
 
-	return { start, automode,mode, s, se, m, accAuto, resultFan, supply }
+	return { start, automode, mode, s, se, m, accAuto, resultFan, supply }
 }
 
 module.exports = scan

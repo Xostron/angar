@@ -1,6 +1,8 @@
 const { data: store } = require('@store')
+const { sensor } = require('@tool/command/sensor')
 const relay = require('./relay')
 const fc = require('./fc')
+const { ventConfig } = require('./fn/vent')
 const data = {
 	relay, // Плавный пуск (все вентиляторы на контакторах)
 	fc, // Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)
@@ -17,7 +19,7 @@ const data = {
  * @param {*} resultFan Данные о ВНО всего склада
  * @param {object} bdata Результат функции scan()
  */
-function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
+function soft(bld, obj, s, seB, m, resultFan, bdata, where) {
 	const { section, cooler } = obj.data
 	if (!resultFan.list?.length || !s) return
 	// Управление цепочкой ВНО - По секциям
@@ -32,7 +34,7 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		// Соленоиды подогрева
 		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
 		// ВНО без ПЧ
-		const fans = resultFan.fan
+		let fans = resultFan.fan
 			.filter((el) => el.owner.id === idS && !el?.ao && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
 
@@ -51,12 +53,17 @@ function soft(bld, obj, s, seB, seS, m, resultFan, bdata, where) {
 		fans.push(...fansCoo)
 		// Тип управления: с ПЧ или реле
 		const type = fanFC ? 'fc' : 'relay'
+		// ВВ (внутренняя вентиляция) для комби-холодильника
+		// ventConfig(fanFC, fans, solHeat, aCmd, bdata)
+		// ВВ для обычного склада и комби-обычного
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
-		console.log('******НАЧАЛО Плавный пуск ВНО', fans)
+		console.log('\t', 11, 'SOFT', idS, fanFC?.name, fans, aCmd)
 		// console.table(
 		// 	[{ Секция: idS, 'Тип ВНО': type, 'Тип управления': where }],
 		// 	['Секция', 'Тип ВНО', 'Тип управления']
 		// )
+		// Показания с датчиков секции
+		const seS = sensor(bld._id, idS, obj)
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }
