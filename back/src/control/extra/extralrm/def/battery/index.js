@@ -1,5 +1,5 @@
 const { data: store } = require('@store')
-const { set, reset } = require('./fn')
+const { set, reset, blink } = require('./fn')
 
 /**
  * Авария питания. Дальнейшая работа невозможна
@@ -22,7 +22,7 @@ function battery(bld, sect, obj, s, se, m, automode, acc, data) {
 
 	reset(acc, store.debounce)
 	set(bld, store.battery, obj, store.debounce, acc, watch, count)
-
+	blink(bld, store.battery)
 	return acc?._alarm ?? false
 }
 

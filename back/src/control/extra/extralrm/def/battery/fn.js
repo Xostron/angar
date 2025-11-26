@@ -1,5 +1,5 @@
 const { msgBB } = require('@tool/message')
-const { wrExtralrm } = require('@tool/message/extralrm')
+const { wrExtralrm, delExtralrm } = require('@tool/message/extralrm')
 
 /**
  * Функция слежения и генерации аварии дребезга
@@ -41,4 +41,10 @@ function reset(acc, accDeb) {
 	}
 }
 
-module.exports = { set, reset }
+// Для логов, ловим импульсы просадки напряжения
+function blink(bld, battery) {
+	if (battery) wrExtralrm(bld._id, null, 'battery', msgBB(bld, 103))
+	else delExtralrm(bld._id, null, 'battery')
+}
+
+module.exports = { set, reset, blink }

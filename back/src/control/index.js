@@ -41,7 +41,8 @@ async function control() {
 		// Сохранение пользовательских настроек склада retain/data.json
 		await Aboc.asycall(save)(obj)
 		// await delay(5000)
-		// store.battery = !store.battery
+
+		testBattery()
 		Aboc.refresh()
 		if (store._cycle_ms_ < 50) await delay(1000)
 		return true
@@ -80,6 +81,15 @@ function exception(err) {
 	cAlarm([{ type: 'alr', message: e }])
 	// Web: socket пустые значения
 	cValue({})
+}
+
+function testBattery() {
+	// store.battery = !store.battery
+	if (store.testBattery) store.battery = false
+	if (!store.testBattery) {
+		store.testBattery = true
+		store.battery = true
+	}
 }
 
 module.exports = loop
