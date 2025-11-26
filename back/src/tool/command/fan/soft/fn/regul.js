@@ -13,7 +13,8 @@ const _MIN_SP = 20
  * true: Регулирование частоты текущего (acc.order) ВНО,
  * false: Регулирование по кол-ву ВНО
  */
-function regul(acc, fanFC, on, off, s, where) {
+function regul(acc, fanFC, on, off, s, aCmd, max, where) {
+	if (aCmd.force && (max === null || max === -1)) return
 	if (!fanFC) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false

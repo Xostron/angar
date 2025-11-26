@@ -75,15 +75,16 @@ function fnCheck(bld, sect, code, fanS, s, ban, prepare) {
 	const reason = [
 		ban,
 		!fanS.length,
-		(!s?.vent?.mode || s?.vent?.mode === 'off' || !s?.vent?.max) && isN,
-		(!s?.vent?.mode || s?.vent?.mode === 'off' || !s?.vent?.max) && isCN,
+		(!s?.vent?.mode || s?.vent?.mode === 'off') /*|| !s?.vent?.max*/ && isN,
+		(!s?.vent?.mode || s?.vent?.mode === 'off') /*|| !s?.vent?.max*/ && isCN,
 		isExtralrm(bld._id, sect._id, 'alrClosed'),
 		isExtralrm(bld._id, sect._id, 'local'),
 		extraCO2?.start,
 		code === null,
 		!start,
 		!secAuto,
-		(!s?.coolerCombi?.wait || !s?.coolerCombi?.work || !s?.coolerCombi?.max || !cFlagFinish) &&
+		(!s?.coolerCombi?.work /*|| !s?.coolerCombi?.wait ||  !s?.coolerCombi?.max*/ ||
+			!cFlagFinish) &&
 			code === 'combiCold',
 	]
 

@@ -1,5 +1,4 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
-const { fnLimit } = require('./vent')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
@@ -9,18 +8,21 @@ const _MIN_SP = 20
  * @param {*} idB Склад Id
  * @param {*} acc Аккумулятор
  */
-function turnOn(fanFC, fans, solHeat, idB, acc, aCmd) {
-	const max = fnLimit(fanFC, fans, aCmd)
+function turnOn(fanFC, fans, solHeat, idB, acc, max, off, isCC) {
+	const offCC = off && isCC
 	if (fanFC) {
 		ctrlAO(fanFC, idB, acc.fc.sp)
 		ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
-		if (max === -1) ctrlDO(fanFC, idB, 'off')
+		if (max === -1 || offCC) {
+			ctrlAO(fanFC, idB, _MIN_SP)
+			ctrlDO(fanFC, idB, 'off')
+		}
 		// console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
 	}
 
 	fans.forEach((f, i) => {
 		// Очередь не дошла - выключить ВНО
-		if (acc.order < i || max <= 0 || (max > 0 && i >= max)) {
+		if (acc.order < i || offCC) {
 			ctrlDO(f, idB, 'off')
 			f?.ao?.id ? ctrlAO(f, idB, _MIN_SP) : null
 			// console.log('\tDO ВНО', f.name, 'ВЫКЛ')
@@ -32,7 +34,12 @@ function turnOn(fanFC, fans, solHeat, idB, acc, aCmd) {
 		// console.log('\tDO ВНО', f.name, 'ВКЛ')
 	})
 	solHeat.forEach((el) => {
+		if (offCC) {
+			ctrlDO(el, idB, 'off')
+			return
+		}
 		ctrlDO(el, idB, acc.sol.value ? 'on' : 'off')
+
 		// console.log('\tDO соленоиды подгрева', el.name, acc.sol.value ? 'ВКЛ' : 'ВЫКЛ')
 	})
 }

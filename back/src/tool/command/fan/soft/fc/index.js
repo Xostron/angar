@@ -7,7 +7,8 @@ const regul = require('../fn/regul')
 const init = require('../fn/init')
 const fnSolHeat = require('../fn/sol_heat')
 const isAllStarted = require('../fn/all_started')
-
+const { fnLimit } = require('../fn/vent')
+const { isCombiCold} = require('@tool/combi/is')
 /**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
@@ -22,6 +23,8 @@ const isAllStarted = require('../fn/all_started')
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const who = aCmd.force ? 'normal' : where
+	// Склад комби-холод, работа по темпе канала
+	const isCC = isCombiCold(bld, bdata.automode, s) && !aCmd.force
 	const bldId = bld._id
 	const acc = init(bld, idS, obj, s, who, 'fc', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
@@ -39,14 +42,15 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
 
+	const max = fnLimit(fanFC, aCmd)
 	// Регулирование по ПЧ после ожидания соленоида подогрева
-	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, who)
+	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, who)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, s, fans.length)
+	checkOn(on, acc, s, fans.length, aCmd, max)
 	checkOff.fc(off, acc)
 	// Непосредственное включение
-	turnOn(fanFC, fans, solHeat, bldId, acc, aCmd)
+	turnOn(fanFC, fans, solHeat, bldId, acc, max, off, isCC)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 	console.table(acc)

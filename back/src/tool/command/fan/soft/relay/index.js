@@ -6,6 +6,8 @@ const turnOn = require('../fn/turn_on')
 const init = require('../fn/init')
 const fnSolHeat = require('../fn/sol_heat')
 const isAllStarted = require('../fn/all_started')
+const { fnLimit } = require('../fn/vent')
+const { isCombiCold} = require('@tool/combi/is')
 
 /**
  * Плавный пуск ВНО в секции на контакторах
@@ -21,12 +23,15 @@ const isAllStarted = require('../fn/all_started')
  */
 function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	const bldId = bld._id
-	const acc = init(bld, idS, obj, s, where, 'relay', fans.length)
+	const who = aCmd.force ? 'normal' : where
+	// Склад комби-холод, работа по темпе канала
+	const isCC = isCombiCold(bld, bdata.automode, s) && !aCmd.force
+	const acc = init(bld, idS, obj, s, who, 'relay', fans.length)
 	// ****************** Авто: команда выкл ВНО секции ******************
 	if (turnOff(null, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
 	// ****************** Авто: команда вкл ВНО секции ******************
 	// Проверка давления/темп в канале (сигнал на вкл/откл вентиляторов)
-	let { on, off } = defOnOff[where](bld._id, idS, bdata.accAuto, obj, seS, s)
+	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)
 	// Прогрев клапанов
 	if (aCmd.warming) {
 		on = true
@@ -40,7 +45,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 		console.log('\tВключен Антидребезг, поэтому ВНО работают на постоянке')
 	}
 	// Управление соленоидом подогрева
-	acc.busySol = fnSolHeat(bldId, acc, solHeat, on, off, obj, s, where)
+	acc.busySol = fnSolHeat(bldId, acc, solHeat, on, off, obj, s, who)
 	if (acc.busySol) {
 		on = false
 		off = false
@@ -48,11 +53,12 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 			'\tЖдем соленоиды подогрева (Настройка ВНО:Время подключения доп. вентилятора (Т канала))'
 		)
 	}
+	const max = fnLimit(fanFC, aCmd)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc, s, fans.length)
+	checkOn(on, acc, s, fans.length, aCmd, max)
 	checkOff.relay(off, acc, where)
 	// Непосредственное включение
-	turnOn(null, fans, solHeat, bldId, acc)
+	turnOn(null, fans, solHeat, bldId, acc, max, isCC)
 	// Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 	console.table(acc)
