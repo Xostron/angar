@@ -13,8 +13,8 @@ const _MIN_SP = 20
  * true: Регулирование частоты текущего (acc.order) ВНО,
  * false: Регулирование по кол-ву ВНО
  */
-function regul(acc, fanFC, on, off, s, aCmd, max, where) {
-	if (aCmd.force && (max === null || max === -1)) return
+function regul(acc, fanFC, on, off, s, aCmd, max, isCC, where) {
+	if (aCmd.force && (max === null || max === -1)) return false
 	if (!fanFC) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
@@ -42,7 +42,7 @@ function regul(acc, fanFC, on, off, s, aCmd, max, where) {
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
 		acc.fc.value = true
-		if (magic(acc, s, where)) return true
+		if (magic(acc, isCC)) return false
 		// Задание ПЧ дошло до min% && не все ВНО выкл  => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc.sp <= s.fan.min && acc.order >= 0) {
 			acc.fc.sp = s.fan.min
@@ -54,7 +54,6 @@ function regul(acc, fanFC, on, off, s, aCmd, max, where) {
 		if (!compareTime(acc.fc.date, acc.delayFC)) return true
 		// Время стабилизации прошло
 		acc.fc.sp -= s.fan.step
-		if (magic(acc, s, where)) return true
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
 	}
@@ -62,14 +61,16 @@ function regul(acc, fanFC, on, off, s, aCmd, max, where) {
 	return true
 }
 
-// Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min && acc.fc.sp < s.fan.min
-function magic(acc, s, where) {
-	if (where == 'cold' && acc.order === -1 && !acc.fc.value) {
+// Комби-холод: Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
+function magic(acc, isCC) {
+	// Комби-холод
+	if (isCC && acc.order === -1 && acc.fc.sp <= _MIN_SP) {
 		acc.fc.sp = _MIN_SP
 		acc.fc.value = false
 		acc.fc.date = new Date()
 		return true
 	}
+	// Обычный, комби-обычный
 	return false
 }
 

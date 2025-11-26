@@ -5,7 +5,7 @@ import Row from './row'
 //Тело таблицы
 export default function List({}) {
 	const { build } = useParams()
-	const [signal] = useInputStore(({ alarm }) => [alarm.signal])
+	const signal = useInputStore((s) => s.alarm.signal)
 	return (
 		<section className='list-signal'>
 			{!!signal?.[build]?.length && signal?.[build].map((el, i) => <Row data={el} key={i} i={i} />)}

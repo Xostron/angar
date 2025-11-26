@@ -8,7 +8,7 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	// Подготовка данных
 	const prepare = fnPrepare(bld, sect, obj, s)
 	// Сообщение о выбранном режиме
-	fnMsg(bld, acc, s)
+	// fnMsg(bld, acc, s)
 	// Выбор алгоритма ВВ
 	const code = fnSelect(prepare, s, acc)
 	// Проверка разрешения ВВ и очистка аккумулятора

@@ -236,7 +236,12 @@ const data = {
 	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
 	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
 	102: { count: true, code: 'debdo', typeSignal: 'critical', msg: 'Частое включение' },
-	103: { count: true, code: 'battery', typeSignal: 'critical', msg: 'Авария питания (Ручной сброс)' },
+	103: {
+		count: true,
+		code: 'battery',
+		typeSignal: 'critical',
+		msg: 'Авария питания (Ручной сброс)',
+	},
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
 	111: {
@@ -273,6 +278,13 @@ const data = {
 	86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
 	87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
 	88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
+	141: { code: 'ventCCwait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
+	142: { code: 'ventCCwork', typeSignal: 'info', msg: 'Внутренняя вентиляция. В работе' },
+	143: {
+		code: 'ventCheck',
+		typeSignal: 'info',
+		msg: 'Внутренняя вентиляция. Выключена. По причине:',
+	},
 	// Увлажнение
 	130: { code: 'off', typeSignal: 'info', msg: 'Увлажнитель. Режим работы : Выключен.' },
 	131: { code: 'on', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Включен.' },

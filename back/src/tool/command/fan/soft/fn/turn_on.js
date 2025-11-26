@@ -11,11 +11,14 @@ const _MIN_SP = 20
 function turnOn(fanFC, fans, solHeat, idB, acc, max, off, isCC) {
 	const offCC = off && isCC
 	if (fanFC) {
-		ctrlAO(fanFC, idB, acc.fc.sp)
-		ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
 		if (max === -1 || offCC) {
 			ctrlAO(fanFC, idB, _MIN_SP)
 			ctrlDO(fanFC, idB, 'off')
+			console.log(113, 'ВЫКЛ ПЧ', max === -1, offCC)
+		} else {
+			ctrlAO(fanFC, idB, acc.fc.sp)
+			ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
+			console.log(114, 'ВКЛ ПЧ', max === -1, offCC)
 		}
 		// console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
 	}

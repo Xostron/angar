@@ -1,10 +1,11 @@
 const { delUnused } = require('@tool/command/extra')
 const { isExtralrm } = require('@tool/message/extralrm')
-const { delExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra } = require('@tool/message/extra')
 const { isAchieve } = require('@tool/message/achieve')
 const { isAlr } = require('@tool/message/auto')
 const { readAcc } = require('@store/index')
 const { isCombiCold } = require('@tool/combi/is')
+const { msg } = require('@tool/message')
 
 function fnPrepare(bld, sect, obj, s) {
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
@@ -48,6 +49,21 @@ function exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan) {
 	return true
 }
 
+const dict = {
+	0: 'таймер запрета активен',
+	1: 'вентиляторы неисправны',
+	2: 'режим вентиляции - Выкл',
+	3: 'режим вентиляции - Выкл',
+	4: 'аварийное закрытие клапанов',
+	5: 'переключатель на щите',
+	6: 'работает удаление СО2',
+	7: 'алгоритм вентиляции неопределен',
+	8: 'склад выключен',
+	9: 'секция не в авто',
+	10: 'Комбинированный склад в режиме холодильника (нет настройки "Время работы")',
+	11: 'Комбинированный склад в режиме холодильника (задание продукта не достигнуто)',
+}
+
 /**
  * Разрешить/запретить ВВ в секции
  * Запретить:
@@ -75,22 +91,26 @@ function fnCheck(bld, sect, code, fanS, s, ban, prepare) {
 	const reason = [
 		ban,
 		!fanS.length,
-		(!s?.vent?.mode || s?.vent?.mode === 'off') /*|| !s?.vent?.max*/ && isN,
-		(!s?.vent?.mode || s?.vent?.mode === 'off') /*|| !s?.vent?.max*/ && isCN,
+		(!s?.vent?.mode || s?.vent?.mode === 'off') && isN,
+		(!s?.vent?.mode || s?.vent?.mode === 'off') && isCN,
 		isExtralrm(bld._id, sect._id, 'alrClosed'),
 		isExtralrm(bld._id, sect._id, 'local'),
 		extraCO2?.start,
 		code === null,
 		!start,
 		!secAuto,
-		(!s?.coolerCombi?.work /*|| !s?.coolerCombi?.wait ||  !s?.coolerCombi?.max*/ ||
-			!cFlagFinish) &&
-			code === 'combiCold',
+		!s?.coolerCombi?.work && code === 'combiCold',
+		!cFlagFinish && code === 'combiCold',
 	]
+
+	const err = reason
+		.map((el, i) => (el ? dict[i] : null))
+		.filter((el) => el !== null)
+		.join(', ')
+	console.log(77, sect.name, 'Условия ВВ не подходят по причине', reason, err)
 
 	if (reason.some((el) => el)) {
 		// Запретить ВВ
-		console.log(77, sect.name, 'Условия ВВ не подходят по причине')
 		console.table(
 			[
 				{
@@ -105,6 +125,7 @@ function fnCheck(bld, sect, code, fanS, s, ban, prepare) {
 					not_start: reason[8],
 					not_secAuto: reason[9],
 					combiCold: reason[10],
+					combiCold2: reason[11],
 				},
 			],
 			[
@@ -114,15 +135,18 @@ function fnCheck(bld, sect, code, fanS, s, ban, prepare) {
 				'Выкл_Комби',
 				'alrClosed',
 				'local',
-				'СО2',
+				'CО2',
 				'def_null',
 				'not_start',
 				'not_secAuto',
 				'combiCold',
+				'combiCold2',
 			]
 		)
+		wrExtra(bld._id, sect._id, 'ventCheck', msg(bld, sect, 143, `${err}`))
 		return false
 	}
+	delExtra(bld._id, sect._id, 'ventCheck')
 	// Разрешить ВВ
 	return true
 }
