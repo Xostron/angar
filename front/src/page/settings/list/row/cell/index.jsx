@@ -69,7 +69,7 @@ export default function Cell({ data, i, j }) {
         />
       );
     case "switch":
-      return <Switch cls="cell-w" value={value} setValue={data.setValue} style={st} />;
+      return <Switch cls="cell-w" value={value} setValue={data.setValue} style={st} title={data.code} />;
     case "popup":
       return (
         <Popup
@@ -82,6 +82,7 @@ export default function Cell({ data, i, j }) {
             },
           }}
           style={st}
+		  title={data.code}
         />
       );
     case "title":

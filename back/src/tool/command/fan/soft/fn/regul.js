@@ -13,7 +13,7 @@ const _MIN_SP = 20
  * true: Регулирование частоты текущего (acc.order) ВНО,
  * false: Регулирование по кол-ву ВНО
  */
-function regul(acc, fanFC, on, off, s, aCmd, max, isCC, where) {
+function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 	if (aCmd.force && (max === null || max === -1)) return false
 	if (!fanFC) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
@@ -61,7 +61,7 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC, where) {
 	return true
 }
 
-// Комби-холод: Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
+// Комби-холод. Обычное управление: Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
 function magic(acc, isCC) {
 	// Комби-холод
 	if (isCC && acc.order === -1 && acc.fc.sp <= _MIN_SP) {

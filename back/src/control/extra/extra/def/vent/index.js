@@ -1,4 +1,6 @@
-const { exit, fnMsg, fnPrepare, fnSelect } = require('./fn/fn')
+const { fnPrepare } = require('./fn/fn')
+const { fnMode, fnModeMsg } = require('./fn/mode')
+const { exit } = require('./fn/exit')
 const def = require('./def')
 
 // Внутренняя вентиляция секции
@@ -6,17 +8,16 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
 	const { fanS, vlvS } = m
 	// Подготовка данных
-	const prepare = fnPrepare(bld, sect, obj, s)
-	// Сообщение о выбранном режиме
-	// fnMsg(bld, acc, s)
+	const prepare = fnPrepare(bld, obj, s)
 	// Выбор алгоритма ВВ
-	const code = fnSelect(prepare, s, acc)
+	const code = fnMode(prepare, s, acc)
+	// Сообщение о выбранном алогритме
+	fnModeMsg(bld, acc, code)
 	// Проверка разрешения ВВ и очистка аккумулятора
-	if (!exit(bld, sect, code, fanS, s, ban, prepare, acc, resultFan))
+	if (!exit(bld, code, fanS, s, ban, prepare, acc, resultFan))
 		return console.log(77, 'Условия ВВ не подходят')
 	// Алгоритм ВВ
-	console.log(77, sect.name, 'code', code, resultFan)
-	def[code](obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan)
+	def[code](obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan)
 }
 module.exports = vent
 

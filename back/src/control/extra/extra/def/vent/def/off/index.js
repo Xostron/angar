@@ -4,11 +4,11 @@ const { msg } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
-// Режим вентиляции: Вкл - постоянная вентиляция
+// Режим вентиляции: Выкл
 // Склад обычный, комби-обычный
-function fnOn(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
-	resultFan.force.push(true)
-	resultFan.stg = 'vent'
+function fnOff(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
+	resultFan.force.push(false)
+	resultFan.stg = null
 }
 
-module.exports = fnOn
+module.exports = fnOff

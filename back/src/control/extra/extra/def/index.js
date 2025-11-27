@@ -34,7 +34,7 @@ const data = {
 			cableS,
 			// Увлажнение
 			wetting,
-			vent,
+			// vent,
 		},
 	},
 	// Обычный склад - Доп функции для склада
@@ -55,6 +55,7 @@ const data = {
 			cableB,
 			connectLost,
 			reset,
+			vent,
 		},
 	},
 	// Склад холодильник

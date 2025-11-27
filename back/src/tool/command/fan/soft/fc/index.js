@@ -9,6 +9,7 @@ const fnSolHeat = require('../fn/sol_heat')
 const isAllStarted = require('../fn/all_started')
 const { fnLimit } = require('../fn/vent')
 const { isCombiCold } = require('@tool/combi/is')
+
 /**
  * Плавный пуск ВНО в секции на контакторах
  * @param {string} bldId Id склада
@@ -22,37 +23,42 @@ const { isCombiCold } = require('@tool/combi/is')
  * @returns
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
+	// Комби-холод. Обычное управление
+	const isCC = isCombiCold(bld._id, bdata.automode, s) && !aCmd.force
+	// При принудительном включении работаем ВНО как в обычном складу:
+	// normal - обычный склад (по давлению канала)
+	// cold - комби-холод (по темпе канала)
 	const who = aCmd.force ? 'normal' : where
-	// Склад комби-холод, работа по темпе канала
-	const isCC = isCombiCold(bld, bdata.automode, s) && !aCmd.force
-	const bldId = bld._id
+	// Инициализация аккумулятора плавного пуска
 	const acc = init(bld, idS, obj, s, who, 'fc', fans.length)
-	// ****************** Авто: команда выкл ВНО секции ******************
+
+	// 1. Разрешение на работу
 	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
 
-	// ****************** Авто: команда вкл ВНО секции ******************
-	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
+	// 2. Регулирование по давлению/темпе канала
 	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)
-	console.log(110, idS, 'on', on, 'off', off, 'isCC', isCC)
-	// Прогрев клапанов
-	if (aCmd.warming) (on = true), (off = false)
-	// Антидребезг ВНО
-	if (acc.stable) (on = false), (off = false)
-	console.log(111, 'on', on, 'off', off, who, 'isCC', isCC)
-	// Управление соленоидом подогрева
-	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
+	console.log(110, idS, 'on', on, 'off', off)
 
+	// Доп: Прогрев клапанов
+	if (aCmd.warming) (on = true), (off = false)
+	// Доп: Антидребезг ВНО (зафиксировать кол-во ВНО)
+	if (acc.stable) (on = false), (off = false)
+	console.log(111, 'on', on, 'off', off, who)
+	// Доп: Комби-холод. Управление соленоидом подогрева
+	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
+	// Доп: Принудительное включение: расчет макс кол-ва ВНО
 	const max = fnLimit(fanFC, aCmd)
-	// Регулирование по ПЧ после ожидания соленоида подогрева
-	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, isCC, who)
+	// 4. Регулирование ПЧ
+	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, isCC)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
-	console.log(112, 'on', on, 'off', off, who, 'isCC', isCC)
-	// Управление очередью вкл|выкл вентиляторов
+	console.log(112, 'on', on, 'off', off, who)
+	// 5. Регулирование Релейных ВНО: увеличение кол-ва
 	checkOn(on, acc, s, fans.length, aCmd, max)
+	// 5. Регулирование Релейных ВНО: уменьшение кол-ва
 	checkOff.fc(off, acc)
-	// Непосредственное включение
-	turnOn(fanFC, fans, solHeat, bldId, acc, max, off, isCC)
-	// Все вспомагательные механизмы подогрева канала запущены
+	// 6. Непосредственное вкл/выкл
+	turnOn(fanFC, fans, solHeat, bld._id, acc, max, off)
+	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 	console.table(acc)
 }

@@ -1,11 +1,11 @@
 const { stateEq } = require('@tool/command/fan/fn')
 const { curStateV } = require('@tool/command/valve')
-const { msg } = require('@tool/message')
+const { msg, msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
 // Режим вентиляции: Авто - Доп вентиляция выравнивания температуры
-function fnDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) {
+function fnDura(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
@@ -17,7 +17,7 @@ function fnDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) 
 		acc?.byTime?.start
 	) {
 		acc.byDura = {}
-		delExtra(bld._id, sect._id, 'vent_dura')
+		delExtra(bld._id, null, 'vent_dura')
 		return
 	}
 	// Состояние приточного клапана секции
@@ -49,7 +49,7 @@ function fnDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) 
 		// Время отключения дополнительной вентиляции
 		const overtime = x < s.vent.max_add ? x : s.vent.max_add
 		acc.byDura.end = +(curTime + overtime).toFixed(0)
-		wrExtra(bld._id, sect._id, 'vent_dura', msg(bld, sect, 86))
+		wrExtra(bld._id, null, 'vent_dura', msgB(bld, 86))
 	}
 	// Клапан не изменял своего состояния - завершить данный режим
 	if (!acc.byDura?.vlvIn && acc.byDura?.end) {
@@ -64,7 +64,7 @@ function fnDura(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) 
 		resultFan.start = [false]
 		acc.byDura.finish = true
 	}
-	if (acc.byDura.finish) delExtra(bld._id, sect._id, 'vent_dura')
+	if (acc.byDura.finish) delExtra(bld._id, null, 'vent_dura')
 	// console.log(11141, 'vent Время отключения подхвата', acc, fanOff, alarm)
 }
 

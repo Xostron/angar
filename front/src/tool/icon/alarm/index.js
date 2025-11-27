@@ -11,6 +11,8 @@ const data = {
 	vent_dura: '/img/alarm/intfan.svg',
 	vent_time_wait: '/img/alarm/intfan.svg',
 	vent_time: '/img/alarm/intfan.svg',
+	ventCCwait: '/img/alarm/intfan.svg',
+	ventCCwork: '/img/alarm/intfan.svg',
 	debdo: '/img/alarm/debdo.svg',
 	stableVno: '/img/alarm/hysteresis-fan.svg',
 	overVlv:'/img/alarm/valve-crash.svg',

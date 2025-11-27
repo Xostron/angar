@@ -38,8 +38,8 @@ function isCombiCold(bld, am, s) {
 function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	// По-умолчанию ВНО испарителя включены
 	let state = true
-	// Если Продукт достиг задания - возврат true, чтобы не было блокировки ВНО секций
-	if (bdata.accAuto.cold?.flagFinish) return state
+	// // Если Продукт достиг задания - возврат true, чтобы не было блокировки ВНО секций
+	// if (bdata.accAuto.cold?.flagFinish) return state
 
 	if (isCombiCold(bld, bdata?.automode, bdata?.s)) {
 		const mS = mech(obj, idS, bld._id)

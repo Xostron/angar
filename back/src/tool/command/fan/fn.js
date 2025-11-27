@@ -22,15 +22,26 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 	const coolerCombiOn = isCoolerCombiOn(bld, bdata)
 
 	resultFan.list.forEach((idS) => {
+		// Принудительное включение ВНО: удаление СО2, внутренняя вентиляция
+		if (resultFan.force.includes(true)) {
+			setACmd('fan', idS, {
+				delay,
+				type: 'on',
+				force: true, // принудительное включение
+				max: bdata?.s?.[resultFan?.stg]?.max, // max кол-во ВНО при принудительном включении
+			})
+			return
+		}
+		// Включение ВНО с проверкой:
+		// Секция в авто
 		const sectOn = obj?.retain?.[idB]?.mode?.[idS]
+		// Нет переключателя на щите
 		const local = isExtralrm(idB, idS, 'local')
-		// Склад комби-холод: Если нет работающих ВНО испарителей,
-		// то обычные ВНО секции выключаем,
-		// TODO кроме ситуации когда "Продукт достиг задания"
+		// Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций
 		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
 		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
 			console.log(
-				1,
+				11,
 				'Секция',
 				idS,
 				'Плавный пуск: ВНО выключены из-за:',
@@ -41,27 +52,14 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 				!goVNO
 			)
 			setACmd('fan', idS, { delay, type: 'off' })
+			return
 		}
-		// stg - везде где делаем включение force, указываем настройку ВВ
-		// force - принудительное включение
-		// Источники force: Настройки сушки: "Постоянная вентиляция"
-		// Настройки Вентиляции. В зависимости от режима ВВ
-		// Удаление СО2
-		else {
-			!resultFan.force.includes(true)
-				? setACmd('fan', idS, {
-						delay,
-						type: start ? 'on' : 'off',
-						force: null,
-						max: null,
-				  })
-				: setACmd('fan', idS, {
-						delay,
-						type: 'on',
-						force: true,
-						max: bdata?.s?.[resultFan?.stg]?.max,
-				  })
-		}
+		setACmd('fan', idS, {
+			delay,
+			type: start ? 'on' : 'off',
+			force: null,
+			max: null,
+		})
 	})
 }
 

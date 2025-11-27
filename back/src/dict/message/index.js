@@ -88,7 +88,7 @@ const data = {
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
 	13: {
-		count:true,
+		count: true,
 		code: 'antibliz',
 		typeSignal: 'critical',
 		msg: 'Сработал режим антивьюги',
@@ -250,7 +250,12 @@ const data = {
 	},
 	// ======== Сообщения extra - доп. функции ========
 	50: { code: '', typeSignal: 'info', msg: 'Модуль в сети' },
-	101: { count:true, code: 'connect_lost', typeSignal: 'critical', msg: 'Потеря связи с автоматикой' },
+	101: {
+		count: true,
+		code: 'connect_lost',
+		typeSignal: 'critical',
+		msg: 'Потеря связи с автоматикой',
+	},
 	// Разгонный вентилятор
 	51: { code: 'off', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Выключен' },
 	52: { code: 'on', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Включен' },
@@ -269,13 +274,19 @@ const data = {
 	// Подогрев клапанов
 	55: { code: 'heating', typeSignal: 'info', msg: 'Подогрев клапанов включен' },
 	// Вентиляция
-	56: { code: 'off', typeSignal: 'info', msg: 'Режим работы вентиляции: Выключен' },
-	57: { code: 'on', typeSignal: 'info', msg: 'Режим работы вентиляции: Включен' },
-	58: { code: 'auto', typeSignal: 'info', msg: 'Режим работы вентиляции: Авто' },
-	85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает внутр. вентиляция (постоянно)' },
-	86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
-	87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
-	88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
+	144: { code: 'off', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим выключен' },
+	145: { code: 'on', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим включен' },
+	146: { code: 'auto', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим авто' },
+	147: {
+		code: 'combiCold',
+		typeSignal: 'info',
+		msg: 'Внутренняя вентиляция. Режим комби-холодильник',
+	},
+	// 58: { code: 'auto', typeSignal: 'info', msg: 'Режим работы вентиляции: Авто' },
+	// 85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает внутр. вентиляция (постоянно)' },
+	// 86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
+	// 87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
+	// 88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
 	141: { code: 'ventCCwait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
 	142: { code: 'ventCCwork', typeSignal: 'info', msg: 'Внутренняя вентиляция. В работе' },
 	143: {

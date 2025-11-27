@@ -1,4 +1,4 @@
-const {delExtra, wrExtra} = require('@tool/message/extra')
+const { delExtra, wrExtra } = require('@tool/message/extra')
 const { ctrlDO } = require('@tool/command/module_output')
 const { msgB } = require('@tool/message')
 
@@ -9,11 +9,11 @@ function fnAlarm(building, arr, value) {
 	})
 }
 
-// Формирование событий имеющих несколько вариантов
-function delUnused(arr, cur, building, codeMsg, code) {
-	arr.forEach((el) => {
-		if (el == cur) return wrExtra(building._id, null, code, msgB(building, codeMsg), cur ?? 'off')
-		delExtra(building._id, null, code, el ?? 'off')
+// Обновление событий при смене режима (очищает лишние сообщения)
+function delUnused(arrCode, code, bld, codeMsg, type) {
+	arrCode.forEach((el) => {
+		if (el === code) return wrExtra(bld._id, null, type, msgB(bld, codeMsg), el)
+		delExtra(bld._id, null, type, el)
 	})
 }
 

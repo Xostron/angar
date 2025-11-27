@@ -6,7 +6,7 @@ import Modal from './modal'
 import Text from '@cmp/fields/text'
 
 //Выпадающий список
-export default function Popup({ data, style }) {
+export default function Popup({ data, style, title }) {
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
 	if (!data || !data.list?.length) return null
 	// data.value = 'Режим управления'
@@ -16,9 +16,9 @@ export default function Popup({ data, style }) {
 		setVal(data.value)
 	}, [data.value])
 
-	if (!isAuth) return <Text data={{ value: val }} />
+	if (!isAuth) return <Text data={{ value: val }} title={title} />
 	return (
-		<span style={style} className='cell popup' onClick={(_) => setShow(!show)}>
+		<span style={style} className='cell popup' onClick={(_) => setShow(!show)} title={title}>
 			<button>
 				<img src={'/img/popup.svg'} id={'popup'} />
 			</button>

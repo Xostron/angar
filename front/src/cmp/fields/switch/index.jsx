@@ -5,7 +5,7 @@ import Text from '@cmp/fields/text'
 import '../style.css'
 
 //Компонент свитч для переключения ВКЛ/Выкл
-export default function Switch({ value, setValue, style = {}, cls }) {
+export default function Switch({ value, setValue, style = {}, cls, title }) {
 	const { isAuth } = useAuthStore(({ isAuth, name }) => ({ isAuth, name }))
 	const [check, setCheck] = useState(value ?? false)
 	useEffect(() => {
@@ -15,14 +15,14 @@ export default function Switch({ value, setValue, style = {}, cls }) {
 		setCheck(!check)
 		setValue(!check)
 	}
-	const title = check ? 'Вкл' : 'Выкл'
+	const txt = check ? 'Вкл' : 'Выкл'
 
-	if (!isAuth) return <Text style={style} cls={cls} data={{ value: title }} />
+	if (!isAuth) return <Text style={style} cls={cls} data={{ value: txt }} title={title} />
 	return (
-		<label className='switch' style={style}>
+		<label className='switch' style={style} title={title}>
 			<input type='checkbox' checked={check} onChange={onClick} />
 			<span className='slider'>
-				<p>{title}</p>
+				<p>{txt}</p>
 			</span>
 		</label>
 	)

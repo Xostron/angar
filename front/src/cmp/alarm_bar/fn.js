@@ -13,6 +13,8 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 	const ventDura = bar?.[buildingId]?.[sectionId]?.ventDura
 	const ventTimeWait = bar?.[buildingId]?.[sectionId]?.ventTimeWait
 	const ventTime = bar?.[buildingId]?.[sectionId]?.ventTime
+	const ventCCwait = bar?.[buildingId]?.[sectionId]?.ventCCwait
+	const ventCCwork = bar?.[buildingId]?.[sectionId]?.ventCCwork
 	const debdo = bar?.[buildingId]?.[sectionId]?.debdo
 	const stableVno = bar?.[buildingId]?.[sectionId]?.stableVno
 	const alr = [
@@ -29,7 +31,9 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 		ventTime,
 		debdo,
 		stableVno,
-		overVlv
+		overVlv,
+		ventCCwait,
+		ventCCwork,
 	].filter((el) => el)
 	// Таймеры запретов
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
@@ -52,6 +56,8 @@ function fnAlarmB(buildingId, barB, timer) {
 	const ventTimeWait = barB?.[buildingId]?.ventTimeWait?.[0]
 	const debdo = barB?.[buildingId]?.debdo?.[0]
 	const stableVno = barB?.[buildingId]?.stableVno?.[0]
+	const ventCCwait = barB?.[buildingId]?.ventCCwait?.[0]
+	const ventCCwork = barB?.[buildingId]?.ventCCwork?.[0]
 	const alr = [
 		alrClosed,
 		tout,
@@ -66,7 +72,9 @@ function fnAlarmB(buildingId, barB, timer) {
 		ventTime,
 		debdo,
 		stableVno,
-		overVlv
+		overVlv,
+		ventCCwait,
+		ventCCwork,
 	].filter((el) => el)
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
 
