@@ -16,7 +16,7 @@ const { set, reset, fnCheck } = require('./fn')
  */
 function overVlv(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Состояние приточного клапана
-	console.log(33, 'overVlv', acc)
+	// console.log(33, 'overVlv', acc)
 	const vlvIn = m.vlvS.find((vlv) => vlv.type === 'in')
 	if (!fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc)) return false
 

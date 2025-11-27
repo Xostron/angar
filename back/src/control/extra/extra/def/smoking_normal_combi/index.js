@@ -63,10 +63,10 @@ function smoking(
 	const fan = collect(idB, idsS, obj, stg)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
+	// console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
 	// Запрет окуривания: нет настроек окуривания, окуривание выкл, склад вкл,
 	if (!stg || !stg?.on) {
-		console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
+		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrl(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
@@ -79,7 +79,7 @@ function smoking(
 		return
 	}
 	// Включено окуривание
-	console.log('Режим окуривания', runTime(doc.wait ?? doc.work))
+	// console.log('Режим окуривания', runTime(doc.wait ?? doc.work))
 
 	// Работаем - включаются вентиляторы
 	if (!doc.work) {
@@ -91,7 +91,7 @@ function smoking(
 		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 
 	if (!compareTime(doc.work, stg.work * h)) {
-		console.log(22, 'Окуривание работа: Включение плавного пуска')
+		// console.log(22, 'Окуривание работа: Включение плавного пуска')
 		// Вкл разгонные
 		arrCtrl(idB, fanA, 'on')
 		// Вкл ВНО секции
@@ -111,11 +111,11 @@ function smoking(
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrl(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
-		console.log(33, 'Окуривание ожидание: Выключение плавного пуска')
+		// console.log(33, 'Окуривание ожидание: Выключение плавного пуска')
 		return
 	}
 
-	console.log('Режим окуривания завершен')
+	// console.log('Режим окуривания завершен')
 	doc.work = null
 	doc.wait = null
 	// Удаляем аккумулятор плавного пуска по завершению окуривания

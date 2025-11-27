@@ -6,12 +6,11 @@ const { compareTime } = require('@tool/command/time')
 
 // Комби-холод. Тпродукта достигла задания
 function fnCC(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) {
-	console.log(77, 'ВВ комби-холод в работе')
+	console.log(77, 'ВВ комби-холод в работе', acc.CC)
 	acc.CC ??= {}
-	// Ожидание
+	// Ожидание ВВ
 	acc.CC.wait ??= new Date()
 	let time = compareTime(acc.CC.wait, s.coolerCombi.wait)
-
 	console.log(77, 'ВВ комби-холод - ожидание', time, acc.CC.wait, s.coolerCombi.wait)
 	if (!time) {
 		wrExtra(
@@ -34,7 +33,7 @@ function fnCC(obj, s, m, bld, sect, value, fanS, vlvS, alarm, acc, resultFan) {
 	resultFan.force.push(true)
 	resultFan.stg = 'coolerCombi'
 	acc.CC.work ??= new Date()
-	time = compareTime(acc.CC.work, s.vent.work)
+	time = compareTime(acc.CC.work, s.coolerCombi.work)
 	if (time) {
 		delete acc.CC?.wait
 		delete acc.CC?.work

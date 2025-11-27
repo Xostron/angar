@@ -22,18 +22,18 @@ function debdo(bld, sect, obj, s, se, m, automode, acc, data) {
 	count += 1
 	const wait = s?.sys?.debWait ?? s?.cooler?.debWait ?? 30 * 60 * 1000 // 30 мин
 	const arr = [...fanAll]
-	console.log(
-		66,
-		count,
-		'debdo',
-		acc
-		// 'heatingAll',
-		// heatingAll,
-		// 'heatingWAll',
-		// heatingWAll,
-		// 'heatingClrAll',
-		// heatingClrAll
-	)
+	// console.log(
+	// 	66,
+	// 	count,
+	// 	'debdo',
+	// 	acc
+	// 	// 'heatingAll',
+	// 	// heatingAll,
+	// 	// 'heatingWAll',
+	// 	// heatingWAll,
+	// 	// 'heatingClrAll',
+	// 	// heatingClrAll
+	// )
 	// arr.forEach((el) => console.log('store.debounce', el.name, el._id, store.debounce?.[el._id]))
 	// Разрешение на работу
 	if (!fnCheck(bld, watch, count, wait, arr, acc, store.debounce)) return false

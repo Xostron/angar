@@ -49,7 +49,7 @@ function isСoolerCombiVNO(bld, idS, obj, bdata) {
 			return stateClr === 'off-on-off' || stateClr === 'on-on-off'
 		})
 		// Если имеется хотя бы один испаритель у которого включен ВНО, то разрешаем работу ВНО
-		console.log(1, 'state', state)
+		// console.log(1, 'state', state)
 		return state
 	}
 	return state

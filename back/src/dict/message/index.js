@@ -88,22 +88,21 @@ const data = {
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
 	13: {
+		count:true,
 		code: 'antibliz',
-		type: 'antibliz',
-		typeSignal: 'valve',
+		typeSignal: 'critical',
 		msg: 'Сработал режим антивьюги',
 	},
 	// Работа клапанов over_vlv
 	14: {
 		code: 'overVlv',
-		typeSignal: 'valve',
+		typeSignal: 'critical',
 		msg: 'Превышено время работы с закрытыми клапанами',
 	},
 	// Авария низкой температуры (Аварийное закрытие клапанов) Реле безопасности
 	26: {
 		count: true,
 		code: 'alrClosed',
-		type: 'alr',
 		typeSignal: 'critical',
 		msg: 'Аварийное закрытие клапанов',
 	},
@@ -128,13 +127,13 @@ const data = {
 		msg: 'Работа от генератора',
 	},
 	// Аварии клапанов
-	30: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Превышено время открытия' },
-	31: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Превышено время закрытия' },
-	32: { count: true, code: 'alrValve', typeSignal: 'valve', msg: 'Оба концевика сработало' },
-	33: { count: true, code: 'vlvLim', typeSignal: 'valve', msg: 'Нет питания концевиков' },
-	34: { count: true, code: 'vlvCrash', typeSignal: 'valve', msg: 'Авария двигателя' },
+	30: { count: false, code: 'alrValve', typeSignal: 'critical', msg: 'Превышено время открытия' },
+	31: { count: false, code: 'alrValve', typeSignal: 'critical', msg: 'Превышено время закрытия' },
+	32: { count: false, code: 'alrValve', typeSignal: 'critical', msg: 'Оба концевика сработало' },
+	33: { count: true, code: 'vlvLim', typeSignal: 'critical', msg: 'Нет питания концевиков' },
+	34: { count: false, code: 'vlvCrash', typeSignal: 'critical', msg: 'Авария двигателя' },
 	// Аварии вентиляторов
-	35: { count: true, code: 'fanCrash', typeSignal: 'fan', msg: 'Авария вентилятора' },
+	35: { count: false, code: 'fanCrash', typeSignal: 'critical', msg: 'Авария вентилятора' },
 	// Нажат аварийный стоп
 	36: {
 		count: true,
@@ -170,7 +169,7 @@ const data = {
 	// beep alarm
 	65: [
 		{
-			count: true,
+			count: false,
 			code: 'off',
 			typeSignal: 'critical',
 			msg: 'Выбит автоматический выключатель',
@@ -192,7 +191,6 @@ const data = {
 	90: {
 		count: true,
 		code: 'notTune',
-		type: 'alr',
 		typeSignal: 'critical',
 		msg: 'Требуется калибровка клапанов',
 	},
@@ -252,7 +250,7 @@ const data = {
 	},
 	// ======== Сообщения extra - доп. функции ========
 	50: { code: '', typeSignal: 'info', msg: 'Модуль в сети' },
-	101: { code: 'connect_lost', typeSignal: 'info', msg: 'Потеря связи с автоматикой' },
+	101: { count:true, code: 'connect_lost', typeSignal: 'critical', msg: 'Потеря связи с автоматикой' },
 	// Разгонный вентилятор
 	51: { code: 'off', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Выключен' },
 	52: { code: 'on', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Включен' },
@@ -324,7 +322,7 @@ const data = {
 	// ======== Окуривание (холодильник) ========
 	82: {
 		code: 'smoking',
-		typeSignal: 'critical',
+		typeSignal: 'info',
 		msg: 'Окуривание',
 	},
 

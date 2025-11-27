@@ -31,7 +31,7 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// 	bld.type,
 	// 	store.alarm.achieve?.[bld._id]?.[bld.type]
 	// )
-	console.log(11000, se.tprd, accCold.tgtTprd, se.tprd <= accCold.tgtTprd)
+	// console.log(11000, se.tprd, accCold.tgtTprd, se.tprd <= accCold.tgtTprd)
 	if (se.tprd <= accCold.tgtTprd && se.hin <= s.mois.humidity) {
 		delAchieve(bld._id, bld.type, mes[81].code)
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.tgtTprd ?? '--'} °C`))
@@ -57,7 +57,6 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		fnChange(0, 0, 0, 0, 'off', clr)
 		return true
 	}
-	console.log(3300, 'Сброс Температура задания достигнута по гистерезису')
 	// Сброс "Температура задания достигнута" по гистерезису
 	if (accCold.flagFinish && se.tprd > accCold.tgtTprd + s.cooling.hysteresisIn) {
 		accCold.flagFinish = null

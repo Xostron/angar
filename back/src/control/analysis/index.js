@@ -56,7 +56,6 @@ const calcSetting = (v, obj) => {
 			const s = _STG.find((el) => el[0] == key)
 			if (!s) continue
 			const [_, field1, field2] = s
-			// console.log(77, key, field1, field2)
 			v.coef[bld._id][key] = !field2
 				? store.calcSetting[bld._id][key][field1]
 				: store.calcSetting[bld._id][key][field1][field2]

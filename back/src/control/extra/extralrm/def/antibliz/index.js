@@ -17,7 +17,7 @@ function antibliz(bld, sect, obj, s, se, m, automode, acc, data) {
 	// const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	// Сбрасываем подсчет при работе удаления СО2
 	// if (extraCO2.start) acc.queue = []
-	console.log(11, 'antibliz',acc)
+	// console.log(11, 'antibliz',acc)
 	if (!fnCheck(bld, sect, obj, m, s, acc)) return false
 	
 	// Автосброс аварии
