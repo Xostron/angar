@@ -1,4 +1,5 @@
 const { isExtralrm } = require('@tool/message/extralrm')
+const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { getAO } = require('@tool/in_out')
 const { data: store } = require('@store')
@@ -11,9 +12,11 @@ function vlv(obj) {
 		const opn = value?.[v._id]?.open
 		const cls = value?.[v._id]?.close
 		const idB = getIdB(mdlOnId, data.module)
-
+		const idsS = getIdsS(obj.data.section, idB)
 		// Блокировки
-		const local = isExtralrm(idB, v.sectionId[0], 'local')
+		// const local = isExtralrm(idB, v.sectionId[0], 'local')
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		const localB = isExtralrm(idB, null, 'local')
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		const vlvLim = isExtralrm(idB, v.sectionId[0], 'vlvLim')
@@ -25,7 +28,19 @@ function vlv(obj) {
 			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
 			cls
 
-		console.log(3333, 'lock', v.type, local,localB,alrStop, vlvLim, vlvLimB, vlvCrash, longOC, offS)
+		console.log(
+			3333,
+			'lock',
+			v.type,
+			local,
+			localB,
+			alrStop,
+			vlvLim,
+			vlvLimB,
+			vlvCrash,
+			longOC,
+			offS
+		)
 		// блокировка открытия
 		outV('on', output, v, opn, localB, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
 		// // блокировка закрытия
@@ -45,6 +60,7 @@ function fan(obj, s) {
 
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		const idsS = getIdsS(obj.data.section, idB)
 		// Игнор блокировки: вкл окуривание
 		const smoking = s[idB]?.smoking?.on
 		// Блокировки:
@@ -52,16 +68,18 @@ function fan(obj, s) {
 		const isAlrOff =
 			value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
 		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
-		const local = isExtralrm(idB, f.owner.id, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
-		const localB = isExtralrm(idB, null, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
+		// const local = isExtralrm(idB, f.owner.id, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
+		// const localB = isExtralrm(idB, null, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !smoking
 		// Склад выключен и секция в авторежиме
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !smoking
-		out(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
-		ao(obj, output, f, localB, local, isAlrOff, offS, alrStop, lockAuto)
+		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto)
+		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto)
 	}
 }
 // Блокировки разгонных вентиляторов (обычный склад и холодильник)
@@ -74,19 +92,23 @@ function fanAccel(obj, s) {
 		if (!output[mdl]) continue
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		const idsS = getIdsS(obj.data.section, idB)
+		// Блокировки
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+
 		// Игнор блокировки: вкл окуривание
 		const ignore = s[idB]?.smoking?.on
-
 		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
-		const local = isExtralrm(idB, el.owner.id, 'local') //&& !store.aCmd?.[el.owner.id]?.fan?.end
-		const localB = isExtralrm(idB, null, 'local')
+		// const local = isExtralrm(idB, el.owner.id, 'local') //&& !store.aCmd?.[el.owner.id]?.fan?.end
+		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') //&& !store.aCmd?.[el.owner.id]?.fan?.end
 		// Таймер запрета
 		const ban = store.alarm.timer?.[idB]?.accel && !ignore
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrState = value?.[el._id]?.state === 'alarm' ? true : false
-		out(obj, output, el, localB, local, !!ban, alrStop, isAlrState)
+		out(obj, output, el, local, !!ban, alrStop, isAlrState)
 	}
 }
 
@@ -98,12 +120,15 @@ function heating(obj) {
 		if (!output[mdl]) continue
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
-		const local = isExtralrm(idB, el.owner.id, 'local')
-		const localB = isExtralrm(idB, null, 'local')
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		// const local = isExtralrm(idB, el.owner.id, 'local')
+		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
-		out(obj, output, el, localB, local, alrStop)
+		out(obj, output, el, local, alrStop)
 	}
 }
 
@@ -115,11 +140,14 @@ function device(obj) {
 		if (!output[mdl]) continue
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
-		const localB = isExtralrm(idB, null, 'local')
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
-		out(obj, output, el, localB, alrStop)
+		out(obj, output, el, local, alrStop)
 	}
 }
 
@@ -134,9 +162,12 @@ function fnSolHeat(obj) {
 		if (!output[mdl]) continue
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
-		const local = isExtralrm(idB, idS, 'local')
-		const localB = isExtralrm(idB, null, 'local')
+		// const local = isExtralrm(idB, idS, 'local')
+		// const localB = isExtralrm(idB, null, 'local')
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		// Состояние испарителя

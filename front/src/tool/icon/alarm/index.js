@@ -16,6 +16,7 @@ const data = {
 	debdo: '/img/alarm/debdo.svg',
 	stableVno: '/img/alarm/hysteresis-fan.svg',
 	overVlv:'/img/alarm/valve-crash.svg',
+	alrClosed:'/img/alarm/alr.svg',
 
 	drying: '/img/alarm/dry.svg',
 	cure: '/img/alarm/healing.svg',

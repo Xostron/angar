@@ -2,6 +2,7 @@ const { msg } = require('@tool/message')
 const { curStateV } = require('@tool/command/valve')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
+const { isCombiCold } = require('@tool/combi/is')
 
 function set(bld, sect, value, vlvS, acc, s) {
 	// Уже в аварии - выходим из итерации
@@ -73,7 +74,9 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 	// 2. Нет приточных клапанов
 	// 4. Нет настроек
 	// 5. Режим антивьюги Выкл
+	// 6. Комби склад перешел на холод
 	const vlvIn = m.vlvS.find((vlv) => vlv.type === 'in')
+	const am = obj.retain?.[bld._id]?.automode
 	if (
 		!obj.retain[bld._id].start ||
 		!obj.retain[bld._id].mode?.[sect._id] ||
@@ -82,7 +85,8 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 		!s.antibliz.time ||
 		!s.antibliz.wait ||
 		!s?.antibliz?.mode ||
-		s.antibliz.mode === 'off'
+		s.antibliz.mode === 'off' ||
+		isCombiCold(bld, am, s)
 	) {
 		fnReset(bld, sect, acc)
 		return false
