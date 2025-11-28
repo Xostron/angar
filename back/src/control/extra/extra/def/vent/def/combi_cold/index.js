@@ -2,34 +2,46 @@ const { stateEq } = require('@tool/command/fan/fn')
 const { curStateV } = require('@tool/command/valve')
 const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
-const { compareTime } = require('@tool/command/time')
+const { compareTime, runTime } = require('@tool/command/time')
 
 // Комби-холод. Тпродукта достигла задания
-function fnCC(obj, s, m, bld, value, alarm, prepare, acc, resultFan) {
-	console.log(77, 'ВВ комби-холод в работе', acc.CC)
+function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
+	// console.log(77, 'ВВ комби-холод в работе', acc.CC)
 	acc.CC ??= {}
 	// Ожидание ВВ
 	acc.CC.wait ??= new Date()
 	let time = compareTime(acc.CC.wait, s.coolerCombi.wait)
-	console.log(77, 'ВВ комби-холод - ожидание', time, acc.CC.wait, s.coolerCombi.wait)
+	// console.log(77, 'ВВ комби-холод - ожидание', time, acc.CC.wait, s.coolerCombi.wait)
 	if (!time) {
 		// Время ожидание не прошло
-		wrExtra(bld._id, null, 'ventCCwait', msgB(bld, 141, `${s.coolerCombi.wait / 60 / 1000}мин`))
+		wrExtra(
+			bld._id,
+			null,
+			'vent',
+			msgB(bld, 141, `${s.coolerCombi.wait / 60 / 1000}мин (${runTime(acc.CC.wait)})`),
+			'wait'
+		)
 		return
 	}
 	// Время ожидания прошло. Работа ВВ
-	console.log(77, 'ВВ комби-холод - работа')
-	delExtra(bld._id, null, 'ventCCwait')
-	wrExtra(bld._id, null, 'ventCCwork', msgB(bld, 142, `${s.coolerCombi.work / 60 / 1000}мин`))
+	acc.CC.work ??= new Date()
+	delExtra(bld._id, null, 'vent', 'wait')
+	wrExtra(
+		bld._id,
+		null,
+		'vent',
+		msgB(bld, 142, `${s.coolerCombi.work / 60 / 1000}мин (${runTime(acc.CC.work)})`),
+		'work'
+	)
 	resultFan.force.push(true)
 	resultFan.stg = 'coolerCombi'
-	acc.CC.work ??= new Date()
 	time = compareTime(acc.CC.work, s.coolerCombi.work)
+	// console.log(77, 'ВВ комби-холод - работа')
 	if (time) {
 		// Время работы прошло
 		delete acc.CC?.wait
 		delete acc.CC?.work
-		delExtra(bld._id, null, 'ventCCwork')
+		delExtra(bld._id, null, 'vent', 'work')
 		resultFan.force.push(false)
 		resultFan.stg = null
 	}

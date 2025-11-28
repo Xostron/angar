@@ -3,6 +3,9 @@ const check = require('../../../check')
 
 // Обдув
 function blow(fnChange, accCold, acc, se, s, bld, clr) {
+	if (!acc?.state?.blow) {
+		acc.state.blow = new Date()
+	}
 	onTime('blow', acc)
 	// При работе ВВ, испаритель будет попадать сюда (в обдув), когда ВВ выкл по таймеру,
 	// испаритель будет попадать в off, когда время off закончится
@@ -10,6 +13,6 @@ function blow(fnChange, accCold, acc, se, s, bld, clr) {
 
 	if (accCold.flagFinish) return
 	// Если попали в обдув, то вызываем check, чтобы узнать куда испарителю работать дальше
-	return check.combi(fnChange, 'blow', acc, se, s, bld, clr)
+	return check.combi(fnChange, 'blow', accCold, acc, se, s, bld, clr)
 }
 module.exports = blow

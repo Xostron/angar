@@ -14,11 +14,11 @@ function turnOn(fanFC, fans, solHeat, idB, acc, max, off, isCC) {
 		if (max === -1 || offCC) {
 			ctrlAO(fanFC, idB, _MIN_SP)
 			ctrlDO(fanFC, idB, 'off')
-			console.log(113, 'ВЫКЛ ПЧ', max === -1, offCC)
+			console.log(113, 'ВЫКЛ ПЧ', max === -1)
 		} else {
 			ctrlAO(fanFC, idB, acc.fc.sp)
 			ctrlDO(fanFC, idB, acc.fc.value ? 'on' : 'off')
-			console.log(114, 'ВКЛ ПЧ', max === -1, offCC)
+			console.log(114, 'ПЧ', max === -1, offCC)
 		}
 		// console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
 	}

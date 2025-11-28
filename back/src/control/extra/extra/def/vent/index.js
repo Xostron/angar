@@ -13,10 +13,9 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	// Сообщение о выбранном алогритме
 	fnModeMsg(bld, acc, code)
 	// Проверка разрешения ВВ и очистка аккумулятора
-	if (!exit(bld, code, s, ban, prepare, acc, resultFan))
-		return console.log(77, 'Условия ВВ не подходят')
+	if (!exit(bld, code, s, ban, prepare, acc, resultFan)) return
 	// Алгоритм ВВ
-	def[code](obj, s, m, bld, value, alarm, prepare, acc, resultFan)
+	def[code](obj, s, m, bld, alarm, prepare, acc, resultFan)
 }
 module.exports = vent
 

@@ -24,7 +24,8 @@ const { isCombiCold } = require('@tool/combi/is')
  */
 function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
 	// Комби-холод. Обычное управление
-	const isCC = isCombiCold(bld._id, bdata.automode, s) && !aCmd.force
+	const isCC = bld.type === 'combi' && !isCombiCold(bld._id, bdata.automode, s) && !aCmd.force
+	console.log(1101, !isCombiCold(bld._id, bdata.automode, s), !aCmd.force, isCC)
 	// При принудительном включении работаем ВНО как в обычном складу:
 	// normal - обычный склад (по давлению канала)
 	// cold - комби-холод (по темпе канала)
@@ -51,7 +52,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 4. Регулирование ПЧ
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, isCC)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
-	console.log(112, 'on', on, 'off', off, who)
+	console.log(112, 'on', on, 'off', off, who, isCC)
 	// 5. Регулирование Релейных ВНО: увеличение кол-ва
 	checkOn(on, acc, s, fans.length, aCmd, max)
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва

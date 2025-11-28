@@ -56,4 +56,14 @@ function isExtra(idB, idS, code, type) {
 	return idS ? !!data.alarm?.extra?.[idB]?.[idS]?.[code] : !!data.alarm?.extra?.[idB]?.[code]
 }
 
-module.exports = { wrExtra, delExtra, isExtra }
+function getDTextra(idB, idS, code, type) {
+	if (type)
+		return idS
+			? data.alarm?.extra?.[idB]?.[idS]?.[code]?.[type]?.date ?? ''
+			: data.alarm?.extra?.[idB]?.[code]?.[type]?.date ?? ''
+	return idS
+		? data.alarm?.extra?.[idB]?.[idS]?.[code]?.date ?? ''
+		: data.alarm?.extra?.[idB]?.[code]?.date ?? ''
+}
+
+module.exports = { wrExtra, delExtra, isExtra, getDTextra }

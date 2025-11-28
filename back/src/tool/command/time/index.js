@@ -66,7 +66,7 @@ function runTime(doc) {
 		if (typeof doc === 'string') doc = new Date(doc)
 		const t = (new Date() - doc) / 1000
 		let m = Math.trunc(t / 60)
-		return `Продолжительность: ${m ? m + ' мин ' : ''}${(t % 60).toFixed(0) + ' сек'} `
+		return `${m ? m + ' мин ' : ''}${(t % 60).toFixed(0) + ' сек'}`
 	} catch (error) {
 		console.log('runTime', error)
 		return ''
@@ -129,7 +129,12 @@ function elapsedTime(date) {
 
 // Вычисляет сколько в минут работает в указанном режиме и выводит в консоль
 function onTime(code, acc) {
-	if (!acc.state[code]) acc.state[code] = new Date()
+	if (!code) return
+	if (!acc?.state?.[code]) {
+		acc.state??={}
+		acc.state[code] = new Date()
+	}
+
 	console.log('\t' + code, runTime(acc.state[code]))
 }
 

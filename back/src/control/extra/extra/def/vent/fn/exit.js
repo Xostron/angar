@@ -31,25 +31,14 @@ const dict = {
 function exit(bld, code, s, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
 	if (!fnCheck(bld, code, s, ban, prepare)) {
-		clear(bld, acc, resultFan, 1, 1, 1, 1)
+		clear(bld, acc, resultFan, 1, 1, 1, 1, 1)
 		return false
 	}
 	return true
 }
 
 /**
- * Разрешить/запретить ВВ в секции
- * Запретить:
- * 1. Таймер запрета ВВ
- * 2. Нет рабочих ВНО
- * 3. Режим вентиляции Выкл (для обычных складов/комби складов в режиме обычного)
- * 4. Аварийное закрытие клапанов
- * 5. Переключатель на щите
- * 6. Работает удаление СО2
- * 7. Алгоритм ВВ не определен = null
- * 8. Настройка "Кол-во ВНО = 0"
- * 9. Склад выключен, секция не в авто
- * 10. Комби склад в режиме холодильника: нет настроек
+ * Разрешить/запретить ВВ
  * Разрешено: обычному складу и комби складу в обычном/холодильном режимах
  * @param {*} bld
  * @param {*} obj
@@ -120,10 +109,10 @@ function fnCheck(bld, code, s, ban, prepare) {
 				'combiCold2',
 			]
 		)
-		wrExtra(bld._id, null, 'ventCheck', msgB(bld, 143, `${err}`))
+		wrExtra(bld._id, null, 'vent', msgB(bld, 143, `${err}`), 'check')
 		return false
 	}
-	delExtra(bld._id, null, 'ventCheck')
+	delExtra(bld._id, null, 'vent', 'check')
 	// Разрешить ВВ
 	return true
 }
@@ -135,12 +124,11 @@ function clear(bld, acc, resultFan, ...args) {
 	acc.CC = {}
 	resultFan.force.push(false)
 	// resultFan.stg = null
-	args[0] ? delExtra(bld._id, null, 'vent_on') : null
-	args[1] ? delExtra(bld._id, null, 'vent_dura') : null
-	args[2] ? delExtra(bld._id, null, 'vent_time_wait') : null
-	args[3] ? delExtra(bld._id, null, 'vent_time') : null
-	args[2] ? delExtra(bld._id, null, 'ventCCwait') : null
-	args[3] ? delExtra(bld._id, null, 'ventCCwork') : null
+	args[0] ? delExtra(bld._id, null, 'vent', 'on') : null
+	args[1] ? delExtra(bld._id, null, 'vent', 'off') : null
+	args[2] ? delExtra(bld._id, null, 'vent', 'time') : null
+	args[3] ? delExtra(bld._id, null, 'vent', 'wait') : null
+	args[4] ? delExtra(bld._id, null, 'vent', 'work') : null
 }
 
 module.exports = { exit }

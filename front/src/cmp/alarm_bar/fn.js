@@ -9,12 +9,12 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 	const co2work = bar?.[buildingId]?.[sectionId]?.co2work
 	const co2wait = bar?.[buildingId]?.[sectionId]?.co2wait
 	const openVin = bar?.[buildingId]?.[sectionId]?.openVin
-	const ventOn = bar?.[buildingId]?.[sectionId]?.ventOn
-	const ventDura = bar?.[buildingId]?.[sectionId]?.ventDura
-	const ventTimeWait = bar?.[buildingId]?.[sectionId]?.ventTimeWait
-	const ventTime = bar?.[buildingId]?.[sectionId]?.ventTime
-	const ventCCwait = bar?.[buildingId]?.[sectionId]?.ventCCwait
-	const ventCCwork = bar?.[buildingId]?.[sectionId]?.ventCCwork
+	// const ventOn = bar?.[buildingId]?.[sectionId]?.ventOn
+	// const ventDura = bar?.[buildingId]?.[sectionId]?.ventDura
+	// const ventTimeWait = bar?.[buildingId]?.[sectionId]?.ventTimeWait
+	// const ventTime = bar?.[buildingId]?.[sectionId]?.ventTime
+	const ventWait = bar?.[buildingId]?.[sectionId]?.ventWait
+	const ventWork = bar?.[buildingId]?.[sectionId]?.ventWork
 	const debdo = bar?.[buildingId]?.[sectionId]?.debdo
 	const stableVno = bar?.[buildingId]?.[sectionId]?.stableVno
 	const alr = [
@@ -25,15 +25,15 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 		co2work,
 		co2wait,
 		openVin,
-		ventOn,
-		ventDura,
-		ventTimeWait,
-		ventTime,
+		// ventOn,
+		// ventDura,
+		// ventTimeWait,
+		// ventTime,
 		debdo,
 		stableVno,
 		overVlv,
-		ventCCwait,
-		ventCCwork,
+		ventWait,
+		ventWork,
 	].filter((el) => el)
 	// Таймеры запретов
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
@@ -50,14 +50,14 @@ function fnAlarmB(buildingId, barB, timer) {
 	const co2work = barB?.[buildingId]?.co2work?.[0]
 	const co2wait = barB?.[buildingId]?.co2wait?.[0]
 	const openVin = barB?.[buildingId]?.openVin?.[0]
-	const ventOn = barB?.[buildingId]?.ventOn?.[0]
-	const ventDura = barB?.[buildingId]?.ventDura?.[0]
-	const ventTime = barB?.[buildingId]?.ventTime?.[0]
-	const ventTimeWait = barB?.[buildingId]?.ventTimeWait?.[0]
+	// const ventOn = barB?.[buildingId]?.ventOn?.[0]
+	// const ventDura = barB?.[buildingId]?.ventDura?.[0]
+	// const ventTime = barB?.[buildingId]?.ventTime?.[0]
+	// const ventTimeWait = barB?.[buildingId]?.ventTimeWait?.[0]
 	const debdo = barB?.[buildingId]?.debdo?.[0]
 	const stableVno = barB?.[buildingId]?.stableVno?.[0]
-	const ventCCwait = barB?.[buildingId]?.ventCCwait?.[0]
-	const ventCCwork = barB?.[buildingId]?.ventCCwork?.[0]
+	const ventWait = barB?.[buildingId]?.ventWait?.[0]
+	const ventWork = barB?.[buildingId]?.ventWork?.[0]
 	const alr = [
 		alrClosed,
 		tout,
@@ -66,15 +66,15 @@ function fnAlarmB(buildingId, barB, timer) {
 		co2work,
 		co2wait,
 		openVin,
-		ventOn,
-		ventDura,
-		ventTimeWait,
-		ventTime,
+		// ventOn,
+		// ventDura,
+		// ventTimeWait,
+		// ventTime,
 		debdo,
 		stableVno,
 		overVlv,
-		ventCCwait,
-		ventCCwork,
+		ventWait,
+		ventWork,
 	].filter((el) => el)
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
 

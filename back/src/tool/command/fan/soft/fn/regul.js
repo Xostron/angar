@@ -64,6 +64,7 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 // Комби-холод. Обычное управление: Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
 function magic(acc, isCC) {
 	// Комби-холод
+	console.log(1121, isCC, acc.order, acc.fc.sp <= _MIN_SP)
 	if (isCC && acc.order === -1 && acc.fc.sp <= _MIN_SP) {
 		acc.fc.sp = _MIN_SP
 		acc.fc.value = false
