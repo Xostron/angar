@@ -21,7 +21,6 @@ const dict = {
  * Если проверка не прошла выключение ВВ и очистка аккумуляторов и соообщений
  * @param {*} bld
  * @param {*} code
- * @param {*} fanS
  * @param {*} s
  * @param {*} ban
  * @param {*} prepare
@@ -29,9 +28,9 @@ const dict = {
  * @param {*} resultFan
  * @returns {boolean} true - разрешить работу, false - запрет работы
  */
-function exit(bld, code, fanS, s, ban, prepare, acc, resultFan) {
+function exit(bld, code, s, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (!fnCheck(bld, code, fanS, s, ban, prepare)) {
+	if (!fnCheck(bld, code, s, ban, prepare)) {
 		clear(bld, acc, resultFan, 1, 1, 1, 1)
 		return false
 	}
@@ -59,8 +58,8 @@ function exit(bld, code, fanS, s, ban, prepare, acc, resultFan) {
  * @param {*} ban
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
-function fnCheck(bld, code, fanS, s, ban, prepare) {
-	const { extraCO2, am, isCC, isCN, isN, start, secAuto, cFlagFinish, idsS } = prepare
+function fnCheck(bld, code, s, ban, prepare) {
+	const { extraCO2, am, isCC, isCN, isN, start, secAuto, cFlagFinish, idsS, fan } = prepare
 	const alrClosed =
 		isExtralrm(bld._id, null, 'alrClosed') ||
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
@@ -68,7 +67,7 @@ function fnCheck(bld, code, fanS, s, ban, prepare) {
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	const reason = [
 		ban,
-		!fanS.length,
+		!fan.length,
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isN,
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isCN,
 		alrClosed,

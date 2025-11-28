@@ -1,6 +1,5 @@
 const { delUnused } = require('@tool/command/extra')
-const { delExtra} = require('@tool/message/extra')
-
+const { delExtra } = require('@tool/message/extra')
 
 /**
  * Выбор алгоритма ВВ
@@ -23,10 +22,10 @@ function fnMode(prepare, s, acc) {
 	if ((isN || isCN) && (s?.vent?.mode === 'off' || !s?.vent?.mode)) return 'off'
 	// Обычный, комби-обычный. Режим ВВ Вкл
 	if ((isN || isCN) && s?.vent?.mode === 'on') return 'on'
-	// Обычный, комби-обычный. Режим ВВ авто. После отработки подхвата. Выберется по времени
-	if ((isN || isCN) && s?.vent?.mode === 'auto' && acc.byTime?.allow) return 'time'
+	// Обычный, комби-обычный. Режим ВВ авто. Выберется по времени
+	if ((isN || isCN) && s?.vent?.mode === 'auto') return 'time'
 	// Обычный, комби-обычный. Режим ВВ авто. Выберется подхват
-	if ((isN || isCN) && s?.vent?.mode === 'auto') return 'dura'
+	// if ((isN || isCN) && s?.vent?.mode === 'auto') return 'dura'
 	// Комби-холод.
 	if (isCC) return 'combiCold'
 	return null
@@ -54,7 +53,7 @@ function fnModeMsg(bld, acc, code) {
 				key = 145
 				break
 			case 'time':
-			case 'dura':
+				// case 'dura':
 				key = 146
 				break
 			case 'combiCold':
@@ -65,11 +64,11 @@ function fnModeMsg(bld, acc, code) {
 			delExtra(bld._id, null, 'vent', 'off')
 			delExtra(bld._id, null, 'vent', 'on')
 			delExtra(bld._id, null, 'vent', 'time')
-			delExtra(bld._id, null, 'vent', 'dura')
+			// delExtra(bld._id, null, 'vent', 'dura')
 			delExtra(bld._id, null, 'vent', 'combiCold')
 			return
 		}
-		const arrCode = ['off', 'on', 'dura', 'time', 'combiCold']
+		const arrCode = ['off', 'on', /*'dura',*/ 'time', 'combiCold']
 		delUnused(arrCode, code, bld, key, 'vent')
 	}
 }

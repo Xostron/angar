@@ -5,7 +5,7 @@ const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
 // Режим вентиляции: Авто - Доп вентиляция выравнивания температуры
-function fnDura(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
+function fnDura(obj, s, m, bld, value, fan, alarm, acc, resultFan) {
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	// Аккумулятор вычислений
 	acc.byDura ??= {}
@@ -23,7 +23,7 @@ function fnDura(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
 	// Состояние приточного клапана секции
 	const state = curStateV(vlvIn._id, value)
 	// Состояние напорных вентиляторов
-	const run = fanS.some((f) => stateEq(f._id, value))
+	const run = fan.some((f) => stateEq(f._id, value))
 
 	// Текущее время
 	const curTime = +new Date().getTime()

@@ -5,7 +5,7 @@ const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
 // Комби-холод. Тпродукта достигла задания
-function fnCC(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
+function fnCC(obj, s, m, bld, value, alarm, prepare, acc, resultFan) {
 	console.log(77, 'ВВ комби-холод в работе', acc.CC)
 	acc.CC ??= {}
 	// Ожидание ВВ

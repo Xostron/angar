@@ -6,7 +6,7 @@ const { compareTime } = require('@tool/command/time')
 
 // Режим вентиляции: Выкл
 // Склад обычный, комби-обычный
-function fnOff(obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan) {
+function fnOff(obj, s, m, bld, value, alarm, prepare, acc, resultFan) {
 	resultFan.force.push(false)
 	resultFan.stg = null
 }

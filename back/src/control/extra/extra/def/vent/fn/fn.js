@@ -5,7 +5,7 @@ const { readAcc } = require('@store/index')
 const { isCombiCold } = require('@tool/combi/is')
 const { getIdsS } = require('@tool/get/building')
 
-function fnPrepare(bld, obj, s) {
+function fnPrepare(bld, obj, s, m) {
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	const am = obj.retain?.[bld._id]?.automode
 	// Комби склад в режиме холодильника
@@ -18,10 +18,13 @@ function fnPrepare(bld, obj, s) {
 	const start = obj.retain[bld._id].start
 	// Секция в авто
 	const idsS = getIdsS(obj.data.section, bld._id)
+	// Рабочие ВНО по всем секциям
+	const fan = idsS.flatMap((idS) => m.sect[idS]?.fanS ?? [])
+	// Есть ли хоть одна секция в авто
 	const secAuto = idsS.some((idS) => obj.retain[bld._id].mode?.[idS])
 	// Комби склад в режиме холодильника - флаг выкл по достижению задания
 	const cFlagFinish = readAcc(bld._id, 'combi')?.cold?.flagFinish
-	return { extraCO2, am, isCC, isCN, isN, start, secAuto, cFlagFinish, idsS }
+	return { extraCO2, am, isCC, isCN, isN, start, secAuto, cFlagFinish, idsS, fan }
 }
 
 function isAccessTime(bld, obj) {

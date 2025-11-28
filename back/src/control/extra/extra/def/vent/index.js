@@ -6,18 +6,17 @@ const def = require('./def')
 // Внутренняя вентиляция секции
 function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
-	const { fanS, vlvS } = m
 	// Подготовка данных
-	const prepare = fnPrepare(bld, obj, s)
+	const prepare = fnPrepare(bld, obj, s, m)
 	// Выбор алгоритма ВВ
 	const code = fnMode(prepare, s, acc)
 	// Сообщение о выбранном алогритме
 	fnModeMsg(bld, acc, code)
 	// Проверка разрешения ВВ и очистка аккумулятора
-	if (!exit(bld, code, fanS, s, ban, prepare, acc, resultFan))
+	if (!exit(bld, code, s, ban, prepare, acc, resultFan))
 		return console.log(77, 'Условия ВВ не подходят')
 	// Алгоритм ВВ
-	def[code](obj, s, m, bld, value, fanS, vlvS, alarm, acc, resultFan)
+	def[code](obj, s, m, bld, value, alarm, prepare, acc, resultFan)
 }
 module.exports = vent
 
