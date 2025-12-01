@@ -19,6 +19,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 			msgB(bld, 141, `${s.vent.wait / 60 / 1000}мин  (${runTime(acc.byTime.wait)})`),
 			'wait'
 		)
+		delExtra(bld._id, null, 'vent', 'work')
 		return
 	}
 	// Время ожидания прошло. Работа ВВ
@@ -36,6 +37,12 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	time = compareTime(acc.byTime.work, s.vent.work)
 	// console.log(77, 'ВВ комби-холод - работа')
 	if (time) {
+		if (!s.vent.wait) {
+			delete acc.byTime?.wait
+			delete acc.byTime?.work
+			delExtra(bld._id, null, 'vent', 'work')
+			return
+		}
 		// Время работы прошло
 		delete acc.byTime?.wait
 		delete acc.byTime?.work
