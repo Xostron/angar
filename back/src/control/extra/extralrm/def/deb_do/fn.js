@@ -49,12 +49,12 @@ function set(bld, arr, obj, accDeb, acc, watch, count) {
 function fnOwner(el, obj) {
 	const idS = el?.owner.type === 'section' ? el?.owner?.id : null
 	const clrId = el?.owner.type === 'cooler' ? el?.owner?.id : null
-	let ownerName = ''
-	if (idS) ownerName = obj?.data?.section?.find((sec) => sec._id === idS)?.name
+
+	if (idS) return obj?.data?.section?.find((sec) => sec._id === idS)?.name
 	if (clrId) {
 		const clr = obj?.data?.cooler?.find((cl) => cl._id === clrId)
 		const sect = obj?.data?.section?.find((sec) => sec._id === clr.sectionId)
-		ownerName = sect?.name ?? '' + ' ' + clr?.name ?? '' + ':'
+		return sect?.name ?? '' + ' ' + clr?.name ?? '' + ':'
 	}
 }
 

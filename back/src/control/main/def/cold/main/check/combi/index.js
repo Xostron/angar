@@ -18,6 +18,7 @@ const { data: store } = require('@store')
  * 			false - не блокировать
  */
 function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
+	console.trace('666666')
 	// "Температура задания достигнута"
 	// console.log(
 	// 	1100,

@@ -1,6 +1,7 @@
 const { barB, bar, bannerB, banner, signalB, signal, count } = require('./fn')
 const { data: store } = require('@store')
 const defClear = require('../../clear')
+const { isCombiCold } = require('@tool/combi/is')
 
 function alarm(obj) {
 	const { data, retain, value } = obj
@@ -34,13 +35,14 @@ function alarm(obj) {
 		// Авторежим
 		const am = retain?.[bld._id]?.automode
 		// События достижения задания в авторежиме
+		const isCC = isCombiCold(bld._id, am, store.calcSetting[bld._id])
 		r.achieve ??= {}
 		r.achieve[bld._id] ??= {}
 		if (bld.type === 'cold')
 			r.achieve[bld._id] = Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
-		if (bld.type === 'normal')
+		if (bld.type === 'normal' || (bld.type === 'combi' && !isCC))
 			r.achieve[bld._id] = Object.values(store.alarm?.achieve?.[bld._id]?.[am] ?? {})
-		if (bld.type === 'combi')
+		if (bld.type === 'combi' && isCC)
 			r.achieve[bld._id] = Object.values(store.alarm?.achieve?.[bld._id]?.[bld.type] ?? {})
 		// Для всех складов: сообщение Склад выключен
 		if (store.alarm?.achieve?.[bld._id]?.building?.datestop)

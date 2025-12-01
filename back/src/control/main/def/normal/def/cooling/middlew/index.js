@@ -4,6 +4,7 @@ const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
+const { data: store } = require('@store')
 
 /**
  * Определение подрежима
@@ -112,6 +113,7 @@ function message(bld, obj, s, seB, am, acc) {
 	// Для данного склада проверка происходит в src\control\main\def\cold\main\check\index.js
 	if (isCombiCold(bld, am, s)) return
 	if (!s) return
+
 	// Продукт достиг температуры задания*****************************************
 	// В режиме лечения - Продукт достиг не активен
 	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
@@ -129,12 +131,9 @@ function message(bld, obj, s, seB, am, acc) {
 		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
 
-	wrAchieve(bld._id, 'cooling', {
-		...msgB(bld, 150),
-		msg: `t задания канала = ${acc.tcnl.toFixed(1)} °С, t задания продукта = ${acc.tgt.toFixed(
-			1
-		)} °С`,
-	})
+	const txt = `Tзад.канала = ${acc.tcnl ?? '--'} (${seB.tcnl ?? '--'})°C. 
+	Тзад.прод. = ${acc.tgt ?? '--'} (${seB.tprd ?? '--'})°C`
+	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt), txt)
 
 	// Обновление времени в сообщении "Продукт достиг температуры"
 	if (acc.finish) {

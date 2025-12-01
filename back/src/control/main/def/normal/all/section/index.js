@@ -32,7 +32,7 @@ function section(start, bld, obj, s, seB, am, accAuto, resultFan, alrBld, alrAm)
 		const se = sensor(bld._id, sect._id, obj)
 		// Секция в любом режиме
 		alrAlw = always(bld, sect, obj, s, se, m, am, accAuto, resultFan, alrBld)
-		// sumExtralrmSection(building, section) - Аварии возникающие в секции, но останавливающие работу всего склада
+		// Аварии возникающие в секции, но останавливающие работу всего склада
 		sumAlrS = sumExtralrmSection(bld, obj)
 		// Склад включен, секция в авто
 		on(bld, sect, obj, s, se, seB, m, am, accAuto, resultFan, start, alrBld || sumAlrS, alrAm, alrAlw)

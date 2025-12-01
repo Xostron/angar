@@ -82,7 +82,7 @@ const data = {
 	},
 	// ======= Сообщения Achieve =======
 	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
-	150: { order: 2, code: 'target', msg: 'Задание канала, задание продукта' },
+	150: { order: 2, code: 'target', msg: '' },
 	151: { order: 3, code: 'datestop', msg: 'Склад выключен' },
 
 	// ======== extralrm - доп. аварии склада/секции ========
@@ -104,7 +104,7 @@ const data = {
 		count: true,
 		code: 'alrClosed',
 		typeSignal: 'critical',
-		msg: 'Аварийное закрытие клапанов',
+		msg: 'Авария низкой температуры',
 	},
 	// Переключатель на щите секции - местный режим
 	27: {

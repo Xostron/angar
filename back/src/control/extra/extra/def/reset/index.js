@@ -68,9 +68,9 @@ function connect(obj, bld, m, acc) {
 function alrClosed(bld, obj, se) {
 	// Неисправность модулей
 	const isErrm = isErrMs(bld._id)
-	// Аварийное закрытие клапанов (сигнал Склада)
+	// Авария низкой температуры (сигнал Склада)
 	const acBld = getSignal(bld?._id, obj, 'low')
-	// Аварийное закрытие клапанов (сигналы секций)
+	// Авария низкой температуры (сигналы секций)
 	const acSec = obj.data.section
 		.filter((el) => el.buildingId === bld._id)
 		.reduce((acc, el) => {

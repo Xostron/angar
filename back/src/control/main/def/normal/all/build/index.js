@@ -29,7 +29,7 @@ function build(start, building, obj, s, se, m, am, accAuto, resultFan) {
 		alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'on')
 		extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'on')
 		// Промежуточные расчеты
-		def[am]?.middlewB(building, obj, s, se, am, accAuto)
+		def[am]?.middlewB(building, obj, s, se, am, accAuto, alrBld)
 		// Аварии авторежима (Склад включен, )
 		rs(building._id, am, def[am]?.alarm(s, se, building, accAuto))
 		alrAm = isAlr(building._id, am)

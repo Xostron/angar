@@ -29,7 +29,9 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		// Состояние испарителя
 		const stateCooler = obj.value?.[clr._id]
 		// Проверка: Запрет работы испарителя
+		console.log(4, '###############################')
 		if (denied.combi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj)) continue
+		console.log(5, '%%%%%%%%%%%%%%%%%%%%%%%%%')
 		// Датчики секции и испарителя
 		const seClr = { ...seS, cooler: {} }
 		seClr.cooler = seS.cooler[clr._id]

@@ -4,7 +4,7 @@ const { isReadyAgg, clear, clearCombi } = require('./fn')
 const { isAlr } = require('@tool/message/auto')
 const { clearAchieve } = require('@tool/message/achieve')
 const { isExtralrm } = require('@tool/message/extralrm')
-
+const { getIdsS } = require('@tool/get/building')
 /**
  * @description Склад Холодильник: Запрет работы испарителя
  * @param {object} bld Склад
@@ -54,7 +54,10 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// Выведен ли из работы ВНО испарителя
 	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
 	// Местный режим секции
-	const local = isExtralrm(bld._id, sect._id, 'local')
+	// const local = isExtralrm(bld._id, sect._id, 'local')
+	const idsS = getIdsS(obj.data.section, bld._id)
+	const local =
+		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	// Режим секции true-Авто
 	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
 	// Настройка "Испаритель холодильного оборудования" = true/false
@@ -103,7 +106,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		'stateCooler?.status === alarm',
 		stateCooler?.status === 'alarm'
 	)
-	// Работа испарителя запрещена? false: работаем испарителем
+	// Работа испарителя запрещена? false - Нет.
 	if (!store.denied[bld._id][clr._id]) return false
 
 	// true - Да (очищаем аккумулятор по испарителю и выключаем его)

@@ -180,7 +180,7 @@ function fnSolHeat(obj) {
 		const offB = retain?.[idB]?.start == false
 		// Секция выключена
 		let offS = (retain?.[idB]?.mode?.[idS] ?? null) === null
-		out(obj, output, el, localB, local, alrStop, alrAgg, alr_offVNO, offB, offS)
+		out(obj, output, el, local, alrStop, alrAgg, alr_offVNO, offB, offS)
 	}
 }
 

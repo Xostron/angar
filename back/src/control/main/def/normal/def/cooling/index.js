@@ -20,12 +20,12 @@ const data = {
 	middlewB,
 }
 
-function middlewB(building, obj, s, seB, am, acc) {
+function middlewB(building, obj, s, seB, am, acc, alrBld) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
 	// Вычисление подрежима
 	submode(building, obj, s, seB, acc)
 	// Вычисления
-	target(building, obj, s, seB, acc)
+	target(building, obj, s, seB, acc, alrBld)
 	// Сообщения
 	message(building, obj, s, seB, am, acc)
 }

@@ -2,7 +2,9 @@ const { data: store } = require('@store')
 
 // Получить extralrm аварию
 function isExtralrm(idB, idS, code) {
-	return idS ? !!store.alarm?.extralrm?.[idB]?.[idS]?.[code] : !!store.alarm?.extralrm?.[idB]?.[code]
+	return idS
+		? !!store.alarm?.extralrm?.[idB]?.[idS]?.[code]
+		: !!store.alarm?.extralrm?.[idB]?.[code]
 }
 
 // Записать в extralrm (доп. аварии)
@@ -36,8 +38,8 @@ function sumExtralrmSection(building, obj) {
 	const { data } = obj
 	const section = data.section.filter((el) => el.buildingId == building._id)
 	let alrS = false
-	//Список аварий: Аварийное закрытие клапанов
-	const list = ['alrClosed', 'overVlv', 'antibliz']
+	//Список аварий: Авария низкой температуры
+	const list = ['alrClosed', 'overVlv', 'antibliz', 'local']
 	// id секций склада
 	const secIds = section.map((el) => el._id)
 	// аварии склада
