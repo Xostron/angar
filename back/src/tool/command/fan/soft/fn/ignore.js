@@ -3,7 +3,7 @@ const { isAlr } = require('@tool/message/auto')
 const { ctrlDO } = require('@tool/command/module_output')
 
 /**
- * normal - обычный склад и комби(режим обычный)
+ * normal - обычный склад и комби-обычный
  * cold - комби (режим холодильник)
  *
  * Для комбинированного склада: игнорировать управление ВНО, в следующих сценариях:
@@ -15,22 +15,29 @@ const { ctrlDO } = require('@tool/command/module_output')
  * @returns false - разрешить управление, true - запрет управления
  */
 function normal(bld, obj, s, acc, bdata) {
-	// Удаление СО2
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
-
-	if (bld.type == 'normal' || bdata.automode != 'cooling' || extraCO2.start) {
+	// Управление ВНО: склад нормальный, режим сушка, удаление СО2, режим охлаждения и отключено оборудование,
+	// комби склад без аварии авторежима
+	if (
+		bld.type == 'normal' ||
+		bdata.automode != 'cooling' ||
+		extraCO2.start ||
+		(bdata.automode === 'cooling' && s?.coolerCombi?.on !== true)
+	) {
 		console.log('\tИгнор (normal) false')
 		return false
 	}
+	// Игнорирование работы ВНО: если комби склад с аварией авторежима + вкл оборудование
 	const alrAuto = isAlr(bld._id, bdata.automode)
 	console.log('\tИгнор (normal)', alrAuto)
 	return alrAuto
 }
-// cold - комби (режим холодильник)
+
+// Комби-холодильник
 function cold(bld, obj, s, acc, bdata, solHeat) {
-	// Удаление СО2: логика холодильника -> логика обычного
+	// 1. Игнор работы ВНО: если удаление СО2, выкл.оборудование испарителей
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
-	if (extraCO2.start) {
+	if (extraCO2.start || (bdata.automode === 'cooling' && s?.coolerCombi?.on !== true)) {
 		// Отключение соленоидов подогрева
 		fnSol(bld._id, extraCO2, solHeat)
 		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')

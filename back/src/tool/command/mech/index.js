@@ -30,7 +30,7 @@ function mech(obj, idS, idB) {
 			return acc
 		}, {})
 	)
-	// Вно испарителей с людим state, но исключая дубляжи
+	// Вно испарителей с любым state, но исключая дубляжи
 	let allFanClr = Object.values(
 		fanClrRaw.reduce((acc, el, i) => {
 			if (acc[el.module.id + el.module.channel]) return acc

@@ -48,12 +48,12 @@ function delExtra(idB, idS, name, type) {
 	}
 }
 
-function isExtra(idB, idS, code, type) {
+function isExtra(idB, idS, name, type) {
 	if (type)
 		return idS
-			? !!data.alarm?.extra?.[idB]?.[idS]?.[code]?.[type]
-			: !!data.alarm?.extra?.[idB]?.[code]?.[type]
-	return idS ? !!data.alarm?.extra?.[idB]?.[idS]?.[code] : !!data.alarm?.extra?.[idB]?.[code]
+			? !!data.alarm?.extra?.[idB]?.[idS]?.[name]?.[type]
+			: !!data.alarm?.extra?.[idB]?.[name]?.[type]
+	return idS ? !!data.alarm?.extra?.[idB]?.[idS]?.[name] : !!data.alarm?.extra?.[idB]?.[name]
 }
 
 function getDTextra(idB, idS, code, type) {

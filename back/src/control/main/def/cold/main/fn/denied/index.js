@@ -139,7 +139,7 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 			allDeniedSect.push(store?.denied?.[idB]?.[pair[0]])
 			const clr = mS.coolerS.find((el) => el._id === pair[0])
 			if (!clr) return
-			if (!alrAuto || sectM === false || s.smoking.on) {
+			if (!alrAuto || sectM === false || s.smoking.on || !s?.coolerCombi?.on) {
 				fnChange(0, null, 0, 0, null, clr)
 			} else fnChange(0, 0, 0, 0, null, clr)
 			return
@@ -156,9 +156,10 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 			// 1. в режиме обычного склада (нет аварий авторежима)
 			// 2. Секция в ручном режиме
 			// 3. Включено окуривание
+			// 4. выключено оборудование испарителя
 			pair.forEach((idClr) => {
 				const clr = mS.coolerS.find((el) => el._id === idClr)
-				if (!alrAuto || sectM === false || s.smoking.on) {
+				if (!alrAuto || sectM === false || s.smoking.on || !s?.coolerCombi?.on) {
 					fnChange(0, null, 0, 0, null, clr)
 				} else fnChange(0, 0, 0, 0, null, clr)
 			})

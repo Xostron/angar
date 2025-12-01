@@ -29,7 +29,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// При принудительном включении работаем ВНО как в обычном складу:
 	// normal - обычный склад (по давлению канала)
 	// cold - комби-холод (по темпе канала)
-	const who = aCmd.force ? 'normal' : where
+	const who = aCmd.force || s.coolerCombi?.on !== true ? 'normal' : where
 	// Инициализация аккумулятора плавного пуска
 	const acc = init(bld, idS, obj, s, who, 'fc', fans.length)
 
@@ -52,7 +52,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 4. Регулирование ПЧ
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, isCC)
 	if (acc.busy || acc.busySol) (on = false), (off = false)
-	console.log(112, 'on', on, 'off', off, who, isCC)
+	console.log(112, 'on', on, 'off', off, who, isCC, max, aCmd.force)
 	// 5. Регулирование Релейных ВНО: увеличение кол-ва
 	checkOn(on, acc, s, fans.length, aCmd, max)
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва

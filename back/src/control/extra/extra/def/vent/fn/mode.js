@@ -1,6 +1,6 @@
 const { delUnused } = require('@tool/command/extra')
-const { delExtra } = require('@tool/message/extra')
-
+const { delExtra, wrExtra } = require('@tool/message/extra')
+const { msgB } = require('@tool/message')
 /**
  * Выбор алгоритма ВВ
  * 1. Режим Вкл (для обычного и комби в режиме обычного)
@@ -38,39 +38,26 @@ function fnMode(prepare, s, acc) {
  * @param {*} acc Аккумулятор
  * @param {*} code Код выбранного алгоритма из fnSelect
  */
-function fnModeMsg(bld, acc, code) {
-	console.log(771, acc.lastMode, code)
-	if (acc.lastMode !== code) {
-		acc.lastMode = code
-		let key
-		switch (code) {
-			case null:
-				break
-			case 'off':
-				key = 144
-				break
-			case 'on':
-				key = 145
-				break
-			case 'time':
-				// case 'dura':
-				key = 146
-				break
-			case 'combiCold':
-				key = 147
-				break
-		}
-		if (code === null) {
-			delExtra(bld._id, null, 'vent', 'off')
-			delExtra(bld._id, null, 'vent', 'on')
-			delExtra(bld._id, null, 'vent', 'time')
-			// delExtra(bld._id, null, 'vent', 'dura')
-			delExtra(bld._id, null, 'vent', 'combiCold')
-			return
-		}
-		const arrCode = ['off', 'on', /*'dura',*/ 'time', 'combiCold']
-		delUnused(arrCode, code, bld, key, 'vent')
+function fnModeMsg(bld, code, acc) {
+	// let key
+	switch (code) {
+		case null:
+		case 'off':
+			key = 144
+			break
+		case 'on':
+			key = 145
+			break
+		case 'time':
+			// case 'dura':
+			key = 146
+			break
+		case 'combiCold':
+			key = 147
+			break
 	}
+	const arrCode = ['off', 'on', 'time', 'combiCold']
+	delUnused(arrCode, code, bld, key, 'vent')
 }
 
 module.exports = { fnMode, fnModeMsg }

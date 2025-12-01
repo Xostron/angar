@@ -1,7 +1,7 @@
-const { delExtra, wrExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { ctrlDO } = require('@tool/command/module_output')
 const { msgB } = require('@tool/message')
-
+const { data: store } = require('@store')
 // Выключение
 function fnAlarm(building, arr, value) {
 	arr?.forEach((el) => {
@@ -12,8 +12,11 @@ function fnAlarm(building, arr, value) {
 // Обновление событий при смене режима (очищает лишние сообщения)
 function delUnused(arrCode, code, bld, codeMsg, type) {
 	arrCode.forEach((el) => {
-		if (el === code) return wrExtra(bld._id, null, type, msgB(bld, codeMsg), el)
-		delExtra(bld._id, null, type, el)
+		if (el !== code) {
+			delExtra(bld._id, null, type, el)
+			return
+		}
+		wrExtra(bld._id, null, type, msgB(bld, codeMsg), el)
 	})
 }
 

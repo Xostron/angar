@@ -6,7 +6,6 @@ const { compareTime, runTime } = require('@tool/command/time')
 
 // Комби-холод. Тпродукта достигла задания
 function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
-	// console.log(77, 'ВВ комби-холод в работе', acc.CC)
 	acc.CC ??= {}
 	// Ожидание ВВ
 	acc.CC.wait ??= new Date()
