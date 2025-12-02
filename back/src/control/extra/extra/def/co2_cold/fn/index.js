@@ -1,14 +1,14 @@
-const { arrCtrl } = require('@tool/command/fan/fn')
+const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 
 // СО2: Вкл
 function on(building, co2, value) {
-	arrCtrl(building._id, co2, 'on')
+	arrCtrlDO(building._id, co2, 'on')
 }
 
 // СО2: Выкл
 function off(building, co2, value) {
-	arrCtrl(building._id, co2, 'off')
+	arrCtrlDO(building._id, co2, 'off')
 }
 
 // СО2: По времени

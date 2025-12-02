@@ -67,14 +67,15 @@ function ctrlV(vlv, buildingId, type) {
 }
 
 /**
- * Вкл/выкл множество механизмов
+ * Массовое вкл/выкл выходов
  * @param {object[]} arr Массив механизмов
  * @param {string} idB ИД склада
  * @param {string} type Тип команды: 'on'|'off'
  */
-function arrCtrlDO(arr, idB, type) {
-	arr.forEach((el) => {
+function arrCtrlDO(idB, arr, type) {
+	arr?.forEach((el) => {
 		ctrlDO(el, idB, type)
+		if (el?.ao) ctrlAO(el, idB, type === 'off' ? _MIN_SP : _MAX_SP)
 	})
 }
 

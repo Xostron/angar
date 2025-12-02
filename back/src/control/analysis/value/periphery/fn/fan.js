@@ -1,4 +1,4 @@
-const { stateF } = require('@tool/command/fan/fn')
+const { stateF } = require('@tool/fan')
 
 // Состояние вентиляторов
 function fan(equip, val, retain, result) {

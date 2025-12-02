@@ -1,10 +1,10 @@
-const { compareTime, runTime } = require('@tool/command/time')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
-const { arrCtrl } = require('@tool/command/fan/fn')
-const { data: store } = require('@store')
-const { msgB } = require('@tool/message')
+const { compareTime, runTime } = require('@tool/command/time')
+const { arrCtrlDO } = require('@tool/command/module_output')
 const { getIdsS } = require('@tool/get/building')
 const { fnClear, collect } = require('./fn')
+const { data: store } = require('@store')
+const { msgB } = require('@tool/message')
 const soft = require('./soft')
 const h = 3600000
 
@@ -68,7 +68,7 @@ function smoking(
 	if (!stg || !stg?.on) {
 		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrl(idB, fanA, 'off')
+		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
 		delete doc.work
 		delete doc.wait
@@ -93,7 +93,7 @@ function smoking(
 	if (!compareTime(doc.work, stg.work * h)) {
 		// console.log(22, 'Окуривание работа: Включение плавного пуска')
 		// Вкл разгонные
-		arrCtrl(idB, fanA, 'on')
+		arrCtrlDO(idB, fanA, 'on')
 		// Вкл ВНО секции
 		soft(idB, idsS, fan, obj, s, true)
 		return
@@ -109,7 +109,7 @@ function smoking(
 	if (doc.wait && !isExtra(idB, null, 'smoking2'))
 		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	if (!compareTime(doc.wait, stg.wait * h)) {
-		arrCtrl(idB, fanA, 'off')
+		arrCtrlDO(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
 		// console.log(33, 'Окуривание ожидание: Выключение плавного пуска')
 		return

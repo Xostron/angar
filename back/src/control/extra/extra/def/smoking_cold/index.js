@@ -1,6 +1,6 @@
 const { compareTime, runTime } = require('@tool/command/time')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
-const { arrCtrl } = require('@tool/command/fan/fn')
+const { arrCtrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 const h = 3600000
@@ -51,7 +51,7 @@ function smoking(
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrl(idB, arr, 'off')
+		if (accelMode !== 'on') arrCtrlDO(idB, arr, 'off')
 		delete doc.work
 		delete doc.wait
 		delExtra(idB, null, 'smoking1')
@@ -71,7 +71,7 @@ function smoking(
 		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 
 	if (!compareTime(doc.work, stg.work * h)) {
-		arrCtrl(idB, arr, 'on')
+		arrCtrlDO(idB, arr, 'on')
 		return
 	}
 
@@ -85,7 +85,7 @@ function smoking(
 	if (doc.wait && !isExtra(idB, null, 'smoking2'))
 		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	if (!compareTime(doc.wait, stg.wait * h)) {
-		arrCtrl(idB, arr, 'off')
+		arrCtrlDO(idB, arr, 'off')
 		return
 	}
 

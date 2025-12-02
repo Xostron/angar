@@ -1,4 +1,4 @@
-const { stateEq } = require('@tool/command/fan/fn')
+const { stateEq } = require('@tool/fan')
 const { curStateV } = require('@tool/command/valve')
 const { msg, msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')

@@ -41,7 +41,7 @@ x минут выключения истекли
 х минут выключения еще не истекли
 n минут работы истекли
  */
-const { stateEq } = require('@tool/command/fan/fn')
+const { stateEq } = require('@tool/fan')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msg } = require('@tool/message')
@@ -176,7 +176,7 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 	// Управление
 	function ctrlWet(flag = false, str) {
 		// false - выключить, true - включить
-		arrCtrlDO(wettingS, bld._id, flag ? 'on' : 'off')
+		arrCtrlDO(bld._id, wettingS, flag ? 'on' : 'off')
 		if (flag) {
 			acc.work = new Date()
 			acc.stop = null

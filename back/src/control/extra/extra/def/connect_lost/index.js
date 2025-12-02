@@ -9,7 +9,7 @@ function connectLost(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	acc.flag ??= {}
 	if (isErrMs(bld._id)) {
 		// Есть неисправный модуль -> выключаем данные выхода
-		arrCtrlDO(m.connectLost, bld._id, 'off')
+		arrCtrlDO(bld._id, m.connectLost, 'off')
 		// Сообщение
 		if (!acc.on) {
 			acc.on = true
@@ -19,7 +19,7 @@ function connectLost(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	}
 	acc.on = false
 	// Модули исправны -> Включаем данные выхода
-	arrCtrlDO(m.connectLost, bld._id, 'on')
+	arrCtrlDO(bld._id, m.connectLost, 'on')
 	// Удаляем сообщение
 	delExtra(bld._id, null, 'connectLost')
 }

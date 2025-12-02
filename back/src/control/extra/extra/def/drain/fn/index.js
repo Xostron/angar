@@ -1,10 +1,10 @@
-const {delExtra, wrExtra} = require('@tool/message/extra')
-const { arrCtrl } = require('@tool/command/fan/fn')
+const { delExtra, wrExtra } = require('@tool/message/extra')
+const { arrCtrlDO } = require('@tool/command/module_output')
 const { msgB } = require('@tool/message')
 
 // Оттайка слива воды: Вкл
 function on(building, arr, value, acc) {
-	arrCtrl(building._id, arr, 'on')
+	arrCtrlDO(building._id, arr, 'on')
 	if (!acc?.on) {
 		acc.on = true
 		acc.off = false
@@ -15,7 +15,7 @@ function on(building, arr, value, acc) {
 
 // Оттайка слива воды: Выкл
 function off(building, arr, value, acc) {
-	arrCtrl(building._id, arr, 'off')
+	arrCtrlDO(building._id, arr, 'off')
 	if (!acc?.off) {
 		acc.off = true
 		acc.on = false

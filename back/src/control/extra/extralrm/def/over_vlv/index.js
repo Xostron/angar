@@ -1,5 +1,5 @@
 const { curStateV } = require('@tool/command/valve')
-const { stateEq } = require('@tool/command/fan/fn')
+const { stateEq } = require('@tool/fan')
 const { set, reset, fnCheck } = require('./fn')
 
 /**
