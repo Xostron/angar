@@ -2,7 +2,7 @@ const { stateEq } = require('@tool/command/fan/fn')
 const { curStateV } = require('@tool/command/valve')
 const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
-const { compareTime, runTime } = require('@tool/command/time')
+const { compareTime, remTime } = require('@tool/command/time')
 
 // Режим вентиляции: Авто - по времени
 function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
@@ -10,13 +10,17 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	// Ожидание ВВ
 	acc.byTime.wait ??= new Date()
 	let time = compareTime(acc.byTime.wait, s.vent.wait)
+		console.log(
+		'###########################################',
+		remTime(acc.byTime.wait, s.vent.wait)
+	)
 	if (!time) {
 		// Время ожидание не прошло
 		wrExtra(
 			bld._id,
 			null,
 			'vent',
-			msgB(bld, 141, `${s.vent.wait / 60 / 1000}мин  (${runTime(acc.byTime.wait)})`),
+			msgB(bld, 141, `${remTime(acc.byTime.wait, s.vent.wait)}`),
 			'wait'
 		)
 		delExtra(bld._id, null, 'vent', 'work')
@@ -29,9 +33,12 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		bld._id,
 		null,
 		'vent',
-		msgB(bld, 142, `${s.vent.work / 60 / 1000}мин (${runTime(acc.byTime.work)})`),
+		msgB(bld, 142, `${remTime(acc.byTime.work, s.vent.work)}`),
 		'work'
 	)
+
+
+
 	resultFan.force.push(true)
 	resultFan.stg = 'vent'
 	time = compareTime(acc.byTime.work, s.vent.work)

@@ -35,9 +35,13 @@ function normal(bld, obj, s, acc, bdata) {
 
 // Комби-холодильник
 function cold(bld, obj, s, acc, bdata, solHeat) {
-	// 1. Игнор работы ВНО: если удаление СО2, выкл.оборудование испарителей
+	// 1. Игнор работы ВНО: если удаление СО2, выкл.оборудование испарителей (хранение), сушка
 	const extraCO2 = readAcc(bld._id, 'building', 'co2')
-	if (extraCO2.start || (bdata.automode === 'cooling' && !s?.coolerCombi?.on)) {
+	if (
+		extraCO2.start ||
+		(bdata.automode === 'cooling' && !s?.coolerCombi?.on) ||
+		bdata.automode === 'drying'
+	) {
 		// Отключение соленоидов подогрева
 		fnSol(bld._id, extraCO2, solHeat)
 		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')

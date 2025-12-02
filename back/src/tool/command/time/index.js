@@ -41,7 +41,7 @@ function range(o) {
 /**
  * Проверка на пройденное время, true - время прошло
  * @param {String | DateTime} t дата и время (начальная точка)
- * @param {Integer} d пройденное время, мс
+ * @param {Integer} d заданное время, мс
  * @returns {Boolean} true - время истекло
  */
 function compareTime(t, d) {
@@ -67,6 +67,36 @@ function runTime(doc) {
 		const t = (new Date() - doc) / 1000
 		let m = Math.trunc(t / 60)
 		return `${m ? m + ' мин ' : ''}${(t % 60).toFixed(0) + ' сек'}`
+	} catch (error) {
+		console.log('runTime', error)
+		return ''
+	}
+}
+
+/**
+ * Оставшееся времени
+ * @param {String||DateTime} date дата и время (начальная точка)
+ * @param {number} x заданное время, мс
+ * @returns {String} Оставшееся время
+ */
+function remTime(date, x) {
+	try {
+		if (typeof date === 'string') date = new Date(date)
+		// Пройденное время, мс
+		const t = new Date() - date
+		// Оставшееся время, с
+		let s = (x - t) / 1000
+		// Часы
+		let h = Math.trunc(s / 3600)
+		// Минуты
+		let m = Math.trunc((s % 3600) / 60)
+
+		s = Math.trunc(s % 60)
+
+		const hh = h < 10 ? '0' + h : h
+		const mm = m < 10 ? '0' + m : m
+		const ss = s < 10 ? '0' + s : s
+		return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`
 	} catch (error) {
 		console.log('runTime', error)
 		return ''
@@ -131,7 +161,7 @@ function elapsedTime(date) {
 function onTime(code, acc) {
 	if (!code) return
 	if (!acc?.state?.[code]) {
-		acc.state??={}
+		acc.state ??= {}
 		acc.state[code] = new Date()
 	}
 
@@ -148,4 +178,5 @@ module.exports = {
 	engineHour,
 	elapsedTime,
 	onTime,
+	remTime,
 }
