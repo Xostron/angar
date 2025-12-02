@@ -133,6 +133,7 @@ function message(bld, obj, s, seB, am, acc) {
 
 	const txt = `Tзад.канала = ${acc.tcnl ?? '--'} (${seB.tcnl ?? '--'})°C. 
 	Тзад.прод. = ${acc.tgt ?? '--'} (${seB.tprd ?? '--'})°C`
+	console.log(1100, txt)
 	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt), txt)
 
 	// Обновление времени в сообщении "Продукт достиг температуры"

@@ -2,7 +2,7 @@ const { stateEq } = require('@tool/command/fan/fn')
 const { curStateV } = require('@tool/command/valve')
 const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
-const { compareTime, runTime } = require('@tool/command/time')
+const { compareTime, remTime } = require('@tool/command/time')
 
 // Комби-холод. Тпродукта достигла задания
 function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
@@ -17,7 +17,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 			bld._id,
 			null,
 			'vent',
-			msgB(bld, 141, `${s.coolerCombi.wait / 60 / 1000}мин (${runTime(acc.CC.wait)})`),
+			msgB(bld, 141, `${remTime(acc.CC.wait)}`),
 			'wait'
 		)
 		return
@@ -29,7 +29,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		bld._id,
 		null,
 		'vent',
-		msgB(bld, 142, `${s.coolerCombi.work / 60 / 1000}мин (${runTime(acc.CC.work)})`),
+		msgB(bld, 142, `${remTime(acc.CC.work)}`),
 		'work'
 	)
 	resultFan.force.push(true)

@@ -279,8 +279,8 @@ const data = {
 	// 86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
 	// 87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
 	// 88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
-	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Пауза' },
-	142: { code: 'ventWork', typeSignal: 'info', msg: 'Внутренняя вентиляция. Пуск' },
+	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
+	142: { code: 'ventWork', typeSignal: 'info', msg: 'Внутренняя вентиляция. Работа' },
 	143: {
 		code: 'ventCheck',
 		typeSignal: 'info',
@@ -330,8 +330,8 @@ const data = {
 	72: { code: 'temp', typeSignal: 'info', msg: 'Оттайка слива воды: Отключена' },
 
 	// ======== Склад-холодильник ========
-	80: { order: 1, code: 'target', msg: 'Продукт достиг температуры задания ' },
-	81: { order: 2, code: 'status', msg: '' },
+	80: { order: 1, code: 'finish', msg: 'Продукт достиг температуры задания ' },
+	81: { order: 2, code: 'target', msg: '' },
 	// ======== Окуривание (холодильник) ========
 	82: {
 		code: 'smoking',

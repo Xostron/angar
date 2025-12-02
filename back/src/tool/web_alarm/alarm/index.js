@@ -35,7 +35,7 @@ function alarm(obj) {
 		// Авторежим
 		const am = retain?.[bld._id]?.automode
 		// События достижения задания в авторежиме
-		const isCC = isCombiCold(bld._id, am, store.calcSetting[bld._id])
+		const isCC = isCombiCold(bld, am, store.calcSetting[bld._id])
 		r.achieve ??= {}
 		r.achieve[bld._id] ??= {}
 		if (bld.type === 'cold')

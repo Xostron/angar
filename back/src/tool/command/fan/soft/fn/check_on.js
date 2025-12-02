@@ -34,7 +34,7 @@ function checkOn(on, acc, s, length, aCmd, max) {
 	
 	++acc.order
 	if (aCmd.force && acc.order > max - 1) {
-		--acc.order
+		acc.order=max-1
 		return
 	}
 	// Включаем следующий ВНО

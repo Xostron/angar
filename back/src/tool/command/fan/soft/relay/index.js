@@ -22,8 +22,8 @@ const { isCombiCold } = require('@tool/combi/is')
  * @returns
  */
 function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where) {
-	// Комби-холод. Обычное управление
-	const isCC = isCombiCold(bld, bdata.automode, s) && !aCmd.force
+	// Комби-холод. Управление ВНО
+	const isCC = bld.type === 'combi' && isCombiCold(bld, bdata.automode, s) && !aCmd.force
 	// При принудительном включении работаем ВНО как в обычном складу:
 	// normal - обычный склад (по давлению канала)
 	// cold - комби-холод (по темпе канала)
@@ -53,7 +53,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва
 	checkOff.relay(off, acc, where)
 	// 6. Непосредственное вкл/выкл
-	turnOn(null, fans, solHeat, bld._id, acc, max, isCC)
+	turnOn(null, fans, solHeat, bld._id, acc, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
 	console.table(acc)

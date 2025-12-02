@@ -57,7 +57,7 @@ function soft(bld, obj, s, seB, m, resultFan, bdata, where) {
 		// ventConfig(fanFC, fans, solHeat, aCmd, bdata)
 		// ВВ для обычного склада и комби-обычного
 		// Выбор алгоритма управления плавным пуском: ПЧ или релейная
-		console.log('\t', 11, 'SOFT', idS, fanFC?.name, fans, aCmd)
+		// console.log('\t', 11, 'SOFT', idS, fanFC?.name, fans, aCmd)
 		// console.table(
 		// 	[{ Секция: idS, 'Тип ВНО': type, 'Тип управления': where }],
 		// 	['Секция', 'Тип ВНО', 'Тип управления']

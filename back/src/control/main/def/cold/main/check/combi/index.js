@@ -68,6 +68,7 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	Тзад.прод. = ${accCold.tgtTprd ?? '--'} (${se.tprd ?? '--'})°C, 
 	Влажность = ${s?.mois?.humidity ?? '--'} 
 	(${se.hin ?? '--'})%`
+	console.log(411, txt)
 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	// Не блокировать
 	return false
