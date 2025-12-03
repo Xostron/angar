@@ -41,6 +41,7 @@ function scan(bld, obj) {
 		warming: {},
 		force: [],
 		stg: null,
+		notDur:[]
 	}
 
 	return { start, automode, mode, s, se, m, accAuto, resultFan, supply }

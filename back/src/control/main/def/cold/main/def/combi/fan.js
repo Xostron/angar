@@ -3,6 +3,7 @@ const { data: store, readAcc } = require('@store')
 const { isCombiCold } = require('@tool/combi/is')
 
 /**
+ * Комби-холодильник
  * Для секции
  * @param {*} bld
  * @param {*} bdata

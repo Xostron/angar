@@ -19,6 +19,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада
 	// const alr = alrS || alrAm || ban || alrBld || alrAlw || alrSe
 	const alr = alrS || (alrAm && !extraCO2.start) || ban || alrBld || alrAlw || alrSe
+
 	console.log(
 		666,
 		sect?.name,
@@ -45,7 +46,10 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 
 	// Вентилятор
 	const f = def[am].fan(s, se, alr, sect._id, acc)
+	// Наличие аварии для обратки доп. вентиляции ()
+	const notDur = alrS || ban || alrBld || alrAlw || alrSe
 	resultFan.start.push(f.start)
+	resultFan.notDur.push(notDur)
 	// Запись аккумулятора
 	const automode = obj.retain?.[bld._id]?.automode
 	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type

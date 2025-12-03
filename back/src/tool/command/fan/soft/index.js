@@ -2,7 +2,6 @@ const { data: store } = require('@store')
 const { sensor } = require('@tool/command/sensor')
 const relay = require('./relay')
 const fc = require('./fc')
-const { ventConfig } = require('./fn/vent')
 const data = {
 	relay, // Плавный пуск (все вентиляторы на контакторах)
 	fc, // Плавный пуск (1 вентилятор на ПЧ, остальные на контакторах)

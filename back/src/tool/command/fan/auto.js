@@ -1,6 +1,6 @@
 const { fnACmd, fnFanWarm } = require('./fn')
 const soft = require('./soft')
-
+const durVent = require('./duration')
 /**
  * Обычный склад и Комбинированный склад в обычном режиме
  * @param {string} bld Cклад
@@ -11,10 +11,11 @@ const soft = require('./soft')
  */
 function normal(bld, obj, s, seB, m, resultFan, bdata) {
 	console.log(11, 'SOFT_COMBI_NORMAL', bld.name)
-	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	fnACmd(bld, resultFan, start, obj, bdata)
+	fnACmd(bld, resultFan, obj, bdata)
+	durVent(bld, obj, s, seB, m, resultFan, bdata)
 	// Формирование aCmd: Прогрев клапанов
+	const start = resultFan.start.includes(true)
 	if (!start) fnFanWarm(resultFan, s)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'normal')
@@ -23,9 +24,9 @@ function normal(bld, obj, s, seB, m, resultFan, bdata) {
 // Комбинированный склад в холодильном режиме
 function combi(bld, obj, s, seB, m, resultFan, bdata) {
 	console.log(11, 'SOFT_COMBI_COLD', bld.name)
-	const start = resultFan.start.includes(true)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	fnACmd(bld, resultFan, start, obj, bdata)
+	fnACmd(bld, resultFan, obj, bdata)
+	durVent(bld, obj, s, seB, m, resultFan, bdata)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'cold')
 }

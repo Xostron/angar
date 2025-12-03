@@ -2,7 +2,6 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { setACmd } = require('@tool/command/set')
 const { isСoolerCombiVNO, isCoolerCombiOn } = require('@tool/combi/is')
 
-
 /**
  * Команда авторежима на плавный пуск/стоп ВНО секции
  * @param {*} bld Id склада
@@ -10,7 +9,8 @@ const { isСoolerCombiVNO, isCoolerCombiOn } = require('@tool/combi/is')
  * @param {*} s Настройки склада
  * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
-function fnACmd(bld, resultFan, start, obj, bdata) {
+function fnACmd(bld, resultFan, obj, bdata) {
+	const start = resultFan.start.includes(true)
 	if (!bdata?.s) return
 	const idB = bld._id
 	const delay = bdata.s.fan.delay * 1000
@@ -47,7 +47,7 @@ function fnACmd(bld, resultFan, start, obj, bdata) {
 				!coolerCombiOn,
 				!goVNO
 			)
-			setACmd('fan', idS, { delay, type: 'off' })
+			setACmd('fan', idS, { delay, type: 'off', force: null, max: null })
 			return
 		}
 		setACmd('fan', idS, {
@@ -72,7 +72,5 @@ function fnFanWarm(resultFan, s) {
 		setACmd('fan', o.sectionId, { delay, type: 'on', warming: true })
 	}
 }
-
-
 
 module.exports = { fnACmd, fnFanWarm }
