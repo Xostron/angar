@@ -1,30 +1,51 @@
+const { delExtra, wrExtra } = require('@tool/message/extra')
+const { msgB } = require('@tool/message')
 const dict = {
-	1: 'вентиляторы неисправны',
-	2: 'режим вентиляции - Выкл',
-	3: 'режим вентиляции - Выкл',
-	4: 'авария низкой температуры',
-	5: 'переключатель на щите',
-	6: 'работает удаление СО2',
-	7: 'не выбран авторежим и(или) продукт, нет настроек, тип склада',
-	8: 'склад выключен',
-	9: 'секция не в авто',
-	10: 'настройки "Холодильник С" (Работа ВВ = 0)',
-	11: 'комби-холодильник (задание продукта еще не достигнуто)',
-	12: 'настройка "Вентиляция" (Работа ВВ = 0)',
+	0: 'настройки "Вентиляция": дополнительная вентиляция = 0%',
+	1: 'аварийная ситуация',
+	2: 'склад выключен',
+	3: 'нет секций в авто режиме',
+	4: 'работает удаление СО2',
+	5: 'работает внутрення вентиляция',
+	6: 'комбинированный склад работает в режиме холодильника',
 }
+
 /**
- * 
- * @param {*} prepare 
- * @return {boolean} true разрешение на работу 
+ * Разрешение на работу
+ * @param {*} prepare
+ * @return {boolean} true разрешение на работу
  */
-function check(prepare) {
-	const { acc, cmd, isCN, isN, alrAuto, notDur, achieve, idsS, s } = prepare
-	// if ()
+function fnCheck(bld, prepare) {
+	// Вычисление причин запрета дополнительной вентиляции
+	const reason = fnReason(prepare)
+	// Собираем причины для вывода в сообщение
+	const err = reason
+		.map((el, i) => (el ? dict[i] : null))
+		.filter((el) => el !== null)
+		.join('; ')
+	// Запретить ДВ
+	if (reason.some((el) => el)) {
+		// consoleTable(reason)
+		console.log(11, reason)
+		wrExtra(bld._id, null, 'durVent', msgB(bld, 148, `${err}`), 'check')
+		clear(bld, prepare)
+		return false
+	}
+	// Разрешить ДВ
+	delExtra(bld._id, null, 'durVent', 'check')
+	return true
 }
 
-function clear(prepare) {
-const { acc, cmd, isCN, isN, alrAuto, notDur, achieve, idsS, s } = prepare
+// Очистка аккумулятора, удаление сообщение о работе ДВ
+function clear(bld, prepare) {
+	prepare.acc.byDur = {}
+	delExtra(bld._id, null, 'durVent', 'work')
 }
 
-module.exports = { check, clear }
+// Вычисление причин запрета дополнительной вентиляции
+function fnReason(prepare) {
+	const { acc, cmd, isCC, s, bstart, secAuto, extraCO2 } = prepare
+	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, extraCO2.start, acc.start, isCC]
+}
 
+module.exports = { fnCheck, clear }

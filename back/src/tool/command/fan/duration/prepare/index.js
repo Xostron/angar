@@ -8,32 +8,53 @@ const { getIdsS } = require('@tool/get/building')
 // Подготовка данных для работы доп. вентиляции
 function fnPrepare(bld, obj, s, resultFan, bdata) {
 	const cmd = fnStart(bld, obj, resultFan)
+	// Комби-холодильник
+	const isCC = isCombiCold(bld, bdata.automode, s)
 	// Комби-обычный
-	const isCN = !isCombiCold(bld, bdata.automode, s)
+	const isCN = !isCC
 	// Обычный
 	const isN = bld.type === 'normal'
 	// Аварии авторежима
 	const alrAuto = isAlr(bld._id, bdata.automode)
 	// Режим хранения. Достиг задания
 	const achieve = def[bld.type](bld._id, bdata.automode, isCN)
-	// Аккумулятор
+	// Аккумулятор внутренней и доп вентиляции
 	const acc = readAcc(bld._id, 'building', 'vent')
 	const notDur = resultFan.notDur.includes(true)
 	// ID секций
 	const idsS = getIdsS(obj.data.section, bld._id)
-	return { acc, cmd, isCN, isN, alrAuto, notDur, achieve, idsS, s }
+	const bstart = obj.retain?.[bld._id]?.start
+	const secAuto = idsS.some((idS) => obj.retain?.[bld._id]?.mode?.[idS])
+	//
+	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	return {
+		acc,
+		cmd,
+		isCC,
+		isCN,
+		isN,
+		alrAuto,
+		notDur,
+		achieve,
+		idsS,
+		s,
+		bstart,
+		secAuto,
+		extraCO2,
+	}
 }
 
-//
-function fnStart(bld, idsS, obj, resultFan) {
-	if (resultFan.force.includes(true)) return { start: false, force: true }
-
-	const o = {}
-	idsS.forEach((idS) => {
-		o.start = o.start || store.aCmd?.[idS]?.fan.type === 'on'
-		o.force = o.force || store.aCmd?.[idS]?.fan.force
-	})
-	return o
+// Команды на управление плавным пуском
+function fnStart(bld, obj, resultFan) {
+	const { start, force, notDur } = resultFan
+	return {
+		// true: плавный пуск в работе
+		start: start.includes(true),
+		// true: плавный пуск принудительно запущен
+		force: force.includes(true),
+		// true: аварийная ситуация на складе
+		notDur: notDur.includes(true),
+	}
 }
 
 const def = {

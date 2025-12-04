@@ -1,62 +1,62 @@
-const { compareTime } = require('@tool/command/time')
-const { setACmd } = require('@tool/command/set')
+const { compareTime, remTime } = require('@tool/command/time')
+const { wrExtra } = require('@tool/message/extra')
+const { msgB } = require('@tool/message')
+const { clear } = require('../check')
+// Минимальное вычисляемое время работы ВНО 12с
+const _MIN_DELTA_TIME = 12 * 1000
 
-function calc(prepare) {
+function calc(bld, prepare, resultFan) {
 	const { acc, cmd, isCN, isN, alrAuto, notDur, achieve, idsS, s } = prepare
 	acc.byDur ??= {}
 	acc.byDur.queue ??= []
-	console.log('s.ventTime.time', s.ventTime, 's.fan.delay', s.fan.delay)
 	// 1. Фиксация работы ВНО
-	if (!acc.byDur.queue[0] && cmd.start && !cmd.force) {
+	if (!acc.byDur.queue[0] && cmd.start) {
 		acc.byDur.queue[0] = { start: true, date: new Date() }
 		acc.byDur.queue[1] = null
 		return
 	}
 	// 2. Фиксация останова ВНО по достижению задания или аварий авторежима
-	if (acc.byDur.queue[0] && !cmd.start && !cmd.force && !notDur && (alrAuto || achieve)) {
+	if (acc.byDur.queue[0] && !acc.byDur.queue[1] && !cmd.start && (alrAuto || achieve)) {
 		acc.byDur.queue[1] = { start: false, date: new Date() }
 	}
 	// 3. Проверка очереди: наличие 1 и 2 фиксации
 	if (!acc.byDur.queue?.[0]?.date || !acc.byDur.queue?.[1]?.date) return
-	// Защита от отрицательного времени, сбрасываем очередь
+
+	// Вычисление времени работы ВНО: Защита от отрицательного времени, сбрасываем очередь
 	const deltaTime = acc.byDur.queue[1].date - acc.byDur.queue[0].date
-	if (deltaTime < 0) {
+	if (deltaTime <  _MIN_DELTA_TIME) {
 		acc.byDur.queue = []
 		return
 	}
 
-	// 4. Расчет времени доп. вентиляции
+	// 4. Расчет времени доп. вентиляции, мс
 	let spTime = (deltaTime * s.vent.add) / 100
 	spTime = spTime > s.vent.max_add ? s.vent.max_add : spTime
-	console.log('spTime', spTime, deltaTime)
 
+	console.log(
+		'\tspTime',
+		spTime,
+		's.vent.max_add',
+		s.vent.max_add,
+		remTime(acc.byDur.queue[1].date, spTime)
+	)
 	// 5. Включаем доп. вентиляцию
-	idsS.forEach((idS) => {
-		setACmd('fan', idS, {
-			delay: s.fan.delay * 1000,
-			type: 'on',
-			force: null,
-			max: null,
-		})
-	})
-
+	resultFan.start.push(true)
 	// 6. Ожидаем окончания доп. вентиляции
-	let time = compareTime(acc.byDur.queue[1].date, spTime)
+	const time = compareTime(acc.byDur.queue[1].date, spTime)
+	wrExtra(
+		bld._id,
+		null,
+		'durVent',
+		msgB(bld, 149, `${remTime(acc.byDur.queue[1].date, spTime)}`),
+		'work'
+	)
 	// Время работы ДВ не прошло
 	if (!time) return
-
-
+	
 	// 7. Время работы ДВ прошло. Выключаем доп. вентиляцию
-	idsS.forEach((idS) => {
-		setACmd('fan', idS, {
-			delay: s.fan.delay * 1000,
-			type: 'off',
-			force: null,
-			max: null,
-		})
-	})
-	acc.byDur.queue = []
-
+	resultFan.start.push(false)
+	clear(bld, prepare)
 }
 
 module.exports = calc

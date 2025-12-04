@@ -12,8 +12,8 @@ const durVent = require('./duration')
 function normal(bld, obj, s, seB, m, resultFan, bdata) {
 	console.log(11, 'SOFT_COMBI_NORMAL', bld.name)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	fnACmd(bld, resultFan, obj, bdata)
 	durVent(bld, obj, s, seB, m, resultFan, bdata)
+	fnACmd(bld, resultFan, obj, bdata)
 	// Формирование aCmd: Прогрев клапанов
 	const start = resultFan.start.includes(true)
 	if (!start) fnFanWarm(resultFan, s)
@@ -25,8 +25,8 @@ function normal(bld, obj, s, seB, m, resultFan, bdata) {
 function combi(bld, obj, s, seB, m, resultFan, bdata) {
 	console.log(11, 'SOFT_COMBI_COLD', bld.name)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	fnACmd(bld, resultFan, obj, bdata)
 	durVent(bld, obj, s, seB, m, resultFan, bdata)
+	fnACmd(bld, resultFan, obj, bdata)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'cold')
 }

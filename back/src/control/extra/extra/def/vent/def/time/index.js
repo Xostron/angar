@@ -1,5 +1,3 @@
-const { stateEq } = require('@tool/command/fan/fn')
-const { curStateV } = require('@tool/command/valve')
 const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime, remTime } = require('@tool/command/time')
@@ -10,10 +8,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	// Ожидание ВВ
 	acc.byTime.wait ??= new Date()
 	let time = compareTime(acc.byTime.wait, s.vent.wait)
-		console.log(
-		'###########################################',
-		remTime(acc.byTime.wait, s.vent.wait)
-	)
+
 	if (!time) {
 		// Время ожидание не прошло
 		wrExtra(
@@ -36,8 +31,6 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		msgB(bld, 142, `${remTime(acc.byTime.work, s.vent.work)}`),
 		'work'
 	)
-
-
 
 	resultFan.force.push(true)
 	resultFan.stg = 'vent'
