@@ -26,12 +26,9 @@ function bar(r, bld, sect, am, start) {
 	const co2work = store.alarm.extra?.[bld._id]?.co2?.co2_work ?? null
 	const co2wait = store.alarm.extra?.[bld._id]?.co2?.co2_wait ?? null
 	const openVin = store.alarm.extralrm?.[bld._id]?.openVin ?? null
-	// const ventOn = store.alarm.extra?.[bld._id]?.vent_on ?? null
-	// const ventDura = store.alarm.extra?.[bld._id]?.vent_dura ?? null
-	// const ventTimeWait = store.alarm.extra?.[bld._id]?.vent_time_wait ?? null
-	// const ventTime = store.alarm.extra?.[bld._id]?.vent_time ?? null
 	const ventWait = store.alarm.extra?.[bld._id]?.vent?.wait ?? null
 	const ventWork = store.alarm.extra?.[bld._id]?.vent?.work ?? null
+	const durVentWork = store.alarm.extra?.[bld._id]?.durVent?.work ?? null
 	const stableVno = store.alarm.extralrm?.[bld._id]?.[sect._id]?.stableVno ?? null
 	const debdo = JSON.parse(
 		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
@@ -49,12 +46,9 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].co2work = co2work
 	r.bar[bld._id][sect._id].co2wait = co2wait
 	r.bar[bld._id][sect._id].openVin = openVin
-	// r.bar[bld._id][sect._id].ventOn = ventOn
-	// r.bar[bld._id][sect._id].ventDura = ventDura
-	// r.bar[bld._id][sect._id].ventTimeWait = ventTimeWait
-	// r.bar[bld._id][sect._id].ventTime = ventTime
 	r.bar[bld._id][sect._id].ventWait = ventWait
 	r.bar[bld._id][sect._id].ventWork = ventWork
+	r.bar[bld._id][sect._id].durVentWork = durVentWork
 	r.bar[bld._id][sect._id].stableVno = stableVno
 	r.bar[bld._id][sect._id].debdo = debdo
 
@@ -82,12 +76,9 @@ function barB(r, bld) {
 		r.barB[bld._id].co2work ??= []
 		r.barB[bld._id].co2wait ??= []
 		r.barB[bld._id].openVin ??= []
-		// r.barB[bld._id].ventOn ??= []
-		// r.barB[bld._id].ventDura ??= []
-		// r.barB[bld._id].ventTimeWait ??= []
-		// r.barB[bld._id].ventTime ??= []
 		r.barB[bld._id].ventWait ??= []
 		r.barB[bld._id].ventWork ??= []
+		r.barB[bld._id].durVentWork ??= []
 		r.barB[bld._id].stableVno ??= []
 		r.barB[bld._id].debdo ??= []
 
@@ -99,12 +90,9 @@ function barB(r, bld) {
 		if (s.co2work) r.barB[bld._id].co2work.push(s.co2work)
 		if (s.co2wait) r.barB[bld._id].co2wait.push(s.co2wait)
 		if (s.openVin) r.barB[bld._id].openVin.push(s.openVin)
-		// if (s.ventOn) r.barB[bld._id].ventOn.push(s.ventOn)
-		// if (s.ventDura) r.barB[bld._id].ventDura.push(s.ventDura)
-		// if (s.ventTimeWait) r.barB[bld._id].ventTimeWait.push(s.ventTimeWait)
-		// if (s.ventTime) r.barB[bld._id].ventTime.push(s.ventTime)
 		if (s.ventWait) r.barB[bld._id].ventWait.push(s.ventWait)
 		if (s.ventWork) r.barB[bld._id].ventWork.push(s.ventWork)
+		if (s.durVentWork) r.barB[bld._id].durVentWork.push(s.durVentWork)
 		if (s.stableVno) r.barB[bld._id].stableVno.push(s.stableVno)
 		if (s.debdo) r.barB[bld._id].debdo.push(s.debdo)
 	}
@@ -157,6 +145,7 @@ function signalB(r, bld, am, data) {
 	const co2 = Object.values(store.alarm.extra?.[bld._id]?.co2 ?? {})
 	const drain = Object.values(store.alarm.extra?.[bld._id]?.drain ?? {})
 	const vent = Object.values(store.alarm.extra?.[bld._id]?.vent ?? {})
+	const durVent = Object.values(store.alarm.extra?.[bld._id]?.durVent ?? {})
 	const cable = store.alarm.extra?.[bld._id]?.cable ?? null
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
 	const smoking1 = store.alarm.extra?.[bld._id]?.smoking1 ?? null
@@ -186,6 +175,7 @@ function signalB(r, bld, am, data) {
 	if (co2) r.signal[bld._id].push(...co2)
 	if (drain) r.signal[bld._id].push(...drain)
 	if (vent) r.signal[bld._id].push(...vent)
+	if (durVent) r.signal[bld._id].push(...durVent)
 	if (gen) r.signal[bld._id].push(gen)
 	if (cable) r.signal[bld._id].push(cable)
 	if (vlvLim) r.signal[bld._id].push(vlvLim)

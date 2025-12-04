@@ -87,4 +87,4 @@ const def = {
 	},
 }
 
-module.exports = fnPrepare
+module.exports = {fnPrepare, def}

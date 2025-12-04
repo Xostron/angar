@@ -25,7 +25,7 @@ function normal(bld, obj, s, seB, m, resultFan, bdata) {
 function combi(bld, obj, s, seB, m, resultFan, bdata) {
 	console.log(11, 'SOFT_COMBI_COLD', bld.name)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
-	durVent(bld, obj, s, seB, m, resultFan, bdata)
+	// durVent(bld, obj, s, seB, m, resultFan, bdata)
 	fnACmd(bld, resultFan, obj, bdata)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'cold')

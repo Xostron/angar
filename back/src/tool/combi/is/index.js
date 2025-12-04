@@ -75,7 +75,8 @@ function isCoolerCombiOn(bld, bdata) {
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
 	const alrAuto = isAlr(bld._id, automode)
 	//
-	if (bld?.type === 'combi' && automode === 'cooling' && alrAuto)
+	// if (bld?.type === 'combi' && automode === 'cooling' && alrAuto)
+	if (isCombiCold(bld, automode, s))
 		coolerCombiOn = s?.coolerCombi?.on ?? true
 	//
 	console.log(

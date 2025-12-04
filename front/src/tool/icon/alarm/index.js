@@ -13,6 +13,7 @@ const data = {
 	// vent_time: '/img/alarm/intfan.svg',
 	ventWait: '/img/alarm/intfan.svg',
 	ventWork: '/img/alarm/intfan.svg',
+	durVentWork: '/img/alarm/dur_vent.svg',
 	debdo: '/img/alarm/debdo.svg',
 	stableVno: '/img/alarm/hysteresis-fan.svg',
 	overVlv:'/img/alarm/valve-crash.svg',

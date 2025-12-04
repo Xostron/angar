@@ -299,7 +299,7 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Дополнительная вентиляция. Выключена. По причине:',
 	},
-	149: { code: 'durWork', typeSignal: 'info', msg: 'Дополнительная вентиляция. В работе' },
+	149: { code: 'durVentWork', typeSignal: 'info', msg: 'Доп. вентиляция. В работе' },
 	// Увлажнение
 	130: { code: 'off', typeSignal: 'info', msg: 'Увлажнитель. Режим работы : Выключен.' },
 	131: { code: 'on', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Включен.' },

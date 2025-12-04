@@ -24,7 +24,7 @@ function calc(bld, prepare, resultFan) {
 
 	// Вычисление времени работы ВНО: Защита от отрицательного времени, сбрасываем очередь
 	const deltaTime = acc.byDur.queue[1].date - acc.byDur.queue[0].date
-	if (deltaTime <  _MIN_DELTA_TIME) {
+	if (deltaTime < _MIN_DELTA_TIME) {
 		acc.byDur.queue = []
 		return
 	}
@@ -40,21 +40,24 @@ function calc(bld, prepare, resultFan) {
 		s.vent.max_add,
 		remTime(acc.byDur.queue[1].date, spTime)
 	)
-	// 5. Включаем доп. вентиляцию
-	resultFan.start.push(true)
-	// 6. Ожидаем окончания доп. вентиляции
+
+	// 5. Следим за временем работы ДВ
 	const time = compareTime(acc.byDur.queue[1].date, spTime)
-	wrExtra(
-		bld._id,
-		null,
-		'durVent',
-		msgB(bld, 149, `${remTime(acc.byDur.queue[1].date, spTime)}`),
-		'work'
-	)
-	// Время работы ДВ не прошло
-	if (!time) return
-	
-	// 7. Время работы ДВ прошло. Выключаем доп. вентиляцию
+	if (!time) {
+		// Время работы ДВ не прошло
+		// Включаем доп. вентиляцию
+		resultFan.start.push(true)
+		wrExtra(
+			bld._id,
+			null,
+			'durVent',
+			msgB(bld, 149, `${remTime(acc.byDur.queue[1].date, spTime)}`),
+			'work'
+		)
+		return
+	}
+
+	// 6. Время работы ДВ прошло. Выключаем доп. вентиляцию
 	resultFan.start.push(false)
 	clear(bld, prepare)
 }
