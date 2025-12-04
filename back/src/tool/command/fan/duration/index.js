@@ -28,7 +28,7 @@ function durVent(bld, obj, s, seB, m, resultFan, bdata) {
 	console.log('\tacc', prepare.acc.byDur)
 	console.log('\tcmd', prepare.cmd)
 	// Разрешение на работу
-	if (!fnCheck(bld, prepare)) return
+	if (!fnCheck(bld, prepare, resultFan)) return
 	// Расчет доп вентиляции и работа
 	calc(bld, prepare, resultFan)
 	console.log(

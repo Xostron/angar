@@ -8,6 +8,7 @@ const dict = {
 	4: 'работает удаление СО2',
 	5: 'работает внутрення вентиляция',
 	6: 'комбинированный склад работает в режиме холодильника',
+	7: 'склад работает по авто режиму',
 }
 
 /**
@@ -15,9 +16,9 @@ const dict = {
  * @param {*} prepare
  * @return {boolean} true разрешение на работу
  */
-function fnCheck(bld, prepare) {
+function fnCheck(bld, prepare, resultFan) {
 	// Вычисление причин запрета дополнительной вентиляции
-	const reason = fnReason(prepare)
+	const reason = fnReason(prepare, resultFan)
 	// Собираем причины для вывода в сообщение
 	const err = reason
 		.map((el, i) => (el ? dict[i] : null))
@@ -27,8 +28,9 @@ function fnCheck(bld, prepare) {
 	if (reason.some((el) => el)) {
 		// consoleTable(reason)
 		console.log(11, reason)
-		wrExtra(bld._id, null, 'durVent', msgB(bld, 148, `${err}`), 'check')
 		clear(bld, prepare)
+		if (reason[0]) return false
+		wrExtra(bld._id, null, 'durVent', msgB(bld, 148, `${err}`), 'check')
 		return false
 	}
 	// Разрешить ДВ
@@ -43,9 +45,11 @@ function clear(bld, prepare) {
 }
 
 // Вычисление причин запрета дополнительной вентиляции
-function fnReason(prepare) {
+function fnReason(prepare, resultFan) {
 	const { acc, cmd, isCC, s, bstart, secAuto, extraCO2 } = prepare
-	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, extraCO2.start, acc.start, isCC]
+	console.log(9900, resultFan)
+	const ok = acc.byDur?.queue?.[0] && acc.byDur?.queue?.[1] && resultFan.start.includes(true)
+	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, extraCO2.start, !!resultFan.stg, isCC, ok]
 }
 
 module.exports = { fnCheck, clear }

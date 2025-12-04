@@ -9,6 +9,7 @@ function calc(bld, prepare, resultFan) {
 	const { acc, cmd, isCN, isN, alrAuto, notDur, achieve, idsS, s } = prepare
 	acc.byDur ??= {}
 	acc.byDur.queue ??= []
+	// acc.byDur.start = false
 	// 1. Фиксация работы ВНО
 	if (!acc.byDur.queue[0] && cmd.start) {
 		acc.byDur.queue[0] = { start: true, date: new Date() }
@@ -47,6 +48,7 @@ function calc(bld, prepare, resultFan) {
 		// Время работы ДВ не прошло
 		// Включаем доп. вентиляцию
 		resultFan.start.push(true)
+		// acc.byDur.start = true
 		wrExtra(
 			bld._id,
 			null,

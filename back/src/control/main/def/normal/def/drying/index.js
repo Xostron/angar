@@ -10,11 +10,11 @@ const data = {
 	// Логика включения вентиляторов
 	fan,
 	// Данные от сушки на Доп. аварии (Антивьюга, работа клапанов и т.д.)
-	toAlrS: (s) => ({ exclude: s.drying.ventilation }),
+	toAlrS: (s) => ({ exclude: null }),
 	// Данные от сушки на Доп. функции (контроль вентиляции, обогрев клапанов и т.д.)
 	toExtra: (s, alarm) => ({
-		fanOff: alarm && !s.drying.ventilation,
-		alwaysFan: s.drying.ventilation,
+		fanOff: alarm,
+		alwaysFan: s.vent.mode === 'on',
 	}),
 	// Промежуточные расчеты по секции
 	middlew: (building, section, obj, s, se, seB, alr, acc) => {},
@@ -72,8 +72,8 @@ function valve(s, se, sectionId, acc, extraCO2) {
 }
 function fan(s, se, alr, sectionId, acc) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
-	const force = s.drying.ventilation || forceByTout
-	const start = !alr || force 
+	const force = forceByTout
+	const start = !alr || force
 	return { start }
 }
 module.exports = data

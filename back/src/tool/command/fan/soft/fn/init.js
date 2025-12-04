@@ -1,4 +1,5 @@
 const { data: store } = require('@store')
+const { isCombiCold } = require('@tool/combi/is')
 const _RAMP = 5000
 const _MIN_SP = 20
 
@@ -14,12 +15,13 @@ const _MIN_SP = 20
  * @returns {object} Аккумулятор секции
  */
 
-function init(bld, secId, obj, s, where, type, fansLength) {
+function init(bld, secId, obj, bdata, s, where, type, fansLength) {
 	if (!s) return
 	store.watchdog.softFan[secId] ??= {}
 	const a = store.watchdog.softFan[secId]
 	// Тип склада + режим: normal, cold, combi_normal, combi_cold
-	a.prevMode ??= obj?.value?.building?.[bld._id]?.bldType
+	// a.prevMode ??= obj?.value?.building?.[bld._id]?.bldType
+	a.prevMode ??= isCombiCold(bld, bdata.automode, s) ? 'combi_cold' : 'combi_normal'
 	a.toggleMode ??= false
 	// Точка отсчета вкл/выкл ВНО
 	a.date ??= new Date()

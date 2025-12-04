@@ -1,6 +1,7 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const ignore = require('./ignore')
+const { readAcc } = require('@store/index')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
@@ -21,7 +22,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 	}
 	// (КОМБИ)Запрет управления: Проверка переключения с НОРМАЛЬНОГО на ХОЛОД
 	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) {
-		console.log('\tПлавный пуск: TurnOff (переключения с НОРМАЛЬНОГО на ХОЛОД)', idS, where)
+		console.log('\tПлавный пуск: TurnOff (переключения с НОРМАЛЬНОГО на ХОЛОД)', aCmd, idS, where)
 		return true
 	}
 	// Запрет управления (Работа в НОРМ или ХОЛОД)
@@ -50,6 +51,7 @@ function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where
 // ========================================================================
 // Отключение ВНО при переключения комби склада с режима НОРМАЛЬНОГО на ХОЛОД
 function hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat) {
+	// const accVent = readAcc(bld._id,'building','vent')
 	if (
 		acc.prevMode &&
 		acc.prevMode == 'combi_normal' &&

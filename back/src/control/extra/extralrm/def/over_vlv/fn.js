@@ -2,6 +2,7 @@ const { msg } = require('@tool/message')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { isAlr } = require('@tool/message/auto')
+const { isCombiCold } = require('@tool/combi/is')
 
 function set(bld, sect, obj, m, s, acc, term) {
 	// Логика
@@ -35,22 +36,18 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 	// 2. Секция не в авто
 	// 3. Нет приточных клапанов
 	// 4. Нет настроек
-	// 5. Авторежим сушка && Настройки.Сушка.Постоянный вент=true
 	// 6. Настройки.Вентиляция.Управление вент=ВКЛ('on') или авто
-	// 7. Склад холодильник
 	// 8. Склад Комби в режиме холодильника
-	const alrAuto = isAlr(bld._id, automode)
+	const isCC = isCombiCold(bld, automode, s)
 	if (
 		!obj.retain[bld._id].start ||
 		!obj.retain[bld._id].mode?.[sect._id] ||
 		!vlvIn ||
 		!s.overVlv.time ||
 		!s.overVlv.wait ||
-		(automode === 'drying' && s.drying.ventilation) ||
 		s.vent.mode === 'on' ||
 		s.vent.mode === 'auto' ||
-		bld?.type === 'cold' ||
-		(bld?.type === 'combi' && automode === 'cooling' && alrAuto)
+		isCC
 	) {
 		fnReset(bld, sect, acc)
 		return false

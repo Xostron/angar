@@ -29,7 +29,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// cold - комби-холод (по темпе канала)
 	const who = aCmd.force ? 'normal' : where
 	// Инициализация аккумулятора плавного пуска
-	const acc = init(bld, idS, obj, s, who, 'relay', fans.length)
+	const acc = init(bld, idS, obj, bdata, s, who, 'relay', fans.length)
 
 	// 1. Разрешение на работу
 	if (turnOff(null, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return

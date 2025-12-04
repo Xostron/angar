@@ -121,7 +121,6 @@ function fnReason(bld, code, s, ban, prepare) {
 
 // Очистка аккумуляторов
 function clear(bld, acc, resultFan, ...args) {
-	acc.byDura = {}
 	acc.byTime = {}
 	acc.CC = {}
 	resultFan.force.push(false)

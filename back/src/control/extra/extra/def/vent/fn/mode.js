@@ -17,15 +17,12 @@ const { msgB } = require('@tool/message')
  */
 function fnMode(prepare, s, acc) {
 	const { extraCO2, am, isCC, isCN, isN } = prepare
-	const a = am === 'drying' && s?.drying?.ventilation === true
 	// Обычный, комби-обычный. Режим ВВ Выкл
 	if ((isN || isCN) && (s?.vent?.mode === 'off' || !s?.vent?.mode)) return 'off'
 	// Обычный, комби-обычный. Режим ВВ Вкл
 	if ((isN || isCN) && s?.vent?.mode === 'on') return 'on'
 	// Обычный, комби-обычный. Режим ВВ авто. Выберется по времени
 	if ((isN || isCN) && s?.vent?.mode === 'auto') return 'time'
-	// Обычный, комби-обычный. Режим ВВ авто. Выберется подхват
-	// if ((isN || isCN) && s?.vent?.mode === 'auto') return 'dura'
 	// Комби-холод.
 	if (isCC) return 'combiCold'
 	return null

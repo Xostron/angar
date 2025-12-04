@@ -7,6 +7,7 @@ const { data: store } = require('@store')
 // Внутренняя вентиляция секции
 function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
+	console.log(77, 'vent', acc)
 	// Подготовка данных
 	const prepare = fnPrepare(bld, obj, s, m)
 	// Выбор алгоритма ВВ
@@ -19,4 +20,3 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	def[code](obj, s, m, bld, alarm, prepare, acc, resultFan)
 }
 module.exports = vent
-
