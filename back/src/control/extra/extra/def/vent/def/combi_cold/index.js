@@ -1,5 +1,3 @@
-const { stateEq } = require('@tool/command/fan/fn')
-const { curStateV } = require('@tool/command/valve')
 const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime, remTime } = require('@tool/command/time')

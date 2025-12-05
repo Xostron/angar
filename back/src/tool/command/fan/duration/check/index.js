@@ -21,15 +21,15 @@ function fnCheck(bld, prepare, resultFan) {
 	const reason = fnReason(prepare, resultFan)
 	// Собираем причины для вывода в сообщение
 	const err = reason
-		.map((el, i) => (el ? dict[i] : null))
+		.map((el, i) => (el && i<1 ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
+
 	// Запретить ДВ
 	if (reason.some((el) => el)) {
-		// consoleTable(reason)
 		console.log(11, reason)
 		clear(bld, prepare)
-		if (reason[7] || reason[5]) return false
+		if (!err) return false
 		wrExtra(bld._id, null, 'durVent', msgB(bld, 148, `${err}`), 'check')
 		return false
 	}
@@ -47,7 +47,7 @@ function clear(bld, prepare) {
 // Вычисление причин запрета дополнительной вентиляции
 function fnReason(prepare, resultFan) {
 	const { acc, cmd, isCC, s, bstart, secAuto, extraCO2 } = prepare
-	console.log(9900, resultFan)
+	// console.log(9900, resultFan)
 	const ok = acc.byDur?.queue?.[0] && acc.byDur?.queue?.[1] && resultFan.start.includes(true)
 	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, extraCO2.start, !!resultFan.stg, isCC, ok]
 }

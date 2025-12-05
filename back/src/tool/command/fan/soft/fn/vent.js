@@ -6,7 +6,7 @@ function fnLimit(fanFC, aCmd) {
 	// Кол-во ВНО = 0 || undefined || null
 	if (!aCmd?.max) return -1
 	// Настройка "Макс. кол-во ВНО" > 0
-	return fanFC ? aCmd?.max - 1 : max
+	return fanFC ? aCmd?.max - 1 : aCmd?.max
 }
 
 module.exports = { fnLimit }

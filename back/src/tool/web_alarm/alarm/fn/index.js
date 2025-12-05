@@ -29,6 +29,7 @@ function bar(r, bld, sect, am, start) {
 	const ventWait = store.alarm.extra?.[bld._id]?.vent?.wait ?? null
 	const ventWork = store.alarm.extra?.[bld._id]?.vent?.work ?? null
 	const durVentWork = store.alarm.extra?.[bld._id]?.durVent?.work ?? null
+	const ventOn = store.alarm.extra?.[bld._id]?.vent?.on ?? null
 	const stableVno = store.alarm.extralrm?.[bld._id]?.[sect._id]?.stableVno ?? null
 	const debdo = JSON.parse(
 		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
@@ -48,6 +49,7 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].openVin = openVin
 	r.bar[bld._id][sect._id].ventWait = ventWait
 	r.bar[bld._id][sect._id].ventWork = ventWork
+	r.bar[bld._id][sect._id].ventOn = ventOn
 	r.bar[bld._id][sect._id].durVentWork = durVentWork
 	r.bar[bld._id][sect._id].stableVno = stableVno
 	r.bar[bld._id][sect._id].debdo = debdo
@@ -79,6 +81,7 @@ function barB(r, bld) {
 		r.barB[bld._id].ventWait ??= []
 		r.barB[bld._id].ventWork ??= []
 		r.barB[bld._id].durVentWork ??= []
+		r.barB[bld._id].ventOn ??= []
 		r.barB[bld._id].stableVno ??= []
 		r.barB[bld._id].debdo ??= []
 
@@ -93,6 +96,7 @@ function barB(r, bld) {
 		if (s.ventWait) r.barB[bld._id].ventWait.push(s.ventWait)
 		if (s.ventWork) r.barB[bld._id].ventWork.push(s.ventWork)
 		if (s.durVentWork) r.barB[bld._id].durVentWork.push(s.durVentWork)
+		if (s.ventOn) r.barB[bld._id].ventOn.push(s.ventOn)
 		if (s.stableVno) r.barB[bld._id].stableVno.push(s.stableVno)
 		if (s.debdo) r.barB[bld._id].debdo.push(s.debdo)
 	}

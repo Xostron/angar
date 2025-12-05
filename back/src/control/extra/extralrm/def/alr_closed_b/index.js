@@ -1,19 +1,21 @@
 const { msgB } = require('@tool/message')
-const { getSignal } = require('@tool/command/signal')
+const { getSumSig } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Аварийное закрытие клапанов - по низкой температуре (склад)
-function alrClosedB(building, section, obj, s, se, m, automode, acc, data) {
+function alrClosedB(bld, section, obj, s, se, m, automode, acc, data) {
 	// Сигнал от реле безопасности данной секции
-	const sig = getSignal(building?._id, obj, 'low')
+	// const sig = getSignal(bld?._id, obj, 'low')
+	const sig = getSumSig(bld._id, obj?.data?.section, obj, 'low')
+
 	// Сброс
 	if (!sig) {
-		delExtralrm(building._id, null, 'alrClosed')
+		delExtralrm(bld._id, null, 'alrClosed')
 		acc._alarm = false
 	}
 	// Установка
 	if (sig && !acc._alarm) {
-		wrExtralrm(building._id, null, 'alrClosed', msgB(building, 26))
+		wrExtralrm(bld._id, null, 'alrClosed', msgB(bld, 26))
 		acc._alarm = true
 	}
 	return acc._alarm ?? null
@@ -26,3 +28,4 @@ module.exports = alrClosedB
  * и дает сигнал "Аварийное закрытие клапанов"
  *
  */
+

@@ -56,19 +56,18 @@ function exit(bld, code, s, ban, prepare, acc, resultFan) {
 function fnCheck(bld, code, s, ban, prepare) {
 	// Вычисление причин запрета ВВ
 	const reason = fnReason(bld, code, s, ban, prepare)
-	// Собираем причины для вывода в сообщение
+	// Собираем причины для вывода в сообщение, кроме ignore
+	const ignore = [2, 3, 14, 15, 16, 17]
 	const err = reason
-		.map((el, i) => (el ? dict[i] : null))
+		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
 	console.log(77, 'Условия ВВ не подходят по причине', reason, err)
 
 	// Запретить ВВ
 	if (reason.some((el, i) => el)) {
-		// consoleTable(reason)
-		// console.log(77, reason)
-		if (reason[14] || reason[15] || reason[16] || reason[17]) return false
 		// Печатаем причиный с 0 по 13
+		if (!err) return false
 		wrExtra(bld._id, null, 'vent', msgB(bld, 143, `${err}`), 'check')
 		return false
 	}
@@ -128,45 +127,5 @@ function clear(bld, acc, resultFan, ...args) {
 	args[0] ? delExtra(bld._id, null, 'vent', 'wait') : null
 	args[1] ? delExtra(bld._id, null, 'vent', 'work') : null
 }
-
-// function consoleTable(reason) {
-// 	console.table(
-// 		[
-// 			{
-// 				ban: reason[0],
-// 				ВНО_0: reason[1],
-// 				Выкл_Обыч: reason[2],
-// 				Выкл_Комби: reason[3],
-// 				alrClosed: reason[4],
-// 				local: reason[5],
-// 				CО2: reason[6],
-// 				def_null: reason[7],
-// 				not_start: reason[8],
-// 				not_secAuto: reason[9],
-// 				combiCold: reason[10],
-// 				combiCold2: reason[11],
-// 				combiNormal: reason[12],
-// 				combiNormal: reason[13],
-
-// 			},
-// 		],
-// 		[
-// 			'ban',
-// 			'ВНО_0',
-// 			'Выкл_Обыч',
-// 			'Выкл_Комби',
-// 			'alrClosed',
-// 			'local',
-// 			'CО2',
-// 			'def_null',
-// 			'not_start',
-// 			'not_secAuto',
-// 			'combiCold',
-// 			'combiCold2',
-// 			'combiNormal',
-// 			'Normal',
-// 		]
-// 	)
-// }
 
 module.exports = { exit }

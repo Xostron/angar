@@ -1,5 +1,6 @@
 const signaltype = require('@dict/signal')
 const { puIO } = require('@tool/in_out')
+const { getIdBS } = require('@tool/get/building')
 
 // Получить значение сигнала
 function getSignal(ownerId, obj, type) {
@@ -8,7 +9,7 @@ function getSignal(ownerId, obj, type) {
 }
 // Получить сигнал (авария двигателя) вентилятора
 function getSignalFan(fanId, obj) {
-	return obj.value?.[fanId]?.qf 
+	return obj.value?.[fanId]?.qf
 }
 
 // Получить значения сигналов по sectionId
@@ -74,4 +75,21 @@ function sigDfl(sig, val, result) {
 	result[sig._id] = value === null ? value : !sig.reverse ? value : !value
 }
 
-module.exports = { getSignal, getSignalFan, getSignalList, sigValve, sigFan, sigDfl }
+/**
+ * Найти все сигналы типа type и вернуть суммарное значение
+ * @param {*} idB
+ * @param {*} section
+ * @param {*} obj
+ * @param {*} type
+ */
+function getSumSig(idB, section, obj, type) {
+	const idBS = getIdBS(section, idB)
+	if (!idBS.length) return false
+	const signals = obj?.data?.signal?.filter(
+		(el) => idBS.includes(el.owner.id) && el.type === type
+	)
+	if (!signals.length) return false
+	return signals.some((el) => obj.value?.[el._id])
+}
+
+module.exports = { getSignal, getSignalFan, getSignalList, sigValve, sigFan, sigDfl, getSumSig }

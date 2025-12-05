@@ -1,18 +1,19 @@
 const { msgB } = require('@tool/message')
-const { getSignal } = require('@tool/command/signal')
+const { getSumSig } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Местное управление (сигнал склада)
-function localB(building, section, obj, s, se, m, automode, acc, data) {
-	const sig = getSignal(building?._id, obj, 'local')
+function localB(bld, section, obj, s, se, m, automode, acc, data) {
+	// const sig = getSignal(bld?._id, obj, 'local')
+	const sig = getSumSig(bld._id, obj?.data?.section, obj, 'local')
 	// Сброс
 	if (sig === true) {
-		delExtralrm(building._id, null, 'local')
+		delExtralrm(bld._id, null, 'local')
 		acc._alarm = false
 	}
 	// Установка
 	if (sig === false && !acc._alarm) {
-		wrExtralrm(building._id, null, 'local', msgB(building, 27))
+		wrExtralrm(bld._id, null, 'local', msgB(bld, 27))
 		acc._alarm = true
 	}
 	return acc?._alarm ?? false

@@ -382,7 +382,7 @@ const data = {
 		msg: 'Внутренняя вентиляция. Выключена. По причине:',
 	},
 	144: { code: 'off', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим выключен' },
-	145: { code: 'on', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим включен' },
+	145: { code: 'ventOn', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим включен' },
 	146: { code: 'auto', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим авто' },
 	147: {
 		code: 'combiCold',

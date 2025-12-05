@@ -1,3 +1,5 @@
+const { getIdBS } = require('@tool/get/building')
+
 // Исполнительные механизмы секции
 function mech(obj, idS, idB) {
 	const { data, retain, value } = obj
@@ -90,7 +92,7 @@ function mechB(bId, type, obj) {
 	const { data } = obj
 
 	//ID склада и секций
-	let idS = getId(data?.section, bId)
+	let idS = getIdBS(data?.section, bId)
 	// Увлажнители склада
 	const wettingS = data.device.filter(
 		(el) => el?.device?.code === 'wetting' && idS.includes(el.sectionId)
@@ -161,17 +163,10 @@ function mechB(bId, type, obj) {
 	}
 }
 
-// Получить массив ID склада и его секций
-function getId(section, bId) {
-	const ids = section?.filter((el) => el.buildingId === bId)?.map((el) => el._id) ?? []
-	ids.push(bId)
-	return ids
-}
-
 // Оборудование камеры
 function fnCold(idB, obj) {
 	//ID склада и камер
-	const idS = getId(obj.data?.section, idB)
+	const idS = getIdBS(obj.data?.section, idB)
 	// Id камер
 	const idSec = idS.filter((el) => el !== idB)
 	// Сигналы склада и камер
@@ -227,4 +222,4 @@ function transformClr(doc, data) {
 	}
 }
 
-module.exports = { mech, mechB, getId }
+module.exports = { mech, mechB }

@@ -77,4 +77,27 @@ function getIDB(el, section) {
 	return el?.buildingId ?? section.find((sect) => sect._id === el.sectionId)?.buildingId
 }
 
-module.exports = { getIdB, getB, getBS, getS, getIdByClr, getIdSB, getOwnerClr, getIdsS, getIDB }
+/**
+ * Получить массив ID склада и его секций
+ * @param {object[]} section Рама секций
+ * @param {string} idB ИД склада
+ * @returns
+ */
+function getIdBS(section = [], idB) {
+	const ids = section?.filter((el) => el.buildingId === idB)?.map((el) => el._id) ?? []
+	ids.push(idB)
+	return ids
+}
+
+module.exports = {
+	getIdB,
+	getB,
+	getBS,
+	getS,
+	getIdByClr,
+	getIdSB,
+	getOwnerClr,
+	getIdsS,
+	getIDB,
+	getIdBS,
+}

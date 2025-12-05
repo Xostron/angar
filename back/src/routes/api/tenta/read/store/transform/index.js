@@ -1,7 +1,7 @@
 const { checkS } = require('@tool/get/sensor');
 const { readOne } = require('@tool/json');
 const { data: store } = require('@store');
-const { getId } = require('@tool/command/mech');
+const { getIdBS } = require('@tool/get/building')
 const secDef = require('./section');
 const alarm = require('./alarm');
 const banner = require('./banner');
@@ -35,7 +35,7 @@ async function transform(bldId, secId) {
 		// Тип склада
 		const type = building?.find((el) => el._id === bldId)?.type;
 		// Поиск разгонного вентилятора, принадлежащего зданию
-		let idsS = getId(section, bldId);
+		let idsS = getIdBS(section, bldId);
 		let f = fan.filter(
 			(el) => idsS.includes(el.owner.id) && el.type === 'accel'
 		);
