@@ -1,6 +1,6 @@
 const { stateEq } = require('@tool/command/fan/fn')
 const { curStateV } = require('@tool/command/valve')
-const { msg } = require('@tool/message')
+const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime } = require('@tool/command/time')
 
@@ -9,6 +9,13 @@ const { compareTime } = require('@tool/command/time')
 function fnOn(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	resultFan.force.push(true)
 	resultFan.stg = 'vent'
+	wrExtra(
+		bld._id,
+		null,
+		'vent',
+		msgB(bld, 145),
+		'ventOn'
+	)
 }
 
 module.exports = fnOn

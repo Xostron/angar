@@ -29,7 +29,7 @@ function bar(r, bld, sect, am, start) {
 	const ventWait = store.alarm.extra?.[bld._id]?.vent?.wait ?? null
 	const ventWork = store.alarm.extra?.[bld._id]?.vent?.work ?? null
 	const durVentWork = store.alarm.extra?.[bld._id]?.durVent?.work ?? null
-	const ventOn = store.alarm.extra?.[bld._id]?.vent?.on ?? null
+	const ventOn = store.alarm.extra?.[bld._id]?.vent?.ventOn ?? null
 	const stableVno = store.alarm.extralrm?.[bld._id]?.[sect._id]?.stableVno ?? null
 	const debdo = JSON.parse(
 		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)

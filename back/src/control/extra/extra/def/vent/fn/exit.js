@@ -20,6 +20,8 @@ const dict = {
 	15: 'склад работает по авто режиму', //обычный, хранение
 	16: 'склад работает по авто режиму', //комби-обычный, сушка
 	17: 'склад работает по авто режиму', //обычный, сушка
+	18: 'настройка "Вентиляция": количество вентиляторов = 0', //обычный, комби-обычный
+	19: 'настройка "Холодильник С": количество вентиляторов = 0', //комби-холодильник
 }
 
 /**
@@ -115,6 +117,8 @@ function fnReason(bld, code, s, ban, prepare) {
 		isN && am === 'cooling' && !flagFinish && !alrAuto, //15
 		isCN && am === 'drying' && !alrAuto, //16
 		isN && am === 'drying' && !alrAuto, //17
+		(isCN || isN) && !s?.vent?.max, // 18
+		!s?.coolerCombi?.max && code === 'combiCold', // 19
 	]
 }
 
@@ -126,6 +130,7 @@ function clear(bld, acc, resultFan, ...args) {
 	resultFan.stg = null
 	args[0] ? delExtra(bld._id, null, 'vent', 'wait') : null
 	args[1] ? delExtra(bld._id, null, 'vent', 'work') : null
+	args[2] ? delExtra(bld._id, null, 'vent', 'ventOn') : null
 }
 
 module.exports = { exit }
