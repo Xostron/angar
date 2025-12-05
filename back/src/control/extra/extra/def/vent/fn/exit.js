@@ -66,7 +66,7 @@ function fnCheck(bld, code, s, ban, prepare) {
 	// Запретить ВВ
 	if (reason.some((el, i) => el)) {
 		// consoleTable(reason)
-		console.log(77, reason)
+		// console.log(77, reason)
 		if (reason[14] || reason[15] || reason[16] || reason[17]) return false
 		// Печатаем причиный с 0 по 13
 		wrExtra(bld._id, null, 'vent', msgB(bld, 143, `${err}`), 'check')

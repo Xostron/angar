@@ -83,7 +83,7 @@ const def = {
 		if (!isCN) return false
 		// Игнорируем при сушке
 		if (am !== 'cooling') return false
-		return isAchieve(idB, 'combi', 'finish')
+		return isAchieve(idB, am, 'finish')
 	},
 }
 

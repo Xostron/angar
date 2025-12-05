@@ -6,7 +6,7 @@ const dict = {
 	2: 'склад выключен',
 	3: 'нет секций в авто режиме',
 	4: 'работает удаление СО2',
-	5: 'работает внутрення вентиляция',
+	5: 'работает внутренняя вентиляция',
 	6: 'комбинированный склад работает в режиме холодильника',
 	7: 'склад работает по авто режиму',
 }
@@ -29,7 +29,7 @@ function fnCheck(bld, prepare, resultFan) {
 		// consoleTable(reason)
 		console.log(11, reason)
 		clear(bld, prepare)
-		if (reason[0]) return false
+		if (reason[7] || reason[5]) return false
 		wrExtra(bld._id, null, 'durVent', msgB(bld, 148, `${err}`), 'check')
 		return false
 	}

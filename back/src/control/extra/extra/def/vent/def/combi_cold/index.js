@@ -17,7 +17,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 			bld._id,
 			null,
 			'vent',
-			msgB(bld, 141, `${remTime(acc.CC.wait)}`),
+			msgB(bld, 141, `${remTime(acc.CC.wait, s.coolerCombi.wait)}`),
 			'wait'
 		)
 		return
@@ -29,7 +29,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		bld._id,
 		null,
 		'vent',
-		msgB(bld, 142, `${remTime(acc.CC.work)}`),
+		msgB(bld, 142, `${remTime(acc.CC.work, s.coolerCombi.work)}`),
 		'work'
 	)
 	resultFan.force.push(true)
