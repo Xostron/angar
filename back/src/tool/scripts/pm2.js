@@ -10,8 +10,9 @@ function pm2(code, type = 'all') {
 				// const command = `echo "${getSecureAccessKey()}" | sudo -S /root/.nvm/versions/node/v22.17.0/bin/node /root/.nvm/versions/node/v22.17.0/bin/pm2 ${code} all`;
 				// const command = `sudo -S /root/.nvm/versions/node/v22.17.0/bin/node /root/.nvm/versions/node/v22.17.0/bin/pm2 ${code} all`;
 				// pm2 /home/tenta/apps/ecosystem/ecosystem.config.js
-				const command = `pm2 ${code} /home/tenta/apps/ecosystem/ecosystem.config.js  && pm2 save`;
-
+				let command = `pm2 ${code} /home/tenta/apps/ecosystem/ecosystem.config.js  && pm2 save`;
+				if (code === 'save') command = 'pm2 save';
+				
 				exec(command, (error, stdout, stderr) => {
 					if (error) {
 						console.error(

@@ -12,7 +12,7 @@ import './style.css'
 //Информация по датчикам склада
 export default function Sensor({}) {
 	const { build: idB, sect } = useParams()
-	const isList = useEquipStore((s) => !!s.list.length)
+	const isList = useEquipStore((s) => !!s.list?.length)
 	const section = useEquipStore((s) => s.section())
 	const sections = useEquipStore((s) => s.sections())
 	const build = useEquipStore((s) => s.build())

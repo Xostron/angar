@@ -17,6 +17,9 @@ const {
 	sync_time,
 	set_time,
 	disconnect_wifi,
+	keyboard,
+	statClear,
+	statInfo,
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -60,6 +63,11 @@ function service(router) {
 
 	// Установить файл с конфигурацией оборудования
 	serviceRouter.post('/file', file());
+	serviceRouter.post('/keyboard', keyboard());
+
+	// Статистика
+	serviceRouter.get('/stat', statInfo());
+	serviceRouter.delete('/stat', statClear());
 }
 
 module.exports = service;

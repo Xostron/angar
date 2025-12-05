@@ -7,7 +7,7 @@ const list = [
 	// { code: 'root', name: 'Сервис' },
 ]
 //Поле ввода
-export default function ChoiceInput({ value, setValue, style, placeholder, icon, sti, cls, title }) {
+export default function ChoiceInput({ value, setValue, style, placeholder, icon, sti, cls, title, onFocus, onClick }) {
 	const [val, setVal] = useState(value)
 	const [show, setShow] = useState(false)
 	// Защита от сброса курсора в конец текста
@@ -29,9 +29,12 @@ export default function ChoiceInput({ value, setValue, style, placeholder, icon,
 				placeholder={placeholder}
 				value={val}
 				onChange={onChange}
+				onFocus={onFocus}
+				onClick={onClick}
 				title={title}
+				keyboard={false}
 			/>
-			<img onClick={onClick} className='cmp-choice-input-arrow' src='/img/popup.svg' alt='' />
+			<img onClick={toggleModal} className='cmp-choice-input-arrow' src='/img/popup.svg' alt='' />
 			<Modal value={value} setValue={setValue} list={list} show={show} setShow={setShow} />
 		</div>
 	)
@@ -41,9 +44,7 @@ export default function ChoiceInput({ value, setValue, style, placeholder, icon,
 		setVal(v)
 		setValue({ login: v, name: v })
 	}
-	function onClick(e) {
+	function toggleModal(e) {
 		setShow(!show)
 	}
 }
-
-

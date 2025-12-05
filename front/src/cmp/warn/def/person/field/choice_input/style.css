@@ -3,8 +3,8 @@
 }
 
 .cmp-choice-input-arrow {
-	filter: brightness(0) saturate(100%) invert(76%) sepia(45%) saturate(4012%) hue-rotate(184deg)
-		brightness(93%) contrast(100%);
+	filter: brightness(0) saturate(100%) invert(76%) sepia(45%) saturate(4012%)
+		hue-rotate(184deg) brightness(93%) contrast(100%);
 	padding: 5px !important;
 	margin-right: 10px !important;
 	height: var(--fsz30) !important;
@@ -24,8 +24,8 @@
 
 	& > span {
 		background-color: var(--background);
-		font-size: var(--fsz20);
-		line-height: var(--fsz20);
+		font-size: var(--fsz28);
+		line-height: var(--fsz30);
 		padding: var(--fsz10);
 		text-align: left;
 		border-radius: 5px;

@@ -16,11 +16,11 @@ export const routesApp = [
 		element: <Main />,
 		errorElement: <RouterError />,
 	},
-	{
-		path: 'building/service',
-		element: <Service header />,
-		errorElement: <RouterError />,
-	},
+	// {
+	// 	path: 'building/service',
+	// 	element: <Service header />,
+	// 	errorElement: <RouterError />,
+	// },
 	{
 		path: 'building/:build',
 		element: <Menu />,

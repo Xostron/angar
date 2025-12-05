@@ -1,11 +1,12 @@
-const { checkS } = require('@tool/get/sensor')
-const { readOne } = require('@tool/json')
-const { data: store } = require('@store')
-const { getId } = require('@tool/command/mech')
-const secDef = require('./section')
-const alarm = require('./alarm')
-const banner = require('./banner')
-const sections = require('./sections')
+const { checkS } = require('@tool/get/sensor');
+const { readOne } = require('@tool/json');
+const { data: store } = require('@store');
+const { getId } = require('@tool/command/mech');
+const secDef = require('./section');
+const alarm = require('./alarm');
+const banner = require('./banner');
+const sections = require('./sections');
+const push = require('./push');
 /**
  * Трансформация данных о здании и секциях с использованием сенсоров и оборудования.
  *
@@ -28,14 +29,17 @@ async function transform(bldId, secId) {
 			readOne('valve'), // Считываем данные клапанов
 			readOne('section'), // Считываем данные секций
 			readOne('building'), // Считываем данные складов
-		]
-		const [sensor, fan, heating, valve, section, building] = await Promise.all(p)
+		];
+		const [sensor, fan, heating, valve, section, building] =
+			await Promise.all(p);
 		// Тип склада
-		const type = building?.find((el) => el._id === bldId)?.type
+		const type = building?.find((el) => el._id === bldId)?.type;
 		// Поиск разгонного вентилятора, принадлежащего зданию
-		let idsS = getId(section, bldId)
-		let f = fan.filter((el) => idsS.includes(el.owner.id) && el.type === 'accel')
-		f = f.some((el) => data?.[el?._id]?.state === 'run') ? 'run' : 'stop'
+		let idsS = getId(section, bldId);
+		let f = fan.filter(
+			(el) => idsS.includes(el.owner.id) && el.type === 'accel'
+		);
+		f = f.some((el) => data?.[el?._id]?.state === 'run') ? 'run' : 'stop';
 
 		result['bldId'] = bldId
 		// Включен/выкл склад
@@ -43,19 +47,26 @@ async function transform(bldId, secId) {
 		// Продукт, хранящийся в складе
 		result[bldId + 'product'] = bldData?.product?.code ?? null
 		// Режим склада
-		result[bldId + 'mode'] = store.value?.building?.[bldId]?.submode?.[0] ?? bldData?.automode ?? null
+		result[bldId + 'mode'] =
+			store.value?.building?.[bldId]?.submode?.[0] ??
+			bldData?.automode ??
+			null;
 		// Сообщение авторежима
-		result[bldId + 'note'] = data.alarm?.achieve?.[bldId] ?? null
-		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0
-		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null
-		result[bldId + 'banner'] = banner(bldId, data) ?? null
+		result[bldId + 'note'] = data.alarm?.achieve?.[bldId] ?? null;
+		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0;
+		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null;
+		result[bldId + 'banner'] = banner(bldId, data) ?? null;
+		result[bldId + 'push'] = push(bldId, data) ?? null;
 		// Разгонный вентилятор склада
 		result[bldId + 'accel'] = f
 		// Абсолютная влажность продукта
 		result[bldId + 'ahb'] = {
 			value: data?.humAbs?.in?.[bldId],
-			state: checkS(data?.total?.[bldId]?.hin?.state, data?.total?.[bldId]?.tprd?.state),
-		}
+			state: checkS(
+				data?.total?.[bldId]?.hin?.state,
+				data?.total?.[bldId]?.tprd?.state
+			),
+		};
 		// Температура потолка (мин)
 		result[bldId + 'tempb'] = {
 			value: data?.total?.[bldId]?.tin?.max?.toFixed(1) ?? undefined,
@@ -74,17 +85,29 @@ async function transform(bldId, secId) {
 
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы
-			result['ah'] = { value: data?.humAbs?.out?.com, state: checkS(data?.total?.tout?.state, data?.total?.hout?.state) }
+			result['ah'] = {
+				value: data?.humAbs?.out?.com,
+				state: checkS(
+					data?.total?.tout?.state,
+					data?.total?.hout?.state
+				),
+			};
 			// Температура улицы (мин)
-			result['temp'] = { value: data?.total?.tout?.min?.toFixed(1) ?? undefined, state: data?.total?.tout?.state }
+			result['temp'] = {
+				value: data?.total?.tout?.min?.toFixed(1) ?? undefined,
+				state: data?.total?.tout?.state,
+			};
 			// Влажность улицы (макс)
-			result['rh'] = { value: data?.total?.hout?.max?.toFixed(1) ?? undefined, state: data?.total?.hout?.state }
+			result['rh'] = {
+				value: data?.total?.hout?.max?.toFixed(1) ?? undefined,
+				state: data?.total?.hout?.state,
+			};
 		}
 		// Если указан secId, обрабатываем полную информацию по секции
 		if (secId && secId !== 'undefined') {
 			// Объединяем результаты с полными данными по секции
-			const o = { data, heating, sensor, fan, valve }
-			if (secDef[type]) await secDef[type](result, secId, bldId, o)
+			const o = { data, heating, sensor, fan, valve };
+			if (secDef[type]) await secDef[type](result, secId, bldId, o);
 		}
 		//
 		return result

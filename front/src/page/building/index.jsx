@@ -21,7 +21,8 @@ export default function Building({}) {
 
 	// Редирект на секции
 	useEffect(() => {
-		if (sects?.length > 1 || sects?.length === 0 || sects?.[0]?.buildingId != build) return
+		if(!sects || !sects.length) return
+		if (sects?.length > 1 || sects?.[0]?.buildingId != build) return
 		const path = `${location.pathname}/section/${sects?.[0]?._id}`.replace('//', '/')
 		navigate(path)
 	}, [sects])

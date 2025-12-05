@@ -8,7 +8,7 @@ import Title from '../fn/title'
 import '../style.css'
 
 //Управление клапаном
-export default function Entry({ data = {}, entryCode }) {
+export default function Entry({ data = {}, entryCode, refDialog }) {
 	const { vlv, state, build, refSp, sp } = data
 	const setO = useOutputStore((s) => s.setO)
 	const setT = useOutputStore((s) => s.setT)
@@ -34,7 +34,7 @@ export default function Entry({ data = {}, entryCode }) {
 	return (
 		<div className='entry'>
 			<Title name={t} />
-			<Field sel={sel} change={change} spO={spO} setSpO={setSpO} />
+			<Field sel={sel} change={change} spO={spO} setSpO={setSpO} container={refDialog?.current} />
 			<Control cancel={cancel} ok={set} />
 		</div>
 	)

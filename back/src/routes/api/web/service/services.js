@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const reboot = require('@tool/scripts/reboot');
 const update = require('@tool/scripts/update');
 const pm2 = require('@tool/scripts/pm2');
@@ -11,8 +9,41 @@ const reload_net = require('@tool/scripts/reload_net');
 const network = require('@tool/scripts/network');
 const eth = require('@tool/scripts/eth');
 const time = require('@tool/scripts/time');
+const statistic = require('@tool/scripts/statistic');
 const fsp = require('fs').promises;
 const { writeConfig } = require('@tool/init');
+const { data } = require('@store');
+
+function keyboard() {
+	return (req, res) => {
+		try {
+			const value = req.body?.value;
+			if (value === undefined || value == null)
+				return res.status(400).json({ txt: 'не передан параметр' });
+			data.retain.keyboard = value;
+			res.json({ result: 'ok' });
+		} catch (error) {
+			res.status(400).json({ txt: error.toString() });
+		}
+	};
+}
+function statInfo() {
+	return (req, res) => {
+		statistic
+			.info()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ txt: err.toString() }));
+	};
+}
+
+function statClear() {
+	return (req, res) => {
+		statistic
+			.clear()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ txt: err.toString() }));
+	};
+}
 
 function net_info() {
 	return (req, res) => {
@@ -209,4 +240,7 @@ module.exports = {
 	sync_time,
 	set_time,
 	disconnect_wifi,
+	keyboard,
+	statInfo,
+	statClear,
 };

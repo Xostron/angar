@@ -1,5 +1,12 @@
-.cmp-person-entry-logo{
+.cmp-person-entry-logo {
 	/* width: 200px; */
 	height: 80px;
 	padding: 8px;
+}
+.entry-logo-container {
+	max-width: 330px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--fsz24);
+	margin: auto;
 }

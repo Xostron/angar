@@ -1,6 +1,7 @@
 const { readFileSync } = require('fs');
 const { execSync } = require('child_process');
 const get_net_info = require('@tool/scripts/get_net_info');
+const { data } = require('@store');
 
 async function info() {
 	const frontInfo = require('../../../../../front/package.json');
@@ -11,13 +12,20 @@ async function info() {
 		front: frontInfo.version,
 		platform: process.platform,
 		date: new Date(),
+		battery: {
+			status: data.battery,
+			level: null,
+		},
 	};
 
 	if (obj.platform === 'linux') {
 		obj.net = await get_net_info();
 		obj.os = 'unknown';
 		try {
-			const issue = readFileSync('/etc/issue', 'utf8').trim();
+			// Удаляем escape-последовательности типа \n \l \r и т.д.
+			const issue = readFileSync('/etc/issue', 'utf8')
+				.replace(/\\[a-z]/g, '')
+				.trim();
 			obj.os = issue;
 		} catch (e) {
 			console.error('\x1b[33m%s\x1b[0m /etc/issue', e.message);
@@ -31,7 +39,7 @@ async function info() {
 				const match = acpiOut.match(/(\d+)%/);
 				if (match) {
 					const batteryLevel = parseInt(match[1], 10);
-					obj.battery = batteryLevel;
+					obj.battery.level = batteryLevel;
 				}
 			}
 		} catch (e) {

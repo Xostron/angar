@@ -10,7 +10,7 @@ import Input from '@cmp/fields/input'
  * @param {*} change Переключение радиокнопок
  * @returns
  */
-export default function Field({ sel, change, active, state, spO, setSpO, off }) {
+export default function Field({ sel, change, active, state, spO, setSpO, off, container }) {
 	const title = off ? 'Ввести в работу' : 'Вывести из работы'
 	const styleIn = active ? 'run' : 'off'
 	return (
@@ -35,6 +35,7 @@ export default function Field({ sel, change, active, state, spO, setSpO, off }) 
 						setValue={setSpO}
 						cls={`cell-modal ${styleIn}`}
 						disabled={active ? false : true}
+						keyboardContainer={container}
 					/>
 					%
 				</>

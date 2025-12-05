@@ -8,7 +8,7 @@ import Title from '../fn/title'
 import '../style.css'
 const _MIN_VALUE = 20
 //Управление вентилятором+ПЧ
-export default function Entry({ data = {}, entryCode }) {
+export default function Entry({ data = {}, entryCode, refDialog }) {
 	const { _id, name, module, buildingId, sectionId, active, ao } = data
 	const clear = useWarn((s) => s.clear)
 	const setO = useOutputStore((s) => s.setO)
@@ -39,6 +39,7 @@ export default function Entry({ data = {}, entryCode }) {
 				state={state}
 				spO={spO}
 				setSpO={setSpO}
+				container={refDialog?.current}
 			/>
 			<Control cancel={cancel} ok={set} />
 		</div>

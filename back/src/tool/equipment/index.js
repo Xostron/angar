@@ -1,6 +1,6 @@
 const fsp = require('fs').promises;
 const { readTO } = require('@tool/json');
-const { dataDir } = require('@store');
+const { dataDir, data } = require('@store');
 const equip = require('./equip');
 const getInfo = require('@tool/init/info');
 /**
@@ -15,8 +15,9 @@ function equipment() {
 			.then(([r, info = {}]) => {
 				info.apiUri = process.env.API_URI;
 				info.port = process.env.PORT;
-				info.period = process.env.PERIOD/1000;
-				info.periodState = process.env.PERIOD_STATE/1000;
+				info.period = process.env.PERIOD / 1000;
+				info.periodState = process.env.PERIOD_STATE / 1000;
+				info.keyboard = data.retain.keyboard;
 				r.apiInfo = info;
 				resolve(r);
 			})

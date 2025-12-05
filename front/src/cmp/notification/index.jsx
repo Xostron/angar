@@ -25,7 +25,7 @@ let notificationStore = {
 		if (notification.autoClose !== false) {
 			setTimeout(() => {
 				this.remove(id)
-			}, notification.duration || 5000)
+			}, notification.duration || 3000)
 		}
 	},
 	remove: function(id) {

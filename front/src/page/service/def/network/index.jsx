@@ -15,24 +15,50 @@ export default function Network({ props }) {
 
 	return (
 		<>
-			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>COM/USB</span>
+			
+			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
+				Настройка IP-адреса для проекта:
+			</span>
+			<div className='page-service-row'>
+				<Input value={ip} setValue={setIp} auth={false} placeholder='192.168.1.100' keyboard="numeric" />
+				<Btn title='Установить IP вручную' onClick={() => set_ip(ip)} />
+				<div className='page-service-row'>
+					<Btn title='Обновить список' onClick={() => onNetInfo(req_ip, setInfo, setTtyS)} />
+				</div>
+			</div>
 			<Accordion
-				title={`Устройства последовательных портов (${ttyS?.length || 0})`}
-				defaultOpen={false}
+				title={`Список сетевых интерфейсов (${info?.length || 0})`}
+				defaultOpen={true}
 			>
-				{ttyS && !ttyS.error ? (
-					ttyS.map((el, i) => {
+				{info && !info.error ? (
+					info.map((el, i) => {
 						return (
-							<div key={i} className='page-service-row'>
-								<span>
-									[ {i} ]: {el.raw}
-								</span>
+							<div
+								key={i}
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'space-between',
+									padding: '5px',
+								}}
+							>
+								<span style={{ width: '100px' }}>{el.interface} [{el.state}]</span>
+								<span style={{ width: '160px' }}>mac: {el.mac || '--'}</span>
+								<span style={{ width: '160px' }}>ip: {el.ip || '--'}</span>
+								{el.ip ? (
+									<Btn
+										title={'Установить ' + el.ip}
+										onClick={() => set_ip(el.ip)}
+									/>
+								) : (
+									<span style={{ width: '310px' }}></span>
+								)}
 							</div>
 						)
 					})
 				) : (
 					<div className='page-service-row'>
-						<span>Нет доступных устройств</span>
+						<span>Нет доступных сетевых интерфейсов</span>
 					</div>
 				)}
 			</Accordion>
@@ -71,52 +97,30 @@ export default function Network({ props }) {
 				<Btn title='Проверка связи' onClick={()=>checkInternet()} />
 			</div>
 
-			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>
-				Настройка IP-адреса для проекта:
-			</span>
-			<div className='page-service-row'>
-				<Input value={ip} setValue={setIp} auth={false} placeholder='192.168.1.100' />
-				<Btn title='Установить IP вручную' onClick={() => set_ip(ip)} />
-				<div className='page-service-row'>
-					<Btn title='Обновить' onClick={() => onNetInfo(req_ip, setInfo, setTtyS)} />
-				</div>
-			</div>
+			<span style={{ fontSize: '20px', fontWeight: 'bold' }}>COM/USB</span>
 			<Accordion
-				title={`Список сетевых интерфейсов (${info?.length || 0})`}
+				title={`Устройства последовательных портов (${ttyS?.length || 0})`}
 				defaultOpen={false}
 			>
-				{info && !info.error ? (
-					info.map((el, i) => {
+				{ttyS && !ttyS.error ? (
+					ttyS.map((el, i) => {
 						return (
-							<div
-								key={i}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'space-between',
-									padding: '5px',
-								}}
-							>
-								<span style={{ width: '100px' }}>{el.interface} [{el.state}]</span>
-								<span style={{ width: '160px' }}>mac: {el.mac || '--'}</span>
-								<span style={{ width: '160px' }}>ip: {el.ip || '--'}</span>
-								{el.ip ? (
-									<Btn
-										title={'Установить ' + el.ip}
-										onClick={() => set_ip(el.ip)}
-									/>
-								) : (
-									<span style={{ width: '310px' }}></span>
-								)}
+							<div key={i} className='page-service-row'>
+								<span>
+									[ {i} ]: {el.raw}
+								</span>
 							</div>
 						)
 					})
 				) : (
 					<div className='page-service-row'>
-						<span>Нет доступных сетевых интерфейсов</span>
+						<span>Нет доступных устройств</span>
 					</div>
 				)}
 			</Accordion>
+
+			
+
 		</>
 	)
 }

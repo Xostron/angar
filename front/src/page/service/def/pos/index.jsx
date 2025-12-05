@@ -12,8 +12,8 @@ export default function Equip({ props }) {
 	return (
 		<>
 			<div className='page-service-row'>
-				<Btn title='AutoLogin On' onClick={() => onAL(true, req_ip, warn, clear)} />
-				<Btn title='AutoLogin Off' onClick={() => onAL(false, req_ip, warn, clear)} />
+				{/* <Btn title='AutoLogin On' onClick={() => onAL(true, req_ip, warn, clear)} /> */}
+				{/* <Btn title='AutoLogin Off' onClick={() => onAL(false, req_ip, warn, clear)} /> */}
 				<Btn title='Reboot Устройства' onClick={() => onReboot(req_ip)} />
 			</div>
 			<div className='page-service-row'>

@@ -8,7 +8,7 @@ import { get, post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import { useEffect } from 'react'
 
-export default function Ethernet({ data }) {
+export default function Ethernet({ data, refDialog }) {
 	console.log('Ethernet', data)
 	const [networkMode, setNetworkMode] = useState() // 'dhcp' или 'manual'
 	const [ip, setIp] = useState('')
@@ -142,6 +142,8 @@ export default function Ethernet({ data }) {
 								placeholder='192.168.1.100'
 								disabled={false}
 								auth={false}
+								keyboard="numeric"
+								keyboardContainer={refDialog?.current}
 							/>
 						</div>
 
@@ -153,6 +155,8 @@ export default function Ethernet({ data }) {
 								placeholder='255.255.255.0'
 								disabled={false}
 								auth={false}
+								keyboard="numeric"
+								keyboardContainer={refDialog?.current}
 							/>
 						</div>
 
@@ -164,6 +168,8 @@ export default function Ethernet({ data }) {
 								placeholder='192.168.1.1'
 								disabled={false}
 								auth={false}
+								keyboard="numeric"
+								keyboardContainer={refDialog?.current}
 							/>
 						</div>
 
@@ -175,6 +181,8 @@ export default function Ethernet({ data }) {
 								placeholder='8.8.8.8'
 								disabled={false}
 								auth={false}
+								keyboard="numeric"
+								keyboardContainer={refDialog?.current}
 							/>
 						</div>
 					</div>

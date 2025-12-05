@@ -13,3 +13,28 @@
 	border: none;
 	outline: none;
 }
+
+/* Dialog с клавиатурой - адаптация под размещение клавиатуры внизу */
+.dia.with-keyboard {
+	position: relative;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+/* Контент dialog с клавиатурой */
+.dia.with-keyboard > :not(.keyboard-wrapper) {
+	flex: 1;
+	overflow-y: auto;
+	padding-bottom: 10px;
+}
+
+/* Клавиатура внутри dialog */
+.dia.with-keyboard .keyboard-wrapper {
+	position: sticky;
+	bottom: 0;
+	flex-shrink: 0;
+	margin: 0;
+	border-radius: 0 0 10px 10px;
+}

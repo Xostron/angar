@@ -138,8 +138,12 @@ function fnDryingCount(building) {
 		store.retain[idB].drying.acc ??= 0
 
 		// Фиксируем точку отсчета работы сушки
-		if (store.retain?.[idB]?.start && store.retain[idB]?.automode == 'drying' && !store.retain[idB]?.drying?.date) {
-			store.retain[idB].drying.date = new Date()
+		if (
+			store.retain?.[idB]?.start &&
+			store.retain[idB]?.automode == 'drying' &&
+			!store.retain[idB]?.drying?.date
+		) {
+			store.retain[idB].drying.date = new Date();
 		}
 		// Сушка выключена / склад выключен - сохраняем в аккумулятор
 		if ((!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') && store.retain?.[idB]?.drying?.date) {
@@ -157,10 +161,19 @@ function fnDryingCount(building) {
 
 		// Подсчет дней
 		if (dt) {
-			const dd = typeof dt == 'string' ? new Date(dt) : dt
-			store.retain[idB].drying.count = store.retain[idB].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
+			const dd = typeof dt == 'string' ? new Date(dt) : dt;
+			store.retain[idB].drying.count =
+				store.retain[idB].drying.acc +
+				(new Date() - dd) / (24 * 60 * 60 * 1000);
 		}
 	}
 }
 
-module.exports = { positionVlv, fnResult, fnCooling, fnDateBuild, fnDryingCount, fnResultValve }
+module.exports = {
+	positionVlv,
+	fnResult,
+	fnCooling,
+	fnDateBuild,
+	fnDryingCount,
+	fnResultValve,
+};

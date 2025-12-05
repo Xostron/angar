@@ -14,17 +14,17 @@ const lists = [
 	{
 		path: '../service/1',
 		icon: '/img/service/wifi.svg',
-		name: 'Настройки сети',
+		name: '1. Настройки сети',
 	},
 	{
 		path: '../service/3',
 		icon: '/img/service/network-2.svg',
-		name: 'Обновить ПО',
+		name: '2. Управление ПО',
 	},
 	{
 		path: '../service/2',
 		icon: '/img/service/project-configuration.svg',
-		name: 'Конфигурация',
+		name: '3. Конфигурация',
 	},
 	
 	{

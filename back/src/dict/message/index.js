@@ -83,7 +83,7 @@ const data = {
 	// ======= Сообщения Achieve =======
 	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
 	150: { order: 2, code: 'target', msg: '' },
-	151: { order: 3, code: 'datestop', msg: 'Склад выключен' },
+	151: { order: 3, code: 'datestop', msg: 'Склад выключен', flt: [true] },
 
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
@@ -92,19 +92,23 @@ const data = {
 		code: 'antibliz',
 		typeSignal: 'critical',
 		msg: 'Сработал режим антивьюги',
+		flt: [true],
 	},
 	// Работа клапанов over_vlv
 	14: {
+		count: true,
 		code: 'overVlv',
 		typeSignal: 'critical',
 		msg: 'Превышено время работы с закрытыми клапанами',
+		flt: [true],
 	},
 	// Авария низкой температуры (Аварийное закрытие клапанов) Реле безопасности
 	26: {
 		count: true,
 		code: 'alrClosed',
 		typeSignal: 'critical',
-		msg: 'Авария низкой температуры',
+		msg: 'Аварийное закрытие клапанов',
+		flt: [true],
 	},
 	// Переключатель на щите секции - местный режим
 	27: {
@@ -112,12 +116,14 @@ const data = {
 		code: 'local',
 		typeSignal: 'critical',
 		msg: 'Управление переведено переключателем на щите',
+		flt: [true],
 	},
 	// Модуль не в сети
 	28: {
 		code: 'connect',
 		typeSignal: 'critical',
 		msg: 'Обратитесь в сервисный центр (пропала связь с модулем)',
+		flt: [true],
 	},
 	// Генератор (склад)
 	29: {
@@ -125,21 +131,59 @@ const data = {
 		code: 'gen',
 		typeSignal: 'critical',
 		msg: 'Работа от генератора',
+		flt: [true],
 	},
 	// Аварии клапанов
-	30: { count: false, code: 'alrValve', typeSignal: 'critical', msg: 'Превышено время открытия' },
-	31: { count: false, code: 'alrValve', typeSignal: 'critical', msg: 'Превышено время закрытия' },
-	32: { count: false, code: 'alrValve', typeSignal: 'critical', msg: 'Оба концевика сработало' },
-	33: { count: true, code: 'vlvLim', typeSignal: 'critical', msg: 'Нет питания концевиков' },
-	34: { count: false, code: 'vlvCrash', typeSignal: 'critical', msg: 'Авария двигателя' },
+	30: {
+		count: false,
+		code: 'alrValve',
+		typeSignal: 'critical',
+		msg: 'Превышено время открытия',
+		flt: [true],
+	},
+	31: {
+		count: false,
+		code: 'alrValve',
+		typeSignal: 'critical',
+		msg: 'Превышено время закрытия',
+		flt: [true],
+	},
+	32: {
+		count: false,
+		code: 'alrValve',
+		typeSignal: 'critical',
+		msg: 'Оба концевика сработало',
+		flt: [true],
+	},
+	33: {
+		count: true,
+		code: 'vlvLim',
+		typeSignal: 'critical',
+		msg: 'Нет питания концевиков',
+		flt: [true],
+	},
+	34: {
+		count: false,
+		code: 'vlvCrash',
+		typeSignal: 'critical',
+		msg: 'Авария двигателя',
+		flt: [true],
+	},
 	// Аварии вентиляторов
-	35: { count: false, code: 'fanCrash', typeSignal: 'critical', msg: 'Авария вентилятора' },
+	35: {
+		count: false,
+		code: 'fanCrash',
+		typeSignal: 'critical',
+		msg: 'Авария вентилятора',
+		flt: [true],
+	},
 	// Нажат аварийный стоп
 	36: {
 		count: true,
 		code: 'alarm',
 		typeSignal: 'critical',
 		msg: 'Нажат аварийный стоп',
+		flt: [true],
 	},
 	// Питание отключено
 	38: {
@@ -147,6 +191,7 @@ const data = {
 		code: 'supply',
 		typeSignal: 'critical',
 		msg: 'Питание отключено',
+		flt: [true],
 	},
 	// Приточный клапан открыт, темп канала > темп продукта
 	39: {
@@ -159,6 +204,7 @@ const data = {
 		code: 'stableVno',
 		typeSignal: 'fan',
 		msg: 'Неправильные настройки "Гистерезиса давления" в "Настройках вентилятора"',
+		flt: [true],
 	},
 
 	41: {
@@ -173,6 +219,7 @@ const data = {
 			code: 'off',
 			typeSignal: 'critical',
 			msg: 'Выбит автоматический выключатель',
+			flt: [true],
 		},
 	],
 	// ======== Компрессоры агрегата ========
@@ -183,9 +230,20 @@ const data = {
 			code: 'low',
 			typeSignal: 'critical',
 			msg: 'Низкий уровень масла в компрессоре',
+			flt: [true],
 		},
-		{ count: true, code: 'off', typeSignal: 'critical', msg: 'Отключен автомат питания' },
-		{ count: true, code: 'stator', typeSignal: 'critical', msg: 'Перегрев обмотки двигателя' },
+		{
+			count: true,
+			code: 'off',
+			typeSignal: 'critical',
+			msg: 'Отключен автомат питания',
+		},
+		{
+			count: true,
+			code: 'stator',
+			typeSignal: 'critical',
+			msg: 'Перегрев обмотки двигателя',
+		},
 	],
 	// Склад не работает: требуется калибровка клапанов
 	90: {
@@ -193,6 +251,7 @@ const data = {
 		code: 'notTune',
 		typeSignal: 'critical',
 		msg: 'Требуется калибровка клапанов',
+		flt: [true],
 	},
 	// ======== Неисправность датчика ========
 	93: {
@@ -212,33 +271,53 @@ const data = {
 		code: 'sensor',
 		typeSignal: 'sensor',
 		msg: 'Датчики влажности улицы выключены',
+		flt: [true],
 	},
 	96: {
 		count: true,
 		code: 'sensor',
 		typeSignal: 'sensor',
 		msg: 'Датчики влажности улицы неисправны',
+		flt: [true],
 	},
 	97: {
 		count: true,
 		code: 'sensor',
 		typeSignal: 'sensor',
 		msg: 'Датчики температуры улицы выключены',
+		flt: [true],
 	},
 	98: {
 		count: true,
 		code: 'sensor',
 		typeSignal: 'sensor',
 		msg: 'Датчики температуры улицы неисправны',
+		flt: [true],
 	},
-	99: { code: 'sensor', typeSignal: 'sensor', msg: 'Автообнаружение неисправности датчика' },
-	100: { code: 'sensor', typeSignal: 'sensor', msg: 'Неисправность датчика' },
-	102: { count: true, code: 'debdo', typeSignal: 'critical', msg: 'Частое включение' },
+	99: {
+		code: 'sensor',
+		typeSignal: 'sensor',
+		msg: 'Автообнаружение неисправности датчика',
+	},
+	100: {
+		code: 'sensor',
+		typeSignal: 'sensor',
+		msg: 'Неисправность датчика',
+		flt: [true],
+	},
+	102: {
+		count: true,
+		code: 'debdo',
+		typeSignal: 'critical',
+		msg: 'Частое включение',
+		flt: [true],
+	},
 	103: {
 		count: true,
 		code: 'battery',
 		typeSignal: 'critical',
 		msg: 'Авария питания (Ручной сброс)',
+		flt: [true],
 	},
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
@@ -257,8 +336,16 @@ const data = {
 		msg: 'Потеря связи с автоматикой',
 	},
 	// Разгонный вентилятор
-	51: { code: 'off', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Выключен' },
-	52: { code: 'on', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Включен' },
+	51: {
+		code: 'off',
+		typeSignal: 'info',
+		msg: 'Режим работы разгонного вентилятора: Выключен',
+	},
+	52: {
+		code: 'on',
+		typeSignal: 'info',
+		msg: 'Режим работы разгонного вентилятора: Включен',
+	},
 	53: {
 		code: 'time',
 		typeSignal: 'info',
@@ -270,9 +357,17 @@ const data = {
 		msg: 'Режим работы разгонного вентилятора: По температуре',
 	},
 	// Разгонный вентилятор холодильника
-	83: { code: 'auto', typeSignal: 'info', msg: 'Режим работы разгонного вентилятора: Авто' },
+	83: {
+		code: 'auto',
+		typeSignal: 'info',
+		msg: 'Режим работы разгонного вентилятора: Авто',
+	},
 	// Подогрев клапанов
-	55: { code: 'heating', typeSignal: 'info', msg: 'Подогрев клапанов включен' },
+	55: {
+		code: 'heating',
+		typeSignal: 'info',
+		msg: 'Подогрев клапанов включен',
+	},
 	// Вентиляция
 	// 58: { code: 'auto', typeSignal: 'info', msg: 'Режим работы вентиляции: Авто' },
 	// 85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает внутр. вентиляция (постоянно)' },
@@ -301,21 +396,61 @@ const data = {
 	},
 	149: { code: 'durVentWork', typeSignal: 'info', msg: 'Доп. вентиляция. В работе' },
 	// Увлажнение
-	130: { code: 'off', typeSignal: 'info', msg: 'Увлажнитель. Режим работы : Выключен.' },
-	131: { code: 'on', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Включен.' },
-	132: { code: 'sensor', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Датчик.' },
-	133: { code: 'auto', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Авто.' },
-	134: { code: 'time', typeSignal: 'info', msg: 'Увлажнитель. Режим работы: Время.' },
+	130: {
+		code: 'off',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Режим работы : Выключен.',
+	},
+	131: {
+		code: 'on',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Режим работы: Включен.',
+	},
+	132: {
+		code: 'sensor',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Режим работы: Датчик.',
+	},
+	133: {
+		code: 'auto',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Режим работы: Авто.',
+	},
+	134: {
+		code: 'time',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Режим работы: Время.',
+	},
 
-	135: { code: 'info1', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
+	135: {
+		code: 'info1',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Запуск не возможен.',
+	},
 	136: { code: 'info2', typeSignal: 'info', msg: 'Увлажнитель запущен.' },
 	137: { code: 'info3', typeSignal: 'info', msg: 'Увлажнитель остановлен.' },
-	138: { code: 'info4', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
-	139: { code: 'info5', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
-	140: { code: 'info6', typeSignal: 'info', msg: 'Увлажнитель. Запуск не возможен.' },
+	138: {
+		code: 'info4',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Запуск не возможен.',
+	},
+	139: {
+		code: 'info5',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Запуск не возможен.',
+	},
+	140: {
+		code: 'info6',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Запуск не возможен.',
+	},
 
 	// Прогрев секции
-	59: { code: 'warming', typeSignal: 'info', msg: 'Включен прогрев клапанов' },
+	59: {
+		code: 'warming',
+		typeSignal: 'info',
+		msg: 'Включен прогрев клапанов',
+	},
 	//
 	60: { code: 'cable', typeSignal: 'info', msg: 'Перегрев вводного кабеля' },
 	// ======== Удаление СО2 ========
@@ -326,12 +461,36 @@ const data = {
 	84: { code: 'co2_work', typeSignal: 'info', msg: 'Удаление СО2 в работе' },
 	89: { code: 'co2_wait', typeSignal: 'info', msg: 'Удаление СО2 (ожидание' },
 	// ======== Оттайка слива воды ========
-	67: { code: 'off', typeSignal: 'info', msg: 'Оттайка слива воды: Режим "Выключен"' },
-	68: { code: 'on', typeSignal: 'info', msg: 'Оттайка слива воды: Режим "Включен"' },
-	69: { code: 'auto', typeSignal: 'info', msg: 'Оттайка слива воды: Режим "Авто"' },
-	70: { code: 'temp', typeSignal: 'info', msg: 'Оттайка слива воды: Режим "По температуре!"' },
-	71: { code: 'temp', typeSignal: 'info', msg: 'Оттайка слива воды: Включена' },
-	72: { code: 'temp', typeSignal: 'info', msg: 'Оттайка слива воды: Отключена' },
+	67: {
+		code: 'off',
+		typeSignal: 'info',
+		msg: 'Оттайка слива воды: Режим "Выключен"',
+	},
+	68: {
+		code: 'on',
+		typeSignal: 'info',
+		msg: 'Оттайка слива воды: Режим "Включен"',
+	},
+	69: {
+		code: 'auto',
+		typeSignal: 'info',
+		msg: 'Оттайка слива воды: Режим "Авто"',
+	},
+	70: {
+		code: 'temp',
+		typeSignal: 'info',
+		msg: 'Оттайка слива воды: Режим "По температуре!"',
+	},
+	71: {
+		code: 'temp',
+		typeSignal: 'info',
+		msg: 'Оттайка слива воды: Включена',
+	},
+	72: {
+		code: 'temp',
+		typeSignal: 'info',
+		msg: 'Оттайка слива воды: Отключена',
+	},
 
 	// ======== Склад-холодильник ========
 	80: { order: 1, code: 'finish', msg: 'Продукт достиг температуры задания ' },
@@ -352,8 +511,8 @@ const data = {
 	// ======== Действия пользователя =======
 	500: { msg: 'Склад включен' },
 	501: { msg: 'Склад выключен' },
-	502: { msg: 'Режим склада изменен' },
-	503: { msg: 'Продукт изменен' },
+	502: { msg: 'Режим склада изменен', flt: [true] },
+	503: { msg: 'Продукт изменен', flt: [true] },
 	504: { msg: 'Датчик выведен из работы' },
 	505: { msg: 'Датчик введен в работу' },
 	506: { msg: 'Коррекция датчика' },
@@ -369,12 +528,12 @@ const data = {
 	516: { msg: 'Ручное управление: клапан открыть на' },
 	517: { msg: 'Ручное управление: клапан стоп' },
 	518: paste('*1 *2'),
-}
+};
 
-module.exports = data
+module.exports = data;
 
 function paste(msg) {
 	return function (...txt) {
-		return msg.replace('*1', txt[0]).replace('*2', txt[1])
-	}
+		return msg.replace('*1', txt[0]).replace('*2', txt[1]);
+	};
 }

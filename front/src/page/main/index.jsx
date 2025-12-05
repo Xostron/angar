@@ -16,8 +16,9 @@ const Main = () => {
 
 	// Автоматический переход на склад (список секций)(если складов == 1)
 	useEffect(() => {
-		// Складов больше одного
-		if (list?.length > 1 || list?.length === 0) return
+		// Складов больше одного или нет ниодного то остаемся на главной
+		if ( !list || !list?.length) return
+		if ( list?.length > 1 || list?.length === 0) return
 		// Складов == 1
 		const path = `/building/${list?.[0]?._id}`.replace('//', '/')
 		navigate(path)

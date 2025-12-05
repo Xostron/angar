@@ -110,6 +110,35 @@ function get(code, ip = '127.0.0.1') {
 	});
 }
 
+function del(code, ip = '127.0.0.1') {
+	return new Promise((resolve, reject) => {
+		const endpoint = `web/service/${code}`;
+		const config = {
+			method: 'DELETE',
+			maxBodyLength: Infinity,
+			url: endpoint,
+			baseURL: 'http://' + ip + ':4000/api/',
+			headers: {
+				'Content-Type': 'application/json',
+				'Cache-Control': 'no-cache, no-store, must-revalidate',
+				Pragma: 'no-cache',
+				Expires: '0',
+			},
+			timeout: 10000,
+		};
+
+		api(config)
+			.then((r) => {
+				console.log(`Response service_angar/${code}`, r.data);
+				resolve(r.data);
+			})
+			.catch((error) => {
+				const formattedError = formatApiError(error, endpoint);
+				reject(formattedError);
+			});
+	});
+}
+
 function post(code, data, ip = '127.0.0.1') {
 	return new Promise((resolve, reject) => {
 		const endpoint = `web/service/${code}`;
@@ -145,4 +174,4 @@ function post(code, data, ip = '127.0.0.1') {
 	});
 }
 
-export { get, post };
+export { get, post, del };

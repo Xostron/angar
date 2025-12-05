@@ -2,7 +2,7 @@ import Radio from '@cmp/fields/radio'
 import Input from '@cmp/fields/input'
 
 // чек-бокс - управление вентилятором
-export default function Field({ sel, change, spO, setSpO }) {
+export default function Field({ sel, change, spO, setSpO, container }) {
 	return (
 		<fieldset className='ef-field'>
 			<Radio value='stop' selected={sel} name='vlv' title='Стоп' change={change} />
@@ -19,6 +19,7 @@ export default function Field({ sel, change, spO, setSpO }) {
 					value={spO}
 					setValue={setSpO}
 					cls='cell-modal'
+					keyboardContainer={container}
 				/>
 				{'%'}
 			</span>

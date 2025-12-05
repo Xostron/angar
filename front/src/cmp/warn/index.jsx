@@ -23,7 +23,7 @@ export default function Warn({}) {
 
 	return (
 		<Dialog href={refDialog} cls={data.cls ?? ''}>
-			<Entry data={data} entryCode={entryCode} />
+			<Entry data={data} entryCode={entryCode} refDialog={refDialog} />
 		</Dialog>
 	)
 }

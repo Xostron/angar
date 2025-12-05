@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 const data = {
 	// Кэш модулей выхода
@@ -8,7 +8,10 @@ const data = {
 	// Данные из файла retain, 1. файл читается один раз только при запуске проекта
 	// -> 2. далее в каждом цикле в аккумулятор retain записываем данные для сохранения
 	// -> 3. затем сохраняем в файл retain -> повтор цикла 2-3
-	retain: {},
+	retain: {
+		// Отображать клавиатуру или нет
+		// keyboard: false,
+	},
 	// Аккумулятор команд от web -> сохранение в retain
 	web: {},
 	// Аккумулятор команд от web -> сохранение в retain
@@ -147,7 +150,7 @@ const data = {
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
-}
+};
 
 // Сссылка на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
 function readAcc(buildingId, name, sectionId) {
