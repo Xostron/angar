@@ -23,8 +23,8 @@ function bar(r, bld, sect, am, start) {
 	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.hout2 ?? null
 	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.ahout1 ?? null
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
-	const co2work = store.alarm.extra?.[bld._id]?.co2?.co2_work ?? null
-	const co2wait = store.alarm.extra?.[bld._id]?.co2?.co2_wait ?? null
+	const co2work = store.alarm.extra?.[bld._id]?.co2?.co2work ?? null
+	const co2wait = store.alarm.extra?.[bld._id]?.co2?.co2wait ?? null
 	const openVin = store.alarm.extralrm?.[bld._id]?.openVin ?? null
 	const ventWait = store.alarm.extra?.[bld._id]?.vent?.wait ?? null
 	const ventWork = store.alarm.extra?.[bld._id]?.vent?.work ?? null

@@ -185,7 +185,7 @@ const data = {
 		msg: 'Нажат аварийный стоп',
 		flt: [true],
 	},
-	// Питание отключено
+	// Питание отключено DI
 	38: {
 		count: true,
 		code: 'supply',
@@ -202,7 +202,7 @@ const data = {
 	},
 	40: {
 		code: 'stableVno',
-		typeSignal: 'fan',
+		typeSignal: 'info',
 		msg: 'Неправильные настройки "Гистерезиса давления" в "Настройках вентилятора"',
 		flt: [true],
 	},
@@ -452,14 +452,14 @@ const data = {
 		msg: 'Включен прогрев клапанов',
 	},
 	//
-	60: { code: 'cable', typeSignal: 'info', msg: 'Перегрев вводного кабеля' },
+	60: { code: 'cable', typeSignal: 'critical', msg: 'Перегрев вводного кабеля' },
 	// ======== Удаление СО2 ========
 	61: { code: 'off', typeSignal: 'info', msg: 'CO2: Режим "Выключен"' },
 	62: { code: 'on', typeSignal: 'info', msg: 'CO2: Режим "Включен"' },
 	63: { code: 'time', typeSignal: 'info', msg: 'CO2: Режим "По времени"' },
 	64: { code: 'sens', typeSignal: 'info', msg: 'CO2: Режим "По датчику"' },
-	84: { code: 'co2_work', typeSignal: 'info', msg: 'Удаление СО2 в работе' },
-	89: { code: 'co2_wait', typeSignal: 'info', msg: 'Удаление СО2 (ожидание' },
+	84: { code: 'co2work', typeSignal: 'info', msg: 'Удаление СО2 в работе' },
+	89: { code: 'co2wait', typeSignal: 'info', msg: 'Удаление СО2 (ожидание' },
 	// ======== Оттайка слива воды ========
 	67: {
 		code: 'off',

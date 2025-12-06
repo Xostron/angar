@@ -49,7 +49,7 @@ function checkMain(bld, obj, acc, o) {
 	// Если клапан был открыт - то запрет удаление СО2, и обнуление таймеров ожидания
 	if (!o.vlvClose && !acc.work) {
 		console.log('\t 1-Запрещено удаление СО2 (клапан открыт)')
-		delExtra(bld._id, null, 'co2', 'co2_wait')
+		delExtra(bld._id, null, 'co2', 'co2wait')
 		clear(acc, 'work', 'wait', 'start')
 		return false
 	}

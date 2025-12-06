@@ -2,7 +2,7 @@ const { msgB } = require('@tool/message')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
-// Питание в норме
+// Питание отключено DI
 function supply(building, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(building?._id, obj, 'supply')
 	// Питание в норме
@@ -11,7 +11,7 @@ function supply(building, section, obj, s, se, m, automode, acc, data) {
 		acc.on = true
 		acc._alarm = false
 	}
-	// Питания нет
+	// Питание отключено
 	if (sig === true && !acc._alarm) {
 		wrExtralrm(building._id, null, 'supply', { date: new Date(), ...msgB(building, 38) })
 		acc.on = false

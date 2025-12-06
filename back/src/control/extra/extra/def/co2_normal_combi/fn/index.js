@@ -11,7 +11,7 @@ function time(bld, obj, acc, m, se, s, o, resultFan) {
 	let time = compareTime(acc.wait, s.co2.wait.w)
 	// Ждем
 	if (!time) {
-		wrExtra(bld._id, null, 'co2', msgB(bld, 89, `${s.co2.wait.w / 60 / 1000}мин)`), 'co2_wait')
+		wrExtra(bld._id, null, 'co2', msgB(bld, 89, `${s.co2.wait.w / 60 / 1000}мин)`), 'co2wait')
 		return console.log(
 			`\t3-Ожидание по таймеру ${s.co2.wait.w / 60 / 1000}мин)`,
 			acc.wait,
@@ -37,7 +37,7 @@ function time(bld, obj, acc, m, se, s, o, resultFan) {
 	resultFan.start.push(true)
 
 	console.log('\t3-Работа по таймеру')
-	delExtra(bld._id, null, 'co2', 'co2_wait')
+	delExtra(bld._id, null, 'co2', 'co2wait')
 	// Ждем время работы
 	time = compareTime(acc.work, s.co2.work)
 	// Время работы прошло
@@ -96,7 +96,7 @@ function on(bld, obj, acc, m, se, s, o, resultFan) {
 // СО2: Выкл
 function off(bld, obj, acc, m, se, s, o, resultFan) {
 	clear(acc, 'work', 'wait', 'start')
-	delExtra(bld._id, null, 'co2', 'co2_wait')
+	delExtra(bld._id, null, 'co2', 'co2wait')
 	resultFan.start.push(false)
 	console.log('\tРежим: ВЫКЛ')
 }

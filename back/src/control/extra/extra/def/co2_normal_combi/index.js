@@ -53,6 +53,6 @@ function fnMsg(bld, acc, s) {
 		const arr = [null, 'off', 'on', 'sensor', 'time']
 		delUnused(arr, s?.co2?.mode, bld, code, 'co2')
 	}
-	if (acc.start) wrExtra(bld._id, null, 'co2', msgB(bld, 84, acc.message), 'co2_work')
-	else delExtra(bld._id, null, 'co2', 'co2_work')
+	if (acc.start) wrExtra(bld._id, null, 'co2', msgB(bld, 84, acc.message), 'co2work')
+	else delExtra(bld._id, null, 'co2', 'co2work')
 }
