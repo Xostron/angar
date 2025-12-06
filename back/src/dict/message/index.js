@@ -80,7 +80,7 @@ const data = {
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой (по продукту)',
 	},
-	// ======= Сообщения Achieve =======
+	// ======= Сообщения Achieve ======= flt: [true] - включить отправку в push
 	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
 	150: { order: 2, code: 'target', msg: '' },
 	151: { order: 3, code: 'datestop', msg: 'Склад выключен', flt: [true] },
