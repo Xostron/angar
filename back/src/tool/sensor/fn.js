@@ -121,7 +121,7 @@ function range(r, sens) {
 }
 
 // Аварийные сообщения о неисправности датчика
-function webAlarm(r, bld, sect, sens) {
+function webSensAlarm(r, bld, sect, sens) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
 	if (
 		r.state === 'alarm' &&
@@ -203,7 +203,7 @@ module.exports = {
 	detection,
 	state,
 	range,
-	webAlarm,
+	webSensAlarm,
 	fnMsgs,
 	fnMsg,
 	isValidWeather,
