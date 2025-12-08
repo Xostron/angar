@@ -38,8 +38,8 @@ function isCombiCold(bld, am, s) {
 function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	// По-умолчанию ВНО испарителя включены
 	let state = true
-	// // Если Продукт достиг задания - возврат true, чтобы не было блокировки ВНО секций
-	// if (bdata.accAuto.cold?.flagFinish) return state
+	// Если Продукт достиг задания - возврат true, чтобы не было блокировки ВНО секций
+	if (bdata.accAuto.cold?.flagFinish) return state
 
 	if (isCombiCold(bld, bdata?.automode, bdata?.s)) {
 		const mS = mech(obj, idS, bld._id)
@@ -73,7 +73,7 @@ function isCoolerCombiOn(bld, bdata) {
 	//
 	let coolerCombiOn = true
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
-	const alrAuto = isAlr(bld._id, automode)
+	// const alrAuto = isAlr(bld._id, automode)
 	//
 	// if (bld?.type === 'combi' && automode === 'cooling' && alrAuto)
 	if (isCombiCold(bld, automode, s))
