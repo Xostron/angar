@@ -378,6 +378,8 @@ const data = {
 	// 86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
 	// 87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
 	// 88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
+	87: { code: 'ventWait', typeSignal: 'info', msg: 'Обдув датчиков. Ожидание' },
+	88: { code: 'ventWork', typeSignal: 'info', msg: 'Обдув датчиков. Работа' },
 	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
 	142: { code: 'ventWork', typeSignal: 'info', msg: 'Внутренняя вентиляция. Работа' },
 	143: {

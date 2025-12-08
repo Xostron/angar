@@ -1,5 +1,7 @@
-const { compareTime, onTime } = require('@tool/command/time')
+const { compareTime, onTime, remTime } = require('@tool/command/time')
 const check = require('../../../check')
+const { wrAchieve } = require('@tool/message/achieve')
+const { msgB } = require('@tool/message')
 
 // Испаритель выключен
 function off(fnChange, accCold, acc, se, s, bld, clr) {
@@ -24,19 +26,12 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	// Время работы в текущем режиме
 	onTime('off', acc)
 
-	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова по достижению задания
+	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова 
+	// по достижению задания
 	if (accCold.finishTarget) {
-		const time = compareTime(accCold.finishTarget, s?.coolerCombi?.stop)
-		console.log('\toff', 'Выключен по достижению задания', time, s?.coolerCombi?.stop)
-		if (time) {
-			accCold.finishTarget = null
-			acc.state.off = null
-			// Время ожидания прошло -> проверка вышли из задания ->
-			// если нет инициализируем заново accCold.finishTarget и снова ждем
-			return check.combi(fnChange, 'off', accCold, acc, se, s, bld, clr)
-		}
-		// Время ожидания не прошло просто остаемся выключенным
-		// в этом времени ожидания периодически включается внутренняя вентиляция
+		console.log('\toff', 'Выключен по достижению задания', s?.coolerCombi?.stop)
+		// По окончанию времени достижения задания -> включается внутренняя вентиляция ОБДУВ
+		// По окончанию обдува сбрасывается accCold.finishTarget=null
 		return
 	}
 

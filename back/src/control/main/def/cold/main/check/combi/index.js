@@ -2,6 +2,7 @@ const mes = require('@dict/message')
 const { msgB } = require('@tool/message')
 const { wrAchieve, delAchieve } = require('@tool/message/achieve')
 const { data: store } = require('@store')
+const { remTime } = require('@tool/command/time')
 
 /**
  * Склад холодильник, комби в режиме холодильника
@@ -19,19 +20,6 @@ const { data: store } = require('@store')
  */
 function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// "Температура задания достигнута"
-	// console.log(
-	// 	1100,
-	// 	se.tprd,
-	// 	accCold.tgtTprd,
-	// 	se.hin,
-	// 	s.mois.humidity,
-	// 	se.tprd <= accCold.tgtTprd && se.hin <= s.mois.humidity,
-	// 	s.cooling.hysteresisIn,
-	// 	bld._id,
-	// 	bld.type,
-	// 	store.alarm.achieve?.[bld._id]?.[bld.type]
-	// )
-	// console.log(11000, se.tprd, accCold.tgtTprd, se.tprd <= accCold.tgtTprd)
 	if (se.tprd <= accCold.tgtTprd && se.hin <= s.mois.humidity) {
 		delAchieve(bld._id, bld.type, mes[81].code)
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accCold.tgtTprd ?? '--'} °C`))
