@@ -1,3 +1,4 @@
+const { msgB } = require('@tool/message')
 const alarm = require('./alarm')
 const { wrAchieve, delAchieve } = require('@tool/message/achieve')
 
@@ -17,49 +18,57 @@ const data = {
 		alwaysFan: s.vent.mode === 'on',
 	}),
 	// Промежуточные расчеты по секции
-	middlew: (building, section, obj, s, se, seB, alr, acc) => {},
+	middlew: (bld, section, obj, s, se, seB, alr, acc) => {},
 	// Промежуточные расчеты по складу
 	middlewB,
 }
 
-function middlewB(building, obj, s, seB, am, acc) {
+function middlewB(bld, obj, s, seB, am, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
 
 	// ************************************************
 	if (tout < s.drying.channelMin) {
-		wrAchieve(building._id, 'drying', {
-			date: new Date(),
-			code: 'drying-1',
-			msg: `t задания канала = ${s.drying.channelMin} °С, t задания продукта = ${tprd} °С`,
-		})
+		wrAchieve(
+			bld._id,
+			'drying',
+			msgB(
+				bld,
+				153,
+				`t задания канала = ${s.drying.channelMin} °С, t задания продукта = ${tprd} °С`
+			)
+		)
 		acc.f1 = true
 	} else {
 		acc.f1 = false
-		delAchieve(building._id, 'drying', 'drying-1')
+		delAchieve(bld._id, 'drying', 'drying1')
 	}
 	// ************************************************
 	if (tout >= s.drying.channelMin && tout < s.drying.channelMax) {
-		wrAchieve(building._id, 'drying', {
-			date: new Date(),
-			code: 'drying-2',
-			msg: `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`,
-		})
+		wrAchieve(
+			bld._id,
+			'drying',
+			msgB(bld, 154, `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`)
+		)
 		acc.f2 = true
 	} else {
 		acc.f2 = false
-		delAchieve(building._id, 'drying', 'drying-2')
+		delAchieve(bld._id, 'drying', 'drying2')
 	}
 	// ************************************************
 	if (tout >= s.drying.channelMax) {
-		wrAchieve(building._id, 'drying', {
-			date: new Date(),
-			code: 'drying-3',
-			msg: `t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${seB.tprd} °С`,
-		})
+		wrAchieve(
+			bld._id,
+			'drying',
+			msgB(
+				bld,
+				155,
+				`t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${seB.tprd} °С`
+			)
+		)
 		acc.f3 = true
 	} else {
 		acc.f3 = false
-		delAchieve(building._id, 'drying', 'drying-3')
+		delAchieve(bld._id, 'drying', 'drying-3')
 	}
 }
 

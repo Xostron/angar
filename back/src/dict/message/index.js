@@ -84,6 +84,10 @@ const data = {
 	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
 	150: { order: 2, code: 'target', msg: '' },
 	151: { order: 3, code: 'datestop', msg: 'Склад выключен', flt: [true] },
+	152: { order: 4, code: 'sectOff', msg: 'Нет секций в авто', flt: [true] },
+	153: { order: 2, code: 'drying1', msg: '' },
+	154: { order: 2, code: 'drying2', msg: '' },
+	155: { order: 2, code: 'drying3', msg: '' },
 
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
@@ -528,12 +532,12 @@ const data = {
 	516: { msg: 'Ручное управление: клапан открыть на' },
 	517: { msg: 'Ручное управление: клапан стоп' },
 	518: paste('*1 *2'),
-};
+}
 
-module.exports = data;
+module.exports = data
 
 function paste(msg) {
 	return function (...txt) {
-		return msg.replace('*1', txt[0]).replace('*2', txt[1]);
-	};
+		return msg.replace('*1', txt[0]).replace('*2', txt[1])
+	}
 }

@@ -98,17 +98,24 @@ function finishSmoking(dataB, resultB, key) {
 
 /**
  * Данные режима хранения
+ * tprdMin
+ * finish
  * @param {*} data Текущее состояние процесса
  * @returns
  */
 function fnCooling(data) {
 	if (!data) return
 	for (const idB in data) {
+		// console.log('5500', data[idB])
 		store.retain[idB].cooling ??= {}
 		// Мин. темп. продукта в режиме хранения
-		store.retain[idB].cooling.tprdMin = store.retain[idB].automode === 'cooling' ? data?.[idB]?.cooling?.tprdMin ?? null : null
+		store.retain[idB].cooling.tprdMin =
+			store.retain[idB].automode === 'cooling'
+				? data?.[idB]?.cooling?.tprdMin ?? data?.[idB]?.combi?.tprdMin
+				: null
 		// Дата и время: продукт достиг задания в режиме хранения
-		store.retain[idB].cooling.finish = data?.[idB]?.cooling?.finish
+		store.retain[idB].cooling.finish =
+			data?.[idB]?.cooling?.finish ?? data?.[idB]?.combi?.finish
 	}
 }
 
@@ -143,10 +150,13 @@ function fnDryingCount(building) {
 			store.retain[idB]?.automode == 'drying' &&
 			!store.retain[idB]?.drying?.date
 		) {
-			store.retain[idB].drying.date = new Date();
+			store.retain[idB].drying.date = new Date()
 		}
 		// Сушка выключена / склад выключен - сохраняем в аккумулятор
-		if ((!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') && store.retain?.[idB]?.drying?.date) {
+		if (
+			(!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') &&
+			store.retain?.[idB]?.drying?.date
+		) {
 			store.retain[idB].drying.acc = store.retain[idB].drying.count
 			delete store.retain?.[idB]?.drying?.date
 			delete store.retain?.[idB]?.drying?.count
@@ -161,10 +171,9 @@ function fnDryingCount(building) {
 
 		// Подсчет дней
 		if (dt) {
-			const dd = typeof dt == 'string' ? new Date(dt) : dt;
+			const dd = typeof dt == 'string' ? new Date(dt) : dt
 			store.retain[idB].drying.count =
-				store.retain[idB].drying.acc +
-				(new Date() - dd) / (24 * 60 * 60 * 1000);
+				store.retain[idB].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
 		}
 	}
 }
@@ -176,4 +185,4 @@ module.exports = {
 	fnDateBuild,
 	fnDryingCount,
 	fnResultValve,
-};
+}

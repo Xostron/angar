@@ -8,23 +8,26 @@ function isAchieve(idB, name, code) {
 }
 // Achieve - это информационные сообщения режима: температура продукта достигла задания и т.д.
 // Записать в achieve (доп. функции)
-function wrAchieve(buildingId, name, o) {
+function wrAchieve(idB, name, o) {
 	store.alarm.achieve ??= {}
-	store.alarm.achieve[buildingId] ??= {}
-	store.alarm.achieve[buildingId][name] ??= {}
-	store.alarm.achieve[buildingId][name][o.code] = o
+	store.alarm.achieve[idB] ??= {}
+	store.alarm.achieve[idB][name] ??= {}
+
+	!isAchieve(idB, name, o.code)
+		? (store.alarm.achieve[idB][name][o.code] = o)
+		: (store.alarm.achieve[idB][name][o.code].msg = o.msg)
 }
 
 // Удалить из aciheve
-function delAchieve(buildingId, name, code) {
-	delete store?.alarm?.achieve?.[buildingId]?.[name]?.[code]
+function delAchieve(idB, name, code) {
+	delete store?.alarm?.achieve?.[idB]?.[name]?.[code]
 }
 
 // Обновить запись сообщения
-function updAchieve(buildingId, name, code, set) {
-	if (!store.alarm.achieve?.[buildingId]?.[name]?.[code]) return
+function updAchieve(idB, name, code, set) {
+	if (!store.alarm.achieve?.[idB]?.[name]?.[code]) return
 	for (const key in set) {
-		store.alarm.achieve[buildingId][name][code][key] = set[key]
+		store.alarm.achieve[idB][name][code][key] = set[key]
 	}
 }
 
@@ -37,30 +40,52 @@ function updAchieve(buildingId, name, code, set) {
  * @param {boolean} start Склад включен
  */
 function clearAchieve(bld, obj, accAuto, isAllSectOff, start) {
-	if (!start || isAllSectOff) fnClear()
-	add()
+	// Если выключен склад или все секции выключены -> очистка событий достижений
+	fnClear()
+	// Добавление/обновление сообщений "склад выкл"
+	fnDatestop()
+	// Добавление/обновление сообщений "нет секции в авто"
+	fnSectOff()
 	// Очистка всех событий
 	function fnClear() {
-		if (!accAuto.clearAchieve) {
-			delete store.alarm.achieve?.[bld._id]
-			accAuto.clearAchieve = true
+		// Очистить все сообщения достижений, кроме сообщения склад выключен
+		if (!start) {
+			const datestop = { ...(store.alarm.achieve?.[bld._id]?.building?.datestop ?? {}) }
+			store.alarm.achieve[bld._id] = {}
+			store.alarm.achieve[bld._id].building = {}
+			if (Object.keys(datestop).length)
+				store.alarm.achieve[bld._id].building.datestop = datestop
+			return
 		}
-		if (start || !isAllSectOff) delete accAuto?.clearAchieve
+		// Очистить все сообщения достижений, если склад включен,
+		// но нет ни одной секции в авторежиме
+		if (isAllSectOff) {
+			const sectOff = { ...(store.alarm.achieve?.[bld._id]?.building?.sectOff ?? {}) }
+			store.alarm.achieve[bld._id] = {}
+			store.alarm.achieve[bld._id].building = {}
+			if (Object.keys(sectOff).length) store.alarm.achieve[bld._id].building.sectOff = sectOff
+		}
 	}
 	// Добавление и обновление события "Склад выключен"
-	function add() {
-		if (!start && !accAuto.datestop) accAuto.datestop = true
-
+	function fnDatestop() {
 		if (start) {
-			accAuto.datestop = null
-			delAchieve(bld._id, 'building', mes[151].code)
+			delAchieve(bld._id, 'building', 'datestop')
+			return
 		}
-		if (accAuto.datestop) {
-			const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
-			const msg = elapsed ? mes[151].msg + ' ' + elapsed : null
-			wrAchieve(bld._id, 'building', msgB(bld, 151, elapsed))
-			// if (msg) updAchieve(bld._id, 'building', 'datestop', { msg })
+		const elapsed = elapsedTime(obj.retain?.[bld._id]?.datestop ?? null)
+		wrAchieve(bld._id, 'building', msgB(bld, 151, elapsed))
+	}
+	// Добавление/обновление сообщений "нет секции в авто"
+	function fnSectOff() {
+		// Если склад выключен, то сообщение о секция не важно
+		if (!start) return
+		// Хоть одна секция в авто
+		if (!isAllSectOff) {
+			delAchieve(bld._id, 'building', mes[152].code)
+			return
 		}
+		// Нет секции в авто
+		wrAchieve(bld._id, 'building', msgB(bld, 152))
 	}
 }
 

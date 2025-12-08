@@ -8,12 +8,12 @@ const { readTO } = require('@tool/json')
 /**
  * Статистика - сбор данных по изменению (Главный цикл)
  * @param {object} obj глобальный объект склада (рама, значения с модулей, аварии)
- * @param {object[]} alr данные для логирования неисправностей
+ * @param {object[]} history данные для логирования неисправностей
  */
-function statOnChange(obj, alr) {
-	if (!alr || !obj?.value) return
+function statOnChange(obj, history) {
+	if (!history || !obj?.value) return
 	const { data, value } = obj
-	const { critical, event } = alr
+	const { critical, event, achieve } = history
 	const force = TT.check()
 	// Вентиляторы
 	pLog(data, data.fan, value, 'fan', force)
@@ -32,6 +32,7 @@ function statOnChange(obj, alr) {
 	historyLog(critical, store.prev.critical, 'alarm', force)
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event', force)
+	historyLog(achieve, store.prev.achieve, 'event', force)
 	if (force) {
 		// Датчики (Total после анализа)
 		sensTotalLog(store?.value?.total, data.building, force)

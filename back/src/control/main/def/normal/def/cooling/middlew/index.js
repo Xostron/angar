@@ -102,7 +102,8 @@ function target(bld, obj, s, seB, acc) {
 	acc.tprdMin = acc.tprdMin === null ? seB.tprd : acc.tprdMin
 	acc.tprdMin = seB.tprd < acc.tprdMin ? seB.tprd : acc.tprdMin
 	acc.tprdMin = acc.tprdMin < acc.tgt ? acc.tgt : acc.tprdMin
-	// console.log(11, 'Мин темп продукта', acc.tprdMin)
+	// store.retain[bld._id].cooling.tprdMin = acc.tprdMin
+	console.log(3300, 'Мин темп продукта', acc.tprdMin)
 }
 
 /**
@@ -114,35 +115,42 @@ function message(bld, obj, s, seB, am, acc) {
 	if (isCombiCold(bld, am, s)) return
 	if (!s) return
 
-	// Продукт достиг температуры задания*****************************************
+	// Продукт достиг температуры задания
 	// В режиме лечения - Продукт достиг не активен
 	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
 		// Истекшее время "Продукт достиг задания"
 		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
 		// Защита против потери счетчика при перезагрузке pos
 		if (elapsed) acc.finish = obj.retain?.[bld._id]?.cooling?.finish
-		else acc.finish = new Date()
+		else {
+			acc.finish = new Date()
+			// 
+			// store.retain[bld._id].cooling ??= {}
+			// store.retain[bld._id].cooling.finish = acc.finish
+		}
 		wrAchieve(bld._id, 'cooling', msgB(bld, 15))
 	}
 
 	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
 	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
 		acc.finish = null
+		// store.retain[bld._id].cooling.finish = acc.finish
 		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
 
 	const txt = `Tзад.канала = ${acc.tcnl ?? '--'} (${seB.tcnl ?? '--'})°C. 
 	Тзад.прод. = ${acc.tgt ?? '--'} (${seB.tprd ?? '--'})°C`
-	console.log(1100, txt)
-	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt), txt)
+	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt))
 
 	// Обновление времени в сообщении "Продукт достиг температуры"
 	if (acc.finish) {
 		// Истекшее время "Продукт достиг задания"
 		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
-		const msg = elapsed ? mes[15].msg + ' ' + elapsed : null
+		const msg = elapsed ? elapsed : ''
+		console.log(2200, elapsed, msg)
 		if (!msg) return
-		updAchieve(bld._id, 'cooling', 'finish', { msg })
+		// updAchieve(bld._id, 'cooling', 'finish', { msg })
+		wrAchieve(bld._id, 'cooling', msgB(bld, 15, msg))
 	}
 }
 

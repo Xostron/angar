@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 const data = {
 	// Кэш модулей выхода
@@ -131,7 +131,7 @@ const data = {
 	timeout: {},
 	debMdl: {},
 	// Прошлые состояния
-	prev: { critical: {}, event: {} },
+	prev: { critical: {}, event: {}, achieve: {} },
 	// Обнулить счетчик сушки
 	zero: new Set(),
 	// Готовые настройки для алгоритма
@@ -150,7 +150,7 @@ const data = {
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
-};
+}
 
 // Сссылка на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
 function readAcc(buildingId, name, sectionId) {

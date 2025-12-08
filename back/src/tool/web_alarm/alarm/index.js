@@ -24,7 +24,7 @@ function alarm(obj) {
 		monit: { critical: {} },
 		// statistic history (critical:[] критические аварии,
 		// event:[] информационные сообщения)
-		history: { critical: [], event: [] },
+		history: { critical: [], event: [], achieve: [] },
 	}
 
 	// Таймер запретов
@@ -47,6 +47,8 @@ function alarm(obj) {
 		// Для всех складов: сообщение Склад выключен
 		if (store.alarm?.achieve?.[bld._id]?.building?.datestop)
 			r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.datestop)
+		if (store.alarm?.achieve?.[bld._id]?.building?.sectOff)
+			r.achieve[bld._id].push(store.alarm?.achieve?.[bld._id]?.building?.sectOff)
 		r.achieve[bld._id].sort((a, b) => a.order - b.order)
 
 		// аварии по секции
@@ -64,19 +66,21 @@ function alarm(obj) {
 	// Счетчик текущих аварий (карточка склада)
 	count(r)
 	// История для логов
-	history(r)
+	history(r, data.building)
 	// Мониторинг: критические аварии
 	critical(r)
 	return r
 }
 
-// Данные отправляемые в логирование
-function history(r) {
-	for (const bld in r.signal) {
+// Сбор данных - Данные отправляемые в логирование
+function history(r, buildings) {
+	for (const { _id: idB } of buildings) {
 		// Критические аварии
-		r.history.critical = r.history.critical.concat(...r.signal[bld].filter((el) => el.count))
-		// Инофрмационные сообщения
-		r.history.event = r.history.event.concat(...r.signal[bld].filter((el) => !el.count))
+		r.history.critical = r.history.critical.concat(...r.signal[idB].filter((el) => el.count))
+		// Информационные сообщения
+		r.history.event = r.history.event.concat(...r.signal[idB].filter((el) => !el.count))
+		// Сообщения achieve
+		r.history.achieve = r.history.achieve.concat(...r.achieve[idB])
 	}
 }
 

@@ -13,7 +13,7 @@ function clearAcc(accAuto, isAllSectOff, start) {
 	function fnClear() {
 		if (!Object.keys(accAuto).length) return
 		for (const key in accAuto) {
-			if (['cold', 'datestop', 'clearAchieve'].includes(key)) continue
+			if (['cold'].includes(key)) continue
 			delete accAuto[key]
 		}
 	}
