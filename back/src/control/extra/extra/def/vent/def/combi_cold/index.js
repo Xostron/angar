@@ -4,6 +4,7 @@ const { compareTime, remTime } = require('@tool/command/time')
 
 // Комби-холод. Тпродукта достигла задания
 function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
+	delExtra(bld._id, null, 'vent', 'ventOn')
 	acc.CC ??= {}
 	// Ожидание ВВ
 	acc.CC.wait ??= new Date()

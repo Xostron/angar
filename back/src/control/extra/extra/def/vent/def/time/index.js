@@ -4,6 +4,8 @@ const { compareTime, remTime } = require('@tool/command/time')
 
 // Режим вентиляции: Авто - по времени
 function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
+	delExtra(bld._id, null, 'vent', 'ventOn')
+
 	acc.byTime ??= {}
 	// Ожидание ВВ
 	acc.byTime.wait ??= new Date()
