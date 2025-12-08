@@ -61,7 +61,6 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	if (accCold.flagFinish && se.tprd > accCold.tgtTprd + s.cooling.hysteresisIn) {
 		accCold.flagFinish = null
 		accCold.finishTarget = null
-		// accCold.blow = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
 	const txt = `Tзад.канала = ${accCold.tgtTcnl ?? '--'} (${se.tcnl ?? '--'})°C. 

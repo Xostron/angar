@@ -157,7 +157,7 @@ function turnOff(idB, idS, fan, bStart, start) {
 	// ЗАПРЕЩЕНО ВКЛ и не блокируем ВНО если склад выключен и секция в ручном режиме
 	if (!bStart && fan.mode === false) return true
 	// Запрещено и выкл ВНО если закончилось окуривание
-	console.log(11, idS, 'ПП: Выключение ВНО')
+	console.log(11, idS, 'Окуривание ПП: Выключение ВНО')
 	fan.fans.forEach((f, i) => {
 		f?.ao?.id ? ctrlAO(f, idB, _MIN_SP) : null
 		ctrlDO(f, idB, 'off')

@@ -32,6 +32,7 @@ export default function Input({
   const [val, setVal] = useState(value);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const inputRef = useRef(null);
+  const keyboardInstanceRef = useRef(null); // Ref для экземпляра клавиатуры
   const apiInfo = useEquipStore((s) => s.apiInfo)
   if(!apiInfo?.keyboard) keyboard = false;
   // Защита от сброса курсора в конец текста
@@ -47,16 +48,11 @@ export default function Input({
 
     const handleClickOutside = (event) => {
       // Проверяем, что клик был не по input
-      if (inputRef.current && inputRef.current.contains(event.target)) {
-        return;
-      }
+      if (inputRef.current && inputRef.current.contains(event.target)) return;
 
       // Проверяем, что клик был не по клавиатуре (в т.ч. через портал)
       const clickedKeyboard = event.target.closest('.keyboard-wrapper');
-      if (clickedKeyboard) {
-        return;
-      }
-
+      if (clickedKeyboard) return;
       // Закрываем клавиатуру
       setShowKeyboard(false);
     };
@@ -74,33 +70,19 @@ export default function Input({
 
   // Определяем тип клавиатуры
   const getKeyboardType = () => {
-    if (keyboard === true) {
       // По умолчанию: numeric для number, иначе default
-      return type === "number" ? "numeric" : "default";
-    }
-    if (typeof keyboard === "string") {
-      return keyboard;
-    }
+    if (keyboard === true) return type === "number" ? "numeric" : "default";
+    if (typeof keyboard === "string") return keyboard;
     return "default";
   };
 
 //   Нужна ли клавиатура
-// TODO: НУЖНА Глобальная переменная
   const needsKeyboard = type !=='time' && keyboard !== undefined && keyboard !== false;
 
   // Обработчик клика по полю
   const handleInputClick = (e) => {
-    if (needsKeyboard && !dis) {
-      setShowKeyboard(true);
-    }
-    if (onClick) {
-      onClick(e);
-    }
-  };
-
-  // Закрытие клавиатуры
-  const handleCloseKeyboard = () => {
-    setShowKeyboard(false);
+    if (needsKeyboard && !dis) setShowKeyboard(true);
+    if (onClick) onClick(e);
   };
 
   let cl = ["cell input", cls];
@@ -111,6 +93,8 @@ export default function Input({
   const mini = min ?? -12000;
   const maxi = max ?? 12000;
 
+  if(title) title = `${title} min=${min} max=${max}`
+  
   return (
     <>
       <div style={{ ...style }} className={cl}>
@@ -140,14 +124,14 @@ export default function Input({
         <Keyboard
           type={getKeyboardType()}
           value={val}
-          onChange={(newValue) => {
-            setVal(newValue);
-            setValue(newValue);
+          onChange={(v) => {
+            onChange({target: {value: v}});
           }}
-          onClose={handleCloseKeyboard}
+          onClose={() => setShowKeyboard(false)}
           container={keyboardContainer}
           showInput={showInput}
           placeholder={placeholder}
+          keyboardInstanceRef={keyboardInstanceRef}
         />
       )}
     </>
@@ -155,19 +139,35 @@ export default function Input({
 
   function onChange(e) {
     let v = e.target.value;
+    
     // Валидация для Number
-    if (type === "number") v = validNumber(e.target.value, mini);
+    if (type === "number") v = validNumber(v, mini, maxi);
     if (Number.isInteger(step) && +v) v = Math.floor(+v);
 
+    // Синхронизируем клавиатуру после валидации
+    const syncKeyboard = (value) => {
+      if (keyboardInstanceRef.current) {
+        keyboardInstanceRef.current.setInput(String(value));
+      }
+    };
+
     if (maxi && mini >= 0 && maxi.toString().length > 1 && +v * 10 < maxi) {
+      syncKeyboard(v);
+      setVal(v);
       return setValue(v);
     } else if ((v || v === 0) && mini > +v) {
+      syncKeyboard(mini);
+      setVal(mini);
       return setValue(mini);
     }
-    if ((v || v === 0) && maxi < +v) return setVal(maxi);
+    if ((v || v === 0) && maxi < +v) {
+      syncKeyboard(maxi);
+      setVal(maxi);
+      return setValue(maxi);
+    }
 
     if (type === "number") v = decimal(v, 2);
-
+    syncKeyboard(v);
     setVal(v);
     setValue(v);
   }

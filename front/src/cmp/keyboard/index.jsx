@@ -21,20 +21,40 @@ export default function Keyboard({
 	onClose,
 	placeholder = 'Введите текст...',
 	container = null,
-	showInput = false
+	showInput = false,
+	keyboardInstanceRef = null // Ref для доступа к экземпляру клавиатуры извне
 }) {
 	const [inputValue, setInputValue] = useState(value)
 	const [layoutName, setLayoutName] = useState('default')
 	const keyboard = useRef()
+	const valueRef = useRef(value) // Храним актуальное значение для использования в колбэках
 
+	// Обновляем ref при изменении value
+	useEffect(() => {
+		valueRef.current = value
+	}, [value])
 
 	useEffect(() => {
 		setInputValue(value)
 		// Синхронизируем виртуальную клавиатуру с новым значением
 		if (keyboard.current) {
-			keyboard.current.setInput(value)
+			keyboard.current.setInput(String(value ?? ''))
 		}
 	}, [value])
+
+	// Колбэк получения ref на клавиатуру
+	const onKeyboardRef = (kb) => {
+		keyboard.current = kb
+		// Передаем ref наружу для синхронизации
+		if (keyboardInstanceRef) {
+			keyboardInstanceRef.current = kb
+		}
+		// Устанавливаем начальное значение сразу при получении ref
+		if (kb) {
+			const currentValue = String(valueRef.current ?? value ?? '')
+			kb.setInput(currentValue)
+		}
+	}
 
 	// Обработчик изменения через клавиатуру
 	const onKeyPress = (button) => {
@@ -47,7 +67,8 @@ export default function Keyboard({
 
 	// Обработчик изменения значения
 	const onChangeInput = (input) => {
-		setInputValue(input)
+		// НЕ обновляем inputValue здесь - оно обновится через useEffect когда вернется провалидированное значение
+		// setInputValue(input) - УДАЛЕНО
 		if (onChange) {
 			onChange(input)
 		}
@@ -124,6 +145,7 @@ export default function Keyboard({
 					placeholder={placeholder}
 					/>
 				)}
+
 				{showInput &&onClose && (
 					<button 
 					className="keyboard-close-btn" 
@@ -136,7 +158,7 @@ export default function Keyboard({
 			</div>
 			{/* Клавиатура */}
 			<SimpleKeyboard
-				keyboardRef={r => (keyboard.current = r)}
+				keyboardRef={onKeyboardRef}
 				layoutName={layoutName}
 				layout={type === 'numeric' ? numericLayout : defaultLayout}
 				onChange={onChangeInput}

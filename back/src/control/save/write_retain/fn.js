@@ -106,7 +106,6 @@ function finishSmoking(dataB, resultB, key) {
 function fnCooling(data) {
 	if (!data) return
 	for (const idB in data) {
-		// console.log('5500', data[idB])
 		store.retain[idB].cooling ??= {}
 		// Мин. темп. продукта в режиме хранения
 		store.retain[idB].cooling.tprdMin =

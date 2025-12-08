@@ -130,7 +130,6 @@ function message(bld, obj, s, seB, am, acc) {
 	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
 	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
 		acc.finish = null
-		// store.retain[bld._id].cooling.finish = acc.finish
 		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
 
@@ -143,7 +142,6 @@ function message(bld, obj, s, seB, am, acc) {
 		// Истекшее время "Продукт достиг задания"
 		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
 		const msg = elapsed ? elapsed : ''
-		console.log(2200, elapsed, msg)
 		if (!msg) return
 		wrAchieve(bld._id, 'cooling', msgB(bld, 15, msg))
 	}
