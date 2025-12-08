@@ -102,7 +102,6 @@ function target(bld, obj, s, seB, acc) {
 	acc.tprdMin = acc.tprdMin === null ? seB.tprd : acc.tprdMin
 	acc.tprdMin = seB.tprd < acc.tprdMin ? seB.tprd : acc.tprdMin
 	acc.tprdMin = acc.tprdMin < acc.tgt ? acc.tgt : acc.tprdMin
-	// store.retain[bld._id].cooling.tprdMin = acc.tprdMin
 	console.log(3300, 'Мин темп продукта', acc.tprdMin)
 }
 
@@ -124,9 +123,6 @@ function message(bld, obj, s, seB, am, acc) {
 		if (elapsed) acc.finish = obj.retain?.[bld._id]?.cooling?.finish
 		else {
 			acc.finish = new Date()
-			// 
-			// store.retain[bld._id].cooling ??= {}
-			// store.retain[bld._id].cooling.finish = acc.finish
 		}
 		wrAchieve(bld._id, 'cooling', msgB(bld, 15))
 	}
@@ -149,7 +145,6 @@ function message(bld, obj, s, seB, am, acc) {
 		const msg = elapsed ? elapsed : ''
 		console.log(2200, elapsed, msg)
 		if (!msg) return
-		// updAchieve(bld._id, 'cooling', 'finish', { msg })
 		wrAchieve(bld._id, 'cooling', msgB(bld, 15, msg))
 	}
 }

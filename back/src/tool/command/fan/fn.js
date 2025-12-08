@@ -18,16 +18,6 @@ function fnACmd(bld, resultFan, obj, bdata) {
 	const coolerCombiOn = isCoolerCombiOn(bld, bdata)
 
 	resultFan.list.forEach((idS) => {
-		// Принудительное включение ВНО: удаление СО2, внутренняя вентиляция
-		if (resultFan.force.includes(true)) {
-			setACmd('fan', idS, {
-				delay,
-				type: 'on',
-				force: true, // принудительное включение
-				max: bdata?.s?.[resultFan?.stg]?.max, // max кол-во ВНО при принудительном включении
-			})
-			return
-		}
 		// Включение ВНО с проверкой:
 		// Секция в авто
 		const sectOn = obj?.retain?.[idB]?.mode?.[idS]
@@ -35,6 +25,7 @@ function fnACmd(bld, resultFan, obj, bdata) {
 		const local = isExtralrm(idB, idS, 'local')
 		// Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций
 		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
+
 		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
 			console.log(
 				11,
@@ -50,6 +41,19 @@ function fnACmd(bld, resultFan, obj, bdata) {
 			setACmd('fan', idS, { delay, type: 'off', force: null, max: null })
 			return
 		}
+
+		// Принудительное включение ВНО: удаление СО2, внутренняя вентиляция
+		if (resultFan.force.includes(true)) {
+			setACmd('fan', idS, {
+				delay,
+				type: 'on',
+				force: true, // принудительное включение
+				max: bdata?.s?.[resultFan?.stg]?.max, // max кол-во ВНО при принудительном включении
+			})
+			return
+		}
+		
+		// Если нет блокировок и нет принудительного, то включаем по состоянию start
 		setACmd('fan', idS, {
 			delay,
 			type: start ? 'on' : 'off',
