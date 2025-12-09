@@ -4,7 +4,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Местное управление (сигнал секции)
 function local(building, section, obj, s, se, m, automode, acc, data) {
-	const sig = getSignal(section?._id, obj, 'local', false)
+	const sig = getSignal(section?._id, obj, 'local')
 	// Сброс
 	if (sig === true ) {
 		delExtralrm(building._id, section._id, 'local')

@@ -20,7 +20,6 @@ function fanCombi(bld, bdata, obj, s, seB, m, alr, acc) {
 	// Логика включения ВНО в комбинированном складе в режиме холодильник
 	const start = checkStart(bld)
 	resultFan.start.push(start)
-	console.log(1100,'@@@@@@@@@@@@@@@@@@@@@@@@@@', start, resultFan.start)
 	// resultFan.list.push(sect._id)
 	// Последовательное вкл/выкл соленоида подогрева и ВНО секций
 	const { sol, fan } = mFan(bld, m, bdata)

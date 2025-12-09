@@ -1,4 +1,6 @@
 const { data: store } = require('@store')
+const mes = require('@dict/message')
+const { delAchieve } = require('@tool/message/achieve')
 
 /**
  * @description Агрегат (группа компрессоров) готов?
@@ -64,6 +66,7 @@ function clearBuild(bld, accAuto) {
 	if (!denied.every((el) => el)) return true
 	// Все испарители запрещены к работе -> очистка
 	del[bld.type](accAuto)
+	delAchieve(bld._id, bld.type, mes[80].code)
 	// console.log(555, bld.type, 'Все испарители запрещены')
 	return false
 }
