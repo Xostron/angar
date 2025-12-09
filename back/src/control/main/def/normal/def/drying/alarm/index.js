@@ -2,7 +2,15 @@ const { msgB } = require('@tool/message')
 
 function alarm(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn } = seB
-	console.log(1100, '@@@@@@@@@@@@@@@@@@@@@!',  'bdata.start', bdata.start)
+	console.log(
+		1100,
+		'@@@@@@@@@@@@@@@@@@@@@!',
+		'bdata.start',
+		bdata.start,
+		tout > s.drying.channelMax,
+		tout,
+		s.drying.channelMax
+	)
 	// Абсолютная влажность улицы выше допустимой при сушке
 	// console.log(
 	// 	99003,
@@ -44,8 +52,8 @@ function alarm(s, seB, building, acc, bdata) {
 	return [
 		// Температура улицы не подходит при сушке
 		{
-			set: s.drying.channelMax < tout,
-			reset: s.drying.channelMax > tout + s.drying.hysteresisOut,
+			set: tout > s.drying.channelMax,
+			reset: tout + s.drying.hysteresisOut < s.drying.channelMax,
 			msg: msgB(building, 1),
 		},
 		// Температура улицы ниже допустимой при сушке
