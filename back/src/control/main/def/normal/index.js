@@ -16,7 +16,8 @@ function normal(bld, obj, bdata) {
 		m,
 		automode,
 		accAuto,
-		resultFan
+		resultFan,
+		bdata
 	)
 	// СЕКЦИИ: авторежимы, доп.функции - extra, доп. аварии - extralrm
 	section(start, bld, obj, s, seB, automode, accAuto, resultFan, alrBld, alrAm)
