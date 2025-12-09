@@ -373,11 +373,6 @@ const data = {
 		msg: 'Подогрев клапанов включен',
 	},
 	// Вентиляция
-	// 58: { code: 'auto', typeSignal: 'info', msg: 'Режим работы вентиляции: Авто' },
-	// 85: { code: 'vent_on', typeSignal: 'info', msg: 'Работает внутр. вентиляция (постоянно)' },
-	// 86: { code: 'vent_dura', typeSignal: 'info', msg: 'Работает внутр. вентиляция (подхват)' },
-	// 87: { code: 'vent_time_wait', typeSignal: 'info', msg: 'Работает внутр. вентиляция (ожидание' },
-	// 88: { code: 'vent_time', typeSignal: 'info', msg: 'Работает внутр. вентиляция (по таймеру' },
 	87: { code: 'ventWait', typeSignal: 'info', msg: 'Обдув датчиков. Ожидание' },
 	88: { code: 'ventWork', typeSignal: 'info', msg: 'Обдув датчиков. Работа' },
 	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
@@ -385,7 +380,7 @@ const data = {
 	143: {
 		code: 'ventCheck',
 		typeSignal: 'info',
-		msg: 'Внутренняя вентиляция. Выключена. По причине:',
+		msg: 'Внутренняя вентиляция (Обдув датчиков). Выключена. По причине:',
 	},
 	144: { code: 'off', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим выключен' },
 	145: { code: 'ventOn', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим включен' },
@@ -393,7 +388,7 @@ const data = {
 	147: {
 		code: 'combiCold',
 		typeSignal: 'info',
-		msg: 'Внутренняя вентиляция. Режим комби-холодильник',
+		msg: 'Внутренняя вентиляция (Обдув датчиков). Режим комби-холодильник',
 	},
 	148: {
 		code: 'durCheck',

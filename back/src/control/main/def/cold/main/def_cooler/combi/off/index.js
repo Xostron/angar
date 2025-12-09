@@ -32,6 +32,15 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 		console.log('\toff', 'Выключен по достижению задания', s?.coolerCombi?.stop)
 		// По окончанию времени достижения задания -> включается внутренняя вентиляция ОБДУВ
 		// По окончанию обдува сбрасывается accCold.finishTarget=null
+		wrAchieve(
+			bld._id,
+			bld.type,
+			msgB(
+				bld,
+				80,
+				`${accCold.tgtTprd ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`
+			)
+		)
 		return
 	}
 

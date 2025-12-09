@@ -14,10 +14,8 @@ function vlv(obj) {
 		const idB = getIdB(mdlOnId, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// Блокировки
-		// const local = isExtralrm(idB, v.sectionId[0], 'local')
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
-		const localB = isExtralrm(idB, null, 'local')
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		const vlvLim = isExtralrm(idB, v.sectionId[0], 'vlvLim')
 		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
@@ -28,23 +26,11 @@ function vlv(obj) {
 			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
 			cls
 
-		console.log(
-			3333,
-			'lock',
-			v.type,
-			local,
-			localB,
-			alrStop,
-			vlvLim,
-			vlvLimB,
-			vlvCrash,
-			longOC,
-			offS
-		)
+		console.log(3333, 'lock', v.type, local, alrStop, vlvLim, vlvLimB, vlvCrash, longOC, offS)
 		// блокировка открытия
-		outV('on', output, v, opn, localB, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
+		outV('on', output, v, opn, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
 		// // блокировка закрытия
-		outV('off', output, v, cls, localB, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
+		outV('off', output, v, cls, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
 	}
 }
 
@@ -68,8 +54,6 @@ function fan(obj, s) {
 		const isAlrOff =
 			value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
 		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
-		// const local = isExtralrm(idB, f.owner.id, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
-		// const localB = isExtralrm(idB, null, 'local') && !store.aCmd?.[f.owner.id]?.fan?.end
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
@@ -94,14 +78,11 @@ function fanAccel(obj, s) {
 		const idB = getIdB(mdl, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// Блокировки
+		// местный режим
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
-
 		// Игнор блокировки: вкл окуривание
 		const ignore = s[idB]?.smoking?.on
-		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
-		// const local = isExtralrm(idB, el.owner.id, 'local') //&& !store.aCmd?.[el.owner.id]?.fan?.end
-		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') //&& !store.aCmd?.[el.owner.id]?.fan?.end
 		// Таймер запрета
@@ -124,8 +105,6 @@ function heating(obj) {
 		// местный режим
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
-		// const local = isExtralrm(idB, el.owner.id, 'local')
-		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		out(obj, output, el, local, alrStop)

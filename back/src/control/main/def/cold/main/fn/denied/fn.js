@@ -71,9 +71,19 @@ function clearBuild(bld, accAuto) {
 // Удаление полей для аккумулятора (комби, холод)
 const del = {
 	combi: (accAuto) => {
-		delete accAuto?.cold?.tgtTprd
-		delete accAuto?.cold?.tgtTcnl
-		delete accAuto?.cold?.targetDT
+		accAuto.cold ??= {}
+		accAuto.cold.tgtTprd = null
+		accAuto.cold.tgtTcnl = null
+		accAuto.cold.targetDT = null
+		accAuto.cold.finishTarget = null
+		accAuto.cold.finishTarget = null
+		accAuto.cold.flagFinish = null
+		accAuto.cold.defrostAll = null
+		accAuto.cold.defrostAllFinish = null
+		accAuto.cold.drainAll = null
+		accAuto.cold.afterD = null
+		accAuto.cold.timeAD = null
+		delete accAuto?.cold?.softSol
 	},
 	cold: (accAuto) => {
 		delete accAuto?.target

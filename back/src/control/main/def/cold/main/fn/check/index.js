@@ -3,8 +3,10 @@ const skip = ['off-off-on', 'off-off-off-add']
 const max = 2
 const maxCombi = 3
 const def = require('../../def_cooler')
+const { data: store } = require('@store')
+
 // Проверка на включение оттайки
-function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
+function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 	console.log(
 		'\t',
 		5551,
@@ -65,7 +67,7 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr) {
  * @param {*} clr Рама испарителя
  * @returns {boolean} true-заблокировать ()
  */
-function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
+function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld) {
 	console.log(
 		'\t',
 		5551,
@@ -100,7 +102,7 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr) {
 	const time = compareTime(accCold.targetDT, s.coolerCombi.defrostWait)
 	// console.log(777, se.cooler.tmpCooler ,  s?.coolerCombi?.defrostOn, accCold.targetDT, )
 	// Запуск оттайки по температуре || времени || один из испарителей секции требует оттайки (все остальные идут за ним в оттайку)
-	if (tmp || time || accCold.defrostAll) {
+	if ((tmp || time || accCold.defrostAll) && !store.alarm.achieve?.[bld._id]?.combi?.finish) {
 		// Уже была оттайка( ждем остальных испарителей) -> пропустить
 		// if (acc?.state?.waitDefrost) return false
 		acc.state.defrostCount ??= 0

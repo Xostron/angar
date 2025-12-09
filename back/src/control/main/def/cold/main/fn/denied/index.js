@@ -54,7 +54,6 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// Выведен ли из работы ВНО испарителя
 	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
 	// Местный режим секции
-	// const local = isExtralrm(bld._id, sect._id, 'local')
 	const idsS = getIdsS(obj.data.section, bld._id)
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
@@ -62,7 +61,10 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
 	// Настройка "Испаритель холодильного оборудования" = true/false
 	const off = (s?.coolerCombi?.on ?? true) === false
-
+	const alrStop = isExtralrm(bld._id, null, 'alarm')
+	const alrClosed =
+		isExtralrm(bld._id, null, 'alrClosed') ||
+		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
 	store.denied[bld._id][clr._id] =
 		!start ||
 		alr ||
@@ -77,7 +79,9 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		local ||
 		!sectM ||
 		stateCooler?.status === 'alarm' ||
-		off
+		off ||
+		alrStop ||
+		alrClosed
 	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
 	console.log(
 		'\t',
@@ -104,7 +108,11 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		'!sectM',
 		!sectM,
 		'stateCooler?.status === alarm',
-		stateCooler?.status === 'alarm'
+		stateCooler?.status === 'alarm',
+		'alrStop',
+		alrStop,
+		'alrClosed',
+		alrClosed
 	)
 	// Работа испарителя запрещена? false - Нет.
 	if (!store.denied[bld._id][clr._id]) return false

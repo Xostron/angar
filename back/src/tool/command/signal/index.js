@@ -7,6 +7,7 @@ function getSignal(ownerId, obj, type) {
 	const t = obj.data?.signal?.find((o) => o.owner.id === ownerId && o.type == type) ?? null
 	return obj.value?.[t?._id] ?? null
 }
+
 // Получить сигнал (авария двигателя) вентилятора
 function getSignalFan(fanId, obj) {
 	return obj.value?.[fanId]?.qf
@@ -76,20 +77,43 @@ function sigDfl(sig, val, result) {
 }
 
 /**
- * Найти все сигналы типа type и вернуть суммарное значение
+ * Найти все сигналы типа type и вернуть суммарное значение по складу и секциям
  * @param {*} idB
  * @param {*} section
  * @param {*} obj
  * @param {*} type
+ * @param {} alr Значение сигнала для установки аварии (по-умолчанию true)
  */
-function getSumSig(idB, section, obj, type) {
+function getSumSig(idB, section, obj, type, alr = true) {
 	const idBS = getIdBS(section, idB)
-	if (!idBS.length) return false
-	const signals = obj?.data?.signal?.filter(
-		(el) => idBS.includes(el.owner.id) && el.type === type
-	)
-	if (!signals.length) return false
-	return signals.some((el) => obj.value?.[el._id])
+	if (!idBS.length) return null
+	const arr = obj?.data?.signal?.filter((el) => idBS.includes(el.owner.id) && el.type === type)
+	if (!arr.length) return null
+
+	return alr ? arr.some((el) => obj.value?.[el._id]) : arr.every((el) => obj.value?.[el._id])
 }
 
-module.exports = { getSignal, getSignalFan, getSignalList, sigValve, sigFan, sigDfl, getSumSig }
+/**
+ * Найти все сигналы типа type и вернуть суммарное значение по складу
+ * @param {*} idB
+ * @param {*} obj
+ * @param {*} type
+ * @param {} alr Значение сигнала для установки аварии (по-умолчанию true)
+ * @returns
+ */
+function getSumSigBld(idB, obj, type, alr = true) {
+	const arr = obj.data?.signal?.filter((el) => el.owner.id === idB && el.type == type) ?? null
+	if (!arr.length) return !alr
+	return alr ? arr.some((el) => obj.value?.[el._id]) : arr.every((el) => obj.value?.[el._id])
+}
+
+module.exports = {
+	getSignal,
+	getSignalFan,
+	getSignalList,
+	sigValve,
+	sigFan,
+	sigDfl,
+	getSumSig,
+	getSumSigBld,
+}

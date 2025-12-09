@@ -42,39 +42,3 @@ function main(bld, obj, bdata, alr) {
 
 module.exports = main
 
-// function consoleTable(accCold, m, section) {
-// 	console.table(
-// 		[
-// 			{
-// 				'defrostAll(Оттайка_начало)': accCold.defrostAll,
-// 				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
-// 			},
-// 		],
-// 		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)']
-// 	)
-// 	console.table(
-// 		[
-// 			{
-// 				'drainAll(Слив_воды_окончен)': accCold.drainAll,
-// 				'afterD(Ожидание_после_слива)': accCold.afterD,
-// 				'timeAD(Время_после_слива)': accCold.timeAD,
-// 			},
-// 		],
-// 		['drainAll(Слив_воды_окончен)', 'afterD(Ожидание_после_слива)', 'timeAD(Время_после_слива)']
-// 	)
-// 	console.table(
-// 		[
-// 			{
-// 				tgtTcnl: accCold.tgtTcnl,
-// 				tgtTprd: accCold.tgtTprd,
-// 				targetDT: accCold.targetDT,
-// 			},
-// 		],
-// 		['tgtTcnl', 'tgtTprd', 'targetDT']
-// 	)
-// 	m.cold.cooler.forEach((el) => {
-// 		const sect = section.find((sec) => sec._id === el.sectionId)
-// 		console.log('\x1b[36m%s\x1b[0m', el.name, sect.name)
-// 		console.table(accCold?.[el._id])
-// 	})
-// }

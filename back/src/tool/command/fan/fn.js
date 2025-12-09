@@ -16,7 +16,6 @@ function fnACmd(bld, resultFan, obj, bdata) {
 	const delay = bdata.s.fan.delay * 1000
 	const localB = isExtralrm(idB, null, 'local')
 	const coolerCombiOn = isCoolerCombiOn(bld, bdata)
-
 	resultFan.list.forEach((idS) => {
 		// Включение ВНО с проверкой:
 		// Секция в авто

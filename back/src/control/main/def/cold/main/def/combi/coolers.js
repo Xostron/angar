@@ -42,7 +42,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				seClr,
 				s,
 				stateCooler.state,
-				clr
+				clr,
+				bld
 			) &&
 			cooler.combi?.[stateCooler?.state]
 		)
