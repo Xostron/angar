@@ -13,16 +13,15 @@ const smokingNC = require('./smoking_normal_combi')
 const { accelCOn, accelCAuto } = require('./accel_cold')
 const tChannel = require('./t_channel')
 const slaveAgg = require('./slave_agg')
-const coNormal = require('./co2_normal_combi')
+const co2NC = require('./co2_normal_combi')
 const connectLost = require('./connect_lost')
-const wetting = require('./wetting');
+const wetting = require('./wetting')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
 	section: {
 		// Секция - АВТО
 		on: {
-			
 			tChannel,
 		},
 		// Секция - ВЫКЛ
@@ -32,9 +31,7 @@ const data = {
 			warming,
 			heating,
 			cableS,
-			// Увлажнение
 			wetting,
-			// vent,
 		},
 	},
 	// Обычный склад - Доп функции для склада
@@ -42,7 +39,6 @@ const data = {
 		// Склад - ВКЛ
 		on: {
 			accelAuto,
-			coNormal,
 		},
 		// Склад - ВЫКЛ
 		off: {
@@ -56,6 +52,7 @@ const data = {
 			connectLost,
 			reset,
 			vent,
+			co2NC,
 		},
 	},
 	// Склад холодильник
@@ -77,7 +74,6 @@ const data = {
 			drainOn,
 			slaveAgg,
 			connectLost,
-			// Увлажнение
 			wetting,
 		},
 	},

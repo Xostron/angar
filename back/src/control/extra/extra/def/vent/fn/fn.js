@@ -13,9 +13,9 @@ function fnPrepare(bld, obj, s, m) {
 	const isCN = !isCC
 	// Обычный склад
 	const isN = bld.type === 'normal'
-	// Склад выключен
+	// Склад включен
 	const start = obj.retain[bld._id].start
-	// Секция в авто
+	// Массив секций
 	const idsS = getIdsS(obj.data.section, bld._id)
 	// Рабочие ВНО по всем секциям
 	const fan = idsS.flatMap((idS) => m.sect[idS]?.fanS ?? [])

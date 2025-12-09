@@ -1,6 +1,5 @@
 const { delUnused } = require('@tool/command/extra')
-const { delExtra, wrExtra } = require('@tool/message/extra')
-const { msgB } = require('@tool/message')
+
 /**
  * Выбор алгоритма ВВ
  * 1. Режим Вкл (для обычного и комби в режиме обычного)
