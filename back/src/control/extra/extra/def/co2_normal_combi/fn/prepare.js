@@ -2,6 +2,7 @@ const { isAlr } = require('@tool/message/auto')
 const { readAcc } = require('@store/index')
 const { isCombiCold } = require('@tool/combi/is')
 const { getIdsS } = require('@tool/get/building')
+const { def } = require('@tool/command/fan/duration/prepare')
 
 module.exports = function fnPrepare(bld, obj, s, m) {
 	// Авторежим склада

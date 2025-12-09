@@ -66,10 +66,9 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		accCold.finishTarget = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
-	const txt = `Tзад.канала = ${accCold.tgtTcnl ?? '--'} (${se.tcnl ?? '--'})°C. 
-	Тзад.прод. = ${accCold.tgtTprd ?? '--'} (${se.tprd ?? '--'})°C, 
-	Зад. влажности = ${s?.mois?.humidity ?? '--'} 
-	(${se.hin ?? '--'})%`
+	const txt = `Tзад.канала = ${accCold.tgtTcnl ?? '--'}°C. Тзад.прод. = ${
+		accCold.tgtTprd ?? '--'
+	}°C. Зад. влажности = ${s?.mois?.humidity ?? '--'}%`
 	console.log(411, txt)
 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	// Не блокировать

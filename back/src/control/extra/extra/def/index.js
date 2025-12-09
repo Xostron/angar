@@ -52,7 +52,7 @@ const data = {
 			connectLost,
 			reset,
 			vent,
-			co2NC,
+			// co2NC,
 		},
 	},
 	// Склад холодильник

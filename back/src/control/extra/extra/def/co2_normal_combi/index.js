@@ -1,4 +1,4 @@
-const def = require('./fn')
+// const def = require('./fn')
 // const { checkMain } = require('./fn/check')
 const fnPrepare = require('./fn/prepare')
 const { fnMode, fnModeMsg } = require('./fn/mode')
@@ -16,7 +16,7 @@ function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	fnModeMsg(bld, code, acc)
 	// Проверка разрешения ВВ и очистка аккумулятора
 	// if (!exit(bld, code, s, ban, prepare, acc, resultFan)) return
-	def[code](bld, obj, acc, m, se, s, prepare, resultFan)
+	// def[code](bld, obj, acc, m, se, s, prepare, resultFan)
 	// Проверка открыт ли клапан
 	// if (!checkMain(bld, obj, acc, o)) return
 	// def.fnSol(bld, obj, acc)
