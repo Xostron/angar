@@ -5,7 +5,7 @@ const { delExtra, wrExtra } = require('@tool/message/extra')
 function fnOff(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 	console.log(8800, 'off', alarm)
 	resultFan.force.push(false)
-	resultFan.stg = null
+	resultFan.stg = 'co2'
 	delExtra(bld._id, null, 'co2', 'wait')
 	delExtra(bld._id, null, 'co2', 'work')
 	delExtra(bld._id, null, 'co2', 'on')

@@ -116,8 +116,8 @@ function fnReason(bld, code, s, ban, prepare) {
 
 // Очистка аккумуляторов
 function clear(bld, acc, resultFan, ...args) {
-	acc.time = {}
-	acc.sensor = {}
+	acc.byTime = {}
+	acc.bySensor = {}
 	resultFan.force.push(false)
 	resultFan.stg = null
 	args[0] ? delExtra(bld._id, null, 'co2', 'wait') : null
