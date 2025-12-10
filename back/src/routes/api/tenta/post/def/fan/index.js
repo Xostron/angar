@@ -5,9 +5,12 @@ const Aboc = require('@tool/abort_controller')
 
 async function cmd(obj) {
 	try {
-		const { buildingId, fanId, value, ao = null } = obj
+		Aboc.set()
+		const { buildingId, fanId, value, ao = null, sectionId } = obj
+		console.log(6600, obj)
 		const fan = await findOne('fan', { key: '_id', v: fanId })
-		const sectionId = fan?.owner.id
+		// console.log(6601, fan)
+		// const sectionId = fan?.owner?.id
 		// Вывести из работы
 		if (value === 'off') {
 			const o = { buildingId, sectionId, fanId, value: true }
@@ -39,7 +42,7 @@ async function cmd(obj) {
 			const s = {
 				[buildingId]: {
 					[moduleId]: val,
-					[binding.moduleId]: { [binding.channel - 1]: 0 },
+					[binding.moduleId]: { [binding.channel - 1]: ao },
 				},
 			}
 			setCmd(s)
@@ -49,12 +52,11 @@ async function cmd(obj) {
 		s = {
 			[buildingId]: {
 				[moduleId]: val,
-				[binding.moduleId]: { [binding.channel - 1]: value == 'run' ? +ao : 0 },
+				[binding.moduleId]: { [binding.channel - 1]: +ao  },
 			},
 		}
 		console.log(333, s)
 		setCmd(s)
-		Aboc.set()
 		return true
 	} catch (error) {
 		return error

@@ -133,7 +133,7 @@ function onListening() {
 process.on('SIGINT', async function () {
 	console.log(
 		'\x1b[32m%s\x1b[0m',
-		`Запуск останова системы (max ${process.env.COUNT} сек)...`
+		`Запуск останова системы (max ${process.env.COUNT ?? 30} сек)...`
 	);
 	store.shutdown = true;
 	let count = 0;

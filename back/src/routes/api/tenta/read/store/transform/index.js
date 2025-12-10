@@ -29,8 +29,9 @@ async function transform(bldId, secId) {
 			readOne('valve'), // Считываем данные клапанов
 			readOne('section'), // Считываем данные секций
 			readOne('building'), // Считываем данные складов
+			readOne('cooler') // Испарителя
 		];
-		const [sensor, fan, heating, valve, section, building] =
+		const [sensor, fan, heating, valve, section, building, cooler] =
 			await Promise.all(p);
 		// Тип склада
 		const type = building?.find((el) => el._id === bldId)?.type;
@@ -106,7 +107,7 @@ async function transform(bldId, secId) {
 		// Если указан secId, обрабатываем полную информацию по секции
 		if (secId && secId !== 'undefined') {
 			// Объединяем результаты с полными данными по секции
-			const o = { data, heating, sensor, fan, valve };
+			const o = { data, heating, sensor, fan, valve, cooler };
 			if (secDef[type]) await secDef[type](result, secId, bldId, o);
 		}
 		//

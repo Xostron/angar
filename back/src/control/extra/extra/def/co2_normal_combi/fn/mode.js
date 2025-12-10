@@ -29,7 +29,7 @@ function fnMode(prepare, s, acc) {
 	return null
 }
 
-function fnModeMsg(bld, acc, s) {
+function fnModeMsg(bld, code, acc) {
 	switch (code) {
 		case null:
 		case 'off':
@@ -50,34 +50,3 @@ function fnModeMsg(bld, acc, s) {
 }
 
 module.exports = { fnMode, fnModeMsg }
-
-// if (acc.lastMode !== s?.co2?.mode) {
-// 	delete acc.work
-// 	delete acc.wait
-// 	delete acc.start
-// 	acc.lastMode = s?.co2?.mode
-// 	let code
-// 	switch (s?.co2?.mode) {
-// 		case 'off':
-// 		case null:
-// 			code = 61
-// 			acc.message = ''
-// 			break
-// 		case 'on':
-// 			code = 62
-// 			acc.message = '(постоянно)'
-// 			break
-// 		case 'time':
-// 			code = 63
-// 			acc.message = `(${s.co2.work / 60 / 1000}мин)`
-// 			break
-// 		case 'sensor':
-// 			acc.message = '(по датчику)'
-// 			code = 64
-// 			break
-// 	}
-// 	const arr = [null, 'off', 'on', 'sensor', 'time']
-// 	delUnused(arr, s?.co2?.mode, bld, code, 'co2')
-// }
-// if (acc.start) wrExtra(bld._id, null, 'co2', msgB(bld, 84, acc.message), 'co2work')
-// else delExtra(bld._id, null, 'co2', 'co2work')

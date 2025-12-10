@@ -3,9 +3,11 @@ const alarm = require('../../alarm')
 
 // Полное описание секции
 function normal(result, idS, idB, obj) {
-	const { data, heating, sensor, fan, valve } = obj
+	const { data, heating, sensor, fan, valve, cooler } = obj
+	// ИД испарителей данной секции
+	const idsClr = cooler.filter((el) => el.sectionId === idS).map((el) => el._id)
 	const value = result.value
-	// Аварии авторежима секции (TODO удалить result.alarm) 
+	// Аварии авторежима секции (TODO удалить result.alarm)
 	result.alarm = alarm(idB, idS, data)
 
 	// Температура продукта секции
@@ -17,9 +19,11 @@ function normal(result, idS, idB, obj) {
 
 	// Статусы вентиляторов секции
 	fan.forEach((el) => {
-		if (el.owner.id !== idS) return
-		value[el._id] = data[el._id]?.value === undefined ? data[el._id]?.state : { value: data[el._id]?.state, ao: data[el._id]?.value }
-		// value[el._id] = data[el._id]?.state
+		if (!idsClr.includes(el.owner.id) && el.owner.id !== idS) return
+		value[el._id] =
+			data[el._id]?.value === undefined
+				? data[el._id]?.state
+				: { value: data[el._id]?.state, ao: data[el._id]?.value }
 	})
 
 	// Приток in секции

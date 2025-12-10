@@ -3,7 +3,7 @@ const { readOne } = require('@tool/json')
 
 // Данные для холодильника
 async function cold(result, idS, idB, obj) {
-	const { data, sensor } = obj
+	const { data, sensor, fan } = obj
 	const value = result.value
 
 	const p = [
@@ -24,7 +24,9 @@ async function cold(result, idS, idB, obj) {
 	// СО2 датчик
 	get('co2', idS, 'section', sensor).forEach((el) => fe(el, result.value, data))
 	// Агрегаты
-	aggregate?.filter((el) => el?.buildingId === idB)?.forEach((el) => (result.value[el._id] = data[el?._id]?.state))
+	aggregate
+		?.filter((el) => el?.buildingId === idB)
+		?.forEach((el) => (result.value[el._id] = data[el?._id]?.state))
 	// Конденсаторы + вентиляторы
 	aggregate
 		.map((el) => el.condenser)
@@ -35,7 +37,11 @@ async function cold(result, idS, idB, obj) {
 	cooler
 		?.filter((el) => el?.sectionId === idS)
 		?.forEach((el) => {
-			result.value[el._id] = { state: data[el?._id]?.state, mode: data[el?._id]?.name,ao:data[el._id]?.ao }
+			result.value[el._id] = {
+				state: data[el?._id]?.state,
+				mode: data[el?._id]?.name,
+				ao: data[el._id]?.ao,
+			}
 			get('cooler', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))
 			get('pin', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))
 			get('pout', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))

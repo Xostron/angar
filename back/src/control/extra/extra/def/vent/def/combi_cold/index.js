@@ -23,6 +23,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 			msgB(bld, 87, `${remTime(acc.CC.wait, s.coolerCombi.stop)}`),
 			'wait'
 		)
+		delExtra(bld._id, null, 'vent', 'work')
 		return
 	}
 	// Время ожидания прошло достижения задания. Работа ВВ

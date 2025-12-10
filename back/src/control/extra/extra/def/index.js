@@ -13,7 +13,7 @@ const smokingNC = require('./smoking_normal_combi')
 const { accelCOn, accelCAuto } = require('./accel_cold')
 const tChannel = require('./t_channel')
 const slaveAgg = require('./slave_agg')
-const co2NC = require('./co2_normal_combi')
+const co2NormalCombi = require('./co2_normal_combi')
 const connectLost = require('./connect_lost')
 const wetting = require('./wetting')
 
@@ -52,7 +52,7 @@ const data = {
 			connectLost,
 			reset,
 			vent,
-			// co2NC,
+			co2NormalCombi
 		},
 	},
 	// Склад холодильник

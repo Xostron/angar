@@ -4,7 +4,11 @@ const { isCombiCold } = require('@tool/combi/is')
 const { getIdsS } = require('@tool/get/building')
 const { def } = require('@tool/command/fan/duration/prepare')
 
-module.exports = function fnPrepare(bld, obj, s, m) {
+function fnPrepare(bld, obj, s, m) {
+	// Массив секций
+	let idsS = getIdsS(obj.data.section, bld._id)
+	// Массив секций в авто
+	idsS = idsS.filter((idS) => obj.retain[bld._id].mode?.[idS])
 	// Авторежим склада
 	const am = obj.retain?.[bld._id]?.automode
 	// Авария авторежима
@@ -21,16 +25,14 @@ module.exports = function fnPrepare(bld, obj, s, m) {
 	const ccFlagFinish = readAcc(bld._id, 'combi')?.cold?.flagFinish
 	// Обычный, Комби-обычный: Достиг задания
 	const flagFinish = def[bld.type](bld._id, am, isCN)
-	// Массив секций
-	let idsS = getIdsS(obj.data.section, bld._id)
-	// Массив секций в авто
-	idsS = idsS.filter((idS) => obj.retain[bld._id].mode?.[idS])
 	// Все ли клапаны закрыты (секции в авто)
 	let vlvClosed
 	idsS.forEach((idS) => {
 		vlvClosed = obj.data.valve.filter((el) => el.sectionId.includes(idS))
 	})
 	vlvClosed = vlvClosed?.every((el) => obj.value[el._id].state === 'cls')
+	// Рабочие ВНО по всем секциям в авто
+	const fan = idsS.flatMap((idS) => m.sect[idS]?.fanS ?? [])
 	// Точка росы
 	const point = obj.value.total?.[bld._id]?.point
 	// Температура продукта
@@ -64,6 +66,7 @@ module.exports = function fnPrepare(bld, obj, s, m) {
 		flagFinish,
 		idsS,
 		vlvClosed,
+		fan,
 		point,
 		tprd,
 		co2,
@@ -72,3 +75,5 @@ module.exports = function fnPrepare(bld, obj, s, m) {
 		validSe,
 	}
 }
+
+module.exports = fnPrepare

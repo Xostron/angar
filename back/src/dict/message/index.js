@@ -459,8 +459,9 @@ const data = {
 	62: { code: 'on', typeSignal: 'info', msg: 'CO2: Режим "Включен"' },
 	63: { code: 'time', typeSignal: 'info', msg: 'CO2: Режим "По времени"' },
 	64: { code: 'sens', typeSignal: 'info', msg: 'CO2: Режим "По датчику"' },
-	84: { code: 'co2work', typeSignal: 'info', msg: 'Удаление СО2 в работе' },
-	89: { code: 'co2wait', typeSignal: 'info', msg: 'Удаление СО2 (ожидание' },
+	84: { code: 'co2work', typeSignal: 'info', msg: 'Удаление СО2. Работа' },
+	85: { code: 'co2wait', typeSignal: 'info', msg: 'Удаление СО2. Ожидание' },
+	86: { code: 'co2check', typeSignal: 'info', msg: 'Удаление СО2. Выключена. По причине:' },
 	// ======== Оттайка слива воды ========
 	67: {
 		code: 'off',

@@ -59,7 +59,7 @@ function fnCheck(bld, code, s, ban, prepare) {
 	// Вычисление причин запрета ВВ
 	const reason = fnReason(bld, code, s, ban, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
-	const ignore = [2, 3, 14, 15, 16, 17]
+	const ignore = [2, 3, 13, 14, 15, 16]
 	const err = reason
 		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
@@ -68,8 +68,12 @@ function fnCheck(bld, code, s, ban, prepare) {
 
 	// Запретить ВВ
 	if (reason.some((el, i) => el)) {
-		// Печатаем причиный с 0 по 13
-		if (!err) return false
+		if (!err) {
+			// Нет причин для печати
+			delExtra(bld._id, null, 'vent', 'check')
+			return false
+		}
+		// Печатаем причины
 		wrExtra(bld._id, null, 'vent', msgB(bld, 143, `${err}`), 'check')
 		return false
 	}
