@@ -72,7 +72,7 @@ function middlewB(bld, obj, s, seB, am, acc) {
 	}
 }
 
-function valve(s, se, sectionId, acc, extraCO2) {
+function valve(s, se, sectionId, acc, CO2work) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout

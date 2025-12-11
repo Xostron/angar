@@ -372,30 +372,7 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Подогрев клапанов включен',
 	},
-	// Вентиляция
-	87: { code: 'ventWait', typeSignal: 'info', msg: 'Обдув датчиков. Ожидание' },
-	88: { code: 'ventWork', typeSignal: 'info', msg: 'Обдув датчиков. Работа' },
-	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
-	142: { code: 'ventWork', typeSignal: 'info', msg: 'Внутренняя вентиляция. Работа' },
-	143: {
-		code: 'ventCheck',
-		typeSignal: 'info',
-		msg: 'Внутренняя вентиляция (Обдув датчиков). Выключена. По причине:',
-	},
-	144: { code: 'off', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим выключен' },
-	145: { code: 'ventOn', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим включен' },
-	146: { code: 'auto', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим авто' },
-	147: {
-		code: 'combiCold',
-		typeSignal: 'info',
-		msg: 'Внутренняя вентиляция (Обдув датчиков). Режим комби-холодильник',
-	},
-	148: {
-		code: 'durCheck',
-		typeSignal: 'info',
-		msg: 'Дополнительная вентиляция. Выключена. По причине:',
-	},
-	149: { code: 'durVentWork', typeSignal: 'info', msg: 'Доп. вентиляция. В работе' },
+
 	// Увлажнение
 	130: {
 		code: 'off',
@@ -454,14 +431,39 @@ const data = {
 	},
 	//
 	60: { code: 'cable', typeSignal: 'critical', msg: 'Перегрев вводного кабеля' },
+	// Вентиляция
+	87: { code: 'ventWait', typeSignal: 'info', msg: 'Обдув датчиков. Ожидание' },
+	88: { code: 'ventWork', typeSignal: 'info', msg: 'Обдув датчиков. Работа' },
+	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
+	142: { code: 'ventWork', typeSignal: 'info', msg: 'Внутренняя вентиляция. Работа' },
+	143: {
+		code: 'ventCheck',
+		typeSignal: 'info',
+		msg: 'Внутренняя вентиляция (Обдув датчиков). Выключена. По причине:',
+	},
+	144: { code: 'off', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим выключен' },
+	145: { code: 'ventOn', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим включен' },
+	146: { code: 'auto', typeSignal: 'info', msg: 'Внутренняя вентиляция. Режим авто' },
+	147: {
+		code: 'combiCold',
+		typeSignal: 'info',
+		msg: 'Внутренняя вентиляция (Обдув датчиков). Режим комби-холодильник',
+	},
+	148: {
+		code: 'durCheck',
+		typeSignal: 'info',
+		msg: 'Дополнительная вентиляция. Выключена. По причине:',
+	},
+	149: { code: 'durVentWork', typeSignal: 'info', msg: 'Доп. вентиляция. В работе' },
 	// ======== Удаление СО2 ========
-	61: { code: 'off', typeSignal: 'info', msg: 'CO2: Режим "Выключен"' },
-	62: { code: 'on', typeSignal: 'info', msg: 'CO2: Режим "Включен"' },
-	63: { code: 'time', typeSignal: 'info', msg: 'CO2: Режим "По времени"' },
-	64: { code: 'sens', typeSignal: 'info', msg: 'CO2: Режим "По датчику"' },
+	61: { code: 'off', typeSignal: 'info', msg: 'CO2. Режим выключен' },
+	62: { code: 'co2on', typeSignal: 'info', msg: 'CO2. Режим включен' },
+	63: { code: 'time', typeSignal: 'info', msg: 'CO2. Режим по времени' },
+	64: { code: 'sensor', typeSignal: 'info', msg: 'CO2. Режим по датчику' },
 	84: { code: 'co2work', typeSignal: 'info', msg: 'Удаление СО2. Работа' },
 	85: { code: 'co2wait', typeSignal: 'info', msg: 'Удаление СО2. Ожидание' },
 	86: { code: 'co2check', typeSignal: 'info', msg: 'Удаление СО2. Выключена. По причине:' },
+	// 89: { code: 'co2check', typeSignal: 'info', msg: 'Удаление СО2. Выключена. По причине:' },
 	// ======== Оттайка слива воды ========
 	67: {
 		code: 'off',

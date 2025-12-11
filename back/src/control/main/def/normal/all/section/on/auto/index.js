@@ -2,10 +2,13 @@ const { data: store, readAcc } = require('@store')
 const def = require('@control/main/def/normal/def')
 const extralrm = require('@control/extra/extralrm')
 const { fnValve } = require('@tool/command/valve/auto')
+const { isExtra } = require('@tool/message/extra')
 
 function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, alrAlw) {
 	// Удаление СО2
-	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// Удаление co2 в работе
+	const CO2work = isExtra(bld._id, null, 'co2', 'work')
 	// Таймер запретов - закрываем клапана, выключаем вентиляторы
 	let ban = !!store.alarm.timer?.[bld._id]?.[am]
 
@@ -18,7 +21,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада
 	// const alr = alrS || alrAm || ban || alrBld || alrAlw || alrSe
-	const alr = alrS || (alrAm && !extraCO2.start) || ban || alrBld || alrAlw || alrSe
+	const alr = alrS || (alrAm && !CO2work) || ban || alrBld || alrAlw || alrSe
 
 	console.log(
 		666,
@@ -41,7 +44,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	if (def[am]?.middlew) def[am]?.middlew(bld, sect, obj, s, se, seB, alr, acc)
 
 	// Клапан
-	const v = def[am].valve(s, se, sect._id, acc, extraCO2)
+	const v = def[am].valve(s, se, sect._id, acc, CO2work)
 	fnValve(v, sect._id, s)
 
 	// Вентилятор

@@ -30,10 +30,10 @@ function middlewB(building, obj, s, seB, am, acc, alrBld) {
 	message(building, obj, s, seB, am, acc)
 }
 
-function valve(s, se, sectionId, acc, extraCO2) {
+function valve(s, se, sectionId, acc, CO2work) {
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
-	const forceCls = acc.finish && !extraCO2.start
+	const forceCls = acc.finish && !CO2work
 	console.log('\tКлапаны, режим хранение, секция', sectionId)
 	console.table([{ open, close, forceCls }], ['open', 'close', 'forceCls'])
 	return { open, close, forceCls, forceOpn: false }

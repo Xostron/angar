@@ -15,7 +15,7 @@ const { delUnused } = require('@tool/command/extra')
  * @param {*} acc
  */
 function fnMode(prepare, s, acc) {
-	const { extraCO2, am, isCC, isCN, isN } = prepare
+	const { isCC, isCN, isN } = prepare
 	// Обычный, комби-обычный. Режим ВВ Выкл
 	if ((isN || isCN) && (s?.vent?.mode === 'off' || !s?.vent?.mode)) return 'off'
 	// Обычный, комби-обычный. Режим ВВ Вкл

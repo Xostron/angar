@@ -33,12 +33,14 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		msgB(bld, 142, `${remTime(acc.byTime.work, s.vent.work)}`),
 		'work'
 	)
-
+	//
 	resultFan.force.push(true)
 	resultFan.stg = 'vent'
 	time = compareTime(acc.byTime.work, s.vent.work)
-	// console.log(77, 'ВВ комби-холод - работа')
+	//
 	if (time) {
+		// Если нет времени ожидания, ВВ будет всегда в работе
+		// для безударнорго перехода
 		if (!s.vent.wait) {
 			delete acc.byTime?.wait
 			delete acc.byTime?.work

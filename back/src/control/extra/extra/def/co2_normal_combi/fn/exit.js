@@ -1,5 +1,5 @@
 const { isExtralrm } = require('@tool/message/extralrm')
-const { delExtra, wrExtra } = require('@tool/message/extra')
+const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 const dict = {
 	0: 'таймер запрета активен',
@@ -30,7 +30,7 @@ const dict = {
  */
 function exit(bld, code, s, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (!fnCheck(bld, code, s, ban, prepare)) {
+	if (!fnCheck(bld, code, s, ban, acc, prepare)) {
 		clear(bld, acc, resultFan, 1, 1, 1, 1, 1)
 		return false
 	}
@@ -47,9 +47,9 @@ function exit(bld, code, s, ban, prepare, acc, resultFan) {
  * @param {*} ban
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
-function fnCheck(bld, code, s, ban, prepare) {
+function fnCheck(bld, code, s, ban, acc, prepare) {
 	// Вычисление причин запрета
-	const reason = fnReason(bld, code, s, ban, prepare)
+	const reason = fnReason(bld, code, s, ban, acc, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
 	const ignore = [9, 10, 11]
 	const err = reason
@@ -73,7 +73,7 @@ function fnCheck(bld, code, s, ban, prepare) {
 	return true
 }
 
-function fnReason(bld, code, s, ban, prepare) {
+function fnReason(bld, code, s, ban, acc, prepare) {
 	const {
 		am,
 		alrAuto,
@@ -90,7 +90,7 @@ function fnReason(bld, code, s, ban, prepare) {
 		tprd,
 		co2,
 		hout,
-		outMax,
+		isHout,
 		validSe,
 	} = prepare
 	const alrClosed =
@@ -98,16 +98,18 @@ function fnReason(bld, code, s, ban, prepare) {
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
+	// CO2 запущен
+	const isRunCO2 = acc?.byTime?.work || acc?.bySensor?.work || isExtra(bld._id, null, 'co2', 'work') || isExtra(bld._id, null, 'co2', 'on')
 	return [
 		ban, //0
 		!fan.length, //1
-		!vlvClosed && (isCN || isN) && (alrAuto || flagFinish), //2
+		!vlvClosed && !isRunCO2, //2
 		!idsS, //3
 		alrClosed, //4
 		local, //5
 		!start, //6
-		(isCN || isN) && !s?.co2?.wait, //7
-		(isCN || isN) && !s?.co2?.work, //8
+		false && (isCN || isN) && !s?.co2?.wait, //7
+		false && (isCN || isN) && !s?.co2?.work, //8
 		isCN && !alrAuto && !flagFinish, //9
 		isN && !alrAuto && !flagFinish, //10
 		isCC, //11
@@ -125,4 +127,13 @@ function clear(bld, acc, resultFan, ...args) {
 	args[2] ? delExtra(bld._id, null, 'co2', 'on') : null
 }
 
-module.exports = { exit }
+/**
+ * Очистка аккумулятора
+ * @param {*} acc
+ * @param  {...any} args
+ */
+function clear2(acc, ...args) {
+	args.forEach((key) => (acc[key] = null))
+}
+
+module.exports = { exit, clear }

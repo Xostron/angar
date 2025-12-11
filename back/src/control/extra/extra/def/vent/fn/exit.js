@@ -85,7 +85,7 @@ function fnCheck(bld, code, s, ban, prepare) {
 function fnReason(bld, code, s, ban, prepare) {
 	const {
 		alrAuto,
-		extraCO2,
+		CO2work,
 		am,
 		isCC,
 		isCN,
@@ -109,7 +109,7 @@ function fnReason(bld, code, s, ban, prepare) {
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isCN, //3
 		alrClosed, //4
 		local, //5
-		extraCO2?.start, //6
+		CO2work, //6
 		code === null, //7
 		!start, //8
 		!secAuto, //9

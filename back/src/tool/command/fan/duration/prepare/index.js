@@ -4,6 +4,7 @@ const { isAchieve } = require('@tool/message/achieve')
 const { isAlr } = require('@tool/message/auto')
 const { data: store } = require('@store')
 const { getIdsS } = require('@tool/get/building')
+const { isExtra } = require('@tool/message/extra')
 
 // Подготовка данных для работы доп. вентиляции
 function fnPrepare(bld, obj, s, resultFan, bdata) {
@@ -26,7 +27,9 @@ function fnPrepare(bld, obj, s, resultFan, bdata) {
 	const bstart = obj.retain?.[bld._id]?.start
 	const secAuto = idsS.some((idS) => obj.retain?.[bld._id]?.mode?.[idS])
 	//
-	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// Удаление co2 в работе
+	const CO2work = isExtra(bld._id, null, 'co2', 'work')
 	return {
 		acc,
 		cmd,
@@ -40,7 +43,7 @@ function fnPrepare(bld, obj, s, resultFan, bdata) {
 		s,
 		bstart,
 		secAuto,
-		extraCO2,
+		CO2work,
 	}
 }
 
@@ -87,4 +90,4 @@ const def = {
 	},
 }
 
-module.exports = {fnPrepare, def}
+module.exports = { fnPrepare, def }

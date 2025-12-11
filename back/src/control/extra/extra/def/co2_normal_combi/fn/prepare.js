@@ -42,18 +42,13 @@ function fnPrepare(bld, obj, s, m) {
 	// Относительная влажность улицы
 	const hout = obj.value.total?.hout?.max
 	// Макс. внешняя отн. влажность
-	let outMax
-	if (am === 'drying') {
-		// Сушка
-		outMax = s?.drying?.humidityMax
-	} else if (am === 'cooling') {
-		// Хранение
-		outMax = s?.mois?.outMax
-	}
+	const isHout = fnIsHout(hout, s, am)
+	// Температура улицы
+	const tout = obj.value.total?.tout?.min
 	// Если данные невалидны (valid=false), то запрет выполнение СО2
-	let validSe = !isNaN(point) && !isNaN(tprd) && !isNaN(hout) && !isNaN(outMax)
-	// для режима по датчику
-	validSe = s.co2.mode === 'sensor' ? validSe && !isNaN(co2) : validSe
+	// Для режима таймер / датчик
+	let validSe = !isNaN(point) && !isNaN(tprd) && !isNaN(hout) && !isNaN(tout)
+	validSe = s.co2.mode === 'time' ? validSe : validSe && !isNaN(co2)
 
 	return {
 		am,
@@ -71,9 +66,26 @@ function fnPrepare(bld, obj, s, m) {
 		tprd,
 		co2,
 		hout,
-		outMax,
+		tout,
+		isHout,
 		validSe,
 	}
 }
 
 module.exports = fnPrepare
+
+/**
+ * Учитывать внешнюю относительную влажность
+ * @param {*} hout Влажность улицы
+ * @param {*} s Настройки
+ * @param {*} am авторежим: drying, cooling
+ * @return {boolean} true - предупреждение влажность улицы выше допустимой,
+ * false - влажность подходит/слежение в настройках выключена
+ */
+function fnIsHout(hout, s, am = 'cooling') {
+	// Максимальная внешн. отн. влажность: настройки Сушка или Влажность
+	const t = am === 'drying' ? am : 'mois'
+	// Название поля
+	const f = t === 'drying' ? 'humidityMax' : 'outMax'
+	return s?.co2?.hout ? hout >= s?.[t]?.[f] : false
+}

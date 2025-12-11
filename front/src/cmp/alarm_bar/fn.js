@@ -1,5 +1,6 @@
 // Возвращает аварии определенной секции
 function fnAlarm(buildingId, sectionId, bar, timer) {
+	console.log(2, bar?.[buildingId]?.[sectionId])
 	// Аварии секции авторежима
 	const tout = bar?.[buildingId]?.[sectionId]?.tout?.[0]
 	const hout = bar?.[buildingId]?.[sectionId]?.hout?.[0]
@@ -8,6 +9,7 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 	const alrClosed = bar?.[buildingId]?.[sectionId]?.alrClosed
 	const co2work = bar?.[buildingId]?.[sectionId]?.co2work
 	const co2wait = bar?.[buildingId]?.[sectionId]?.co2wait
+	const co2on = bar?.[buildingId]?.[sectionId]?.co2on
 	const openVin = bar?.[buildingId]?.[sectionId]?.openVin
 	const ventWait = bar?.[buildingId]?.[sectionId]?.ventWait
 	const ventWork = bar?.[buildingId]?.[sectionId]?.ventWork
@@ -30,6 +32,7 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 		ventWork,
 		durVentWork,
 		ventOn,
+		co2on,
 	].filter((el) => el)
 	// Таймеры запретов
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
@@ -38,6 +41,7 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 
 // Возвращает аварии суммарно по всем секциям
 function fnAlarmB(buildingId, barB, timer) {
+	console.log(1, barB?.[buildingId])
 	const tout = barB?.[buildingId]?.tout?.[0]
 	const hout = barB?.[buildingId]?.hout?.[0]
 	const antibz = barB?.[buildingId]?.antibliz?.[0]
@@ -45,6 +49,7 @@ function fnAlarmB(buildingId, barB, timer) {
 	const alrClosed = barB?.[buildingId]?.alrClosed?.[0]
 	const co2work = barB?.[buildingId]?.co2work?.[0]
 	const co2wait = barB?.[buildingId]?.co2wait?.[0]
+	const co2on = barB?.[buildingId]?.co2on?.[0]
 	const openVin = barB?.[buildingId]?.openVin?.[0]
 	const debdo = barB?.[buildingId]?.debdo?.[0]
 	const stableVno = barB?.[buildingId]?.stableVno?.[0]
@@ -59,6 +64,7 @@ function fnAlarmB(buildingId, barB, timer) {
 		antibz,
 		co2work,
 		co2wait,
+		co2on,
 		openVin,
 		debdo,
 		stableVno,

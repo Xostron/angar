@@ -3,6 +3,7 @@ const { curStateV } = require('@tool/command/valve')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { isCombiCold } = require('@tool/combi/is')
+const { isExtra } = require('@tool/message/extra')
 
 function set(bld, sect, value, vlvS, acc, s) {
 	// Уже в аварии - выходим из итерации
@@ -77,6 +78,12 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 	// 6. Комби склад перешел на холод
 	const vlvIn = m.vlvS.find((vlv) => vlv.type === 'in')
 	const am = obj.retain?.[bld._id]?.automode
+	// 7. Удаление СО2 активно
+	const co2work =
+		isExtra(bld._id, null, 'co2', 'wait') ||
+		isExtra(bld._id, null, 'co2', 'work') ||
+		isExtra(bld._id, null, 'co2', 'check2') ||
+		isExtra(bld._id, null, 'co2', 'on')
 	if (
 		!obj.retain[bld._id].start ||
 		!obj.retain[bld._id].mode?.[sect._id] ||
@@ -86,7 +93,8 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 		!s.antibliz.wait ||
 		!s?.antibliz?.mode ||
 		s.antibliz.mode === 'off' ||
-		isCombiCold(bld, am, s)
+		isCombiCold(bld, am, s) ||
+		co2work
 	) {
 		fnReset(bld, sect, acc)
 		return false

@@ -3,9 +3,11 @@ const { readAcc } = require('@store/index')
 const { isCombiCold } = require('@tool/combi/is')
 const { getIdsS } = require('@tool/get/building')
 const { def } = require('@tool/command/fan/duration/prepare')
+const { isExtra } = require('@tool/message/extra')
 
 function fnPrepare(bld, obj, s, m) {
-	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// Удаление co2 в работе
+	const CO2work = isExtra(bld._id, null, 'co2', 'work')
 	const am = obj.retain?.[bld._id]?.automode
 	// Комби склад в режиме холодильника
 	const isCC = isCombiCold(bld, am, s)
@@ -29,7 +31,7 @@ function fnPrepare(bld, obj, s, m) {
 	const alrAuto = isAlr(bld._id, am)
 	return {
 		alrAuto,
-		extraCO2,
+		CO2work,
 		am,
 		isCC,
 		isCN,

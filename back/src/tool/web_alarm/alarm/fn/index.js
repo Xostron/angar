@@ -23,8 +23,9 @@ function bar(r, bld, sect, am, start) {
 	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.hout2 ?? null
 	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.ahout1 ?? null
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
-	const co2work = store.alarm.extra?.[bld._id]?.co2?.co2work ?? null
-	const co2wait = store.alarm.extra?.[bld._id]?.co2?.co2wait ?? null
+	const co2work = store.alarm.extra?.[bld._id]?.co2?.work ?? null
+	const co2wait = store.alarm.extra?.[bld._id]?.co2?.wait ?? null
+	// const co2on = store.alarm.extra?.[bld._id]?.co2?.on ?? null
 	const openVin = store.alarm.extralrm?.[bld._id]?.openVin ?? null
 	const ventWait = store.alarm.extra?.[bld._id]?.vent?.wait ?? null
 	const ventWork = store.alarm.extra?.[bld._id]?.vent?.work ?? null
@@ -35,6 +36,8 @@ function bar(r, bld, sect, am, start) {
 		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
 	)
 	if (debdo) debdo.msg = mes[102].msg
+	const smoking1 = store.alarm?.extra?.[bld._id]?.smoking1
+	const smoking2 = store.alarm?.extra?.[bld._id]?.smoking2
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
@@ -46,6 +49,7 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].overVlv = overVlv
 	r.bar[bld._id][sect._id].co2work = co2work
 	r.bar[bld._id][sect._id].co2wait = co2wait
+	// r.bar[bld._id][sect._id].co2on = co2on
 	r.bar[bld._id][sect._id].openVin = openVin
 	r.bar[bld._id][sect._id].ventWait = ventWait
 	r.bar[bld._id][sect._id].ventWork = ventWork
@@ -53,6 +57,8 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].durVentWork = durVentWork
 	r.bar[bld._id][sect._id].stableVno = stableVno
 	r.bar[bld._id][sect._id].debdo = debdo
+	r.bar[bld._id][sect._id].smoking1 = smoking1
+	r.bar[bld._id][sect._id].smoking2 = smoking2
 
 	if (tout1) r.bar[bld._id][sect._id].tout.push(tout1)
 	if (tout2) r.bar[bld._id][sect._id].tout.push(tout2)
@@ -77,6 +83,7 @@ function barB(r, bld) {
 		r.barB[bld._id].alrClosed ??= []
 		r.barB[bld._id].co2work ??= []
 		r.barB[bld._id].co2wait ??= []
+		// r.barB[bld._id].co2on ??= []
 		r.barB[bld._id].openVin ??= []
 		r.barB[bld._id].ventWait ??= []
 		r.barB[bld._id].ventWork ??= []
@@ -84,6 +91,8 @@ function barB(r, bld) {
 		r.barB[bld._id].ventOn ??= []
 		r.barB[bld._id].stableVno ??= []
 		r.barB[bld._id].debdo ??= []
+		r.barB[bld._id].smoking1 ??= []
+		r.barB[bld._id].smoking2 ??= []
 
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
@@ -92,6 +101,7 @@ function barB(r, bld) {
 		if (s.alrClosed) r.barB[bld._id].alrClosed.push(s.alrClosed)
 		if (s.co2work) r.barB[bld._id].co2work.push(s.co2work)
 		if (s.co2wait) r.barB[bld._id].co2wait.push(s.co2wait)
+		// if (s.co2on) r.barB[bld._id].co2on.push(s.co2on)
 		if (s.openVin) r.barB[bld._id].openVin.push(s.openVin)
 		if (s.ventWait) r.barB[bld._id].ventWait.push(s.ventWait)
 		if (s.ventWork) r.barB[bld._id].ventWork.push(s.ventWork)
@@ -99,6 +109,8 @@ function barB(r, bld) {
 		if (s.ventOn) r.barB[bld._id].ventOn.push(s.ventOn)
 		if (s.stableVno) r.barB[bld._id].stableVno.push(s.stableVno)
 		if (s.debdo) r.barB[bld._id].debdo.push(s.debdo)
+		if (s.smoking1) r.barB[bld._id].smoking1.push(s.smoking1)
+		if (s.smoking2) r.barB[bld._id].smoking2.push(s.smoking2)
 	}
 }
 
@@ -236,10 +248,10 @@ function bannerB(r, bld) {
 	r.banner.connect ??= {}
 	r.banner.connect[bld._id] = isErrMs(bld._id) ? mes[28] : null
 	// Окуривание
-	r.banner.smoking ??= {}
-	r.banner.smoking[bld._id] ??= {}
-	r.banner.smoking[bld._id] =
-		store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
+	// r.banner.smoking ??= {}
+	// r.banner.smoking[bld._id] ??= {}
+	// r.banner.smoking[bld._id] =
+	// 	store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
 	// Склад не работает: требуется калибровка клапанов
 	r.banner.notTune ??= {}
 	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune

@@ -1,5 +1,4 @@
 const def = require('./def')
-// const { checkMain } = require('./fn/check')
 const fnPrepare = require('./fn/prepare')
 const { fnMode, fnModeMsg } = require('./fn/mode')
 const { exit } = require('./fn/exit')
@@ -18,10 +17,7 @@ function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	// Проверка разрешения CO2 и очистка аккумулятора
 	if (!exit(bld, code, s, ban, prepare, acc, resultFan)) return
 	def[code](bld, obj, s, se, m, alarm, prepare, acc, resultFan)
-	// Проверка открыт ли клапан
-	// if (!checkMain(bld, obj, acc, o)) return
 	// def.fnSol(bld, obj, acc)
-	// console.log('\tresultFan', resultFan, 'Аккумулятор', JSON.stringify(acc))
 }
 
 module.exports = coNormal

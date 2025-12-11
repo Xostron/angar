@@ -14,10 +14,13 @@ const { ctrlDO } = require('@tool/command/module_output')
 // -> ждем время -> выкл сол2 -> ждем время -> выкл сол1 и сол2
 // -> выдаем предупреждение "Низкая температура канала"
 const { data: store, readAcc } = require('@store')
+const { isExtra } = require('@tool/message/extra')
 
 function softsol(idB, solenoid, sl, f, h, clr, accAuto) {
-	const extraCO2 = readAcc(idB, 'building', 'co2')
-	if (extraCO2.sol) return fnSol(idB, extraCO2, solenoid)
+	// Удаление co2 в работе
+	const CO2work = isExtra(idB, null, 'co2', 'work')
+	// const extraCO2 = readAcc(idB, 'building', 'co2')
+	if (CO2work) return fnSol(idB, CO2work, solenoid)
 	const secId = clr.sectionId
 	const map = accAuto?.cold?.softSol?.[secId]
 	// Комби: Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
@@ -80,7 +83,7 @@ function initSoftsol(accAuto, sect, coolerS, s) {
 module.exports = { softsol, initSoftsol }
 
 // Отключение соленоидов
-function fnSol(idB, extraCO2, sol) {
-	if (!extraCO2.sol) return
+function fnSol(idB, CO2work, sol) {
+	// if (!extraCO2.sol) return
 	sol.forEach((el) => ctrlDO(el, idB, 'off'))
 }

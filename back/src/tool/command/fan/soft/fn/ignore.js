@@ -1,6 +1,7 @@
 const { data: store, readAcc } = require('@store')
 const { isAlr } = require('@tool/message/auto')
 const { ctrlDO } = require('@tool/command/module_output')
+const { isExtra } = require('@tool/message/extra')
 
 /**
  * normal - обычный склад и комби-обычный
@@ -15,13 +16,14 @@ const { ctrlDO } = require('@tool/command/module_output')
  * @returns false - разрешить управление, true - запрет управления
  */
 function normal(bld, obj, s, acc, bdata) {
-	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// Удаление co2 в работе
+	const CO2work = isExtra(bld._id, null, 'co2', 'work')
 	// Управление ВНО: склад нормальный, режим сушка, удаление СО2, режим охлаждения и отключено оборудование,
 	// комби склад без аварии авторежима
 	if (
 		bld.type == 'normal' ||
 		bdata.automode != 'cooling' ||
-		extraCO2.start ||
+		CO2work ||
 		(bdata.automode === 'cooling' && !s?.coolerCombi?.on)
 	) {
 		console.log('\tИгнор (normal) false')
@@ -36,14 +38,15 @@ function normal(bld, obj, s, acc, bdata) {
 // Комби-холодильник
 function cold(bld, obj, s, acc, bdata, solHeat) {
 	// 1. Игнор работы ВНО: если удаление СО2, выкл.оборудование испарителей (хранение), сушка
-	const extraCO2 = readAcc(bld._id, 'building', 'co2')
+	// Удаление co2 в работе
+	const CO2work = isExtra(bld._id, null, 'co2', 'work')
 	if (
-		extraCO2.start ||
+		CO2work ||
 		(bdata.automode === 'cooling' && !s?.coolerCombi?.on) ||
 		bdata.automode === 'drying'
 	) {
 		// Отключение соленоидов подогрева
-		fnSol(bld._id, extraCO2, solHeat)
+		fnSol(bld._id, CO2work, solHeat)
 		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')
 		return true
 	}
@@ -54,8 +57,8 @@ function cold(bld, obj, s, acc, bdata, solHeat) {
 }
 
 // Отключение соленоидов
-function fnSol(idB, extraCO2, sol) {
-	if (!extraCO2.sol) return
+function fnSol(idB, CO2work, sol) {
+	// if (!extraCO2.sol) return
 	sol.forEach((el) => ctrlDO(el, idB, 'off'))
 }
 
