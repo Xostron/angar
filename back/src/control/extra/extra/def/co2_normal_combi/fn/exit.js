@@ -2,7 +2,7 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 const dict = {
-	0: 'таймер запрета активен',
+	0: 'таймер запрета',
 	1: 'вентиляторы неисправны',
 	2: 'клапаны не закрыты',
 	3: 'секция не в авто',
@@ -14,6 +14,7 @@ const dict = {
 	9: 'склад работает по авто режиму', //комби-обычный
 	10: 'склад работает по авто режиму', //обычный
 	11: 'склад работает в режиме комби-холодильника',
+	12: 'обнаружена авария',
 }
 
 /**
@@ -28,10 +29,10 @@ const dict = {
  * @param {*} resultFan
  * @returns {boolean} true - разрешить работу, false - запрет работы
  */
-function exit(bld, code, s, ban, prepare, acc, resultFan) {
+function exit(bld, code, s, alarm, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (code === 'off' || !fnCheck(bld, code, s, ban, acc, prepare)) {
-		clear(bld, acc, resultFan, 1, 1, 1, 1, 1)
+	if (code === 'off' || !fnCheck(bld, code, s, alarm, ban, acc, prepare)) {
+		clear(bld, acc, resultFan, 1, 1, 1)
 		return false
 	}
 	return true
@@ -47,9 +48,9 @@ function exit(bld, code, s, ban, prepare, acc, resultFan) {
  * @param {*} ban
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
-function fnCheck(bld, code, s, ban, acc, prepare) {
+function fnCheck(bld, code, s, alarm, ban, acc, prepare) {
 	// Вычисление причин запрета
-	const reason = fnReason(bld, code, s, ban, acc, prepare)
+	const reason = fnReason(bld, code, s, alarm, ban, acc, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
 	const ignore = [9, 10]
 	const err = reason
@@ -74,7 +75,7 @@ function fnCheck(bld, code, s, ban, acc, prepare) {
 }
 
 // Вычисление причин выключения "Удаления СО2"
-function fnReason(bld, code, s, ban, acc, prepare) {
+function fnReason(bld, code, s, alarm, ban, acc, prepare) {
 	const {
 		am,
 		alrAuto,
@@ -118,6 +119,7 @@ function fnReason(bld, code, s, ban, acc, prepare) {
 		isCN && !alrAuto && !flagFinish, //9
 		isN && !alrAuto && !flagFinish, //10
 		isCC, //11
+		alarm,
 	]
 }
 

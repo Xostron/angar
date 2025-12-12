@@ -21,7 +21,7 @@ function battery(bld, sect, obj, s, se, m, automode, acc, data) {
 
 	reset(acc, store.debounce)
 	set(bld, store.battery, obj, store.debounce, acc, watch, count)
-	blink(bld, store.battery)
+	blink(bld, store.battery, acc)
 	return acc?._alarm ?? false
 }
 

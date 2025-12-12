@@ -21,7 +21,6 @@ function build(start, building, obj, s, se, m, am, accAuto, resultFan, bdata) {
 		alrAm = false
 	// Доп. аварии и доп. функции (always - всегда выполняются)
 	alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'always')
-	extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'always')
 
 	if (start) {
 		// Склад включен
@@ -40,6 +39,7 @@ function build(start, building, obj, s, se, m, am, accAuto, resultFan, bdata) {
 		clearAA(building._id, am)
 	}
 
+	extra(building, null, obj, s, se, m, /*null*/ alrBld, resultFan, null, 'building', 'always')
 	// Калибровка клапанов
 	tuneup(obj)
 	return { alrBld, alrAm }

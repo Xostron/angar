@@ -14,7 +14,7 @@ function coNormal(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	// Сообщение о выбранном алгоритме
 	fnModeMsg(bld, code, acc)
 	// Проверка разрешения CO2 и очистка аккумулятора
-	if (!exit(bld, code, s, ban, prepare, acc, resultFan)) return
+	if (!exit(bld, code, s, alarm, ban, prepare, acc, resultFan)) return
 	def[code](bld, obj, s, se, m, alarm, prepare, acc, resultFan)
 	// def.fnSol(bld, obj, acc)
 }

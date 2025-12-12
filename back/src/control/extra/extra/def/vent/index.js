@@ -15,7 +15,7 @@ function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	// Сообщение о выбранном алогритме
 	fnModeMsg(bld, code, acc)
 	// Проверка разрешения ВВ и очистка аккумулятора
-	if (!exit(bld, code, s, ban, prepare, acc, resultFan)) return
+	if (!exit(bld, code, s, alarm, ban, prepare, acc, resultFan)) return
 	// Алгоритм ВВ
 	def[code](obj, s, m, bld, alarm, prepare, acc, resultFan)
 }

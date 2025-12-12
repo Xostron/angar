@@ -20,6 +20,7 @@ const dict = {
 	15: 'склад работает по авто режиму', //комби-обычный, сушка
 	16: 'склад работает по авто режиму', //обычный, сушка
 	17: 'настройка "Вентиляция": количество вентиляторов = 0', //обычный, комби-обычный
+	18: 'обнаружена авария',
 	// 18: 'настройки "Холодильник С": работа внутренней вентиляции = 0',
 	// 19: 'настройка "Холодильник С": количество вентиляторов = 0', //комби-холодильник
 }
@@ -36,9 +37,9 @@ const dict = {
  * @param {*} resultFan
  * @returns {boolean} true - разрешить работу, false - запрет работы
  */
-function exit(bld, code, s, ban, prepare, acc, resultFan) {
+function exit(bld, code, s, alarm, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (!fnCheck(bld, code, s, ban, prepare)) {
+	if (!fnCheck(bld, code, s, alarm, ban, prepare)) {
 		clear(bld, acc, resultFan, 1, 1, 1, 1, 1)
 		return false
 	}
@@ -55,9 +56,9 @@ function exit(bld, code, s, ban, prepare, acc, resultFan) {
  * @param {*} ban
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
-function fnCheck(bld, code, s, ban, prepare) {
+function fnCheck(bld, code, s, alarm, ban, prepare) {
 	// Вычисление причин запрета ВВ
-	const reason = fnReason(bld, code, s, ban, prepare)
+	const reason = fnReason(bld, code, s, alarm, ban, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
 	const ignore = [2, 3, 13, 14, 15, 16]
 	const err = reason
@@ -82,7 +83,7 @@ function fnCheck(bld, code, s, ban, prepare) {
 	return true
 }
 
-function fnReason(bld, code, s, ban, prepare) {
+function fnReason(bld, code, s, alarm, ban, prepare) {
 	const {
 		alrAuto,
 		CO2work,
@@ -121,6 +122,7 @@ function fnReason(bld, code, s, ban, prepare) {
 		isCN && am === 'drying' && !alrAuto, //15
 		isN && am === 'drying' && !alrAuto, //16
 		(isCN || isN) && !s?.vent?.max, // 17
+		alarm,
 		// !s?.coolerCombi?.work && code === 'combiCold', //18
 		// !s?.coolerCombi?.max && code === 'combiCold', // 19
 	]

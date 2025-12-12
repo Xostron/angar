@@ -39,7 +39,7 @@ function runExtra(bld, obj, bdata) {
 	} else extraClear(bld, null, obj, s, se, m, null, null, null, type, 'off')
 
 	// Склад включен
-	extra(bld, null, obj, s, se, m, null, null, null, type, 'on')
 	alr = alr || extralrm(bld, null, obj, s, se, m, automode, null, type, 'on')
+	extra(bld, null, obj, s, se, m, alr, null, null, type, 'on')
 	return alr
 }
