@@ -30,7 +30,7 @@ const dict = {
  */
 function exit(bld, code, s, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (!fnCheck(bld, code, s, ban, acc, prepare)) {
+	if (code === 'off' || !fnCheck(bld, code, s, ban, acc, prepare)) {
 		clear(bld, acc, resultFan, 1, 1, 1, 1, 1)
 		return false
 	}
@@ -73,6 +73,7 @@ function fnCheck(bld, code, s, ban, acc, prepare) {
 	return true
 }
 
+// Вычисление причин выключения "Удаления СО2"
 function fnReason(bld, code, s, ban, acc, prepare) {
 	const {
 		am,
@@ -99,7 +100,11 @@ function fnReason(bld, code, s, ban, acc, prepare) {
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	// CO2 запущен
-	const isRunCO2 = acc?.byTime?.work || acc?.bySensor?.work || isExtra(bld._id, null, 'co2', 'work') || isExtra(bld._id, null, 'co2', 'on')
+	const isRunCO2 =
+		acc?.byTime?.work ||
+		acc?.bySensor?.work ||
+		isExtra(bld._id, null, 'co2', 'work') ||
+		isExtra(bld._id, null, 'co2', 'on')
 	return [
 		ban, //0
 		!fan.length, //1
@@ -121,7 +126,7 @@ function clear(bld, acc, resultFan, ...args) {
 	acc.byTime = {}
 	acc.bySensor = {}
 	resultFan.force.push(false)
-	resultFan.stg = null
+	resultFan.stg.push(null)
 	args[0] ? delExtra(bld._id, null, 'co2', 'wait') : null
 	args[1] ? delExtra(bld._id, null, 'co2', 'work') : null
 	args[2] ? delExtra(bld._id, null, 'co2', 'on') : null

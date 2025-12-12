@@ -10,10 +10,8 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 	acc.byTime ??= {}
 	// Ожидание
 	acc.byTime.wait ??= new Date()
-	// acc.byTime.stgWait ??=s.co2?.wait?.w
 	acc.byTime.stgWait = s.co2?.wait?.w
 	let time = compareTime(acc.byTime.wait, acc.byTime.stgWait)
-	console.log(8800, 'acc.byTime.wait, acc.byTime.stgWait', acc.byTime.wait, acc.byTime.stgWait)
 	// 1. Время ожидание не прошло
 	if (!time) {
 		wrExtra(
@@ -26,7 +24,7 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 		delExtra(bld._id, null, 'co2', 'work')
 		return
 	}
-	// 2. Время прошло -> Проверка условий
+	// 2. Время ожидания прошло -> Проверка условий по датчикам
 	if (!checkNow(bld, prepare, s)) {
 		// Проверка не пройдена
 		delExtra(bld._id, null, 'co2', 'work')
@@ -43,7 +41,7 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 	wrExtra(bld._id, null, 'co2', msgB(bld, 84, `${remTime(acc.byTime.work, s.co2.work)}`), 'work')
 	//
 	resultFan.force.push(true)
-	resultFan.stg = 'co2'
+	resultFan.stg.push('co2')
 	//
 	time = compareTime(acc.byTime.work, s.co2.work)
 	//
@@ -55,7 +53,7 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 		if (acc.byTime.stgWait) return
 		// Время работы прошло
 		resultFan.force.push(false)
-		resultFan.stg = null
+		resultFan.stg.push(null)
 	}
 }
 

@@ -35,7 +35,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	)
 	//
 	resultFan.force.push(true)
-	resultFan.stg = 'vent'
+	resultFan.stg.push('vent')
 	time = compareTime(acc.byTime.work, s.vent.work)
 	//
 	if (time) {
@@ -52,7 +52,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		delete acc.byTime?.work
 		delExtra(bld._id, null, 'vent', 'work')
 		resultFan.force.push(false)
-		resultFan.stg = null
+		resultFan.stg.push(null)
 	}
 }
 

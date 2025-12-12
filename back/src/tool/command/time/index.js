@@ -57,16 +57,16 @@ function compareTime(t, d) {
 }
 
 /**
- * Читаемая разница между переданным временем и текущим в минутах и секундах
+ * Пройденное время
  * @param {String||DateTime} doc время
- * @returns {String}
+ * @returns {String} Пройденное время 00:00:00/00:00
  */
-function runTime(doc) {
+function runTime(date) {
 	try {
-		if (typeof doc === 'string') doc = new Date(doc)
-		const t = (new Date() - doc) / 1000
-		let m = Math.trunc(t / 60)
-		return `${m ? m + ' мин ' : ''}${(t % 60).toFixed(0) + ' сек'}`
+		if (typeof date === 'string') date = new Date(date)
+		// Пройденное время, с
+		const s = (new Date() - date) / 1000
+		return fmtTime(s)
 	} catch (error) {
 		console.log('runTime', error)
 		return ''
@@ -77,7 +77,7 @@ function runTime(doc) {
  * Оставшееся времени
  * @param {String||DateTime} date дата и время (начальная точка)
  * @param {number} x заданное время, мс
- * @returns {String} Оставшееся время
+ * @returns {String} Оставшееся время 00:00:00/00:00
  */
 function remTime(date, x) {
 	try {
@@ -85,22 +85,30 @@ function remTime(date, x) {
 		// Пройденное время, мс
 		const t = new Date() - date
 		// Оставшееся время, с
-		let s = (x - t) / 1000
-		// Часы
-		let h = Math.trunc(s / 3600)
-		// Минуты
-		let m = Math.trunc((s % 3600) / 60)
-
-		s = Math.trunc(s % 60)
-
-		const hh = h < 10 ? '0' + h : h
-		const mm = m < 10 ? '0' + m : m
-		const ss = s < 10 ? '0' + s : s
-		return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`
+		const s = (x - t) / 1000
+		return fmtTime(s)
 	} catch (error) {
-		console.log('runTime', error)
+		console.log('remTime', error)
 		return ''
 	}
+}
+/**
+ * Форматировать секунды в 00:00:00 или 00:00
+ * @param {number} s время в секундах
+ * @returns {string} 00:00:00 или 00:00
+ */
+function fmtTime(s) {
+	// Часы
+	const h = Math.trunc(s / 3600)
+	// Минуты
+	const m = Math.trunc((s % 3600) / 60)
+	// секунды
+	s = Math.trunc(s % 60)
+
+	const hh = h < 10 ? '0' + h : h
+	const mm = m < 10 ? '0' + m : m
+	const ss = s < 10 ? '0' + s : s
+	return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`
 }
 
 /**

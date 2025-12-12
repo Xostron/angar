@@ -6,6 +6,7 @@ const dict = {
 	2: 'температура улицы не подходит',
 	3: 'нет показаний датчиков (точка росы, темп. продукта, влажность улицы, темп. улицы)',
 	4: 'нет показаний датчиков (точка росы, темп. продукта, влажность улицы, , темп. улицы, CO2)',
+	5: 'CO2 в норме',
 }
 
 /**
@@ -16,7 +17,7 @@ const dict = {
  * @param {object} s Настройки
  * @returns {boolean} true Разрешено удаление СО2
  */
-function checkNow(bld, prepare, s) {
+function checkNow(bld, prepare, s, acc) {
 	const {
 		am,
 		alrAuto,
@@ -41,7 +42,7 @@ function checkNow(bld, prepare, s) {
 	// Причины запрета
 	let reason =
 		s?.co2?.mode === 'sensor'
-			? [isHout, point >= tprd - 1, tout <= s.co2.min, false, !validSe]
+			? [isHout, point >= tprd - 1, tout <= s.co2.min, false, !validSe, checkCO2(co2, s, acc)]
 			: [isHout, point >= tprd - 1, tout <= s.co2.min, !validSe]
 	//
 	const error = reason
@@ -57,6 +58,25 @@ function checkNow(bld, prepare, s) {
 	// Разрешение
 	delExtra(bld._id, null, 'co2', 'check2')
 	return true
+}
+
+/**
+ * Проверка СО2
+ * @param {*} co2 Показание СО2
+ * @param {*} s Настройки
+ * @param {*} acc Аккумулятор
+ * @returns {boolean} true - СО2 в норме acc.bySensor.work = null|undefined,
+ *					  false - СО2 превышен
+ */
+function checkCO2(co2, s, acc) {
+	if (co2 >= s?.co2?.sp) {
+		acc.bySensor.work = new Date()
+	}
+	if (co2 < s?.co2?.sp - s?.co2?.hysteresis) {
+		acc.bySensor.work = null
+	}
+	//
+	return !acc.bySensor.work
 }
 
 module.exports = { checkNow }

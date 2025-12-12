@@ -8,7 +8,7 @@ const { compareTime } = require('@tool/command/time')
 // Склад обычный, комби-обычный
 function fnOn(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	resultFan.force.push(true)
-	resultFan.stg = 'vent'
+	resultFan.stg.push('vent')
 	wrExtra(bld._id, null, 'vent', msgB(bld, 145), 'ventOn')
 	delExtra(bld._id, null, 'vent', 'wait')
 	delExtra(bld._id, null, 'vent', 'work')

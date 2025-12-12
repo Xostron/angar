@@ -7,7 +7,7 @@ const { runTime } = require('@tool/command/time')
 function fnSensor(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 	const { co2 } = prepare
 	delExtra(bld._id, null, 'co2', 'wait')
-	delExtra(bld._id, null, 'co2', 'work')
+	// delExtra(bld._id, null, 'co2', 'work')
 	delExtra(bld._id, null, 'co2', 'on')
 	acc.bySensor ??= {}
 	// Проверка условий
@@ -15,27 +15,29 @@ function fnSensor(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 		delExtra(bld._id, null, 'co2', 'work')
 		// Проверка не пройдена
 		resultFan.force.push(false)
-		resultFan.stg = null
+		resultFan.stg.push(null)
 		return
 	}
-	// Проверка пройден -> проверка по датчику СО2
+	// Проверка пройдена -> проверка по датчику СО2
 
-	if (co2 >= s?.co2?.sp) {
-		acc.bySensor.work = new Date()
-	}
-	if (co2 < s?.co2?.sp - s?.co2?.hysteresis) {
-		acc.bySensor.work = null
-	}
+	// if (co2 >= s?.co2?.sp) {
+	// 	acc.bySensor.work = new Date()
+	// }
+	// if (co2 < s?.co2?.sp - s?.co2?.hysteresis) {
+	// 	acc.bySensor.work = null
+	// }
+
 	if (!acc.bySensor.work) {
+		// CO2 в норме -> выключаем
 		delExtra(bld._id, null, 'co2', 'work')
-		// Проверка не пройдена
 		resultFan.force.push(false)
-		resultFan.stg = null
+		resultFan.stg.push(null)
 		return
 	}
+	// CO2 превышена -> включаем
 	wrExtra(bld._id, null, 'co2', msgB(bld, 84, `по датчику ${runTime(acc.bySensor.work)}`), 'work')
 	resultFan.force.push(true)
-	resultFan.stg = 'co2'
+	resultFan.stg.push('co2')
 }
 
 module.exports = fnSensor

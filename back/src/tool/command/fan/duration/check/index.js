@@ -1,5 +1,6 @@
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
+const { getRFstg } = require('../../fn')
 const dict = {
 	0: 'настройки "Вентиляция": дополнительная вентиляция = 0%',
 	1: 'аварийная ситуация',
@@ -49,7 +50,8 @@ function fnReason(prepare, resultFan) {
 	const { acc, cmd, isCC, s, bstart, secAuto, CO2work } = prepare
 	// console.log(9900, resultFan)
 	const ok = acc.byDur?.queue?.[0] && acc.byDur?.queue?.[1] && resultFan.start.includes(true)
-	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, CO2work, !!resultFan.stg, isCC, ok]
+	const rfStg = getRFstg(resultFan.stg)
+	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, CO2work, !!rfStg, isCC, ok]
 }
 
 module.exports = { fnCheck, clear }

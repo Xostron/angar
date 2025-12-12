@@ -131,7 +131,7 @@ function clear(bld, acc, resultFan, ...args) {
 	acc.byTime = {}
 	acc.CC = {}
 	resultFan.force.push(false)
-	resultFan.stg = null
+	resultFan.stg.push(null)
 	args[0] ? delExtra(bld._id, null, 'vent', 'wait') : null
 	args[1] ? delExtra(bld._id, null, 'vent', 'work') : null
 	args[2] ? delExtra(bld._id, null, 'vent', 'ventOn') : null

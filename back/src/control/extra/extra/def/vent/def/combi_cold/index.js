@@ -37,7 +37,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		'work'
 	)
 	resultFan.force.push(true)
-	resultFan.stg = 'coolerCombi'
+	resultFan.stg.push('coolerCombi')
 	time = compareTime(acc.CC.work, s.coolerCombi.work)
 	// console.log(77, 'ВВ комби-холод - работа')
 	if (time) {
@@ -48,7 +48,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		// accCold.blow = null
 		delExtra(bld._id, null, 'vent', 'work')
 		resultFan.force.push(false)
-		resultFan.stg = null
+		resultFan.stg.push(null)
 	}
 }
 

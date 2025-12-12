@@ -40,7 +40,7 @@ function scan(bld, obj) {
 		fan: [],
 		warming: {},
 		force: [],
-		stg: null,
+		stg: [],
 		notDur:[]
 	}
 

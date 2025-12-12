@@ -43,15 +43,17 @@ function fnACmd(bld, resultFan, obj, bdata) {
 
 		// Принудительное включение ВНО: удаление СО2, внутренняя вентиляция
 		if (resultFan.force.includes(true)) {
+			rfs = getRFstg(resultFan.stg)
+			console.log(115, resultFan.stg, rfs, bdata?.s?.[rfs]?.max)
 			setACmd('fan', idS, {
 				delay,
 				type: 'on',
 				force: true, // принудительное включение
-				max: bdata?.s?.[resultFan?.stg]?.max, // max кол-во ВНО при принудительном включении
+				max: bdata?.s?.[rfs]?.max, // max кол-во ВНО при принудительном включении
 			})
 			return
 		}
-		
+
 		// Если нет блокировок и нет принудительного, то включаем по состоянию start
 		setACmd('fan', idS, {
 			delay,
@@ -76,4 +78,16 @@ function fnFanWarm(resultFan, s) {
 	}
 }
 
-module.exports = { fnACmd, fnFanWarm }
+// Получить настройку stg
+function getRFstg(stg = []) {
+	if (!stg.length) return null
+	// все элементы null
+	if (stg.every((el) => el === null)) return null
+	// Если имеется хотя бы один элемент 'со2'
+	if (stg.some((el) => el === 'co2')) return 'co2'
+	// если имеется хотя бы один элемент 'coolerCombi'
+	if (stg.some((el) => el === 'coolerCombi')) return 'coolerCombi'
+	return 'vent'
+}
+
+module.exports = { fnACmd, fnFanWarm, getRFstg }
