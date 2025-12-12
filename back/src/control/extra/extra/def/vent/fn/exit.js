@@ -2,7 +2,7 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 const dict = {
-	0: 'таймер запрета активен',
+	0: 'таймер запрета',
 	1: 'вентиляторы неисправны',
 	2: 'режим вентиляции - Выкл', //обычный склад
 	3: 'режим вентиляции - Выкл', //комби-обычный
