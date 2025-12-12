@@ -5,13 +5,16 @@ const { isErrMs } = require('@tool/message/plc_module')
 // Аварии на боковой колонке на странице "внутренности" Секции
 function bar(r, bld, sect, am, start) {
 	// склад выключен, авторежим не выбран - очищаем аварии, сообщения, таймеры запретов авторежима
-	if (!am || !start) {
+	// console.log(1100, store.alarm?.extra?.[bld._id])
+	if (!am) {
 		r.bar ??= {}
 		r.bar[bld._id] = {}
 		return
 	}
 	// Боковая панель аварий для секции
 	// const d = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
+	const smoking1 = store.alarm?.extra?.[bld._id]?.smoking1
+	const smoking2 = store.alarm?.extra?.[bld._id]?.smoking2
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed ?? null
 	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
@@ -36,8 +39,6 @@ function bar(r, bld, sect, am, start) {
 		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
 	)
 	if (debdo) debdo.msg = mes[102].msg
-	const smoking1 = store.alarm?.extra?.[bld._id]?.smoking1
-	const smoking2 = store.alarm?.extra?.[bld._id]?.smoking2
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}

@@ -1,15 +1,12 @@
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { checkNow } = require('../time/check')
 const { runTime } = require('@tool/command/time')
+const { defClear } = require('../../fn/exit')
 
 // Режим вентиляции: Выкл
 // Склад обычный, комби-обычный
 function fnSensor(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
-	const { co2 } = prepare
-	delExtra(bld._id, null, 'co2', 'wait')
-	// delExtra(bld._id, null, 'co2', 'work')
-	delExtra(bld._id, null, 'co2', 'on')
-	acc.bySensor ??= {}
+	defClear.sensor(bld, acc)
 	// Проверка условий
 	if (!checkNow(bld, prepare, s)) {
 		delExtra(bld._id, null, 'co2', 'work')

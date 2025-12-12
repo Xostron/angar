@@ -51,7 +51,7 @@ function fnCheck(bld, code, s, ban, acc, prepare) {
 	// Вычисление причин запрета
 	const reason = fnReason(bld, code, s, ban, acc, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
-	const ignore = [9, 10, 11]
+	const ignore = [9, 10]
 	const err = reason
 		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
@@ -125,6 +125,7 @@ function fnReason(bld, code, s, ban, acc, prepare) {
 function clear(bld, acc, resultFan, ...args) {
 	acc.byTime = {}
 	acc.bySensor = {}
+	acc.byOn = {}
 	resultFan.force.push(false)
 	resultFan.stg.push(null)
 	args[0] ? delExtra(bld._id, null, 'co2', 'wait') : null
@@ -132,13 +133,27 @@ function clear(bld, acc, resultFan, ...args) {
 	args[2] ? delExtra(bld._id, null, 'co2', 'on') : null
 }
 
-/**
- * Очистка аккумулятора
- * @param {*} acc
- * @param  {...any} args
- */
-function clear2(acc, ...args) {
-	args.forEach((key) => (acc[key] = null))
+// Очистка аккумулятора, инициализация
+const defClear = {
+	on(bld, acc) {
+		acc.byOn ??= {}
+		acc.byTime = {}
+		acc.bySensor = {}
+		delExtra(bld._id, null, 'co2', 'wait')
+	},
+	time(bld, acc) {
+		acc.byTime ??= {}
+		acc.bySensor = {}
+		acc.byOn = {}
+		delExtra(bld._id, null, 'co2', 'on')
+	},
+	sensor(bld, acc) {
+		acc.bySensor ??= {}
+		acc.byTime = {}
+		acc.byOn = {}
+		delExtra(bld._id, null, 'co2', 'wait')
+		delExtra(bld._id, null, 'co2', 'on')
+	},
 }
 
-module.exports = { exit, clear }
+module.exports = { exit, clear, defClear }

@@ -503,7 +503,7 @@ const data = {
 	82: {
 		code: 'smoking',
 		typeSignal: 'info',
-		msg: 'Окуривание',
+		msg: 'Окуривание.',
 	},
 
 	// ======== 399 ========

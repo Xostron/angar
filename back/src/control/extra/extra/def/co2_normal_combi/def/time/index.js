@@ -2,12 +2,12 @@ const { msgB } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { compareTime, remTime } = require('@tool/command/time')
 const { checkNow } = require('./check')
+const { defClear } = require('../../fn/exit')
 
 // Режим вентиляции: Выкл
 // Склад обычный, комби-обычный
 function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
-	delExtra(bld._id, null, 'co2', 'on')
-	acc.byTime ??= {}
+	defClear.time(bld, acc)
 	// Ожидание
 	acc.byTime.wait ??= new Date()
 	acc.byTime.stgWait = s.co2?.wait?.w

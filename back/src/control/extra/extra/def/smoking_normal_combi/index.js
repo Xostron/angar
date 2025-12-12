@@ -1,5 +1,5 @@
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
-const { compareTime, runTime } = require('@tool/command/time')
+const { compareTime, runTime, remTime } = require('@tool/command/time')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { getIdsS } = require('@tool/get/building')
 const { fnClear, collect } = require('./fn')
@@ -82,46 +82,45 @@ function smoking(
 	// console.log('Режим окуривания', runTime(doc.wait ?? doc.work))
 
 	// Работаем - включаются вентиляторы
-	if (!doc.work) {
-		doc.work = new Date()
-		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
-	}
-	// Повтор сообщения, если наш пос ребутнулся ночью аккурат находясь в окуривании
-	if (doc.work && !doc.wait && !isExtra(idB, null, 'smoking1'))
-		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
-
-	if (!compareTime(doc.work, stg.work * h)) {
-		// console.log(22, 'Окуривание работа: Включение плавного пуска')
+	doc.work ??= new Date()
+	let time = compareTime(doc.work, stg.work * h)
+	// Время работы не прошло
+	if (!time) {
+		wrExtra(
+			idB,
+			null,
+			'smoking1',
+			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`)
+		)
+		delExtra(idB, null, 'smoking2')
 		// Вкл разгонные
 		arrCtrlDO(idB, fanA, 'on')
 		// Вкл ВНО секции
 		soft(idB, idsS, fan, obj, s, true)
 		return
 	}
+	// Время работы прошло
+	doc.wait ??= new Date()
+	delExtra(idB, null, 'smoking1')
+	wrExtra(
+		idB,
+		null,
+		'smoking2',
+		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
+	)
+	arrCtrlDO(idB, fanA, 'off')
+	soft(idB, idsS, fan, obj, s, false)
+	time = compareTime(doc.wait, stg.wait * h)
 
-	// Выключаем вентиляторы и ждем
-	if (!doc.wait) {
-		doc.wait = new Date()
+	if (time) {
+		doc.work = null
+		doc.wait = null
+		// Удаляем аккумулятор плавного пуска по завершению окуривания
+		delete store?.heap?.smoking
 		delExtra(idB, null, 'smoking1')
-		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
-	}
-	// Повтор сообщения, если наш пос ребутнулся ночью аккурат находясь в окуривании
-	if (doc.wait && !isExtra(idB, null, 'smoking2'))
-		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
-	if (!compareTime(doc.wait, stg.wait * h)) {
-		arrCtrlDO(idB, fanA, 'off')
-		soft(idB, idsS, fan, obj, s, false)
-		// console.log(33, 'Окуривание ожидание: Выключение плавного пуска')
+		delExtra(idB, null, 'smoking2')
 		return
 	}
-
-	// console.log('Режим окуривания завершен')
-	doc.work = null
-	doc.wait = null
-	// Удаляем аккумулятор плавного пуска по завершению окуривания
-	delete store?.heap?.smoking
-	delExtra(idB, null, 'smoking1')
-	delExtra(idB, null, 'smoking2')
 }
 
 module.exports = smoking

@@ -59,16 +59,12 @@ function smoking(
 		return
 	}
 	// Включено окуривание
-	console.log('Режим окуривания', runTime(doc.wait ?? doc.work))
-
 	// Работаем - включаются вентиляторы
 	if (!doc.work) {
 		doc.work = new Date()
-		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
 	}
-	// Повтор сообщения, если наш пос ребутнулся ночью аккурат находясь в окуривании
-	if (doc.work && !doc.wait && !isExtra(idB, null, 'smoking1'))
-		wrExtra(idB, null, 'smoking1', msgB(building, 82, 'работа (этап 1 из 2)'))
+	wrExtra(idB, null, 'smoking1', msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`))
+
 
 	if (!compareTime(doc.work, stg.work * h)) {
 		arrCtrlDO(idB, arr, 'on')
@@ -79,11 +75,14 @@ function smoking(
 	if (!doc.wait) {
 		doc.wait = new Date()
 		delExtra(idB, null, 'smoking1')
-		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
 	}
-	// Повтор сообщения, если наш пос ребутнулся ночью аккурат находясь в окуривании
-	if (doc.wait && !isExtra(idB, null, 'smoking2'))
-		wrExtra(idB, null, 'smoking2', msgB(building, 82, 'ожидание (этап 2 из 2)'))
+	wrExtra(
+		idB,
+		null,
+		'smoking2',
+		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
+	)
+
 	if (!compareTime(doc.wait, stg.wait * h)) {
 		arrCtrlDO(idB, arr, 'off')
 		return

@@ -133,8 +133,7 @@ function message(bld, obj, s, seB, am, acc) {
 		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
 
-	const txt = `Tзад.канала = ${acc.tcnl ?? '--'}°C. 
-	Тзад.прод. = ${acc.tgt ?? '--'}°C`
+	const txt = `T зад. канала = ${acc.tcnl ?? '--'}°C. Т зад. прод. = ${acc.tgt ?? '--'}°C`
 	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt))
 
 	// Обновление времени в сообщении "Продукт достиг температуры"
