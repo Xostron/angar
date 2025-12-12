@@ -119,7 +119,6 @@ function smoking(
 		delete store?.heap?.smoking
 		delExtra(idB, null, 'smoking1')
 		delExtra(idB, null, 'smoking2')
-		return
 	}
 }
 

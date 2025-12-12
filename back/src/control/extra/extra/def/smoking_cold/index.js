@@ -60,40 +60,38 @@ function smoking(
 	}
 	// Включено окуривание
 	// Работаем - включаются вентиляторы
-	if (!doc.work) {
-		doc.work = new Date()
-	}
-	wrExtra(idB, null, 'smoking1', msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`))
+	doc.work ??= new Date()
+	let time = compareTime(doc.work, stg.work * h)
 
-
-	if (!compareTime(doc.work, stg.work * h)) {
+	if (!time) {
+		wrExtra(
+			idB,
+			null,
+			'smoking1',
+			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`)
+		)
+		delExtra(idB, null, 'smoking2')
 		arrCtrlDO(idB, arr, 'on')
 		return
 	}
 
-	// Выключаем вентиляторы и ждем
-	if (!doc.wait) {
-		doc.wait = new Date()
-		delExtra(idB, null, 'smoking1')
-	}
+	// Время работы прошло
+	doc.wait ??= new Date()
+	delExtra(idB, null, 'smoking1')
 	wrExtra(
 		idB,
 		null,
 		'smoking2',
 		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
 	)
-
-	if (!compareTime(doc.wait, stg.wait * h)) {
-		arrCtrlDO(idB, arr, 'off')
-		return
+	arrCtrlDO(idB, arr, 'off')
+	time = compareTime(doc.wait, stg.wait * h)
+	if (time) {
+		doc.work = null
+		doc.wait = null
+		delExtra(idB, null, 'smoking1')
+		delExtra(idB, null, 'smoking2')
 	}
-
-	console.log('Режим окуривания завершен')
-
-	doc.work = null
-	doc.wait = null
-	delExtra(idB, null, 'smoking1')
-	delExtra(idB, null, 'smoking2')
 }
 
 module.exports = smoking

@@ -35,7 +35,6 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		accCold.finishTarget ??= new Date()
 		// accCold.blow ??= new Date()
 		acc.state.off = new Date()
-		console.log(11001, code, `Продукт достиг темп задания`)
 		accCold.flagFinish ??= new Date()
 		if (code === 'off') return true
 		// Флаг продукт достиг задания для гистерезиса
@@ -48,7 +47,6 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		se.tprd <= accCold.tgtTprd + s.cooling.hysteresisIn &&
 		se.hin <= s?.mois?.humidity
 	) {
-		console.log(2200, 'Температура задания достигнута ожидаем выход из гистерезиса')
 		// Точка отсчета для обдува датчиков по достижению задания
 		accCold.finishTarget ??= new Date()
 		// accCold.blow ??= new Date()
@@ -69,7 +67,6 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 	const txt = `T зад. канала = ${accCold.tgtTcnl ?? '--'}°C. Т зад. прод. = ${
 		accCold.tgtTprd ?? '--'
 	}°C. Зад. влажности = ${s?.mois?.humidity ?? '--'}%`
-	console.log(411, txt)
 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	// Не блокировать
 	return false
