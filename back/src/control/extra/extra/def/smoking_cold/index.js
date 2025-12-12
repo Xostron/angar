@@ -1,4 +1,4 @@
-const { compareTime, runTime } = require('@tool/command/time')
+const { compareTime, runTime, remTime } = require('@tool/command/time')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')

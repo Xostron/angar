@@ -69,8 +69,9 @@ function checkNow(bld, prepare, s, acc) {
  *					  false - СО2 превышен
  */
 function checkCO2(co2, s, acc) {
+	acc.bySensor ??= {}
 	if (co2 >= s?.co2?.sp) {
-		acc.bySensor.work = new Date()
+		acc.bySensor.work ??= new Date()
 	}
 	if (co2 < s?.co2?.sp - s?.co2?.hysteresis) {
 		acc.bySensor.work = null

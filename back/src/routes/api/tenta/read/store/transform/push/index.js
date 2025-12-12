@@ -11,7 +11,7 @@ function push(bldId, data) {
 	const list = [];
 	const connect = data.alarm?.banner?.connect?.[bldId];
 	if (connect) list.push(connect);
-	data.alarm.signal?.[bldId].forEach((el) => {
+	data.alarm.signal?.[bldId]?.forEach((el) => {
 		if (need.includes(el.msg)) list.push(el);
 	});
 	// console.log('list', JSON.stringify(list));
