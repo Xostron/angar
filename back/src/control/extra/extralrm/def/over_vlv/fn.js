@@ -3,6 +3,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { isAlr } = require('@tool/message/auto')
 const { isCombiCold } = require('@tool/combi/is')
+const { isExtra } = require('@tool/message/extra')
 
 function set(bld, sect, obj, m, s, acc, term) {
 	// Логика
@@ -36,9 +37,22 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 	// 2. Секция не в авто
 	// 3. Нет приточных клапанов
 	// 4. Нет настроек
-	// 6. Настройки.Вентиляция.Управление вент=ВКЛ('on') или авто
+	// 6. Настройки.Вентиляция.Управление вент=ВКЛ('on')
 	// 8. Склад Комби в режиме холодильника
 	const isCC = isCombiCold(bld, automode, s)
+	// 9. Работает удаление СО2
+	const co2work =
+		isExtra(bld._id, null, 'co2', 'wait') ||
+		isExtra(bld._id, null, 'co2', 'work') ||
+		isExtra(bld._id, null, 'co2', 'check2') ||
+		isExtra(bld._id, null, 'co2', 'on')
+	// 10. Работает ВВ
+	const ventWork =
+		isExtra(bld._id, null, 'vent', 'wait') ||
+		isExtra(bld._id, null, 'vent', 'work') ||
+		isExtra(bld._id, null, 'vent', 'ventOn')
+	// 11. Работает доп вентиляция
+	const durWork = isExtra(bld._id, null, 'durVent', 'work')
 	if (
 		!obj.retain[bld._id].start ||
 		!obj.retain[bld._id].mode?.[sect._id] ||
@@ -46,8 +60,10 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 		!s.overVlv.time ||
 		!s.overVlv.wait ||
 		s.vent.mode === 'on' ||
-		s.vent.mode === 'auto' ||
-		isCC
+		isCC ||
+		co2work ||
+		ventWork ||
+		durWork
 	) {
 		fnReset(bld, sect, acc)
 		return false

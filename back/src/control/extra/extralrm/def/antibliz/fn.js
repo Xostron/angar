@@ -84,6 +84,13 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 		isExtra(bld._id, null, 'co2', 'work') ||
 		isExtra(bld._id, null, 'co2', 'check2') ||
 		isExtra(bld._id, null, 'co2', 'on')
+	// 10. Работает ВВ
+	const ventWork =
+		isExtra(bld._id, null, 'vent', 'wait') ||
+		isExtra(bld._id, null, 'vent', 'work') ||
+		isExtra(bld._id, null, 'vent', 'ventOn')
+	// 11. Работает доп вентиляция
+	const durWork = isExtra(bld._id, null, 'durVent', 'work')
 	if (
 		!obj.retain[bld._id].start ||
 		!obj.retain[bld._id].mode?.[sect._id] ||
@@ -94,7 +101,9 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 		!s?.antibliz?.mode ||
 		s.antibliz.mode === 'off' ||
 		isCombiCold(bld, am, s) ||
-		co2work
+		co2work ||
+		ventWork ||
+		durWork
 	) {
 		fnReset(bld, sect, acc)
 		return false

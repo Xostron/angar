@@ -1,7 +1,8 @@
-const { wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
+const { wrExtralrm, isExtralrm, delExtralrm } = require('@tool/message/extralrm')
 const { data: store } = require('@store')
 const { msg } = require('@tool/message')
 const byChangeCount = require('./fn')
+const { isExtra } = require('@tool/message/extra')
 
 /**
  * По секциям
@@ -27,8 +28,18 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	const isAlr = isExtralrm(bld._id, sect._id, 'stableVno')
 	const alrCount = !isAlr ? byChangeCount(bld, sect, acc, soft, s, LIMIT_TIME) : true
 	// const alrFC = !isAlr ? byChangeFC(bld, sect, acc, soft, s, LIMIT_TIME) : true
+	// 9. Работает удаление СО2
+	const co2wait = isExtra(bld._id, null, 'co2', 'wait')
+	// 10. Работает ВВ
+	const ventWait = isExtra(bld._id, null, 'vent', 'wait')
 
-	// Возник антидребезг
+	// Сброс антидребезга, перед ВВ или удалением СО2
+	if (co2wait || ventWait) {
+		fnClear(bld, sect, soft, acc)
+		return
+	}
+
+	// Обнаружен антидребезг
 	if (alrCount) {
 		// Вывод сообщения, плавный пуск фиксирует кол-во включенных ВНО и ВНО+ПЧ = 20%
 		wrExtralrm(bld._id, sect._id, 'stableVno', msg(bld, sect, 40))
@@ -39,11 +50,14 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 		soft.fc.value = true
 		soft.stable = true
 		acc._alarm = true
-	} else {
-		// Сброшен антидребезг
-		soft.stable = null
-		acc._alarm = false
-	}
+	} else fnClear(bld, sect, soft, acc)
 }
 
 module.exports = stableVno
+
+function fnClear(bld, sect, soft, acc) {
+	// Сброшен антидребезг
+	delExtralrm(bld._id, sect._id, 'stableVno')
+	soft.stable = null
+	acc._alarm = false
+}
