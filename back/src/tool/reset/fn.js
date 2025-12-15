@@ -33,7 +33,7 @@ function clearAlarm() {
  * @param {object} pAcc Аккумулятор родитель, acc (вложенный) текущий объект аккумулятор (для выполнения п.2)
  */
 function clearAcc(acc, arr, pKey, pAcc) {
-	console.log('ENTER')
+	// console.log('ENTER')
 	// Проверка текущий объект из списка arr? если ключ _alarm=true у данного
 	// объекта -> обнуляем данный объект, иначе не трогаем
 	if (pKey && arr.includes(pKey)) {
@@ -50,12 +50,12 @@ function clearAcc(acc, arr, pKey, pAcc) {
 	for (const key in acc) {
 		// Ключ - значение
 		if (typeof acc[key] !== 'object') {
-			console.log('Ключ-значение', key)
+			// console.log('Ключ-значение', key)
 			if (key === '_alarm') console.log('\t найден _alarm', acc[key])
 			key === '_alarm' ? (acc[key] = false) : null
 			continue
 		}
-		console.log('Ключ-объект', key)
+		// console.log('Ключ-объект', key)
 		// Ключ - объект
 		clearAcc(acc[key], arr, key, acc)
 	}

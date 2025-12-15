@@ -1,5 +1,5 @@
 const { ctrlDO } = require('@tool/command/module_output')
-const { getSignal } = require('@tool/command/signal')
+const { getSignal, getSumSig } = require('@tool/command/signal')
 const { data: store } = require('@store')
 const { isReset, reset } = require('@tool/reset')
 const { compareTime } = require('@tool/command/time')
@@ -13,14 +13,18 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	// 3. При аварийном закрытии клапанов: если нет неисправных модулей
 	//  И темп канала >=0.5 И есть авария закр клапанов
 	// 4. При потере сигнала модуль в сети
-	if (isReset(bld._id) || !acc.firstFlag || alrClosed(bld, obj, se)) {
+	const reason = [
+		isReset(bld._id),
+		!acc.firstFlag,
+		alrClosed(bld, obj, se, s),
+		connect(obj, bld, m),
+	]
+	if (reason.some((el) => el)) {
 		acc.wait = new Date()
 		acc.firstFlag = true
 		// Обнулить флаг reset (кнопка сброса аварии)
 		reset(null, false)
 	}
-	// Сброс аварии при потери связи
-	connect(obj, bld, m, acc)
 
 	// Включить выход на 3 сек
 	const time = acc.wait && compareTime(acc.wait, 3000)
@@ -42,43 +46,48 @@ function DOReset(arr, bld, type) {
 	})
 }
 
-/**
- * Включение выходов на модулях, которые принадлежат разным секции
- * При отключении данного выхода срабатывает реле безопасности,
- * которое все отключает
- * Реле безопасности у каждой секции
- */
 // Если сигнал "Модуль в сети" пропадал, то включаем выход сброса аварии
-function connect(obj, bld, m, acc) {
+/**
+ * Имеется DO сигнал "Модуль в сети", если модуль данного сигнала
+ * неисправен или сам сигнал был выключен, то вырабатывается
+ * импульс на включение выхода "Сброс аварии"
+ * @param {*} obj
+ * @param {*} bld
+ * @param {*} m
+ * @param {*} acc
+ * @returns
+ */
+function connect(obj, bld, m) {
 	if (!m?.connect?.length) return
-	acc.reset ??= {}
+	let reset = false
+	// Перебор сигналов "Модуль в сети"
 	m.connect.forEach((el) => {
 		const sig = obj.value?.[el._id]
 		const idM = el.module?.id
 		const isErr = isErrM(bld._id, idM)
-		if (isErr || !sig) acc.reset[idM] = true
-		if (sig && acc.reset?.[idM]) {
-			acc.wait = new Date()
-			acc.firstFlag = true
-			delete acc.reset?.[idM]
-		}
+		// Неисправен модуль данного сигнала || сигнал выключен
+		if (isErr || !sig) reset = true
 	})
+	return reset
 }
 
-function alrClosed(bld, obj, se) {
+/**
+ * Автосброс аварии низкой температуры (аварийное закрытие клапанов)
+ * Условия для автосброса
+ * 1. Модули исправны
+ * 2. Мин темп. канала >= 0.5
+ * 3. Авария низкой температуры активна
+ *
+ * @param {*} bld
+ * @param {*} obj
+ * @param {*} se
+ * @returns
+ */
+function alrClosed(bld, obj, se, s) {
 	// Неисправность модулей
 	const isErrm = isErrMs(bld._id)
-	// Авария низкой температуры (сигнал Склада)
-	const acBld = getSignal(bld?._id, obj, 'low')
-	// Авария низкой температуры (сигналы секций)
-	const acSec = obj.data.section
-		.filter((el) => el.buildingId === bld._id)
-		.reduce((acc, el) => {
-			acc.push(getSignal(el._id, obj, 'low'))
-			return acc
-		}, [])
-		.some((el) => !!el)
-
-	const alr = acSec || acBld
-	return !isErrm && se.tcnl >= 0.5 && alr
+	// Авария низкой температуры (сигнал Склада и секций)
+	const sig = getSumSig(bld._id, obj?.data?.section, obj, 'low')
+	// console.log(9900, 'alrClosed', sig, 'Автосброс', !isErrm && se.tcnl >= 0.5 && sig, s.sys.acTcnl)
+	return !isErrm && se.tcnl >= (s.sys.acTcnl ?? 0.5) && sig
 }
