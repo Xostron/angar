@@ -30,8 +30,10 @@ function soft(bld, obj, s, seB, m, resultFan, bdata, where) {
 		let fansCoo = resultFan.fan
 			.filter((el) => coolerIds.includes(el.owner.id) && el.type == 'fan')
 			.sort((a, b) => a?.order - b?.order)
-		// Соленоиды подогрева
-		const solHeat = resultFan.fan.filter((el) => el.type == 'channel')
+		// Соленоиды подогрева испарителей
+		const solHeat = resultFan.fan.filter(
+			(el) => coolerIds.includes(el.owner.id) && el.type == 'channel'
+		)
 		// ВНО без ПЧ
 		let fans = resultFan.fan
 			.filter((el) => el.owner.id === idS && !el?.ao && el.type == 'fan')

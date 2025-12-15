@@ -2,7 +2,7 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 const dict = {
-	0: 'таймер запрета',
+	0: 'таймер запрета', //обычный склад, комби-обычный
 	1: 'вентиляторы неисправны',
 	2: 'режим вентиляции - Выкл', //обычный склад
 	3: 'режим вентиляции - Выкл', //комби-обычный
@@ -104,7 +104,7 @@ function fnReason(bld, code, s, alarm, ban, prepare) {
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	return [
-		ban, //0
+		ban && code !== 'combiCold', //0
 		!fan.length, //1
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isN, //2
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isCN, //3
