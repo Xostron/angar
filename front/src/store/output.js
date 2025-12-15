@@ -120,16 +120,15 @@ const useOutputStore = create((set, get) => ({
 	setTune(vlv) {
 		const tune = get().tune
 		tune[vlv._id] = { ...vlv }
-		// tune[vlv._id].name = get().name
 		set({ tune })
-		console.log('111', vlv)
+		console.log(4401, 'setTune', vlv)
 	},
 	//Отправить на сервер: Команды на калибровку
 	sendTune() {
 		// отправить на сервер
 		const tune = get().tune
 		sTune(tune)
-		console.log(333, tune)
+		console.log(4402, 'Команды калибровки', tune)
 	},
 	// Установить: настройки датчиков
 	setSens(obj) {

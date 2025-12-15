@@ -26,7 +26,6 @@ export default function Item({ data }) {
 		setLink(null)
 		if (!bmb) navigate(path)
 		if (bmb) bmbNavigate(path, href,navigate)
-		// console.log(111, path, href, cur)
 	}
 }
 
