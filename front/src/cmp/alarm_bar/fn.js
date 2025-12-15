@@ -1,6 +1,5 @@
 // Возвращает аварии определенной секции
 function fnAlarm(buildingId, sectionId, bar, timer) {
-	console.log(2, bar?.[buildingId]?.[sectionId])
 	// Аварии секции авторежима
 	const tout = bar?.[buildingId]?.[sectionId]?.tout?.[0]
 	const hout = bar?.[buildingId]?.[sectionId]?.hout?.[0]
@@ -45,7 +44,6 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 
 // Возвращает аварии суммарно по всем секциям
 function fnAlarmB(buildingId, barB, timer) {
-	console.log(1, barB?.[buildingId])
 	const tout = barB?.[buildingId]?.tout?.[0]
 	const hout = barB?.[buildingId]?.hout?.[0]
 	const antibz = barB?.[buildingId]?.antibliz?.[0]

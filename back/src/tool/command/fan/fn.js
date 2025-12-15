@@ -44,7 +44,7 @@ function fnACmd(bld, resultFan, obj, bdata) {
 		// Принудительное включение ВНО: удаление СО2, внутренняя вентиляция
 		if (resultFan.force.includes(true)) {
 			rfs = getRFstg(resultFan.stg)
-			console.log(115, resultFan.stg, rfs, bdata?.s?.[rfs]?.max)
+			// console.log(115, resultFan.stg, rfs, bdata?.s?.[rfs]?.max)
 			setACmd('fan', idS, {
 				delay,
 				type: 'on',

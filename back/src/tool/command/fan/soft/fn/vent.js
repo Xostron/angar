@@ -1,7 +1,6 @@
 // Максимальное кол-во вентиляторов при принудительном включении
 // (внутренняя вентиляция, удаление СО2)
 function fnLimit(fanFC, aCmd) {
-	console.log(114, aCmd)
 	// Нет принудительного вкл
 	if (!aCmd?.force) return null
 	// Кол-во ВНО = 0 || undefined || null
