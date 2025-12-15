@@ -13,7 +13,7 @@ const useAuthStore = create((set, get) => ({
 	},
 	access: '',
 	refresh: '',
-	name: '',
+	name: 'Панель',
 	last:null,
 	updateAccess: (access) => set({ access }),
 	updateRefresh: (refresh) => set({ refresh }),
@@ -22,7 +22,7 @@ const useAuthStore = create((set, get) => ({
 	logout: (_) => {
 		localStorage.removeItem('access')
 		localStorage.removeItem('name')
-		set({ isAuth: false, name: '' })
+		set({ isAuth: false, name: 'Панель' })
 	},
 }))
 
