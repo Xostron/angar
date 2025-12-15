@@ -10,16 +10,23 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
  */
 function alarmV(building, section, obj, s, se, m, automode, acc, data) {
 	const { retain, value } = obj
+
+	// Сброс аварии
+	if (acc.flag && !acc._alarm) {
+		for (const key in acc) delete acc[key]
+		delExtralrm(building._id, section._id, 'alrValve')
+	}
+	//
 	for (const v of m.vlvS) {
 		acc[v._id] ??= {}
-
 		// Состояние и текущее положение клапана
 		const { state, val } = value?.[v._id]
 
-		// Автосброс аварии клапана
+		// Установка аварии клапана
 		if (acc[v._id]?.finish) {
-			acc[v._id] = {}
-			delExtralrm(building._id, section._id, 'alrValve')
+			acc._alarm = true
+			acc.flag = true
+			return acc._alarm ?? false
 		}
 
 		// Клапан не в состоянии закрытия/открытия - выходим, очищая аккумулятор
@@ -34,9 +41,7 @@ function alarmV(building, section, obj, s, se, m, automode, acc, data) {
 
 		// Гистерезис  х% от полного открытия клапан - время ожидания
 		const hyst = +((+retain?.[building._id]?.valve?.[v._id] * store.hystV) / 100).toFixed(0)
-
 		const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
-
 		// Текущий момент времени
 		const curTime = +new Date().getTime()
 
@@ -61,6 +66,7 @@ function alarmV(building, section, obj, s, se, m, automode, acc, data) {
 		// 	continue
 		// }
 	}
+	console.log(4400, 'Превышение времени', acc)
 }
 
 module.exports = alarmV
