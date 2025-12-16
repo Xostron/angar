@@ -1,7 +1,7 @@
 const { ctrlVSoft, flyingVlv } = require('@tool/command/valve/auto')
 
 /**
- * Приточный клапан (шаговое управление)
+ * Приточный клапан (шаговое управление) TODO12
  * @param {*} building
  * @param {*} sect
  * @param {*} vlvS
