@@ -8,8 +8,9 @@ function mech(obj, idS, idB) {
 	// Увлажнитель
 	const wettingS = device.filter((el) => el?.device?.code === 'wetting' && el?.sectionId === idS)
 
-	// Клапаны и обогрев (приточный и выпускной)
+	// Клапаны (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
+	// Обогрев клапанов
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
 	// Испарители секции(соленоид + ВНО + оттайка)
 	const coolerS = []

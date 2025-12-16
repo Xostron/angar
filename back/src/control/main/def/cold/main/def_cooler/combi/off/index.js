@@ -38,7 +38,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 			msgB(
 				bld,
 				80,
-				`${accCold.tgtTprd ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`
+				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`
 			)
 		)
 		return

@@ -21,7 +21,6 @@ function rs(idB, automode, arr) {
 	})
 }
 
-
 /**
  * Наличие аварии авторежима
  * @param {*} idB ИД склада
@@ -38,6 +37,8 @@ function isAlr(idB, automode) {
  * @param {*} automode Авторежим
  */
 function clearAA(idB, automode) {
+	if (!idB || !automode) return
+	data.alarm.auto ??= {}
 	data.alarm.auto[idB] ??= {}
 	data.alarm.auto[idB][automode] = {}
 }

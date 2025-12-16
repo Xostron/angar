@@ -59,14 +59,15 @@ function compareTime(t, d) {
 /**
  * Пройденное время
  * @param {String||DateTime} doc время
+ * @param {number} 0 - стандартный формат hh:mm:ss|mm:ss. 1 - с подписями `${hh}ч ${mm}м`
  * @returns {String} Пройденное время 00:00:00/00:00
  */
-function runTime(date) {
+function runTime(date, type = 0) {
 	try {
 		if (typeof date === 'string') date = new Date(date)
 		// Пройденное время, с
 		const s = (new Date() - date) / 1000
-		return fmtTime(s)
+		return fmtTime(s, type)
 	} catch (error) {
 		console.log('runTime', error)
 		return ''
@@ -77,16 +78,17 @@ function runTime(date) {
  * Оставшееся времени
  * @param {String||DateTime} date дата и время (начальная точка)
  * @param {number} x заданное время, мс
+ * @param {number} 0 - стандартный формат hh:mm:ss|mm:ss. 1 - с подписями `${hh}ч ${mm}м`
  * @returns {String} Оставшееся время 00:00:00/00:00
  */
-function remTime(date, x) {
+function remTime(date, x, type = 0) {
 	try {
 		if (typeof date === 'string') date = new Date(date)
 		// Пройденное время, мс
 		const t = new Date() - date
 		// Оставшееся время, с
 		const s = (x - t) / 1000
-		return fmtTime(s)
+		return fmtTime(s, type)
 	} catch (error) {
 		console.log('remTime', error)
 		return ''
@@ -95,9 +97,10 @@ function remTime(date, x) {
 /**
  * Форматировать секунды в 00:00:00 или 00:00
  * @param {number} s время в секундах
+ * @param {number} 0 - стандартный формат hh:mm:ss|mm:ss. 1 - с подписями `${hh}ч ${mm}м`
  * @returns {string} 00:00:00 или 00:00
  */
-function fmtTime(s) {
+function fmtTime(s, type = 0) {
 	// Часы
 	const h = Math.trunc(s / 3600)
 	// Минуты
@@ -108,7 +111,9 @@ function fmtTime(s) {
 	const hh = h < 10 ? '0' + h : h
 	const mm = m < 10 ? '0' + m : m
 	const ss = s < 10 ? '0' + s : s
-	return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`
+
+	if (!type) return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`
+	else return `${hh}ч ${mm}м`
 }
 
 /**
@@ -145,7 +150,7 @@ function engineHour(el, state, ehour) {
 /**
  * Получить истекшее время
  * @param {*} date Дата отсчета
- * @returns {string}'HH:mm'
+ * @returns {string} `${hh}ч ${mm}м`
  */
 function elapsedTime(date) {
 	if (!date) return null

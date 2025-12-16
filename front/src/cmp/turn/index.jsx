@@ -10,7 +10,7 @@ export default function Turn({ style, cls }) {
 	const { build } = useParams()
 	const warn = useWarn((s) => s.warn)
 	const isAuth = useAuthStore((s) => s.isAuth)
-	const start = useInputStore(({ input }) => input?.retain?.[build]?.start)
+	const start = useInputStore((s) => s.input?.retain?.[build]?.start)
 
 	const img = isAuth ? '/img/turn.svg' : '/img/turn_b.svg'
 	const st = isAuth ? style : { ...style, color: 'var(--primary)' }
@@ -29,16 +29,13 @@ export default function Turn({ style, cls }) {
 		</>
 	)
 	function onClick() {
-		// Если склад уже включен, то не спрашивать авторизацию
+		// Если склад уже включен, то не спрашивать авторизацию ||
 		// Пользователь Авторизован -> окно управления складом
 		if (start || isAuth) {
 			warn({ build }, 'turn')
 			return
 		}
 		// Если не авторизован -> предупреждение
-		// if (!isAuth) {
 		warn('auth', 'warn', () => warn(null, 'person'))
-		// return
-		// }
 	}
 }

@@ -1,5 +1,5 @@
 const { wrAchieve, delAchieve, updAchieve } = require('@tool/message/achieve')
-const { elapsedTime } = require('@tool/command/time')
+const { elapsedTime, runTime } = require('@tool/command/time')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
@@ -118,13 +118,10 @@ function message(bld, obj, s, seB, am, acc) {
 	// В режиме лечения - Продукт достиг не активен
 	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
 		// Истекшее время "Продукт достиг задания"
-		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
-		// Защита против потери счетчика при перезагрузке pos
-		if (elapsed) acc.finish = obj.retain?.[bld._id]?.cooling?.finish
-		else {
-			acc.finish = new Date()
-		}
-		wrAchieve(bld._id, 'cooling', msgB(bld, 15))
+		acc.finish = obj.retain?.[bld._id]?.cooling?.finish
+			? obj.retain?.[bld._id]?.cooling?.finish
+			: new Date()
+		wrAchieve(bld._id, 'cooling', msgB(bld, 15, runTime(acc.finish, 1)))
 	}
 
 	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
@@ -133,17 +130,11 @@ function message(bld, obj, s, seB, am, acc) {
 		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
 
-	const txt = `T зад. канала = ${acc.tcnl ?? '--'}°C. Т зад. прод. = ${acc.tgt ?? '--'}°C`
+	const txt = `T зад. канала = ${acc.tcnl?.toFixed(1) ?? '--'}°C. Т зад. прод. = ${acc.tgt?.toFixed(1) ?? '--'}°C`
 	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt))
 
 	// Обновление времени в сообщении "Продукт достиг температуры"
-	if (acc.finish) {
-		// Истекшее время "Продукт достиг задания"
-		const elapsed = elapsedTime(obj.retain?.[bld._id]?.cooling?.finish ?? null)
-		const msg = elapsed ? elapsed : ''
-		if (!msg) return
-		wrAchieve(bld._id, 'cooling', msgB(bld, 15, msg))
-	}
+	if (acc.finish) wrAchieve(bld._id, 'cooling', msgB(bld, 15, runTime(acc.finish, 1)))
 }
 
 module.exports = { submode, target, message }

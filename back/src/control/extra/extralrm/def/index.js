@@ -34,7 +34,7 @@ const def = {
 		off: {},
 		always: {
 			alrClosed,
-			alrValve,
+			
 			local,
 			vlvLim,
 			vlvCrash,
@@ -59,6 +59,7 @@ const def = {
 			debdo,
 			battery,
 			openVin,
+			alrValve,
 		},
 	},
 	// Доп. аварии холодильника

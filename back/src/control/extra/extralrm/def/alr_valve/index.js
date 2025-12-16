@@ -1,72 +1,32 @@
 const { data: store } = require('@store')
-const { longOpn, longCls } = require('./fn')
-const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { longOpn, longCls, fnClear } = require('./fn')
+const { delExtralrm } = require('@tool/message/extralrm')
+const fnPrepare = require('./fn/prepare')
+
 /**
  * Авария клапана: долгое открытие/закрытие
- * @param {*} vlvS Клапаны
- * @param {*} building._id Ссылка на склад
- * @param {*} section Секция
- * @param {*} retain Сохраненные данные склада (текущее положение клапана, время калибровки и т.д.)
  */
-function alarmV(building, section, obj, s, se, m, automode, acc, data) {
+function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 	const { retain, value } = obj
 
+	console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
+	const prepare = fnPrepare(bld, sect, obj, s, se, m, automode, acc, data)
+	console.log('prepare', prepare)
+
 	// Сброс аварии
-	if (acc.flag && !acc._alarm) {
-		for (const key in acc) delete acc[key]
-		delExtralrm(building._id, section._id, 'alrValve')
-	}
-	//
-	for (const v of m.vlvS) {
+	if (acc.flag && !acc._alarm) fnClear(acc, prepare)
+
+	// Проход по клапанам секций в авто
+	for (const v of prepare.vlv) {
 		acc[v._id] ??= {}
-		// Состояние и текущее положение клапана
-		const { state, val } = value?.[v._id]
-
-		// Установка аварии клапана
-		if (acc[v._id]?.finish) {
-			acc._alarm = true
-			acc.flag = true
-			return acc._alarm ?? false
-		}
-
-		// Клапан не в состоянии закрытия/открытия - выходим, очищая аккумулятор
-		if (!['iopn', 'icls'].includes(state)) {
-			acc[v._id] = {}
-			continue
-		}
-
-		// гистерезис 2% от времени полного открытия (100% - hystPos - положение клапана,
-		//  при котором начинается слежение за долгим открытием/закрытием)
-		const hystPos = 2
-
-		// Гистерезис  х% от полного открытия клапан - время ожидания
-		const hyst = +((+retain?.[building._id]?.valve?.[v._id] * store.hystV) / 100).toFixed(0)
-		const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
-		// Текущий момент времени
-		const curTime = +new Date().getTime()
-
-		// Долгое открытие
-		if (state === 'iopn') {
-			longOpn(building, section, val, v, hyst, hystPos, typeV, curTime, acc)
-			continue
-		}
-
-		// Долгое закрытие
-		if (state === 'icls') {
-			longCls(building, section, val, v, hyst, hystPos, typeV, curTime, acc)
-			continue
-		}
-
-		// Авария клапана
-		// if (state === 'alr') {
-		// 	acc[v._id].finish = true
-		// 	delete acc[v._id].wait
-		// 	// ctrlV(v, building._id, 'stop')
-		// 	fnMsg(building, section, typeV, 32)
-		// 	continue
-		// }
+		// Проверка и взвод аварии
+		longOpn(bld, obj, v, s, acc)
+		longCls(bld, obj, v, s, acc)
 	}
-	console.log(4400, 'Превышение времени', acc)
+
+	console.log('acc', acc)
+	console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
+	return acc._alarm ?? false
 }
 
 module.exports = alarmV

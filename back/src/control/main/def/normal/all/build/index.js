@@ -36,7 +36,7 @@ function build(start, building, obj, s, se, m, am, accAuto, resultFan, bdata) {
 		// Склад выключен
 		// Доп функции склада (off - выполнение при выключенном складе)
 		extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'off')
-		clearAA(building._id, am)
+		clearAA(building?._id, am)
 	}
 
 	extra(building, null, obj, s, se, m, /*null*/ alrBld, resultFan, null, 'building', 'always')

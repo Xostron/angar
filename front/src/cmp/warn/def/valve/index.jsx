@@ -50,7 +50,7 @@ export default function Entry({ data = {}, entryCode, refDialog }) {
 		let cmd = null
 		let off = null
 		let tCmd = null
-		console.log(4400, vlv._id, sel)
+
 		if (sel === 'tune') setTune({ ...vlv, _stage: 'begin', _build: build })
 		else setTune({ ...vlv, _stage: null })
 		if (sel === 'stop') {

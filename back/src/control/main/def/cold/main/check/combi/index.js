@@ -28,7 +28,7 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 			msgB(
 				bld,
 				80,
-				`${accCold.tgtTprd ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`
+				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`
 			)
 		)
 		// Точка отсчета для обдува датчиков по достижению задания
@@ -64,8 +64,8 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		accCold.finishTarget = null
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
-	const txt = `T зад. канала = ${accCold.tgtTcnl ?? '--'}°C. Т зад. прод. = ${
-		accCold.tgtTprd ?? '--'
+	const txt = `T зад. канала = ${accCold.tgtTcnl?.toFixed(1) ?? '--'}°C. Т зад. прод. = ${
+		accCold.tgtTprd?.toFixed(1) ?? '--'
 	}°C. Зад. влажности = ${s?.mois?.humidity ?? '--'}%`
 	wrAchieve(bld._id, bld.type, msgB(bld, 81, txt))
 	// Не блокировать
