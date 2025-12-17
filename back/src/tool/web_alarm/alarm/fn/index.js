@@ -40,6 +40,8 @@ function bar(r, bld, sect, am, start) {
 	)
 	if (debdo) debdo.msg = mes[102].msg
 
+	const long = store.alarm.extralrm?.[bld._id]?.[sect._id]?.alrValve ?? null
+
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
 	r.bar[bld._id][sect._id].tout ??= []
@@ -60,6 +62,7 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].debdo = debdo
 	r.bar[bld._id][sect._id].smoking1 = smoking1
 	r.bar[bld._id][sect._id].smoking2 = smoking2
+	r.bar[bld._id][sect._id].long = long
 
 	if (tout1) r.bar[bld._id][sect._id].tout.push(tout1)
 	if (tout2) r.bar[bld._id][sect._id].tout.push(tout2)
@@ -94,6 +97,7 @@ function barB(r, bld) {
 		r.barB[bld._id].debdo ??= []
 		r.barB[bld._id].smoking1 ??= []
 		r.barB[bld._id].smoking2 ??= []
+		r.barB[bld._id].long ??= []
 
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
 		if (s.hout) r.barB[bld._id].hout.push(...s.hout)
@@ -112,6 +116,7 @@ function barB(r, bld) {
 		if (s.debdo) r.barB[bld._id].debdo.push(s.debdo)
 		if (s.smoking1) r.barB[bld._id].smoking1.push(s.smoking1)
 		if (s.smoking2) r.barB[bld._id].smoking2.push(s.smoking2)
+		if (s.long) r.barB[bld._id].smoking2.push(s.long)
 	}
 }
 

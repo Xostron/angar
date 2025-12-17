@@ -18,6 +18,7 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 	const stableVno = bar?.[buildingId]?.[sectionId]?.stableVno
 	const smoking1 = bar?.[buildingId]?.[sectionId]?.smoking1
 	const smoking2 = bar?.[buildingId]?.[sectionId]?.smoking2
+	const long = bar?.[buildingId]?.[sectionId]?.long
 	const alr = [
 		alrClosed,
 		tout,
@@ -36,6 +37,7 @@ function fnAlarm(buildingId, sectionId, bar, timer) {
 		co2on,
 		smoking1,
 		smoking2,
+		long,
 	].filter((el) => el)
 	// Таймеры запретов
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
@@ -61,6 +63,7 @@ function fnAlarmB(buildingId, barB, timer) {
 	const ventOn = barB?.[buildingId]?.ventOn?.[0]
 	const smoking1 = barB?.[buildingId]?.smoking1?.[0]
 	const smoking2 = barB?.[buildingId]?.smoking2?.[0]
+	const long = barB?.[buildingId]?.long?.[0]
 	const alr = [
 		alrClosed,
 		tout,
@@ -79,6 +82,7 @@ function fnAlarmB(buildingId, barB, timer) {
 		ventOn,
 		smoking1,
 		smoking2,
+		long,
 	].filter((el) => el)
 	const tmr = timer?.[buildingId] ? Object.values(timer[buildingId]) : []
 
