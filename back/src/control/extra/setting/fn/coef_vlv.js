@@ -34,7 +34,7 @@ function coefVlv(s, bld, obj) {
 		kIn = 1
 	}
 
-	// console.log(5555, 'Коэффициенты клапана', 'tout', tout, '<', s.outOn, { kOut, kIn })
+	console.log(5555, 'Коэффициенты клапана', 'tout', tout, '<', s.outOn, { kOut, kIn })
 	return { kOut, kIn }
 }
 
