@@ -32,6 +32,8 @@ function fnValve(data, sectionId, s) {
  * @param {*} delay принудительно открыть
  */
 function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
+	console.log('##############', sectionId, '##############')
+	console.log(9900, sectionId, 'forceCls', forceCls, 'forceOpn', forceOpn)
 	// Принудительное закрытие клапанов: аварии
 	if (forceCls) {
 		store.aCmd ??= {}
@@ -59,35 +61,39 @@ function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
 	// Команда на управление
 	const aCmd = store.aCmd?.[sectionId]?.vlv
 
-	if (!aCmd) return
+	if (!aCmd) return console.log(99001)
 	// Нет настроек калибровки
-	if (!retain.valve || !retain.valvePosition) return
+	if (!retain.valve || !retain.valvePosition) return console.log(99002)
 
 	// Приточный клапан
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 
-	if (!vlvIn) return
-
+	if (!vlvIn) return console.log(99003)
+	console.log(99004, vlvIn)
 	// Расчет шага
 	calcSoft(vlvIn, aCmd, retain)
-
+	console.log(99005, store.watchdog[vlvIn._id])
 	// Выполнение включение приточного клапана
 	// Нет задания - пропускается
-	if (!store.watchdog?.[vlvIn._id]?.endStep) return
+	if (!store.watchdog?.[vlvIn._id]?.endStep) return console.log(99006)
 	// Время шага не прошло - включаем клапан
 	if (+new Date().getTime() < store.watchdog?.[vlvIn._id]?.endStep) {
+		console.log(99007)
 		ctrlV(vlvIn, buildingId, store.watchdog?.[vlvIn._id]?.type)
 	}
 	// Время шага истекло - останавливаем клапан
 	if (+new Date().getTime() > store.watchdog?.[vlvIn._id]?.endStep) {
+		console.log(99008)
 		ctrlV(vlvIn, buildingId, 'stop')
 	}
 
 	// Проверка времени простоя - очистка задания и расчетов
 	if (+new Date().getTime() >= store.watchdog?.[vlvIn._id]?.endDelay) {
+		console.log(99009)
 		store.watchdog[vlvIn._id] = null
 		store.aCmd[sectionId].vlv = null
 	}
+	console.log('############## END')
 }
 
 // Расчеты для работы клапана в режиме шага (Xсек - откр/закр, Yсек - стоит)

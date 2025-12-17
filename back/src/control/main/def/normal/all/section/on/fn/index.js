@@ -15,8 +15,9 @@ const { ctrlVSoft, flyingVlv } = require('@tool/command/valve/auto')
  */
 function valve(building, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 	if (!vlvS.length) return
-	const fanOff = isOff(sect, fanS, obj.retain?.[building._id].fan)
-	const forceOff = alr || v.forceCls || fanOff
+	const haveFan = !!fanS.length
+	const forceOff = alr || v.forceCls || !haveFan
+	console.log(8800, 'forceOff =', alr, '||', v.forceCls, '||', !haveFan)
 	ctrlVSoft(
 		vlvS,
 		building._id,
@@ -32,15 +33,16 @@ function valve(building, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 	flyingVlv(building._id, sect._id, obj, accAuto, vlvS, s, forceOff)
 }
 
-/**
- * @param {*} fanS Вентиляторы секции
- * @param {*} fanOff Вентиляторы выведенные из работы retain[build].fan
- * @returns FALSE/TRUE: Напорные вентиляторы секции выведены из работы
- */
-function isOff(section, fanS, fanOff) {
-	if (!fanS.length) return false
-	const a = Object.values(fanOff?.[section._id] ?? {})
-	return a.length === fanS.length ? a.every((el) => el === true) : false
-}
+// /**
+//  * @param {*} fanS Вентиляторы секции
+//  * @param {*} fanOff Вентиляторы выведенные из работы retain[build].fan
+//  * @returns TRUE: Напорные вентиляторы секции выведены из работы
+//  * False - есть рабочик
+//  */
+// function isOff(section, fanS, fanOff) {
+// 	if (!fanS.length) return false
+// 	const a = Object.values(fanOff?.[section._id] ?? {})
+// 	return a.length === fanS.length ? a.every((el) => el === true) : false
+// }
 
 module.exports = { valve }
