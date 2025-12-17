@@ -34,13 +34,13 @@ function calc(bld, prepare, resultFan) {
 	let spTime = (deltaTime * s.vent.add) / 100
 	spTime = spTime > s.vent.max_add ? s.vent.max_add : spTime
 
-	console.log(
-		'\tspTime',
-		spTime,
-		's.vent.max_add',
-		s.vent.max_add,
-		remTime(acc.byDur.queue[1].date, spTime)
-	)
+	// console.log(
+	// 	'\tspTime',
+	// 	spTime,
+	// 	's.vent.max_add',
+	// 	s.vent.max_add,
+	// 	remTime(acc.byDur.queue[1].date, spTime)
+	// )
 
 	// 5. Следим за временем работы ДВ
 	const time = compareTime(acc.byDur.queue[1].date, spTime)

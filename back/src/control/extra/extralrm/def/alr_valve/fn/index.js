@@ -1,6 +1,6 @@
 const { compareTime } = require('@tool/command/time')
 const { msgV } = require('@tool/message')
-const { wrExtralrm } = require('@tool/message/extralrm')
+const { wrExtralrm, delExtralrm } = require('@tool/message/extralrm')
 
 /**
  * Когда клапан достиг 100% и дальше открывает до концевика,
@@ -16,69 +16,64 @@ const { wrExtralrm } = require('@tool/message/extralrm')
  * @param {*} curTime
  * @param {*} acc
  */
-function longOpn(bld, obj, v, s, acc) {
+function long(bld, obj, v, s, acc, type = 'open') {
+	// Аккумулятор клапана
+	acc[v._id] ??= {}
 	// Состояние и текущее положение клапана
 	const { state, val } = obj?.value?.[v._id]
 
+	// Время полного открытия
+	const total = obj?.retain?.[bld._id]?.valve?.[v._id]
+		? +obj?.retain?.[bld._id]?.valve?.[v._id]
+		: undefined
+
 	// Авария выключена
-	if (!s?.overVlv?.onlo) return
+	if (type === 'open' ? !s?.overVlv?.onlo : !s?.overVlv?.onlc) return
 
-	if (!['icls', 'iopn'].includes(state) || !obj?.retain?.[bld._id]?.valve?.[v._id])
-		return (acc[v._id] = {})
+	// Клапан сейчас не открывается и не закрывается || нет калибровки
+	// Склад включен
+	const start = obj.retain[bld._id].start
+	if (!['icls', 'iopn'].includes(state) || !total || !start) {
+		acc[v._id] = {}
+		return
+	}
 
-	if (val >= 100 && !acc[v._id].wait) acc[v._id].wait = new Date()
+	// Слежение за аварией
+	fnDetect(v._id, val, state, acc, type)
 
-	// 20% от общего калибровочного времени
-	const wait = +obj?.retain?.[bld._id]?.valve?.[v._id] * 0.1
-	const time = compareTime(acc[v._id].wait, wait)
-	console.log('ждем открытие', wait)
+	// 10% от общего калибровочного времени
+	const wait = total * ((s?.overVlv?.long ?? 10) / 100)
+	const time = compareTime(type === 'open' ? acc[v._id].waitO : acc[v._id].waitC, wait)
+	console.log('ждем ', type, val, '%=', s.overVlv.long ?? 10, wait)
+
 	// Время не прошло (ждем концевика)
 	if (!time) return
-	console.log('авария открытие')
+
 	// Время прошло (Концевик не сработал)
-	// acc[v._id].finish = true
+	console.log('авария ', type)
 	acc._alarm = true
 	acc.flag = true
-	delete acc[v._id].wait
+	if (type === 'open') delete acc?.[v._id]?.waitO
+	else delete acc?.[v._id]?.waitC
+
 	const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
 	v.sectionId.forEach((idS) => {
 		const section = obj.data.section.find((el) => el._id === idS)
-		wrExtralrm(bld._id, idS, 'alrValve', msgV(bld, section, typeV, 30))
+		wrExtralrm(bld._id, idS, 'alrValve', msgV(bld, section, typeV, type === 'open' ? 30 : 31))
 	})
 }
 
-function longCls(bld, obj, v, s, acc) {
-	// Состояние и текущее положение клапана
-	const { state, val } = obj?.value?.[v._id]
-
-	// Авария выключена
-	if (!s?.overVlv?.onlc) return
-
-	if (!['icls', 'iopn'].includes(state) || !obj?.retain?.[bld._id]?.valve?.[v._id])
-		return (acc[v._id] = {})
-
-	if (val <= 0 && !acc[v._id].wait) acc[v._id].wait = new Date()
-
-	// 20% от общего калибровочного времени
-	const wait = +obj?.retain?.[bld._id]?.valve?.[v._id] * 0.2
-	const time = compareTime(acc[v._id].wait, wait)
-	console.log('ждем закрытия', wait)
-	// Время не прошло (ждем концевика)
-	if (!time) return
-	console.log('авария закрытия')
-	// Время прошло (Концевик не сработал)
-	// acc[v._id].finish = true
-	acc._alarm = true
-	acc.flag = true
-	delete acc[v._id].wait
-	const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
-	v.sectionId.forEach((idS) => {
-		const section = obj.data.section.find((el) => el._id === idS)
-		wrExtralrm(bld._id, idS, 'alrValve', msgV(bld, section, typeV, 31))
-	})
+function fnDetect(idV, val, state, acc, type) {
+	if (type === 'open') {
+		if (state === 'iopn' && val >= 100 && !acc[idV].waitO) acc[idV].waitO = new Date()
+		console.log('fnDetect', type, acc[idV].waitO)
+		return
+	}
+	if (state === 'icls' && val <= 0 && !acc[idV].waitC) acc[idV].waitC = new Date()
+	console.log('fnDetect', type, acc[idV].waitC)
 }
 
-function fnClear(acc, prepare) {
+function fnClear(bld, acc, prepare) {
 	// Очистка аккумулятора
 	for (const key in acc) delete acc[key]
 	// Очистка авар. сообщений
@@ -89,4 +84,4 @@ function fnClear(acc, prepare) {
 	})
 }
 
-module.exports = { longOpn, longCls, fnClear }
+module.exports = { long, fnClear }

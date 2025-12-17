@@ -65,7 +65,7 @@ function fnCheck(bld, code, s, alarm, ban, prepare) {
 		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
-	console.log(77, 'Условия ВВ не подходят по причине', reason, err)
+	// console.log(77, 'Условия ВВ не подходят по причине', reason, err)
 
 	// Запретить ВВ
 	if (reason.some((el, i) => el)) {

@@ -25,9 +25,12 @@ function writeTCP(host, port, opt) {
 					delDebMdl(opt._id)
 					// if (opt.ip === '192.168.21.126')
 					// console.log(666, 'write', opt.ip, opt.value)
+					console.log(9900, 'Запись', opt.name, opt.ip)
+					console.table(opt.value)
 					resolve(true)
 				})
 				.catch((e) => {
+					console.log(9900, 'Ошибка запись', opt.name, opt.ip)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

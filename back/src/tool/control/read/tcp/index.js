@@ -42,9 +42,14 @@ function readTCP(host, port, opt) {
 					r = convUint32DO(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
+					if (opt.use === 'w') {
+						console.log('Чтение DO', opt.name, opt.ip)
+						console.table(r)
+					}
 					resolve([r, w])
 				})
 				.catch((e) => {
+					console.log('Ошибка чтения DO', opt.name, opt.ip)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

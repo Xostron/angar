@@ -22,25 +22,25 @@ const { fnCheck } = require('./check')
  * @param {*} bdata Сбор данных по складу
  */
 function durVent(bld, obj, s, seB, m, resultFan, bdata) {
-	console.log('\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n')
+	// console.log('\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n')
 	// Подготовка данных
 	const prepare = fnPrepare(bld, obj, s, resultFan, bdata)
-	console.log('\tacc', prepare.acc.byDur)
-	console.log('\tcmd', prepare.cmd)
+	// console.log('\tacc', prepare.acc.byDur)
+	// console.log('\tcmd', prepare.cmd)
 	// Разрешение на работу
 	if (!fnCheck(bld, prepare, resultFan)) return
 	// Расчет доп вентиляции и работа
 	calc(bld, prepare, resultFan)
-	console.log(
-		'\tresultFan',
-		'start',
-		resultFan.start,
-		'force',
-		resultFan.force,
-		'notDur',
-		resultFan.notDur
-	)
-	console.log('\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n')
+	// console.log(
+	// 	'\tresultFan',
+	// 	'start',
+	// 	resultFan.start,
+	// 	'force',
+	// 	resultFan.force,
+	// 	'notDur',
+	// 	resultFan.notDur
+	// )
+	// console.log('\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n')
 }
 
 module.exports = durVent

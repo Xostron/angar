@@ -7,7 +7,7 @@ const { data: store } = require('@store')
 // Внутренняя вентиляция секции
 function vent(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan) {
 	const { retain, factory, value } = obj
-	console.log(77, 'vent', acc)
+	// console.log(77, 'vent', acc)
 	// Подготовка данных
 	const prepare = fnPrepare(bld, obj, s, m)
 	// Выбор алгоритма ВВ

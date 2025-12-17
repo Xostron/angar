@@ -57,7 +57,7 @@ function fnCheck(bld, code, s, alarm, ban, acc, prepare) {
 		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
-	console.log(88, 'Условия CO2 не подходят по причине', reason, err)
+	// console.log(88, 'Условия CO2 не подходят по причине', reason, err)
 
 	// Запретить
 	if (reason.some((el, i) => el)) {

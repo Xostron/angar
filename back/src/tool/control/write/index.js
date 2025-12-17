@@ -17,7 +17,7 @@ async function write(obj) {
 
 			// Запись данных в модуль
 			v = await make(obj[i], 'write')
-
+			console.log(9900, 'Запись данных в модуль', obj[i].ip, v)
 			await pause(100)
 			const k = obj[i].name + ' Порт ' + obj[i].port
 			ok[k] = v

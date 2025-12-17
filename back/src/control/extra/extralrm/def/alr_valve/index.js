@@ -1,27 +1,26 @@
 const { data: store } = require('@store')
-const { longOpn, longCls, fnClear } = require('./fn')
-const { delExtralrm } = require('@tool/message/extralrm')
+const { long, fnClear } = require('./fn')
 const fnPrepare = require('./fn/prepare')
 
 /**
  * Авария клапана: долгое открытие/закрытие
+ * Только для клапанов в авторежиме
  */
 function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 	const { retain, value } = obj
 
 	console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
 	const prepare = fnPrepare(bld, sect, obj, s, se, m, automode, acc, data)
-	console.log('prepare', prepare)
+	// console.log('prepare', prepare)
 
 	// Сброс аварии
-	if (acc.flag && !acc._alarm) fnClear(acc, prepare)
+	if (acc.flag && !acc._alarm) fnClear(bld, acc, prepare)
 
 	// Проход по клапанам секций в авто
 	for (const v of prepare.vlv) {
-		acc[v._id] ??= {}
-		// Проверка и взвод аварии
-		longOpn(bld, obj, v, s, acc)
-		longCls(bld, obj, v, s, acc)
+		// Проверка и взвод аварии при открытии/закрытии
+		long(bld, obj, v, s, acc, 'open')
+		long(bld, obj, v, s, acc, 'close')
 	}
 
 	console.log('acc', acc)
