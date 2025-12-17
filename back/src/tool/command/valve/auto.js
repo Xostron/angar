@@ -69,7 +69,7 @@ function ctrlVSoft(vlvS, buildingId, sectionId, retain, forceCls, forceOpn) {
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 
 	if (!vlvIn) return console.log(99003)
-	console.log(99004, vlvIn)
+	// console.log(99004, vlvIn)
 	// Расчет шага
 	calcSoft(vlvIn, aCmd, retain)
 	console.log(99005, store.watchdog[vlvIn._id])
@@ -109,9 +109,12 @@ function calcSoft(vlvIn, aCmd, retain) {
 	store.watchdog[vlvIn._id].type = aCmd.type
 	// Момент времени включения клапана
 	const begin = +new Date().getTime()
+	store.watchdog[vlvIn._id].start = new Date()
 	// Момент времени отключения клапана (шаг)
+	store.watchdog[vlvIn._id].step = aCmd.step * 1000 * aCmd.kIn
 	store.watchdog[vlvIn._id].endStep = begin + aCmd.step * 1000 * aCmd.kIn
 	// Момент времени завершения простоя клапана
+	store.watchdog[vlvIn._id].delay = aCmd.delay * 1000
 	store.watchdog[vlvIn._id].endDelay = store.watchdog[vlvIn._id].endStep + aCmd.delay * 1000
 	// Шаг клапана, %
 	store.watchdog[vlvIn._id].stepPer = (aCmd.step * 100) / +retain.valve[vlvIn._id]
