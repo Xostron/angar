@@ -5,15 +5,14 @@ const checkForce = require('./force')
 /**
  * Шаговое открытие/закрытие приточного клапана
  * @param {*} vlvS клапаны
- * @param {*} idB ссылка на склад
- * @param {*} idS ссылка на секцию
+ * @param {*} idB ИД склада
+ * @param {*} idS ИД секции
  * @param {*} retain сохраненные данные склада (настройки и т.д.)
  * @param {*} step принудительно закрыть
  * @param {*} delay принудительно открыть
  */
 function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
 	console.log('##############', idS, '##############')
-	console.log(9900, 'Я снимаю нахуй')
 
 	// Принудительное управление
 	if (checkForce(idB, idS, vlvS, forceCls, forceOpn))
@@ -47,4 +46,27 @@ function fnValve(data, idS, s) {
 	setACmd('vlv', idS, o)
 }
 
-module.exports = { ctrlVSoft, fnValve }
+/**
+ * Принудительно закрывать, если позиция приточного
+ * клапана = 0мс && нет концевика закрытого положения
+ * @param {*} bld
+ * @param {*} sect
+ * @param {*} vlvS
+ * @param {*} obj
+ * @returns
+ */
+function fnLookCls(bld, sect, vlvS, obj) {
+	// Приточный клапан
+	const v = vlvS.find((el) => el.type === 'in')
+	// Положение клапана, мс
+	const pos = +obj.retain?.[bld._id]?.valvePosition?.[v._id]
+	// Состояние клапана { open: false, close: false, crash: false, val: 61, state: 'popn' }
+	const o = obj?.value?.[v._id]
+
+	// Если позиция приточного клапана = 0мс && нет концевика закрытого положения
+	console.log(8801, 'Поиск концевика', pos === 0 && !o.close)
+	if (pos === 0 && !o.close) return true
+	return false
+}
+
+module.exports = { ctrlVSoft, fnValve, fnLookCls }

@@ -1,12 +1,11 @@
-const { ctrlVSoft} = require('@tool/command/valve/auto')
+const { ctrlVSoft, fnLookCls } = require('@tool/command/valve/auto')
 const flyingVlv = require('@tool/command/valve/flying')
-
 
 /**
  * Приточный клапан (шаговое управление) TODO12
- * @param {*} building
+ * @param {*} bld
  * @param {*} sect
- * @param {*} vlvS
+ * @param {*} vlvS Клапаны секции
  * @param {*} fanS
  * @param {*} obj
  * @param {*} alr Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада, авария по низкой темпаературе
@@ -15,24 +14,29 @@ const flyingVlv = require('@tool/command/valve/flying')
  * @param {*} s
  * @returns
  */
-function valve(building, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
+function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 	if (!vlvS.length) return
-	const haveFan = !!fanS.length
-	const forceOff = alr || v.forceCls || !haveFan
-	console.log(8800, 'forceOff =', alr, '||', v.forceCls, '||', !haveFan)
+	// 1. Аварии
+	// 2. Принудительное закрытие
+	// 3. Нет рабочих ВНО у секции
+	// 4. Поиск закрытого концевика, если положение клапана = 0
+	const lookCls = fnLookCls(bld, sect, vlvS, obj)
+	const forceCls = alr || v.forceCls || !fanS.length || lookCls
+	console.log(8800, 'forceCls =', alr, '||', v.forceCls, '||', !fanS.length, '||', lookCls)
+
 	ctrlVSoft(
 		vlvS,
-		building._id,
+		bld._id,
 		sect._id,
 		{
-			valve: obj.retain?.[building._id]?.valve,
-			valvePosition: obj.retain?.[building._id]?.valvePosition,
+			valve: obj.retain?.[bld._id]?.valve,
+			valvePosition: obj.retain?.[bld._id]?.valvePosition,
 		},
-		forceOff,
+		forceCls,
 		v.forceOpn
 	)
 	// Выпускной клапан (следит за приточным клапаном)
-	flyingVlv(building._id, sect._id, obj, accAuto, vlvS, s, forceOff)
+	flyingVlv(bld._id, sect._id, obj, accAuto, vlvS, s, forceCls)
 }
 
 // /**

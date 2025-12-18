@@ -21,6 +21,7 @@ function fnStep(vlvS, idB, idS, retain) {
 	// Включаем клапан
 	acc.work ??= new Date()
 	let time = compareTime(acc.work, tStep)
+
 	// Время шага не прошло - включаем клапан
 	if (!time) {
 		console.log(99005, 'Включаем клапан', aCmd.type, remTime(acc.work, tStep))

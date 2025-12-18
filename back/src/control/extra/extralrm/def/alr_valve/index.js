@@ -19,8 +19,8 @@ function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Проход по клапанам секций в авто
 	for (const v of prepare.vlv) {
 		// Проверка и взвод аварии при открытии/закрытии
-		long(bld, obj, v, s, acc, 'open')
-		long(bld, obj, v, s, acc, 'close')
+		long(bld, obj, v, s, acc,prepare, 'open')
+		long(bld, obj, v, s, acc,prepare, 'close')
 	}
 
 	console.log('acc', acc)
