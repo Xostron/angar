@@ -1,4 +1,6 @@
-const { ctrlVSoft, flyingVlv } = require('@tool/command/valve/auto')
+const { ctrlVSoft} = require('@tool/command/valve/auto')
+const flyingVlv = require('@tool/command/valve/flying')
+
 
 /**
  * Приточный клапан (шаговое управление) TODO12

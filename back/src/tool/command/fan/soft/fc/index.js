@@ -60,7 +60,8 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	turnOn(fanFC, fans, solHeat, bld._id, acc, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
-	console.table(acc)
+	console.log(112, idS)
+	// console.table(acc)
 }
 
 module.exports = fc
