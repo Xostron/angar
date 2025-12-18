@@ -1,4 +1,4 @@
-const reconciliation = require('@tool/state/back')
+const prepare = require('@tool/state/back')
 
 /**
  * Админ-сервер периодически опрашивает сервер ангара (для актуальности)
@@ -9,7 +9,7 @@ function state() {
 	return async function (req, res) {
 		try {
 			const type = req.query?.type
-			const { result = [], present = [] } = await reconciliation(type)
+			const { result = [], present = [] } = await prepare(type)
 			const pLength = Object.keys(present).length
 			console.log(
 				'\x1b[33m%s\x1b[0m',

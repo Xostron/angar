@@ -3,7 +3,8 @@ const { delay } = require('@tool/command/time')
 
 /**
  * Получение данных от ЦС: Сервер ангара каждые 10 сек
- * отправляет полное состояние своих складов на Админ сервер (Tenta)
+ * отправляет состояние своих складов на Админ сервер (Tenta)
+ * POS->Tenta
  * @returns
  */
 module.exports = async function loopState() {

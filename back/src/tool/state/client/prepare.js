@@ -2,7 +2,6 @@ const {
 	convertPC,
 	convertSec,
 	convertTenta,
-	delta,
 	deltaTol,
 } = require('@tool/state/fn');
 const transformStore = require('@routes/api/tenta/read/store/transform');
@@ -12,7 +11,7 @@ const { readTO } = require('@tool/json');
 const fsp = require('fs').promises;
 const tolerance = require('../fn/tolerance.json');
 /**
- * Request на админ-сервер
+ * POS -> Tenta
  * Формирование state (значения данных по PC)
  * @returns {object}	result Данные по датчикам (для Tenta админки),
  * 						hub: {init:boolean, last:boolean, state:object}
@@ -57,19 +56,14 @@ module.exports = async function prepareReq() {
 		// Преобразуем в одноуровневый объект с составными ключами
 		present = { ...convertPC(resPC), ...convertSec(present) };
 		
-		// Расчет delta (первое включение прошло успешно hub.init = true)
-		// diffing = hub.init ? delta(present, hub.state) : null
-		// const sens = data.sensor.reduce((acc, el, i) => {
-		// 	acc[el._id] = el.tolerance ?? 1
-		// 	return acc
-		// }, {})
+		// Расчет delta (первый пул данных успешно hub.init = true)
 		// Датчики id с допусками из tolerance.json
 		const sens = {};
 		data.sensor.forEach((el) => (sens[el._id] = tolerance[el.type]));
 		diffing = hub.init
 			? deltaTol(present, hub.state, sens, tolerance)
 			: null;
-		// Формируем данные для Tenta
+		// Формируем данные для Tenta: изменения или полные данные
 		result = convertTenta(diffing ?? present, data.pc._id);
 		return { result, hub, present, diffing };
 	} catch (error) {

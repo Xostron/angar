@@ -28,7 +28,7 @@ function runExtra(bld, obj, bdata) {
 	// Для склада холодильник
 	let sect = null
 	if (type === 'cold') sect = obj?.data?.section?.find((el) => el.buildingId === bld._id)
-	// Всегда
+	// Всегда TODO2 авария неисправность модулей не должна влиять на комби-холод
 	alr = alr || extralrm(bld, null, obj, s, se, m, automode, null, type, 'always')
 	extra(bld, sect, obj, s, se, m, null, null, null, type, 'always')
 

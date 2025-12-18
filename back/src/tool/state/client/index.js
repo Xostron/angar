@@ -1,5 +1,5 @@
-const prepare = require('./prepare');
-const api = require('@tool/api');
+const fnPrepare = require('./prepare')
+const api = require('@tool/api')
 
 const apiConfig = (data, params) => ({
 	method: 'POST',
@@ -11,78 +11,67 @@ const apiConfig = (data, params) => ({
 	},
 	data,
 	params,
-});
+})
 
 /**
  * Собрать данные по складам и отправить на Админ-сервер
+ * POS -> Tenta
+ * если запрос не успешен не фиксировать в аккумуляторе прошлых значений
  * @returns
  */
 module.exports = async function state() {
 	try {
-		// TODO: Пропуск отправки данных на локальном хосте
+		// Пропуск отправки данных на локальном хосте
 		if (['127.0.0.1', 'localhost'].includes(process.env.IP)) {
-			console.log(
-				'\x1b[32m%s\x1b[0m',
-				`IP ${process.env.IP} не является публичным, пропуск отправки данных на Tenta`
-			);
-			return false;
-		}
-		// Формирование state (значения данных по PC)
-		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. Подготовка данных...')
-		const o = await prepare()
-		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. ✅Подготовка пройдена')
-		// Если данные не готовы -> пропуск итерации
-		if (!o) {
-			console.log(
-				'\x1b[33m%s\x1b[0m',
-				'POS->Tenta: 2. ✅Данные не готовы. Операция закончена'
-			);
-			return false;
+			console.log('\x1b[32m%s\x1b[0m', `IP ${process.env.IP} не является публичным, пропуск отправки данных на Tenta`)
+			return false
 		}
 
-		// Если изменений не было
-		if (!o.result.length) {
-			const now = new Date() - (o?.hub?.last ?? new Date());
-			// Если нет изменений и 10 мин не прошло, не отправляем запрос
-			if (o?.hub?.last && now < 10 * 60 * 1000) {
-				console.log(
-					'\x1b[33m%s\x1b[0m',
-					'POS->Tenta: 2. ✅Данные не изменялись, не передаем на сервере. Операция закончена'
-				);
-				return false;
-			}
-			console.log(
-				'\x1b[33m%s\x1b[0m',
-				'POS->Tenta: 2. ✅Прошло 10 минут с последнего обновления...'
-			);
+		// Формирование state (значения данных по PC)
+		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. Подготовка данных...')
+		const o = await fnPrepare()
+		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 1. ✅Подготовка пройдена')
+
+		// Если данные не готовы -> пропуск итерации
+		if (!o) {
+			console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. ✅Данные не готовы. Операция закончена')
+			return false
 		}
+
+		const { result, hub, present, diffing } = o
+		// Если изменений не было не отправляем запрос
+		if (result.length) {
+			console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. ✅Данные не изменялись, не передаем на сервере. Операция закончена')
+			return false
+		}
+
 		// Передать данные INIT или delta
-		console.log(
-			'\x1b[33m%s\x1b[0m',
-			'POS->Tenta: 2. Соединение с Tenta...',
-			process.env.API_URI
-		);
-		const params = o?.hub?.init ? null : { type: 'init' };
-		const config = apiConfig(o.result, params);
-		const response = await api(config);
+		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. Соединение с Tenta...', process.env.API_URI)
+
+		// hub.init = true Первый пул данных был отправлен
+		// Первый пул данных (при перезапуске ангара) { type: 'init' }
+		// Последующие данные params = null
+		const params = hub?.init ? null : { type: 'init' }
+		const config = apiConfig(result, params)
+		const response = await api(config)
+
+		// Запрос не успешен
 		if (!response.data) {
-			throw new Error(
-				'POS->Tenta: 3. ❌Не удалось передать данные на Tenta'
-			);
+			throw new Error('POS->Tenta: 3. ❌Не удалось передать данные на Tenta')
 		}
-		// Передача POS->Tenta успешна, обновляем прошлые значения
-		o.hub.init = new Date();
-		o.hub.last = new Date();
-		o.hub.state =
-			o.diffing === null ? o.present : { ...o.hub.state, ...o.diffing };
-		console.log(
-			'\x1b[33m%s\x1b[0m',
-			'3. ✅POS->Tenta: Данные переданы',
-			o?.result?.length
-		);
+
+		// Запрос успешен, обновляем прошлые значения
+		// Инициализация пройдена
+        hub.init = new Date()
+        // Последние данные были успешны переданы
+		hub.last = new Date()
+        // Обновление прошлых значений: если различий не было (diffing), 
+        // то сохраняем текущий state (present), иначе прошлые+новые различия
+		hub.state = diffing === null ? present : { ...hub.state, ...diffing }
+		console.log('\x1b[33m%s\x1b[0m', '3. ✅POS->Tenta: Данные переданы', o?.result?.length)
 		// console.log(4, o.result)
-		return true;
+		return true
 	} catch (error) {
-		throw error;
+		throw error
 	}
-};
+}
