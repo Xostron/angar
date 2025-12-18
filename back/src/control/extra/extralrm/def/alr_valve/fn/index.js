@@ -41,7 +41,7 @@ function long(bld, obj, v, s, acc, prepare, type = 'open') {
 	console.log('ждем ', type, val, '%=', s.overVlv.long ?? 10, wait)
 
 	// Время не прошло (ждем концевика)
-	if (!time) return
+	if (!time) return console.log('Ждем', type, v._id, acc[v._id])
 
 	// Время прошло (Концевик не сработал)
 	console.log('авария ', type)
@@ -61,7 +61,7 @@ function long(bld, obj, v, s, acc, prepare, type = 'open') {
 	v.sectionId.forEach((idS) => {
 		const section = obj.data.section.find((el) => el._id === idS)
 		// Если авария на клапане рабочей секции, то генерируем сообщение
-		if (onIdsS.includes(idS))
+		if (prepare.onIdsS.includes(idS))
 			wrExtralrm(
 				bld._id,
 				idS,
