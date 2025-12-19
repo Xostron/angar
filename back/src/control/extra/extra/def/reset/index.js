@@ -19,11 +19,12 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 		alrClosed(bld, obj, se, s),
 		connect(obj, bld, m),
 	]
+	console.log(4400, 'resetDO', reason)
 	if (reason.some((el) => el)) {
-		acc.wait = new Date()
+		acc.wait ??= new Date()
 		acc.firstFlag = true
 		// Обнулить флаг reset (кнопка сброса аварии)
-		reset(null, false)
+		reset(bld._id)
 	}
 
 	// Включить выход на 3 сек
@@ -35,6 +36,7 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (time) {
 		DOReset(m.reset, bld, 'off')
 		delete acc.wait
+		reset(null, false)
 	}
 }
 module.exports = resetDO

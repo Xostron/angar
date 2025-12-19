@@ -14,7 +14,7 @@ const { set, reset, fnCheck } = require('./fn')
  * @param {null} data доп. данные (используются секционными доп авариями)
  * @returns {boolean} авария
  */
-module.exports = function openVin(bld, section, obj, s, seB, m, automode, acc, data) {
+function openVin(bld, section, obj, s, seB, m, automode, acc, data) {
 	// console.log(22, 'openVin', acc)
 	// Разрешение работы
 	if (!fnCheck(bld, obj, s, automode, m, acc)) return false
@@ -31,3 +31,5 @@ module.exports = function openVin(bld, section, obj, s, seB, m, automode, acc, d
 	return false
 	return acc?._alarm ?? false
 }
+
+module.exports = openVin

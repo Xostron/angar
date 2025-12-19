@@ -11,11 +11,11 @@ import './style.css'
 export default function Warming({ cls }) {
 	const { sect, build } = useParams()
 	const isAuth = useAuthStore((s) => s.isAuth)
-	const warming = useOutputStore(useShallow((s) => s.warming))
-	const setWarming = useOutputStore(useShallow((s) => s.setWarming))
-	const bar = useInputStore(useShallow((s) => s.alarm.bar))
-	const resetId = useEquipStore(useShallow((s) => s.getSigByType(build, sect, 'reset')))
-	const reset = useInputStore(useShallow((s) => s.getSignal(resetId)))
+	const warming = useOutputStore((s) => s.warming)
+	const setWarming = useOutputStore((s) => s.setWarming)
+	const bar = useInputStore((s) => s.alarm.bar)
+	const resetId = useEquipStore((s) => s.getSigByType(build, sect, 'reset'))
+	const reset = useInputStore((s) => s.getSignal(resetId))
 	const active = warming?.[build]?.[sect]
 	const [cur, setCur] = useState('off')
 	// Выход сброса аварии (реле безопасности)

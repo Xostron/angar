@@ -1,6 +1,7 @@
 const { data: store } = require('@store')
 const { long, fnClear } = require('./fn')
 const fnPrepare = require('./fn/prepare')
+const { isReset } = require('@tool/reset')
 
 /**
  * Авария клапана: долгое открытие/закрытие
@@ -14,12 +15,12 @@ function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 	// console.log('prepare', prepare)
 
 	// Сброс аварии
-	if (acc.flag && !acc._alarm) fnClear(bld, acc, prepare)
+	if (acc.flag && !acc._alarm || isReset(bld._id)) fnClear(bld, acc, prepare)
 
 	// Проход по клапанам секций в авто
 	for (const v of prepare.vlv) {
 		// Проверка и взвод аварии при открытии/закрытии
-		long(bld, obj, v, s, acc,prepare, 'open')
+		// long(bld, obj, v, s, acc,prepare, 'open')
 		long(bld, obj, v, s, acc,prepare, 'close')
 	}
 

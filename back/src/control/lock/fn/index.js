@@ -3,6 +3,8 @@ const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { getAO } = require('@tool/in_out')
 const { data: store } = require('@store')
+const { readAcc } = require('@store/index')
+const { isLongVlv } = require('@tool/command/valve')
 
 // Блокировки задвижки (клапана)
 function vlv(obj) {
@@ -20,18 +22,66 @@ function vlv(obj) {
 		const vlvLim = isExtralrm(idB, v.sectionId[0], 'vlvLim')
 		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
 		const vlvCrash = isExtralrm(idB, v.sectionId[0], 'vlvCrash' + v._id)
-		const longOC = isExtralrm(idB, v.sectionId[0], 'alrValve')
+
+		const alarmOpn = isLongVlv(idB, v)
+		const alarmCls = isLongVlv(idB, v, 'close')
 		// Секция выключена (true)
 		const offS =
 			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
 			cls
 
-		console.log(3333, 'lock', v.type, local, alrStop, vlvLim, vlvLimB, vlvCrash, longOC, offS)
+		const open100 = fnOpen100(idB, v, retain)
+		console.log(
+			3333,
+			'lock',
+			v.type,
+			local,
+			alrStop,
+			vlvLim,
+			vlvLimB,
+			vlvCrash,
+			offS,
+			open100,
+			alarmOpn,
+			alarmCls
+			// acc
+		)
 		// блокировка открытия
-		outV('on', output, v, opn, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
+		outV(
+			'on',
+			output,
+			v,
+			opn,
+			local,
+			vlvLim,
+			vlvLimB,
+			vlvCrash,
+			alarmOpn,
+			offS,
+			alrStop,
+			open100
+		)
 		// // блокировка закрытия
-		outV('off', output, v, cls, local, vlvLim, vlvLimB, vlvCrash, longOC, offS, alrStop)
+		outV('off', output, v, cls, local, vlvLim, vlvLimB, vlvCrash, alarmCls, offS, alrStop)
 	}
+}
+
+
+
+/**
+ * Блокировка открытия клапана по достижениию 100%
+ * @param {*} idB
+ * @param {*} v
+ * @param {*} retain
+ * @returns true - блокировать
+ */
+function fnOpen100(idB, v, retain) {
+	const cur = +retain?.[idB]?.valvePosition?.[v._id]
+	const total = +retain?.[idB]?.valve[v._id]
+	// Если нет значений
+	if (isNaN(cur) || isNaN(total)) return false
+	if (cur >= total) return true
+	return false
 }
 
 // Блокировки напорных вентиляторов (обычный склад)

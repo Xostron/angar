@@ -1,7 +1,7 @@
 const { data: store, setToAuto, setToMan, setToOffSection } = require('@store')
 const { ctrlV, ctrlDO } = require('@tool/command/module_output')
 const { stateEq } = require('@tool/fan')
-const { curStateV } = require('@tool/command/valve')
+const { curStateV, isLongVlv } = require('@tool/command/valve')
 
 /**
  * При переходе в авто, выкл, останов склада:
@@ -85,7 +85,7 @@ function clsValves(vlvS, value, buildingId, data) {
 	let count = vlvS.length
 	for (const vlv of vlvS) {
 		const state = curStateV(vlv._id, value)
-		if (state === 'icls') continue
+		if (state === 'icls' || isLongVlv(buildingId, vlv, 'close')) continue
 		if (state !== 'cls') {
 			ctrlV(vlv, buildingId, 'close')
 			continue

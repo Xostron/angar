@@ -40,7 +40,9 @@ function bar(r, bld, sect, am, start) {
 	)
 	if (debdo) debdo.msg = mes[102].msg
 
-	const long = store.alarm.extralrm?.[bld._id]?.[sect._id]?.alrValve ?? null
+	const secAuto = store?.retain?.[bld._id]?.mode?.[sect._id]
+	// Если секция в авто, смотрим есть ли у нее аварии долгого закрытия по клапану
+	const long = secAuto ? store.alarm.extralrm?.[bld._id]?.[sect._id]?.alrValve ?? null : null
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}

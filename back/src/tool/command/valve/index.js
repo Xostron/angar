@@ -1,3 +1,4 @@
+const { readAcc } = require('@store/index')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { isErrM } = require('@tool/message/plc_module')
 
@@ -44,9 +45,19 @@ function curStateV(vlvId, value) {
 	return value?.[vlvId]?.state ?? null
 }
 
+// Авария долгого открытия/закрытия
+function isLongVlv(idB, v, type = 'open') {
+	const acc = readAcc(idB, 'building', 'alrValve')
+	if (type === 'open') {
+		return acc?.[v._id]?.alarmOpn
+	}
+	return acc?.[v._id]?.alarmCls
+}
+
 module.exports = {
 	stateV,
 	curStateV,
+	isLongVlv,
 }
 
 /**

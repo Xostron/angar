@@ -9,10 +9,11 @@ function clearAlarm() {
 	// По складу: на каком складе была нажата кнопка сброса аварии
 	store.reset.forEach((idB) => {
 		// Очистка сообщений неисправности модулей
+		store.alarm??={}
+		store.alarm.module??={}
 		store.alarm.module[idB] = {}
 		delDebMdl()
 		// Очистка аварийных сообщений extralrm
-		store.alarm ??= {}
 		store.alarm.extralrm ??= {}
 		store.alarm.extralrm[idB] = {}
 		// Очистка аккумуляторов extralrm для того чтобы они не блокировали работу
