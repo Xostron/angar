@@ -33,7 +33,7 @@ function long(bld, obj, v, s, acc, prepare, type = 'open') {
 	const { total, wait } = def.wait[type](bld, v, obj, s, type)
 	// Клапан уже в аварии
 	if (def.isExistLong[type](v._id, acc)) {
-		def.message(bld, v, obj, s, acc, prepare, type, (withAlarm = false))
+		def.message(bld, v, obj, s, acc, prepare, type)
 		return
 	}
 	// Сброс аккумулятора отслеживания аварии:
@@ -49,13 +49,13 @@ function long(bld, obj, v, s, acc, prepare, type = 'open') {
 
 	// Ожидание долгой работы
 	const time = compareTime(type === 'open' ? acc[v._id]?.waitO : acc[v._id]?.waitC, wait)
-	console.log('ждем ', type, val, '%=', s.overVlv.long ?? 10, wait)
+	// console.log('ждем ', type, val, '%=', s.overVlv.long ?? 10, wait)
 
 	// Время не прошло (ждем концевика)
-	if (!time) return console.log('Ждем', type, v._id, acc[v._id])
+	if (!time) return //console.log('Ждем', type, v._id, acc[v._id])
 
 	// Время прошло (Концевик не сработал)
-	console.log('авария ', type)
+	// console.log('авария ', type)
 	def.set[type](v, acc)
 
 	def.message(bld, v, obj, s, acc, prepare, type)
@@ -125,7 +125,7 @@ const def = {
 		},
 	},
 	// Генерация сообщения об аварии
-	message(bld, v, obj, s, acc, prepare, type, withAlarm = true) {
+	message(bld, v, obj, s, acc, prepare, type) {
 		const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
 		v.sectionId.forEach((idS) => {
 			const section = obj.data.section.find((el) => el._id === idS)
@@ -136,8 +136,6 @@ const def = {
 				'alrValve',
 				msgV(bld, section, typeV, type === 'open' ? 30 : 31)
 			)
-			// Выполнить функцию с проверкой Авария разрешена (withAlarm = true)
-			if (!withAlarm) return
 			// Фильтрация: только для клапанов секций в авто
 			if (!prepare.onIdsS.includes(idS)) return
 			// Настройка: Авария разрешена для останова склада

@@ -10,11 +10,17 @@ const { isLongVlv } = require('@tool/command/valve')
 function vlv(obj) {
 	const { value, data, retain, output } = obj
 	for (const v of data.valve) {
+		// store.heap.valve ??= {}
+		// store.heap.valve[v._id] ??= {}
+		// const acc = store.heap.valve[v._id]
 		const mdlOnId = v?.module?.on?.id
 		const opn = value?.[v._id]?.open
 		const cls = value?.[v._id]?.close
 		const idB = getIdB(mdlOnId, data.module)
+		// ИД всех секций склада
 		const idsS = getIdsS(obj.data.section, idB)
+		// Ручной режим работы секции
+		const man = v.sectionId.every((idS) => retain?.[idB]?.mode?.[idS] === false)
 		// Блокировки
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
@@ -23,14 +29,16 @@ function vlv(obj) {
 		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
 		const vlvCrash = isExtralrm(idB, v.sectionId[0], 'vlvCrash' + v._id)
 
-		const alarmOpn = isLongVlv(idB, v)
-		const alarmCls = isLongVlv(idB, v, 'close')
+		// const alarmOpn = isLongVlv(idB, v)
+
 		// Секция выключена (true)
 		const offS =
 			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
 			cls
 
 		const open100 = fnOpen100(idB, v, retain)
+		const close0 = fnClose0(idB, v, retain)
+
 		console.log(
 			3333,
 			'lock',
@@ -42,9 +50,7 @@ function vlv(obj) {
 			vlvCrash,
 			offS,
 			open100,
-			alarmOpn,
-			alarmCls
-			// acc
+			close0
 		)
 		// блокировка открытия
 		outV(
@@ -56,17 +62,15 @@ function vlv(obj) {
 			vlvLim,
 			vlvLimB,
 			vlvCrash,
-			alarmOpn,
 			offS,
 			alrStop,
-			open100
+			open100,
+			close0 && !man
 		)
 		// // блокировка закрытия
-		outV('off', output, v, cls, local, vlvLim, vlvLimB, vlvCrash, alarmCls, offS, alrStop)
+		outV('off', output, v, cls, local, vlvLim, vlvLimB, vlvCrash, close0, offS, alrStop)
 	}
 }
-
-
 
 /**
  * Блокировка открытия клапана по достижениию 100%
@@ -78,10 +82,22 @@ function vlv(obj) {
 function fnOpen100(idB, v, retain) {
 	const cur = +retain?.[idB]?.valvePosition?.[v._id]
 	const total = +retain?.[idB]?.valve[v._id]
-	// Если нет значений
+	// Если нет значений - не блокировать
 	if (isNaN(cur) || isNaN(total)) return false
+	// Если позиция больше калибровочного - блокировать
 	if (cur >= total) return true
 	return false
+}
+
+// Блокировка если клапан на позиции 0 и авария долгого закрытия и секция не в ручном режиме
+function fnClose0(idB, v, retain) {
+	const alarmCls = isLongVlv(idB, v, 'close')
+	const cur = +retain?.[idB]?.valvePosition?.[v._id]
+
+	// Если нет значений
+	if (isNaN(cur)) return false
+	// Если есть авария долгого открытия и позиция клапана=0 - блокировать
+	return alarmCls && cur === 0
 }
 
 // Блокировки напорных вентиляторов (обычный склад)

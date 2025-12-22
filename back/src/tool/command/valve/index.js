@@ -45,7 +45,7 @@ function curStateV(vlvId, value) {
 	return value?.[vlvId]?.state ?? null
 }
 
-// Авария долгого открытия/закрытия
+// Авария долгого закрытия
 function isLongVlv(idB, v, type = 'open') {
 	const acc = readAcc(idB, 'building', 'alrValve')
 	if (type === 'open') {

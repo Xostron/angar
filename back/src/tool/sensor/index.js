@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 const { getBS } = require('@tool/get/building')
-const debounce = require('./debounce')
+const { debounce } = require('./debounce')
 const { getRaw, range, webSensAlarm, state, isValidWeather } = require('./fn')
 /**
  * Анализ датчиков
@@ -23,6 +23,7 @@ function vSensor(equip, val, retain, result) {
 		result[s._id] = hold ? hold : r
 		// Аварийные сообщения датчика
 		webSensAlarm(result[s._id], owner?.building, owner?.section, s)
+		// Обновляем прошлое значение
 		store.holdSensor[s._id] = result?.[s._id]
 	}
 	// Добавление прогноза погоды на экран настроек датчиков

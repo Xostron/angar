@@ -2,6 +2,7 @@ const { setACmd } = require('@tool/command/set')
 const fnStep = require('./step')
 const checkForce = require('./force')
 const { data: store } = require('@store')
+const { isLongVlv } = require('.')
 /**
  * Шаговое открытие/закрытие приточного клапана
  * @param {*} vlvS клапаны
@@ -12,15 +13,16 @@ const { data: store } = require('@store')
  * @param {*} delay принудительно открыть
  */
 function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
-	console.log('##############', idS, '##############')
+	// console.log('##############', idS, '##############')
 
 	// Принудительное управление
-	if (checkForce(idB, idS, vlvS, forceCls, forceOpn)) return console.log(99001, 'Принудительное ', 'close=', forceCls, 'open=', forceOpn)
+	if (checkForce(idB, idS, vlvS, forceCls, forceOpn))
+		return console.log(99001, 'Принудительное ', 'close=', forceCls, 'open=', forceOpn)
 
 	// Шаговое управление
 	fnStep(vlvS, idB, idS, retain)
 
-	console.log('############## END')
+	// console.log('############## END')
 }
 
 /**
@@ -66,9 +68,14 @@ function fnLookCls(bld, sect, vlvS, obj) {
 
 	// Если позиция приточного клапана = 0мс && нет концевика закрытого положения
 	console.log(8801, 'Поиск концевика', pos === 0 && !o.close)
-	// TODO2
-	// Если в настройках "Работа клапанов" авария долгого закрытия включена
-	if (s?.overVlv?.onlc && pos === 0 && !o.close) return true
+
+	// const alarmCls = isLongVlv(bld._id, v, 'close')
+	// Если авария долгого закрытия и позиция=0, то давать возможность работы клапаном
+	// TODO отключить данную функцию, клапан при аварии
+	// просто блокируется в оба направления
+	// if (pos===0 && alarmCls) return false
+	// Принудительно закрывать
+	if (pos === 0 && !o.close) return true
 	return false
 }
 

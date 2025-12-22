@@ -58,7 +58,12 @@ function getIdSB(section, id) {
 	return section.find((el) => el._id === id)?.buildingId
 }
 
-// Получить массив id секций по id склада
+/**
+ * Получить массив id секций по id склада
+ * @param {*} section 
+ * @param {*} idB 
+ * @returns 
+ */
 function getIdsS(section, idB) {
 	return section
 		.filter((el) => el.buildingId === idB)
@@ -89,6 +94,18 @@ function getIdBS(section = [], idB) {
 	return ids
 }
 
+function getBbySig(sig, equip) {
+	switch (sig?.owner?.type) {
+		case 'building':
+			return sig.owner.id
+		case 'section':
+			const sect = equip?.section?.find((el) => el._id === sig.owner.id)
+			return sect?.buildingId
+		default:
+			return null
+	}
+}
+
 module.exports = {
 	getIdB,
 	getB,
@@ -100,4 +117,5 @@ module.exports = {
 	getIdsS,
 	getIDB,
 	getIdBS,
+	getBbySig,
 }

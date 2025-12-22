@@ -10,7 +10,7 @@ const { isReset } = require('@tool/reset')
 function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 	const { retain, value } = obj
 
-	console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
+	// console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
 	const prepare = fnPrepare(bld, sect, obj, s, se, m, automode, acc, data)
 	// console.log('prepare', prepare)
 
@@ -24,8 +24,8 @@ function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 		long(bld, obj, v, s, acc,prepare, 'close')
 	}
 
-	console.log('acc', acc)
-	console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
+	// console.log('acc', acc)
+	// console.log(4400, '@@@@@@@@@@@@@@@@@@@@@@\n')
 	return acc._alarm ?? false
 }
 

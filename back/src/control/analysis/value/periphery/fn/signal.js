@@ -19,7 +19,7 @@ function signal(equip, val, retain, result) {
 				sigFan(o, val, result, module, retain, fan)
 				break
 			default:
-				sigDfl(o, val, result)
+				sigDfl(o, val, equip, result)
 				break
 		}
 	}

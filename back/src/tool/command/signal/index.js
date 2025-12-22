@@ -1,6 +1,8 @@
 const signaltype = require('@dict/signal')
 const { puIO } = require('@tool/in_out')
-const { getIdBS } = require('@tool/get/building')
+const { getIdBS, getBbySig } = require('@tool/get/building')
+const { debDI } = require('@tool/sensor/debounce')
+const { data: store } = require('@store')
 
 // Получить значение сигнала
 function getSignal(ownerId, obj, type) {
@@ -68,12 +70,16 @@ function sigFan(sig, val, result, module, retain, fan) {
 }
 
 // Другие сигналы:
-function sigDfl(sig, val, result) {
+function sigDfl(sig, val, equip, result) {
 	let value = null
-	if (!signaltype.output.includes(sig.type)) value = puIO(val, sig.module.id, sig.module.channel)
-	if (signaltype.output.includes(sig.type))
-		value = puIO(val, sig.module.id, sig.module.channel, true)
-	result[sig._id] = value === null ? value : !sig.reverse ? value : !value
+	const isDO = signaltype.output.includes(sig.type)
+
+	// Считанное значение
+	value = puIO(val, sig.module.id, sig.module.channel, isDO)
+	value = value === null ? value : !sig.reverse ? value : !value
+
+	// антидребезг
+	debDI(sig, value, equip, result)
 }
 
 /**
