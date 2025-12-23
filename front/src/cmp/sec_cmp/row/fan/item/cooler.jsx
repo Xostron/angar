@@ -83,6 +83,7 @@ function BtnCooler({
 	const Sh = solHeat ? (
 		<img className='sh' src={'/img/periphery/heater/on.svg'} />
 	) : (
+		// <img className='sh' src={'/img/periphery/heater/on.svg'} />
 		<span className='sh'></span>
 	)
 
