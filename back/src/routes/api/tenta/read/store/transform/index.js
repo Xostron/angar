@@ -78,7 +78,7 @@ async function transform(bldId, secId) {
 		result[bldId + 'point'] = { value: data?.total?.[bldId]?.point }
 
 		// Увлажнители: агрегация
-		// fnWetting(bldId, data, { section, device }, result)
+		fnWetting(bldId, data, { section, device }, result)
 
 		// Краткая информация по секциям (карточки)
 		sections(bldId, type, section, data, { heating, valve, fan }, result)
