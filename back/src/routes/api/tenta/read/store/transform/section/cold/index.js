@@ -41,6 +41,9 @@ async function cold(result, idS, idB, obj) {
 				state: data[el?._id]?.state,
 				mode: data[el?._id]?.name,
 				ao: data[el._id]?.ao,
+				level:data[el._id]?.level,
+				sh:data[el._id]?.solHeat?.state,
+				fl:data[el._id]?.flap?.state
 			}
 			get('cooler', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))
 			get('pin', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))

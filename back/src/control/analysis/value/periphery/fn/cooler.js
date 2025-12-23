@@ -13,78 +13,88 @@ function cooler(equip, val, retain, result) {
 		const arrM = new Set()
 		// Состояния периферии испарителя
 		result[clr._id] ??= {}
+		result[clr._id].aggregate ??= {}
 		result[clr._id].solenoid ??= {}
 		result[clr._id].fan ??= {}
 		result[clr._id].heating ??= {}
 		result[clr._id].sensor ??= {}
 		result[clr._id].solHeat ??= {}
-		result[clr._id].aggregate ??= {}
+		result[clr._id].flap ??= {}
 
-		// Агрегат (по нему модули не фиксируем, т.к. они проверяются в состоянии агрегата)
+		// 1. Агрегат (по нему модули не фиксируем, т.к. они проверяются в состоянии агрегата)
 		aggregate
 			.filter((el) => el._id === clr.aggregateListId)
-			.forEach((el) => {
-				result[clr._id].aggregate = result[el._id]
-			})
-		// Соленоид - холод
+			.forEach((el) => (result[clr._id].aggregate = result[el._id]))
+
+		// 2. Соленоид - холод
 		clr.solenoid.forEach((el) => {
-			// Добавляем модуль ПЛК на который привязан соленоид
+			// Добавляем модуль ПЛК, на который привязан соленоид
 			arrM.add(findMdl(binding, el._id))
 			// сигнал соленоида "полное открытие"
 			const sig = signal.find((e) => e.owner.id === el._id)
 			arrM.add(sig?.module?.id)
-			if (result?.[sig?._id] === undefined)
-				result[clr._id].solenoid[el._id] = result?.outputEq?.[el._id]
-			else result[clr._id].solenoid[el._id] = result?.[sig?._id]
+			// Состояние соленоида: сигнал обратной связи или управляющий сигнал
+			result[clr._id].solenoid[el._id] =
+				result?.[sig?._id] === undefined ? result?.outputEq?.[el._id] : result?.[sig?._id]
 		})
-		// Напорные вентиляторы (модули не добавляю, потому что в
+
+		// 3. Напорные вентиляторы (модули не добавляю, потому что в
 		// состоянии ВНО уже учтены неисправности модулей)
-		const arrFan = fan.filter((el) => el.owner.id === clr._id)
-		arrFan.forEach((f) => {
-			result[clr._id].fan[f._id] = result[f._id]
-			// DO
-			// arrM.add(f?.module?.id)
-			// AO
-			// const ao = getAO(binding, f)
-			// ao ? arrM.add(ao?.moduleId) : null
-		})
-		result[clr._id].fan.state = arrFan.every(
-			(f) => result[f._id].state === 'off' || result[f._id].state === 'alarm'
+		const arrF = fan.filter((el) => el.owner.id === clr._id)
+		arrF.forEach((el) => (result[clr._id].fan[el._id] = result[el._id]))
+		// Агрегированный состояние по ВНО испарителя: alarm (если нет рабочих ВНО[выведены/авария]) или ''(есть рабочие ВНО)
+		result[clr._id].fan.state = arrF.every((el) =>
+			['off', 'alarm'].includes(result[el._id].state)
 		)
 			? 'alarm'
 			: ''
 
-		// Оттайка испарителя
-		heating
-			.filter((el) => el.owner.id === clr._id && el.type == 'cooler')
-			.forEach((h) => {
-				arrM.add(h?.module?.id)
-				result[clr._id].heating[h._id] = result?.outputEq?.[h._id]
-			})
-		// Соленоидs подогрева испарителя
-		heating
-			.filter((el) => el.owner.id === clr._id && el.type == 'channel')
-			.forEach((h) => {
-				arrM.add(h?.module?.id)
-				result[clr._id].solHeat[h._id] = result?.outputEq?.[h._id]
-			})
-		// Датчики испарителя (температура всасывания, давления всасывания/нагентания)
+		// 4. Оттайка испарителя
+		const arrH = heating.filter((el) => el.owner.id === clr._id && el.type == 'cooler')
+		arrH.forEach((el) => {
+			arrM.add(el?.module?.id)
+			result[clr._id].heating[el._id] = result?.outputEq?.[el._id]
+		})
+		// Агрегирование состояния
+		result[clr._id].heating.state = arrH.some((el) => result[clr._id].heating[el._id])
+
+		// 5. Соленоиды подогрева испарителя
+		const arrSH = heating.filter((el) => el.owner.id === clr._id && el.type == 'channel')
+		arrSH.forEach((el) => {
+			arrM.add(el?.module?.id)
+			result[clr._id].solHeat[el._id] = result?.outputEq?.[el._id]
+		})
+		// Агрегированное состояние true - работа, false - стоп
+		result[clr._id].solHeat.state = arrSH.some((el) => result[clr._id].solHeat[el._id])
+
+		// 6. Заслонки
+		const arrFl = heating.filter((el) => el.owner.id === clr._id && el.type == 'flap')
+		arrFl.forEach((el) => {
+			arrM.add(el?.module?.id)
+			result[clr._id].flap[el._id] = result?.outputEq?.[el._id]
+		})
+		// Агрегированное состояние true - работа, false - стоп
+		result[clr._id].flap.state = arrFl.some((el) => result[clr._id].flap[el._id])
+
+		// 7. Датчики испарителя (температура всасывания, давления всасывания/нагентания)
 		sensor
 			.filter((el) => el.owner.id === clr._id)
 			.forEach((s) => {
 				if (s.type === 'cooler') arrM.add(s?.module?.id)
 				result[clr._id].sensor[s._id] = result[s._id]
 			})
-
+		// ********************************************************************************
 		// Состояние испарителя
 		result[clr._id].state = state(result[clr._id], clr, equip, arrM)
-		// AO ВНО испарителя
+
+		// Задание ПЧ ВНО испарителя
 		result[clr._id].ao = Object.values(result[clr._id].fan).find(
 			(el) => el.value !== null || el.value !== undefined
 		)?.value
-		//Добавление читаемого названия состояния
+
+		//Добавление читаемого названия состояния испарителя
 		result[clr._id].name = coolerDef[result[clr._id]?.state] ?? ''
-		console.log(111, 'Статус аварии испарителя', result[clr._id].status)
+
 		// Кол-во запущенных ступеней (соленоидов охлаждения)
 		const arr = Object.values(result[clr._id].solenoid)
 		if (arr.length < 2) return
@@ -92,7 +102,9 @@ function cooler(equip, val, retain, result) {
 			if (el) acc++
 			return acc
 		}, 0)
+
 		result[clr._id].level = `${level} (${arr.length})`
+		// console.log(111, 'Статус аварии испарителя', result[clr._id])
 	})
 }
 module.exports = cooler

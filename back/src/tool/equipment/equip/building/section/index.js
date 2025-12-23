@@ -39,6 +39,7 @@ function section(doc, data) {
 	const heating = correct(data.heating.filter((el) => el?.owner?.id === doc._id))
 	// Испаритель
 	const cooler = correct(data?.cooler.filter((el) => el.sectionId === doc._id))
+	
 	// Испаритель: сленоиды, датчики, aggregateListId
 	cooler?.forEach((el) => {
 		el.sensor = data?.sensor.filter((s) => s.owner.id === el._id)
@@ -51,6 +52,7 @@ function section(doc, data) {
 				return { ...f, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			})
 		el.solHeat = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'channel')
+		el.flap = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'flap')
 		// console.log(555, el)
 	})
 	// Давление всасывания агрегата

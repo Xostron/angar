@@ -2,6 +2,7 @@ import defUn from '@src/tool/unit'
 import { useParams } from 'react-router-dom'
 import useInputStore from '@store/input'
 import defImg from '@tool/icon'
+
 /**
  *
  * @param {object} data Рамаи мясо по ВНО испарителя
@@ -9,28 +10,35 @@ import defImg from '@tool/icon'
  */
 export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const { build } = useParams()
-	// [Состояния и показания испарителя], [склад вкл/выкл]
+	// [Состояния и показания испарителя]
 	const cooler = useInputStore((s) => s?.input?.[data.el?._id])
+	// [склад вкл/выкл]
 	const start = useInputStore((s) => s?.input?.retain?.[build]?.start)
-	// Стадия испарителя - режим
+
+	// Режим испарителя
 	const uptxt = start ? cooler.name : ''
+
 	// Задание ПЧ
-	let ltxt = data.value
-	if (ltxt !== undefined) ltxt = isNaN(ltxt) ? '-- %' : ltxt + '%'
-	else ltxt = '-- %'
+	const ltxt = isNaN(data.value) || data.value === null ? '-- %' : data.value + '%'
+
 	// Температура всасывания
 	const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
-	let t = cooler?.sensor?.[idT]?.value ?? '-'
+	let t = cooler?.sensor?.[idT]?.value ?? '--'
 	const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
+
 	// Соленоид подогрева
-	const idSolHeat = data.el?.solHeat?.[0]?._id
-	const solHeat = cooler?.solHeat?.[idSolHeat]
-	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
+	// const idSolHeat = data.el?.solHeat?.[0]?._id
+	const solHeat = cooler?.solHeat?.state
+
+	// Заслонка
+	const flap = cooler?.flap?.state
+	console.log(1, cooler, flap)
+
 	// Иконка состояния испарителя
 	const state = cooler?.state
 	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
-	// if (data.state == 'alarm') icon = '/img/cold/cooler/fan-alarm.svg'
 
+	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 	// Доступ разрешен
 	if (isAuth) cl.push('auth-sir')
 	// Вывод из работы ВНО
@@ -47,6 +55,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 			rtxt={rtxt}
 			uptxt={uptxt}
 			solHeat={solHeat}
+			flap={flap}
 			level={cooler?.level}
 			cls={cl}
 		/>
@@ -62,32 +71,46 @@ function BtnCooler({
 	rtxt = '',
 	uptxt = '',
 	solHeat,
+	flap,
 	level,
 	cls,
 	style,
 }) {
 	let cl = ['btn', cls]
 	cl = cl.join(' ')
+
 	// Соленоид подогрева
 	const Sh = solHeat ? (
-		<img className='sol-heat' src={'/img/periphery/heater/on.svg'} />
+		<img className='sh' src={'/img/periphery/heater/on.svg'} />
 	) : (
-		<span className='sol-heat'></span>
-		// <img className='sol-heat' src={'/img/periphery/heater/on.svg'} />
+		<span className='sh'></span>
+	)
+
+	// Заслонка
+	const fl = flap ? (
+		<img className='fl' src={'/img/periphery/flap.svg'} />
+	) : (
+		// <img className='fl' src={'/img/periphery/flap.svg'} />
+		<span className='fl'></span>
 	)
 
 	return (
 		<button onClick={onClick} className={cl} style={style} title={title}>
-			<div className='state-extra'>
-				{solHeat !== undefined && Sh}
+			{/* Слева: Соленоид подогрева, кол-во включенных соленоидов холода */}
+			<div className='left'>
+				{Sh}
 				<span>{level}</span>
 			</div>
-			<div className='state-cooler'>
+			{/* Центр: Задание ПЧ, Испаритель, Темпе. испарителя */}
+			<div className='center'>
 				<span>{ltxt}</span>
 				<img src={icon} />
 				<span>{rtxt}</span>
 			</div>
+			{/* Верх: Состояние испарителя */}
 			<span className='up'>{uptxt}</span>
+			{/* Справа: Заслонка */}
+			<div className='right'>{fl}</div>
 		</button>
 	)
 }

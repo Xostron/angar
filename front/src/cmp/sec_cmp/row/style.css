@@ -54,7 +54,7 @@
 	font-size: var(--fsz18);
 	top: -2.4rem;
 }
-.btn-cooler .state-cooler {
+.btn-cooler .center {
 	position: absolute;
 	top: 0.1rem;
 	height: 40px;
@@ -64,12 +64,12 @@
 	gap: 8px;
 	color: var(--primary);
 }
-.state-cooler > img {
+.center > img {
 	filter: brightness(0) saturate(100%) invert(14%) sepia(11%) saturate(3362%) hue-rotate(185deg)
 		brightness(92%) contrast(95%);
 }
 
-.state-cooler > span {
+.center > span {
 	width: 100px;
 	&:first-child {
 		text-align: right;
@@ -79,7 +79,7 @@
 	}
 }
 
-.btn-cooler .state-extra {
+.btn-cooler .left {
 	position: absolute;
 	height: 100%;
 	width: 35px;
@@ -89,7 +89,7 @@
 	color: var(--primary);
 }
 
-.state-extra > .sol-heat {
+.left > .sh {
 	position: absolute;
 	left: 0px;
 	top: -5px;
@@ -97,10 +97,27 @@
 	width: 35px;
 }
 
-.state-extra > span {
+.left > span {
 	position: absolute;
 	left: 7px;
 	bottom: -16px;
 	width: 50px;
 	text-align: left;
+}
+
+.btn-cooler .right {
+	position: absolute;
+	height: 100%;
+	width: 35px;
+	top: 0px;
+	right: 8px;
+	font-size: 14px;
+	color: var(--primary);
+}
+.right .fl {
+	position: absolute;
+	width: 30px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 }

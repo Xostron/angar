@@ -36,13 +36,13 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 
 	// 2. Регулирование по давлению/темпе канала
 	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)
-	console.log(110, idS, 'on', on, 'off', off)
+	// console.log(110, idS, 'on', on, 'off', off)
 
 	// Доп: Прогрев клапанов
 	if (aCmd.warming) (on = true), (off = false)
 	// Доп: Антидребезг ВНО (зафиксировать кол-во ВНО)
 	if (acc.stable) (on = false), (off = false)
-	console.log(111, 'on', on, 'off', off, who)
+	// console.log(111, 'on', on, 'off', off, who)
 	// Доп: Комби-холод. Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
 	if (acc.busySol) (on = false), (off = false)
@@ -56,7 +56,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	turnOn(null, fans, solHeat, bld._id, acc, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
 	isAllStarted(acc, fans)
-	console.log(112, idS)
+	// console.log(112, idS)
 	// console.table(acc)
 }
 

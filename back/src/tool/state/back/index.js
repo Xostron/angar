@@ -7,7 +7,7 @@ const { readTO } = require('@tool/json')
 const fsp = require('fs').promises
 
 /**
- * API GET State from Tenta
+ * API GET State: для запросов от Tenta
  * Подготовка state для Админ-сервера (с учетом delta-дребезга и расчета delta-изменений)
  * @param {string} type init - Сервер запрашивает полный набор данных
  * @returns

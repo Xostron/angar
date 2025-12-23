@@ -10,7 +10,7 @@ const durVent = require('./duration')
  * @param {object} bdata Результат функции scan()
  */
 function normal(bld, obj, s, seB, m, resultFan, bdata) {
-	console.log(11, 'SOFT_COMBI_NORMAL', bld.name)
+	console.log('\n------------SOFT_COMBI_NORMAL------------', bld.name, '\n')
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	durVent(bld, obj, s, seB, m, resultFan, bdata)
 	fnACmd(bld, resultFan, obj, bdata)
@@ -19,16 +19,18 @@ function normal(bld, obj, s, seB, m, resultFan, bdata) {
 	if (!start) fnFanWarm(resultFan, s)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'normal')
+	console.log('\n------------SOFT_COMBI_NORMAL------------', bld.name, '\n')
 }
 
 // Комбинированный склад в холодильном режиме
 function combi(bld, obj, s, seB, m, resultFan, bdata) {
-	console.log(11, 'SOFT_COMBI_COLD', bld.name)
+	console.log('\n------------SOFT_COMBI_COLD------------', bld.name, '\n')
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	// durVent(bld, obj, s, seB, m, resultFan, bdata)
 	fnACmd(bld, resultFan, obj, bdata)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'cold')
+	console.log('\n------------SOFT_COMBI_COLD------------', bld.name, '\n')
 }
 
 // У склада холодильник не будет ВНО камеры и соленоида подогрева

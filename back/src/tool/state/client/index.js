@@ -23,7 +23,10 @@ module.exports = async function state() {
 	try {
 		// Пропуск отправки данных на локальном хосте
 		if (['127.0.0.1', 'localhost'].includes(process.env.IP)) {
-			console.log('\x1b[32m%s\x1b[0m', `IP ${process.env.IP} не является публичным, пропуск отправки данных на Tenta`)
+			console.log(
+				'\x1b[32m%s\x1b[0m',
+				`IP ${process.env.IP} не является публичным, пропуск отправки данных на Tenta`
+			)
 			return false
 		}
 
@@ -34,19 +37,29 @@ module.exports = async function state() {
 
 		// Если данные не готовы -> пропуск итерации
 		if (!o) {
-			console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. ✅Данные не готовы. Операция закончена')
+			console.log(
+				'\x1b[33m%s\x1b[0m',
+				'POS->Tenta: 2. ✅Данные не готовы. Операция закончена'
+			)
 			return false
 		}
 
 		const { result, hub, present, diffing } = o
 		// Если изменений не было не отправляем запрос
-		if (result.length) {
-			console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. ✅Данные не изменялись, не передаем на сервере. Операция закончена')
+		if (!result.length) {
+			console.log(
+				'\x1b[33m%s\x1b[0m',
+				'POS->Tenta: 2. ✅Данные не изменялись, не передаем на сервере. Операция закончена'
+			)
 			return false
 		}
 
 		// Передать данные INIT или delta
-		console.log('\x1b[33m%s\x1b[0m', 'POS->Tenta: 2. Соединение с Tenta...', process.env.API_URI)
+		console.log(
+			'\x1b[33m%s\x1b[0m',
+			'POS->Tenta: 2. Соединение с Tenta...',
+			process.env.API_URI
+		)
 
 		// hub.init = true Первый пул данных был отправлен
 		// Первый пул данных (при перезапуске ангара) { type: 'init' }
@@ -62,11 +75,11 @@ module.exports = async function state() {
 
 		// Запрос успешен, обновляем прошлые значения
 		// Инициализация пройдена
-        hub.init = new Date()
-        // Последние данные были успешны переданы
+		hub.init = new Date()
+		// Последние данные были успешны переданы
 		hub.last = new Date()
-        // Обновление прошлых значений: если различий не было (diffing), 
-        // то сохраняем текущий state (present), иначе прошлые+новые различия
+		// Обновление прошлых значений: если различий не было (diffing),
+		// то сохраняем текущий state (present), иначе прошлые+новые различия
 		hub.state = diffing === null ? present : { ...hub.state, ...diffing }
 		console.log('\x1b[33m%s\x1b[0m', '3. ✅POS->Tenta: Данные переданы', o?.result?.length)
 		// console.log(4, o.result)

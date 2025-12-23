@@ -86,7 +86,7 @@ function isDebMdl(idB, idM, opt) {
 	// Если модуля нет в списке - выход
 	if (!store.debMdl[idM]) return
 	const debounce = (opt?.debounce ?? store.tDeb) * 60_000
-	if (opt.ip === '192.168.21.132') console.log('======debounce===========', debounce)
+	// if (opt.ip === '192.168.21.132') console.log('======debounce===========', debounce)
 	const time = store.debMdl[idM].getTime() + debounce
 	const cur = new Date().getTime()
 	// Время прошло: авария осталась -> добавляем модуль в список неисправных

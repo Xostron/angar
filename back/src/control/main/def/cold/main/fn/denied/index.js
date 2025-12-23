@@ -83,37 +83,37 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		alrStop ||
 		alrClosed
 	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
-	console.log(
-		'\t',
-		'start',
-		!start,
-		'alr',
-		alr,
-		'aggr',
-		!aggr,
-		'supplySt',
-		!supplySt,
-		'!store.toAuto?.[bld._id]?.[sect._id]',
-		!store.toAuto?.[bld._id]?.[sect._id],
-		'!alrAuto',
-		!alrAuto,
-		'automode != cooling',
-		automode != 'cooling',
-		'fansOff',
-		fansOff,
-		'stateCooler.fan.state === alarm',
-		stateCooler.fan.state === 'alarm',
-		'local',
-		local,
-		'!sectM',
-		!sectM,
-		'stateCooler?.status === alarm',
-		stateCooler?.status === 'alarm',
-		'alrStop',
-		alrStop,
-		'alrClosed',
-		alrClosed
-	)
+	// console.log(
+	// 	'\t',
+	// 	'start',
+	// 	!start,
+	// 	'alr',
+	// 	alr,
+	// 	'aggr',
+	// 	!aggr,
+	// 	'supplySt',
+	// 	!supplySt,
+	// 	'!store.toAuto?.[bld._id]?.[sect._id]',
+	// 	!store.toAuto?.[bld._id]?.[sect._id],
+	// 	'!alrAuto',
+	// 	!alrAuto,
+	// 	'automode != cooling',
+	// 	automode != 'cooling',
+	// 	'fansOff',
+	// 	fansOff,
+	// 	'stateCooler.fan.state === alarm',
+	// 	stateCooler.fan.state === 'alarm',
+	// 	'local',
+	// 	local,
+	// 	'!sectM',
+	// 	!sectM,
+	// 	'stateCooler?.status === alarm',
+	// 	stateCooler?.status === 'alarm',
+	// 	'alrStop',
+	// 	alrStop,
+	// 	'alrClosed',
+	// 	alrClosed
+	// )
 	// Работа испарителя запрещена? false - Нет.
 	if (!store.denied[bld._id][clr._id]) return false
 
