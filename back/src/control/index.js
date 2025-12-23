@@ -86,10 +86,10 @@ function testBattery() {
 	// store.battery = !store.battery
 	// blink
 	// if (store.testBattery) store.battery = false
-	if (!store.testBattery) {
-		store.testBattery = true
-		store.battery = true
-	}
+	// if (!store.testBattery) {
+	// 	store.testBattery = true
+	// 	store.battery = true
+	// }
 }
 
 module.exports = loop
