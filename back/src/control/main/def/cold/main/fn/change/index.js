@@ -1,5 +1,6 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { softsol } = require('./soft_solenoid')
+const { isCombiCold } = require('@tool/combi/is')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
@@ -33,8 +34,9 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 }
 
 // Для комбинированного (ступенчатое, заслонка оттайки)
-function oneChangeCombi(bdata, idB, sl, f, h, add, code, clr) {
-	const { start, s, se, m, accAuto } = bdata
+function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
+	const idB = bld._id
+	const { start, s, se, m, accAuto, automode } = bdata
 	const { solenoid, fan, heating, flap = [] } = clr
 
 	// Управление механизмами
@@ -50,7 +52,9 @@ function oneChangeCombi(bdata, idB, sl, f, h, add, code, clr) {
 	// Оттайка
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
 	// Заслонка оттайки (работает при оттайке и сливе воды)
-	const flapOn = accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll
+	
+	const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
+	console.log(2200, '*************************', flapOn, isCombiCold(bld,automode,s))
 	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
 
 	// Доп состояние слива воды

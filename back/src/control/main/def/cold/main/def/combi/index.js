@@ -14,7 +14,7 @@ function main(bld, obj, bdata, alr) {
 
 	// Управление испарителем
 	const fnChange = (sl, f, h, add, code, clr) =>
-		oneChangeCombi(bdata, bld._id, sl, f, h, add, code, clr)
+		oneChangeCombi(bdata, bld, sl, f, h, add, code, clr)
 
 	// Синхронизация оттайки-слива_воды испарителей
 	defrostAll(bld._id, accAuto.cold, m.cold.cooler, obj, s)
@@ -37,7 +37,7 @@ function main(bld, obj, bdata, alr) {
 		target.combi(bld, obj, bdata, alr)
 	}
 	console.log(88, 'Аккумулятор холодильника')
-	// console.log(accAuto.cold)
+	console.log(accAuto.cold)
 }
 
 module.exports = main
