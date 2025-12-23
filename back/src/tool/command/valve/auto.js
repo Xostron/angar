@@ -49,7 +49,8 @@ function fnValve(data, idS, s) {
 
 /**
  * Принудительно закрывать, если позиция приточного
- * клапана = 0мс && нет концевика закрытого положения
+ * клапана = 0мс && нет концевика закрытого положения &&
+ * авто команда на закрытие
  * @param {*} bld
  * @param {*} sect
  * @param {*} vlvS
@@ -57,6 +58,8 @@ function fnValve(data, idS, s) {
  * @returns {boolean} true - принудительно закрыть
  */
 function fnLookCls(bld, sect, vlvS, obj) {
+    // Авто: Команда на закрытие
+	const cmdCls = store.aCmd?.[sect._id]?.vlv?.type ==='close'
 	// Все настройки склада
 	const s = store?.calcSetting?.[bld._id] ?? {}
 	// Приточный клапан
@@ -67,7 +70,8 @@ function fnLookCls(bld, sect, vlvS, obj) {
 	const o = obj?.value?.[v._id]
 
 	// Если позиция приточного клапана = 0мс && нет концевика закрытого положения
-	console.log(8801, 'Поиск концевика', pos === 0 && !o.close)
+	console.log(8801, 'Поиск концевика', pos === 0 && !o?.close && cmdCls, pos, o?.val, o?.close, cmdCls)
+
 
 	// const alarmCls = isLongVlv(bld._id, v, 'close')
 	// Если авария долгого закрытия и позиция=0, то давать возможность работы клапаном
@@ -75,7 +79,7 @@ function fnLookCls(bld, sect, vlvS, obj) {
 	// просто блокируется в оба направления
 	// if (pos===0 && alarmCls) return false
 	// Принудительно закрывать
-	if (pos === 0 && !o.close) return true
+	if (pos === 0 && !o?.close && cmdCls) return true
 	return false
 }
 
