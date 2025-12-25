@@ -17,11 +17,10 @@ function building(equip, val, retain, result) {
 		result.building[bld._id] ??= {}
 		// Авторежим подрежимы хранения
 		const am = retain?.[bld._id]?.automode
-		if (am) result.building[bld._id].submode = store.acc?.[bld._id]?.[am]?.submode
-		// Тип склада + режим: normal, cold, combi_normal, combi_cold
-		// normal|cold
+		fnSubmode(bld, retain, result)
+		// Тип склада normal|cold
 		if (bld.type !== 'combi') result.building[bld._id].bldType = bld.type
-		// combi_normal | combi_cold
+		// Тип склада combi_normal | combi_cold
 		result.building[bld._id].bldType = isCombiCold(bld, am, store.calcSetting[bld._id])
 			? 'combi_cold'
 			: 'combi_normal'
@@ -29,3 +28,21 @@ function building(equip, val, retain, result) {
 }
 
 module.exports = building
+
+// Web: Подрежим
+function fnSubmode(bld, retain, result) {
+	// Авторежим подрежимы хранения
+	const am = retain?.[bld._id]?.automode
+	// Тип склада
+	switch (bld?.type) {
+		case 'cold':
+		case 'normal':
+			result.building[bld._id].submode = store.acc?.[bld._id]?.[am]?.submode ?? ''
+			break
+		case 'combi':
+			result.building[bld._id].submode = store.acc?.[bld._id]?.combi?.submode ?? ''
+			break
+		default:
+			result.building[bld._id].submode = ''
+	}
+}

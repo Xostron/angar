@@ -38,7 +38,8 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	const idB = bld._id
 	const { start, s, se, m, accAuto, automode } = bdata
 	const { solenoid, fan, heating, flap = [] } = clr
-
+	// Склад работает в режиме комби-холодильника
+	const isCN = isCombiCold(bld, automode, s)
 	// Управление механизмами
 	// Ступенчатое управление соленоидами
 	softsol(idB, solenoid, sl, f, h, clr, accAuto)
@@ -51,12 +52,8 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	})
 	// Оттайка
 	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
-	// Заслонка оттайки (работает при оттайке и сливе воды)
-	
-	const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
-	console.log(2200, '*************************', flapOn, isCombiCold(bld,automode,s))
-	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
-
+	// Заслонки
+	ctrlFlap(idB, flap, accAuto.cold, isCN)
 	// Доп состояние слива воды
 	accAuto.cold ??= {}
 	accAuto.cold[clr._id] ??= {}
@@ -68,4 +65,20 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
 }
 
-module.exports = { oneChange, oneChangeCombi }
+module.exports = { oneChange, oneChangeCombi, ctrlFlap }
+
+/**
+ * Вкл/Выкл заслонок
+ * @param {*} idB ИД склада
+ * @param {*} flap Массив заслонок
+ * @param {*} accCold Аккумулятор комби-холода
+ * @param {*} isCN Склад в режиме комби-холодильника
+ */
+function ctrlFlap(idB, flap = [], accCold, isCN = true) {
+	// TODO: ИЗМЕНЕНО: Заслонка оттайки (работает при оттайке и сливе воды)
+	// const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
+	// Заслонка оттайки (работает при оттайке)
+	const flapOn = isCN && (accCold.defrostAll || accCold.defrostAllFinish)
+	console.log(2200, '*************************', flapOn, isCN)
+	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
+}

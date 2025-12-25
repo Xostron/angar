@@ -5,11 +5,13 @@ import defImg from '@tool/icon'
 //Информация по продукту
 export default function Prod({ change, style, show }) {
 	const { build } = useParams()
-	const [automode, product, sm] = useInputStore(({ input }) => [
-		input?.retain?.[build]?.automode,
-		input?.retain?.[build]?.product,
-		input?.building?.[build]?.submode,
-	])
+	// const [product, sm] = useInputStore(({ input }) => [
+	// 	input?.retain?.[build]?.product,
+	// 	input?.building?.[build]?.submode,
+	// ])
+	const automode = useInputStore((s) => s?.input?.retain?.[build]?.automode)
+	const product = useInputStore((s) => s?.input?.retain?.[build]?.product)
+	const sm = useInputStore((s) => s?.input?.building?.[build]?.submode)
 	const subm = sm?.[1] ? `(${sm[1]})` : ''
 	return (
 		<div className='prod' style={style}>
