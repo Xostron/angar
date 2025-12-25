@@ -2,7 +2,7 @@ const { setACmd } = require('@tool/command/set')
 const fnStep = require('./step')
 const checkForce = require('./force')
 const { data: store } = require('@store')
-const { isLongVlv } = require('.')
+
 /**
  * Шаговое открытие/закрытие приточного клапана
  * @param {*} vlvS клапаны
@@ -72,12 +72,6 @@ function fnLookCls(bld, sect, vlvS, obj) {
 	// Если позиция приточного клапана = 0мс && нет концевика закрытого положения
 	console.log(8801, 'Поиск концевика', pos === 0 && !o?.close && cmdCls, pos, o?.val, o?.close, cmdCls)
 
-
-	// const alarmCls = isLongVlv(bld._id, v, 'close')
-	// Если авария долгого закрытия и позиция=0, то давать возможность работы клапаном
-	// TODO отключить данную функцию, клапан при аварии
-	// просто блокируется в оба направления
-	// if (pos===0 && alarmCls) return false
 	// Принудительно закрывать
 	if (pos === 0 && !o?.close && cmdCls) return true
 	return false
