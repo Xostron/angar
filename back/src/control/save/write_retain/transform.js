@@ -20,7 +20,7 @@ function transform(obj) {
 	// Создаем область для каждого склада
 	for (const { _id } of obj.data.building) store.retain[_id] ??= {}
 
-	// 0. Расчет положения клпанов
+	// 0. Расчет положения клапанов
 	positionVlv(obj)
 	// 1. Калибровка клапанов
 	fnResultValve(store.tuneTime, 'valve')

@@ -62,7 +62,6 @@ function ctrlV(vlv, buildingId, type) {
 		r[bldId][mdlOn][chOn] = 0
 		r[bldId][mdlOff][chOff] = 1
 	}
-	console.log(1100, vlv.type, type, r)
 	if (r) setCmd(r)
 }
 
