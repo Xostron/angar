@@ -38,9 +38,9 @@ function fnCtrl(idB, arrOut, obj, acc, s, forceOff) {
  */
 function fnCheck(obj, acc, s) {
 	const tout = obj?.value?.total?.tout?.min
-	console.log(4411, 'fnCheck', tout, s.sys.outStep)
+	console.log(4411, 'fnCheck', tout, s.sys.outStep, s.cooling.hysteresisOut)
 	if (tout <= s.sys.outStep) acc.byStep = new Date()
-	if (acc?.byStep && tout > s.sys.outStep + s.cooling.hysteresisIn) delete acc?.byStep
+	if (acc?.byStep && tout > s.sys.outStep + s.cooling.hysteresisOut) delete acc?.byStep
 	console.log(
 		4400,
 		!!acc?.byStep ? 'Управление по шагам' : 'обычное открытие',
