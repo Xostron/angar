@@ -32,9 +32,8 @@ function stableVno(bld, sect, obj, s, se, m, automode, acc, data) {
 	const co2wait = isExtra(bld._id, null, 'co2', 'wait')
 	// 10. Работает ВВ
 	const ventWait = isExtra(bld._id, null, 'vent', 'wait')
-
-	// Сброс антидребезга, перед ВВ или удалением СО2
-	if (co2wait || ventWait) {
+	// Сброс антидребезга, перед ВВ или удалением СО2, или нет датчика давления канала
+	if (co2wait || ventWait || se?.p === null || se?.p === undefined) {
 		fnClear(bld, sect, soft, acc)
 		return
 	}

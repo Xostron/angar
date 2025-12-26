@@ -10,7 +10,7 @@ export default function Cooler({ state, data, start }) {
 	const img = `/img/cold/cooler/cooler-${data.state}.svg` ?? ''
 	const sen = state.sensor ?? []
 	const title = start ? data.name : ''
-	const sensor = sen.length ? sen.filter(el=>el.type==='cooler').map((el, i) => <Sensor key={i} state={el} data={data?.sensor[el._id]} />) : null
+	const sensor = sen?.length ? sen.filter(el=>el.type==='cooler').map((el, i) => <Sensor key={i} state={el} data={data?.sensor[el._id]} />) : null
 
 	return (
 		<>

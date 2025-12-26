@@ -9,7 +9,7 @@ export default function RowTemp({  data = [], cls }) {
 		<>
 			<div className={cl}>
 				{!!data?.length 
-					&& data.map((el, idx) => <ItemTemp key={idx} sensId={el?._id} type={el?.type}/>)}
+					&& data?.map((el, idx) => <ItemTemp key={idx} sensId={el?._id} type={el?.type}/>)}
 			</div>
 		</>
 	)

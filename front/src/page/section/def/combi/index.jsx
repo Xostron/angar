@@ -16,12 +16,10 @@ import useViewStore from '@src/store/view'
  */
 export default function Combi() {
 	const { build, sect } = useParams()
-	const [{ tprd, tcnl, fan, valve, heating, p, cooler }] = useEquipStore(({ section }) => [
-		section(),
-	])
+	const { tprd, tcnl, fan, valve, heating, p, cooler } = useEquipStore(({ section }) => section())
 	// Ручной режим активен
 	const { isMan } = running(build, sect)
-	const r3 = [...tcnl, ...p]
+	const r3 = [...(tcnl ?? []), ...(p ?? [])]
 	const mb = useViewStore((s) => s.mb())
 	const cls = ['sect', mb, 'cold combi'].join(' ')
 	return (

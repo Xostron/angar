@@ -26,3 +26,5 @@ https://www.emojer.ru/vlazhnost
   value: 'run',
   ao: '74'
 }
+
+"680a22602341ab3e64048cc9": 80000,
