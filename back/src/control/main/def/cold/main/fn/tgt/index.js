@@ -24,11 +24,14 @@ function coldTarget(bld, obj, bdata, alr) {
 function combiTarget(bld, obj, bdata, alr) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
-	// console.log(999,accAuto.cold)
 
+	// TODO3 Для комби холодильника рассчитывать свое задание канала
 	const name = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 	const r = readAcc(bld._id, name)
 	accAuto.cold.tgtTcnl = r?.tcnl
+	// console.log(9900, accAuto.cold.tgtTcnl, r?.tcnl, se.tprd, accAuto.tcnl)
+	// accAuto.cold.tgtTcnl = se.tprd - accAuto.setting.cooling.differenceValue
+	
 	// Начать расчет задания: Нет расчета задания || Полночь || Оператор изменил настройки (Т задания, Уменьшение температуры в день)
 	if (!accAuto.cold.targetDT || accAuto.cold.targetDT.getDate() !== new Date().getDate() || accAuto.cold?.isChange(s.cooling.decrease, s.cooling.target)) {
 		// Указанные настройки изменились?
