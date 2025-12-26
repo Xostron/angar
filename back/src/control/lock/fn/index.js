@@ -81,7 +81,7 @@ function vlv(obj) {
  */
 function fnOpen100(idB, v, retain) {
 	const cur = +retain?.[idB]?.valvePosition?.[v._id]
-	const total = +retain?.[idB]?.valve[v._id]
+	const total = +retain?.[idB]?.valve?.[v._id]
 	// Если нет значений - не блокировать
 	if (isNaN(cur) || isNaN(total)) return false
 	// Если позиция больше калибровочного - блокировать

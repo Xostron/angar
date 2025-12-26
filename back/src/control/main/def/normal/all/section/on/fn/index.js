@@ -36,19 +36,7 @@ function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 		v.forceOpn
 	)
 	// Выпускной клапан (следит за приточным клапаном)
-	flyingVlv(bld._id, sect._id, obj, accAuto, vlvS, s, forceCls)
+	flyingVlv(bld._id, sect._id, obj, vlvS, s, forceCls)
 }
-
-// /**
-//  * @param {*} fanS Вентиляторы секции
-//  * @param {*} fanOff Вентиляторы выведенные из работы retain[build].fan
-//  * @returns TRUE: Напорные вентиляторы секции выведены из работы
-//  * False - есть рабочик
-//  */
-// function isOff(section, fanS, fanOff) {
-// 	if (!fanS.length) return false
-// 	const a = Object.values(fanOff?.[section._id] ?? {})
-// 	return a.length === fanS.length ? a.every((el) => el === true) : false
-// }
 
 module.exports = { valve }

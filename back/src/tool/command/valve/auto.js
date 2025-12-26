@@ -14,24 +14,20 @@ const { data: store } = require('@store')
  */
 function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
 	// console.log('##############', idS, '##############')
-
 	// Принудительное управление
 	if (checkForce(idB, idS, vlvS, forceCls, forceOpn))
 		return console.log(99001, 'Принудительное ', 'close=', forceCls, 'open=', forceOpn)
 
 	// Шаговое управление
 	fnStep(vlvS, idB, idS, retain)
-
 	// console.log('############## END')
 }
 
 /**
  * АВТО: Формирование команды управления клапаном
- * @param {*} open условие на открытие
- * @param {*} close условие на закрытие
- * @param {*} idS
+ * @param {*} data Состояние клапана
+ * @param {*} idS ИД секции
  * @param {*} s Настройки склада
- * @returns
  */
 function fnValve(data, idS, s) {
 	const { open, close, forceOpn, forceCls } = data
@@ -51,10 +47,10 @@ function fnValve(data, idS, s) {
  * Принудительно закрывать, если позиция приточного
  * клапана = 0мс && нет концевика закрытого положения &&
  * авто команда на закрытие
- * @param {*} bld
- * @param {*} sect
- * @param {*} vlvS
- * @param {*} obj
+ * @param {*} bld Рама склада
+ * @param {*} sect Рама секции
+ * @param {*} vlvS Массив клапана
+ * @param {*} obj Глобальные данные
  * @returns {boolean} true - принудительно закрыть
  */
 function fnLookCls(bld, sect, vlvS, obj) {

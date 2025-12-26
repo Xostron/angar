@@ -15,8 +15,6 @@ function fnStep(vlvS, idB, idS, retain) {
 	store.watchdog ??= {}
 	store.watchdog[vlvIn._id] ??= {}
 	const acc = store.watchdog[vlvIn._id]
-	// console.log(99003, 'aCmd', aCmd)
-	// console.log(99004, 'acc', acc)
 
 	// Включаем клапан
 	acc.work ??= new Date()
@@ -32,12 +30,10 @@ function fnStep(vlvS, idB, idS, retain) {
 	// Время шага прошло - стоп клапана - задержка
 	ctrlV(vlvIn, idB, 'stop')
 	acc.wait ??= new Date()
-	console.log(99006, 'Ждем следующего шага', remTime(acc.wait, tWait))
 
 	time = compareTime(acc.wait, tWait)
 	// Задержка прошла - очищаем аккумулятор
 	if (time) {
-		// console.log(99007, 'Задержка прошла - очищаем аккумулятор')
 		store.watchdog[vlvIn._id] = null
 		store.aCmd[idS].vlv = null
 	}

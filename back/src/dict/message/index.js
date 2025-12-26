@@ -400,28 +400,36 @@ const data = {
 		msg: 'Увлажнитель. Режим работы: Время.',
 	},
 
-	135: {
-		code: 'info1',
+	135: { code: 'run', typeSignal: 'info', msg: 'Увлажнитель запущен.' },
+	136: { code: 'stop', typeSignal: 'info', msg: 'Увлажнитель остановлен.' },
+
+	137: {
+		code: 'impossible',
 		typeSignal: 'info',
-		msg: 'Увлажнитель. Запуск не возможен.',
+		msg: 'Увлажнитель. Запуск невозможен.',
 	},
-	136: { code: 'info2', typeSignal: 'info', msg: 'Увлажнитель запущен.' },
-	137: { code: 'info3', typeSignal: 'info', msg: 'Увлажнитель остановлен.' },
 	138: {
-		code: 'info4',
+		code: 'impossible_tin',
 		typeSignal: 'info',
-		msg: 'Увлажнитель. Запуск не возможен.',
+		msg: 'Увлажнитель. Запуск невозможен. Температура помещения ниже',
 	},
+
 	139: {
-		code: 'info5',
+		code: 'impossible_sec',
 		typeSignal: 'info',
-		msg: 'Увлажнитель. Запуск не возможен.',
+		msg: 'Увлажнитель. Запуск невозможен. Cекция выключена.',
 	},
 	140: {
-		code: 'info6',
+		code: 'impossible_conf',
 		typeSignal: 'info',
-		msg: 'Увлажнитель. Запуск не возможен.',
+		msg: 'Увлажнитель. Запуск невозможен. Нет настроек по продукту.',
 	},
+	141: {
+		code: 'impossible_bld_sec',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Запуск невозможен. Склад и секция выключены',
+	},
+	
 
 	// Прогрев секции
 	59: {

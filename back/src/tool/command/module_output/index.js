@@ -54,6 +54,7 @@ function ctrlV(vlv, buildingId, type) {
 	// stop
 	r[bldId] = { [mdlOn]: { [chOn]: 0 } }
 	r[bldId] = { ...r[bldId], [mdlOff]: { ...r[bldId][mdlOff], [chOff]: 0 } }
+
 	if (type === 'open') {
 		r[bldId][mdlOn][chOn] = 1
 		r[bldId][mdlOff][chOff] = 0

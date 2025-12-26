@@ -45,7 +45,7 @@ const data = {
 	// Антидребезг дискретных сигналов, сек
 	tDebdi: 10,
 	// Зона нечувствительности между клапанами 2%(sys.deadzone)
-	tDeadzone: 4,
+	tDeadzone: 3,
 	// Web клиент: команды на включение
 	command: null,
 	// Web клиент: Команды на управление клапанами по времени
@@ -159,6 +159,7 @@ const data = {
 function readAcc(buildingId, name, sectionId) {
 	data.acc ??= {}
 	data.acc[buildingId] ??= {}
+	if (!name && !sectionId) return data.acc[buildingId]
 	data.acc[buildingId][name] ??= {}
 	if (!sectionId) return data.acc[buildingId][name]
 
