@@ -2,6 +2,7 @@ const { data: store, readAcc } = require('@store')
 const { isAlr } = require('@tool/message/auto')
 const { ctrlDO } = require('@tool/command/module_output')
 const { isExtra } = require('@tool/message/extra')
+const { isCombiCold } = require('@tool/combi/is')
 
 /**
  * normal - обычный склад и комби-обычный
@@ -40,11 +41,8 @@ function cold(bld, obj, s, acc, bdata, solHeat) {
 	// 1. Игнор работы ВНО: если удаление СО2, выкл.оборудование испарителей (хранение), сушка
 	// Удаление co2 в работе
 	const CO2work = isExtra(bld._id, null, 'co2', 'work')
-	if (
-		CO2work ||
-		(bdata.automode === 'cooling' && !s?.coolerCombi?.on) ||
-		bdata.automode === 'drying'
-	) {
+	const isN = !isCombiCold(bld, bdata.automode, s)
+	if (CO2work || bdata.automode === 'drying' || isN) {
 		// Отключение соленоидов подогрева
 		fnSol(bld._id, CO2work, solHeat)
 		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')
