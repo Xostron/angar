@@ -55,7 +55,7 @@ function auto(obj, ctrlWet, setMsg, delMsg) {
 				'Увлажнитель (АВТО): Время простоя увлажнителя истекло. Запускаем',
 				new Date().toLocaleString()
 			);
-			ctrlWet(false);
+			ctrlWet(true);
 			return;
 		}
 		console.log(

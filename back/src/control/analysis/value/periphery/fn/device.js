@@ -75,7 +75,6 @@ function other(doc, signal, result) {
 	})
 	// Состояние устройства
 	result[doc._id].state = stateD(result[doc._id].beep, out)
-	console.log(5500, result[doc._id])
 }
 
 // Состояние устройства
