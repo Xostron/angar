@@ -9,7 +9,7 @@ import './style.css'
 export default function Wifi({ data, cls }) {
 	const clear = useWarn((s) => s.clear)
 	const list = def.filter((el) => el.titleM !== data.titleM)
-	console.log(111, data, list)
+	// console.log(111, data, list)
 	useEffect(() => {}, [])
 
 	return (

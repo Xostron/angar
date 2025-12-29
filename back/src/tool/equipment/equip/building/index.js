@@ -26,6 +26,7 @@ function building(doc, data) {
 	let idS = correct(data.section?.filter((el) => el.buildingId === doc._id).map((el) => el._id))
 	idS ??= []
 	idS.push(doc._id)
+	// Разгонный ВНО
 	const fan = correct(data.fan.filter((f) => idS.includes(f.owner.id) && f.type === 'accel'))
 
 	// Секции склада

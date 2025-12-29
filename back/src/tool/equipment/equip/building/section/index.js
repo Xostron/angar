@@ -51,6 +51,7 @@ function section(doc, data) {
 				if (!ao) return f
 				return { ...f, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			})
+			// к напорным ВНО секции добавляем ВНО испарителя 
 		el.solHeat = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'channel')
 		el.flap = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'flap')
 		// console.log(555, el)

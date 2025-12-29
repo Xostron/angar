@@ -60,9 +60,28 @@ function isErrM(idB, idM) {
 }
 
 // Есть ли неисправные модули в системе
-function isErrMs(idB) {
-	return Object.keys(store.alarm?.module?.[idB] ?? {}).length ? true : false
+/**
+ * Поиск неисправных модулей, с игнорирование "внешних" модулей
+ * Внешний модуль отмечается в админке, неисправность данных модулей
+ * не влияет на работу склада
+ * Два режима выполнения:
+ * 1. Без рамы модулей: простая проверка, по наличию любых неисправных модулей
+ * 2. С рамой: исключаем из списка неисправных модулей, модули отмеченные как "внешний"
+ * @param {string} idB ИД склада
+ * @param {object[]} mdl Рама модулей
+ * @returns true - есть неисправные модули
+ */
+function isErrMs(idB, mdl = []) {
+	// 1. Если рамы модулей нет, то смотрим на наличие неисправных модулей
+	if (!mdl) return Object.keys(store.alarm?.module?.[idB] ?? {}).length ? true : false
+	// 2. Если рама модулей передана, то делаем проверку на "внешний" модуль
+	const aErr = Object.keys(store.alarm?.module?.[idB] ?? {}).filter((idM) => {
+		const foreign = mdl.find((el) => el._id === idM)?.foreign
+		return !foreign
+	})
+	return !!aErr?.length
 }
+
 // Добавить модуль в список неисправных
 function wrModule(idB, idM, o) {
 	store.alarm.module ??= {}

@@ -34,7 +34,6 @@ const def = {
 		off: {},
 		always: {
 			alrClosed,
-			
 			local,
 			vlvLim,
 			vlvCrash,

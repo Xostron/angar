@@ -48,8 +48,8 @@
 
 .row2 .top .brd,
 .row2 .bottom .brd {
-	width: 134px;
-	max-width: 134px;
+	width: 145px;
+	max-width: 145px;
 }
 .row2 .bottom {
 	display: flex;
@@ -69,7 +69,7 @@
 	width: 100%;
 	border-radius: 20px;
 	border: solid 1px var(--primary);
-	box-sizing: border-box;
+	/* box-sizing: border-box; */
 }
 
 .row1 .brd {
@@ -80,7 +80,9 @@
 
 .row2 .brd {
 	height: 60px;
-	font-size: 1.5625rem; /* 25px */
+	font-size: 1.5625rem;
+	/* min-width:50%; */
+	/* background-color: red; */
 }
 .cold .row-cooler {
 	display: flex;

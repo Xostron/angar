@@ -32,7 +32,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 
 	// Заслонка
 	const flap = cooler?.flap?.state
-	console.log(1, cooler, flap)
+	// console.log(1, cooler, flap)
 
 	// Иконка состояния испарителя
 	const state = cooler?.state

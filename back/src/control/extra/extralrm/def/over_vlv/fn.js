@@ -1,7 +1,6 @@
 const { msg } = require('@tool/message')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
-const { isAlr } = require('@tool/message/auto')
 const { isCombiCold } = require('@tool/combi/is')
 const { isExtra } = require('@tool/message/extra')
 

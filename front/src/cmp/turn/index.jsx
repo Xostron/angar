@@ -28,14 +28,15 @@ export default function Turn({ style, cls }) {
 			/>
 		</>
 	)
+	// При нажатии на Вкл/Выкл склада, не спрашивать авторизацию
 	function onClick() {
 		// Если склад уже включен, то не спрашивать авторизацию ||
 		// Пользователь Авторизован -> окно управления складом
-		if (start || isAuth) {
-			warn({ build }, 'turn')
-			return
-		}
-		// Если не авторизован -> предупреждение
-		warn('auth', 'warn', () => warn(null, 'person'))
+		// if (start || isAuth) {
+		warn({ build }, 'turn')
+		// 	return
+		// }
+		// // Если не авторизован -> предупреждение
+		// warn('auth', 'warn', () => warn(null, 'person'))
 	}
 }

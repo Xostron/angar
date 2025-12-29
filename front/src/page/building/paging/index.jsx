@@ -30,6 +30,7 @@ export default function Paging({ bId, sects }) {
 			<div className={clPaging}>
 				{limit >= 1 && <Btn icon='\img\arrow-left.svg' cls='paging-arrow' onClick={prev} />}
 				<article className={clItem}>
+					{/* Карточки секций */}
 					{arr?.length &&
 						arr.map((el, i) => (
 							<Item key={el._id} cls={arr?.length} sec={el} bId={bId} iSect={i} />

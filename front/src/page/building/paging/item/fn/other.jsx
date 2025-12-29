@@ -3,7 +3,8 @@ import defImg from '@src/tool/icon'
 import defUn from '@src/tool/unit'
 
 export default function Other({ data = {}, buildId, sect, cls }) {
-	const { valve, fan, heating } = data
+	const { valve, fan, heating, cooler } = data
+
 	const [input] = useInputStore(({ input }) => [input])
 	if (!valve) return
 	const idxVin = valve.findIndex((v) => v.type === 'in')
@@ -18,8 +19,10 @@ export default function Other({ data = {}, buildId, sect, cls }) {
 	const imgVout = defImg.valve?.vout?.[stateVout]
 
 	// Вентиляторы секции (включен ли хоть один вентилятор)
-	const sumAlr = fan?.some((el) => input?.[el._id]?.state === 'alarm')
-	const sumRun = fan?.some((el) => input?.[el._id]?.state === 'run')
+	const clrFan = cooler?.flatMap((el) => el?.fan ?? [])
+	const allFan = [...(fan ?? []), ...(clrFan ?? [])]
+	const sumAlr = allFan?.some((el) => input?.[el._id]?.state === 'alarm')
+	const sumRun = allFan?.some((el) => input?.[el._id]?.state === 'run')
 	const stateF = sumAlr === true ? 'alarm' : sumRun === true ? 'run' : 'stop'
 	const imgF = defImg.fan?.[stateF]
 

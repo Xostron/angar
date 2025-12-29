@@ -6,7 +6,7 @@ import Tprd from './fn/tprd'
 import { useShallow } from 'zustand/react/shallow'
 
 export default function Item({ sec = {}, bId, iSect, cls }) {
-	const { _id, name, valve, heating, fan } = sec
+	const { _id, name, valve, heating, fan, cooler } = sec
 	// Показания и настройки
 	const input = useInputStore((s) => s.input)
 	const retain = input?.retain?.[bId]
@@ -15,7 +15,7 @@ export default function Item({ sec = {}, bId, iSect, cls }) {
 	// Режим работы секции
 	const mode = retain?.mode?.[_id] === true ? 'Автомат.' : retain?.mode?.[_id] === false ? 'Ручной' : 'Выключена'
 	// Клапаны, вентилятор и обогреватель
-	const other = { valve, heating, fan }
+	const other = { valve, heating, fan, cooler }
 
 	let cl = ['section', 'sx' + cls]
 	cl = cl.join(' ')

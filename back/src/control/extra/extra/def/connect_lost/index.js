@@ -7,7 +7,7 @@ const { isErrMs } = require('@tool/message/plc_module')
 function connectLost(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	if (!m.connectLost?.length) return
 	acc.flag ??= {}
-	if (isErrMs(bld._id)) {
+	if (isErrMs(bld._id, obj?.data?.module)) {
 		// Есть неисправный модуль -> выключаем данные выхода
 		arrCtrlDO(bld._id, m.connectLost, 'off')
 		// Сообщение

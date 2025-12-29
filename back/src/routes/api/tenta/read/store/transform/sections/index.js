@@ -2,7 +2,7 @@
 function sections(idB, type, list, data, obj, result) {
 	// Получаем данные для конкретного здания из хранилища
 	const bldData = data.retain?.[idB]
-	const { heating, valve, fan } = obj
+	const { heating, valve, fan, cooler } = obj
 
 	// Обогрев клапанов секции (1 обогрев на много секций)
 	let h = null
@@ -44,14 +44,16 @@ function sections(idB, type, list, data, obj, result) {
 				val: data?.[v._id]?.val,
 				state: data?.[v._id]?.state,
 			}
-			result.valve??={}
-			result.valve[el._id] ??=[]
+			result.valve ??= {}
+			result.valve[el._id] ??= []
 			result.valve[el._id].push(v._id)
 		})
 
-		// Обработка вентиляторов секции
+		// Обработка вентиляторов секции el
 		fan.forEach((f) => {
-			if (f.owner.id !== el._id || f.type !== 'fan') return
+			const idsClr = cooler?.filter((clr) => clr.sectionId === el._id)?.map((clr) => clr._id)
+			if ((f.owner.id !== el._id || f.type !== 'fan') && !idsClr.includes(f.owner.id)) return
+
 			const need = ['alarm', 'run']
 			// Если текущий статус вентилятора "alarm", пропускаем дальнейшую обработку
 			if (result[el._id + 'fan'] === need[0]) return

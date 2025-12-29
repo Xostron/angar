@@ -81,7 +81,7 @@ async function transform(bldId, secId) {
 		fnWetting(bldId, data, { section, device }, result)
 
 		// Краткая информация по секциям (карточки)
-		sections(bldId, type, section, data, { heating, valve, fan }, result)
+		sections(bldId, type, section, data, { heating, valve, fan, cooler }, result)
 
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы

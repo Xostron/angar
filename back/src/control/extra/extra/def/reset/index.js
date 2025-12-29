@@ -87,7 +87,7 @@ function connect(obj, bld, m) {
  */
 function alrClosed(bld, obj, se, s) {
 	// Неисправность модулей
-	const isErrm = isErrMs(bld._id)
+	const isErrm = isErrMs(bld._id, obj?.data?.module)
 	// Авария низкой температуры (сигнал Склада и секций)
 	const sig = getSumSig(bld._id, obj?.data?.section, obj, 'low')
 	// console.log(9900, 'alrClosed', sig, 'Автосброс', !isErrm && se.tcnl >= 0.5 && sig, s.sys.acTcnl)
