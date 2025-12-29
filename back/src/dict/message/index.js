@@ -429,8 +429,16 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Увлажнитель. Запуск невозможен. Склад и секция выключены',
 	},
-	
-
+	142: {
+		code: 'impossible_fun',
+		typeSignal: 'info',
+		msg: 'Увлажнитель. Запуск невозможен. Напорные вентиляторы не работают',
+	},
+	160: {
+		code: 'impossible',
+		typeSignal: 'critical',
+		msg: '',
+	},
 	// Прогрев секции
 	59: {
 		code: 'warming',

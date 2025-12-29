@@ -160,6 +160,7 @@ const useOutputStore = create((set, get) => ({
 	},
 	// Настройки
 	setSettingAu(obj) {
+		console.log('setSettingAu')
 		if (!obj) {
 			set({ settingAu: {} })
 			return
@@ -192,6 +193,7 @@ const useOutputStore = create((set, get) => ({
 		set({ settingAu })
 	},
 	sendSettingAu() {
+		console.log('sendSettingAu')
 		// Отправить на сервер
 		const settingAu = get().settingAu
 		sSettingAu(settingAu)
@@ -199,6 +201,7 @@ const useOutputStore = create((set, get) => ({
 		set({ settingAu: {} })
 	},
 	hasChangedSettingAu(build, type) {
+		console.log('hasChangedSettingAu', get().settingAu?.value)
 		if (type === 'menu') return false
 		return get().settingAu?.value ? true : false
 	},

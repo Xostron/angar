@@ -1,9 +1,7 @@
-const { delExtra, wrExtra } = require('@tool/message/extra');
-const { msg } = require('@tool/message');
-const { compareTime } = require('@tool/command/time');
+const { compareTime, remTime } = require('@tool/command/time');
 
 // Автоматический режим по датчику
-function auto(obj, ctrlWet) {
+function auto(obj, ctrlWet, setMsg, delMsg) {
 	const { status, hin, run, bld, sect, wetting, acc } = obj;
 	// проверить состояние напорных вентиляторов
 	console.log('Увлажнитель (АВТО): ', hin, acc);
@@ -16,24 +14,19 @@ function auto(obj, ctrlWet) {
 				' '
 			)}`
 		);
-		wrExtra(
-			bld._id,
-			sect._id,
-			'wetting',
-			msg(bld, sect, 135, error.join(' ')),
-			'info1'
-		);
-		if (status) ctrlWet(false);
+		ctrlWet(false, `По причине: ${error.join(' ')}`);
 		return;
-		// Удаляем ошибку
-	} else delExtra(bld._id, sect._id, 'wetting', 'info1');
+	}
 
 	// проверить значение датчика влажности
-	if (hin >= wetting.sp) {
+	if (hin >= wetting.sp && status) {
 		console.log(
 			'Увлажнитель (АВТО): Влажность продукта выше заданной. Выключаем увлажнитель'
 		);
-		if (status) ctrlWet(false, 'Влажность продукта выше заданной');
+		ctrlWet(
+			false,
+			`Влажность продукта выше ${wetting.sp}% (-${wetting.hysteresis}%)`
+		);
 		return;
 	}
 	if (hin < wetting.sp - wetting.hysteresis) {
@@ -45,7 +38,7 @@ function auto(obj, ctrlWet) {
 			console.log(
 				'Увлажнитель (АВТО): Увлажнитель еще не запускался. Начинаем с ожидания'
 			);
-			ctrlWet(false, 'Увлажнитель еще не запускался. Ожидаем');
+			ctrlWet(false);
 			return;
 		}
 
@@ -54,10 +47,7 @@ function auto(obj, ctrlWet) {
 				'Увлажнитель (АВТО): Время работы увлажнителя истекло. Выключаем',
 				new Date().toLocaleString()
 			);
-			ctrlWet(
-				false,
-				'Влажность продукта ниже заданной. Время работы истекло.'
-			);
+			ctrlWet(false);
 			return;
 		}
 		if (!status && compareTime(acc.stop, wetting.stop)) {
@@ -65,10 +55,7 @@ function auto(obj, ctrlWet) {
 				'Увлажнитель (АВТО): Время простоя увлажнителя истекло. Запускаем',
 				new Date().toLocaleString()
 			);
-			ctrlWet(
-				true,
-				'Влажность продукта ниже заданной. Время ожидания истекло. '
-			);
+			ctrlWet(false);
 			return;
 		}
 		console.log(
@@ -77,10 +64,31 @@ function auto(obj, ctrlWet) {
 				' Время простоя: ' +
 				acc.stop?.toLocaleString()
 		);
+		if (acc.work && !compareTime(acc.work, wetting.work)) {
+			setMsg(
+				135,
+				'run',
+				`Влажность продукта ниже ${wetting.sp}% (-${
+					wetting.hysteresis
+				}%).Осталось ${remTime(acc.work, wetting.work)}`
+			);
+		} else if (acc.stop && !compareTime(acc.stop, wetting.stop)) {
+			setMsg(
+				136,
+				'stop',
+				`Влажность продукта ниже ${wetting.sp}% (-${
+					wetting.hysteresis
+				}%). Осталось ${remTime(acc.stop, wetting.stop)}`
+			);
+		}
 		return;
 	}
 
-	if (!status) ctrlWet(false, 'Значения в допустимых пределах. Ожидание.');
+	if (!status)
+		ctrlWet(
+			false,
+			`Влажность продукта выше ${wetting.sp}% (-${wetting.hysteresis}%)`
+		);
 	console.log(
 		`Увлажнитель (АВТО): Влажность продукта в пределах заданной. Ничего не делаем. Влажность: ${hin.value}, Заданная влажность: ${wetting.sp}, Гистерезис: ${wetting.hysteresis}`
 	);

@@ -177,6 +177,7 @@ function signalB(r, bld, am, data) {
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 	const connectLost = store.alarm.extra?.[bld._id]?.connectLost ?? null
 	// extralrm
+	const wetting = store.alarm.extralrm?.[bld._id]?.wetting ?? null;
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
 	const vlvLim = store.alarm?.extralrm?.[bld._id]?.vlvLim ?? null
 	const local = store.alarm?.extralrm?.[bld._id]?.local ?? null
@@ -219,6 +220,7 @@ function signalB(r, bld, am, data) {
 	if (battery) r.signal[bld._id].push(battery)
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
+	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []));
 	r.signal[bld._id].sort((a, b) => {
 		const [d1, m1, o1] = a.date.split('.')
 		const aa = [m1, d1, o1].join('.')
