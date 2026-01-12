@@ -55,7 +55,7 @@ function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	// Готовность работы озонаторов (есть ли хотя бы один рабочий озонатор)
 	const oz = getOzon(building, obj, m)
 	// Если Окуривание еще не в работе И озонатор не готов, то выключаем озонатор
-	if (!oz.ready && !doc.work && stg?.on || s?.smoking?.on) {
+	if ((!oz.ready && !doc.work && stg?.on) || s?.smoking?.on) {
 		store.retain[building._id].setting ??= {}
 		store.retain[building._id].setting.ozon ??= {}
 		store.retain[building._id].setting.ozon.on = false
@@ -125,3 +125,16 @@ function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 }
 
 module.exports = ozon
+
+function clear(idB, doc, mod = null) {
+	delete store?.heap?.ozon
+	delExtra(idB, null, 'ozon1')
+	delExtra(idB, null, 'ozon2')
+	if (mod === null) {
+		doc.work = null
+		doc.wait = null
+		return
+	}
+	delete doc.work
+	delete doc.wait
+}
