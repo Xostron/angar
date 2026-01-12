@@ -124,13 +124,11 @@ const useInputStore = create((set, get) => ({
 		const local = Object.values(get()?.alarm?.banner?.local?.[idB] ?? {}).filter((el) => el)
 		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const notTune = get()?.alarm?.banner?.notTune?.[idB]
-		// const smoking = get()?.alarm?.banner?.smoking?.[idB]
 		const battery = get()?.alarm?.banner?.battery?.[idB]
 
 		local.length ? arr.push(local[0]) : null
 		connect ? arr.push(connect) : null
 		notTune ? arr.push(notTune) : null
-		// smoking ? arr.push(smoking) : null
 		battery ? arr.push(battery) : null
 		return arr
 	},
@@ -142,13 +140,11 @@ const useInputStore = create((set, get) => ({
 			get()?.alarm?.banner?.local?.[idB]?.[idS] ?? get()?.alarm?.banner?.local?.[idB]?.[idB]
 		const connect = get()?.alarm?.banner?.connect?.[idB]
 		const notTune = get()?.alarm?.banner?.notTune?.[idB]
-		// const smoking = get()?.alarm?.banner?.smoking?.[idB]
 		const battery = get()?.alarm?.banner?.battery?.[idB]
 
 		local ? arr.push(local) : null
 		connect ? arr.push(connect) : null
 		notTune ? arr.push(notTune) : null
-		// smoking ? arr.push(smoking) : null
 		battery ? arr.push(battery) : null
 		return arr
 	},

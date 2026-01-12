@@ -17,7 +17,7 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 		isReset(bld._id),
 		!acc.firstFlag,
 		alrClosed(bld, obj, se, s),
-		connect(obj, bld, m),
+		// connect(obj, bld, m),
 	]
 	console.log(4400, 'resetDO', reason)
 	if (reason.some((el) => el)) {
@@ -48,7 +48,27 @@ function DOReset(arr, bld, type) {
 	})
 }
 
-// Если сигнал "Модуль в сети" пропадал, то включаем выход сброса аварии
+/**
+ * Автосброс аварии низкой температуры (аварийное закрытие клапанов)
+ * Условия для автосброса
+ * 1. Модули исправны
+ * 2. Мин темп. канала >= 0.5
+ * 3. Авария низкой температуры активна
+ *
+ * @param {*} bld
+ * @param {*} obj
+ * @param {*} se
+ * @returns
+ */
+function alrClosed(bld, obj, se, s) {
+	// Неисправность модулей
+	const isErrm = isErrMs(bld._id, obj?.data?.module)
+	// Авария низкой температуры (сигнал Склада и секций)
+	const sig = getSumSig(bld._id, obj?.data?.section, obj, 'low')
+	// console.log(9900, 'alrClosed', sig, 'Автосброс', !isErrm && se.tcnl >= 0.5 && sig, s.sys.acTcnl)
+	return !isErrm && se.tcnl >= (s.sys.acTcnl ?? 0.5) && sig
+}
+
 /**
  * Имеется DO сигнал "Модуль в сети", если модуль данного сигнала
  * неисправен или сам сигнал был выключен, то вырабатывается
@@ -71,25 +91,4 @@ function connect(obj, bld, m) {
 		if (isErr || !sig) reset = true
 	})
 	return reset
-}
-
-/**
- * Автосброс аварии низкой температуры (аварийное закрытие клапанов)
- * Условия для автосброса
- * 1. Модули исправны
- * 2. Мин темп. канала >= 0.5
- * 3. Авария низкой температуры активна
- *
- * @param {*} bld
- * @param {*} obj
- * @param {*} se
- * @returns
- */
-function alrClosed(bld, obj, se, s) {
-	// Неисправность модулей
-	const isErrm = isErrMs(bld._id, obj?.data?.module)
-	// Авария низкой температуры (сигнал Склада и секций)
-	const sig = getSumSig(bld._id, obj?.data?.section, obj, 'low')
-	// console.log(9900, 'alrClosed', sig, 'Автосброс', !isErrm && se.tcnl >= 0.5 && sig, s.sys.acTcnl)
-	return !isErrm && se.tcnl >= (s.sys.acTcnl ?? 0.5) && sig
 }

@@ -113,8 +113,8 @@ function fan(obj, s) {
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
-		// Игнор блокировки: вкл окуривание
-		const smoking = s[idB]?.smoking?.on
+		// Игнор блокировки: включено окуривание или озонатор
+		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
 		// Блокировки:
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrOff =
@@ -125,9 +125,10 @@ function fan(obj, s) {
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
-		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !smoking
+		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !ignore
 		// Склад выключен и секция в авторежиме
-		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !smoking
+		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !ignore
+		console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto)
 		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto)
 		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto)
 	}
@@ -147,8 +148,8 @@ function fanAccel(obj, s) {
 		// местный режим
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
-		// Игнор блокировки: вкл окуривание
-		const ignore = s[idB]?.smoking?.on
+		// Игнор блокировки: включено окуривание или озонатор
+		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') //&& !store.aCmd?.[el.owner.id]?.fan?.end
 		// Таймер запрета

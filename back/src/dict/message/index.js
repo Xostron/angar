@@ -153,7 +153,7 @@ const data = {
 		flt: [true],
 	},
 	32: {
-		count: false,
+		count: true,
 		code: 'alrValve',
 		typeSignal: 'critical',
 		msg: 'Оба концевика сработало',
@@ -167,7 +167,7 @@ const data = {
 		flt: [true],
 	},
 	34: {
-		count: false,
+		count: true,
 		code: 'vlvCrash',
 		typeSignal: 'critical',
 		msg: 'Авария двигателя',
@@ -521,7 +521,12 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Окуривание.',
 	},
-
+	// ======== Озонатор (холодильник) ========
+	91: {
+		code: 'ozon',
+		typeSignal: 'info',
+		msg: 'Озонатор.',
+	},
 	// ======== 399 ========
 	399: { code: 399, typeSignal: 'info', msg: 'Описание аварии не найдено' },
 

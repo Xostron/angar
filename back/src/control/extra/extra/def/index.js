@@ -8,8 +8,10 @@ const cableB = require('./cableB')
 const cableS = require('./cableS')
 const { coOn, coAuto } = require('./co2_cold')
 const { drainAuto, drainOn, drainOff } = require('./drain')
-const smokingCold = require('./smoking_cold')
+const smokingC = require('./smoking_cold')
 const smokingNC = require('./smoking_normal_combi')
+const ozonC = require('./ozon_cold')
+const ozonNC = require('./ozon_normal_combi')
 const { accelCOn, accelCAuto } = require('./accel_cold')
 const tChannel = require('./t_channel')
 const slaveAgg = require('./slave_agg')
@@ -43,6 +45,7 @@ const data = {
 		// Склад - ВЫКЛ
 		off: {
 			smokingNC,
+			ozonNC,
 		},
 		// Склад - ВКЛ, ВЫКЛ
 		always: {
@@ -52,7 +55,7 @@ const data = {
 			connectLost,
 			reset,
 			vent,
-			co2NormalCombi
+			co2NormalCombi,
 		},
 	},
 	// Склад холодильник
@@ -63,7 +66,8 @@ const data = {
 			drainAuto,
 		},
 		off: {
-			smokingCold,
+			smokingC,
+			ozonC,
 			drainOff,
 		},
 		always: {

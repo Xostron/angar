@@ -15,6 +15,8 @@ function bar(r, bld, sect, am, start) {
 	// const d = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
 	const smoking1 = store.alarm?.extra?.[bld._id]?.smoking1
 	const smoking2 = store.alarm?.extra?.[bld._id]?.smoking2
+	const ozon1 = store.alarm?.extra?.[bld._id]?.ozon1
+	const ozon2 = store.alarm?.extra?.[bld._id]?.ozon2
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed ?? null
 	const alrClosedB = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const antibliz = store.alarm.extralrm[bld._id]?.[sect._id]?.antibliz ?? null
@@ -54,7 +56,6 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].overVlv = overVlv
 	r.bar[bld._id][sect._id].co2work = co2work
 	r.bar[bld._id][sect._id].co2wait = co2wait
-	// r.bar[bld._id][sect._id].co2on = co2on
 	r.bar[bld._id][sect._id].openVin = openVin
 	r.bar[bld._id][sect._id].ventWait = ventWait
 	r.bar[bld._id][sect._id].ventWork = ventWork
@@ -64,6 +65,8 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id].debdo = debdo
 	r.bar[bld._id][sect._id].smoking1 = smoking1
 	r.bar[bld._id][sect._id].smoking2 = smoking2
+	r.bar[bld._id][sect._id].ozon1 = ozon1
+	r.bar[bld._id][sect._id].ozon2 = ozon2
 	r.bar[bld._id][sect._id].long = long
 
 	if (tout1) r.bar[bld._id][sect._id].tout.push(tout1)
@@ -89,7 +92,6 @@ function barB(r, bld) {
 		r.barB[bld._id].alrClosed ??= []
 		r.barB[bld._id].co2work ??= []
 		r.barB[bld._id].co2wait ??= []
-		// r.barB[bld._id].co2on ??= []
 		r.barB[bld._id].openVin ??= []
 		r.barB[bld._id].ventWait ??= []
 		r.barB[bld._id].ventWork ??= []
@@ -99,6 +101,8 @@ function barB(r, bld) {
 		r.barB[bld._id].debdo ??= []
 		r.barB[bld._id].smoking1 ??= []
 		r.barB[bld._id].smoking2 ??= []
+		r.barB[bld._id].ozon1 ??= []
+		r.barB[bld._id].ozon2 ??= []
 		r.barB[bld._id].long ??= []
 
 		if (s.tout) r.barB[bld._id].tout.push(...s.tout)
@@ -118,7 +122,9 @@ function barB(r, bld) {
 		if (s.debdo) r.barB[bld._id].debdo.push(s.debdo)
 		if (s.smoking1) r.barB[bld._id].smoking1.push(s.smoking1)
 		if (s.smoking2) r.barB[bld._id].smoking2.push(s.smoking2)
-		if (s.long) r.barB[bld._id].smoking2.push(s.long)
+		if (s.ozon1) r.barB[bld._id].ozon1.push(s.ozon1)
+		if (s.ozon2) r.barB[bld._id].ozon2.push(s.ozon2)
+		if (s.long) r.barB[bld._id].long.push(s.long)
 	}
 }
 
@@ -174,10 +180,12 @@ function signalB(r, bld, am, data) {
 	const drainRun = store.alarm.extra?.[bld._id]?.drainRun ?? null
 	const smoking1 = store.alarm.extra?.[bld._id]?.smoking1 ?? null
 	const smoking2 = store.alarm.extra?.[bld._id]?.smoking2 ?? null
+	const ozon1 = store.alarm.extra?.[bld._id]?.ozon1 ?? null
+	const ozon2 = store.alarm.extra?.[bld._id]?.ozon2 ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 	const connectLost = store.alarm.extra?.[bld._id]?.connectLost ?? null
 	// extralrm
-	const wetting = store.alarm.extralrm?.[bld._id]?.wetting ?? null;
+	const wetting = store.alarm.extralrm?.[bld._id]?.wetting ?? null
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
 	const vlvLim = store.alarm?.extralrm?.[bld._id]?.vlvLim ?? null
 	const local = store.alarm?.extralrm?.[bld._id]?.local ?? null
@@ -209,6 +217,8 @@ function signalB(r, bld, am, data) {
 	if (drainRun) r.signal[bld._id].push(drainRun)
 	if (smoking1) r.signal[bld._id].push(smoking1)
 	if (smoking2) r.signal[bld._id].push(smoking2)
+	if (ozon1) r.signal[bld._id].push(ozon1)
+	if (ozon2) r.signal[bld._id].push(ozon2)
 	if (connect) r.signal[bld._id].push(connect)
 	if (connectLost) r.signal[bld._id].push(connectLost)
 	if (low) r.signal[bld._id].push(low)
@@ -220,7 +230,7 @@ function signalB(r, bld, am, data) {
 	if (battery) r.signal[bld._id].push(battery)
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
-	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []));
+	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []))
 	r.signal[bld._id].sort((a, b) => {
 		const [d1, m1, o1] = a.date.split('.')
 		const aa = [m1, d1, o1].join('.')
@@ -257,11 +267,6 @@ function bannerB(r, bld) {
 	// Обратитесь в сервисный центр (пропала связь с модулем)
 	r.banner.connect ??= {}
 	r.banner.connect[bld._id] = isErrMs(bld._id) ? mes[28] : null
-	// Окуривание
-	// r.banner.smoking ??= {}
-	// r.banner.smoking[bld._id] ??= {}
-	// r.banner.smoking[bld._id] =
-	// 	store.alarm?.extra?.[bld._id]?.smoking1 ?? store.alarm?.extra?.[bld._id]?.smoking2 ?? null
 	// Склад не работает: требуется калибровка клапанов
 	r.banner.notTune ??= {}
 	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune

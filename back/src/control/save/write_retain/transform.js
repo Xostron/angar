@@ -30,6 +30,8 @@ function transform(obj) {
 	fnResult(store.supply, 'supply')
 	// 4. Окуривание
 	fnResult(store.smoking, 'smoking')
+	// 4.1. Озонатор
+	fnResult(store.ozon, 'ozon')
 	// 5. Режим хранения cooling
 	fnCooling(store.acc)
 	// 6. Дата и время: вкл/выкл склада

@@ -64,8 +64,8 @@ function fnResult(data, key) {
 	if (!data) return
 	for (const idB in data) {
 		store.retain[idB][key] = data[idB]
-		// Правило для окуривания (key==='cooling')
-		finishSmoking(data[idB], store.retain[idB], key)
+		// Правило для окуривания | озонатора (key==='smoking' | 'ozon')
+		finishSmokingOzon(data[idB], store.retain[idB], key)
 	}
 }
 
@@ -86,14 +86,14 @@ function fnResultValve(data, key) {
  * @param {string} key Ключ по которому хранится инфа(например, valvePosition - позиции клапана)
  * @returns
  */
-function finishSmoking(dataB, resultB, key) {
-	if (key !== 'smoking') return
+function finishSmokingOzon(dataB, resultB, key) {
+	if (key !== 'smoking' && key !== 'ozon') return
+	if (!resultB?.setting?.[key]?.on) return
 	if (dataB.work !== null || dataB.wait !== null) return
-	if (!resultB?.setting?.smoking?.on) return
 	resultB.start = true
 	resultB.setting ??= {}
-	resultB.setting.smoking ??= {}
-	resultB.setting.smoking.on = false
+	resultB.setting[key] ??= {}
+	resultB.setting[key].on = false
 }
 
 /**

@@ -15,8 +15,8 @@ const _MIN_SP = 20
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where = 'normal') {
-	// Запрет управления при окуривании
-	if (s?.smoking?.on) {
+	// Запрет управления при окуривании или озонаторе
+	if (s?.smoking?.on || s?.ozon?.on) {
 		console.log('\tПлавный пуск: TurnOff (Окуривание)', idS, where)
 		return true
 	}

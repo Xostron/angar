@@ -24,7 +24,6 @@ const data = {
 	heat: '/img/alarm/heat.svg',
 	vent: '/img/alarm/intfan.svg',
 	accel: '/img/alarm/overfan.svg',
-	ozon: '/img/alarm/ozon.svg',
 	heater: '/img/alarm/heater.svg',
 	co2: '/img/alarm/dioxide.svg',
 	wetting: '/img/alarm/wetting.svg',
@@ -33,6 +32,7 @@ const data = {
 	local: '/img/alarm/local.svg',
 	notTune: '/img/alarm/notTune.svg',
 	smoking: '/img/alarm/smoking.svg',
+	ozon: '/img/alarm/ozon.svg',
 	battery: '/img/alarm/battery.svg',
 }
 export default data

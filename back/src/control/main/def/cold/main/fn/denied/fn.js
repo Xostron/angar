@@ -32,7 +32,12 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	delete accAuto?.drainAll
 	delete accAuto?.defrostAll
 	// Пропуск: Испаритель выключен или окуривание запущено
-	if (stateCooler?.state === 'off-off-off' || store?.smoking?.[bldId]?.work) return
+	if (
+		stateCooler?.state === 'off-off-off' ||
+		store?.smoking?.[bldId]?.work ||
+		store?.ozon?.[bldId]?.work
+	)
+		return
 	// Выключение всех узлов испарителя
 	fnChange(0, 0, 0, 0, null, clr)
 

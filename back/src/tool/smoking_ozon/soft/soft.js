@@ -13,13 +13,11 @@ const _MIN_SP = 20
  * @param {number} номер секции
  * @returns
  */
-function relay(idB, idS, fan, obj, s, se, start) {
+function relay(idB, idS, fan, obj, s, se, start, key) {
 	// Склад включен/выключен
 	const bStart = obj.retain[idB].start
 	// Аккумулятор
-	store.heap.smoking ??= {}
-	store.heap.smoking[idS] ??= {}
-	const acc = store.heap.smoking[idS]
+	const acc = getAcc(idS, key)
 	// Точка отсчета вкл/выкл ВНО
 	acc.date ??= new Date()
 	acc.busy ??= false
@@ -37,7 +35,7 @@ function relay(idB, idS, fan, obj, s, se, start) {
 	const { p } = se
 	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
-	console.log(2, idS, 'ПП: давление', 'on=', on, 'off=', off)
+	console.log(2, idS, key, 'ПП: давление', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, s, fan.fans.length)
 	checkOff_Relay(off, acc)
@@ -56,13 +54,12 @@ function relay(idB, idS, fan, obj, s, se, start) {
  * @param {*} start Команда вкл/выкл
  * @returns
  */
-function fc(idB, idS, fan, obj, s, se, start) {
+function fc(idB, idS, fan, obj, s, se, start, key) {
 	// Склад включен/выключен
 	const bStart = obj.retain[idB].start
 	// Аккумулятор
-	store.heap.smoking ??= {}
-	store.heap.smoking[idS] ??= {}
-	const acc = store.heap.smoking[idS]
+	const acc = getAcc(idS, key)
+	// Точка отсчета вкл/выкл ВНО
 	acc.date ??= new Date()
 	acc.busy ??= false
 	// Номер текущего ВНО
@@ -75,24 +72,29 @@ function fc(idB, idS, fan, obj, s, se, start) {
 	acc.delayFC = s.fan.next * 1000
 	acc.delayRelay = s.fan.delay * 1000 //+ _RAMP
 	// ****************** ВЫКЛ ВНО (команда || секция не в авто) ******************
-	if (turnOff(idB, idS, fan,bStart, start)) return
+	if (turnOff(idB, idS, fan, bStart, start)) return
 	// ****************** ВКЛ ВНО ******************
 	// Проверка давления в канале (сигнал на вкл/откл вентиляторов)
 	const { p } = se
 	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
-	console.log(2, idS, 'ПП: давление', 'on=', on, 'off=', off)
+	console.log(2, idS, key, 'ПП: давление', 'on=', on, 'off=', off)
 
 	// Регулирование по ПЧ после ожидания соленоида подогрева
 	acc.busy = regul(acc, fan.fanFC, on, off, s)
 	if (acc.busy) (on = false), (off = false)
-	console.log(3, idS, 'окуривание ПП', 'on=', on, 'off=', off)
+	console.log(3, idS, key, 'ПП', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
-	checkOn(on, acc,s, fan.fans.length)
+	checkOn(on, acc, s, fan.fans.length)
 	checkOff_FC(off, acc)
 	// ВКЛ
 	turnOn(fan, idB, acc)
 }
 
-module.exports = { fc, relay }
+function getAcc(idS, key) {
+	store.heap[key] ??= {}
+	store.heap[key][idS] ??= {}
+	return store.heap[key][idS]
+}
 
+module.exports = { fc, relay }

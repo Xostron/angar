@@ -55,11 +55,11 @@ function transform(idB, idS, mS, obj, stg, r) {
 	return r
 }
 
-function fnClear(idB) {
-	delExtra(idB, null, 'smoking1')
-	delExtra(idB, null, 'smoking2')
+function fnClear(idB, key = 'smoking') {
+	delExtra(idB, null, `${key}1`)
+	delExtra(idB, null, `${key}2`)
 	// Удаляем аккумулятор плавного пуска по завершению окуривания
-	delete store?.heap?.smoking
+	delete store?.heap?.[key]
 }
 
 module.exports = { fnClear, collect }

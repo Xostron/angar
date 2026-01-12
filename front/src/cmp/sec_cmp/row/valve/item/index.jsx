@@ -16,12 +16,17 @@ export default function Valve({ valve, onClick, active }) {
 	const state = input?.[valve?._id]?.state
 	const type = valve.type === 'out' ? 'vout' : 'vin'
 	const imgV = defImg.valve?.[type]?.[state]
+	let cl = ['sio-btn']
+	console.log(1, state)
+	if (isAuth && active) cl.push('auth')
+	if (state === 'alr') cl.push('alarm')
+	cl = cl.join(' ')
 	return (
 		<div className='sio-valve'>
-			{valve.type === 'out' ? <span style={{textAlign:'left'}}>{sp} %</span> : <></>}
+			{valve.type === 'out' ? <span style={{ textAlign: 'left' }}>{sp} %</span> : <></>}
 			<Btn
 				icon={imgV}
-				cls={'sio-btn' + (isAuth && active ? ' auth' : '')}
+				cls={cl}
 				onClick={() =>
 					onClick({
 						vlv: valve,
@@ -33,7 +38,7 @@ export default function Valve({ valve, onClick, active }) {
 					})
 				}
 			/>
-			{valve.type === 'in' ? <span style={{textAlign:'right'}}>{sp} %</span> : <></>}
+			{valve.type === 'in' ? <span style={{ textAlign: 'right' }}>{sp} %</span> : <></>}
 		</div>
 	)
 }

@@ -34,36 +34,23 @@ const h = 3600000
  * @param {*} clear
  * @returns
  */
-function smoking(
-	building,
-	section,
-	obj,
-	s,
-	se,
-	m,
-	alarm,
-	acc,
-	data,
-	ban,
-	resultFan,
-	clear = false
-) {
+function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
 	const idB = building._id
-	if (clear) return fnClear(idB)
+	if (clear) return fnClear(idB, 'ozon')
 	// id всех секций данного склада
 	const idsS = getIdsS(obj.data.section, idB)
 	// Настройки окуривания
-	const stg = s?.smoking
+	const stg = s?.ozon
 	// Аккумулятор окуривания
-	const doc = obj.retain?.[idB]?.smoking ?? {}
-	store.smoking[idB] = doc
+	const doc = obj.retain?.[idB]?.ozon ?? {}
+	store.ozon[idB] = doc
 	// Настройка режим работы разгонного вент
 	const accelMode = s.coolerCombi?.accel ?? s.accel?.mode
 	// Рабочие ВНО по секциям
 	const fan = collect(idB, idsS, obj, stg)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
+	console.log(11, 'Озонатор', doc, stg, idsS)
 	// Запрет окуривания: нет настроек окуривания, окуривание выкл, склад вкл,
 	if (!stg || !stg?.on) {
 		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
@@ -73,9 +60,9 @@ function smoking(
 		delete doc.work
 		delete doc.wait
 		// Удаляем аккумулятор плавного пуска по завершению окуривания
-		delete store?.heap?.smoking
-		delExtra(idB, null, 'smoking1')
-		delExtra(idB, null, 'smoking2')
+		delete store?.heap?.ozon
+		delExtra(idB, null, 'ozon1')
+		delExtra(idB, null, 'ozon2')
 		return
 	}
 	// Включено окуривание
@@ -86,40 +73,30 @@ function smoking(
 	let time = compareTime(doc.work, stg.work * h)
 	// Время работы не прошло
 	if (!time) {
-		wrExtra(
-			idB,
-			null,
-			'smoking1',
-			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`)
-		)
-		delExtra(idB, null, 'smoking2')
+		wrExtra(idB, null, 'ozon1', msgB(building, 91, `Работа ${remTime(doc.work, stg.work * h)}`))
+		delExtra(idB, null, 'ozon2')
 		// Вкл разгонные
 		arrCtrlDO(idB, fanA, 'on')
 		// Вкл ВНО секции
-		soft(idB, idsS, fan, obj, s, true)
+		soft(idB, idsS, fan, obj, s, true, 'ozon')
 		return
 	}
 	// Время работы прошло
 	doc.wait ??= new Date()
-	delExtra(idB, null, 'smoking1')
-	wrExtra(
-		idB,
-		null,
-		'smoking2',
-		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
-	)
+	delExtra(idB, null, 'ozon1')
+	wrExtra(idB, null, 'ozon2', msgB(building, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`))
 	arrCtrlDO(idB, fanA, 'off')
-	soft(idB, idsS, fan, obj, s, false)
+	soft(idB, idsS, fan, obj, s, false, 'ozon')
 	time = compareTime(doc.wait, stg.wait * h)
 
 	if (time) {
 		doc.work = null
 		doc.wait = null
 		// Удаляем аккумулятор плавного пуска по завершению окуривания
-		delete store?.heap?.smoking
-		delExtra(idB, null, 'smoking1')
-		delExtra(idB, null, 'smoking2')
+		delete store?.heap?.ozon
+		delExtra(idB, null, 'ozon1')
+		delExtra(idB, null, 'ozon2')
 	}
 }
 
-module.exports = smoking
+module.exports = ozon
