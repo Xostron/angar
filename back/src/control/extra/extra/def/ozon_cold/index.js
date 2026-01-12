@@ -3,6 +3,7 @@ const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
+const getOzon = require('../ozon_normal_combi/fn')
 const h = 3600000
 
 /**
@@ -25,20 +26,7 @@ const h = 3600000
  * @param {*} clear
  * @returns
  */
-function ozon(
-	building,
-	section,
-	obj,
-	s,
-	se,
-	m,
-	alarm,
-	acc,
-	data,
-	ban,
-	resultFan,
-	clear = false
-) {
+function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
 	const idB = building._id
 	if (clear) return fnClear(idB)
 
@@ -48,6 +36,22 @@ function ozon(
 	const doc = obj.retain?.[idB]?.ozon ?? {}
 	store.ozon[idB] = doc
 	const accelMode = s.cooler?.accel ?? s.coolerCombi?.accel ?? s.accel?.mode
+	// Устройства озонаторы
+	// Готовность работы озонаторов (есть ли хотя бы один рабочий озонатор)
+	const oz = getOzon(building, obj, m)
+	// Если Окуривание еще не в работе И озонатор не готов, то выключаем озонатор
+	if ((!oz.ready && !doc.work && stg?.on) || s?.smoking?.on) {
+		store.retain[building._id].setting ??= {}
+		store.retain[building._id].setting.ozon ??= {}
+		store.retain[building._id].setting.ozon.on = false
+		delete doc.work
+		delete doc.wait
+		delete store?.heap?.ozon
+		delExtra(idB, null, 'ozon1')
+		delExtra(idB, null, 'ozon2')
+		arrCtrlDO(idB, oz.arr, 'off')
+		return
+	}
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
@@ -59,32 +63,25 @@ function ozon(
 		return
 	}
 	// Включено окуривание
+	delExtra(idB, null, 'ozon3')
 	// Работаем - включаются вентиляторы
 	doc.work ??= new Date()
 	let time = compareTime(doc.work, stg.work * h)
 
 	if (!time) {
-		wrExtra(
-			idB,
-			null,
-			'ozon1',
-			msgB(building, 91, `Работа ${remTime(doc.work, stg.work * h)}`)
-		)
+		wrExtra(idB, null, 'ozon1', msgB(building, 91, `Работа ${remTime(doc.work, stg.work * h)}`))
 		delExtra(idB, null, 'ozon2')
 		arrCtrlDO(idB, arr, 'on')
+		arrCtrlDO(idB, oz.arr, 'on')
 		return
 	}
 
 	// Время работы прошло
 	doc.wait ??= new Date()
 	delExtra(idB, null, 'ozon1')
-	wrExtra(
-		idB,
-		null,
-		'ozon2',
-		msgB(building, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
-	)
+	wrExtra(idB, null, 'ozon2', msgB(building, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`))
 	arrCtrlDO(idB, arr, 'off')
+	arrCtrlDO(idB, oz.arr, 'off')
 	time = compareTime(doc.wait, stg.wait * h)
 	if (time) {
 		doc.work = null
