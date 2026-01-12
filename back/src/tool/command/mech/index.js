@@ -98,6 +98,10 @@ function mechB(bId, type, obj) {
 	const wettingS = data.device.filter(
 		(el) => el?.device?.code === 'wetting' && idS.includes(el.sectionId)
 	)
+	// Озонаторы склада
+	const ozon = data.device.filter(
+		(el) => el?.device?.code === 'ozon' && idS.includes(el.sectionId)
+	)
 	// Разгонные вентиляторы
 	const fanA = data?.fan?.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
 	// Выход "Модуль в работе" для реле безопасности
@@ -161,6 +165,7 @@ function mechB(bId, type, obj) {
 		heatingWAll,
 		heatingClrAll,
 		sect,
+		ozon
 	}
 }
 

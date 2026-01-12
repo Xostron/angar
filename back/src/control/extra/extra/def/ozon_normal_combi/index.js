@@ -6,6 +6,7 @@ const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 const soft = require('@tool/smoking_ozon/soft')
 const { fnClear, collect } = require('@tool/smoking_ozon/fn')
+const getOzon = require('./fn')
 const h = 3600000
 
 /**
@@ -50,45 +51,69 @@ function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	const fan = collect(idB, idsS, obj, stg)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	console.log(11, 'Озонатор', doc, stg, idsS)
-	// Запрет окуривания: нет настроек окуривания, окуривание выкл, склад вкл,
+	// Устройства озонаторы
+	// Готовность работы озонаторов (есть ли хотя бы один рабочий озонатор)
+	const oz = getOzon(building, obj, m)
+	// Если Окуривание еще не в работе И озонатор не готов, то выключаем озонатор
+	if (!oz.ready && !doc.work && stg?.on || s?.smoking?.on) {
+		store.retain[building._id].setting ??= {}
+		store.retain[building._id].setting.ozon ??= {}
+		store.retain[building._id].setting.ozon.on = false
+		delete doc.work
+		delete doc.wait
+		delete store?.heap?.ozon
+		delExtra(idB, null, 'ozon1')
+		delExtra(idB, null, 'ozon2')
+		arrCtrlDO(idB, oz.arr, 'off')
+		return
+	}
+	console.log(11, 'Озонатор', doc, stg, idsS, oz?.arr?.length, oz?.ready)
+
+	// Запрет озонатора: нет настроек, озонация выкл, склад вкл, работает окуривание
+	// if (s?.smoking?.on) return
 	if (!stg || !stg?.on) {
 		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
+		arrCtrlDO(idB, oz.arr, 'off')
 		delete doc.work
 		delete doc.wait
-		// Удаляем аккумулятор плавного пуска по завершению окуривания
 		delete store?.heap?.ozon
 		delExtra(idB, null, 'ozon1')
 		delExtra(idB, null, 'ozon2')
 		return
 	}
+
 	// Включено окуривание
+	delExtra(idB, null, 'ozon3')
 	// console.log('Режим окуривания', runTime(doc.wait ?? doc.work))
 
 	// Работаем - включаются вентиляторы
 	doc.work ??= new Date()
 	let time = compareTime(doc.work, stg.work * h)
-	// Время работы не прошло
-	if (!time) {
+	// Время работы не прошло И озонатор готов => Работа
+	if (!time && oz.ready) {
 		wrExtra(idB, null, 'ozon1', msgB(building, 91, `Работа ${remTime(doc.work, stg.work * h)}`))
 		delExtra(idB, null, 'ozon2')
 		// Вкл разгонные
 		arrCtrlDO(idB, fanA, 'on')
+		arrCtrlDO(idB, oz.arr, 'on')
 		// Вкл ВНО секции
 		soft(idB, idsS, fan, obj, s, true, 'ozon')
+		delete doc?.wait
 		return
 	}
-	// Время работы прошло
+	// Время работы прошло ИЛИ озонатор неисправен
 	doc.wait ??= new Date()
 	delExtra(idB, null, 'ozon1')
 	wrExtra(idB, null, 'ozon2', msgB(building, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`))
 	arrCtrlDO(idB, fanA, 'off')
+	arrCtrlDO(idB, oz.arr, 'off')
 	soft(idB, idsS, fan, obj, s, false, 'ozon')
-	time = compareTime(doc.wait, stg.wait * h)
 
+	time = compareTime(doc.wait, stg.wait * h)
+	// Время ожидания прошло
 	if (time) {
 		doc.work = null
 		doc.wait = null

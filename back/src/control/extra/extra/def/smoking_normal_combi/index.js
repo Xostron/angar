@@ -64,6 +64,19 @@ function smoking(
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
 	console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
+	// озонатор в работе -> выкл окуривание
+	if (s?.ozon?.on) {
+		// store.retain[building._id].setting ??= {}
+		// store.retain[building._id].setting.smoking ??= {}
+		// store.retain[building._id].setting.smoking.on = false
+		// delete doc.work
+		// delete doc.wait
+		// // Удаляем аккумулятор плавного пуска по завершению окуривания
+		// delete store?.heap?.smoking
+		// delExtra(idB, null, 'smoking1')
+		// delExtra(idB, null, 'smoking2')
+		return
+	}
 	// Запрет окуривания: нет настроек окуривания, окуривание выкл, склад вкл,
 	if (!stg || !stg?.on) {
 		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')

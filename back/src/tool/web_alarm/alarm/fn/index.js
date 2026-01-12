@@ -182,6 +182,7 @@ function signalB(r, bld, am, data) {
 	const smoking2 = store.alarm.extra?.[bld._id]?.smoking2 ?? null
 	const ozon1 = store.alarm.extra?.[bld._id]?.ozon1 ?? null
 	const ozon2 = store.alarm.extra?.[bld._id]?.ozon2 ?? null
+	const ozon3 = store.alarm.extra?.[bld._id]?.ozon3 ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 	const connectLost = store.alarm.extra?.[bld._id]?.connectLost ?? null
 	// extralrm
@@ -219,6 +220,7 @@ function signalB(r, bld, am, data) {
 	if (smoking2) r.signal[bld._id].push(smoking2)
 	if (ozon1) r.signal[bld._id].push(ozon1)
 	if (ozon2) r.signal[bld._id].push(ozon2)
+	if (ozon3) r.signal[bld._id].push(ozon3)
 	if (connect) r.signal[bld._id].push(connect)
 	if (connectLost) r.signal[bld._id].push(connectLost)
 	if (low) r.signal[bld._id].push(low)
