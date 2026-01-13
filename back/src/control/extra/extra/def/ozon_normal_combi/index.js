@@ -3,8 +3,8 @@ const { compareTime, remTime } = require('@tool/command/time')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { msgB } = require('@tool/message')
 const { fnClear } = require('@tool/smoking_ozon/fn')
-const fnPrepare = require('./fn/prepare')
-const { checkReady, checkOn } = require('./fn/check')
+const { fnPrepare } = require('./fn/prepare')
+const { checkReady, checkOn, clearOacc } = require('./fn/check')
 const soft = require('@tool/smoking_ozon/soft')
 const h = 3600000
 /**
@@ -83,7 +83,7 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 
 	// Время ожидания прошло - завершаем озонацию
 	time = compareTime(oacc.wait, stg.wait * h)
-	if (time) clear(idB, oacc, null)
+	if (time) clearOacc(idB, oacc, null)
 }
 
 module.exports = ozon

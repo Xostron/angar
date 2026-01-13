@@ -21,7 +21,7 @@ function checkReady(bld, s, prepare) {
 		store.retain[bld._id].setting.ozon ??= {}
 		store.retain[bld._id].setting.ozon.on = false
 		// Очистка аккумуляторов
-		clear(bld._id, oacc)
+		clearOacc(bld._id, oacc)
 		// Выкл озонатора
 		arrCtrlDO(bld._id, oz.arr, 'off')
 		return false
@@ -40,7 +40,7 @@ function checkReady(bld, s, prepare) {
 function checkOn(bld, obj, s, prepare) {
 	const { oacc, oz, fanA, fan, accelMode, stg, idsS } = prepare
 	if (!stg || !stg?.on) {
-		clear(bld._id, oacc)
+		clearOacc(bld._id, oacc)
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrlDO(bld._id, fanA, 'off')
 		soft(bld._id, idsS, fan, obj, s, false)
@@ -50,7 +50,7 @@ function checkOn(bld, obj, s, prepare) {
 	return true
 }
 
-module.exports = { checkReady, checkOn }
+module.exports = { checkReady, checkOn, clearOacc }
 
 /**
  * Очистка аккумуляторов и сообщений
@@ -59,7 +59,7 @@ module.exports = { checkReady, checkOn }
  * @param {*} mod
  * @returns
  */
-function clear(idB, doc, mod = null) {
+function clearOacc(idB, doc, mod = null) {
 	// Удаляем аккумулятор плавного пуска по завершению окуривания
 	delete store?.heap?.ozon
 	delExtra(idB, null, 'ozon1')

@@ -3,7 +3,7 @@ const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
-const getOzon = require('../ozon_normal_combi/fn')
+const { getOzon } = require('../ozon_normal_combi/fn/prepare')
 const h = 3600000
 
 /**

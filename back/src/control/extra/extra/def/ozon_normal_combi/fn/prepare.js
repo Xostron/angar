@@ -24,8 +24,7 @@ function fnPrepare(bld, obj, s, m) {
 	return { oacc, oz, fanA, fan, accelMode, stg, idsS }
 }
 
-module.exports = fnPrepare
-
+module.exports = { fnPrepare, getOzon }
 /**
  * Есть ли рабочие озонаторы со включенным автоматом
  * @param {*} bld
