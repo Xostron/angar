@@ -10,14 +10,16 @@
 	background-color: transparent;
 	padding: 0px!important;
 	border: 1px solid var(--primary);
-	border-radius: 50%;
+	/* border-radius: 50%; */
 
+}
+.man{
+	border: 1px solid var(--secondary);
 }
 /* Valve */
 .sio-btn > img {
 	height: var(--fsz70) !important;
-	/* border: 1px solid var(--primary); */
-	/* border-radius: 50%; */
+	border-radius: 50%;
 	padding: var(--fsz10);
 	overflow:visible;
 }

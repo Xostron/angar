@@ -8,28 +8,27 @@ function isExtralrm(idB, idS, code) {
 }
 
 // Записать в extralrm (доп. аварии)
-function wrExtralrm(idB, idS, name, o) {
+function wrExtralrm(idB, idS, code, o) {
 	store.alarm.extralrm ??= {}
 	store.alarm.extralrm[idB] ??= {}
 	if (!idS) {
-		!isExtralrm(idB, idS, name)
-			? (store.alarm.extralrm[idB][name] = o)
-			: (store.alarm.extralrm[idB][name].msg = o.msg)
+		!isExtralrm(idB, idS, code)
+			? (store.alarm.extralrm[idB][code] = o)
+			: (store.alarm.extralrm[idB][code].msg = o.msg)
 		return
 	}
 	store.alarm.extralrm[idB][idS] ??= {}
-	!isExtralrm(idB, idS, name)
-		? (store.alarm.extralrm[idB][idS][name] = o)
-		: (store.alarm.extralrm[idB][idS][name].msg = o.msg)
+	!isExtralrm(idB, idS, code)
+		? (store.alarm.extralrm[idB][idS][code] = o)
+		: (store.alarm.extralrm[idB][idS][code].msg = o.msg)
 }
 // Удалить из extralrm (доп. аварии)
-function delExtralrm(idB, idS, name) {
+function delExtralrm(idB, idS, code) {
 	if (!idS) {
-		delete store.alarm?.extralrm?.[idB]?.[name]
+		delete store.alarm?.extralrm?.[idB]?.[code]
 		return
 	}
-
-	delete store.alarm?.extralrm?.[idB]?.[idS]?.[name]
+	delete store.alarm?.extralrm?.[idB]?.[idS]?.[code]
 }
 
 /**

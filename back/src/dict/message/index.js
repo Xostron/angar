@@ -175,7 +175,7 @@ const data = {
 	},
 	// Аварии вентиляторов
 	35: {
-		count: false,
+		count: true,
 		code: 'fanCrash',
 		typeSignal: 'critical',
 		msg: 'Авария вентилятора',

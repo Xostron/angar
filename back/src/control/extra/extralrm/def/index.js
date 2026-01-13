@@ -35,9 +35,9 @@ const def = {
 		always: {
 			alrClosed,
 			local,
+			fanCrash,
 			vlvLim,
 			vlvCrash,
-			fanCrash,
 			antibliz,
 			overVlv,
 		},

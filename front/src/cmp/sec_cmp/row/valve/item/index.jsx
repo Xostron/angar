@@ -18,8 +18,10 @@ export default function Valve({ valve, onClick, active }) {
 	const imgV = defImg.valve?.[type]?.[state]
 	let cl = ['sio-btn']
 	console.log(1, state)
-	if (isAuth && active) cl.push('auth')
+
+	if (isAuth && active) cl.push('man')
 	if (state === 'alr') cl.push('alarm')
+	// if (!cl.includes('auth') && !cl.includes('alarm')) cl.push('man')
 	cl = cl.join(' ')
 	return (
 		<div className='sio-valve'>

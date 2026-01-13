@@ -145,6 +145,8 @@ function signal(r, bld, sect, am) {
 		Object.values(extra).forEach((el) =>
 			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el))
 		)
+	// console.log(8800, r.signal[bld._id])
+	// console.log(9900, extralrm)
 }
 
 // Аварии на странице "Сигналы" (собираем по складу и суммируем с секциями)
