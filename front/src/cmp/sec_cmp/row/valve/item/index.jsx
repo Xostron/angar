@@ -17,7 +17,6 @@ export default function Valve({ valve, onClick, active }) {
 	const type = valve.type === 'out' ? 'vout' : 'vin'
 	const imgV = defImg.valve?.[type]?.[state]
 	let cl = ['sio-btn']
-	console.log(1, state)
 
 	if (isAuth && active) cl.push('man')
 	if (state === 'alr') cl.push('alarm')

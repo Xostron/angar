@@ -1,5 +1,5 @@
-const { compareTime, runTime, remTime } = require('@tool/command/time')
-const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
+const { compareTime, remTime } = require('@tool/command/time')
+const { delExtra, wrExtra } = require('@tool/message/extra')
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
@@ -12,7 +12,7 @@ const h = 3600000
  * 2 Зайти в настройки "Окуривание"
  * 3 Настроить время и в поле "ВКЛЮЧИТЬ" выбрать вкл
  * 4 Дождаться конца окуривания: сообщения о завершении попадают на страницу "СИГНАЛЫ"
- * @param {*} building
+ * @param {*} bld
  * @param {*} section
  * @param {*} obj
  * @param {*} s
@@ -26,8 +26,8 @@ const h = 3600000
  * @param {*} clear
  * @returns
  */
-function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
-	const idB = building._id
+function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
+	const idB = bld._id
 	if (clear) return fnClear(idB)
 
 	const stg = s?.ozon
@@ -38,12 +38,13 @@ function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	const accelMode = s.cooler?.accel ?? s.coolerCombi?.accel ?? s.accel?.mode
 	// Устройства озонаторы
 	// Готовность работы озонаторов (есть ли хотя бы один рабочий озонатор)
-	const oz = getOzon(building, obj, m)
+	const oz = getOzon(bld, obj, m)
+	console.log(1100, 'Озонатор', oz)
 	// Если Окуривание еще не в работе И озонатор не готов, то выключаем озонатор
 	if ((!oz.ready && !doc.work && stg?.on) || s?.smoking?.on) {
-		store.retain[building._id].setting ??= {}
-		store.retain[building._id].setting.ozon ??= {}
-		store.retain[building._id].setting.ozon.on = false
+		store.retain[bld._id].setting ??= {}
+		store.retain[bld._id].setting.ozon ??= {}
+		store.retain[bld._id].setting.ozon.on = false
 		delete doc.work
 		delete doc.wait
 		delete store?.heap?.ozon
@@ -69,7 +70,7 @@ function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	let time = compareTime(doc.work, stg.work * h)
 
 	if (!time) {
-		wrExtra(idB, null, 'ozon1', msgB(building, 91, `Работа ${remTime(doc.work, stg.work * h)}`))
+		wrExtra(idB, null, 'ozon1', msgB(bld, 91, `Работа ${remTime(doc.work, stg.work * h)}`))
 		delExtra(idB, null, 'ozon2')
 		arrCtrlDO(idB, arr, 'on')
 		arrCtrlDO(idB, oz.arr, 'on')
@@ -79,7 +80,7 @@ function ozon(building, section, obj, s, se, m, alarm, acc, data, ban, resultFan
 	// Время работы прошло
 	doc.wait ??= new Date()
 	delExtra(idB, null, 'ozon1')
-	wrExtra(idB, null, 'ozon2', msgB(building, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`))
+	wrExtra(idB, null, 'ozon2', msgB(bld, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`))
 	arrCtrlDO(idB, arr, 'off')
 	arrCtrlDO(idB, oz.arr, 'off')
 	time = compareTime(doc.wait, stg.wait * h)

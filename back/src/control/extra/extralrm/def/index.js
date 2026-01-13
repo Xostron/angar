@@ -23,6 +23,7 @@ const stableVno = require('./stable_vno')
 const notTune = require('./not_tune')
 const debdo = require('./deb_do')
 const battery = require('./battery')
+const ozon = require('./ozon')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -59,19 +60,31 @@ const def = {
 			battery,
 			openVin,
 			alrValve,
+			ozon,
 		},
 	},
 	// Доп. аварии холодильника
 	cold: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, debdo, battery },
+		always: {
+			connect,
+			localB,
+			fanCrash,
+			alrStop,
+			supply,
+			co2,
+			aggregate,
+			debdo,
+			battery,
+			ozon,
+		},
 	},
 	// Комбинированный склад (холодильник)
 	combi: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, notTune },
+		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, notTune, ozon },
 	},
 }
 

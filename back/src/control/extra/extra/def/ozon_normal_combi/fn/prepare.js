@@ -1,8 +1,6 @@
-const { delExtra, wrExtra } = require('@tool/message/extra')
 const { getIdsS } = require('@tool/get/building')
-const { data: store } = require('@store')
-const { msgB } = require('@tool/message')
 const { collect } = require('@tool/smoking_ozon/fn')
+const { data: store } = require('@store')
 
 function fnPrepare(bld, obj, s, m) {
 	// id всех секций данного склада
@@ -41,11 +39,11 @@ function getOzon(bld, obj, m) {
 			const st = obj.value[el._id]?.beep?.off?.value ?? true
 			return st
 		}) && !!m.ozon.length
-	let reason = m.ozon.length > 1 ? 'выключены автоматы' : 'выключен автомат'
-	reason = !!m.ozon.length ? reason : null
-	// Если озонаторы неисправны
-	if (!ready && reason !== null)
-		wrExtra(bld._id, null, 'ozon3', msgB(bld, 91, `Не готов. По причине: ${reason}`))
-	else delExtra(bld._id, null, 'ozon3')
+	// let reason = m.ozon.length > 1 ? 'выключены автоматы' : 'выключен автомат'
+	// reason = !!m.ozon.length ? reason : null
+	// // Если озонаторы неисправны
+	// if (!ready && reason !== null)
+	// 	wrExtra(bld._id, null, 'ozon3', msgB(bld, 91, `Не готов. По причине: ${reason}`))
+	// else delExtra(bld._id, null, 'ozon3')
 	return { arr: m.ozon, ready }
 }
