@@ -45,7 +45,9 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 }
 
 function debDI(sig, value, equip, result) {
-	// Разрешенные сигналы для антидребезга
+	// Разрешенные сигналы для антидребезга:
+	// Авария низкой температуры, переключатель на щите, 
+	// работа от генератора, перегрев кабеля, питание в норме
 	const rel = ['low', 'local', 'gen', 'cable', 'supply']
 	if (!rel.includes(sig.type)) {
 		// Сигнал без проверкаи антидребезга

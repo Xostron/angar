@@ -14,6 +14,7 @@ const alrValve = require('./alr_valve')
 const fanCrash = require('./fan_crash')
 const alrStop = require('./alr_stop')
 const supply = require('./supply')
+const supplyB = require('./supply_b')
 const co2 = require('./co2')
 const aggregate = require('./aggregate')
 const banTimer = require('./ban_timer')
@@ -41,6 +42,7 @@ const def = {
 			vlvCrash,
 			antibliz,
 			overVlv,
+			supply
 		},
 	},
 	building: {
@@ -60,6 +62,7 @@ const def = {
 			battery,
 			openVin,
 			alrValve,
+			supplyB,
 			ozon,
 		},
 	},
@@ -84,7 +87,7 @@ const def = {
 	combi: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supply, co2, aggregate, notTune, ozon },
+		always: { connect, localB, fanCrash, alrStop, supplyB, co2, aggregate, notTune, ozon },
 	},
 }
 

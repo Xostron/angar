@@ -65,6 +65,7 @@ module.exports = async function prepareReq() {
 			: null;
 		// Формируем данные для Tenta: изменения или полные данные
 		result = convertTenta(diffing ?? present, data.pc._id);
+		
 		return { result, hub, present, diffing };
 	} catch (error) {
 		console.error(

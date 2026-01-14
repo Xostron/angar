@@ -90,8 +90,8 @@ function sigDfl(sig, val, equip, result) {
  * @param {*} type
  * @param {} alr Значение сигнала для установки аварии (по-умолчанию true)
  */
-function getSumSig(idB, section, obj, type, alr = true) {
-	const idBS = getIdBS(section, idB)
+function getSumSig(idB, obj, type, alr = true) {
+	const idBS = getIdBS(obj?.data?.section, idB)
 	if (!idBS.length) return null
 	const arr = obj?.data?.signal?.filter((el) => idBS.includes(el.owner.id) && el.type === type)
 	if (!arr.length) return null

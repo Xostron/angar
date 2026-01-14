@@ -8,7 +8,7 @@ const { wrExtralrm, delExtralrm } = require('@tool/message/extralrm')
  * @param {object} s Настройки
  * @param {object} accDeb Аккумулятор антидребезга
  */
-function set(bld, battery, obj, accDeb, acc, watch, count) {
+function set(bld, reason, obj, accDeb, acc, watch, count) {
 	// Уже в аварии - выходим из итерации
 	if (acc._alarm) return
 
@@ -16,7 +16,7 @@ function set(bld, battery, obj, accDeb, acc, watch, count) {
 	const last = accDeb.battery.at(-1)
 
 	// Фиксируем изменение состояния
-	if (last?.state !== battery) accDeb.battery.push({ state: battery, date: new Date() })
+	if (last?.state !== reason) accDeb.battery.push({ state: reason, date: new Date() })
 	// Размер очереди превышен
 	if (accDeb.battery.length > count) accDeb.battery.shift()
 

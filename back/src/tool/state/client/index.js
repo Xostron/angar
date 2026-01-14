@@ -45,6 +45,7 @@ module.exports = async function state() {
 		}
 
 		const { result, hub, present, diffing } = o
+		
 		// Если изменений не было не отправляем запрос
 		if (!result.length) {
 			console.log(

@@ -1,11 +1,9 @@
 const { msgB } = require('@tool/message')
-const { getSumSig, getSumSigBld } = require('@tool/command/signal')
+const { getSumSigBld } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Аварийное закрытие клапанов - по низкой температуре (склад)
 function alrClosedB(bld, section, obj, s, se, m, automode, acc, data) {
-	// Сигнал по складу и секциям
-	// const sig = getSumSig(bld._id, obj?.data?.section, obj, 'low')
 	// Сигнал только по складу
 	const sigB = getSumSigBld(bld._id, obj, 'low')
 	// Сброс
