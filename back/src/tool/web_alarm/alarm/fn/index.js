@@ -262,6 +262,11 @@ function banner(r, bld, sect, am) {
 	r.banner.local ??= {}
 	r.banner.local[bld._id] ??= {}
 	r.banner.local[bld._id][sect._id] = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.local ?? null
+	// Авария питания
+	r.banner.supply ??= {}
+	r.banner.supply[bld._id] ??= {}
+	r.banner.supply[bld._id][sect._id] =
+		store.alarm?.extralrm?.[bld._id]?.[sect._id]?.supply ?? null
 }
 function bannerB(r, bld) {
 	// Управление переведено на переключатели на щите
@@ -274,9 +279,13 @@ function bannerB(r, bld) {
 	// Склад не работает: требуется калибровка клапанов
 	r.banner.notTune ??= {}
 	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune
-	// Авария питания
+	// Авария питания. Ручной сброс
 	r.banner.battery ??= {}
 	r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery
+	// Авария питания
+	r.banner.supply ??= {}
+	r.banner.supply[bld._id] ??= {}
+	r.banner.supply[bld._id][bld._id] = store.alarm?.extralrm?.[bld._id]?.supply ?? null
 }
 
 module.exports = { barB, bar, bannerB, banner, signalB, signal, count }

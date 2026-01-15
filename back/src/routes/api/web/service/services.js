@@ -13,6 +13,7 @@ const statistic = require('@tool/scripts/statistic');
 const fsp = require('fs').promises;
 const { writeConfig } = require('@tool/init');
 const { data } = require('@store');
+const api = require('@tool/api');
 
 function keyboard() {
 	return (req, res) => {
@@ -223,6 +224,46 @@ function set_time() {
 	};
 }
 
+function saveSettings() {
+	return (req, res) => {
+		const config = {
+			method: 'POST',
+			url: 'angar/retain',
+			headers: { ip: process.env.IP },
+			data: { retain: JSON.stringify(data.retain) },
+		};
+		api(config)
+			.then((r) => res.status(200).json({ result: 'ok' }))
+			.catch((err) => {
+				console.log('service/saveSettings error:', err);
+				res.status(400).json({ error: err.toString() });
+			});
+	};
+}
+
+function getSettings() {
+	return (req, res) => {
+		const config = {
+			method: 'GET',
+			url: 'angar/retain',
+			headers: { ip: process.env.IP },
+		};
+		api(config)
+			.then((r) => {
+				if (!r?.data)
+					return res
+						.status(400)
+						.json({ error: 'Нет сохраненных данных' });
+				data.retain = JSON.parse(r.data.retain);
+				res.status(200).json({ result: 'ok' });
+			})
+			.catch((err) => {
+				console.log('service/getSettings error:', err);
+				res.status(400).json({ error: err.toString() });
+			});
+	};
+}
+
 module.exports = {
 	reload,
 	upt_soft,
@@ -243,4 +284,6 @@ module.exports = {
 	keyboard,
 	statInfo,
 	statClear,
+	getSettings,
+	saveSettings,
 };

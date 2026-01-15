@@ -69,6 +69,13 @@ export default function Equip({ props }) {
 				/>
 				<Btn title='Обновить конфигурацию из файла' onClick={() => onEquipFile(file)} />
 			</div>
+			<span style={titleStyles}>
+				Управление настройками (Интернет-соединение):
+			</span>
+			<div className='page-service-row'>
+				<Btn title='Сохранить на сервере' onClick={() => onSaveSettings()} />
+				<Btn title='Получить с сервера' onClick={() => onGetSettings()} />
+			</div>
 			<br />
 			<hr />
 			<br />
@@ -209,6 +216,26 @@ function onKeyboardToggle(value) {
 					errorId: e.id,
 				}
 			)
+		})
+}
+
+function onSaveSettings() {
+	post('settings')
+		.then((o) => {
+			notification.success('Настройки сохранены')
+		})
+		.catch((e) => {
+			notification.error(e.message || 'Ошибка сохранения настроек: ' + e.error || e.message)
+		})
+}
+
+function onGetSettings() {
+	get('settings')
+		.then((o) => {
+			notification.success('Настройки получены')
+		})
+		.catch((e) => {
+			notification.error(e.message || 'Ошибка получения настроек: ' + e.error || e.message)
 		})
 }
 

@@ -5,12 +5,13 @@ const { delDebMdl } = require('@tool/message/plc_module')
  * Очистить аварийные сообщения по складу (extralrm) и аварии модулей
  * Информационные сообщения, аварии авторежима - не сбрасываются
  */
-function clearAlarm() {
+function clearAlarm(exclude = false) {
+	if (exclude) return
 	// По складу: на каком складе была нажата кнопка сброса аварии
 	store.reset.forEach((idB) => {
 		// Очистка сообщений неисправности модулей
-		store.alarm??={}
-		store.alarm.module??={}
+		store.alarm ??= {}
+		store.alarm.module ??= {}
 		store.alarm.module[idB] = {}
 		delDebMdl()
 		// Очистка аварийных сообщений extralrm

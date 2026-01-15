@@ -2,7 +2,7 @@ const { msg } = require('@tool/message')
 const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 
-// Питание отключено DI
+// Питание в норме DI
 function supply(bld, sect, obj, s, se, m, automode, acc, data) {
 	const sig = getSignal(sect?._id, obj, 'supply')
 	// Если взведена Авария питания (Ручной сброс) - игнорируем данную аварию

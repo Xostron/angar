@@ -20,6 +20,8 @@ const {
 	keyboard,
 	statClear,
 	statInfo,
+	saveSettings,
+	getSettings,
 } = require('./services');
 
 // TODO Рома ip, reboot, software,pm2,npm
@@ -68,6 +70,10 @@ function service(router) {
 	// Статистика
 	serviceRouter.get('/stat', statInfo());
 	serviceRouter.delete('/stat', statClear());
+
+	// Управление настройками
+	serviceRouter.post('/settings', saveSettings());
+	serviceRouter.get('/settings', getSettings());
 }
 
 module.exports = service;

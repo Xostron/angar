@@ -194,7 +194,7 @@ const data = {
 		count: true,
 		code: 'supply',
 		typeSignal: 'critical',
-		msg: 'Питание отключено',
+		msg: 'Авария питания',
 		flt: [true],
 	},
 	// Приточный клапан открыт, темп канала > темп продукта

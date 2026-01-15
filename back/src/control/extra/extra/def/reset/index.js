@@ -1,9 +1,11 @@
 const { ctrlDO } = require('@tool/command/module_output')
-const { getSignal, getSumSig } = require('@tool/command/signal')
-const { data: store } = require('@store')
+const { getSumSig } = require('@tool/command/signal')
 const { isReset, reset } = require('@tool/reset')
 const { compareTime } = require('@tool/command/time')
 const { isErrMs, isErrM } = require('@tool/message/plc_module')
+const { delExtralrm } = require('@tool/message/extralrm')
+const { getIdsS } = require('@tool/get/building')
+const { data: store } = require('@store')
 
 // Нажата кнопка "Сброс аварии" (mobile, web)
 function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -12,19 +14,23 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	// 2. Однократное срабатывание при рестарте
 	// 3. При аварийном закрытии клапанов: если нет неисправных модулей
 	//  И темп канала >=0.5 И есть авария закр клапанов
-	// 4. При потере сигнала модуль в сети
-	const reason = [
-		isReset(bld._id),
-		!acc.firstFlag,
-		alrClosed(bld, obj, se, s),
-		// connect(obj, bld, m),
-	]
+	const ac = alrClosed(bld, obj, se, s)
+	// Все причины
+	const reasonAll = [isReset(bld._id), !acc.firstFlag, ac]
+	// Обязательные причины, при которых авар сообщения сбрасываются
+	const reasonMain = reasonAll.slice(0, 2).includes(true)
 	console.log(4400, 'resetDO', reason)
+
+	// Включить выход "Сброс аварий" и очистить аварийные сообщения
 	if (reason.some((el) => el)) {
+		// Время активного состояния выхода "Сброс аварии"
 		acc.wait ??= new Date()
+		// Флаг первого цикла отработал
 		acc.firstFlag = true
 		// Обнулить флаг reset (кнопка сброса аварии)
-		reset(bld._id)
+		// ac && !reasonMain = true аварийные сообщения не сбрасывать
+		// если причиной сброса аварии является только авария низкой температуры
+		reset(bld._id, ac && !reasonMain)
 	}
 
 	// Включить выход на 3 сек
@@ -36,7 +42,7 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (time) {
 		DOReset(m.reset, bld, 'off')
 		delete acc.wait
-		reset(null, false)
+		reset(null, false, false)
 	}
 }
 module.exports = resetDO
@@ -65,11 +71,19 @@ function alrClosed(bld, obj, se, s) {
 	const isErrm = isErrMs(bld._id, obj?.data?.module)
 	// Авария низкой температуры (сигнал Склада и секций)
 	const sig = getSumSig(bld._id, obj, 'low')
-	// console.log(9900, 'alrClosed', sig, 'Автосброс', !isErrm && se.tcnl >= 0.5 && sig, s.sys.acTcnl)
-	return !isErrm && se.tcnl >= (s.sys.acTcnl ?? 0.5) && sig
+	// Сигнал на автосброс аварии низкой температуры
+	const ac = !isErrm && se.tcnl >= (s.sys.acTcnl ?? 0.5) && sig
+	// Сброс сообщений аварии низкой температуры
+	// ID всех секций
+	const idsS = getIdsS(obj?.data?.section, bld._id)
+	idsS.forEach((id, i) => delExtralrm(bld._id, id, 'alrClosed'))
+	delExtralrm(bld._id, null, 'alrClosed')
+	// console.log(9900, 'Сигнал alrClosed=', sig, 'Автосброс', !isErrm && se.tcnl >= 0.5 && sig, s.sys.acTcnl)
+	return ac
 }
 
 /**
+ * TODO не используется
  * Имеется DO сигнал "Модуль в сети", если модуль данного сигнала
  * неисправен или сам сигнал был выключен, то вырабатывается
  * импульс на включение выхода "Сброс аварии"
