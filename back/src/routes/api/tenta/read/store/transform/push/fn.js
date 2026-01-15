@@ -15,11 +15,11 @@ function fnBattery(idB, data) {
 	const supply = Object.values(data.alarm?.banner?.supply?.[idB] ?? {})?.[0]
 	if (battery) {
 		r.push(battery)
-		return r?.length
+		return r
 	}
 	if (supply) {
 		r.push(supply)
-		return r?.length
+		return r
 	}
 }
 
@@ -35,7 +35,7 @@ function find(idB, data) {
 		if (fnNeed().includes(el.msg)) r.push(el)
 	})
 
-	console.log(5500, 'r', r)
+	// console.log(5500, 'r', r)
 	return r
 }
 
