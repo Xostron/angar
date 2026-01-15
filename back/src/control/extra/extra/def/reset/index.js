@@ -19,10 +19,10 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	const reasonAll = [isReset(bld._id), !acc.firstFlag, ac]
 	// Обязательные причины, при которых авар сообщения сбрасываются
 	const reasonMain = reasonAll.slice(0, 2).includes(true)
-	console.log(4400, 'resetDO', reason)
+	console.log(4400, 'resetDO', reasonAll)
 
 	// Включить выход "Сброс аварий" и очистить аварийные сообщения
-	if (reason.some((el) => el)) {
+	if (reasonAll.some((el) => el)) {
 		// Время активного состояния выхода "Сброс аварии"
 		acc.wait ??= new Date()
 		// Флаг первого цикла отработал

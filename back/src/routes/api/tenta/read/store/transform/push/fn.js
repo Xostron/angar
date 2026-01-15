@@ -12,15 +12,13 @@ const msg = require('@dict/message')
 function fnBattery(idB, data) {
 	const r = []
 	const battery = data.alarm?.banner?.battery?.[idB]
-	const supply = data.alarm?.banner?.supply?.[idB]
+	const supply = Object.values(data.alarm?.banner?.supply?.[idB] ?? {})?.[0]
 	if (battery) {
 		r.push(battery)
-		console.log(5500, 'r', r)
 		return r?.length
 	}
 	if (supply) {
 		r.push(supply)
-		console.log(5500, 'r', r)
 		return r?.length
 	}
 }

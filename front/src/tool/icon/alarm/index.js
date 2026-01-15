@@ -34,5 +34,6 @@ const data = {
 	smoking: '/img/alarm/smoking.svg',
 	ozon: '/img/alarm/ozon.svg',
 	battery: '/img/alarm/battery.svg',
+	supply: '/img/alarm/battery.svg',
 }
 export default data

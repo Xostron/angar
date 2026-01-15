@@ -75,7 +75,7 @@ const def = {
 			localB,
 			fanCrash,
 			alrStop,
-			supply,
+			supplyB,
 			co2,
 			aggregate,
 			debdo,
