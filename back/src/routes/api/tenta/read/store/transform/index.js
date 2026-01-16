@@ -53,7 +53,7 @@ async function transform(bldId, secId) {
 			store.value?.building?.[bldId]?.submode?.[0] ?? bldData?.automode ?? null
 		// Сообщение авторежима
 		result[bldId + 'note'] = data.alarm?.achieve?.[bldId] ?? null
-		console.log(99001, result?.[bldId + 'note'])
+		// console.log(99001, result?.[bldId + 'note'])
 		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0
 		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null
 		result[bldId + 'banner'] = banner(bldId, data) ?? null

@@ -93,11 +93,11 @@ const def = {
 	detect: {
 		open(idV, val, state, acc) {
 			if (state === 'iopn' && val >= 100 && !acc[idV].waitO) acc[idV].waitO = new Date()
-			console.log('Точка отсчета open', acc[idV].waitO)
+			// console.log('Точка отсчета open', acc[idV].waitO)
 		},
 		close(idV, val, state, acc) {
 			if (state === 'icls' && val <= 0 && !acc[idV].waitC) acc[idV].waitC = new Date()
-			console.log('Точка отсчета close', acc[idV].waitC)
+			// console.log('Точка отсчета close', acc[idV].waitC)
 		},
 	},
 	// Установка флага аварии клапана

@@ -26,7 +26,6 @@ function fnCtrl(idB, arrOut, obj, acc, s, forceOff) {
 		// Выбор типа управления: шаговый/прямой
 		fnSelect(idB, v, type, obj, acc, s)
 	}
-	console.log(4400, 'flying/step', acc)
 }
 
 /**
@@ -38,14 +37,14 @@ function fnCtrl(idB, arrOut, obj, acc, s, forceOff) {
  */
 function fnCheck(obj, acc, s) {
 	const tout = obj?.value?.total?.tout?.min
-	console.log(4411, 'fnCheck', tout, s.sys.outStep, s.cooling.hysteresisOut)
+	// console.log(4411, 'fnCheck', tout, s.sys.outStep, s.cooling.hysteresisOut)
 	if (tout <= s.sys.outStep) acc.byStep = new Date()
 	if (acc?.byStep && tout > s.sys.outStep + s.cooling.hysteresisOut) delete acc?.byStep
-	console.log(
-		4400,
-		!!acc?.byStep ? 'Управление по шагам' : 'обычное открытие',
-		'выпускным клапаном'
-	)
+	// console.log(
+	// 	4400,
+	// 	!!acc?.byStep ? 'Управление по шагам' : 'обычное открытие',
+	// 	'выпускным клапаном'
+	// )
 	return !!acc?.byStep
 }
 

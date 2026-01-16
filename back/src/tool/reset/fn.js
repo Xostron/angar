@@ -40,10 +40,10 @@ function clearAcc(acc, arr, pKey, pAcc) {
 	// объекта -> обнуляем данный объект, иначе не трогаем
 	if (pKey && arr.includes(pKey)) {
 		if (acc._alarm === true) {
-			console.log('обнуляем данный объект', pKey, 'так как acc._alarm=true', pAcc[pKey])
+			// console.log('обнуляем данный объект', pKey, 'так как acc._alarm=true', pAcc[pKey])
 			delete pAcc[pKey]
 		} else {
-			console.log('Не трогаем данный объект', pKey, 'так как acc._alarm=false')
+			// console.log('Не трогаем данный объект', pKey, 'так как acc._alarm=false')
 		}
 		return
 	}
@@ -53,7 +53,7 @@ function clearAcc(acc, arr, pKey, pAcc) {
 		// Ключ - значение
 		if (typeof acc[key] !== 'object') {
 			// console.log('Ключ-значение', key)
-			if (key === '_alarm') console.log('\t найден _alarm', acc[key])
+			// if (key === '_alarm') console.log('\t найден _alarm', acc[key])
 			key === '_alarm' ? (acc[key] = false) : null
 			continue
 		}

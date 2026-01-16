@@ -39,7 +39,7 @@ function battery(bld, sect, obj, s, se, m, automode, acc, data) {
 	set(bld, reason, obj, store.debounce, acc, watch, count)
 	blink(bld, store.battery, acc)
 	
-	console.log(5500, reason, sig, store.debounce.battery)
+	// console.log(5500, reason, sig, store.debounce.battery)
 	return acc?._alarm ?? false
 }
 

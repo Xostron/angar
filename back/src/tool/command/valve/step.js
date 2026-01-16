@@ -22,7 +22,7 @@ function fnStep(vlvS, idB, idS, retain) {
 
 	// Время шага не прошло - включаем клапан
 	if (!time) {
-		console.log(99005, 'Включаем клапан', aCmd.type, remTime(acc.work, tStep))
+		// console.log(99005, 'Включаем клапан', aCmd.type, remTime(acc.work, tStep))
 		ctrlV(vlvIn, idB, aCmd.type,)
 		return
 	}

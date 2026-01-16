@@ -22,7 +22,7 @@ function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 	// 4. Поиск закрытого концевика, если положение клапана = 0
 	const lookCls = fnLookCls(bld, sect, vlvS, obj)
 	const forceCls = alr || v.forceCls || !fanS.length || lookCls
-	console.log(8800, 'forceCls =', alr, '||', v.forceCls, '||', !fanS.length, '||', lookCls)
+	// console.log(8800, 'forceCls =', alr, '||', v.forceCls, '||', !fanS.length, '||', lookCls)
 
 	ctrlVSoft(
 		vlvS,

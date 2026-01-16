@@ -63,7 +63,7 @@ function smoking(
 	const fan = collect(idB, idsS, obj, stg)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
+	// console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
 	// озонатор в работе -> выкл окуривание
 	if (s?.ozon?.on) {
 		// store.retain[building._id].setting ??= {}

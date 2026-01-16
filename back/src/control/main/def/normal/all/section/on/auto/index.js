@@ -24,9 +24,12 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	const alr = alrS || (alrAm && !CO2work) || ban || alrBld || alrAlw || alrSe
 
 	console.log(
+		'\t',
 		666,
 		sect?.name,
-		'alr ' + alr + ' = ',
+		'alr ',
+		alr,
+		' = ',
 		alrS,
 		'||',
 		alrAm && !CO2work,

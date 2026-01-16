@@ -43,6 +43,7 @@ function fan(s, se, alr, sectionId, acc) {
 	// Условие пуска ВНО: нет аварии И {задание продукта не достигнуто ИЛИ удаление СО2}
 	const alright = !acc.finish
 	const start = !alr && alright
+	// console.log(8801, start, '=', !alr, alright)
 	return { start }
 }
 

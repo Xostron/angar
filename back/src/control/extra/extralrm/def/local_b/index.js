@@ -17,6 +17,7 @@ function localB(bld, section, obj, s, se, m, automode, acc, data) {
 		wrExtralrm(bld._id, null, 'local', msgB(bld, 27))
 		acc._alarm = true
 	}
+	console.log(9900, 'Переключатель на щите склада', bld._id, sig)
 	return acc?._alarm ?? false
 }
 

@@ -3,18 +3,19 @@ const { getSignal } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Местное управление (сигнал секции)
-function local(building, section, obj, s, se, m, automode, acc, data) {
-	const sig = getSignal(section?._id, obj, 'local')
+function local(bld, sect, obj, s, se, m, automode, acc, data) {
+	const sig = getSignal(sect?._id, obj, 'local')
 	// Сброс
-	if (sig === true ) {
-		delExtralrm(building._id, section._id, 'local')
+	if (sig === true) {
+		delExtralrm(bld._id, sect._id, 'local')
 		acc._alarm = false
 	}
 	// Установка
 	if (sig === false && !acc._alarm) {
-		wrExtralrm(building._id, section._id, 'local', msg(building, section, 27))
+		wrExtralrm(bld._id, sect._id, 'local', msg(bld, sect, 27))
 		acc._alarm = true
 	}
+	console.log(9900, 'Переключатель на щите секции', bld._id, sect._id, sig)
 }
 
 module.exports = local

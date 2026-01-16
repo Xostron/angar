@@ -191,6 +191,7 @@ function signalB(r, bld, am, data) {
 	const wetting = store.alarm.extralrm?.[bld._id]?.wetting ?? null
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
 	const vlvLim = store.alarm?.extralrm?.[bld._id]?.vlvLim ?? null
+	const vlvCrash = store.alarm?.extralrm?.[bld._id]?.vlvCrash ?? null
 	const local = store.alarm?.extralrm?.[bld._id]?.local ?? null
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const alrStop = store.alarm?.extralrm?.[bld._id]?.alarm ?? null
@@ -215,6 +216,7 @@ function signalB(r, bld, am, data) {
 	if (gen) r.signal[bld._id].push(gen)
 	if (cable) r.signal[bld._id].push(cable)
 	if (vlvLim) r.signal[bld._id].push(vlvLim)
+	if (vlvCrash) r.signal[bld._id].push(...Object.values(vlvCrash))
 	if (alrClosed) r.signal[bld._id].push(alrClosed)
 	if (local) r.signal[bld._id].push(local)
 	if (drainRun) r.signal[bld._id].push(drainRun)

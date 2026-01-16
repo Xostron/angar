@@ -67,7 +67,7 @@ module.exports = async function state() {
 		const params = hub?.init ? null : { type: 'init' }
 		const config = apiConfig(result, params)
 		const response = await api(config)
-		console.log(9900, result[0])
+		// console.log(9900, result[0])
 		// Запрос не успешен
 		if (!response.data) {
 			throw new Error('POS->Tenta: 3. ❌Не удалось передать данные на Tenta')

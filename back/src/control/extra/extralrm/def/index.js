@@ -39,10 +39,9 @@ const def = {
 			local,
 			fanCrash,
 			vlvLim,
-			vlvCrash,
 			antibliz,
 			overVlv,
-			supply
+			supply,
 		},
 	},
 	building: {
@@ -64,6 +63,7 @@ const def = {
 			alrValve,
 			supplyB,
 			ozon,
+			vlvCrash,
 		},
 	},
 	// Доп. аварии холодильника

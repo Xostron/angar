@@ -20,7 +20,7 @@ function stateV(vlv, value, idB, idS, equip) {
 	if (alr) return 'alr'
 	const vlvLim = isExtralrm(idB, idS, 'vlvLim')
 	const vlvLimB = isExtralrm(idB, null, 'vlvLim')
-	const crash = isExtralrm(idB, idS, 'vlvCrash' + vlv._id)
+	const crash = isExtralrm(idB, 'vlvCrash', vlv._id)
 	const iopn = value?.outputEq?.[vlv._id]?.open
 	const icls = value?.outputEq?.[vlv._id]?.close
 	const opn = value?.[vlv._id]?.open

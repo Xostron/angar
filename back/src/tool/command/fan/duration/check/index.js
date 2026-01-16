@@ -28,7 +28,7 @@ function fnCheck(bld, prepare, resultFan) {
 
 	// Запретить ДВ
 	if (reason.some((el) => el)) {
-		console.log(11, reason)
+		// console.log(11, reason)
 		clear(bld, prepare)
 		if (!err) return false
 		wrExtra(bld._id, null, 'durVent', msgB(bld, 148, `${err}`), 'check')

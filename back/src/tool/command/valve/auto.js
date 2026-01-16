@@ -13,14 +13,11 @@ const { data: store } = require('@store')
  * @param {*} delay принудительно открыть
  */
 function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
-	// console.log('##############', idS, '##############')
 	// Принудительное управление
-	if (checkForce(idB, idS, vlvS, forceCls, forceOpn))
-		return console.log(99001, 'Принудительное ', 'close=', forceCls, 'open=', forceOpn)
+	if (checkForce(idB, idS, vlvS, forceCls, forceOpn)) return
 
 	// Шаговое управление
 	fnStep(vlvS, idB, idS, retain)
-	// console.log('############## END')
 }
 
 /**
@@ -54,8 +51,8 @@ function fnValve(data, idS, s) {
  * @returns {boolean} true - принудительно закрыть
  */
 function fnLookCls(bld, sect, vlvS, obj) {
-    // Авто: Команда на закрытие
-	const cmdCls = store.aCmd?.[sect._id]?.vlv?.type ==='close'
+	// Авто: Команда на закрытие
+	const cmdCls = store.aCmd?.[sect._id]?.vlv?.type === 'close'
 	// Все настройки склада
 	const s = store?.calcSetting?.[bld._id] ?? {}
 	// Приточный клапан
@@ -66,7 +63,7 @@ function fnLookCls(bld, sect, vlvS, obj) {
 	const o = obj?.value?.[v._id]
 
 	// Если позиция приточного клапана = 0мс && нет концевика закрытого положения
-	console.log(8801, 'Поиск концевика', pos === 0 && !o?.close && cmdCls, pos, o?.val, o?.close, cmdCls)
+	// console.log(8801, 'Поиск концевика', pos === 0 && !o?.close && cmdCls, pos, o?.val, o?.close, cmdCls)
 
 	// Принудительно закрывать
 	if (pos === 0 && !o?.close && cmdCls) return true

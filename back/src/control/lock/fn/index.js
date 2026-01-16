@@ -27,7 +27,7 @@ function vlv(obj) {
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		const vlvLim = isExtralrm(idB, v.sectionId[0], 'vlvLim')
 		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
-		const vlvCrash = isExtralrm(idB, v.sectionId[0], 'vlvCrash' + v._id)
+		const vlvCrash = isExtralrm(idB, 'vlvCrash', v._id)
 
 		// const alarmOpn = isLongVlv(idB, v)
 
@@ -39,19 +39,19 @@ function vlv(obj) {
 		const open100 = fnOpen100(idB, v, retain)
 		const close0 = fnClose0(idB, v, retain)
 
-		console.log(
-			3333,
-			'lock',
-			v.type,
-			local,
-			alrStop,
-			vlvLim,
-			vlvLimB,
-			vlvCrash,
-			offS,
-			open100,
-			close0
-		)
+		// console.log(
+		// 	3333,
+		// 	'lock',
+		// 	v.type,
+		// 	local,
+		// 	alrStop,
+		// 	vlvLim,
+		// 	vlvLimB,
+		// 	vlvCrash,
+		// 	offS,
+		// 	open100,
+		// 	close0
+		// )
 		// блокировка открытия
 		outV(
 			'on',
@@ -128,7 +128,7 @@ function fan(obj, s) {
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !ignore
 		// Склад выключен и секция в авторежиме
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !ignore
-		console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto)
+		// console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto)
 		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto)
 		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto)
 	}
