@@ -62,11 +62,11 @@ function supply(idB, clrId, sect, retain) {
 
 	const noSupply = isExtralrm(idB, null, 'supply') || isExtralrm(idB, null, 'battery')
 	console.log(
-		'\t nosupply=',
+		'\t Нет питания nosupply=',
 		noSupply,
 		'=',
 		isExtralrm(idB, null, 'supply'),
-		isExtralrm(idB, sect._id, 'supply')
+		isExtralrm(idB, null, 'battery')
 	)
 
 	// Питание отключено
