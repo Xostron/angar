@@ -26,17 +26,17 @@ function fnACmd(bld, resultFan, obj, bdata) {
 		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
 
 		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
-			console.log(
-				11,
-				'Секция',
-				idS,
-				'Плавный пуск: ВНО выключены из-за:',
-				local,
-				localB,
-				!sectOn,
-				!coolerCombiOn,
-				!goVNO
-			)
+			// console.log(
+			// 	11,
+			// 	'Секция',
+			// 	idS,
+			// 	'Плавный пуск: ВНО выключены из-за:',
+			// 	local,
+			// 	localB,
+			// 	!sectOn,
+			// 	!coolerCombiOn,
+			// 	!goVNO
+			// )
 			setACmd('fan', idS, { delay, type: 'off', force: null, max: null })
 			return
 		}

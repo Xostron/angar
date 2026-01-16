@@ -20,7 +20,7 @@ function timeout(idB, idM, ip, opt) {
 	// Время повторного чтения (1 мин)
 	const repeat = (opt?.repeat ?? store.tTCP) * 60_000
 
-	if (opt.ip === '192.168.21.132') console.log('======repeat===========', repeat)
+	// if (opt.ip === '192.168.21.132') console.log('======repeat===========', repeat)
 	const now = new Date().getTime()
 	if (!store.timeout?.[idM]) store.timeout[idM] = now + repeat
 	// Время не прошло - блокировать опрос модуля

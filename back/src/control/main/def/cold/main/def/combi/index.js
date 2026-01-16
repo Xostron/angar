@@ -36,8 +36,8 @@ function main(bld, obj, bdata, alr) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.combi(bld, obj, bdata, alr)
 	}
-	console.log(88, 'Аккумулятор холодильника')
-	console.log(accAuto.cold)
+	// console.log(88, 'Аккумулятор комби холодильника')
+	// console.log(accAuto.cold)
 }
 
 module.exports = main

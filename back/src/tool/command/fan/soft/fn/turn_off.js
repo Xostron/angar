@@ -17,34 +17,39 @@ const _MIN_SP = 20
 function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where = 'normal') {
 	// Запрет управления при окуривании или озонаторе
 	if (s?.smoking?.on || s?.ozon?.on) {
-		console.log('\tПлавный пуск: TurnOff (Окуривание)', idS, where)
+		// console.log('\tЗапрет управления при окуривании или озонаторе', idS, where)
 		return true
 	}
 	// (КОМБИ)Запрет управления: Проверка переключения с НОРМАЛЬНОГО на ХОЛОД
 	if (hasToggle(bld, idS, obj, acc, fanFC, fans, solHeat)) {
-		console.log('\tПлавный пуск: TurnOff (переключения с НОРМАЛЬНОГО на ХОЛОД)', aCmd, idS, where)
+		// console.log(
+		// 	'\t(КОМБИ)Запрет управления: Проверка переключения с НОРМАЛЬНОГО на ХОЛОД',
+		// 	aCmd,
+		// 	idS,
+		// 	where
+		// )
 		return true
 	}
 	// Запрет управления (Работа в НОРМ или ХОЛОД)
 	if (ignore[where](bld, obj, s, acc, bdata, solHeat)) {
-		console.log('\tПлавный пуск: TurnOff (ИГНОР РАБОТЫ)', idS, where)
+		// console.log('\tЗапрет управления (Работа в НОРМ или ХОЛОД)', idS, where)
 		return true
 	}
 	// Ручной режим -> запрет управления, но ВНО оставляем как есть (aCmd.type=off и секция в ручном)
 	if (aCmd.type === 'off' && bdata.mode?.[idS] === false) {
 		clear(idS)
-		console.log('\tПлавный пуск: TurnOff (Ручной режим)', idS, where)
+		// console.log('\tРучной режим -> запрет управления, но ВНО оставляем как есть', idS, where)
 		return true
 	}
 	// aCmd - задание на вкл активно - Разрешить управление
 	if (aCmd.type == 'on') {
-		console.log('\tПлавный пуск: TurnOff = false -> Разрешить работу ВНО', idS, aCmd, where)
+		// console.log('\t aCmd - задание на вкл активно - Разрешить управление', idS, aCmd, where)
 		return false
 	}
 	// Задание не активно: Выкл ВНО (aCmd.type == 'off')
 	offAll(fanFC, fans, solHeat, bld)
 	clear(idS)
-	console.log('\tПлавный пуск: TurnOff (По-умолчанию - все выключить)', idS, aCmd, where)
+	// console.log('\tЗадание не активно: Выкл ВНО (aCmd.type == off)', idS, aCmd, where)
 	return true
 }
 

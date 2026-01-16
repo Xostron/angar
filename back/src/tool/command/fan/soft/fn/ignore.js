@@ -27,12 +27,12 @@ function normal(bld, obj, s, acc, bdata) {
 		CO2work ||
 		(bdata.automode === 'cooling' && !s?.coolerCombi?.on)
 	) {
-		console.log('\tИгнор (normal) false')
+		// console.log('\tIgnore: разрешить управление')
 		return false
 	}
 	// Игнорирование работы ВНО: если комби склад с аварией авторежима + вкл оборудование
 	const alrAuto = isAlr(bld._id, bdata.automode)
-	console.log('\tИгнор (normal)', alrAuto)
+	// console.log('\tIgnore:', alrAuto ? 'запрет управления' : 'разрешить управление')
 	return alrAuto
 }
 
@@ -45,12 +45,12 @@ function cold(bld, obj, s, acc, bdata, solHeat) {
 	if (CO2work || bdata.automode === 'drying' || isN) {
 		// Отключение соленоидов подогрева
 		fnSol(bld._id, CO2work, solHeat)
-		console.log('\tИгнор (cold) удаление СО2+выкл сол. подогрева - true')
+		// console.log('\tIgnore: запрет управления')
 		return true
 	}
 	// Если есть авария авторежима то - разрешить управление
 	const alrAuto = isAlr(bld._id, bdata.automode)
-	console.log('\tИгнор (cold)', !alrAuto)
+	// console.log('\tIgnore:', !alrAuto ? 'запрет управления' : 'разрешить управление')
 	return !alrAuto
 }
 

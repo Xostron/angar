@@ -21,8 +21,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	initSoftsol(accAuto, sect, mS.coolerS, s)
 
 	// console.log(111, accAuto.cold.softSol)
+	// console.log(`-------------------${bld?.name} begin-------------------`)
 	for (const clr of mS.coolerS) {
-		console.log(`\n------------------------${bld?.name} begin-----------------------\n`)
 		// Аккумулятор испарителя
 		accAuto.cold[clr._id] ??= {}
 		accAuto.cold[clr._id].state ??= {}
@@ -63,7 +63,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	// Режим секции true-Авто
 	const sectM = retain?.[bld._id]?.mode?.[sect._id]
 	denied.off(bld._id, mS, s, fnChange, accAuto, alrAuto, sectM)
-	console.log(`\n-----------------------------${bld?.name} end-----------------------------`)
+	// console.log(`-------------------${bld?.name} end-------------------`)
 }
 
 module.exports = coolers

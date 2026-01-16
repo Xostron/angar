@@ -17,10 +17,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
+	// console.log(`-------------------${bld?.name} begin-------------------`)
 	for (const clr of mS.coolerS) {
-		console.log(
-			`\n----------------------------------${bld?.name} begin----------------------------------\n`
-		)
 		accAuto[clr._id] ??= {}
 		accAuto[clr._id].state ??= {}
 		// Состояние испарителя
@@ -55,9 +53,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				clr
 			)
 	}
-	console.log(
-		`\n----------------------------------${bld?.name} end----------------------------------`
-	)
+	// console.log(`-------------------${bld?.name} end-------------------`)
 }
 
 module.exports = coolers

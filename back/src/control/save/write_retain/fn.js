@@ -63,7 +63,7 @@ function positionVlv(obj) {
 function fnResult(data, key) {
 	if (!data) return
 	for (const idB in data) {
-		store.retain[idB][key] = data?.[idB]
+		store.retain[idB][key] = data[idB]
 		// Правило для окуривания | озонатора (key==='smoking' | 'ozon')
 		finishSmokingOzon(data[idB], store.retain[idB], key)
 	}

@@ -17,8 +17,8 @@ const { getIdsS } = require('@tool/get/building')
 function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto } = bdata
 	store.denied[bld._id] ??= {}
-
-	const supplySt = checkSupply( bld._id, clr._id, sect, obj.retain)
+	const idsS = getIdsS(obj.data.section, bld._id)
+	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain)
 	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
 
 	store.denied[bld._id][clr._id] =
@@ -57,8 +57,9 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 	store.denied[bld._id] ??= {}
+	const idsS = getIdsS(obj.data.section, bld._id)
 	// Проверка питания
-	const supplySt = checkSupply(bld._id, clr._id, sect, obj.retain)
+	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain)
 	// Готов ли агрегат
 	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId)
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
@@ -66,7 +67,6 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// Выведен ли из работы ВНО испарителя
 	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
 	// Местный режим секции
-	const idsS = getIdsS(obj.data.section, bld._id)
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	// Режим секции true-Авто
@@ -77,6 +77,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const alrClosed =
 		isExtralrm(bld._id, null, 'alrClosed') ||
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
+
 	store.denied[bld._id][clr._id] =
 		!start ||
 		alr ||
@@ -132,7 +133,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// true - Да (очищаем аккумулятор по испарителю и выключаем его)
 	clearCombi(bld._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
 
-	console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
+	// console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
 	// console.log('\t\tСклад в работе:', start)
 	// console.log('\t\tНет аварий комбинированного склада:', !alr)
 	// console.log('\t\tАгрегат готов к работе', aggr)

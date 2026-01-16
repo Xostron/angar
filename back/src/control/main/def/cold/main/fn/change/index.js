@@ -79,6 +79,5 @@ function ctrlFlap(idB, flap = [], accCold, isCN = true) {
 	// const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
 	// Заслонка оттайки (работает при оттайке)
 	const flapOn = isCN && accCold.defrostAll
-	console.log(2200, '*************************', flapOn, isCN)
 	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
 }
