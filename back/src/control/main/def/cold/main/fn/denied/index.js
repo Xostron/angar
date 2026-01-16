@@ -58,7 +58,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 	store.denied[bld._id] ??= {}
 	// Проверка питания
-	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
+	const supplySt = checkSupply(bld._id, clr._id, sect, obj.retain)
 	// Готов ли агрегат
 	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId)
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
