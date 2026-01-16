@@ -5,6 +5,7 @@
 // false - Останавливаем работу
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store')
+const { isExtralrm } = require('@tool/message/extralrm')
 
 // function supply(state, idB, retain) {
 // 	// Время ожидания между запуском и отключением питания
@@ -46,45 +47,67 @@ const { data: store } = require('@store')
 // 	return false
 // }
 
-function supply(state, idB, clrId, retain) {
+function supply(idB, clrId, sect, retain) {
 	// Время ожидания между запуском и отключением питания
-	const time = 10000
+	const timeH = 60 * 60000
+	const time = 20 * 60000
 	// const time = 30 * 60000
-	// Получаем время последнего запуска и выключения
+	// Получаем время последнего запуска и выключения из retain
 	const doc = retain?.[idB]?.supply?.[clrId] ?? {}
+	// Сохраняем в аккумулятор, он потом сохраняется в retain
 	store.supply[idB] ??= {}
 	store.supply[idB][clrId] = doc
-	// console.log('\tПитание: state', state, 'doc', doc)
-	if (!state) return false
+	console.log('\tПитание:, doc', doc)
+	// if (!state) return false
+
+	const noSupply = isExtralrm(idB, null, 'supply') || isExtralrm(idB, null, 'battery')
+	console.log(
+		'\t nosupply=',
+		noSupply,
+		'=',
+		isExtralrm(idB, null, 'supply'),
+		isExtralrm(idB, sect._id, 'supply')
+	)
 
 	// Питание отключено
-	if (!state?.on) {
-		// Питание было отключено в первый раз. Обновляем время
+	if (noSupply) {
+		// Питание было отключено. Обновляем время
 		if (!doc.off) {
 			// Обновляем время + записать в retain
 			doc.off = new Date()
 			doc.on = null
 		}
-		console.log('\t\tПитание отключено в', doc?.off?.toLocaleString(), 'Проверка:', compareTime(new Date(doc.off), time))
+		console.log(
+			'\t\tПитание отключено в',
+			doc?.off?.toLocaleString(),
+			'Проверка:',
+			compareTime(new Date(doc.off), time)
+		)
 		// Проверка времени
 		return false
 	}
-
-	// Питание в норме
-	// console.log('Питание в норме c ', doc.on?.toLocaleString());
-	// Не получали сигнал о выключении
-	if (!doc.off) return true
+	// Питание включили
 	// Обновляем время включения
 	if (!doc.on) doc.on = new Date()
+	// Первый запуск, питание в норме
+	if (!doc.off) {
+		console.log('Питание в норме c ', doc.on?.toLocaleString())
+		return true
+	}
 	// Питания дали раньше дельты. или вышло время ожидания
-	if (!compareTime(new Date(doc.off), time) || compareTime(new Date(doc.on), time)) {
+	if (!compareTime(new Date(doc.off), timeH) || compareTime(new Date(doc.on), time)) {
 		console.log('\t\tПитание дали раньше ')
 		// Обнуляю время отключения
 		doc.off = null
 		return true
 	}
-	console.log('\t\tПитание дали в ', doc.on, ' ожидаем проверку ', compareTime(new Date(doc.on), time))
+	console.log(
+		'\t\tПитание дали в ',
+		doc.on,
+		' ожидаем проверку ',
+		compareTime(new Date(doc.on), time)
+	)
 	return false
 }
 
-module.exports =  supply
+module.exports = supply

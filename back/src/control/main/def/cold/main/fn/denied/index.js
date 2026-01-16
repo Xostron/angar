@@ -15,15 +15,27 @@ const { getIdsS } = require('@tool/get/building')
  * @returns {boolean} true - запрет работы, false - разрешено
  */
 function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
-	const { start, s, se, m, accAuto, supply } = bdata
+	const { start, s, se, m, accAuto } = bdata
 	store.denied[bld._id] ??= {}
 
-	const supplySt = checkSupply(supply, bld._id, clr._id, obj.retain)
+	const supplySt = checkSupply( bld._id, clr._id, sect, obj.retain)
 	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
 
 	store.denied[bld._id][clr._id] =
 		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm'
-	// console.log(410, clr.name, sect.name, 'работа запрещена', store.denied[bld._id][clr._id])
+	console.log(
+		410,
+		clr.name,
+		sect.name,
+		'работа запрещена',
+		store.denied[bld._id][clr._id],
+		'=',
+		!start,
+		alr,
+		!aggr,
+		!supplySt,
+		stateCooler?.status === 'alarm'
+	)
 	// console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
 	clearAchieve(bld, obj, accAuto, false, start)
 

@@ -32,7 +32,10 @@ function scan(bld, obj) {
 	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
 	const accAuto = readAcc(bld._id, t)
 
-	const supply = store?.acc[bld._id]?.building?.supply
+	// TODO не используется
+	const supply = null
+	// const supply = store?.acc[bld._id]?.building?.supply
+
 	// Напорные вентиляторы всех секций
 	const resultFan = {
 		start: [],
@@ -41,7 +44,7 @@ function scan(bld, obj) {
 		warming: {},
 		force: [],
 		stg: [],
-		notDur:[]
+		notDur: [],
 	}
 
 	return { start, automode, mode, s, se, m, accAuto, resultFan, supply }
