@@ -4,19 +4,18 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Работа от генератора - выкл секции
 function genS(building, section, obj, s, se, m, automode, acc, data) {
-	acc[section._id] ??= {}
 	const sig = getSignal(section?._id, obj, 'gen')
 	// Сброс
 	if (sig === true) {
 		delExtralrm(building._id, section._id, 'gen')
-		acc[section._id]._alarm = false
+		acc._alarm = false
 	}
 	// Установка
-	if (sig === false && !acc[section._id].alarm) {
+	if (sig === false && !acc._alarm) {
 		wrExtralrm(building._id, section._id, 'gen', msg(building, section, 29))
-		acc[section._id]._alarm = true
+		acc._alarm = true
 	}
-	return acc[section._id]?._alarm ?? false
+	return acc?._alarm ?? false
 }
 
 module.exports = genS

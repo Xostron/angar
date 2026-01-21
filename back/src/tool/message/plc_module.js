@@ -72,9 +72,9 @@ function isErrM(idB, idM) {
  * @returns true - есть неисправные модули
  */
 function isErrMs(idB, mdl = []) {
-	// 1. Если рамы модулей нет, то смотрим на наличие неисправных модулей
+	// 1. Без рамы модулей: простая проверка, по наличию любых неисправных модулей
 	if (!mdl) return Object.keys(store.alarm?.module?.[idB] ?? {}).length ? true : false
-	// 2. Если рама модулей передана, то делаем проверку на "внешний" модуль
+	// 2. С рамой: исключаем из списка неисправных модулей, модули отмеченные как "внешний"
 	const aErr = Object.keys(store.alarm?.module?.[idB] ?? {}).filter((idM) => {
 		const foreign = mdl.find((el) => el._id === idM)?.foreign
 		return !foreign

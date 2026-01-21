@@ -1,22 +1,25 @@
-const { msgB } = require('@tool/message')
-const { getSumSigBld } = require('@tool/command/signal')
-const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { getSumSigBld, getSignal } = require('@tool/command/signal')
+const { getIdsS } = require('@tool/get/building')
+const { reset, set, blink } = require('../alr_closed/fn')
+const { data: store } = require('@store')
 
 // Аварийное закрытие клапанов - по низкой температуре (склад)
-function alrClosedB(bld, section, obj, s, se, m, automode, acc, data) {
-	// Сигнал только по складу
-	const sigB = getSumSigBld(bld._id, obj, 'low')
-	// Сброс
-	if (!sigB) {
-		delExtralrm(bld._id, null, 'alrClosed')
-		acc._alarm = false
-	}
-	// Установка
-	if (sigB && !acc._alarm) {
-		wrExtralrm(bld._id, null, 'alrClosed', msgB(bld, 26))
-		acc._alarm = true
-	}
-	return acc._alarm ?? null
+function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
+	// Настройки
+	const watch = s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000
+	const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 2) + 1
+	// Режим секции, хотя бы 1 секция в авто
+	const idsS = getIdsS(obj?.data?.section, bld._id)
+	const mode = idsS.some((el) => obj.retain[bld._id].mode?.[el._id])
+	// const r = getSig(sect?._id, obj, 'low')
+	// Значение сигнала
+	const sig = getSignal(bld?._id, obj, 'low')
+	// Аккумулятор слежения за срабатыванием
+	reset(bld, sect, acc, store.debounce)
+	set(bld, sect, sig, store.debounce, acc, watch, count)
+	blink(bld, sect, sig, acc)
+
+	return (acc._alarm ?? acc._self ?? null) && mode
 }
 
 module.exports = alrClosedB

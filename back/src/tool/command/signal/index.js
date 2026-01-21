@@ -1,12 +1,29 @@
 const signaltype = require('@dict/signal')
 const { puIO } = require('@tool/in_out')
-const { getIdBS, getBbySig } = require('@tool/get/building')
+const { getIdBS } = require('@tool/get/building')
 const { debDI } = require('@tool/sensor/debounce')
 const { data: store } = require('@store')
 
-// Получить значение сигнала
+/**
+ * Получить раму сигнала
+ * @param {*} ownerId 
+ * @param {*} obj 
+ * @param {*} type 
+ * @returns 
+ */
+function getSig(ownerId, obj, type) {
+	return obj.data?.signal?.find((o) => o.owner.id === ownerId && o.type == type) ?? null
+}
+
+/**
+ * Получить значение сигнала
+ * @param {*} ownerId Владелец сигнала: склад/секция
+ * @param {*} obj
+ * @param {*} type
+ * @returns
+ */
 function getSignal(ownerId, obj, type) {
-	const t = obj.data?.signal?.find((o) => o.owner.id === ownerId && o.type == type) ?? null
+	const t = getSig(ownerId, obj, type)
 	return obj.value?.[t?._id] ?? null
 }
 
@@ -114,6 +131,7 @@ function getSumSigBld(idB, obj, type, alr = true) {
 }
 
 module.exports = {
+	getSig,
 	getSignal,
 	getSignalFan,
 	getSignalList,

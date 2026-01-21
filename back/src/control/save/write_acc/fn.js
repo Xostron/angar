@@ -10,7 +10,7 @@ function cbAcc(obj, data) {
 	// Проход по ключам аккумулятора (extralrm, extra, timer, auto ...)
 	for (const key in obj) {
 		if (key === 'achieve') continue
-		// Запись пересечений obj c data
+		// Запись пересечений obj (аккумулятора) c data (данные файла)
 		all(obj[key], data[key])
 	}
 	const newO = { ...obj }

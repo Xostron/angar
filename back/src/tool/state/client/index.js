@@ -73,9 +73,20 @@ module.exports = async function state() {
 				Object.values(diffing ?? [])?.length
 			)
 		}
+		console.log(
+			'\x1b[32m%s\x1b[0m',
+			'Подготовлено данных:',
+			result?.length,
+			Object.values(diffing ?? [])?.length
+		)
 		// Запрос не успешен
-		if (!response.data || +diffing?.temp?.value===15) {
-			console.log('\x1b[32m%s\x1b[0m', '❌Нет соединения с Tenta', response?.message, diffing?.temp?.value)
+		if (!response.data || +diffing?.temp?.value === 15) {
+			console.log(
+				'\x1b[32m%s\x1b[0m',
+				'❌Нет соединения с Tenta',
+				response?.message,
+				diffing?.temp?.value
+			)
 			throw new Error('POS->Tenta: 3. ❌Не удалось передать данные на Tenta')
 		}
 		console.log('\x1b[32m%s\x1b[0m', '2.5. ✅Аккумулятор обновлен', result?.length)

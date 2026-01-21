@@ -19,7 +19,7 @@ const { getSumSigBld, getSignalList } = require('@tool/command/signal')
  */
 function battery(bld, sect, obj, s, se, m, automode, acc, data) {
 	// console.log(44, 'battery', acc)
-	const watch = s?.sys?.rwatch ?? s?.cooler?.rwatch ?? 30 * 60 * 100
+	const watch = s?.sys?.rwatch ?? s?.cooler?.rwatch ?? 30 * 60 * 1000
 	const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 3) + 1
 	// Склад: Сигнал "Питание в норме" false - питание в норме, true - питание отключено
 	const sigB = getSumSigBld(bld?._id, obj, 'supply')
