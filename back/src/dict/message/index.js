@@ -323,6 +323,13 @@ const data = {
 		msg: 'Авария питания (Ручной сброс)',
 		flt: [true],
 	},
+	103: {
+		// count: true,
+		code: 'heatingClrCrash',
+		typeSignal: 'critical',
+		msg: 'Оттайка. Отключен автомат питания',
+		flt: [true],
+	},
 	// ======== Неисправность модуля ========
 	110: { count: true, code: 'module', typeSignal: 'critical', msg: 'Нет связи' },
 	111: {

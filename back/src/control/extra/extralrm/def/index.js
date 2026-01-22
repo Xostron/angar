@@ -25,6 +25,7 @@ const notTune = require('./not_tune')
 const debdo = require('./deb_do')
 const battery = require('./battery')
 const ozon = require('./ozon')
+const heatingClrCrash = require('./heating_cooler')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -64,6 +65,7 @@ const def = {
 			supplyB,
 			ozon,
 			vlvCrash,
+			heatingClrCrash
 		},
 	},
 	// Доп. аварии холодильника

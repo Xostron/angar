@@ -87,4 +87,15 @@ function msgBB(building, code, msgBeg = '', msgEnd = '') {
 	return o
 }
 
-module.exports = { msg, msgB, msgV, msgF, msgBS, msgM, msgBeep, msgBB }
+function msgClr(building, coolers = [], idClr, code, msg = '') {
+	const o = { ...mes[code] }
+	const clr = coolers.find((el) => el._id === idClr)
+	o.title = clr?.name ? `${clr.name}.` : ''
+	o.buildingId = building._id
+	o.msg = msg ? o.msg + ' ' + msg : o.msg
+	o.uid = uuidv4()
+	o.date = new Date().toLocaleString('ru')
+	return o
+}
+
+module.exports = { msg, msgB, msgV, msgF, msgBS, msgM, msgBeep, msgBB, msgClr }
