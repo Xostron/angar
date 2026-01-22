@@ -16,11 +16,9 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	const toAlr = def[am]?.toAlrS(s, sect._id, acc)
 	const alrS = extralrm(bld, sect, obj, s, se, m, am, toAlr)
 
-	// const alrClosed = store.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed
 	const alrSe = alrSens(se)
 
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада
-	// const alr = alrS || alrAm || ban || alrBld || alrAlw || alrSe
 	const alr = alrS || (alrAm && !CO2work) || ban || alrBld || alrAlw || alrSe
 
 	console.log(

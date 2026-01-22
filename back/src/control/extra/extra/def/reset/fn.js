@@ -21,7 +21,6 @@ function onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc) {
 	// Для секции: Рама сигнала сброса аварии конкрентной секции
 	const el = getSig(ownerId, obj, 'reset')
 	// Для склада: берутся все выходы и по складу и по секции
-	// console.log(8801, el, getSignal(ownerId, obj, 'reset'))
 
 	// Вкл/выкл выхода
 	if (reason.some((el) => el)) {
@@ -71,7 +70,6 @@ function alrClosed(bld, ownerId, obj, se, s, isErrm) {
 		bld._id === ownerId ? 'building' : ownerId,
 		bld._id === ownerId ? 'alrClosedB' : 'alrClosed'
 	)
-	// console.log(88, store.acc?.[bld._id])
 	// Сигнал на автосброс аварии низкой температуры
 	const ac = !isErrm && sig && tcnl >= s.sys.acTcnl && !isNaN(tcnl) && !accAC?._alarm
 
@@ -81,14 +79,16 @@ function alrClosed(bld, ownerId, obj, se, s, isErrm) {
 		'Сигнал alrClosed=',
 		sig,
 
-		'Автосброс',
-		ac,
-		'=',
+		'Автосброс = ',
 		!isErrm,
 		sig,
-		tcnl >= s.sys.acTcnl,
-		`tcnl: ${tcnl}>=${s.sys.acTcnl}`,
-		!isNaN(tcnl)
+		`tcnl: ${tcnl}>=${s.sys.acTcnl} = ${tcnl >= s.sys.acTcnl}`,
+		!isNaN(tcnl),
+		!accAC?._alarm,
+		'=',
+		ac,
+		'Аккумулятор alrClosed =',
+		accAC
 	)
 
 	return ac

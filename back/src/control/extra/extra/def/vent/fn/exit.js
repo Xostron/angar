@@ -1,4 +1,4 @@
-const { isExtralrm } = require('@tool/message/extralrm')
+const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 const dict = {
@@ -37,9 +37,9 @@ const dict = {
  * @param {*} resultFan
  * @returns {boolean} true - разрешить работу, false - запрет работы
  */
-function exit(bld, code, s, alarm, ban, prepare, acc, resultFan) {
+function exit(bld, obj, code, s, alarm, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (!fnCheck(bld, code, s, alarm, ban, prepare)) {
+	if (!fnCheck(bld, obj, code, s, alarm, ban, prepare)) {
 		clear(bld, acc, resultFan, 1, 1, 1, 1, 1)
 		return false
 	}
@@ -56,9 +56,9 @@ function exit(bld, code, s, alarm, ban, prepare, acc, resultFan) {
  * @param {*} ban
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
-function fnCheck(bld, code, s, alarm, ban, prepare) {
+function fnCheck(bld, obj, code, s, alarm, ban, prepare) {
 	// Вычисление причин запрета ВВ
-	const reason = fnReason(bld, code, s, alarm, ban, prepare)
+	const reason = fnReason(bld, obj, code, s, alarm, ban, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
 	const ignore = [2, 3, 13, 14, 15, 16]
 	const err = reason
@@ -83,7 +83,7 @@ function fnCheck(bld, code, s, alarm, ban, prepare) {
 	return true
 }
 
-function fnReason(bld, code, s, alarm, ban, prepare) {
+function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 	const {
 		alrAuto,
 		CO2work,
@@ -98,9 +98,7 @@ function fnReason(bld, code, s, alarm, ban, prepare) {
 		idsS,
 		fan,
 	} = prepare
-	const alrClosed =
-		isExtralrm(bld._id, null, 'alrClosed') ||
-		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
+	const alrClosed = isAlrClosed(bld, obj)
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	return [

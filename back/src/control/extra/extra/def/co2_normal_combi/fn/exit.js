@@ -1,4 +1,4 @@
-const { isExtralrm } = require('@tool/message/extralrm')
+const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
 const dict = {
@@ -29,9 +29,9 @@ const dict = {
  * @param {*} resultFan
  * @returns {boolean} true - разрешить работу, false - запрет работы
  */
-function exit(bld, code, s, alarm, ban, prepare, acc, resultFan) {
+function exit(bld, obj, code, s, alarm, ban, prepare, acc, resultFan) {
 	// Очистка аккумулятора и однократное выключение ВНО (acc.firstCycle - флаг для однократной отработки)
-	if (code === 'off' || !fnCheck(bld, code, s, alarm, ban, acc, prepare)) {
+	if (code === 'off' || !fnCheck(bld, obj, code, s, alarm, ban, acc, prepare)) {
 		clear(bld, acc, resultFan, 1, 1, 1)
 		return false
 	}
@@ -48,9 +48,9 @@ function exit(bld, code, s, alarm, ban, prepare, acc, resultFan) {
  * @param {*} ban
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
-function fnCheck(bld, code, s, alarm, ban, acc, prepare) {
+function fnCheck(bld, obj, code, s, alarm, ban, acc, prepare) {
 	// Вычисление причин запрета
-	const reason = fnReason(bld, code, s, alarm, ban, acc, prepare)
+	const reason = fnReason(bld, obj, code, s, alarm, ban, acc, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
 	const ignore = [9, 10]
 	const err = reason
@@ -75,7 +75,7 @@ function fnCheck(bld, code, s, alarm, ban, acc, prepare) {
 }
 
 // Вычисление причин выключения "Удаления СО2"
-function fnReason(bld, code, s, alarm, ban, acc, prepare) {
+function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 	const {
 		am,
 		alrAuto,
@@ -95,9 +95,7 @@ function fnReason(bld, code, s, alarm, ban, acc, prepare) {
 		isHout,
 		validSe,
 	} = prepare
-	const alrClosed =
-		isExtralrm(bld._id, null, 'alrClosed') ||
-		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
+	const alrClosed = isAlrClosed(bld, obj)
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	// CO2 запущен

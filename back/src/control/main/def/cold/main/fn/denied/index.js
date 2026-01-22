@@ -3,7 +3,7 @@ const checkSupply = require('../supply')
 const { isReadyAgg, clear, clearCombi } = require('./fn')
 const { isAlr } = require('@tool/message/auto')
 const { clearAchieve } = require('@tool/message/achieve')
-const { isExtralrm } = require('@tool/message/extralrm')
+const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { getIdsS } = require('@tool/get/building')
 /**
  * @description Склад Холодильник: Запрет работы испарителя
@@ -74,9 +74,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// Настройка "Испаритель холодильного оборудования" = true/false
 	const off = (s?.coolerCombi?.on ?? true) === false
 	const alrStop = isExtralrm(bld._id, null, 'alarm')
-	const alrClosed =
-		isExtralrm(bld._id, null, 'alrClosed') ||
-		idsS.some((idS) => isExtralrm(bld._id, idS, 'alrClosed'))
+	const alrClosed = isAlrClosed(bld, obj)
 
 	store.denied[bld._id][clr._id] =
 		!start ||

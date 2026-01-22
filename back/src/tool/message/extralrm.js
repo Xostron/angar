@@ -1,4 +1,6 @@
 const { data: store } = require('@store')
+const { readAcc } = require('@store/index')
+const { getIdBS } = require('@tool/get/building')
 
 // Получить extralrm аварию
 function isExtralrm(idB, idS, code) {
@@ -38,8 +40,7 @@ function delExtralrm(idB, idS, code) {
  * @returns {boolean} Наличие аварий секции
  */
 function sumExtralrmSection(building, obj) {
-	const { data } = obj
-	const section = data.section.filter((el) => el.buildingId == building._id)
+	const section = obj.data.section.filter((el) => el.buildingId == building._id)
 	let alrS = false
 	//Список аварий: Авария низкой температуры
 	const list = ['alrClosed', 'overVlv', 'antibliz', 'local']
@@ -64,4 +65,31 @@ function sumExtralrmSection(building, obj) {
 	return alrS
 }
 
-module.exports = { isExtralrm, wrExtralrm, delExtralrm, sumExtralrmSection }
+
+/**
+ * Авария низкой температуры останавливает склад, если возникла авария в
+ * секции в авторежиме. Если секция выключена или в ручном,
+ * то весь склад не останавливается
+ * @param {*} bld Склад
+ * @param {*} obj
+ * @returns true - авария активна
+ */
+function isAlrClosed(bld, obj) {
+	const idBS = getIdBS(obj?.data?.section, bld._id)
+	// Читаем аккумулятор аварии низкой темп, и собираем ключи acc.result
+	//  - это итоговый сигнал аварии с учетом режима секции, также здесь учитывается
+	// авария низкой темп, которая принадлежит складу
+	const sum = idBS.map(
+		(ownerId) =>
+			readAcc(
+				bld._id,
+				bld._id === ownerId ? 'building' : ownerId,
+				bld._id === ownerId ? 'alrClosedB' : 'alrClosed'
+			)?.result
+	)
+	console.log(4400, sum)
+	if (sum.some((el) => !!el)) return true
+	return false
+}
+
+module.exports = { isExtralrm, wrExtralrm, delExtralrm, sumExtralrmSection, isAlrClosed }

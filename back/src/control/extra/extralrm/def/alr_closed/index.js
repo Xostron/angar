@@ -3,7 +3,7 @@ const { reset, set, blink } = require('./fn')
 const { data: store } = require('@store')
 
 // Аварийное закрытие клапанов - по низкой температуре данной секции
-// Останавливать склад - если секция в авто
+// с учетом режима секции: если в авто - то выключится весь склад, не авто - игнор аварии
 function alrClosed(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Настройки
 	const watch = s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000
@@ -25,7 +25,8 @@ function alrClosed(bld, sect, obj, s, se, m, automode, acc, data) {
 		store.debounce?.alrClosed?.[sect._id],
 		acc
 	)
-	return (acc._alarm ?? acc._self ?? null) && mode
+	acc.result = (acc._alarm ?? acc._self ?? null) && mode
+	return acc.result
 }
 
 module.exports = alrClosed
