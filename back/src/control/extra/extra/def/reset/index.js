@@ -1,7 +1,6 @@
 const { data: store } = require('@store')
-const fn_1 = require('./fn_1')
-const fn_2 = require('./fn_2')
-
+const { isErrMs } = require('@tool/message/plc_module')
+const { getIdBS } = require('@tool/get/building')
 /**
  * Управление выходом "Сброс аварии" для дезактиввации реле низкой температуры
  * п1. Нажатие на кнопку и первый цикл программы - включает все выходы "Сброса аварии"
@@ -23,11 +22,13 @@ const fn_2 = require('./fn_2')
  * @param {*} ban
  */
 function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
-	// п1
-	fn_1(bld, m, acc)
+	const idBS = getIdBS(obj?.data?.section, bld._id)
+	// Неисправность модулей
+	const isErrm = isErrMs(bld._id, obj?.data?.module)
 
-	// п2
-	fn_2(bld, obj, s, se, m, acc)
+	idBS.forEach((ownerId) => onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc))
+
+	console.log(88001, acc)
 }
 
 module.exports = resetDO
