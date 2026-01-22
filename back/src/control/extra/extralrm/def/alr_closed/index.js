@@ -10,14 +10,21 @@ function alrClosed(bld, sect, obj, s, se, m, automode, acc, data) {
 	const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 2) + 1
 	// Режим секции
 	const mode = obj.retain[bld._id].mode?.[sect._id]
-	// const r = getSig(sect?._id, obj, 'low')
 	// Значение сигнала
 	const sig = getSignal(sect?._id, obj, 'low')
 	// Аккумулятор слежения за срабатыванием
 	reset(bld, sect, acc, store.debounce)
 	set(bld, sect, sig, store.debounce, acc, watch, count)
 	blink(bld, sect, sig, acc)
-
+	console.log(
+		5500,
+		sect.name,
+		`Режим = ${mode ? 'авто' : 'не авто'}`,
+		'Авария = ',
+		(acc._alarm ?? acc._self ?? null) && mode,
+		store.debounce?.alrClosed?.[sect._id],
+		acc
+	)
 	return (acc._alarm ?? acc._self ?? null) && mode
 }
 

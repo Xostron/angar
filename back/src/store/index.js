@@ -156,16 +156,25 @@ const data = {
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
 }
 
-// Сссылка на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
-function readAcc(buildingId, name, sectionId) {
+//
+/**
+ * Получить ссылку на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
+ * @param {*} idB Ид склада
+ * @param {*} name Аккумулятор делится на склад и секции:
+ * name = 'building' | idS | 'combi'
+ * @param {*} key Аккумулятор уровня name, содержит уже конкретные задачи:
+ * по коду extralrm/extra | banTimer | cold(расчеты холодильника) и др.
+ * @returns {object}
+ */
+function readAcc(idB, name, key) {
 	data.acc ??= {}
-	data.acc[buildingId] ??= {}
-	if (!name && !sectionId) return data.acc[buildingId]
-	data.acc[buildingId][name] ??= {}
-	if (!sectionId) return data.acc[buildingId][name]
+	data.acc[idB] ??= {}
+	if (!name && !key) return data.acc[idB]
+	data.acc[idB][name] ??= {}
+	if (!key) return data.acc[idB][name]
 
-	data.acc[buildingId][name][sectionId] ??= {}
-	return data.acc[buildingId][name][sectionId]
+	data.acc[idB][name][key] ??= {}
+	return data.acc[idB][name][key]
 }
 
 // Установить флаг готовности секции - авто/руч/выкл

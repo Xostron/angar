@@ -3,6 +3,7 @@ const { getSignal, getSig } = require('@tool/command/signal')
 const { isReset, reset } = require('@tool/reset')
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store')
+const { readAcc } = require('@store/index')
 
 /**
  * п2. Автосброс аварии закрытия клапанов (включение конкретного выхода "Сброса аварии,
@@ -32,18 +33,16 @@ function onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc) {
 	// Включить выход на 3 сек
 	const time = acc?.[ownerId]?.wait && compareTime(acc?.[ownerId]?.wait, 3000)
 	if (acc?.[ownerId]?.wait && !time) {
-		// Для секции: включение выхода секции
-		if (bld._id !== ownerId) ctrlDO(el, bld._id, 'on')
-		// Для склада: включение всех выходов
-		else DOReset(m.reset, bld, 'off')
+		DOReset(el, m.reset, bld, ownerId, 'on')
 		// Выключить флаг сброса аварии
 		reset(null, false, false)
 	}
 
 	// По истечению 3 сек -> Выключить выход
 	if (time) {
-		ctrlDO(el, bld._id, 'off')
+		DOReset(el, m.reset, bld, ownerId, 'off')
 		delete acc?.[ownerId]?.wait
+		reset(null, false, false)
 	}
 }
 
@@ -66,8 +65,15 @@ function alrClosed(bld, ownerId, obj, se, s, isErrm) {
 	const sig = getSignal(ownerId, obj, 'low')
 	// Значение температуры канала: по складу/по секции
 	let tcnl = bld._id === ownerId ? se.tcnl : obj?.value?.total?.[ownerId]?.tcnl?.min
+	// Авария низкой температуры стала только через Ручной сброс
+	const accAC = readAcc(
+		bld._id,
+		bld._id === ownerId ? 'building' : ownerId,
+		bld._id === ownerId ? 'alrClosedB' : 'alrClosed'
+	)
+	// console.log(88, store.acc?.[bld._id])
 	// Сигнал на автосброс аварии низкой температуры
-	const ac = !isErrm && sig && tcnl >= s.sys.acTcnl && !isNaN(tcnl)
+	const ac = !isErrm && sig && tcnl >= s.sys.acTcnl && !isNaN(tcnl) && !accAC?._alarm
 
 	console.log(
 		8800,
@@ -94,6 +100,9 @@ function alrClosed(bld, ownerId, obj, se, s, isErrm) {
  * @param {*} bld
  * @param {*} type
  */
-function DOReset(arr, bld, type) {
-	arr.forEach((el) => ctrlDO(el, bld._id, type))
+function DOReset(el, arr, bld, ownerId, type) {
+	// Для секции: включение выхода секции
+	if (bld._id !== ownerId) ctrlDO(el, bld._id, 'on')
+	// Для склада: включение всех выходов
+	else arr.forEach((el) => ctrlDO(el, bld._id, type))
 }

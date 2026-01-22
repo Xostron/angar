@@ -11,14 +11,22 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Режим секции, хотя бы 1 секция в авто
 	const idsS = getIdsS(obj?.data?.section, bld._id)
 	const mode = idsS.some((el) => obj.retain[bld._id].mode?.[el._id])
-	// const r = getSig(sect?._id, obj, 'low')
+
 	// Значение сигнала
 	const sig = getSignal(bld?._id, obj, 'low')
 	// Аккумулятор слежения за срабатыванием
-	reset(bld, sect, acc, store.debounce)
-	set(bld, sect, sig, store.debounce, acc, watch, count)
-	blink(bld, sect, sig, acc)
-
+	reset(bld, null, acc, store.debounce)
+	set(bld, null, sig, store.debounce, acc, watch, count)
+	blink(bld, null, sig, acc)
+	console.log(
+		5500,
+		bld.name,
+		`Режим = ${mode ? 'авто' : 'не авто'}`,
+		'Авария = ',
+		(acc._alarm ?? acc._self ?? null) && mode,
+		store.debounce?.alrClosed?.[bld._id],
+		acc
+	)
 	return (acc._alarm ?? acc._self ?? null) && mode
 }
 

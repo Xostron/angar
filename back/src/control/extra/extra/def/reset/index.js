@@ -1,6 +1,7 @@
 const { data: store } = require('@store')
 const { isErrMs } = require('@tool/message/plc_module')
 const { getIdBS } = require('@tool/get/building')
+const onOffDO = require('./fn')
 /**
  * Управление выходом "Сброс аварии" для дезактиввации реле низкой температуры
  * п1. Нажатие на кнопку и первый цикл программы - включает все выходы "Сброса аварии"
