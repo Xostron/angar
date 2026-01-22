@@ -80,7 +80,8 @@ module.exports = async function state() {
 			Object.values(diffing ?? [])?.length
 		)
 		// Запрос не успешен
-		if (!response.data || +diffing?.temp?.value === 15) {
+		if (!response.data) {
+			// || +diffing?.temp?.value === 15) {
 			console.log(
 				'\x1b[32m%s\x1b[0m',
 				'❌Нет соединения с Tenta',

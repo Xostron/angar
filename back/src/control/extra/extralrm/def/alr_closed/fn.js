@@ -57,7 +57,7 @@ function reset(bld, sect, acc, accDeb) {
 function blink(bld, sect, sig, acc) {
 	// Если уже в аварии, то выходи
 	if (acc._alarm) {
-		const o = sect?._id ? msg(bld, sect, 26, '. Ручной сброс') : msgB(bld, 26, '. Ручной сброс')
+		const o = sect?._id ? msg(bld, sect, 26, '(Ручной сброс)') : msgB(bld, 26, '(Ручной сброс)')
 		wrExtralrm(bld._id, sect?._id, 'alrClosed', o)
 		return
 	}

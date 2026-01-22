@@ -42,8 +42,10 @@ function delExtralrm(idB, idS, code) {
 function sumExtralrmSection(building, obj) {
 	const section = obj.data.section.filter((el) => el.buildingId == building._id)
 	let alrS = false
-	//Список аварий: Авария низкой температуры
-	const list = ['alrClosed', 'overVlv', 'antibliz', 'local']
+	// Авария низкой температуры
+	const isAC = isAlrClosed(building, obj)
+	//Список аварий:
+	const list = ['overVlv', 'antibliz', 'local']
 	// id секций склада
 	const secIds = section.map((el) => el._id)
 	// аварии склада
@@ -62,9 +64,8 @@ function sumExtralrmSection(building, obj) {
 		}
 		if (alrS) break
 	}
-	return alrS
+	return alrS || isAC
 }
-
 
 /**
  * Авария низкой температуры останавливает склад, если возникла авария в
