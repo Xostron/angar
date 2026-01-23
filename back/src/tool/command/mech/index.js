@@ -130,6 +130,9 @@ function mechB(bId, type, obj) {
 	const clrsId = cold?.cooler?.map((el) => el._id) ?? []
 	const heatingClrAll =
 		data?.heating?.filter((el) => clrsId.includes(el.owner.id) && el.type === 'cooler') ?? []
+	// Все зслонки испарителей
+	const flapClrAll =
+		data?.heating?.filter((el) => clrsId.includes(el.owner.id) && el.type === 'flap') ?? []
 
 	// Все вентиляторы склада: напорные, разгонные вно испарителей
 	const fanAll = data?.fan
@@ -164,8 +167,9 @@ function mechB(bId, type, obj) {
 		heatingAll,
 		heatingWAll,
 		heatingClrAll,
+		flapClrAll,
 		sect,
-		ozon
+		ozon,
 	}
 }
 

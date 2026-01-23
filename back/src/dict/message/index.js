@@ -222,7 +222,7 @@ const data = {
 			count: false,
 			code: 'off',
 			typeSignal: 'critical',
-			msg: 'Выбит автоматический выключатель',
+			msg: 'Выключен автомат питания',
 			flt: [true],
 		},
 	],
@@ -240,7 +240,7 @@ const data = {
 			count: true,
 			code: 'off',
 			typeSignal: 'critical',
-			msg: 'Отключен автомат питания',
+			msg: 'Выключен автомат питания',
 		},
 		{
 			count: true,
@@ -323,11 +323,18 @@ const data = {
 		msg: 'Авария питания (Ручной сброс)',
 		flt: [true],
 	},
-	103: {
+	104: {
 		// count: true,
 		code: 'heatingClrCrash',
 		typeSignal: 'critical',
-		msg: 'Оттайка. Отключен автомат питания',
+		msg: 'Оттайка. Выключен автомат питания',
+		flt: [true],
+	},
+	105: {
+		// count: true,
+		code: 'heatingClrCrash',
+		typeSignal: 'critical',
+		msg: 'Заслонка. Выключен автомат питания',
 		flt: [true],
 	},
 	// ======== Неисправность модуля ========
