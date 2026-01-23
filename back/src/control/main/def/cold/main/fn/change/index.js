@@ -1,5 +1,5 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
-const { softsol } = require('./soft_solenoid')
+// const { softsol } = require('./soft_solenoid')
 const { isCombiCold } = require('@tool/combi/is')
 const _MAX_SP = 100
 const _MIN_SP = 20
@@ -42,7 +42,8 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	const isCN = isCombiCold(bld, automode, s)
 	// Управление механизмами
 	// Ступенчатое управление соленоидами
-	softsol(idB, solenoid, sl, f, h, clr, accAuto)
+	// softsol(idB, solenoid, sl, f, h, clr, accAuto)
+	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	// ВНО испарителя
 	fan.forEach((el) => {
 		// f = null - означает игнорирование ВНО испарителя, разрешение на работу в обычном режиме комби склада

@@ -1,7 +1,7 @@
 const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
 const denied = require('../../fn/denied')
-const { initSoftsol } = require('../../fn/change/soft_solenoid')
+// const { initSoftsol } = require('../../fn/change/soft_solenoid')
 const { isAlr } = require('@tool/message/auto')
 /**
  * Склад Комби: Логика испарителей
@@ -20,7 +20,6 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 
 	// initSoftsol(accAuto, sect, mS.coolerS, s)
 
-	// console.log(111, accAuto.cold.softSol)
 	// console.log(`-------------------${bld?.name} begin-------------------`)
 	for (const clr of mS.coolerS) {
 		// Аккумулятор испарителя
