@@ -129,7 +129,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	if (!store.denied[bld._id][clr._id]) return false
 
 	// true - Да (очищаем аккумулятор по испарителю и выключаем его)
-	clearCombi(bld._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
+	clearCombi(bld._id, sect._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
 
 	// console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
 	// console.log('\t\tСклад в работе:', start)

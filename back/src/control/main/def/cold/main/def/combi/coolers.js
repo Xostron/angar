@@ -18,7 +18,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	const { data, retain } = obj
 	const { start, s, se, m, accAuto, supply, automode } = bdata
 
-	initSoftsol(accAuto, sect, mS.coolerS, s)
+	// initSoftsol(accAuto, sect, mS.coolerS, s)
 
 	// console.log(111, accAuto.cold.softSol)
 	// console.log(`-------------------${bld?.name} begin-------------------`)
