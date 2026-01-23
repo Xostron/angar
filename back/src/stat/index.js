@@ -33,6 +33,11 @@ function statOnChange(obj, history) {
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event', force)
 	historyLog(achieve, store.prev.achieve, 'event', force)
+	// Напряжение
+	// TODO включить когда появится модуль 701 на стенде
+	// const pui =  data.device.filter((el) => el.device.code === 'pui')
+	// pLog(data, pui, value, 'voltage', force)
+	// Принудительное логирование в полночь
 	if (force) {
 		// Датчики (Total после анализа)
 		sensTotalLog(store?.value?.total, data.building, force)

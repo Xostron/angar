@@ -7,6 +7,9 @@ const { getIdSB, getOwnerClr } = require('@tool/get/building')
  */
 function fnPrev(id, val, level) {
 	switch (level) {
+		case 'voltage':
+			store.prev[id] = [val.Ua, val.Ub, val.Uc]
+			break
 		case 'watt':
 			store.prev[id] = [val.Pa, val.Pb, val.Pc]
 			break
@@ -50,6 +53,10 @@ function message(data, el, level, value) {
 			el.owner.type == 'section' ? (secId = el.owner.id) : (clrId = el.owner.id)
 			v = +value[el._id] ?? 0
 			break
+		case 'voltage':
+			secId = el.sectionId
+			v = [value[el._id].Ua, value[el._id].Ub, value[el._id].Uc]
+			break
 		case 'watt':
 			secId = el.sectionId
 			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
@@ -90,6 +97,10 @@ function check(val, prev, level) {
 	if (val === undefined) return false
 	let v, vprev
 	switch (level) {
+		case 'voltage':
+			v = [val.Ua, val.Ub, val.Uc]
+			vprev = [prev?.Ua, prev?.Ub, prev?.Uc]
+			break
 		case 'watt':
 			v = [val.Pa, val.Pb, val.Pc]
 			break

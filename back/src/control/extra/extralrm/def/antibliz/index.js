@@ -20,7 +20,7 @@ function antibliz(bld, sect, obj, s, se, m, automode, acc, data) {
 	reset(bld, sect, s, acc)
 	// Установка аварии
 	set(bld, sect, obj, m.vlvS, acc, s)
-	console.log(111,acc)
+	// console.log(111,acc)
 	return acc?._alarm ?? false
 }
 

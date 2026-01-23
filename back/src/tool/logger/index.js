@@ -33,6 +33,7 @@ const logger = createLogger({
 		hourlyT('cooler'),
 		hourlyT('aggregate'),
 		hourlyT('device'),
+		hourlyT('voltage'),
 	],
 })
 
