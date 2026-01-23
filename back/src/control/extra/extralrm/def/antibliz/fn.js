@@ -5,32 +5,34 @@ const { compareTime } = require('@tool/command/time')
 const { isCombiCold } = require('@tool/combi/is')
 const { isExtra } = require('@tool/message/extra')
 
-function set(bld, sect, value, vlvS, acc, s) {
+function set(bld, sect, obj, vlvS, acc, s) {
 	// Уже в аварии - выходим из итерации
 	if (acc._alarm) return
 	// Размер очереди для фиксации состояний клапана
-	const count = (s.antibliz.count ?? 0) * 2
+	const count = ((s?.antibliz?.count ?? 3)) * 2
+	const watch = s?.antibliz?.time ?? 30 * 60 * 1000
 	// ['cls', 'other','cls', 'other','cls]
 	acc.queue ??= []
-	// Состояние приточного клапана
+	// Концевик закрыто приточного клапана
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
-	const state = curStateV(vlvIn._id, value) === 'cls' ? 'cls' : 'other'
+	const lc = obj.value[vlvIn._id]?.close
+	// console.log(1100, vlvIn, lc)
 
 	// Логика
-	// Фиксируем состояние клапана в очереди
-	if (acc.queue.at(-1)?.state !== state) acc.queue.push({ state, date: new Date() })
+	// Фиксируем состояние закрытого концевика в очереди
+	if (acc.queue.at(-1)?.state !== lc) acc.queue.push({ state: lc, date: new Date() })
 	// Размер очереди превышен -> удаляем первый элемент
-	if (acc.queue.length > count) {
-		acc.queue.shift()
-	}
+	if (acc.queue.length > count) acc.queue.shift()
+
 	// Из очереди отфильтровываем только состояния "клапан закрыт"
-	const onlyCls = acc.queue.filter((el) => el.state === 'cls')
+	const onlyCls = acc.queue.filter((el) => el.state === true)
+	// console.log(1100, onlyCls)
 	// Очередь не заполнена - выходим
-	if (onlyCls.length < s.antibliz.count) return
+	if (onlyCls.length < s?.antibliz?.count) return
 	// Очередь заполнена -> проверяем время
 	const delta = onlyCls.at(-1).date - onlyCls[0].date
 	// Время между последними состояниями больше  -> Авария false
-	if (delta > s.antibliz.time) return
+	if (delta >= watch) return
 	//Время меньше порога -> Авария true
 	wrExtralrm(bld._id, sect._id, 'antibliz', msg(bld, sect, 13))
 	acc._alarm = true

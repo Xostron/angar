@@ -1,4 +1,4 @@
-const { msgV, msgB, msgClr } = require('@tool/message')
+const { msgClr } = require('@tool/message')
 const { getSignal, getSig } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
