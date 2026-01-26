@@ -1,6 +1,7 @@
 const { msg } = require('@tool/message')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { data: store, readAcc } = require('@store')
+const { isAllStarted } = require('@store/index')
 
 // TODO 42 - ступенчатое управление (вернуть обратно по требованию)
 // Температура канала ниже рекомендованной (комби-холодильник)
@@ -25,16 +26,14 @@ const { data: store, readAcc } = require('@store')
 // 	}
 // }
 
-
 function tChannel(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	// Комби-холодильник: Флаг для отключения испарителей, true - все вспомагательные механизмы подогрева канала запущены
-	const allStarted = store?.watchdog?.softFan?.[sect]?.allStarted
-	if (!allStarted) {
+	if (!isAllStarted(sect._id)) {
 		delExtra(bld._id, sect._id, 't_channel')
 		acc.flag = false
 	}
 	// Установка
-	if (allStarted && !acc.flag) {
+	if (isAllStarted(sect._id) && !acc.flag) {
 		wrExtra(bld._id, sect._id, 't_channel', {
 			date: new Date(),
 			...msg(bld, sect, 41),

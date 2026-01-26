@@ -5,6 +5,8 @@ const { isAlr } = require('@tool/message/auto')
 const { clearAchieve } = require('@tool/message/achieve')
 const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { getIdsS } = require('@tool/get/building')
+const { isAllStarted } = require('@store/index')
+const { compareTime } = require('@tool/command/time')
 /**
  * @description Склад Холодильник: Запрет работы испарителя
  * @param {object} bld Склад
@@ -34,7 +36,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		alr,
 		!aggr,
 		!supplySt,
-		stateCooler?.status === 'alarm'
+		stateCooler?.status === 'alarm',
 	)
 	// console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
 	clearAchieve(bld, obj, accAuto, false, start)
@@ -218,7 +220,32 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 	// }
 }
 
-module.exports = { cold: deniedCold, combi: deniedCombi, off: offDenied }
+function offByTcnl(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
+	mS.coolerS.forEach((clr) => {
+		// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
+		// + доп задержка для защиты двигателя от частого включения
+		accAuto.cold ??= {}
+		accAuto.cold[clr.sectionId] ??= {}
+		if (isAllStarted(clr.sectionId)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
+		const time = compareTime(
+			accAuto?.cold?.[clr.sectionId]?.allStarted,
+			s?.coolerCombi?.allStart ?? 10000,
+		)
+		if (!time) return
+
+		// Испаритель запрещен к работе, но ВНО испарителя не блокируется при:
+		// 1. в режиме обычного склада (нет аварий авторежима)
+		// 2. Секция в ручном режиме
+		// 3. Включено окуривание
+		// 4. Включено озонирование
+		// 5. Выключено оборудование испарителя
+		if (!alrAuto || sectM === false || s?.smoking?.on || s?.ozon?.on || !s?.coolerCombi?.on) {
+			fnChange(0, null, 0, 0, null, clr)
+		} else fnChange(0, 0, 0, 0, null, clr)
+	})
+}
+
+module.exports = { cold: deniedCold, combi: deniedCombi, off: offDenied, offByTcnl }
 
 /**
  *

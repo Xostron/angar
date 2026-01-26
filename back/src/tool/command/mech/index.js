@@ -1,4 +1,5 @@
 const { getIdBS } = require('@tool/get/building')
+const { transformClr, getClr } = require('./fn')
 
 // Исполнительные механизмы секции
 function mech(obj, idS, idB) {
@@ -13,17 +14,13 @@ function mech(obj, idS, idB) {
 	// Обогрев клапанов
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
 	// Испарители секции(соленоид + ВНО + оттайка)
-	const coolerS = []
-	cooler.forEach((el) => {
-		if (el.sectionId != idS) return
-		coolerS.push(transformClr(el, data))
-	})
+	const coolerS = getClr(data, idS)
 	// ВНО испарителей (только рабочие и исключая дубляжи: 1 ВНО на 2 и более испарителя)
 	// Вно испарителей (все вно, включая дубляжи)
 	const fanClrRaw = coolerS.flatMap((el) => el.fan)
 	// Вно испарителей (только рабочие state!=alarm и state!=off)
 	let fanClr = fanClrRaw.filter(
-		(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id]
+		(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id],
 	)
 	// Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
 	fanClr = Object.values(
@@ -31,7 +28,7 @@ function mech(obj, idS, idB) {
 			if (acc[el.module.id + el.module.channel]) return acc
 			acc[el.module.id + el.module.channel] = el
 			return acc
-		}, {})
+		}, {}),
 	)
 	// Вно испарителей с любым state, но исключая дубляжи
 	let allFanClr = Object.values(
@@ -39,7 +36,7 @@ function mech(obj, idS, idB) {
 			if (acc[el.module.id + el.module.channel]) return acc
 			acc[el.module.id + el.module.channel] = el
 			return acc
-		}, {})
+		}, {}),
 	)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
@@ -50,7 +47,7 @@ function mech(obj, idS, idB) {
 				el.owner.id === idS &&
 				el.type === 'fan' &&
 				value[el._id].state != 'alarm' &&
-				!retain?.[idB]?.fan?.[idS]?.[el._id]
+				!retain?.[idB]?.fan?.[idS]?.[el._id],
 		)
 		.map((el) => {
 			const ao = binding.find((b) => b.owner.id === el._id)
@@ -67,7 +64,7 @@ function mech(obj, idS, idB) {
 	const connect = signal.filter((el) => el.owner.id == idS && el.type == 'connect')
 	// Выход сигнала Сброс аварии (создается как в секции, так и для склада)
 	const reset = signal.filter(
-		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset'
+		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset',
 	)
 	// Напорные ВНО секции для extralrm (отслеживание аварий)
 	const fanSAll = [...fan.filter((el) => el.owner.id === idS && el.type === 'fan'), ...fanClr]
@@ -96,11 +93,11 @@ function mechB(bId, type, obj) {
 	let idS = getIdBS(data?.section, bId)
 	// Увлажнители склада
 	const wettingS = data.device.filter(
-		(el) => el?.device?.code === 'wetting' && idS.includes(el.sectionId)
+		(el) => el?.device?.code === 'wetting' && idS.includes(el.sectionId),
 	)
 	// Озонаторы склада
 	const ozon = data.device.filter(
-		(el) => el?.device?.code === 'ozon' && idS.includes(el.sectionId)
+		(el) => el?.device?.code === 'ozon' && idS.includes(el.sectionId),
 	)
 	// Разгонные вентиляторы
 	const fanA = data?.fan?.filter((el) => idS.includes(el.owner.id) && el.type === 'accel')
@@ -205,31 +202,6 @@ function fnCold(idB, obj) {
 	// ВНО испарителей
 	const fan = cooler.flatMap((el) => el.fan)
 	return { signal: sigB, aggregate: aggr, cooler, heating, device, slaveAgg, fan }
-}
-
-// Рама испарителя
-function transformClr(doc, data) {
-	return {
-		...doc,
-		// Соленоиды холода
-		solenoid: doc.solenoid.map((el) => {
-			const b = data.binding.find((e) => e.owner.id === el._id)
-			return { ...el, module: { id: b.moduleId, channel: b.channel } }
-		}),
-		// ВНО
-		fan: data.fan
-			.filter((el) => el.owner.id === doc._id)
-			.map((el) => {
-				const ao = data?.binding.find((b) => b.owner.id === el._id)
-				return !ao ? el : { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
-			}),
-		// Оттайка
-		heating: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'cooler'),
-		// Соленоиды подогрева
-		solHeat: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'channel'),
-		// Заслонка оттайки
-		flap: data.heating.filter((el) => el.owner.id === doc._id && el.type == 'flap'),
-	}
 }
 
 module.exports = { mech, mechB }

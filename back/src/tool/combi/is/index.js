@@ -1,5 +1,8 @@
 const { isAlr } = require('@tool/message/auto')
 const { mech } = require('@tool/command/mech')
+const { isAllStarted } = require('@store/index')
+const { data: store } = require('@store')
+const { getStateClr } = require('@tool/cooler')
 
 /**
  * Склад комби-холод = тип комби-холод && режим хранения &&
@@ -38,21 +41,31 @@ function isCombiCold(bld, am, s) {
 function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	// По-умолчанию ВНО испарителя включены
 	let state = true
+	// Если температура канала низкая и включены все механизмы подогрева,
+	// то выключаем испарители, при этом при выключенных испарителях,
+	// здесь происходит блокировка ВНО секции, но их не нужно в этой ситуации блокировать
+	if (isAllStarted(idS)) {
+		// кол-во пропускаемых циклов = 2
+		store.cycle.goVno = new Date()
+		return true
+	}
 	// Если Продукт достиг задания - возврат true, чтобы не было блокировки ВНО секций
-	if (bdata.accAuto.cold?.flagFinish) return state
+	if (bdata.accAuto.cold?.flagFinish) return true
 
 	if (isCombiCold(bld, bdata?.automode, bdata?.s)) {
-		const mS = mech(obj, idS, bld._id)
-		// Агрегированное состояние испарителей секций
-		state = mS.coolerS.some((clr) => {
-			const stateClr = obj?.value?.[clr._id]?.state
-			return stateClr === 'off-on-off' || stateClr === 'on-on-off'
-		})
+		state = getStateClr(bld, idS, obj)
+		// Задержка инертности включения испарителя, после isAllStarted
+		// if (!state && store.cycle.goVno > 0) {
+		// 	store.cycle.goVno--
+		// 	return true
+		// }
+		// store.cycle.goVno = 0
+		if (state) store.cycle.goVno = null
 		// Если имеется хотя бы один испаритель у которого включен ВНО, то разрешаем работу ВНО
-		// console.log(1, 'state', state)
-		return state
+		console.log(1, 'state', state, store.cycle.goVno)
+		return state || store.cycle.goVno
 	}
-	return state
+	return true
 }
 
 /**
@@ -76,18 +89,17 @@ function isCoolerCombiOn(bld, bdata) {
 	// const alrAuto = isAlr(bld._id, automode)
 	//
 	// if (bld?.type === 'combi' && automode === 'cooling' && alrAuto)
-	if (isCombiCold(bld, automode, s))
-		coolerCombiOn = s?.coolerCombi?.on ?? true
+	if (isCombiCold(bld, automode, s)) coolerCombiOn = s?.coolerCombi?.on ?? true
 	//
 	console.log(
 		'Настройка "Испаритель холодильного оборудования" =',
 		s?.coolerCombi?.on,
-		coolerCombiOn
+		coolerCombiOn,
 	)
 	//
 	if (coolerCombiOn === false)
 		console.log(
-			'Комби склад. Испарители и ВНО выключены. Настройка "Испаритель холодильного оборудования" ВЫКЛ'
+			'Комби склад. Испарители и ВНО выключены. Настройка "Испаритель холодильного оборудования" ВЫКЛ',
 		)
 	return coolerCombiOn
 }

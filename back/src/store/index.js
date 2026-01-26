@@ -74,6 +74,7 @@ const data = {
 	aCmd: null,
 	// Cлежение за временем работы периферии (откр/закр клапанов, вкл/выкл вентиляторов )
 	watchdog: { softFan: {} },
+
 	// Аккумулятор (Промежуточные данные) - для Авторежим, Доп. функции, Доп. аварии
 	acc: {},
 	// Аккумулятор (куча) для расчетов (здесь можно хранить всякое)
@@ -146,6 +147,10 @@ const data = {
 	past: null,
 	// Флаги: появилась новая авария, ушла авария (для обновления state )
 	// isUpdate: false,
+	cycle: {
+		goVno: null,
+	},
+
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),
@@ -209,6 +214,10 @@ function setToOffBuild(obj) {
 function setTick() {
 	data.tick = +new Date().getTime()
 }
+// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
+function isAllStarted(idS) {
+	return data.watchdog.softFan?.[idS]?.allStarted
+}
 
 // Базовая директория проекта
 const baseDir = data.baseDir
@@ -228,6 +237,7 @@ module.exports = {
 	factoryDir,
 	accDir,
 
+	isAllStarted,
 	setTick,
 	setToMan: toggleMode('toMan'),
 	setToAuto: toggleMode('toAuto'),

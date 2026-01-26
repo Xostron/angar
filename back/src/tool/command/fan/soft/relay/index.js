@@ -5,7 +5,7 @@ const turnOff = require('../fn/turn_off')
 const turnOn = require('../fn/turn_on')
 const init = require('../fn/init')
 const fnSolHeat = require('../fn/sol_heat')
-const isAllStarted = require('../fn/all_started')
+const initAllStarted = require('../fn/all_started')
 const { fnLimit } = require('../fn/vent')
 const { isCombiCold } = require('@tool/combi/is')
 
@@ -39,13 +39,13 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// console.log(110, idS, 'on', on, 'off', off)
 
 	// Доп: Прогрев клапанов
-	if (aCmd.warming) (on = true), (off = false)
+	if (aCmd.warming) ((on = true), (off = false))
 	// Доп: Антидребезг ВНО (зафиксировать кол-во ВНО)
-	if (acc.stable) (on = false), (off = false)
+	if (acc.stable) ((on = false), (off = false))
 	// console.log(111, 'on', on, 'off', off, who)
 	// Доп: Комби-холод. Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
-	if (acc.busySol) (on = false), (off = false)
+	if (acc.busySol) ((on = false), (off = false))
 	// Доп: Принудительное включение: расчет макс кол-ва ВНО
 	const max = fnLimit(fanFC, aCmd)
 	// 5. Регулирование Релейных ВНО: увеличение кол-ва
@@ -55,7 +55,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// 6. Непосредственное вкл/выкл
 	turnOn(null, fans, solHeat, bld._id, acc, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
-	isAllStarted(acc, fans)
+	initAllStarted(acc, fans)
 	// console.log(112, idS)
 	// console.table(acc)
 }

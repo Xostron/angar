@@ -15,6 +15,7 @@ const { ctrlDO } = require('@tool/command/module_output')
 // -> выдаем предупреждение "Низкая температура канала"
 const { data: store, readAcc } = require('@store')
 const { isExtra } = require('@tool/message/extra')
+const { isAllStarted } = require('@store/index')
 
 function softsol(idB, solenoid, sl, f, h, clr, accAuto) {
 	// Удаление co2 в работе
@@ -24,7 +25,7 @@ function softsol(idB, solenoid, sl, f, h, clr, accAuto) {
 	const secId = clr.sectionId
 	const map = accAuto?.cold?.softSol?.[secId]
 	// Комби: Флаг для отключения соленоидов испарителя, true - все вспомагательные механизмы подогрева канала запущены
-	const allStarted = store?.watchdog?.softFan?.[secId]?.allStarted
+	const allStarted = isAllStarted(secId)
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
 	// console.log(99001, 'SOFT SOLENOID', clr.name, store?.watchdog?.softFan?.[secId])
 	//Выключение соленоидов испарителя у запрещенного испарителя

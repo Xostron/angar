@@ -9,19 +9,20 @@ const { compareTime } = require('@tool/command/time')
  */
 function fc(off, acc) {
 	if (!off) {
-		// console.log('\tCheckOFF: (off=false) кол-во работающих ВНО => без изменений')
+		console.log('\tCheckOFF: (off=false) ')
 		return
 	}
 
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	if (!compareTime(acc.date, acc.delayRelay)) {
-		// console.log(
-		// 	'\tCheckOFF: (off=true) кол-во работающих ВНО => Ожидание',
-		// 	acc.delayRelay / 1000,
-		// 	'сек'
-		// )
+		console.log(
+			'\tCheckOFF: (off=true) кол-во работающих ВНО => Ожидание',
+			acc.delayRelay / 1000,
+			'сек'
+		)
 		return
 	}
+	console.log('\tCheckOFF: (off=true) кол-во работающих ВНО => уменьшаем -1 ВНО')
 	// Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
 	if (acc.order >= 0) {
 		acc.fc.sp = 100
@@ -30,10 +31,11 @@ function fc(off, acc) {
 	if (--acc.order <= -1) {
 		acc.order = -1
 		// console.log('\tCheckOFF: (off=true) кол-во работающих ВНО => МИН = 0')
+		console.log('\t0CheckOFF: acc.order=',acc.order, acc.fc.sp)
 		return
 	}
+	console.log('\t1CheckOFF: acc.order=',acc.order, acc.fc.sp)
 	// Обновление точки отсчета
-	// console.log('\tCheckOFF: (off=true) кол-во работающих ВНО => уменьшаем -1 ВНО')
 	acc.date = new Date()
 }
 
