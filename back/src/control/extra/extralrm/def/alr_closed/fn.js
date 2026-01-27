@@ -29,8 +29,6 @@ function set(bld, sect, reason, accDeb, acc, watch, count) {
 	// Время между последними состояниями больше порога дребезга -> ОК
 	if (delta > watch) return
 	//Время меньше порога -> установка аварии (ручной сброс)
-	// const o = sect?._id ? msg(bld, sect, 26, '. Ручной сброс') : msgB(bld, 26, '. Ручной сброс')
-	// wrExtralrm(bld._id, sect?._id, 'alrClosed', o)
 	// Авария ручной сброс
 	acc._alarm = true
 }
@@ -54,17 +52,17 @@ function reset(bld, sect, acc, accDeb) {
 }
 
 // Для логов, ловим импульсы аварии
-function blink(bld, sect, sig, acc) {
+function blink(bld, sect, sig, acc, mode) {
 	// Если уже в аварии, то выходи
 	if (acc._alarm) {
 		const o = sect?._id ? msg(bld, sect, 26, '(Ручной сброс)') : msgB(bld, 26, '(Ручной сброс)')
-		wrExtralrm(bld._id, sect?._id, 'alrClosed', o)
+		wrExtralrm(bld._id, sect?._id, 'alrClosed', o, mode)
 		return
 	}
 	// Не в аварии - создаем-удаляем сообщение
 	if (sig) {
 		const o = sect?._id ? msg(bld, sect, 26) : msgB(bld, 26)
-		wrExtralrm(bld._id, sect?._id, 'alrClosed', o)
+		wrExtralrm(bld._id, sect?._id, 'alrClosed', o, mode)
 		acc._self = true
 	} else {
 		delExtralrm(bld._id, sect?._id, 'alrClosed')

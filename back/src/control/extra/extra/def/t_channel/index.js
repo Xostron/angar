@@ -26,6 +26,7 @@ const { isAllStarted } = require('@store/index')
 // 	}
 // }
 
+// Температура канала ниже рекомендованной
 function tChannel(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	// Комби-холодильник: Флаг для отключения испарителей, true - все вспомагательные механизмы подогрева канала запущены
 	if (!isAllStarted(sect._id)) {

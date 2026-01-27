@@ -10,19 +10,38 @@ function isExtralrm(idB, idS, code) {
 }
 
 // Записать в extralrm (доп. аварии)
-function wrExtralrm(idB, idS, code, o) {
+/**
+ *
+ * @param {*} idB ИД склада
+ * @param {*} idS ИД секции
+ * @param {*} code Код аварии
+ * @param {*} o Объект аварийного сообщения
+ * @param {*} mod Модификация (Авария склада - в моб. приложении склад будет
+ * окрашиваться в красный) true - o.count=true, false|null - o.count=false
+ * @returns
+ */
+function wrExtralrm(idB, idS, code, o, mod) {
 	store.alarm.extralrm ??= {}
 	store.alarm.extralrm[idB] ??= {}
+	o = fnMod(o, mod)
 	if (!idS) {
 		!isExtralrm(idB, idS, code)
 			? (store.alarm.extralrm[idB][code] = o)
-			: (store.alarm.extralrm[idB][code].msg = o.msg)
+			: (store.alarm.extralrm[idB][code] = {
+					...store.alarm.extralrm[idB][code],
+					msg: o.msg,
+					count: o.count,
+				})
 		return
 	}
 	store.alarm.extralrm[idB][idS] ??= {}
 	!isExtralrm(idB, idS, code)
 		? (store.alarm.extralrm[idB][idS][code] = o)
-		: (store.alarm.extralrm[idB][idS][code].msg = o.msg)
+		: (store.alarm.extralrm[idB][idS][code] = {
+				...store.alarm.extralrm[idB][idS][code],
+				msg: o.msg,
+				count: o.count,
+			})
 }
 // Удалить из extralrm (доп. аварии)
 function delExtralrm(idB, idS, code) {
@@ -34,6 +53,26 @@ function delExtralrm(idB, idS, code) {
 }
 
 /**
+ * Модификация сообщения: пометка count (что сообщение является аварией склада)
+ * Пометка необходима для счетчика аварий и изменения цвета карточки склада в аварии
+ * @param {*} o Объект аварийного сообщения
+ * @param {*} mod Модификация (Авария склада - в моб. приложении склад будет
+ * окрашиваться в красный) true - o.count=true, false|null - o.count=false
+ * @returns Объект аварийного сообщения
+ */
+function fnMod(o, mod) {
+	if (mod === undefined) return o
+	if (mod === true) {
+		o.count = true
+		return o
+	}
+	if ([false, null].includes(mod)) {
+		o.count = false
+		return o
+	}
+}
+
+/**
  *  Аварии возникающие в секции, но останавливающие работу всего склада
  * @param {object} building склад
  * @param {object} obj глобальные данные о складах
@@ -42,7 +81,7 @@ function delExtralrm(idB, idS, code) {
 function sumExtralrmSection(building, obj) {
 	const section = obj.data.section.filter((el) => el.buildingId == building._id)
 	let alrS = false
-	// Авария низкой температуры
+	// Низкая температура канала
 	const isAC = isAlrClosed(building, obj)
 	//Список аварий:
 	const list = ['overVlv', 'antibliz', 'local']
@@ -68,7 +107,7 @@ function sumExtralrmSection(building, obj) {
 }
 
 /**
- * Авария низкой температуры останавливает склад, если возникла авария в
+ * Низкая температура канала останавливает склад, если возникла авария в
  * секции в авторежиме. Если секция выключена или в ручном,
  * то весь склад не останавливается
  * @param {*} bld Склад
@@ -79,14 +118,14 @@ function isAlrClosed(bld, obj) {
 	const idBS = getIdBS(obj?.data?.section, bld._id)
 	// Читаем аккумулятор аварии низкой темп, и собираем ключи acc.result
 	//  - это итоговый сигнал аварии с учетом режима секции, также здесь учитывается
-	// авария низкой темп, которая принадлежит складу
+	// Низкая температура канала, которая принадлежит складу
 	const sum = idBS.map(
 		(ownerId) =>
 			readAcc(
 				bld._id,
 				bld._id === ownerId ? 'building' : ownerId,
-				bld._id === ownerId ? 'alrClosedB' : 'alrClosed'
-			)?.result
+				bld._id === ownerId ? 'alrClosedB' : 'alrClosed',
+			)?.result,
 	)
 	console.log(4400, sum)
 	if (sum.some((el) => !!el)) return true

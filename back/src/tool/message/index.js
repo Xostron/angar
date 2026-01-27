@@ -16,7 +16,7 @@ function msg(building, section, code, msg = '') {
 // Склада
 function msgB(building, code, msg = '') {
 	const o = { ...mes[code] }
-	o.title = ``
+	o.title = ''
 	o.buildingId = building._id
 	o.msg = msg ? o.msg + ' ' + msg : o.msg
 	o.uid = uuidv4()

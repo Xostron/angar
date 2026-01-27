@@ -48,11 +48,11 @@ function onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc) {
 module.exports = onOffDO
 
 /**
- * Автосброс аварии низкой температуры (аварийное закрытие клапанов)
+ * Автосброс аварии низкой температуры 
  * Условия для автосброса
  * 1. Модули исправны
  * 2. Мин темп. канала >= 0.5
- * 3. Авария низкой температуры активна
+ * 3. Низкая температура канала активна
  *
  * @param {*} bld
  * @param {*} obj
@@ -60,11 +60,11 @@ module.exports = onOffDO
  * @returns true - Разрешить автосброс
  */
 function alrClosed(bld, ownerId, obj, se, s, isErrm) {
-	// Авария низкой температуры
+	// Низкая температура канала
 	const sig = getSignal(ownerId, obj, 'low')
 	// Значение температуры канала: по складу/по секции
 	let tcnl = bld._id === ownerId ? se.tcnl : obj?.value?.total?.[ownerId]?.tcnl?.min
-	// Авария низкой температуры стала только через Ручной сброс
+	// Низкая температура канала стала только через Ручной сброс
 	const accAC = readAcc(
 		bld._id,
 		bld._id === ownerId ? 'building' : ownerId,

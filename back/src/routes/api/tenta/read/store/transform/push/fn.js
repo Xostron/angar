@@ -32,6 +32,9 @@ function find(idB, data) {
 
 	// Сообщения из списка на странице сигналы
 	data.alarm.signal?.[idB]?.forEach((el) => {
+		// Фильтр на аварию низкой температуры, если ее count=false
+		if (el.code === 'alrClosed' && !el.count) return
+		// Добавитиь аварийное сообщение в пуш если она из списка flt=[true]
 		if (fnNeed().includes(el.msg)) r.push(el)
 	})
 

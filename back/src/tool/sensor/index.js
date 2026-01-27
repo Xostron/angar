@@ -21,6 +21,8 @@ function vSensor(equip, val, retain, result) {
 		// антидребезг датчика
 		const hold = debounce(owner?.building?._id, s._id, r, store.holdSensor?.[s._id], retain, s)
 		result[s._id] = hold ? hold : r
+		//
+		result[s._id] = fnHinHout(owner?.building?._id, s, result[s._id], retain)
 		// Аварийные сообщения датчика
 		webSensAlarm(result[s._id], owner?.building, owner?.section, s)
 		// Обновляем прошлое значение
@@ -36,10 +38,10 @@ function vSensor(equip, val, retain, result) {
 
 /**
  * Анализ датчика и настройка
- * @param {object[]} sens
- * @param {object} val
- * @param {object} equip
- * @param {object} retain
+ * @param {object} sens Рама датчика
+ * @param {object} val Значения модуля
+ * @param {object} equip Оборудование
+ * @param {object} retain Сохраненные пользовательские данные
  * @returns {object} {raw, value, state}
  */
 function valid(sens, val, equip, retain) {
@@ -63,10 +65,32 @@ function valid(sens, val, equip, retain) {
 
 	// Значение датчика с коррекцией (используется в алгоритмах)
 	const value = raw !== null ? +(raw + +corr).toFixed(sens?.accuracy || 1) : null
-	const r = { raw, value, state: state(raw, on) }
+	let r = { raw, value, state: state(raw, on) }
 
 	// Проверка диапазонов
 	range(r, sens)
+	return r
+}
+
+/**
+ *
+ * @param {*} sens Рама датчика
+ * @param {*} r Показание и состояние датчика
+ */
+function fnHinHout(idB, sens, r, retain) {
+	const on = retain?.[idB._id]?.[sens._id]?.on ?? true
+	// Если Датчик влажности улицы/продукта = null (авария датчика)
+	// превращаем его => в 100%, и показываем только состояния off|on
+	if (['hout', 'hin'].includes(sens.type)) console.log(2200, sens.type, r)
+	// Датчики влажности продукта/улицы
+	if (['hout', 'hin'].includes(sens.type) && r.raw === null) {
+		return {
+			raw: 100,
+			value: 100,
+			state: state(r.raw, on) === 'alarm' ? 'on' : state(r.raw, on),
+		}
+	}
+	// Все остальные датчики
 	return r
 }
 
