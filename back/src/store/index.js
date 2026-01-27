@@ -148,7 +148,7 @@ const data = {
 	// Флаги: появилась новая авария, ушла авария (для обновления state )
 	// isUpdate: false,
 	cycle: {
-		goVno: null,
+		ccVno: {},
 	},
 
 	// Папки

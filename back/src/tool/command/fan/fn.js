@@ -23,9 +23,9 @@ function fnACmd(bld, resultFan, obj, bdata) {
 		// Нет переключателя на щите
 		const local = isExtralrm(idB, idS, 'local')
 		// Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций
-		const goVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
+		const ccVNO = isСoolerCombiVNO(bld, idS, obj, bdata)
 
-		if (local || localB || !sectOn || !coolerCombiOn || !goVNO) {
+		if (local || localB || !sectOn || !coolerCombiOn || !ccVNO) {
 			console.log(
 				11,
 				'Секция',
@@ -35,7 +35,7 @@ function fnACmd(bld, resultFan, obj, bdata) {
 				localB,
 				!sectOn,
 				!coolerCombiOn,
-				!goVNO
+				!ccVNO
 			)
 			setACmd('fan', idS, { delay, type: 'off', force: null, max: null })
 			return

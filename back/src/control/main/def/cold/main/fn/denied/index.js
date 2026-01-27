@@ -6,7 +6,7 @@ const { clearAchieve } = require('@tool/message/achieve')
 const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { getIdsS } = require('@tool/get/building')
 const { isAllStarted } = require('@store/index')
-const { compareTime } = require('@tool/command/time')
+const { compareTime, remTime } = require('@tool/command/time')
 /**
  * @description Склад Холодильник: Запрет работы испарителя
  * @param {object} bld Склад
@@ -220,21 +220,41 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 	// }
 }
 
+/**
+ * Выключение испарителя по температуре канала
+ * @param {*} idB
+ * @param {*} mS
+ * @param {*} s
+ * @param {*} fnChange
+ * @param {*} accAuto
+ * @param {*} alrAuto
+ * @param {*} sectM
+ */
 function offByTcnl(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
+	const wait = (s?.coolerCombi?.allStarted ?? 60) * 1000
 	mS.coolerS.forEach((clr) => {
 		// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
 		// + доп задержка для защиты двигателя от частого включения
 		accAuto.cold ??= {}
 		accAuto.cold[clr.sectionId] ??= {}
+		// Точка отсчета для выключения испарителя по низкой температуре
 		if (isAllStarted(clr.sectionId)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
-		const time = compareTime(
-			accAuto?.cold?.[clr.sectionId]?.allStarted,
-			s?.coolerCombi?.allStart ?? 10000,
-		)
-		if (!time) return
+		else accAuto.cold[clr.sectionId].allStarted = null
+		// Если время сброшено, это значит канал прогревается и не отключаем испаритель
+		if (!accAuto?.cold?.[clr.sectionId]?.allStarted) return
+		// Температура канала низкая - начинаем отсчет времени "Настройка Холодильник С"
+		const time = compareTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait)
+		if (!time)
+			return console.log(
+				413,
+				accAuto?.cold?.[clr.sectionId]?.allStarted,
+				wait,
+				'Низкая температура канала, отключение испарителя через',
+				remTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait),
+			)
 
-		// Испаритель запрещен к работе, но ВНО испарителя не блокируется при:
-		// 1. в режиме обычного склада (нет аварий авторежима)
+		// Испаритель выключить, но ВНО испарителя не блокируется при:
+		// 1. В режиме обычного склада (нет аварий авторежима)
 		// 2. Секция в ручном режиме
 		// 3. Включено окуривание
 		// 4. Включено озонирование
@@ -242,6 +262,7 @@ function offByTcnl(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 		if (!alrAuto || sectM === false || s?.smoking?.on || s?.ozon?.on || !s?.coolerCombi?.on) {
 			fnChange(0, null, 0, 0, null, clr)
 		} else fnChange(0, 0, 0, 0, null, clr)
+		console.log(414, 'Низкая температура канала, испаритель выключен')
 	})
 }
 

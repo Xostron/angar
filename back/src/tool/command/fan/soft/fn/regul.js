@@ -48,29 +48,29 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 			acc.fc.sp = s.fan.min
 			// // Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
 			// acc.fc.sp = 100
-			console.log(1122, acc.fc)
+			// console.log(1122, acc.fc)
 			return false
 		}
 		// Ждем
 		if (!compareTime(acc.fc.date, acc.delayFC)) {
-			console.log(1123, 'ждем',acc.fc)
+			// console.log(1123, 'ждем',acc.fc)
 			return true
 		}
 		// Время стабилизации прошло
 		acc.fc.sp -= s.fan.step
 		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
 		acc.fc.date = new Date()
-		console.log(1124, acc.fc)
+		// console.log(1124, acc.fc)
 	}
 	acc.fc.date = new Date()
-	console.log(1125, acc.fc)
+	// console.log(1125, acc.fc)
 	return true
 }
 
 // Комби-холод. Обычное управление: Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
 function magic(acc, isCC) {
 	// Комби-холод
-	console.log(1121, isCC, acc.order, acc.fc.sp, '<=', _MIN_SP)
+	// console.log(1121, isCC, acc.order, acc.fc.sp, '<=', _MIN_SP)
 	if (isCC && acc.order === -1 && acc.fc.sp <= _MIN_SP) {
 		acc.fc.sp = _MIN_SP
 		acc.fc.value = false

@@ -46,7 +46,7 @@ function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	// здесь происходит блокировка ВНО секции, но их не нужно в этой ситуации блокировать
 	if (isAllStarted(idS)) {
 		// кол-во пропускаемых циклов = 2
-		store.cycle.goVno = new Date()
+		store.cycle.ccVno[idS] = new Date()
 		return true
 	}
 	// Если Продукт достиг задания - возврат true, чтобы не было блокировки ВНО секций
@@ -55,15 +55,10 @@ function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	if (isCombiCold(bld, bdata?.automode, bdata?.s)) {
 		state = getStateClr(bld, idS, obj)
 		// Задержка инертности включения испарителя, после isAllStarted
-		// if (!state && store.cycle.goVno > 0) {
-		// 	store.cycle.goVno--
-		// 	return true
-		// }
-		// store.cycle.goVno = 0
-		if (state) store.cycle.goVno = null
+		if (state) delete store.cycle.ccVno?.[idS]
 		// Если имеется хотя бы один испаритель у которого включен ВНО, то разрешаем работу ВНО
-		console.log(1, 'state', state, store.cycle.goVno)
-		return state || store.cycle.goVno
+		// console.log(1, 'state', state, store.cycle.ccVno[idS])
+		return state || store.cycle.ccVno?.[idS]
 	}
 	return true
 }
