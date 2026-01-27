@@ -32,7 +32,6 @@ function auto(building, arr, value, acc, se, s, m) {
 	defrost || drain ? on(building, arr, value, acc) : off(building, arr, value, acc)
 }
 
-// TODO Температура улицы от API погоды
 // Оттайка слива воды: По температуре
 function temp(building, arr, value, acc, se, s) {}
 

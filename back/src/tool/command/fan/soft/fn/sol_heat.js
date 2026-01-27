@@ -50,7 +50,7 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 
 	// Команда на выключение соленоида подогрева
 	if (off) {
-		console.log(4441, where, '===', 'cold', acc.order, '===', -1, acc.fc.value)
+		// console.log(4441, where, '===', 'cold', acc.order, '===', -1, acc.fc.value)
 		// Выключение, если все ВНО и ПЧ выключены
 		if (where === 'cold' && acc.order === -1 && !acc.fc.value) {
 			// Ждем и выключаем соленоид подогрева
@@ -60,7 +60,7 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 				return true
 			}
 			acc.sol.value = false
-			console.log(4442, acc.sol)
+			// console.log(4442, acc.sol)
 		}
 		// Сигнал на выключение есть, но условия для отключения соленоида подогрева не наступили
 		// Обновляем точку отсчета отключения соленоида подгрева
