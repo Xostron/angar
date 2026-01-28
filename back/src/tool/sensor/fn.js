@@ -1,15 +1,57 @@
 const tSens = require('@dict/sensor')
 const { data: store } = require('@store')
 const { msgBS } = require('@tool/message')
-const { getB } = require('@tool/get/building')
+const { getB, getBS } = require('@tool/get/building')
 const { getListSens } = require('@tool/get/sensor')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+
+/**
+ * Анализ датчика и настройка
+ * @param {object} sens Рама датчика
+ * @param {object} val Значения модуля
+ * @param {object} equip Оборудование
+ * @param {object} retain Сохраненные пользовательские данные
+ * @returns {object} {raw, value, state}
+ */
+function valid(sens, owner, val, equip, retain) {
+	// Владельцы датчика (склад и секция)
+	const { building, section } = owner
+	if (!building) return
+	// Настройки датчика: on - вкл датчик, corr - коррекция
+	const corr = retain?.[building._id]?.[sens._id]?.corr ?? 0
+	const on = retain?.[building._id]?.[sens._id]?.on ?? true
+	// Истинное значение датчика
+	let v = val?.[sens?.module?.id]?.[sens.module?.channel - 1] ?? null
+	// Для датчика из binding (type='ai')
+	if (sens?.moduleId && sens?.channel) {
+		v = val?.[sens?.moduleId]?.[sens?.channel - 1] ?? null
+		console.log(2277, sens, sens?.moduleId, sens?.channel, v)
+	}
+	// Округленное истинное значение
+	let raw = getRaw(sens, v)
+
+	// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
+	if (String(raw).length > 8) raw = null
+	// Модуль в ошибке
+	if (val?.[sens?.module?.id]?.error) raw = null
+	// isNaN
+	if (isNaN(raw)) raw = null
+
+	// Значение датчика с коррекцией (используется в алгоритмах)
+	const value = raw !== null ? +(raw + +corr).toFixed(sens?.accuracy || 1) : null
+	let r = { raw, value, state: state(raw, on) }
+
+	// Проверка диапазонов
+	range(r, sens)
+	return r ?? { raw: null, value: null, state: 'alarm' }
+}
 
 // Правила обработки датчиков для разных аналоговых модулей
 function getRaw(sens, v) {
 	// const { module, equipment } = equip
 	// Датчик не объявлен в админке
-	if (!sens.module?.id || typeof sens.module.channel !== 'number') return null
+	if (!sens?.module?.id && !sens?.moduleId) return null
+	if (typeof sens?.module?.channel !== 'number' && typeof sens?.channel !== 'number') return null
 	// Тип модуля
 	// const idEq = module.find((el) => el._id == sens.module.id)?.equipmentId
 	// const int10 = equipment?.[idEq]?.re?.type == 'int10'
@@ -161,7 +203,7 @@ function fnMsgs(building, val, type, bType) {
 			b._id,
 			'sensor',
 			type + val.state,
-			msgBS(b, 'sensor', null, code[type][val.state])
+			msgBS(b, 'sensor', null, code[type][val.state]),
 		)
 	})
 }
@@ -179,7 +221,7 @@ function fnMsg(bld, val, type, bType) {
 			bld._id,
 			'sensor',
 			type + val.state,
-			msgBS(bld, 'sensor', null, code[type][val.state])
+			msgBS(bld, 'sensor', null, code[type][val.state]),
 		)
 	}
 }
@@ -198,6 +240,7 @@ function isValidWeather(weather) {
 	return now - updateTime >= expire ? false : true
 }
 module.exports = {
+	valid,
 	getRaw,
 	fnDetection,
 	detection,

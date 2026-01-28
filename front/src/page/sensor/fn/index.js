@@ -1,5 +1,5 @@
 const bldSens = ['outTemp', 'outMois', 'inTemp', 'inMois', 'pin', 'pout']
-const sectSens = ['tcnl', 'tprd', 'p', 'co2']
+const sectSens = ['tcnl', 'tprd', 'p', 'co2', 'aifc']
 const puiSens = ['Ua', 'Ub', 'Uc', 'Ia', 'Ib', 'Ic', 'Pa', 'Pb', 'Pc']
 
 /**

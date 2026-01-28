@@ -5,7 +5,7 @@ function getIdB(mdlId, module) {
 
 // Получить склад
 function getB(building, idB) {
-	if (!building instanceof Array) return null
+	if ((!building) instanceof Array) return null
 	return building.find((b) => b._id == idB)
 }
 
@@ -60,15 +60,27 @@ function getIdSB(section, id) {
 
 /**
  * Получить массив id секций по id склада
- * @param {*} section 
- * @param {*} idB 
- * @returns 
+ * @param {*} section
+ * @param {*} idB
+ * @returns
  */
 function getIdsS(section, idB) {
 	return section
 		.filter((el) => el.buildingId === idB)
 		.sort((a, b) => a.order - b.order)
 		.map((el) => el._id)
+}
+
+/**
+ * Существует ли хоть бы одна секция в авто?
+ * @param {*} idB Ид склада
+ * @param {*} obj Глобальные данные
+ * @returns {boolean} true - существует секция в авто
+ */
+function isAS(idB, obj) {
+	return obj?.data?.section
+		?.filter((el) => el.buildingId === idB)
+		?.some((el) => obj?.retain?.[idB]?.mode?.[el._id])
 }
 
 /**
@@ -118,4 +130,5 @@ module.exports = {
 	getIDB,
 	getIdBS,
 	getBbySig,
+	isAS,
 }

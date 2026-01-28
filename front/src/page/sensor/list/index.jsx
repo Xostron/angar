@@ -7,6 +7,7 @@ import useAuthStore from '@store/auth'
 export default function List({ data, type }) {
 	const { warn } = useWarn()
 	const { isAuth } = useAuthStore()
+
 	if (!data?.length) return
 	return type === 'pui' ? (
 		<Pui data={data} />

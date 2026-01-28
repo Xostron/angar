@@ -10,6 +10,7 @@ const { data: store } = require('@store')
 function getSubmode(bld, retain) {
 	// Авторежим подрежимы хранения
 	const am = retain?.[bld._id]?.automode
+	if (am==='drying') return ''
 	// Тип склада
 	switch (bld?.type) {
 		case 'cold':

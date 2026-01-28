@@ -1,32 +1,45 @@
 function section(doc, data) {
 	// Датчик со2
 	const co2 = correct(
-		data.sensor.filter((el) => el.owner.id === doc._id && ['co2'].includes(el.type))
+		data.sensor.filter((el) => el.owner.id === doc._id && ['co2'].includes(el.type)),
 	)
 	// Датчики давления
 	const p = correct(
-		data.sensor.filter((el) => el.owner.id === doc._id && ['p'].includes(el.type))
+		data.sensor.filter((el) => el.owner.id === doc._id && ['p'].includes(el.type)),
 	)
 	// Температура продукта
 	const tprd = correct(
-		data.sensor.filter((el) => el.owner.id === doc._id && ['tprd'].includes(el.type))
+		data.sensor.filter((el) => el.owner.id === doc._id && ['tprd'].includes(el.type)),
 	)
 	// Температура канала
 	const tcnl = correct(
-		data.sensor.filter((el) => el.owner.id === doc._id && ['tcnl'].includes(el.type))
+		data.sensor.filter((el) => el.owner.id === doc._id && ['tcnl'].includes(el.type)),
 	)
-	// Датчики влажности секции
+	// Датчики влажности продукта секции
 	const mois = correct(
-		data.sensor.filter((el) => el.owner.id === doc._id && ['hin'].includes(el.type))
+		data.sensor.filter((el) => el.owner.id === doc._id && ['hin'].includes(el.type)),
 	)
 	// Напорные вентиляторы
 	const fan = data.fan
 		.filter((el) => el.owner.id === doc._id && el.type === 'fan')
 		.map((el) => {
-			const ao = data.binding.find((b) => b.owner.id === el._id)
-			if (!ao) return el
-			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+			const ao = data.binding.find((b) => b.owner.id === el._id && b.type === 'ao')
+			const ai = data.binding.find((b) => b.owner.id === el._id && b.type === 'ai')
+			if (ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
+			if (ai) el.ai = { _id: ai._id, id: ai?.moduleId, channel: ai?.channel }
+			return el
 		})
+	// Обратная связи от ПЧ (ток двигателя)
+	const aifc = fan
+		.filter((el) => !!el?.ai?.id)
+		.map((el) => {
+			el.name = `Ток ${el.name}`
+			el._id = el.ai._id
+			return el
+		})
+	// const aifc = correct(
+	// 	data.binding.filter((el) => el.owner.id === doc._id && ['aifc'].includes(el.type)),
+	// )
 	// Дополнительные вентиляторы
 	const fanAux = data.fan.filter((el) => el.owner.id === doc._id && el.type === 'aux')
 	// Клапаны
@@ -39,7 +52,7 @@ function section(doc, data) {
 	const heating = correct(data.heating.filter((el) => el?.owner?.id === doc._id))
 	// Испаритель
 	const cooler = correct(data?.cooler.filter((el) => el.sectionId === doc._id))
-	
+
 	// Испаритель: сленоиды, датчики, aggregateListId
 	cooler?.forEach((el) => {
 		el.sensor = data?.sensor.filter((s) => s.owner.id === el._id)
@@ -51,7 +64,7 @@ function section(doc, data) {
 				if (!ao) return f
 				return { ...f, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			})
-			// к напорным ВНО секции добавляем ВНО испарителя 
+		// к напорным ВНО секции добавляем ВНО испарителя
 		el.solHeat = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'channel')
 		el.flap = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'flap')
 		// console.log(555, el)
@@ -80,6 +93,7 @@ function section(doc, data) {
 		device,
 		pin,
 		pout,
+		aifc,
 	}
 	// console.log(333, obj)
 	return obj

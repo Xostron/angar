@@ -66,7 +66,7 @@ export default function Sensor({}) {
 	const data = sensList(build, section, sections, sect)
 	// Заголовок
 	const title = sect === 'all' ? 'Общие' : sect === 'pui' ? 'Сеть' : `Секция ${curS + 1}`
-
+console.log(data)
 	return (
 		<main className='sen'>
 			<SubHead title={title} type={sect} />

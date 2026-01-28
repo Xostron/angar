@@ -1,7 +1,7 @@
 const { data: store } = require('@store')
 const { getBS } = require('@tool/get/building')
 const { debounce } = require('./debounce')
-const { getRaw, range, webSensAlarm, state, isValidWeather } = require('./fn')
+const { webSensAlarm, state, isValidWeather, valid } = require('./fn')
 /**
  * Анализ датчиков
  * result[s._id] - отображение на экране настроек датчиков,
@@ -17,7 +17,7 @@ function vSensor(equip, val, retain, result) {
 		// Владелец датчика
 		const owner = getBS(s, equip)
 		// Исправность, округление датчика
-		const r = valid(s, val, equip, retain)
+		const r = valid(s, owner, val, equip, retain)
 		// антидребезг датчика
 		const hold = debounce(owner?.building?._id, s._id, r, store.holdSensor?.[s._id], retain, s)
 		result[s._id] = hold ? hold : r
@@ -34,42 +34,6 @@ function vSensor(equip, val, retain, result) {
 		result[bld._id].tweather = stateWeather(bld._id, weather, retain, 'tweather', 'temp')
 		result[bld._id].hweather = stateWeather(bld._id, weather, retain, 'hweather', 'humidity')
 	}
-}
-
-/**
- * Анализ датчика и настройка
- * @param {object} sens Рама датчика
- * @param {object} val Значения модуля
- * @param {object} equip Оборудование
- * @param {object} retain Сохраненные пользовательские данные
- * @returns {object} {raw, value, state}
- */
-function valid(sens, val, equip, retain) {
-	// Владельцы датчика (склад и секция)
-	const { building, section } = getBS(sens, equip)
-	if (!building) return
-	// Настройки датчика: on - вкл датчик, corr - коррекция
-	const corr = retain?.[building._id]?.[sens._id]?.corr ?? 0
-	const on = retain?.[building._id]?.[sens._id]?.on ?? true
-	// Истинное значение датчика
-	const v = val?.[sens?.module?.id]?.[sens.module?.channel - 1] ?? null
-	// Округленное истинное значение
-	let raw = getRaw(sens, v)
-
-	// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
-	if (String(raw).length > 8) raw = null
-	// Модуль в ошибке
-	if (val?.[sens?.module?.id]?.error) raw = null
-	// isNaN
-	if (isNaN(raw)) raw = null
-
-	// Значение датчика с коррекцией (используется в алгоритмах)
-	const value = raw !== null ? +(raw + +corr).toFixed(sens?.accuracy || 1) : null
-	let r = { raw, value, state: state(raw, on) }
-
-	// Проверка диапазонов
-	range(r, sens)
-	return r
 }
 
 /**
