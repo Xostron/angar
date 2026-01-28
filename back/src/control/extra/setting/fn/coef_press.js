@@ -1,4 +1,5 @@
 const { data: store } = require('@store')
+const getSubmode = require('@tool/submode')
 /**
  * @description Настройки влажности: Гистерезис абсолютной влажности в зависимости от температуры продукта
  * @param {object} stg настройки влажности
@@ -7,61 +8,76 @@ const { data: store } = require('@store')
  * @returns {number} абс влажность
  */
 function coefPress(stg, bld, obj) {
-	const { value, data } = obj
-	// Куча для отслеживания гистерезисов
-	store.heap[bld._id] ??= {}
-	const heap = store.heap[bld._id]
-	heap.press ??= {}
-	// Влажность продукта и гистерезис
+	const { value, data, retain } = obj
+
+	// Влажность продукта
 	const hin = value?.total?.[bld._id]?.hin?.max
-	const hyst = 5
+	// Гистерезис давления
+	const hyst = stg?.hysteresisP ?? 10
+	// Режим склада
+	const am = retain?.[bld._id]?.automode
+	// Подрежим склада
+	const submode = getSubmode(bld, retain)
 
-	// Значение давления по-умолчанию
-	let pressure = stg?.pressure3
-	// от большего к меньшему
-	// ***************************
-	if (hin < stg?.pressure2?.h || heap.press.p2) {
-		heap.press.p2 = true
-		pressure = stg?.pressure2
-	}
-	if (heap.press.p2 && hin - hyst > stg?.pressure2?.h) {
-		heap.press.p2 = false
-		pressure = stg?.pressure3
-	}
+	// По-умолчанию классические настройки гистерезисов давления
+	let pressure = fnClassic(stg, bld, hin, hyst)
+	// Режим сушка, хранение(лечение) -> максимальные настройки
+	if (am === 'drying' || submode?.[0] === 'cure') pressure = { p: stg?.maxp ?? 201 }
 
-	// ***************************
-	if (hin < stg?.pressure1?.h || heap.press.pressure1) {
-		heap.press.pressure1 = true
-		pressure = stg?.pressure1
-	}
-	if (heap.press.pressure1 && hin - hyst > stg?.pressure1?.p) {
-		heap.press.pressure1 = false
-		pressure = stg?.pressure2
-	}
-
-	console.log(3333, 'Коэффициенты давления', 'hin', hin, '< X;', 'Работа по давление: pressure', pressure)
+	console.log(
+		3333,
+		'Коэффициенты давления',
+		'hin',
+		hin,
+		'< X;',
+		'Работа по давление: pressure',
+		pressure,
+		submode,
+	)
 	return pressure
 }
 
 module.exports = coefPress
 
 /**
- * Зависимость давления от влажности продукта
- * 1. 20% 100Па: 	Установка: датчик влажности продукта = 0..19,9% < 20%
- * 					Сброс гистерезис: датчик влажности продукта - 5% > 20%
+ * Зависимость давления от влажности продукта hyst = 10%
+ * 1. 10% 100Па: 	Установка: датчик влажности продукта 0..50+hyst
+ * 					Сброс гистерезис: датчик влажности продукта при 50%
  *
- * 2. 60% 200Па:	Установка: датчик влажности продукта = 20..59,9% < 60%
- * 					Сброс гистерезис: датчик влажности продукта - 5% > 60%
+ * 2. 50% 200Па:	Установка: датчик влажности продукта 50+hyst..80+hyst
+ * 					Сброс гистерезис: датчик влажности продукта при 80%
  *
- * 3. 80% 300Па: 	Установка: датчик влажности продукта = 59,9..100%
- * 					Сброс гистерезис: датчик влажности продукта - 5% > 80%
+ * 3. 80% 300Па: 	Установка: датчик влажности продукта = 80+hyst..+100
+ * 					Сброс гистерезис: датчик влажности продукта при 80%
  */
+function fnClassic(stg, bld, hin, hyst) {
+	// Аккумулятор для отслеживания гистерезисов
+	store.heap[bld._id] ??= {}
+	const heap = store.heap[bld._id]
+	heap.press ??= {}
 
-/**
- * Зависимость давления от влажности продукта
- * 1. 20% 100Па: 	Установка: датчик влажности продукта = 0..19,9% < 20%
- *
- * 2. 60% 200Па:	Установка: датчик влажности продукта = 20..59,9% < 60%
- *
- * 3. 80% 300Па: 	Установка: датчик влажности продукта = 59,9..100%
- */
+	// Тип 3: Значение давления по-умолчанию
+	let pressure = stg?.pressure3
+	// Тип 2
+	if (hin < stg?.pressure3?.h || heap.press.p2) {
+		heap.press.p2 = true
+		pressure = stg?.pressure2
+	}
+	if (heap.press.p2 && hin - hyst >= stg?.pressure3?.h) {
+		heap.press.p2 = false
+		pressure = stg?.pressure3
+	}
+	// Тип 1
+	if (hin < stg?.pressure2?.h || heap.press.p1) {
+		heap.press.p1 = true
+		pressure = stg?.pressure1
+	}
+	if (heap.press.p1 && hin - hyst >= stg?.pressure2?.h) {
+		heap.press.p1 = false
+		pressure = stg?.pressure2
+	}
+
+	return pressure
+}
+
+
