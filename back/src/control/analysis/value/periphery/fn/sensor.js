@@ -1,7 +1,6 @@
 const { fnDetection } = require('@tool/sensor/fn')
 const vSensor = require('@tool/sensor')
 const total = require('./total')
-// const fnBindingAI = require('@tool/sensor/binding')
 
 /**
  * Аналоговые датчики
@@ -18,8 +17,6 @@ function sensor(equip, val, retain, result) {
 	vSensor(equip, val, retain, result)
 	// Проверка по секционно датчиков температуры продукта
 	fnDetection(equip, result, retain)
-	// Аналоговые входы из binding
-	// fnBindingAI(equip, val, retain, result)
 	// Готовые результаты по датчикам
 	total(equip, result, retain)
 }

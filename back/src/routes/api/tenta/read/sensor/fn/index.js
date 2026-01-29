@@ -55,7 +55,7 @@ module.exports = fnList
  * @param {*} pui рама устройств
  * @returns
  */
-function sensList(params, sensor, pui, ) {
+function sensList(params, sensor, pui) {
 	const { bldId, secId } = params
 	// Данные датчиков конкретной секции или ангара
 	const id = secId === 'all' ? bldId : secId === 'pui' ? 'pui' : secId

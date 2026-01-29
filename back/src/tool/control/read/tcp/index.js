@@ -57,7 +57,7 @@ function readTCP(host, port, opt) {
 					socket.end()
 				})
 		})
-		socket.connect(optTCP, )
+		socket.connect(optTCP)
 	})
 }
 // Нормализация данных с аналогового модуля:
