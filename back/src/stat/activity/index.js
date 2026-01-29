@@ -3,7 +3,6 @@ const readJson = require('@tool/json').read
 const def = require('./def')
 const path = require('path')
 
-
 /**
  * Логирование действий пользователя: web
  * @param {*} code код события websocket
@@ -41,15 +40,14 @@ function mobileLog(req) {
 	activity(code, o)
 }
 
-
 function activity(code, o) {
 	if (!def[code]) return
 	const { _id, buildingId, sectionId, clientId, cliName, fanId, name } = o
 	const _retain = path.join('retain', 'data.json')
-	readJson(['fan', 'valve', 'sensor', 'section', 'factory', 'building', _retain])
-		.then(([fan, valve, sensor, section, factory, building, retain]) => {
+	readJson(['fan', 'valve', 'sensor', 'section', 'factory', 'building', 'binding', _retain])
+		.then(([fan, valve, sensor, section, factory, building, binding, retain]) => {
 			// Рама pc
-			const oData = { fan, valve, sensor, section, factory, building, retain }
+			const oData = { fan, valve, sensor, section, factory, building, binding, retain }
 			// Подготовка данных для лога
 			const { title, value, bId, sId, sensId, type, noLog } = def[code](code, o, oData)
 			// Блокировка лога

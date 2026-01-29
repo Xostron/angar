@@ -11,6 +11,7 @@ const data = {
 	// Давление
 	p: 'Па',
 	bar: 'bar',
+	ampere:'А'
 }
 
 export default data

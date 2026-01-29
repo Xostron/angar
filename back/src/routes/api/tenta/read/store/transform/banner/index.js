@@ -4,8 +4,8 @@ function banner(idB, data) {
 			const ba =
 				k === 'local'
 					? Object.values(data?.alarm?.banner?.[k]?.[idB] ?? {})?.filter(
-							(el) => el !== null
-					  )
+							(el) => el !== null,
+						)
 					: data?.alarm?.banner?.[k]?.[idB]
 			switch (k) {
 				case 'local':
@@ -17,7 +17,8 @@ function banner(idB, data) {
 				case 'battery':
 					return ba ? { code: k, msg: ba.msg } : null
 				case 'supply':
-					return ba?.length ? { code: k, msg: ba?.[0]?.msg } : null	
+					const r = Object.values(ba ?? {}).filter(el=>!!el)
+					return r?.length ? { code: k, msg: r?.[0]?.msg } : null
 			}
 		})
 		.filter((el) => !!el)

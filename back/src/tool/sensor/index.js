@@ -12,10 +12,21 @@ const { webSensAlarm, state, isValidWeather, valid } = require('./fn')
  * @param {object} result Результат
  */
 function vSensor(equip, val, retain, result) {
-	const { sensor, building, weather } = equip
-	for (const s of sensor) {
-		// Владелец датчика
-		const owner = getBS(s, equip)
+	const { sensor, building, weather, binding } = equip
+	// Собираем аналоговые входа = датчики sensor + binding аналоговые входа(ai)
+	const ai = binding?.filter((el) => el.type === 'ai') ?? []
+	const sens = [...sensor, ...ai]
+	for (const s of sens) {
+		// Поиск владельца сигнала binding (вентилятор)
+		let own, owner
+		if (s.type === 'ai') {
+			own = equip?.[s.owner.type].find((el) => el._id === s.owner.id)
+			owner = getBS(own, equip)
+		} else {
+			// Владелец датчика (секция или склад)
+			owner = getBS(s, equip)
+		}
+
 		// Исправность, округление датчика
 		const r = valid(s, owner, val, equip, retain)
 		// антидребезг датчика

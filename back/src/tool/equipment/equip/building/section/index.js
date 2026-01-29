@@ -33,9 +33,11 @@ function section(doc, data) {
 	const aifc = fan
 		.filter((el) => !!el?.ai?.id)
 		.map((el) => {
-			el.name = `Ток ${el.name}`
-			el._id = el.ai._id
-			return el
+			// Делаем копию элементов, чтобы не влиять на исходный массив ВНО fan
+			const r = { ...el }
+			r.name = `Ток ${r.name}`
+			r._id = r.ai._id
+			return r
 		})
 	// const aifc = correct(
 	// 	data.binding.filter((el) => el.owner.id === doc._id && ['aifc'].includes(el.type)),

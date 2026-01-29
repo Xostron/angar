@@ -24,8 +24,8 @@ export function sensList(build, section, sections, sect) {
 				.filter((el) => el)
 			break
 		default:
-			sectSens.forEach((el) => (section?.[el]?.length ? data.push(...section?.[el]) : null))
 			section?.cooler?.forEach((clr) => (clr?.sensor?.length ? data.push(...clr?.sensor) : null))
+			sectSens.forEach((el) => (section?.[el]?.length ? data.push(...section?.[el]) : null))
 			break
 	}
 	return data

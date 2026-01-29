@@ -22,7 +22,6 @@ function pLog(data, arr, value, level, force) {
 		// Прошлое состояние: фиксируем состояние по изменению
 		fnPrev(_id, value[_id], level)
 		// Лог
-		// if (level === 'cooler') console.log(111,_id, value[_id])
 		logger[level]({ message: message(data, el, level, value) })
 	})
 }

@@ -25,7 +25,6 @@ function valid(sens, owner, val, equip, retain) {
 	// Для датчика из binding (type='ai')
 	if (sens?.moduleId && sens?.channel) {
 		v = val?.[sens?.moduleId]?.[sens?.channel - 1] ?? null
-		console.log(2277, sens, sens?.moduleId, sens?.channel, v)
 	}
 	// Округленное истинное значение
 	let raw = getRaw(sens, v)
@@ -48,19 +47,11 @@ function valid(sens, owner, val, equip, retain) {
 
 // Правила обработки датчиков для разных аналоговых модулей
 function getRaw(sens, v) {
-	// const { module, equipment } = equip
 	// Датчик не объявлен в админке
 	if (!sens?.module?.id && !sens?.moduleId) return null
 	if (typeof sens?.module?.channel !== 'number' && typeof sens?.channel !== 'number') return null
-	// Тип модуля
-	// const idEq = module.find((el) => el._id == sens.module.id)?.equipmentId
-	// const int10 = equipment?.[idEq]?.re?.type == 'int10'
 
-	// // Для модулей с типом int10
-	// if (int10) return +v?.toFixed(sens?.accuracy || 1) ?? null
-	// // Для модулей с типом float
 	return +v?.toFixed(sens?.accuracy || 1) ?? null
-	// return v ? +v.toFixed(sens?.accuracy || 1) : null
 }
 
 // Автообнаружжение неисправностей датчиков температуры продукта (посекционно)

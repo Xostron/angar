@@ -17,7 +17,11 @@ export default function Row({ data }) {
 	// сохранить настройки на сервере ангара
 	const [setSens, sens] = useOutputStore(({ setSens, sens }) => [setSens, sens])
 	// настройка датчика
-	const [getSens, setting, input] = useInputStore(({ getSens, input }) => [getSens, input?.retain?.[build], input])
+	const [getSens, setting, input] = useInputStore(({ getSens, input }) => [
+		getSens,
+		input?.retain?.[build],
+		input,
+	])
 	const el = ['tweather', 'hweather'].includes(data?.type) ? data?.type : data?._id
 	// Датчик вкл/выкл
 	const onn = setting?.[el]?.on === undefined ? true : setting?.[el]?.on ? true : false
@@ -46,7 +50,16 @@ export default function Row({ data }) {
 		<>
 			<IconText cls={cl} data={{ value: data.name, icon: ico }} />
 			<Switch cls={cl} value={on} setValue={actOn} style={{ border: 'none' }} />
-			<Input cls={clCorr} type='number' min={-1000} max={1000} step={0.1} value={corr} setValue={actCorr} placeholder={0} />
+			<Input
+				cls={clCorr}
+				type='number'
+				min={-1000}
+				max={1000}
+				step={0.1}
+				value={corr}
+				setValue={actCorr}
+				placeholder={0}
+			/>
 			<Text cls={cls} data={{ value: raw }} />
 			<Text cls={cls} data={{ value: result }} />
 			<Text cls={cl} data={{ value: unit }} />
@@ -99,7 +112,13 @@ function fnUnit(data) {
 	// Ед. измерения, иконка
 	let unit = defUn['p']
 	let ico = defImg['pressure'].on
-	if (['pin','pout'].includes(data.type)){
+	// Ток двигателя
+	if (['fan'].includes(data.type)) {
+		unit = defUn['ampere']
+		ico = defImg['pui'].current
+	}
+
+	if (['pin', 'pout'].includes(data.type)) {
 		unit = defUn['bar']
 	}
 	if (t.includes(data.type)) {

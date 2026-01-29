@@ -1,4 +1,4 @@
-const { sensTotalLog, pLogConst } = require('./sensor')
+const { sensTotalLog, pLogConst, pLogBindingAI } = require('./sensor')
 const historyLog = require('./history')
 const pLog = require('./periph')
 const { delay } = require('@tool/command/time')
@@ -43,6 +43,8 @@ function statOnChange(obj, history) {
 		sensTotalLog(store?.value?.total, data.building, force)
 		// Лог по всем датчикам
 		pLogConst(data, data.sensor, store.value, 'sensor', force)
+		// Лог по всем аналоговым входам binding
+		pLogBindingAI(data, data.binding, store.value, 'sensor', force)
 	}
 }
 
@@ -54,11 +56,13 @@ async function statOnTime() {
 		// Задержка
 		await delay(store.tStat)
 		// await delay(5000)
-		const data = await readTO(['building', 'section', 'sensor','cooler'])
+		const data = await readTO(['building', 'section', 'sensor', 'cooler', 'binding', 'fan'])
 		// Датчики (Total после анализа)
 		sensTotalLog(store?.value?.total, data.building)
 		// Лог по всем датчикам
 		pLogConst(data, data.sensor, store.value, 'sensor')
+		// Лог по всем аналоговым входам binding
+		pLogBindingAI(data, data.binding, store.value, 'sensor')
 		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
 	}
 }

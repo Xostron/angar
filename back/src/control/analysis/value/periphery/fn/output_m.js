@@ -21,7 +21,7 @@ function outputM(equip, val) {
 	// Выходные сигналы
 	sig(equip.signal, val, r)
 	// Вентилятор - аналоговый выход (находится в binding)
-	binding(equip.binding, val, r)
+	bindingWAO(equip.binding, val, r)
 	return r
 }
 
@@ -49,10 +49,11 @@ function sig(data, val, r) {
 		pull(val, o.module.id, r)
 	}
 }
-// 
-function binding(data, val, r) {
+// Сигналы binding type: w - дискретный выход, ao-аналоговый выход, ai-аналоговый вход
+function bindingWAO(data, val, r) {
 	if (!data) return
 	for (const o of data) {
+		if (o.type==='ai') continue
 		if (Object.hasOwn(r, o?.moduleId) || !o?.moduleId) continue
 		pull(val, o.moduleId, r)
 	}

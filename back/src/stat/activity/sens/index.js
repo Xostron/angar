@@ -11,13 +11,19 @@ module.exports = (code, obj, oData) => {
 
 function web(code, obj, oData) {
 	if (code !== 's_sens') return
-	const { sensor } = oData
+	const { sensor, fan, binding } = oData
 	const bId = Object.keys(obj)[0]
 	let title = []
 	for (const sensId in obj[bId]) {
 		let sens = {}
-		if (['tweather', 'hweather'].includes(sensId)) sens.name = 'Прогноз погоды: Температура улицы'
-		else sens = sensor.find((el) => el._id === sensId)
+		if (['tweather', 'hweather'].includes(sensId))
+			sens.name = 'Прогноз погоды: Температура улицы'
+		else {
+			// Поиск в раме датчиков
+			sens = sensor.find((el) => el._id === sensId)
+			// Если не найдено выше, то поиск в раме binding
+			if (!sens) sens = getBindingAI(sensId, oData)
+		}
 		const on = obj[bId][sensId].on
 		const corr = obj[bId][sensId].corr
 
@@ -44,8 +50,13 @@ function mobile(code, o, oData) {
 
 	for (const sensId in obj) {
 		let sens = {}
-		if (['tweather', 'hweather'].includes(sensId)) sens.name = 'Прогноз погоды: Температура улицы'
-		else sens = sensor.find((el) => el._id === sensId)
+		if (['tweather', 'hweather'].includes(sensId))
+			sens.name = 'Прогноз погоды: Температура улицы'
+		else {
+			sens = sensor.find((el) => el._id === sensId)
+			// Если не найдено выше, то поиск в раме binding
+			if (!sens) sens = getBindingAI(sensId, oData)
+		}
 		let on, corr
 		// Выявляем различия нового значение от retain
 		if (obj[sensId].on != retain?.[buildingId]?.[sensId]?.on) on = obj[sensId].on
@@ -64,4 +75,21 @@ function mobile(code, o, oData) {
 		}
 	}
 	return { title: title.length > 1 ? title.join('; ') : title.join() }
+}
+
+/**
+ * Получить раму сигнала binding ai
+ * @param {*} sensId
+ * @param {*} oData
+ * @returns
+ */
+function getBindingAI(sensId, oData) {
+	if (!sensId) return null
+	const { fan, binding } = oData
+	const b = binding?.find((el) => el._id === sensId)
+	if (!b) return null
+	// Пока что владельцами binding аналоговых входов являются ВНО
+	const own = fan?.find((el) => el._id === b.owner.id)
+	b.name = `Ток ${own?.name ?? ''}`
+	return b
 }

@@ -31,7 +31,7 @@ function fnPrev(id, val, level) {
  */
 function message(data, el, level, value) {
 	const { section, cooler } = data
-	let secId, bldId, clrId, v, state
+	let secId, bldId, clrId, v, state, name
 	//
 	switch (level) {
 		case 'fan':
@@ -70,6 +70,12 @@ function message(data, el, level, value) {
 			v = value?.[el._id]?.value
 			state = value?.[el._id]?.state
 			break
+		case 'bindingAi':
+			secId = el.owner.id
+			v = value?.[el._id]?.value
+			state = value?.[el._id]?.state
+			name = el.name
+			break
 		default:
 			break
 	}
@@ -79,11 +85,12 @@ function message(data, el, level, value) {
 	return {
 		bldId: bldId ?? o.bldId,
 		secId: secId ?? o.secId,
-		clrId, // только у heating?
+		clrId, // Только у heating
 		id: el._id,
 		value: v !== undefined ? v : value[el._id]?.state,
-		state, // только у датчиков
+		state, // Только у датчиков и bindingAi
 		type: el?.type,
+		name: el.name, //только у binding ai
 	}
 }
 
@@ -111,6 +118,10 @@ function check(val, prev, level) {
 		case 'cooler':
 			v = val.state
 			vprev = prev
+			break
+		case 'fan':
+			v = { state: val?.state }
+			vprev = { state: prev?.state }
 			break
 		default:
 			v = val

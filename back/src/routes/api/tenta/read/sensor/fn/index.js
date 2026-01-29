@@ -21,16 +21,29 @@ async function fnList(params) {
 	const device = await readOne('device')
 	const secIds = list.map((el) => el._id)
 	const pui = device.filter((el) => {
-		if (secIds.includes(el.sectionId) && el.device.code == 'pui') return (el.sectName = list.find((ss) => ss._id === el.sectionId)?.name)
+		if (secIds.includes(el.sectionId) && el.device.code == 'pui')
+			return (el.sectName = list.find((ss) => ss._id === el.sectionId)?.name)
 	})
+	// Рама датчиков
+	const sensor = await readOne('sensor')
+	// Рама binding - аналоговые входа
+	const binding = await readOne('binding')
+	const fan = await readOne('fan')
+	let ai = binding.filter((el) => el.type === 'ai')
+	ai = ai.map((s) => {
+		// Пока что владельцами binding аналоговых входов являются ВНО
+		const own = fan.find((el) => el._id === s.owner.id)
+		s.owner.id = own.owner.id
+		s.owner.type = own.owner.type
+		s.name = `Ток ${own?.name}`
+		return s
+	})
+
 	// Список навигации = рама секций + Сеть + Общие
 	if (pui?.length) list.unshift({ _id: 'pui', name: `Сеть` })
 	list.unshift({ _id: 'all', name: 'Общие' })
 
-	// Рама датчиков
-	const sensor = await readOne('sensor')
-
-	return { list, sensor: sensList(params, sensor, pui) }
+	return { list, sensor: sensList(params, [...sensor, ...ai], pui) }
 }
 
 module.exports = fnList
@@ -38,11 +51,11 @@ module.exports = fnList
 /**
  * Получить список значений от датчиков
  * @param {*} params Параметры запроса
- * @param {*} sensor Рама датчиков
+ * @param {*} sensor Рама датчиков + рама binding ai
  * @param {*} pui рама устройств
  * @returns
  */
-function sensList(params, sensor, pui) {
+function sensList(params, sensor, pui, ) {
 	const { bldId, secId } = params
 	// Данные датчиков конкретной секции или ангара
 	const id = secId === 'all' ? bldId : secId === 'pui' ? 'pui' : secId
