@@ -98,6 +98,10 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 	const alrClosed = isAlrClosed(bld, obj)
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
+	const supply =
+		isExtralrm(bld._id, null, 'supply') ||
+		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
+		isExtralrm(bld._id, null, 'battery')
 	// CO2 запущен
 	const isRunCO2 =
 		acc?.byTime?.work ||
@@ -117,7 +121,7 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		isCN && !alrAuto && !flagFinish, //9
 		isN && !alrAuto && !flagFinish, //10
 		isCC, //11
-		alarm,
+		alarm||supply,
 	]
 }
 
