@@ -9,7 +9,6 @@ const aggregate = require('./fn/aggregate')
 const device = require('./fn/device')
 const building = require('./fn/building')
 
-
 /**
  * Преобразование прочитанных входов/выходов (коррекция, точность, клапан(концевики))
  * @param {*} val данные опроса модулей

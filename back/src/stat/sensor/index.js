@@ -10,7 +10,7 @@ const { message, checkTyp } = require('../fn')
  * @param {object[]} building Рама складов
  * @param {boolean} force принудительное логирование
  */
-function sensTotalLog(total, building, force) {
+function pLogTotal(total, building, force) {
 	if (!total) return
 	building.forEach((bld) => {
 		const val = total[bld._id]
@@ -38,7 +38,7 @@ function sensTotalLog(total, building, force) {
  * @param {*} level
  * @returns
  */
-function pLogConst(data, arr, value, level) {
+function pLogSensor(data, arr, value, level) {
 	if (!arr?.length) return
 	arr.forEach((el) => {
 		switch (level) {
@@ -81,4 +81,4 @@ function pLogBindingAI(data, arr, value, level) {
 	})
 }
 
-module.exports = { sensTotalLog, pLogConst, pLogBindingAI }
+module.exports = { pLogTotal, pLogSensor, pLogBindingAI }

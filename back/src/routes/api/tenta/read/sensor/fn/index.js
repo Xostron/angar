@@ -2,7 +2,7 @@ const { data: store } = require('@store')
 const { readOne } = require('@tool/json')
 
 /**
- * Получить данные страницы Датчики
+ * Mobile: Получить данные страницы Датчики
  * @param {*} params Параметры запроса
  * @param {*} id
  */

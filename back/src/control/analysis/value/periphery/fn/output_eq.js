@@ -1,6 +1,6 @@
 const { biDO, uniDO } = require('@tool/in_out')
 /**
- * outputEq - Значения выходов (вкд/выкл исполнительный механизм ИМ)
+ * outputEq - Значения выходов (вкл/выкл исполнительный механизм ИМ)
  * Клапан, вентилятор, обогрев клапанов, соленоид
  * @param {*} equip данные json по оборудованию
  * @param {*} val данные опроса модулей
@@ -35,14 +35,16 @@ function fnSolenoid(cooler, binding, val) {
 	return solenoid
 }
 
-// Выход: устройства
+// Выход: устройства управляющий сигнал, кроме электроизмерений
 function fnDevice(device, binding, val) {
-	const arr = device.map((doc) => {
-		const b = binding.find((el) => el.owner.id === doc?._id)
-		doc.module ??= {}
-		doc.module.id = b?.moduleId
-		doc.module.channel = b?.channel
-		return doc
-	})
+	const arr = device
+		.filter((doc) => doc.type !== 'pui')
+		.map((doc) => {
+			const b = binding.find((el) => el.owner.id === doc?._id)
+			doc.module ??= {}
+			doc.module.id = b?.moduleId
+			doc.module.channel = b?.channel
+			return doc
+		})
 	return uniDO(arr, val)
 }

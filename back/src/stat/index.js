@@ -1,4 +1,4 @@
-const { sensTotalLog, pLogConst, pLogBindingAI } = require('./sensor')
+const { pLogTotal, pLogSensor, pLogBindingAI } = require('./sensor')
 const historyLog = require('./history')
 const pLog = require('./periph')
 const { delay } = require('@tool/command/time')
@@ -25,7 +25,7 @@ function statOnChange(obj, history) {
 	pLog(data, data.cooler, value, 'cooler', force)
 	// Агрегат
 	pLog(data, data.aggregate, value, 'aggregate', force)
-	// Устройства (состояние)
+	// Устройства (состояние озонатор, увлажнитель и т.д.), кроме электроизмерений
 	const dvc = data.device.filter((el) => el.device.code !== 'pui')
 	pLog(data, dvc, value, 'device', force)
 	// alarm - Критические неисправности
@@ -33,23 +33,20 @@ function statOnChange(obj, history) {
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event', force)
 	historyLog(achieve, store.prev.achieve, 'event', force)
-	// Напряжение
-	// TODO включить когда появится модуль 701 на стенде
-	// const pui =  data.device.filter((el) => el.device.code === 'pui')
-	// pLog(data, pui, value, 'voltage', force)
+
 	// Принудительное логирование в полночь
 	if (force) {
 		// Датчики (Total после анализа)
-		sensTotalLog(store?.value?.total, data.building, force)
+		pLogTotal(store?.value?.total, data.building, force)
 		// Лог по всем датчикам
-		pLogConst(data, data.sensor, store.value, 'sensor', force)
+		pLogSensor(data, data.sensor, store.value, 'sensor', force)
 		// Лог по всем аналоговым входам binding
 		pLogBindingAI(data, data.binding, store.value, 'sensor', force)
 	}
 }
 
 /**
- * Статистика датчиков - (Цикл с заданным периодом 10 мин)
+ * Статистика датчиков - Сбор данных с периодом store.tStat = 10мин
  */
 async function statOnTime() {
 	while (true) {
@@ -58,29 +55,16 @@ async function statOnTime() {
 		// await delay(5000)
 		const data = await readTO(['building', 'section', 'sensor', 'cooler', 'binding', 'fan'])
 		// Датчики (Total после анализа)
-		sensTotalLog(store?.value?.total, data.building)
+		pLogTotal(store?.value?.total, data.building)
 		// Лог по всем датчикам
-		pLogConst(data, data.sensor, store.value, 'sensor')
+		pLogSensor(data, data.sensor, store.value, 'sensor')
 		// Лог по всем аналоговым входам binding
 		pLogBindingAI(data, data.binding, store.value, 'sensor')
 		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
 	}
 }
 
-/**
- * Электросчетчик: насчитанные кВт за 10 мин
- */
-// TODO Каждую сек аккумулируем значение кВт, на 10 минуте считаем результат и записываем в лог
-async function statOnTimePui() {
-	while (true) {
-		// Задержка
-		await delay(store.tStat)
-		const data = await readTO(['building', 'section', 'device'])
-		// Электросчетчики
-		const pui = data.device.filter((el) => el.device.code === 'pui')
-		pLogConst(data, pui, store.value, 'watt')
-	}
-}
+
 
 /**
  * Текущее время наступило
@@ -110,4 +94,4 @@ class timeTrigger {
 }
 const TT = new timeTrigger(23, 59)
 
-module.exports = { statOnChange, statOnTime, statOnTimePui }
+module.exports = { statOnChange, statOnTime }

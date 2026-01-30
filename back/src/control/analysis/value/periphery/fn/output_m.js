@@ -20,7 +20,7 @@ function outputM(equip, val) {
 	fan(equip.cooler, val, r)
 	// Выходные сигналы
 	sig(equip.signal, val, r)
-	// Вентилятор - аналоговый выход (находится в binding)
+	// binding выхода (w | ao)
 	bindingWAO(equip.binding, val, r)
 	return r
 }
@@ -49,11 +49,13 @@ function sig(data, val, r) {
 		pull(val, o.module.id, r)
 	}
 }
-// Сигналы binding type: w - дискретный выход, ao-аналоговый выход, ai-аналоговый вход
+
+// Сигналы binding type: w - дискретный выход, ao-аналоговый выход, ai-аналоговый вход, pui - электросчетчик
 function bindingWAO(data, val, r) {
 	if (!data) return
 	for (const o of data) {
-		if (o.type==='ai') continue
+		// Проверка типа сигнала binding: обработка только для w, ao
+		if (!['w', 'ao'].includes(o.type)) continue
 		if (Object.hasOwn(r, o?.moduleId) || !o?.moduleId) continue
 		pull(val, o.moduleId, r)
 	}
@@ -64,7 +66,8 @@ function pull(val, moduleId, r) {
 	// Модуль с ошибкой
 	if (val?.[moduleId]?.error) return null
 	// Сдвоенный модуль (DI/DO)
-	if (val?.[moduleId]?.output) return (r[moduleId] = val?.[moduleId]?.output?.map((el) => (el === 0 ? 0 : 1)))
+	if (val?.[moduleId]?.output)
+		return (r[moduleId] = val?.[moduleId]?.output?.map((el) => (el === 0 ? 0 : 1)))
 	// Модуль DO|AO
 	return (r[moduleId] = val?.[moduleId]?.map((el) => (el === 0 ? 0 : el)))
 }

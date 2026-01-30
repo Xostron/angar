@@ -1,4 +1,4 @@
-function dnDevice(equip, val, retain, result) {
+function fnDevice(equip, val, retain, result) {
 	const { device, signal, section } = equip
 	// Состояние отдельного устройства
 	single(equip, result, val)
@@ -9,7 +9,7 @@ function dnDevice(equip, val, retain, result) {
 	sum(section, device, result, 'ozon')
 }
 
-module.exports = dnDevice
+module.exports = fnDevice
 
 // Состояние отдельного устройства
 function single(equip, result, val) {
