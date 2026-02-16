@@ -63,7 +63,7 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	// Обновление времени включения состояния
 	if (code) accAuto.cold[clr._id].state[code] = new Date()
 
-	console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
+	console.log('\t', 5555, 'Смена режима ', clr.name, code, ' : ', sl, f, h, add)
 }
 
 module.exports = { oneChange, oneChangeCombi, ctrlFlap }

@@ -44,7 +44,7 @@ function reset(acc, accDeb) {
 // Для логов, ловим импульсы просадки напряжения
 function blink(bld, battery, acc) {
 	if (acc._alarm) return
-	if (battery) wrExtralrm(bld._id, null, 'battery', msgBB(bld, 103))
+	if (battery) wrExtralrm(bld._id, null, 'battery', msgBB(bld, 38))
 	else delExtralrm(bld._id, null, 'battery')
 }
 

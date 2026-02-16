@@ -38,7 +38,7 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
 	console.log(
-		'\n\tПроверка условий принятия решений, tprd =',
+		'\n\t',5554,'Проверка условий принятия решений, tprd =',
 		se.tprd,
 		'target=',
 		accCold.tgtTprd

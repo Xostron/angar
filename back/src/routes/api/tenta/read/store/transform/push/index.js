@@ -9,7 +9,7 @@ const { fnBattery, find } = require('./fn')
  */
 function push(idB, data) {
 	// Если все секции выключены и склад тоже выключен, то не отправляем ни каких сообщений
-	if (check(idB, data)) return []
+	if (check(idB, data)) return
 
 	// Обнаружена авария питания
 	const r = fnBattery(idB, data)

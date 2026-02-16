@@ -127,7 +127,7 @@ function isAlrClosed(bld, obj) {
 				bld._id === ownerId ? 'alrClosedB' : 'alrClosed',
 			)?.result,
 	)
-	console.log(4400, sum)
+	console.log(4400, 'Cигнал аварии', sum)
 	if (sum.some((el) => !!el)) return true
 	return false
 }

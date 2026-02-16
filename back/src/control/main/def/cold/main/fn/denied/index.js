@@ -1,12 +1,12 @@
-const { data: store } = require('@store')
-const checkSupply = require('../supply')
-const { isReadyAgg, clear, clearCombi } = require('./fn')
-const { isAlr } = require('@tool/message/auto')
-const { clearAchieve } = require('@tool/message/achieve')
-const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
-const { getIdsS } = require('@tool/get/building')
-const { isAllStarted } = require('@store/index')
-const { compareTime, remTime } = require('@tool/command/time')
+const { data: store } = require('@store');
+const checkSupply = require('../supply');
+const { isReadyAgg, clear, clearCombi } = require('./fn');
+const { isAlr } = require('@tool/message/auto');
+const { clearAchieve } = require('@tool/message/achieve');
+const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm');
+const { getIdsS } = require('@tool/get/building');
+const { isAllStarted } = require('@store/index');
+const { compareTime, remTime } = require('@tool/command/time');
 /**
  * @description Склад Холодильник: Запрет работы испарителя
  * @param {object} bld Склад
@@ -17,14 +17,14 @@ const { compareTime, remTime } = require('@tool/command/time')
  * @returns {boolean} true - запрет работы, false - разрешено
  */
 function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
-	const { start, s, se, m, accAuto } = bdata
-	store.denied[bld._id] ??= {}
-	const idsS = getIdsS(obj.data.section, bld._id)
-	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain)
-	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
+	const { start, s, se, m, accAuto } = bdata;
+	store.denied[bld._id] ??= {};
+	const idsS = getIdsS(obj.data.section, bld._id);
+	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain);
+	const aggr = isReadyAgg(obj.value, bld._id, clr._id);
 
 	store.denied[bld._id][clr._id] =
-		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm'
+		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm';
 	console.log(
 		410,
 		clr.name,
@@ -36,146 +36,146 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		alr,
 		!aggr,
 		!supplySt,
-		stateCooler?.status === 'alarm',
-	)
+		stateCooler?.status === 'alarm'
+	);
 	// console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
-	clearAchieve(bld, obj, accAuto, false, start)
+	clearAchieve(bld, obj, accAuto, false, start);
 
 	// Работа испарителя запрещена?
 	// Нет
-	if (!store.denied[bld._id][clr._id]) return false
+	if (!store.denied[bld._id][clr._id]) return false;
 	// Да
-	clear(bld._id, clr, accAuto, fnChange, stateCooler, store)
+	clear(bld._id, clr, accAuto, fnChange, stateCooler, store);
 	// console.log('\tОстановка из-за ошибок:')
 	// console.log('\t\tСклад остановлен:', !start)
 	// console.log('\t\tАвария:', alr)
 	// console.log('\t\tАгрегат готов к работ', aggr)
 	// console.log('\t\tОжидание после включения питания', !supplySt)
 
-	return true
+	return true;
 }
 
 // Склад Комби: Запрет работы испарителя
 function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
-	const { start, s, se, m, accAuto, supply, automode } = bdata
-	store.denied[bld._id] ??= {}
-	const idsS = getIdsS(obj.data.section, bld._id)
+	const { start, s, se, m, accAuto, supply, automode } = bdata;
+	store.denied[bld._id] ??= {};
+	const idsS = getIdsS(obj.data.section, bld._id);
 	// Проверка питания
-	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain)
+	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain);
 	// Готов ли агрегат
-	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId)
+	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId);
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
-	const alrAuto = isAlr(bld._id, automode)
+	const alrAuto = isAlr(bld._id, automode);
 	// Выведен ли из работы ВНО испарителя
-	const fansOff = clr.fan.some((el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id])
+	const fansOff = clr.fan.some(
+		(el) => obj.retain?.[bld._id]?.fan?.[sect._id]?.[el._id]
+	);
 	// Местный режим секции
 	const local =
-		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
+		isExtralrm(bld._id, null, 'local') ||
+		idsS.some((idS) => isExtralrm(bld._id, idS, 'local'));
 	// Режим секции true-Авто
-	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id]
+	const sectM = obj.retain?.[bld._id]?.mode?.[sect._id];
 	// Настройка "Испаритель холодильного оборудования" = true/false
-	const off = (s?.coolerCombi?.on ?? true) === false
-	const alrStop = isExtralrm(bld._id, null, 'alarm')
-	const alrClosed = isAlrClosed(bld, obj)
+	const off = (s?.coolerCombi?.on ?? true) === false;
+	const alrStop = isExtralrm(bld._id, null, 'alarm');
+	const alrClosed = isAlrClosed(bld, obj);
 
+	const a = [
+		[!start, 'Склад в работе: start'],
+		[alr, 'Нет аварий комбинированного склада: alr'],
+		[!aggr, 'Агрегат готов к работе: aggr'],
+		[!supplySt, 'Ожидание после включения питания пройдено: supplySt'],
+		[
+			!store.toAuto?.[bld._id]?.[sect._id],
+			'Подготовка секции к авто пройдена: !store.toAuto?.[bld._id]?.[sect._id]',
+		],
+		[!alrAuto, 'Авария авторежима активна, можно работать !alrAuto'],
+		[automode != 'cooling', 'Склад в режиме Хранения automode != cooling'],
+		[fansOff, 'Выведен ли из работы ВНО испарителя: fansOff'],
+		[stateCooler.fan.state === 'alarm', 'stateCooler.fan.state === alarm'],
+		[local, 'Местный режим секции: local'],
+		[!sectM, 'Секция в Авто: !sectM'],
+		[stateCooler?.status === 'alarm', 'stateCooler?.status === alarm'],
+		[alrStop, 'alrStop'],
+		[alrClosed, 'alrClosed'],
+	];
 	store.denied[bld._id][clr._id] =
-		!start ||
-		alr ||
-		!aggr ||
-		!supplySt ||
-		!store.toAuto?.[bld._id]?.[sect._id] ||
-		!alrAuto ||
-		automode != 'cooling' ||
-		fansOff ||
-		// TODO Авария ВНО испарителя
-		stateCooler.fan.state === 'alarm' ||
-		local ||
-		!sectM ||
-		stateCooler?.status === 'alarm' ||
-		off ||
-		alrStop ||
-		alrClosed
-	console.log(410, clr.name, sect.name, 'работа запрещена combi', store.denied[bld._id][clr._id])
-	// console.log(
-	// 	'\t',
-	// 	'start',
-	// 	!start,
-	// 	'alr',
-	// 	alr,
-	// 	'aggr',
-	// 	!aggr,
-	// 	'supplySt',
-	// 	!supplySt,
-	// 	'!store.toAuto?.[bld._id]?.[sect._id]',
-	// 	!store.toAuto?.[bld._id]?.[sect._id],
-	// 	'!alrAuto',
-	// 	!alrAuto,
-	// 	'automode != cooling',
-	// 	automode != 'cooling',
-	// 	'fansOff',
-	// 	fansOff,
-	// 	'stateCooler.fan.state === alarm',
-	// 	stateCooler.fan.state === 'alarm',
-	// 	'local',
-	// 	local,
-	// 	'!sectM',
-	// 	!sectM,
-	// 	'stateCooler?.status === alarm',
-	// 	stateCooler?.status === 'alarm',
-	// 	'alrStop',
-	// 	alrStop,
-	// 	'alrClosed',
-	// 	alrClosed
-	// )
+		a.filter((e) => e[0] === true)?.length !== 0;
+	console.log(
+		410,
+		clr.name,
+		sect.name,
+		'работа запрещена combi',
+		store.denied[bld._id][clr._id],
+		'',
+		a.filter((e) => e[0])
+	);
 	// Работа испарителя запрещена? false - Нет.
-	if (!store.denied[bld._id][clr._id]) return false
+	if (!store.denied[bld._id][clr._id]) return false;
 
 	// true - Да (очищаем аккумулятор по испарителю и выключаем его)
-	clearCombi(bld._id, sect._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
+	clearCombi(
+		bld._id,
+		sect._id,
+		clr,
+		s,
+		accAuto,
+		fnChange,
+		stateCooler,
+		store,
+		alrAuto,
+		sectM
+	);
 
 	// console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
-	// console.log('\t\tСклад в работе:', start)
-	// console.log('\t\tНет аварий комбинированного склада:', !alr)
-	// console.log('\t\tАгрегат готов к работе', aggr)
-	// console.log('\t\tОжидание после включения питания пройдено', supplySt)
-	// console.log('\t\tСекция в Авто', sectM)
-	// console.log('\t\tПодготовка секции к авто пройдена', store.toAuto?.[bld._id]?.[sect._id])
-	// console.log('\t\tАвария авторежима активна, можно работать', alrAuto)
-	// console.log('\t\tСклад в режиме Хранения', automode == 'cooling')
-
-	return true
+	return true;
 }
 
 // Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
 function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
-	const couple = coupleClr(mS)
+	const couple = coupleClr(mS);
 	// Итог по всем испарителям (для полной очистки аккумулятора секции)
-	const allDeniedSect = []
+	const allDeniedSect = [];
 	// Проходим по парам испарителей и одиночкам
 	couple.forEach((pair) => {
-		const denied = []
-		if (!pair?.length) return
+		const denied = [];
+		if (!pair?.length) return;
 		// 1. Если один испаритель в паре, то просто выключаем при запрете работы
 		if (pair.length < 2 && store?.denied?.[idB]?.[pair[0]]) {
-			allDeniedSect.push(store?.denied?.[idB]?.[pair[0]])
-			const clr = mS.coolerS.find((el) => el._id === pair[0])
-			if (!clr) return
-			if (
-				!alrAuto ||
-				sectM === false ||
-				s?.smoking?.on ||
-				s?.ozon?.on ||
-				!s?.coolerCombi?.on
-			) {
-				fnChange(0, null, 0, 0, null, clr)
-			} else fnChange(0, 0, 0, 0, null, clr)
-			return
+			allDeniedSect.push(store?.denied?.[idB]?.[pair[0]]);
+			const clr = mS.coolerS.find((el) => el._id === pair[0]);
+			if (!clr) return;
+			const a = [
+				[!alrAuto, '!alrAuto'],
+				[sectM, 'sectM'],
+				[s?.smoking?.on, 's?.smoking?.on'],
+				[s?.ozon?.on, 's?.ozon?.on'],
+				[!s?.coolerCombi?.on, '!s?.coolerCombi?.on'],
+			];
+			// if (
+			// 	 !alrAuto||
+			// 	sectM === false ||
+			// 	s?.smoking?.on ||
+			// 	s?.ozon?.on ||
+			// 	!s?.coolerCombi?.on
+			// ) {
+			// 	fnChange(0, null, 0, 0, null, clr)
+			// } else fnChange(0, 0, 0, 0, null, clr)
+			console.log(
+				'Проходим по парам испарителей и одиночкам',
+				a.filter((e) => e[0])
+			);
+			a.filter((e) => e[0] === true)?.length !== 0
+				? fnChange(0, null, 0, 0, null, clr)
+				: fnChange(0, 0, 0, 0, null, clr);
+			return;
 		}
 		// 2. Для парных испарителей (1 ВНО на двоих и более испарителей)
 		pair.forEach((idClr) => {
-			denied.push(store?.denied?.[idB]?.[idClr])
-		})
-		allDeniedSect.push(...denied)
+			denied.push(store?.denied?.[idB]?.[idClr]);
+		});
+		allDeniedSect.push(...denied);
 		// Частичное или Полное отключение пары испарителей
 		// 2.1. Полное отключение пары
 		if (denied.every((el) => el)) {
@@ -185,29 +185,44 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 			// 3. Включено окуривание
 			// 4. выключено оборудование испарителя
 			pair.forEach((idClr) => {
-				const clr = mS.coolerS.find((el) => el._id === idClr)
-				if (
-					!alrAuto ||
-					sectM === false ||
-					s?.smoking?.on ||
-					s?.ozon?.on ||
-					!s?.coolerCombi?.on
-				) {
-					fnChange(0, null, 0, 0, null, clr)
-				} else fnChange(0, 0, 0, 0, null, clr)
-			})
-			return
+				const clr = mS.coolerS.find((el) => el._id === idClr);
+				const a = [
+					[!alrAuto, '!alrAuto'],
+					[sectM === false, 'sectM === false'],
+					[s?.smoking?.on, 's?.smoking?.on'],
+					[s?.ozon?.on, 's?.ozon?.on'],
+					[!s?.coolerCombi?.on, '!s?.coolerCombi?.on'],
+				];
+				// if (
+				// 	!alrAuto ||
+				// 	sectM === false ||
+				// 	s?.smoking?.on ||
+				// 	s?.ozon?.on ||
+				// 	!s?.coolerCombi?.on
+				// ) {
+				// 	fnChange(0, null, 0, 0, null, clr)
+				// } else fnChange(0, 0, 0, 0, null, clr)
+				console.log(
+					'Полное отключение пары',
+					a.filter((e) => e[0])
+				);
+				a.filter((e) => e[0] === true).length !== 0
+					? fnChange(0, null, 0, 0, null, clr)
+					: fnChange(0, 0, 0, 0, null, clr);
+			});
+			return;
 		}
 		// 2.2. Частичное отключение пары
 		denied.forEach((el, i) => {
 			// Если разрешен к работе не отключаем
-			if (el === false) return
+			if (el === false) return;
 			// Запрещен - отключаем
-			const idClr = pair[i]
-			const clr = mS.coolerS.find((el) => el._id === idClr)
-			fnChange(0, null, 0, 0, null, clr)
-		})
-	})
+			const idClr = pair[i];
+			const clr = mS.coolerS.find((el) => el._id === idClr);
+			console.log('Частичное отключение пары');
+			fnChange(0, null, 0, 0, null, clr);
+		});
+	});
 
 	// Полная очистка секции (Все испарители секции запрещены)
 	// console.log('@@@@@@@@@@@@@@',allDeniedSect)
@@ -231,27 +246,32 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
  * @param {*} sectM
  */
 function offByTcnl(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
-	const wait = (s?.coolerCombi?.allStarted ?? 60) * 1000
+	const wait = (s?.coolerCombi?.allStarted ?? 60) * 1000;
 	mS.coolerS.forEach((clr) => {
 		// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
 		// + доп задержка для защиты двигателя от частого включения
-		accAuto.cold ??= {}
-		accAuto.cold[clr.sectionId] ??= {}
+		accAuto.cold ??= {};
+		accAuto.cold[clr.sectionId] ??= {};
 		// Точка отсчета для выключения испарителя по низкой температуре
-		if (isAllStarted(clr.sectionId)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
-		else accAuto.cold[clr.sectionId].allStarted = null
+		if (isAllStarted(clr.sectionId))
+			accAuto.cold[clr.sectionId].allStarted ??= new Date();
+		else accAuto.cold[clr.sectionId].allStarted = null;
 		// Если время сброшено, это значит канал прогревается и не отключаем испаритель
-		if (!accAuto?.cold?.[clr.sectionId]?.allStarted) return
+		if (!accAuto?.cold?.[clr.sectionId]?.allStarted) return;
 		// Температура канала низкая - начинаем отсчет времени "Настройка Холодильник С"
-		const time = compareTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait)
+		const time = compareTime(
+			accAuto?.cold?.[clr.sectionId]?.allStarted,
+			wait
+		);
 		if (!time)
 			return console.log(
 				413,
+				clr.name,
 				accAuto?.cold?.[clr.sectionId]?.allStarted,
 				wait,
 				'Низкая температура канала, отключение испарителя через',
-				remTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait),
-			)
+				remTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait)
+			);
 
 		// Испаритель выключить, но ВНО испарителя не блокируется при:
 		// 1. В режиме обычного склада (нет аварий авторежима)
@@ -259,14 +279,31 @@ function offByTcnl(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 		// 3. Включено окуривание
 		// 4. Включено озонирование
 		// 5. Выключено оборудование испарителя
-		if (!alrAuto || sectM === false || s?.smoking?.on || s?.ozon?.on || !s?.coolerCombi?.on) {
-			fnChange(0, null, 0, 0, null, clr)
-		} else fnChange(0, 0, 0, 0, null, clr)
-		console.log(414, 'Низкая температура канала, испаритель выключен')
-	})
+		const a = [
+			[!alrAuto, 'В режиме обычного склада (аварии авторежима)'],
+			[sectM === false, 'Секция не в ручном режиме'],
+			[s?.smoking?.on, 'окуривание'],
+			[s?.ozon?.on, 'озонирование'],
+			[!s?.coolerCombi?.on, 'Включено оборудование испарителя'],
+		];
+		// if (!alrAuto || sectM === false || s?.smoking?.on || s?.ozon?.on || !s?.coolerCombi?.on) {
+		a.filter((e) => e[0] === true)?.length !== 0
+			? fnChange(0, null, 0, 0, null, clr)
+			: fnChange(0, 0, 0, 0, null, clr);
+		console.log(
+			414,
+			'Низкая температура канала, испаритель выключен',
+			a.filter((e) => e[0])
+		);
+	});
 }
 
-module.exports = { cold: deniedCold, combi: deniedCombi, off: offDenied, offByTcnl }
+module.exports = {
+	cold: deniedCold,
+	combi: deniedCombi,
+	off: offDenied,
+	offByTcnl,
+};
 
 /**
  *
@@ -275,25 +312,27 @@ module.exports = { cold: deniedCold, combi: deniedCombi, off: offDenied, offByTc
  */
 function coupleClr(mS) {
 	const hashClr = mS.coolerS.reduce((rlt, el) => {
-		rlt[el._id] = el
-		return rlt
-	}, {})
+		rlt[el._id] = el;
+		return rlt;
+	}, {});
 	// Разбиваем испарители секции на пары по признаку одинаковых ВНО
 	const couple = mS.allFanClr.reduce((rlt, el, i) => {
 		// el - ВНО какого-то испарителя
-		const uid = el.module.id + '' + el.module.channel
+		const uid = el.module.id + '' + el.module.channel;
 		// Испарители с одинаковыми ВНО
-		const pairC = []
+		const pairC = [];
 		// Берем испаритель и его ВНО (hashClr[idClr].fan) проверяем на схожесть с el по uid
 		for (const idClr in hashClr) {
-			const f = hashClr[idClr].fan.find((ff) => ff.module.id + '' + ff.module.channel === uid)
+			const f = hashClr[idClr].fan.find(
+				(ff) => ff.module.id + '' + ff.module.channel === uid
+			);
 			if (f) {
-				pairC.push(idClr)
-				delete hashClr[idClr]
+				pairC.push(idClr);
+				delete hashClr[idClr];
 			}
 		}
-		rlt.push(pairC)
-		return rlt
-	}, [])
-	return couple
+		rlt.push(pairC);
+		return rlt;
+	}, []);
+	return couple;
 }

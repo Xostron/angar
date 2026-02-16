@@ -70,7 +70,7 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld) {
 	console.log(
 		'\t',
-		5551,
+		5552,
 		'состояние испарителя',
 		stateCooler,
 		!!def.combi[stateCooler],

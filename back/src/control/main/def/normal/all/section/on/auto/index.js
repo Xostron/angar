@@ -17,29 +17,45 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	const alrS = extralrm(bld, sect, obj, s, se, m, am, toAlr)
 
 	const alrSe = alrSens(se)
-
+	const a = [
+		[alrS, 'Доп. аварии. для секции'],
+		[(alrAm && !CO2work), 'Авария авторежима', 'alrAm:', alrAm, '!CO2work:', !CO2work],
+		[ban,'таймер запретов'],
+		[alrBld,'авария склада'],
+		[alrAlw,'alrAlw'],
+		[alrSe,'alrSe'],
+	]
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада
-	const alr = alrS || (alrAm && !CO2work) || ban || alrBld || alrAlw || alrSe
-
-	console.log(
+	// const alr = alrS || (alrAm && !CO2work) || ban || alrBld || alrAlw || alrSe
+	const alr = a.filter(e=>e[0]===true)?.length !== 0
+		console.log(
 		'\t',
-		666,
+		666, 'Сумма аварий',
 		sect?.name,
 		'alr ',
 		alr,
-		' = ',
-		alrS,
-		'||',
-		alrAm && !CO2work,
-		'||',
-		ban,
-		'||',
-		alrBld,
-		'||',
-		alrAlw,
-		'||',
-		alrSe
+		' = ', a.filter(e=>e[0])
 	)
+
+	// console.log(
+	// 	'\t',
+	// 	666,
+	// 	sect?.name,
+	// 	'alr ',
+	// 	alr,
+	// 	' = ',
+	// 	alrS,
+	// 	'||',
+	// 	alrAm && !CO2work,
+	// 	'||',
+	// 	ban,
+	// 	'||',
+	// 	alrBld,
+	// 	'||',
+	// 	alrAlw,
+	// 	'||',
+	// 	alrSe
+	// )
 	//********** Логика авто **********
 	// Пользовательские расчеты
 	if (def[am]?.middlew) def[am]?.middlew(bld, sect, obj, s, se, seB, alr, acc)

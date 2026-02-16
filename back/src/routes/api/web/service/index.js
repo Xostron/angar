@@ -24,7 +24,6 @@ const {
 	getSettings,
 } = require('./services');
 
-// TODO Рома ip, reboot, software,pm2,npm
 function service(router) {
 	const serviceRouter = express.Router(); // api/web/service
 	router.use('/service', serviceRouter);
