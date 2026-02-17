@@ -271,7 +271,7 @@ function offByTcnl(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 			[s?.ozon?.on, 'озонирование'],
 			[!s?.coolerCombi?.on, 'Включено оборудование испарителя'],
 		];
-		// if (!alrAuto || sectM === false || s?.smoking?.on || s?.ozon?.on || !s?.coolerCombi?.on) {
+		
 		a.filter((e) => e[0] === true)?.length !== 0
 			? fnChange(0, null, 0, 0, null, clr)
 			: fnChange(0, 0, 0, 0, null, clr);

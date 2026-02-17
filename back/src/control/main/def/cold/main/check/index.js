@@ -54,7 +54,7 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// Вкл испаритель + включенный соленоид => Охлаждение
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
 	// Выкл испаритель => набор холода
-	if (se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
+	if (se.cooler.tmpCooler!==null && se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return

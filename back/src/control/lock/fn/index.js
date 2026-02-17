@@ -184,20 +184,6 @@ function fanAccel(obj, s) {
 		const isAlrState = value?.[el._id]?.state === 'alarm' ? true : false;
 		// Авария питания
 		const battery = isExtralrm(idB, null, 'battery');
-		console.log(
-			988777,
-			'Блокировки разгонных вентиляторов (обычный склад и холодильник)',
-			'local',
-			local,
-			'!!ban',
-			!!ban,
-			' alrStop',
-			alrStop,
-			'isAlrState',
-			isAlrState,
-			'battery',
-			battery
-		);
 		out(obj, output, el, local, !!ban, alrStop, isAlrState, battery);
 	}
 }

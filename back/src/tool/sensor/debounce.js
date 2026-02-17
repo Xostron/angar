@@ -14,9 +14,11 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 	// 1. значение датчика в аккумуляторе hold отсутсвует,
 	// 2. Состояние датчика не аварийное
 	// Очищаем время слежения за датчиком и обновляем аккумулятор hold:
-	if (!hold || v.state !== 'alarm') {
+
+	if (!hold || v.state !== 'alarm' ) {
 		store.debounce[idSens] = {}
-		return null
+		if (!v.raw && !hold) return v
+		return !v.raw ? hold : v
 	}
 
 	// Антидребезг (подсовываем значение из аккумулятора в течении времени антидребезга,
@@ -63,8 +65,6 @@ function debDI(sig, value, equip, result) {
 	// console.log(7700, 'DEBDI', sig.type, value, hold, store.debounce[sig._id])
 }
 
-module.exports = { debounce, debDI }
-
 /**
  * Антидребезг аналоговых датчиков
  * @param {*} idB
@@ -97,3 +97,6 @@ function debounceDI(idB, sig, v, last) {
 	delete debounce?.date
 	return v
 }
+
+module.exports = { debounce, debDI }
+

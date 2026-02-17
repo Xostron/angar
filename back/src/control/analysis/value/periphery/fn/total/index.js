@@ -89,7 +89,7 @@ module.exports = function total(equip, result, retain) {
 		fltA = (el) => el.owner.id === bld._id && el.type === 'hin'
 		const hin = state(sensor, result, flt, fltA)
 		// 1. Выведены из работы
-		if (hin.max === null && hin.state === 'off') (hin.max = 80), (hin.min = 80)
+		if (hin.max === null && hin.state === 'off') (hin.max = 85), (hin.min = 85)
 		// 2. Датчик в аварии - остается аварийным
 		// Когда склад с одним агрегатом (датччики давления могут быть привязаны к складу)
 		// Давление всасывания

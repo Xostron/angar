@@ -5,7 +5,7 @@
  */
 function initAllStarted(acc, fans) {
 	const r =
-		acc.order >= fans.length - 1 && acc.fc && acc.fc.value && acc.fc.sp >= 100 && acc.sol.value
+		acc.order >= fans.length - 1 && !!acc.fc && acc.fc.value && acc.fc.sp >= 100 && acc.sol.value
 	if (r) acc.allStarted = new Date()
 	// Сброс флага все узлы запущены произойдет, после включения испарителя
 	else acc.allStarted = null
@@ -14,7 +14,7 @@ function initAllStarted(acc, fans) {
 		'allstarted=',
 		acc.order,
 		fans.length - 1,
-		acc.fc,
+		!!acc.fc,
 		acc.fc.value,
 		acc.fc.sp >= 100,
 		acc.sol.value,

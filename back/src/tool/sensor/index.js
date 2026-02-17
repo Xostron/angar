@@ -1,7 +1,8 @@
 const { data: store } = require('@store')
 const { getBS } = require('@tool/get/building')
 const { debounce } = require('./debounce')
-const { webSensAlarm, state, isValidWeather, valid } = require('./fn')
+const { webSensAlarm, valid } = require('./fn')
+const stateWeather = require('./weather')
 /**
  * Анализ датчиков
  * result[s._id] - отображение на экране настроек датчиков,
@@ -27,13 +28,21 @@ function vSensor(equip, val, retain, result) {
 			owner = getBS(s, equip)
 		}
 
-		// Исправность, округление датчика
+		// Обработанное значение датчика
 		const r = valid(s, owner, val, equip, retain)
-		// антидребезг датчика
-		const hold = debounce(owner?.building?._id, s._id, r, store.holdSensor?.[s._id], retain, s)
-		result[s._id] = hold ? hold : r
-		//
-		result[s._id] = fnHinHout(owner?.building?._id, s, result[s._id], retain)
+		// Антидребезг датчика^ из аккумулятора или обработанное значение
+		result[s._id] = debounce(
+			owner?.building?._id,
+			s._id,
+			r,
+			store.holdSensor?.[s._id],
+			retain,
+			s,
+		)
+		// Вторая обработка только для датчиков влажности улицы и продукта
+		// result[s._id] = fnHinHout(owner?.building?._id, s, result[s._id], retain)
+		// if (s.type === 'hout') 
+			// console.log(221, s.type, result[s._id])
 		// Аварийные сообщения датчика
 		webSensAlarm(result[s._id], owner?.building, owner?.section, s)
 		// Обновляем прошлое значение
@@ -45,54 +54,6 @@ function vSensor(equip, val, retain, result) {
 		result[bld._id].tweather = stateWeather(bld._id, weather, retain, 'tweather', 'temp')
 		result[bld._id].hweather = stateWeather(bld._id, weather, retain, 'hweather', 'humidity')
 	}
-}
-
-/**
- *
- * @param {*} sens Рама датчика
- * @param {*} r Показание и состояние датчика
- */
-function fnHinHout(idB, sens, r, retain) {
-	const on = retain?.[idB._id]?.[sens._id]?.on ?? true
-	// Если Датчик влажности улицы/продукта = null (авария датчика)
-	// превращаем его => в 100%, и показываем только состояния off|on
-	if (['hout', 'hin'].includes(sens.type)) console.log(2200, sens.type, r)
-	// Датчики влажности продукта/улицы
-	if (['hout', 'hin'].includes(sens.type) && r.raw === null) {
-		return {
-			raw: 100,
-			value: 100,
-			state: state(r.raw, on) === 'alarm' ? 'on' : state(r.raw, on),
-		}
-	}
-	// Все остальные датчики
-	return r
-}
-
-/**
- * Состояние параметра прогноза погоды
- * @param {string} bId id склада
- * @param {object} weather данные прогноза погоды
- * @param {object} retain сохраненные данные склада из json
- * @param {string} key temp | humidity
- * @return {object} {value:1, state: 'on' | 'off'}
- */
-function stateWeather(bId, weather, retain, key, fld) {
-	// Состояние: вкл/выкл на экране датчиков (on|off)
-	let state =
-		retain?.[bId]?.[key]?.on === undefined || retain?.[bId]?.[key]?.on === true ? 'on' : 'off'
-	// Авария - alarm
-	// Если нет показания или времени обновления
-	if (typeof weather?.[fld] != 'number') state = 'alarm'
-	// Проверка последнего обновления (срок 2 часа)
-	state = isValidWeather(weather) ? state : 'alarm'
-	// Истинное значение
-	// const raw = state == 'alarm' ? null : +weather?.[fld].toFixed(1)
-	const raw = +weather?.[fld]?.toFixed(1)
-	// Значение с коррекцией
-	const value =
-		typeof raw == 'number' ? +(raw + (+retain?.[bId]?.[key]?.corr || 0)).toFixed(1) : null
-	return { raw, value, state }
 }
 
 module.exports = vSensor

@@ -38,11 +38,11 @@ function valid(sens, owner, val, equip, retain) {
 
 	// Значение датчика с коррекцией (используется в алгоритмах)
 	const value = raw !== null ? +(raw + +corr).toFixed(sens?.accuracy || 1) : null
+	// raw = null
 	let r = { raw, value, state: state(raw, on) }
-
 	// Проверка диапазонов
 	range(r, sens)
-	return r ?? { raw: null, value: null, state: 'alarm' }
+	return r
 }
 
 // Правила обработки датчиков для разных аналоговых модулей
@@ -133,16 +133,20 @@ function range(r, sens) {
 			if (r.value < -99) r.value = -99.0
 			break
 		// Датчик влажности продукта (при выводе из работы = 80%)
-		case sens.type === 'hin':
-			if (r.value > 99.8) r.value = 99.8
-			if (r.value < 0) r.value = 0.0
-			if (r.state === 'off') r.value = 80.0
-			break
 		// Влажность улицы
+		case sens.type === 'hin':
 		case tSens.mois.includes(sens.type):
 			if (r.value > 99.8) r.value = 99.8
 			if (r.value < 0) r.value = 0.0
+			if (r.state === 'off') r.value = 85
+			if (r.state === 'alarm') ((r.value = 100), (r.state = 'on'))
 			break
+		// case tSens.mois.includes(sens.type):
+		// 	if (r.value > 99.8) r.value = 99.8
+		// 	if (r.value < 0) r.value = 0.0
+		// 	if (r.state === 'off') r.value = 85
+		// 	if (r.state==='alarm') r.value = 100
+		// 	break
 		// Давление
 		case tSens.pres.includes(sens.type):
 			if (r.value > 2000) r.value = 2000.0
@@ -230,6 +234,8 @@ function isValidWeather(weather) {
 	if (!updateTime) return false
 	return now - updateTime >= expire ? false : true
 }
+
+
 module.exports = {
 	valid,
 	getRaw,
@@ -249,3 +255,33 @@ const code = {
 	hout: { off: 95, alarm: 96 },
 	tin: { off: 93, alarm: 94 },
 }
+
+/**
+ * Только для датчиков влажности улицы и продукта
+ * @param {*} sens Рама датчика
+ * @param {*} r Показание и состояние датчика
+ */
+// function fnHinHout(idB, sens, r, retain) {
+// 	const on = retain?.[idB._id]?.[sens._id]?.on ?? true
+// 	// Если Датчик влажности улицы/продукта = null (авария датчика)
+// 	// превращаем его => в 100%, и показываем только состояния off|on
+// 	if (['hout', 'hin'].includes(sens.type)) console.log(2200, sens.type, r)
+// 	// Датчики влажности продукта/улицы
+// 	if (['hout', 'hin'].includes(sens.type) && r.state == 'alarm') {
+// 		// const st = state(r.raw, on)
+// 		return {
+// 			raw: r.raw,
+// 			value: 100,
+// 			state: 'on',
+// 		}
+// 	}
+// 	if (['hout', 'hin'].includes(sens.type) && r.state == 'off') {
+// 		return {
+// 			raw: r.raw,
+// 			value: 85,
+// 			state: 'off',
+// 		}
+// 	}
+// 	// Все остальные датчики
+// 	return r
+// }
