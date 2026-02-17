@@ -29,7 +29,7 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 
 	idBS.forEach((ownerId) => onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc))
 
-	console.log(88001, acc)
+	// console.log(88001, acc)
 }
 
 module.exports = resetDO

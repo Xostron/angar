@@ -1,9 +1,8 @@
 const { data: store, readAcc } = require('@store')
 const { getIdByClr, getB } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')
-const { getAO } = require('@tool/in_out')
 const { isExtra } = require('@tool/message/extra')
-
+const coolerDef = require('@dict/def/cooler')
 // Испаритель
 function cooler(equip, val, retain, result) {
 	const { building, cooler, sensor, fan, heating, binding, section, signal, aggregate } = equip
@@ -44,7 +43,7 @@ function cooler(equip, val, retain, result) {
 		arrF.forEach((el) => (result[clr._id].fan[el._id] = result[el._id]))
 		// Агрегированный состояние по ВНО испарителя: alarm (если нет рабочих ВНО[выведены/авария]) или ''(есть рабочие ВНО)
 		result[clr._id].fan.state = arrF.every((el) =>
-			['off', 'alarm'].includes(result[el._id].state)
+			['off', 'alarm'].includes(result[el._id].state),
 		)
 			? 'alarm'
 			: ''
@@ -89,7 +88,7 @@ function cooler(equip, val, retain, result) {
 
 		// Задание ПЧ ВНО испарителя
 		result[clr._id].ao = Object.values(result[clr._id].fan).find(
-			(el) => el.value !== null || el.value !== undefined
+			(el) => el.value !== null || el.value !== undefined,
 		)?.value
 
 		//Добавление читаемого названия состояния испарителя
@@ -150,15 +149,6 @@ function state(o, clr, equip, arrM) {
 		if (accAuto?.[clr._id]?.state?.add) state.push('add')
 	}
 	return state.join('-')
-}
-
-const coolerDef = {
-	'on-on-off': 'Охлаждение',
-	'on-off-off': 'Набор холода',
-	'off-on-off': 'Вентилятор',
-	'off-off-on': 'Оттайка',
-	'off-off-off': 'Пауза',
-	'off-off-off-add': 'Слив',
 }
 
 /**

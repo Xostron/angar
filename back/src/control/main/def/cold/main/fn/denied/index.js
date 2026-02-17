@@ -99,6 +99,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		[stateCooler?.status === 'alarm', 'stateCooler?.status === alarm'],
 		[alrStop, 'alrStop'],
 		[alrClosed, 'alrClosed'],
+		[off, "Настройка \"Испаритель холодильного оборудования выключен\""]
 	];
 	store.denied[bld._id][clr._id] =
 		a.filter((e) => e[0] === true)?.length !== 0;
@@ -148,20 +149,12 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 			if (!clr) return;
 			const a = [
 				[!alrAuto, '!alrAuto'],
-				[sectM, 'sectM'],
+				[sectM===false, 'sectM'],
 				[s?.smoking?.on, 's?.smoking?.on'],
 				[s?.ozon?.on, 's?.ozon?.on'],
 				[!s?.coolerCombi?.on, '!s?.coolerCombi?.on'],
 			];
-			// if (
-			// 	 !alrAuto||
-			// 	sectM === false ||
-			// 	s?.smoking?.on ||
-			// 	s?.ozon?.on ||
-			// 	!s?.coolerCombi?.on
-			// ) {
-			// 	fnChange(0, null, 0, 0, null, clr)
-			// } else fnChange(0, 0, 0, 0, null, clr)
+
 			console.log(
 				'Проходим по парам испарителей и одиночкам',
 				a.filter((e) => e[0])
@@ -193,15 +186,7 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 					[s?.ozon?.on, 's?.ozon?.on'],
 					[!s?.coolerCombi?.on, '!s?.coolerCombi?.on'],
 				];
-				// if (
-				// 	!alrAuto ||
-				// 	sectM === false ||
-				// 	s?.smoking?.on ||
-				// 	s?.ozon?.on ||
-				// 	!s?.coolerCombi?.on
-				// ) {
-				// 	fnChange(0, null, 0, 0, null, clr)
-				// } else fnChange(0, 0, 0, 0, null, clr)
+
 				console.log(
 					'Полное отключение пары',
 					a.filter((e) => e[0])

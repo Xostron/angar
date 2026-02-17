@@ -18,16 +18,16 @@ function alrClosed(bld, sect, obj, s, se, m, automode, acc, data) {
 	reset(bld, sect, acc, store.debounce)
 	set(bld, sect, sig, store.debounce, acc, watch, count)
 	blink(bld, sect, sig, acc, mode)
-	console.log(
-		5500,
-		sect.name,
-		`Режим = ${mode ? 'авто' : 'не авто'}`,
-		'Авария = ',
-		(acc._alarm ?? acc._self ?? null) && mode,
-		store.debounce?.alrClosed?.[sect._id],
-		acc,
-		store?.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed
-	)
+	// console.log(
+	// 	5500,
+	// 	sect.name,
+	// 	`Режим = ${mode ? 'авто' : 'не авто'}`,
+	// 	'Авария = ',
+	// 	(acc._alarm ?? acc._self ?? null) && mode,
+	// 	store.debounce?.alrClosed?.[sect._id],
+	// 	acc,
+	// 	store?.alarm?.extralrm?.[bld._id]?.[sect._id]?.alrClosed
+	// )
 	// acc._alarm - авария ручной сброс
 	// acc._self - авария с автосбросом
 	// mode = true - секция в авто, склад останавливается.

@@ -2,7 +2,7 @@ const { isAlr } = require('@tool/message/auto')
 const { mech } = require('@tool/command/mech')
 const { isAllStarted } = require('@store/index')
 const { data: store } = require('@store')
-const { getStateClr } = require('@tool/cooler')
+const { getStateVNOClr } = require('@tool/cooler')
 
 /**
  * Склад комби-холод = тип комби-холод && режим хранения &&
@@ -36,7 +36,7 @@ function isCombiCold(bld, am, s) {
  * @param {*} idS ИД секции
  * @param {*} obj Глобальные данные
  * @param {*} bdata Данные склада
- * @returns {boolean} true - ВНО испарителей секции включены, false - все ВНО испарителей выкл.
+ * @returns {boolean} true - ВНО испарителей секции разрешены, false - все ВНО испарителей запрещены.
  */
 function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	// По-умолчанию ВНО испарителя включены
@@ -53,7 +53,7 @@ function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	if (bdata.accAuto.cold?.flagFinish) return true
 
 	if (isCombiCold(bld, bdata?.automode, bdata?.s)) {
-		state = getStateClr(bld, idS, obj)
+		state = getStateVNOClr(idS, obj)
 		// Задержка инертности включения испарителя, после isAllStarted
 		if (state) delete store.cycle.ccVno?.[idS]
 		// Если имеется хотя бы один испаритель у которого включен ВНО, то разрешаем работу ВНО
@@ -81,16 +81,7 @@ function isCoolerCombiOn(bld, bdata) {
 	//
 	let coolerCombiOn = true
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
-	// const alrAuto = isAlr(bld._id, automode)
-	//
-	// if (bld?.type === 'combi' && automode === 'cooling' && alrAuto)
 	if (isCombiCold(bld, automode, s)) coolerCombiOn = s?.coolerCombi?.on ?? true
-	//
-	console.log(
-		'Настройка "Испаритель холодильного оборудования" =',
-		s?.coolerCombi?.on,
-		coolerCombiOn,
-	)
 	//
 	if (coolerCombiOn === false)
 		console.log(

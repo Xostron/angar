@@ -19,14 +19,14 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	reset(bld, null, acc, store.debounce)
 	set(bld, null, sig, store.debounce, acc, watch, count)
 	blink(bld, null, sig, acc)
-	console.log(
-		5500,
-		bld.name,
-		'Авария = ',
-		acc._alarm ?? acc._self ?? null,
-		store.debounce?.alrClosed?.[bld._id],
-		acc
-	)
+	// console.log(
+	// 	5500,
+	// 	bld.name,
+	// 	'Авария = ',
+	// 	acc._alarm ?? acc._self ?? null,
+	// 	store.debounce?.alrClosed?.[bld._id],
+	// 	acc
+	// )
 	acc.result = acc._alarm ?? acc._self ?? null
 	return acc.result
 }

@@ -1,6 +1,7 @@
 const { isExtralrm } = require('@tool/message/extralrm');
 const { setACmd } = require('@tool/command/set');
 const { isСoolerCombiVNO, isCoolerCombiOn } = require('@tool/combi/is');
+const { getStateClr } = require('@tool/cooler')
 
 /**
  * Команда авторежима на плавный пуск/стоп ВНО секции
@@ -14,38 +15,18 @@ function fnACmd(bld, resultFan, obj, bdata) {
 	if (!bdata?.s) return;
 	const idB = bld._id;
 	const delay = bdata.s.fan.delay * 1000;
-	// const localB = isExtralrm(idB, null, 'local');
-	// const coolerCombiOn = isCoolerCombiOn(bld, bdata);
 	resultFan.list.forEach((idS) => {
-		// Включение ВНО с проверкой:
-		// Секция в авто
-		// const sectOn = obj?.retain?.[idB]?.mode?.[idS];
-		// Нет переключателя на щите
-		// const local = isExtralrm(idB, idS, 'local');
-		// Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций
-		// const ccVNO = isСoolerCombiVNO(bld, idS, obj, bdata);
-		// object.data.coller рама испарителей по idBld back\src\tool\cooler\index.js для получения испарителей по складу
-		// TODO добавить проверку на оттайку object.value.[id_coller].state
+		console.log(110, "fnACmd: Секция=", idS)
+		const st = getStateClr(idS,obj)
 		const a = [
 			[isExtralrm(idB, idS, 'local'), 'Нет переключателя на щите'],
 			[isExtralrm(idB, null, 'local'), 'местный режим блокировки'],
 			[!obj?.retain?.[idB]?.mode?.[idS], 'секция не в авто'],
 			[!isCoolerCombiOn(bld, bdata), 'комби-холод: испарители выключены'],
 			[!isСoolerCombiVNO(bld, idS, obj, bdata), ' Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций'],
+			[st.includes('off-off-on') || st.includes('off-off-off-add'),'Включена оттайка или слив воды']
 		];
 		if (a.filter((el) => el[0]).length > 0) {
-			// if (local || localB || !sectOn || !coolerCombiOn || !ccVNO) {
-			// console.log(
-			// 	11,
-			// 	'Секция',
-			// 	idS,
-			// 	'Плавный пуск: ВНО выключены из-за:',
-			// 	local,
-			// 	localB,
-			// 	!sectOn,
-			// 	!coolerCombiOn,
-			// 	!ccVNO
-			// );
 			console.log(
 				11,
 				'Секция',
