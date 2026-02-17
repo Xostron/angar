@@ -38,13 +38,13 @@ function bar(r, bld, sect, am, start) {
 	const ventOn = store.alarm.extra?.[bld._id]?.vent?.ventOn ?? null
 	const stableVno = store.alarm.extralrm?.[bld._id]?.[sect._id]?.stableVno ?? null
 	const debdo = JSON.parse(
-		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null)
+		JSON.stringify(Object.values(store.alarm.extralrm?.[bld._id]?.debdo ?? {})?.[0] ?? null),
 	)
 	if (debdo) debdo.msg = mes[102].msg
 
 	const secAuto = store?.retain?.[bld._id]?.mode?.[sect._id]
 	// Если секция в авто, смотрим есть ли у нее аварии долгого закрытия по клапану
-	const long = secAuto ? store.alarm.extralrm?.[bld._id]?.[sect._id]?.alrValve ?? null : null
+	const long = secAuto ? (store.alarm.extralrm?.[bld._id]?.[sect._id]?.alrValve ?? null) : null
 
 	r.bar[bld._id] ??= {}
 	r.bar[bld._id][sect._id] ??= {}
@@ -139,11 +139,11 @@ function signal(r, bld, sect, am) {
 	// if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
 	if (extralrm)
 		Object.values(extralrm).forEach((el) =>
-			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el))
+			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el)),
 		)
 	if (extra)
 		Object.values(extra).forEach((el) =>
-			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el))
+			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el)),
 		)
 	// console.log(8800, r.signal[bld._id])
 	// console.log(9900, extralrm)
@@ -197,6 +197,7 @@ function signalB(r, bld, am, data) {
 	const local = store.alarm?.extralrm?.[bld._id]?.local ?? null
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const alrStop = store.alarm?.extralrm?.[bld._id]?.alarm ?? null
+	const bldOff = store.alarm?.extralrm?.[bld._id]?.bldOff ?? null
 	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
 	const low = store.alarm?.extralrm?.[bld._id]?.low ?? null
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
@@ -241,6 +242,7 @@ function signalB(r, bld, am, data) {
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
 	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []))
+	if (bldOff) r.signal[bld._id].push(bldOff)
 	r.signal[bld._id].sort((a, b) => {
 		const [d1, m1, o1] = a.date.split('.')
 		const aa = [m1, d1, o1].join('.')

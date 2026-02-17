@@ -80,7 +80,8 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const off = (s?.coolerCombi?.on ?? true) === false;
 	const alrStop = isExtralrm(bld._id, null, 'alarm');
 	const alrClosed = isAlrClosed(bld, obj);
-
+	// Кнопка выключения склада
+	const bldOff = isExtralrm(bld._id, null, 'bldOff')
 	const a = [
 		[!start, 'Склад в работе: start'],
 		[alr, 'Нет аварий комбинированного склада: alr'],
@@ -99,7 +100,8 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		[stateCooler?.status === 'alarm', 'stateCooler?.status === alarm'],
 		[alrStop, 'alrStop'],
 		[alrClosed, 'alrClosed'],
-		[off, "Настройка \"Испаритель холодильного оборудования выключен\""]
+		[off, "Настройка \"Испаритель холодильного оборудования выключен\""],
+		[bldOff, 'Кнопка выключения склада']
 	];
 	store.denied[bld._id][clr._id] =
 		a.filter((e) => e[0] === true)?.length !== 0;

@@ -153,9 +153,12 @@ function fan(obj, s) {
 			!retain?.[idB]?.start &&
 			retain?.[idB]?.mode?.[f.owner.id] &&
 			!ignore;
-		console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto);
-		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto);
-		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto);
+			// Кнопка выключения склада
+		const bldOff = isExtralrm(idB, null, 'bldOff')
+		
+		console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto, bldOff);
+		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff);
+		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff);
 	}
 }
 // Блокировки разгонных вентиляторов (обычный склад и холодильник)
@@ -184,7 +187,9 @@ function fanAccel(obj, s) {
 		const isAlrState = value?.[el._id]?.state === 'alarm' ? true : false;
 		// Авария питания
 		const battery = isExtralrm(idB, null, 'battery');
-		out(obj, output, el, local, !!ban, alrStop, isAlrState, battery);
+		// Кнопка выключения склада
+		const bldOff = isExtralrm(idB, null, 'bldOff')
+		out(obj, output, el, local, !!ban, alrStop, isAlrState, battery,bldOff);
 	}
 }
 
@@ -203,7 +208,9 @@ function heating(obj) {
 			idsS.some((idS) => isExtralrm(idB, idS, 'local'));
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm');
-		out(obj, output, el, local, alrStop);
+		// Кнопка выключения склада
+		const bldOff = isExtralrm(idB, null, 'bldOff')
+		out(obj, output, el, local, alrStop, bldOff);
 	}
 }
 
@@ -223,7 +230,9 @@ function device(obj) {
 		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm');
-		out(obj, output, el, local, alrStop);
+		// Кнопка выключения склада
+		const bldOff = isExtralrm(idB, null, 'bldOff')
+		out(obj, output, el, local, alrStop, bldOff);
 	}
 }
 
@@ -259,7 +268,9 @@ function fnSolHeat(obj) {
 		const offB = retain?.[idB]?.start == false;
 		// Секция выключена
 		let offS = (retain?.[idB]?.mode?.[idS] ?? null) === null;
-		out(obj, output, el, local, alrStop, alrAgg, alr_offVNO, offB, offS);
+		// Кнопка выключения склада
+		const bldOff = isExtralrm(idB, null, 'bldOff')
+		out(obj, output, el, local, alrStop, alrAgg, alr_offVNO, offB, offS, bldOff);
 	}
 }
 

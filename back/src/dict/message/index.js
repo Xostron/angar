@@ -189,6 +189,14 @@ const data = {
 		msg: 'Нажат аварийный стоп',
 		flt: [true],
 	},
+	// Нажата кнопка выключения склада
+	37: {
+		count: true,
+		code: 'bldOff',
+		typeSignal: 'critical',
+		msg: 'Нажата кнопка выключения склада',
+		// flt: [true],
+	},
 	// Питание отключено DI
 	38: {
 		count: true,

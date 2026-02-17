@@ -27,6 +27,7 @@ const battery = require('./battery')
 const ozon = require('./ozon')
 const hCoolerCrash = require('./heating_cooler')
 const fCoolerCrash = require('./flap_cooler')
+const bldOff = require('./bld_off')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -67,7 +68,8 @@ const def = {
 			ozon,
 			vlvCrash,
 			hCoolerCrash,
-			fCoolerCrash
+			fCoolerCrash,
+			bldOff
 		},
 	},
 	// Доп. аварии холодильника

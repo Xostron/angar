@@ -24,7 +24,8 @@ function fnACmd(bld, resultFan, obj, bdata) {
 			[!obj?.retain?.[idB]?.mode?.[idS], 'секция не в авто'],
 			[!isCoolerCombiOn(bld, bdata), 'комби-холод: испарители выключены'],
 			[!isСoolerCombiVNO(bld, idS, obj, bdata), ' Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций'],
-			[st.includes('off-off-on') || st.includes('off-off-off-add'),'Включена оттайка или слив воды']
+			[st.includes('off-off-on') || st.includes('off-off-off-add'),'Включена оттайка или слив воды'],
+			[isExtralrm(bld._id, null, 'alarm'), 'Нажат аварийный стоп']
 		];
 		if (a.filter((el) => el[0]).length > 0) {
 			console.log(
