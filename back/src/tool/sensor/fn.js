@@ -38,7 +38,6 @@ function valid(sens, owner, val, equip, retain) {
 
 	// Значение датчика с коррекцией (используется в алгоритмах)
 	const value = raw !== null ? +(raw + +corr).toFixed(sens?.accuracy || 1) : null
-	// raw = null
 	let r = { raw, value, state: state(raw, on) }
 	// Проверка диапазонов
 	range(r, sens)
