@@ -1,9 +1,8 @@
-import { useShallow } from 'zustand/react/shallow'
 import Dialog from '@cmp/dialog'
 import useBanner from '@cmp/banner/use_banner'
 import useInputStore from '@store/input'
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Item from './item'
 
 export default function Banner({ type = 'building' }) {
