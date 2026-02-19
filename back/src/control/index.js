@@ -59,14 +59,14 @@ async function loop() {
 		const bgn = hrtime()
 		console.log(
 			'\x1b[36m%s\x1b[0m',
-			`\n-------------------Начало Process ID: ${process.pid}-------------------`
+			`\n-------------------Начало Process ID: ${process.pid}-------------------`,
 		)
 		await control()
 		store._first = false
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
 		console.log(
 			'\x1b[33m%s\x1b[0m',
-			`Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`
+			`Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`,
 		)
 	}
 	// Graceful Shutdown

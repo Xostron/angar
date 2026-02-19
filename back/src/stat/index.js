@@ -32,6 +32,7 @@ function statOnChange(obj, history) {
 	historyLog(critical, store.prev.critical, 'alarm', force)
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event', force)
+	// achieve - сообщения достижений
 	historyLog(achieve, store.prev.achieve, 'event', force)
 
 	// Принудительное логирование в полночь

@@ -47,7 +47,7 @@ const customLevels = {
 
 /**
  * Создаём функцию, которая генерирует DailyRotateFile-транспорт
- * для конкретного уровня, чтобы избежать копирования кода.
+ * для конкретного уровня
  */
 function hourlyT(level) {
 	return new DailyRotateFile({
