@@ -17,7 +17,6 @@ function pLog(data, arr, value, level, force) {
 	arr.forEach((el) => {
 		const { _id } = el
 		// Если не было изменений показаний - выходим из лога
-		if (level=='voltage') console.log(88, value?.[_id], store.prev[_id])
 		if (!check(value?.[_id], store.prev[_id], level) && !force) return
 		// Обновляем прошлое состояние
 		fnPrev(_id, value[_id], level)

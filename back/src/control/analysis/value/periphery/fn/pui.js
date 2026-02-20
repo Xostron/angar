@@ -4,7 +4,6 @@ const { data: store } = require('@store')
 function pui(doc, result, val) {
 	result[doc._id] ??= {}
 	if (!doc.module.id || !val?.[doc.module.id]) return
-	// console.log(777,doc,val[doc.module.id])
 	if (doc.module.name == 'МЭ210-701') puiTCP(doc, result, val)
 	else puiRTU(doc, result, val)
 
@@ -41,7 +40,7 @@ const puiTCP = (doc, result, val) => {
 }
 
 /**
- *
+ * Фильтр нулевых значений от счетчика при чтении модуля
  * @param {*} id ИД счетчика
  * @param {*} v Показания счетчика {Ua:,Ub:,Uc:,Ia:,...Pc:}
  * @returns
@@ -67,11 +66,14 @@ function fnCache(id, v) {
 	let flag = false
 	// Проверяка текущих и прошлых значений
 	for (const key in v) {
-		if (v[key] === store?.prev?.analysis?.[id]?.[key]) continue
+		// Если показание не равно нулю, пропускаем
+		if (v[key] !== 0) continue
+		// Если равен нулю
 		// Возврат из кэша и устанавливаем флаг попыток
 		v[key] = store?.prev?.analysis?.[id]?.[key]
 		flag = true
 	}
+	// Обновление прошлых значений
 	setPrev(id, v)
 	// Был возврат кэша, увеличиваем счетчик попыток
 	if (flag) {

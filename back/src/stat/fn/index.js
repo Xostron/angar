@@ -141,12 +141,6 @@ function isChanged(v, vprev, level) {
 	switch (level) {
 		case 'voltage':
 			if (vprev.every((el) => el === undefined)) return true
-			console.log(
-				99,
-				v,
-				vprev,
-				v.some((el, i) => el > vprev[i] + hyst.voltage || el < vprev[i] - hyst.voltage),
-			)
 			return v.some((el, i) => el > vprev[i] + hyst.voltage || el < vprev[i] - hyst.voltage)
 		case 'watt':
 		case 'valve':
