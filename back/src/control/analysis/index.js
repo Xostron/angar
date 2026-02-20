@@ -17,7 +17,6 @@ async function analysis(obj) {
 	obj.retain = store.retain
 	// Опрос модулей по сети
 	let v = await read(obj)
-	// console.log(551, JSON.stringify(v))
 	// Анализ - данные для клиента и работы алгоритма
 	v = Aboc.call(value)(v, obj)
 	// Настройки складов (обработанные для расчетов)

@@ -1,5 +1,4 @@
-const { getSumSigBld, getSignal } = require('@tool/command/signal')
-const { getIdsS } = require('@tool/get/building')
+const {  getSignal } = require('@tool/command/signal')
 const { reset, set, blink } = require('../alr_closed/fn')
 const { data: store } = require('@store')
 
@@ -9,9 +8,7 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Настройки
 	const watch = s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000
 	const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 2) + 1
-	// // Режим секции, хотя бы 1 секция в авто
-	// const idsS = getIdsS(obj?.data?.section, bld._id)
-	// const mode = idsS.some((el) => obj.retain[bld._id].mode?.[el._id])
+	// Режим секции, хотя бы 1 секция в авто
 
 	// Значение сигнала
 	const sig = getSignal(bld?._id, obj, 'low')

@@ -16,7 +16,6 @@ function bldOff(bld, section, obj, s, se, m, automode, acc, data) {
 		wrExtralrm(bld._id, null, 'bldOff', msgB(bld, 37))
 		acc._alarm = true
 	}
-	console.log(99, sig, acc?._alarm)
 	return acc?._alarm ?? false
 }
 
