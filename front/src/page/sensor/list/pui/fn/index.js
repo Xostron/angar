@@ -19,17 +19,17 @@ export default function fnList(data, input) {
 			let name, unit, icon
 			switch (key[0]) {
 				case 'U':
-					name = `Напряжение по входу ${key}`
+					name = `Напряжение фазы ${key}`
 					unit = 'В'
 					icon = defImg.pui.voltage
 					break
 				case 'I':
-					name = `Ток по входу ${key}`
+					name = `Ток фазы ${key}`
 					unit = 'А'
 					icon = defImg.pui.current
 					break
 				case 'P':
-					name = `Мощность по входу ${key}`
+					name = `Мощность фазы ${key}`
 					unit = 'Вт'
 					icon = defImg.pui.power
 					break

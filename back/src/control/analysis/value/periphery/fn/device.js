@@ -1,3 +1,5 @@
+const pui = require('./pui')
+
 function fnDevice(equip, val, retain, result) {
 	const { device, signal, section } = equip
 	// Состояние отдельного устройства
@@ -24,44 +26,14 @@ function single(equip, result, val) {
 	})
 }
 
-// Значения каналов модуля электроизмерений
-function pui(doc, result, val) {
-	result[doc._id] ??= {}
-	if (!doc.module.id || !val?.[doc.module.id]) return
-	// console.log(777,doc,val[doc.module.id])
-	if (doc.module.name == 'МЭ210-701') puiTCP(doc, result, val)
-	else puiRTU(doc, result, val)
-}
-
-const puiRTU = (doc, result, val) => {
-	// Напряжение
-	result[doc._id].Ua = +val[doc.module.id][0]?.toFixed(1)
-	result[doc._id].Ub = +val[doc.module.id][2]?.toFixed(1)
-	result[doc._id].Uc = +val[doc.module.id][4]?.toFixed(1)
-	// Ток
-	result[doc._id].Ia = +val[doc.module.id][6]?.toFixed(1)
-	result[doc._id].Ib = +val[doc.module.id][8]?.toFixed(1)
-	result[doc._id].Ic = +val[doc.module.id][10]?.toFixed(1)
-	// активная мощность
-	result[doc._id].Pa = +val[doc.module.id][12]?.toFixed(1)
-	result[doc._id].Pb = +val[doc.module.id][14]?.toFixed(1)
-	result[doc._id].Pc = +val[doc.module.id][16]?.toFixed(1)
-}
-const puiTCP = (doc, result, val) => {
-	// Напряжение
-	result[doc._id].Ua = +val[doc.module.id][0]?.toFixed(1)
-	result[doc._id].Ub = +val[doc.module.id][1]?.toFixed(1)
-	result[doc._id].Uc = +val[doc.module.id][2]?.toFixed(1)
-	// Ток
-	// result[doc._id].Ia = +val[doc.module.id][6]?.toFixed(1)
-	// result[doc._id].Ib = +val[doc.module.id][7]?.toFixed(1)
-	// result[doc._id].Ic = +val[doc.module.id][8]?.toFixed(1)
-	// активная мощность
-	// result[doc._id].Pa = +val[doc.module.id][6]?.toFixed(1)
-	// result[doc._id].Pb = +val[doc.module.id][7]?.toFixed(1)
-	// result[doc._id].Pc = +val[doc.module.id][8]?.toFixed(1)
-}
-
+/**
+ * Состояние устройства
+ * Анализ beep сигналов устройства
+ * Устроство содержит ключ beep:объект со значениями beep
+ * @param {*} doc Рама устройства
+ * @param {*} signal Рама сигналов
+ * @param {*} result Результат
+ */
 function other(doc, signal, result) {
 	result[doc._id] ??= {}
 	// По команде управления binding
@@ -77,7 +49,12 @@ function other(doc, signal, result) {
 	result[doc._id].state = stateD(result[doc._id].beep, out)
 }
 
-// Состояние устройства
+/**
+ * Состояние устройства
+ * @param {*} beep объект со значениями beep конкретного устройства
+ * @param {*} out DO устройства
+ * @returns {string} alarm|run|stop
+ */
 function stateD(beep = {}, out) {
 	const r = Object.values(beep).find((el) => el.alarm && el.value)
 	if (r) return 'alarm'

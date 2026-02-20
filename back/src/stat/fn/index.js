@@ -1,5 +1,9 @@
 const { data: store } = require('@store')
 const { getIdSB, getOwnerClr } = require('@tool/get/building')
+// Зона нечувствительности изменений
+const hyst = {
+	voltage: 10,
+}
 
 /**
  * Сохранение изменений
@@ -106,10 +110,11 @@ function check(val, prev, level) {
 	switch (level) {
 		case 'voltage':
 			v = [val?.Ua, val?.Ub, val?.Uc]
-			vprev = [prev?.Ua, prev?.Ub, prev?.Uc]
+			vprev = prev??[]
 			break
 		case 'watt':
 			v = [val?.Pa, val?.Pb, val?.Pc]
+			vprev = prev??[]
 			break
 		case 'valve':
 			v = [val?.open, val?.close]
@@ -127,11 +132,32 @@ function check(val, prev, level) {
 			v = val
 			vprev = prev
 	}
-	// Состояние не изменилось
-	// if (level === 'cooler') console.log(7772, JSON.stringify(v) === JSON.stringify(vprev), v, vprev)
-	if (JSON.stringify(v) === JSON.stringify(vprev)) return false
-	// Состояние изменилось
-	return true
+
+	return isChanged(v, vprev, level)
+}
+// Были ли изменения между предыдущим и текущим показателями
+// true - есть изменения
+function isChanged(v, vprev, level) {
+	switch (level) {
+		case 'voltage':
+			if (vprev.every((el) => el === undefined)) return true
+			console.log(
+				99,
+				v,
+				vprev,
+				v.some((el, i) => el > vprev[i] + hyst.voltage || el < vprev[i] - hyst.voltage),
+			)
+			return v.some((el, i) => el > vprev[i] + hyst.voltage || el < vprev[i] - hyst.voltage)
+		case 'watt':
+		case 'valve':
+		case 'cooler':
+		case 'fan':
+			if (JSON.stringify(v) === JSON.stringify(vprev)) return false
+			return true
+		default:
+			if (JSON.stringify(v) === JSON.stringify(vprev)) return false
+			return true
+	}
 }
 
 function checkTyp(el, bld) {

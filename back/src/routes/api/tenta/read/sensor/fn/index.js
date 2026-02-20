@@ -86,12 +86,12 @@ function puiList(pui, value) {
 			switch (key[0]) {
 				case 'U':
 					_id = el._id + key
-					title = `Напряжение по входу ${key}`
+					title = `Напряжение фазы ${key}`
 					code = 'voltage'
 					break
 				case 'I':
 					_id = el._id + key
-					title = `Ток по входу ${key}`
+					title = `Ток фазы ${key}`
 					code = 'current'
 					break
 				// case 'P':

@@ -1,9 +1,10 @@
 const { pLogTotal, pLogSensor, pLogBindingAI } = require('./sensor')
 const historyLog = require('./history')
-const pLog = require('./periph')
+const pLog = require('./fn/plog')
 const { delay } = require('@tool/command/time')
-const { data: store } = require('@store')
 const { readTO } = require('@tool/json')
+const pLogVoltage = require('./voltage')
+const { data: store } = require('@store')
 
 /**
  * Статистика - сбор данных по изменению (Главный цикл)
@@ -25,15 +26,19 @@ function statOnChange(obj, history) {
 	pLog(data, data.cooler, value, 'cooler', force)
 	// Агрегат
 	pLog(data, data.aggregate, value, 'aggregate', force)
-	// Устройства (состояние озонатор, увлажнитель и т.д.), кроме электроизмерений
-	const dvc = data.device.filter((el) => el.device.code !== 'pui')
-	pLog(data, dvc, value, 'device', force)
 	// alarm - Критические неисправности
 	historyLog(critical, store.prev.critical, 'alarm', force)
 	// event - Сообщения о работе склада
 	historyLog(event, store.prev.event, 'event', force)
 	// achieve - сообщения достижений
 	historyLog(achieve, store.prev.achieve, 'event', force)
+	
+	// Устройства (состояние озонатор, увлажнитель и т.д.), кроме электроизмерений
+	const dvc = data.device.filter((el) => el.device.code !== 'pui')
+	pLog(data, dvc, value, 'device', force)
+	
+	// Логирование напряжения
+	pLogVoltage(data, value, force)
 
 	// Принудительное логирование в полночь
 	if (force) {
@@ -64,8 +69,6 @@ async function statOnTime() {
 		console.log('\x1b[36m%s\x1b[0m', 'Статистика датчиков')
 	}
 }
-
-
 
 /**
  * Текущее время наступило

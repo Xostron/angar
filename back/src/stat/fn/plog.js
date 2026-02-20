@@ -1,6 +1,6 @@
 const { logger } = require('@tool/logger')
 const { data: store } = require('@store')
-const {check, fnPrev, message} = require('../fn')
+const { check, fnPrev, message } = require('.')
 
 /**
  * Логирование периферии (запись в лог по изменению состояния)
@@ -16,12 +16,12 @@ function pLog(data, arr, value, level, force) {
 	if (!arr?.length) return
 	arr.forEach((el) => {
 		const { _id } = el
-		// Проверка изменений не было? && принудит. логирования нет - выходим
-		// if (level==='valve') console.log(7771, el.type, value?.[_id], store.prev[_id])
+		// Если не было изменений показаний - выходим из лога
+		if (level=='voltage') console.log(88, value?.[_id], store.prev[_id])
 		if (!check(value?.[_id], store.prev[_id], level) && !force) return
-		// Прошлое состояние: фиксируем состояние по изменению
+		// Обновляем прошлое состояние
 		fnPrev(_id, value[_id], level)
-		// Лог
+		// Пишем в логи
 		logger[level]({ message: message(data, el, level, value) })
 	})
 }

@@ -79,7 +79,7 @@ const data = {
 	acc: {},
 	// Аккумулятор (куча) для расчетов (здесь можно хранить всякое)
 	// valve - для управления в ручном режиме
-	heap: { fan: {}, smoking: {}, valve: {}, ozon: {} },
+	heap: { fan: {}, smoking: {}, valve: {}, ozon: {}, analysis: {} },
 	// Аварии клапанов
 	alarmV: {},
 	// Аварии для логики
@@ -136,7 +136,7 @@ const data = {
 	timeout: {},
 	debMdl: {},
 	// Прошлые состояния
-	prev: { critical: {}, event: {}, achieve: {} },
+	prev: { critical: {}, event: {}, achieve: {}, analysis: {} },
 	// Обнулить счетчик сушки
 	zero: new Set(),
 	// Готовые настройки для алгоритма
