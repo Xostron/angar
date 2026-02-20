@@ -4,7 +4,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Кнопка выкючения склада (все выкл и закрываются клапаны)
 function bldOff(bld, section, obj, s, se, m, automode, acc, data) {
-	const sig = getSumSigBld(bld._id, obj, 'bldOff', false)
+	const sig = getSumSigBld(bld._id, obj, 'bldOff', true)
 
 	// Сброс
 	if (sig === false || sig === null) {
@@ -16,6 +16,7 @@ function bldOff(bld, section, obj, s, se, m, automode, acc, data) {
 		wrExtralrm(bld._id, null, 'bldOff', msgB(bld, 37))
 		acc._alarm = true
 	}
+	console.log(99, sig, acc?._alarm)
 	return acc?._alarm ?? false
 }
 

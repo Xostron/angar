@@ -121,7 +121,7 @@ function getSumSig(idB, obj, type, alr = true) {
  * @param {*} idB
  * @param {*} obj
  * @param {*} type
- * @param {} alr Значение сигнала для установки аварии (по-умолчанию true)
+ * @param {} alr Значение сигнала для установки аварии (true без инверсии, false - с инверсией)
  * @returns
  */
 function getSumSigBld(idB, obj, type, alr = true) {
