@@ -43,18 +43,24 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	// Управление механизмами
 	// Ступенчатое управление соленоидами
 	// softsol(idB, solenoid, sl, f, h, clr, accAuto)
-	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
-	// ВНО испарителя
-	fan.forEach((el) => {
-		// f = null - означает игнорирование ВНО испарителя, разрешение на работу в обычном режиме комби склада
-		if (f === null) return
-		ctrlDO(el, idB, f ? 'on' : 'off')
-		if (el?.ao?.id) f ? ctrlAO(el, idB, _MAX_SP) : ctrlAO(el, idB, _MIN_SP)
-	})
+
+	// Включение всех соленоидов испарителя (null - игнор команды, 0 - выкл, 1 - вкл)
+	sl !== null ? solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off')) : null
+
+	// ВНО испарителя (null - игнор команды, 0 - выкл, 1 - вкл)
+	f !== null
+		? fan.forEach((el) => {
+				ctrlDO(el, idB, f ? 'on' : 'off')
+				if (el?.ao?.id) ctrlAO(el, idB, f ? _MAX_SP : _MIN_SP)
+			})
+		: null
+
 	// Оттайка
-	heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off'))
+	h !== null ? heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off')) : null
+
 	// Заслонки
 	ctrlFlap(idB, flap, accAuto.cold, isCN)
+
 	// Доп состояние слива воды
 	accAuto.cold ??= {}
 	accAuto.cold[clr._id] ??= {}
@@ -76,9 +82,9 @@ module.exports = { oneChange, oneChangeCombi, ctrlFlap }
  * @param {*} isCN Склад в режиме комби-холодильника
  */
 function ctrlFlap(idB, flap = [], accCold, isCN = true) {
-	// TODO: ИЗМЕНЕНО: Заслонка оттайки (работает при оттайке и сливе воды)
+	// TODO: ИЗМЕНЕНО: Заслонка оттайки (открывается при оттайке и сливе воды)
 	// const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
-	// Заслонка оттайки (работает при оттайке)
+	// Заслонка оттайки (открывается при оттайке)
 	const flapOn = isCN && accCold.defrostAll
 	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
 }
