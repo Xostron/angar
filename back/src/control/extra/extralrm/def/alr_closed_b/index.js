@@ -5,10 +5,9 @@ const { data: store } = require('@store')
 // Низкая температура канала склада
 // Здесь учитывать режим секции не нужно, если авария возникла, то это окончательно
 function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
-	// Режим секции
-	const modeA = Object.values(obj.retain[bld._id].mode).some(
-		(el) => el === true || el === undefined,
-	)
+	// Режим секции: хотя бы одна в авто
+	const modeA = Object.values(obj.retain[bld._id].mode).some((el) => el === true || el === undefined)
+	// Режим секции: хотя бы одна в ручном
 	const modeM = Object.values(obj.retain[bld._id].mode).some((el) => el === false)
 	let mode
 	if (modeA) mode = true
@@ -16,16 +15,14 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	else mode = null
 	console.log(55001, mode)
 	// Настройки: Время срабатывания аварии для авто = Х мин, для руч = 5сек
-	const watch =
-		mm[mode] == 'Авто' ? (s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000) : 5 * 1000
+	const watch = mm[mode] == 'Авто' ? s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000 : 5 * 1000
 	// const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 2) + 1
 	// Режим секции, хотя бы 1 секция в авто
-	// Значение сигнала
+	// Значение сигнала склада
 	const sig = getSignal(bld?._id, obj, 'low')
-
 	// Аккумулятор слежения за срабатыванием
 	reset(bld, null, acc, store.debounce, mode)
-	set(bld, null, sig, store.debounce, acc, watch)
+	set(bld, null, sig, store.debounce, acc, watch, mode)
 	blink(bld, null, acc)
 	// console.log(
 	// 	5500,

@@ -3,119 +3,15 @@ const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { getAO } = require('@tool/in_out')
 const { data: store } = require('@store')
-const { readAcc } = require('@store/index')
-const { isLongVlv } = require('@tool/command/valve')
 const { isCombiCold } = require('@tool/combi/is')
-
-// Блокировки задвижки (клапана)
-function vlv(obj) {
-	const { value, data, retain, output } = obj
-	for (const v of data.valve) {
-		// store.heap.valve ??= {}
-		// store.heap.valve[v._id] ??= {}
-		// const acc = store.heap.valve[v._id]
-		const mdlOnId = v?.module?.on?.id
-		// Концевики
-		const opn = value?.[v._id]?.open
-		const cls = value?.[v._id]?.close
-		const idB = getIdB(mdlOnId, data.module)
-		// ИД всех секций склада
-		const idsS = getIdsS(obj.data.section, idB)
-		// Ручной режим работы секции
-		const man = v.sectionId.every((idS) => retain?.[idB]?.mode?.[idS] === false)
-		// Блокировки
-		const local =
-			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
-		const alrStop = isExtralrm(idB, null, 'alarm')
-		const vlvLim = isExtralrm(idB, v.sectionId[0], 'vlvLim')
-		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
-		const vlvCrash = isExtralrm(idB, 'vlvCrash', v._id)
-		// Низкая температура канала в авто/ручном режиме
-		//  блокирует открытие и закрывает клапаны
-		// в авторежиме через Х мин, в ручном режиме сразу же
-		const low =
-			isExtralrm(idB, null, 'alrClosed') ||
-			idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed'))
-		// const alarmOpn = isLongVlv(idB, v)
-
-		// Секция выключена (true)
-		const offS =
-			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
-			cls
-
-		const open100 = fnOpen100(idB, v, retain)
-		const close0 = fnClose0(idB, v, retain)
-
-		console.log(
-			3333,
-			'lock',
-			v.type,
-			local,
-			alrStop,
-			vlvLim,
-			vlvLimB,
-			vlvCrash,
-			offS,
-			open100,
-			close0,
-			low,
-		)
-		// блокировка открытия
-		outV(
-			'on',
-			output,
-			v,
-			opn,
-			local,
-			vlvLim,
-			vlvLimB,
-			vlvCrash,
-			offS,
-			alrStop,
-			open100,
-			close0 && !man,
-			low,
-		)
-		// При низкой температуре канала закрываем клапан в авто/руч
-		if (low && !cls) forceCls(output, v)
-		// блокировка закрытия
-		outV('off', output, v, cls, local, vlvLim, vlvLimB, vlvCrash, close0, offS, alrStop)
-	}
-}
-
-/**
- * Блокировка открытия клапана по достижениию 100%
- * @param {*} idB
- * @param {*} v
- * @param {*} retain
- * @returns true - блокировать
- */
-function fnOpen100(idB, v, retain) {
-	const cur = +retain?.[idB]?.valvePosition?.[v._id]
-	const total = +retain?.[idB]?.valve?.[v._id]
-	// Если нет значений - не блокировать
-	if (isNaN(cur) || isNaN(total)) return false
-	// Если позиция больше калибровочного - блокировать
-	if (cur >= total) return true
-	return false
-}
-
-// Блокировка если клапан на позиции 0 и авария долгого закрытия и секция не в ручном режиме
-function fnClose0(idB, v, retain) {
-	const alarmCls = isLongVlv(idB, v, 'close')
-	const cur = +retain?.[idB]?.valvePosition?.[v._id]
-
-	// Если нет значений
-	if (isNaN(cur)) return false
-	// Если есть авария долгого открытия и позиция клапана=0 - блокировать
-	return alarmCls && cur === 0
-}
+const _MIN_SP = 20
 
 // Блокировки напорных вентиляторов (обычный склад)
 // Если склад выключен, а секция в ручном режиме - не блокировать ВНО
 function fan(obj, s) {
 	const { value, data, retain, output } = obj
 	const once = {}
+    // Только по ВНО секциям
 	for (const f of data.fan) {
 		if (f.type !== 'fan') continue
 		if (f.owner.type === 'cooler') continue
@@ -132,11 +28,9 @@ function fan(obj, s) {
 		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
 		// Блокировки:
 		// Состояние вентилятора: авария / выведен из работы
-		const isAlrOff =
-			value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
+		const isAlrOff = value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
 		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
-		const local =
-			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		const local = isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
 		// Секция выключена (null)
@@ -145,23 +39,21 @@ function fan(obj, s) {
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !ignore
 		// Кнопка выключения склада
 		const bldOff = isExtralrm(idB, null, 'bldOff')
-		// Низкая температура канала в авто/ручном режиме
-		//  блокирует открытие и закрывает клапаны
-		// в авторежиме через Х мин, в ручном режиме сразу же
-		// Авто/Ручной режим: Однократная блокировка ВНО, для обычного и комби-обычного
-		const lowB = isExtralrm(idB, null, 'alrClosed') && !store.heap.lock?.[idB]?.low && !isCC
+		// Низкая температура канала в авто
+        const mode = retain?.[idB]?.mode?.[f.owner.id]
+        const aLowB = isExtralrm(idB, null, 'alrClosed') && mode===true 
+        const aLow = idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed') && (mode===true || mode===undefined) && !isCC) 
+		// Низкая температура канала в ручной режим: Однократная блокировка ВНО, для обычного и комби-обычного
+		const lowB = isExtralrm(idB, null, 'alrClosed') && mode===false && !store.heap.lock?.[idB]?.low && !isCC
+		const low = idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed') && !store.heap.lock?.[idS]?.low && !isCC)
 		once[idB] = lowB
-		const low = idsS.some(
-			(idS) => isExtralrm(idB, idS, 'alrClosed') && !store.heap.lock?.[idS]?.low && !isCC,
-		)
 		idsS.forEach((idS) => (once[idS] = low))
 
-
-		console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto, bldOff, lowB, low)
-		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff, lowB, low)
-		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff, lowB, low)
+		console.log(111, f.name, local, isAlrOff, offS, alrStop, lockAuto, bldOff, aLowB, aLow, lowB, low)
+		out(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff, aLowB, aLow, lowB, low)
+		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff, aLowB, aLow, lowB, low)
 	}
-	// После блокировки взвести флаг
+	// Низкая темп канала: ручной режим - флаги 1кратной блокировки
 	Object.entries(once).forEach(([id, low]) => {
 		if (!low) return
 		store.heap.lock[id] ??= {}
@@ -182,8 +74,7 @@ function fanAccel(obj, s) {
 		const idsS = getIdsS(obj.data.section, idB)
 		// Блокировки
 		// местный режим
-		const local =
-			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		const local = isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Игнор блокировки: включено окуривание или озонатор
 		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
 		// Нажат аварийный стоп
@@ -210,8 +101,7 @@ function heating(obj) {
 		const idB = getIdB(mdl, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
-		const local =
-			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		const local = isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		// Кнопка выключения склада
@@ -230,8 +120,7 @@ function device(obj) {
 		const idB = getIdB(mdl, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
-		const local =
-			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		const local = isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// const localB = isExtralrm(idB, null, 'local')
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
@@ -256,8 +145,7 @@ function fnSolHeat(obj) {
 		// местный режим
 		// const local = isExtralrm(idB, idS, 'local')
 		// const localB = isExtralrm(idB, null, 'local')
-		const local =
-			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		const local = isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		// Состояние испарителя
@@ -294,27 +182,11 @@ function out(obj, output, o, ...locks) {
 	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
 }
 
-function outV(type, output, o, ...args) {
-	const mdl = o?.module?.[type]?.id
-	if (!output[mdl] || !o) return
-	const ch = o?.module?.[type]?.channel - 1
-	const lock = fn(args)
-	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
-}
-
-function forceCls(output, o) {
-	const mdl = o?.module?.off?.id
-	if (!output[mdl] || !o) return
-	const ch = o?.module?.off?.channel - 1
-	output[mdl].value[ch] = 1
-}
-
 // Сумматор аварий: хотя бы 1 авария  =>return true авария активна
 function fn(args) {
 	return args.some((el) => el === true)
 }
 
-const _MIN_SP = 20
 function ao(obj, output, f, localB, local, ...args) {
 	const lock = fn(args)
 	// Аналоговый выход

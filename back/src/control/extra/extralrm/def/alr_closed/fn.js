@@ -10,12 +10,12 @@ const { data: store } = require('@store')
  * @param {object} s Настройки
  * @param {object} accDeb Аккумулятор антидребезга
  */
-function set(bld, sect, reason, accDeb, acc, watch) {
+function set(bld, sect, reason, accDeb, acc, watch, mode) {
 	const ownerId = sect?._id ?? bld?._id
 	accDeb.alrClosed ??= {}
 	accDeb.alrClosed[ownerId] ??= null
-	// Уже в аварии || нет причины - выходим из итерации, сброс времени
-	if (acc._alarm || !reason) {
+	// Уже в аварии || нет причины || секция выкл - выходим из итерации, сброс времени
+	if (acc._alarm || !reason || mode===null) {
 		accDeb.alrClosed[ownerId] = null
 		return
 	}
@@ -43,7 +43,7 @@ function reset(bld, sect, acc, accDeb, mode) {
 		delete acc.flag
 		// Флаг аварии Ручной сброс
 		delete acc._alarm
-		// Однократная блокировка ВНО
+		// Однократная блокировка ВНО (сброс)
 		delete store.heap.lock?.[ownerId]?.low
 	}
 }
