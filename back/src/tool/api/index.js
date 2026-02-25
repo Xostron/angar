@@ -9,6 +9,19 @@ const api = axios.create({
 	timeout: 10000,
 });
 
+// Добавляем интерцептор, который сработает перед каждым запросом
+axios.interceptors.request.use((config) => {
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	const offset = new Date().getTimezoneOffset();
+	console.log('timezone', timezone);
+	console.log('offset', offset);
+
+	// Добавляем кастомные заголовки
+	config.headers['X-Client-Timezone'] = timezone;
+	config.headers['X-Client-Timezone-Offset'] = offset;
+
+	return config;
+});
 // Перехват 401 ошибки Не авторизованный пользователь
 api.interceptors.response.use(
 	(response) => {
@@ -25,7 +38,7 @@ api.interceptors.response.use(
 		const st = error.response.status;
 		// Обработка статусов
 		return error;
-	}
+	},
 );
 
 module.exports = api;
