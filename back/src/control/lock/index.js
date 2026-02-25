@@ -1,6 +1,7 @@
-const { fan, fanAccel, heating, device, fnSolHeat } = require('./fn')
+const { fanAccel, heating, device, fnSolHeat } = require('./fn/other')
 const { data: store } = require('@store')
 const vlv = require('./fn/valve')
+const fan = require('./fn/fan')
 /**
  * Применение блокировок к командам управления выходами
  * @param {*} obj Данные по оборудованию

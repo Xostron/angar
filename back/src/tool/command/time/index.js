@@ -79,7 +79,7 @@ function runTime(date, type = 0) {
  * @param {String||DateTime} date дата и время (начальная точка)
  * @param {number} x заданное время, мс
  * @param {number} 0 - стандартный формат hh:mm:ss|mm:ss. 1 - с подписями `${hh}ч ${mm}м`
- * @returns {String} Оставшееся время 00:00:00/00:00
+ * @returns {String} Оставшееся время 00:00:00|00:00 / 00ч 00м
  */
 function remTime(date, x, type = 0) {
 	try {

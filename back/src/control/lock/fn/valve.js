@@ -3,6 +3,7 @@ const { isLongVlv } = require('@tool/command/valve')
 const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { data: store } = require('@store')
+const { out, ao, outV, fn } = require('./index')
 
 // Блокировки задвижки (клапана)
 function vlv(obj) {
@@ -18,13 +19,16 @@ function vlv(obj) {
 		// Ручной режим работы секции
 		const man = v.sectionId.every((idS) => retain?.[idB]?.mode?.[idS] === false)
 		// Блокировки
-		const local = isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
+		const local =
+			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		const vlvLim = isExtralrm(idB, v.sectionId[0], 'vlvLim')
 		const vlvLimB = isExtralrm(idB, null, 'vlvLim')
 		const vlvCrash = isExtralrm(idB, 'vlvCrash', v._id)
 		// Секция выключена (true)
-		const offS = v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) && cls
+		const offS =
+			v.sectionId.map((el) => retain?.[idB]?.mode?.[el] ?? null).some((el) => el === null) &&
+			cls
 		// Долгое открытие
 		// const alarmOpn = isLongVlv(idB, v)
 		const open100 = fnOpen100(idB, v, retain)
@@ -32,11 +36,40 @@ function vlv(obj) {
 		// Низкая температура канала в авто/ручном режиме
 		//  блокирует открытие и закрывает клапаны
 		// в авторежиме через Х мин, в ручном режиме сразу же
-		const low = isExtralrm(idB, null, 'alrClosed') || idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed'))
+		const low =
+			isExtralrm(idB, null, 'alrClosed') ||
+			idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed'))
 
-		console.log(3333, 'lock', v.type, local, alrStop, vlvLim, vlvLimB, vlvCrash, offS, open100, close0, low)
+		// console.log(
+		// 	3333,
+		// 	'lock',
+		// 	v.type,
+		// 	local,
+		// 	alrStop,
+		// 	vlvLim,
+		// 	vlvLimB,
+		// 	vlvCrash,
+		// 	offS,
+		// 	open100,
+		// 	close0,
+		// 	low,
+		// )
 		// блокировка открытия
-		outV('on', output, v, opn, local, vlvLim, vlvLimB, vlvCrash, offS, alrStop, open100, close0 && !man, low)
+		outV(
+			'on',
+			output,
+			v,
+			opn,
+			local,
+			vlvLim,
+			vlvLimB,
+			vlvCrash,
+			offS,
+			alrStop,
+			open100,
+			close0 && !man,
+			low,
+		)
 		// При низкой температуре канала закрываем клапан в авто/руч
 		if (low && !cls) forceCls(output, v)
 		// блокировка закрытия
@@ -70,14 +103,6 @@ function fnClose0(idB, v, retain) {
 	if (isNaN(cur)) return false
 	// Если есть авария долгого открытия и позиция клапана=0 - блокировать
 	return alarmCls && cur === 0
-}
-
-function outV(type, output, o, ...args) {
-	const mdl = o?.module?.[type]?.id
-	if (!output[mdl] || !o) return
-	const ch = o?.module?.[type]?.channel - 1
-	const lock = fn(args)
-	output[mdl].value[ch] = +(output?.[mdl]?.value?.[ch] && !lock)
 }
 
 function forceCls(output, o) {

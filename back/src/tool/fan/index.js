@@ -1,7 +1,8 @@
 const { isExtralrm } = require('@tool/message/extralrm')
 const { isErrM } = require('@tool/message/plc_module')
-const { getIdB } = require('@tool/get/building')
-
+const { getIdB, getSectAuto } = require('@tool/get/building')
+const { getVno, getVnoClr } = require('@tool/command/mech/get')
+const { getClr } = require('@tool/command/mech/fn')
 
 // Состояние вентилятора (секции, разгонного, испарителя)
 function stateF(fan, equip, result, retain) {
@@ -91,7 +92,36 @@ function stateEq(id, value) {
 	return value?.outputEq?.[id]
 }
 
+/**
+ * Поиск работающих ВНО, в секциях-авто
+ * @param {*} idB
+ * @param {*} obj
+ * @param {*} idS
+ * @returns
+ * Если указан idS, то возвратить работающие ВНО для секции
+ * Если не указано, то по всем секциям выдать работающие ВНО
+ */
+function stateSum(idB, obj, idS) {
+	const { data, retain, value } = obj
+	let idsS
+	// Если указан idS, то возвратить работающие ВНО для секции
+	if (idS) {
+		const mode = obj.retain?.[idB]?.mode?.[idS]
+		if ([false, null].includes(mode)) return { idsS: [], arr: [] }
+		idsS = [idS]
+	}
+	// Если не указано, то по всем секциям в авто выдать работающие ВНО
+	else idsS = getSectAuto(idB, obj)
 
+	// Получить ВНО секций в авто
+	const arr = idsS
+		.flatMap((idS) => [
+			...getVno(idB, idS, { retain, value }, data.binding, data.fan),
+			...getVnoClr(idB, idS, { retain, value }, getClr(data, idS)).fanClr,
+		])
+		.filter((el) => value[el._id].state == 'run')
 
+	return { idsS, arr }
+}
 
-module.exports = { stateF, stateEq }
+module.exports = { stateF, stateEq, stateSum }

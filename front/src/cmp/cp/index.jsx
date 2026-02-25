@@ -27,7 +27,8 @@ export default function Cp({ buildId, sect, cls }) {
 			{def.map((el) => (
 				<Item deactive={deactive} key={el.id} data={el} cur={md} set={set} />
 			))}
-			<Warming cls={'page-section-sidebar-warming'} />
+			{/* Прогрев клапанов - не актуально */}
+			{/* <Warming cls={'page-section-sidebar-warming'} /> */}
 		</nav>
 	)
 

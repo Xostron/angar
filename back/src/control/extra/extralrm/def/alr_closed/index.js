@@ -1,6 +1,8 @@
 const { getSignal, getSig } = require('@tool/command/signal')
-const { reset, set, blink, mm } = require('./fn')
+const { reset, set, blink, check } = require('./fn')
 const { data: store } = require('@store')
+const mm = require('@dict/def/mode_section')
+const { stateSum } = require('@tool/fan')
 
 // Низкая температура канала секции
 // 1. с учетом режима секции: если в авто - то выключится весь склад, не авто - склад продолжает работать
@@ -9,18 +11,40 @@ const { data: store } = require('@store')
 function alrClosed(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Режим секции
 	const mode = obj.retain[bld._id].mode?.[sect._id]
-	// Настройки: Время срабатывания аварии для авто = Х мин, для руч = 5сек
-	const watch = mm[mode] == 'Авто' ? s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000 : 5 * 1000
+	// Настройки: Время срабатывания аварии для авто = Х мин, для руч = 3сек
+	const watch =
+		mm[mode] == 'Авто' ? (s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000) : 3 * 1000
 	// const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 2) + 1
-	// Значение сигнала
-	const sig = getSignal(sect?._id, obj, 'low') && mode !== null
 
-	// Аккумулятор слежения за срабатыванием
+	// Поиск работающих ВНО, в секциях-авто
+	const isRunning = stateSum(bld._id, obj, sect._id)
+
+	// Причина:
+	// для Авто: источник сигнала && работающие ВНО
+	// для Руч: источник сигнала
+	const reason =
+		mm[mode] == 'Авто'
+			? getSignal(sect?._id, obj, 'low') && !!isRunning.arr.length
+			: getSignal(sect?._id, obj, 'low')
+
+	// console.log(
+	// 	5500,
+	// 	sect.name,
+	// 	isRunning,
+	// 	'reason ANT = ',
+	// 	reason,
+	// 	'[',
+	// 	getSignal(sect?._id, obj, 'low'),
+	// 	!!isRunning.arr.length,
+	// 	']',
+	// )
+
+	if (check(bld, sect, s, automode, mode, acc)) return
 	reset(bld, sect, acc, store.debounce, mode)
-	set(bld, sect, sig, store.debounce, acc, watch, mode)
+	set(bld, sect, reason, store.debounce, acc, watch, mode)
 	blink(bld, sect, acc)
 
-	console.log(5500, sect.name, `Режим = ${mm[mode]}`, 'Авария = ', (acc._alarm ?? acc._self ?? null) && mode, store.debounce?.alrClosed?.[sect._id])
+	console.log(5504, sect.name, 'Авария = ', acc._alarm)
 
 	return acc._alarm
 }

@@ -1,5 +1,6 @@
 const { getIdBS } = require('@tool/get/building')
 const { transformClr, getClr } = require('./fn')
+const { getWettingS, getVnoClr, getVno } = require('./get')
 
 // Исполнительные механизмы секции
 function mech(obj, idS, idB) {
@@ -7,7 +8,7 @@ function mech(obj, idS, idB) {
 	const { valve, fan, heating, signal, binding, cooler, device } = data
 
 	// Увлажнитель
-	const wettingS = device.filter((el) => el?.device?.code === 'wetting' && el?.sectionId === idS)
+	const wettingS = getWettingS(idS, device)
 
 	// Клапаны (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
@@ -17,43 +18,45 @@ function mech(obj, idS, idB) {
 	const coolerS = getClr(data, idS)
 	// ВНО испарителей (только рабочие и исключая дубляжи: 1 ВНО на 2 и более испарителя)
 	// Вно испарителей (все вно, включая дубляжи)
-	const fanClrRaw = coolerS.flatMap((el) => el.fan)
-	// Вно испарителей (только рабочие state!=alarm и state!=off)
-	let fanClr = fanClrRaw.filter(
-		(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id],
-	)
-	// Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
-	fanClr = Object.values(
-		fanClr.reduce((acc, el, i) => {
-			if (acc[el.module.id + el.module.channel]) return acc
-			acc[el.module.id + el.module.channel] = el
-			return acc
-		}, {}),
-	)
-	// Вно испарителей с любым state, но исключая дубляжи
-	let allFanClr = Object.values(
-		fanClrRaw.reduce((acc, el, i) => {
-			if (acc[el.module.id + el.module.channel]) return acc
-			acc[el.module.id + el.module.channel] = el
-			return acc
-		}, {}),
-	)
+	// const fanClrRaw = coolerS.flatMap((el) => el.fan)
+	// // Вно испарителей (только рабочие state!=alarm и state!=off)
+	// let fanClr = fanClrRaw.filter(
+	// 	(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id],
+	// )
+	// // Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
+	// fanClr = Object.values(
+	// 	fanClr.reduce((acc, el, i) => {
+	// 		if (acc[el.module.id + el.module.channel]) return acc
+	// 		acc[el.module.id + el.module.channel] = el
+	// 		return acc
+	// 	}, {}),
+	// )
+	// // Вно испарителей с любым state, но исключая дубляжи
+	// const allFanClr = Object.values(
+	// 	fanClrRaw.reduce((acc, el, i) => {
+	// 		if (acc[el.module.id + el.module.channel]) return acc
+	// 		acc[el.module.id + el.module.channel] = el
+	// 		return acc
+	// 	}, {}),
+	// )
+	const { allFanClr, fanClr } = getVnoClr(idB, idS, { retain, value }, coolerS)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
-	// Напорные ВНО секции обычного склада/камеры холодильника (только рабочие)
-	const fanSS = fan
-		.filter(
-			(el) =>
-				el.owner.id === idS &&
-				el.type === 'fan' &&
-				value[el._id].state != 'alarm' &&
-				!retain?.[idB]?.fan?.[idS]?.[el._id],
-		)
-		.map((el) => {
-			const ao = binding.find((b) => b.owner.id === el._id)
-			if (!ao) return el
-			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
-		})
+	// // Напорные ВНО секции (только рабочие)
+	const fanSS = getVno(idB, idS, { retain, value,  },binding, fan)
+	// const fanSS = fan
+	// 	.filter(
+	// 		(el) =>
+	// 			el.owner.id === idS &&
+	// 			el.type === 'fan' &&
+	// 			value[el._id].state != 'alarm' &&
+	// 			!retain?.[idB]?.fan?.[idS]?.[el._id],
+	// 	)
+	// 	.map((el) => {
+	// 		const ao = binding.find((b) => b.owner.id === el._id)
+	// 		if (!ao) return el
+	// 		return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+	// 	})
 	// Напорные ВНО секции/камеры + ВНО испарителей: обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...fanSS, ...fanClr]
 

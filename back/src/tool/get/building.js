@@ -84,6 +84,24 @@ function isAS(idB, obj) {
 }
 
 /**
+ * Существует ли хоть бы одна секция в авто?
+ * @param {*} idB Ид склада
+ * @param {*} obj Глобальные данные
+ * @param {boolean} mod Тип результата
+ * @returns {object[]} Массив секций ИД (mod=false) или рама (mod=true)
+ */
+function getSectAuto(idB, obj, mod = false) {
+	const { data, retain } = obj
+	// Получить секции в авто
+	const r = data.section.filter(
+		(el) =>
+			(el.buildingId == idB && retain?.[idB]?.mode?.[el._id] === undefined) ||
+			retain?.[idB]?.mode?.[el._id] === true,
+	)
+	return mod ? r : r.map((el) => el._id)
+}
+
+/**
  * Получить Id склада от любого исполнительного механизма
  * @param {object} el Рама исполнительного механизма
  * @param {object[]} section Рама секций
@@ -131,4 +149,5 @@ module.exports = {
 	getIdBS,
 	getBbySig,
 	isAS,
+	getSectAuto,
 }

@@ -16,7 +16,7 @@ function fnACmd(bld, resultFan, obj, bdata) {
 	const idB = bld._id;
 	const delay = bdata.s.fan.delay * 1000;
 	resultFan.list.forEach((idS) => {
-		console.log(110, "fnACmd: Секция=", idS)
+		// console.log(110, "fnACmd: Секция=", idS)
 		const st = getStateClr(idS,obj)
 		const a = [
 			[isExtralrm(idB, idS, 'local'), 'Нет переключателя на щите'],
@@ -28,13 +28,13 @@ function fnACmd(bld, resultFan, obj, bdata) {
 			[isExtralrm(bld._id, null, 'alarm'), 'Нажат аварийный стоп']
 		];
 		if (a.filter((el) => el[0]).length > 0) {
-			console.log(
-				11,
-				'Секция',
-				idS,
-				'Плавный пуск: ВНО выключены из-за:',
-				a.filter((el) => el[0])
-			);
+			// console.log(
+			// 	11,
+			// 	'Секция',
+			// 	idS,
+			// 	'Плавный пуск: ВНО выключены из-за:',
+			// 	a.filter((el) => el[0])
+			// );
 			setACmd('fan', idS, { delay, type: 'off', force: null, max: null });
 			return;
 		}
