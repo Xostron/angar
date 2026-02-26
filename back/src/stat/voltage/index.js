@@ -4,6 +4,7 @@ const { check, fnPrev } = require('../fn')
 const message = require('../fn/mes')
 const { compareTime } = require('@tool/command/time')
 const _min1 = 60 * 1000
+const _min10 = 10 * 60 * 1000
 /**
  * Статистика электроизмерений Напряжения - Сбор данных периодически и по критическим изменениям
  */
@@ -31,15 +32,36 @@ function pLog(data, arr, value, level, force) {
 	arr.forEach((el) => {
 		const { _id } = el
 		// Время (точка отсчета)
-		store.heap.voltage[_id] ??= new Date()
-		// Если не было изменений показаний - выходим из лога
-		if (!check(value?.[_id], store.prev[_id], level) && !force) return
-		// Обновляем прошлое состояние
-		// fnPrev(_id, value[_id], level)
-		// 1 мин
-		if (!compareTime(store.heap.voltage[_id], _min1)) return
-		// Пишем в логи
+		store.heap.voltage[_id] ??= {}
+		store.heap.voltage[_id].min1 ??= null
+		store.heap.voltage[_id].min10 ??= null
+
+		// Если не было изменений показаний - логируем раз в 10 мин
+		if (!check(value?.[_id], store.prev[_id], level) && !force) {
+			if (!store.heap.voltage[_id].min10) {
+				// Первый цикл
+				logger[level]({ message: message(data, el, level, value) })
+				store.heap.voltage[_id].min10 = new Date()
+				return
+			}
+			// Следующие циклы, ждем таймер
+			if (!compareTime(store.heap.voltage[_id].min10, _min10)) return
+			// Время прошло - лог
+			logger[level]({ message: message(data, el, level, value) })
+			store.heap.voltage[_id].min10 = new Date()
+			return
+		}
+		
+		if (!store.heap.voltage[_id].min1) {
+			// Первый цикл
+			logger[level]({ message: message(data, el, level, value) })
+			store.heap.voltage[_id].min1 = new Date()
+			return
+		}
+		// Следующие циклы, ждем таймер
+		if (!compareTime(store.heap.voltage[_id].min1, _min1)) return
+		// Время прошло - лог
 		logger[level]({ message: message(data, el, level, value) })
-		store.heap.voltage[_id] = new Date()
+		store.heap.voltage[_id].min1 = new Date()
 	})
 }
