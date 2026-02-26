@@ -1,6 +1,6 @@
 const { getIdBS } = require('@tool/get/building')
 const { transformClr, getClr } = require('./fn')
-const { getWettingS, getVnoClr, getVno } = require('./get')
+const { getDevice, getVnoClr, getVno } = require('./get')
 
 // Исполнительные механизмы секции
 function mech(obj, idS, idB) {
@@ -8,7 +8,7 @@ function mech(obj, idS, idB) {
 	const { valve, fan, heating, signal, binding, cooler, device } = data
 
 	// Увлажнитель
-	const wettingS = getWettingS(idS, device, 'wetting')
+	const wettingS = getDevice(idS, device, 'wetting')
 
 	// Клапаны (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
@@ -43,7 +43,7 @@ function mech(obj, idS, idB) {
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
 	// // Напорные ВНО секции (только рабочие)
-	const fanSS = getVno(idB, idS, { retain, value,  },binding, fan)
+	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
 	// const fanSS = fan
 	// 	.filter(
 	// 		(el) =>

@@ -1,4 +1,3 @@
-
 /**
  * Устройства секции
  * @param {*} idS ИД секции
@@ -6,7 +5,7 @@
  * @param {*} code Код устройства
  * @returns
  */
-function getWettingS(idS, device, code) {
+function getDevice(idS, device, code) {
 	return device.filter((el) => el?.device?.code === code && el?.sectionId === idS)
 }
 
@@ -45,7 +44,7 @@ function getVnoClr(idB, idS, obj, coolerS) {
 	return { allFanClr, fanClr }
 }
 
-function getVno(idB, idS, obj,binding, fan) {
+function getVno(idB, idS, obj, binding, fan) {
 	const { retain, value } = obj
 	// Напорные ВНО секции (только рабочие)
 	return fan
@@ -63,4 +62,4 @@ function getVno(idB, idS, obj,binding, fan) {
 		})
 }
 
-module.exports = { getWettingS, getVnoClr, getVno }
+module.exports = { getDevice, getVnoClr, getVno }
