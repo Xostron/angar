@@ -58,10 +58,10 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 	const bldStatus = retain[bld._id].start;
 	// Состояние секции выкл (null||undefined)/ Авто(true) / Ручное (false???)
 	const secStatus =
-		bld?.type === 'cold' ? true : retain[bld._id]?.mode?.[sect._id];
+	bld?.type === 'cold' ? true : retain[bld._id]?.mode?.[sect._id];
 	// Датчик влажности продукта
 	const hin = se.hin;
-
+	
 	const { mode, sp, hysteresis, work, stop } = s.wetting;
 	// Нет увлажнителей Выходим
 	if(!wettingS.length) return
@@ -137,13 +137,13 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 		if (flag) {
 			acc.work = new Date();
 			acc.stop = null;
-			// console.log(`Увлажнитель включен ${acc.work?.toLocaleString()}`);
+			console.log(`Увлажнитель включен ${acc.work?.toLocaleString()}`);
 			delMsg('stop');
 			setMsg(135, 'run', str ?? '');
 		} else {
 			acc.stop = new Date();
 			acc.work = null;
-			// console.log(`Увлажнитель выключен ${acc.stop?.toLocaleString()}`);
+			console.log(`Увлажнитель выключен ${acc.stop?.toLocaleString()}`);
 			setMsg(136, 'stop', str ?? '');
 			delMsg('run');
 		}
@@ -169,6 +169,7 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 				if (k !== code) delMsg(k);
 			});
 	}
+	
 }
 
 module.exports = wetting;

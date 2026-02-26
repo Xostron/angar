@@ -8,7 +8,7 @@ function mech(obj, idS, idB) {
 	const { valve, fan, heating, signal, binding, cooler, device } = data
 
 	// Увлажнитель
-	const wettingS = getWettingS(idS, device)
+	const wettingS = getWettingS(idS, device, 'wetting')
 
 	// Клапаны (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
