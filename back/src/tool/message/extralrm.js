@@ -1,6 +1,6 @@
 const { data: store } = require('@store')
 const { readAcc } = require('@store/index')
-const { getIdBS } = require('@tool/get/building')
+const { getIdBS, getIdsS } = require('@tool/get/building')
 
 // Получить extralrm аварию
 function isExtralrm(idB, idS, code) {
@@ -115,21 +115,26 @@ function sumExtralrmSection(building, obj) {
  * @returns true - авария активна
  */
 function isAlrClosed(bld, obj) {
-	const idBS = getIdBS(obj?.data?.section, bld._id)
+	const idB = bld._id
+	// const idBS = getIdBS(obj?.data?.section, bld._id)
 	// Читаем аккумулятор аварии низкой темп, и собираем ключи acc.result
 	//  - это итоговый сигнал аварии с учетом режима секции, также здесь учитывается
 	// Низкая температура канала, которая принадлежит складу
-	const sum = idBS.map(
-		(ownerId) =>
-			readAcc(
-				bld._id,
-				bld._id === ownerId ? 'building' : ownerId,
-				bld._id === ownerId ? 'alrClosedB' : 'alrClosed',
-			)?.result,
-	)
-	// console.log(4400, 'Cигнал аварии', sum)
-	if (sum.some((el) => !!el)) return true
-	return false
+	// const sum = idBS.map((ownerId) => {
+	// 	const r = readAcc(
+	// 		bld._id,
+	// 		bld._id === ownerId ? 'building' : ownerId,
+	// 		bld._id === ownerId ? 'alrClosedB' : 'alrClosed',
+	// 	)
+	// 	return r._alarm
+	// })
+	// ИД секций склада
+	const idsS = getIdsS(obj.data.section, idB)
+	const low =
+		isExtralrm(idB, null, 'alrClosed') || idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed'))
+	return low
+	// if (sum.some((el) => !!el)) return true
+	// return false
 }
 
 module.exports = { isExtralrm, wrExtralrm, delExtralrm, sumExtralrmSection, isAlrClosed }

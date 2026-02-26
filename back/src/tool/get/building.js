@@ -72,19 +72,21 @@ function getIdsS(section, idB) {
 }
 
 /**
- * Существует ли хоть бы одна секция в авто?
+ * Получить секции-авто|руч
  * @param {*} idB Ид склада
  * @param {*} obj Глобальные данные
  * @returns {boolean} true - существует секция в авто
  */
-function isAS(idB, obj) {
-	return obj?.data?.section
-		?.filter((el) => el.buildingId === idB)
-		?.some((el) => obj?.retain?.[idB]?.mode?.[el._id])
+function getSectAM(idB, section, obj, mod = false) {
+	// Получить секции в авто
+	const r = section.filter(
+		(el) => el.buildingId == idB && obj.retain?.[idB]?.mode?.[el._id] !== null,
+	)
+	return mod ? r : r.map((el) => el._id)
 }
 
 /**
- * Существует ли хоть бы одна секция в авто?
+ * Получить секции-авто
  * @param {*} idB Ид склада
  * @param {*} obj Глобальные данные
  * @param {boolean} mod Тип результата
@@ -95,8 +97,8 @@ function getSectAuto(idB, obj, mod = false) {
 	// Получить секции в авто
 	const r = data.section.filter(
 		(el) =>
-			(el.buildingId == idB && retain?.[idB]?.mode?.[el._id] === undefined) ||
-			retain?.[idB]?.mode?.[el._id] === true,
+			el.buildingId == idB &&
+			(retain?.[idB]?.mode?.[el._id] === undefined || retain?.[idB]?.mode?.[el._id] === true),
 	)
 	return mod ? r : r.map((el) => el._id)
 }
@@ -148,6 +150,6 @@ module.exports = {
 	getIDB,
 	getIdBS,
 	getBbySig,
-	isAS,
+	getSectAM,
 	getSectAuto,
 }

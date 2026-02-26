@@ -21,7 +21,6 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Настройки: Время срабатывания аварии для авто = Х мин, для руч = 5сек
 	const watch =
 		mm[mode] == 'Авто' ? (s?.sys?.acWatch ?? s?.cooler?.acWatch ?? 10 * 60 * 1000) : 5 * 1000
-	// const count = (s?.sys?.rcount ?? s?.cooler?.rcount ?? 2) + 1
 
 	// Поиск работающих ВНО, в секциях-авто
 	const isRunning = stateSum(bld._id, obj)

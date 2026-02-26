@@ -61,7 +61,7 @@ async function transform(bldId, secId) {
 		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null;
 		result[bldId + 'banner'] = banner(bldId, data) ?? null;
 		// обработка пуш
-		result[bldId + 'push'] = push(bldId, data) ?? null;
+		result[bldId + 'push'] = push(bldId, section, data) ?? null;
 		// Разгонный вентилятор склада
 		result[bldId + 'accel'] = f;
 		// Абсолютная влажность продукта

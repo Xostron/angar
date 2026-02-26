@@ -18,7 +18,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 			null,
 			'vent',
 			msgB(bld, 141, `${remTime(acc.byTime.wait, s.vent.wait)}`),
-			'wait'
+			'wait',
 		)
 		delExtra(bld._id, null, 'vent', 'work')
 		return
@@ -31,7 +31,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		null,
 		'vent',
 		msgB(bld, 142, `${remTime(acc.byTime.work, s.vent.work)}`),
-		'work'
+		'work',
 	)
 	//
 	resultFan.force.push(true)

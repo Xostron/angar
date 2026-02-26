@@ -20,7 +20,7 @@ const dict = {
 	15: 'склад работает по авто режиму', //обычный, сушка
 	16: 'настройка "Вентиляция": количество вентиляторов = 0', //обычный, комби-обычный
 	17: 'обнаружена авария',
-	// 18: 'Низкая температура канала',
+	18: 'Низкая температура канала',
 }
 
 /**
@@ -96,33 +96,34 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		idsS,
 		fan,
 	} = prepare
-	// const alrClosed = isAlrClosed(bld, obj)
+	const alrClosed = isAlrClosed(bld, obj)
 	const local =
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	const supply =
 		isExtralrm(bld._id, null, 'supply') ||
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
 		isExtralrm(bld._id, null, 'battery')
+
 	return [
 		ban && code !== 'combiCold', //0
 		!fan.length, //1
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isN, //2
 		(!s?.vent?.mode || s?.vent?.mode === 'off') && isCN, //3
-		// alrClosed, //4
-		local, //5
-		CO2work, //6
-		code === null, //7
-		!start, //8
-		!secAuto, //9
-		!ccFlagFinish && code === 'combiCold', //10
-		s?.vent?.mode === 'auto' && isCN && !s?.vent?.work, //11
-		s?.vent?.mode === 'auto' && isN && !s?.vent?.work, //12
-		isCN && am === 'cooling' && !flagFinish && !alrAuto, //13
-		isN && am === 'cooling' && !flagFinish && !alrAuto, //14
-		isCN && am === 'drying' && !alrAuto, //15
-		isN && am === 'drying' && !alrAuto, //16
-		(isCN || isN) && !s?.vent?.max, // 17
-		alarm || supply,
+		local, //4
+		CO2work, //5
+		code === null, //6
+		!start, //7
+		!secAuto, //8
+		!ccFlagFinish && code === 'combiCold', //9
+		s?.vent?.mode === 'auto' && isCN && !s?.vent?.work, //10
+		s?.vent?.mode === 'auto' && isN && !s?.vent?.work, //11
+		isCN && am === 'cooling' && !flagFinish && !alrAuto, //12
+		isN && am === 'cooling' && !flagFinish && !alrAuto, //13
+		isCN && am === 'drying' && !alrAuto, //14
+		isN && am === 'drying' && !alrAuto, //15
+		(isCN || isN) && !s?.vent?.max, // 16
+		alarm || supply, //17
+		alrClosed, //18
 	]
 }
 
