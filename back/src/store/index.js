@@ -79,7 +79,7 @@ const data = {
 	acc: {},
 	// Аккумулятор (куча) для расчетов (здесь можно хранить всякое)
 	// valve - для управления в ручном режиме
-	heap: { fan: {}, smoking: {}, valve: {}, ozon: {}, analysis: {}, lock:{} },
+	heap: { fan: {}, smoking: {}, valve: {}, ozon: {}, analysis: {}, lock:{}, voltage:{} },
 	// Аварии клапанов
 	alarmV: {},
 	// Аварии для логики

@@ -137,13 +137,13 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 		if (flag) {
 			acc.work = new Date();
 			acc.stop = null;
-			console.log(`Увлажнитель включен ${acc.work?.toLocaleString()}`);
+			// console.log(`Увлажнитель включен ${acc.work?.toLocaleString()}`);
 			delMsg('stop');
 			setMsg(135, 'run', str ?? '');
 		} else {
 			acc.stop = new Date();
 			acc.work = null;
-			console.log(`Увлажнитель выключен ${acc.stop?.toLocaleString()}`);
+			// console.log(`Увлажнитель выключен ${acc.stop?.toLocaleString()}`);
 			setMsg(136, 'stop', str ?? '');
 			delMsg('run');
 		}

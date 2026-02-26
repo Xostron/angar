@@ -4,7 +4,7 @@ const { getIdSB, getOwnerClr } = require('@tool/get/building')
 const hyst = {
 	voltage: {
 		delta: 10,
-		min: 370,
+		min: 375,
 		max: 440,
 	},
 }
@@ -15,7 +15,7 @@ function isChanged(v, vprev, level) {
 	switch (level) {
 		case 'voltage':
 			// Прошлые значение не инициализированы -> фиксируем как изменения
-			if (vprev.every((el) => el === undefined)) return true
+			// if (vprev.every((el) => el === undefined)) return true
 			// Прошлые значения есть, проверка границ 10В, или мин/макс порог
 			return v.some((cur, i) => cur <= hyst.voltage.min || cur >= hyst.voltage.max)
 			// проверка границ 10В (отключено)
