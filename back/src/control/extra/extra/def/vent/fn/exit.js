@@ -102,7 +102,8 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 	const supply =
 		isExtralrm(bld._id, null, 'supply') ||
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
-		isExtralrm(bld._id, null, 'battery')
+		isExtralrm(bld._id, null, 'battery') ||
+		isExtralrm(bld._id, null, 'sb')
 
 	return [
 		ban && code !== 'combiCold', //0

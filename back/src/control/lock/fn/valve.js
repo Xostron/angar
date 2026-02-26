@@ -45,13 +45,13 @@ function vlv(obj) {
 		// 	'lock',
 		// 	v.type,
 		// 	local,
-		// 	alrStop,
 		// 	vlvLim,
 		// 	vlvLimB,
 		// 	vlvCrash,
 		// 	offS,
+		// 	alrStop,
 		// 	open100,
-		// 	close0,
+		// 	close0 && !man,
 		// 	low,
 		// )
 		// блокировка открытия

@@ -26,6 +26,8 @@ function fan(obj, s) {
 		// Игнор блокировки: включено окуривание или озонатор
 		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
 		// Блокировки:
+		// Авария питания. Ручной сброс
+		const sb = isExtralrm(bld._id, f.owner.id, 'sb')
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrOff =
 			value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
@@ -66,6 +68,7 @@ function fan(obj, s) {
 		console.log(
 			111,
 			f.name,
+			sb,
 			local,
 			isAlrOff,
 			offS,
@@ -81,6 +84,7 @@ function fan(obj, s) {
 			obj,
 			output,
 			f,
+			sb,
 			local,
 			isAlrOff,
 			offS,
@@ -92,7 +96,22 @@ function fan(obj, s) {
 			lowB,
 			low,
 		)
-		ao(obj, output, f, local, isAlrOff, offS, alrStop, lockAuto, bldOff, aLowB, aLow, lowB, low)
+		ao(
+			obj,
+			output,
+			f,
+			sb,
+			local,
+			isAlrOff,
+			offS,
+			alrStop,
+			lockAuto,
+			bldOff,
+			aLowB,
+			aLow,
+			lowB,
+			low,
+		)
 	}
 	// Низкая темп канала: ручной режим - флаги 1кратной блокировки
 	Object.entries(once).forEach(([id, low]) => {

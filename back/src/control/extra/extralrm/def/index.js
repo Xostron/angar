@@ -13,8 +13,6 @@ const genS = require('./genS')
 const alrValve = require('./alr_valve')
 const fanCrash = require('./fan_crash')
 const alrStop = require('./alr_stop')
-const supply = require('./supply')
-const supplyB = require('./supply_b')
 const co2 = require('./co2')
 const aggregate = require('./aggregate')
 const banTimer = require('./ban_timer')
@@ -23,11 +21,13 @@ const openVin = require('./open_vin')
 const stableVno = require('./stable_vno')
 const notTune = require('./not_tune')
 const debdo = require('./deb_do')
-const battery = require('./battery')
 const ozon = require('./ozon')
 const hCoolerCrash = require('./heating_cooler')
 const fCoolerCrash = require('./flap_cooler')
 const bldOff = require('./bld_off')
+// const supply = require('./supply')
+const supplyB = require('./supply_b')
+const sb = require('./supply_battery')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -44,7 +44,7 @@ const def = {
 			vlvLim,
 			antibliz,
 			overVlv,
-			supply,
+			// supply,
 		},
 	},
 	building: {
@@ -61,7 +61,7 @@ const def = {
 			deltaMdl,
 			notTune,
 			debdo,
-			battery,
+			sb,
 			openVin,
 			alrValve,
 			supplyB,
@@ -85,7 +85,7 @@ const def = {
 			co2,
 			aggregate,
 			debdo,
-			battery,
+			sb,
 			ozon,
 		},
 	},

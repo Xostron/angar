@@ -70,15 +70,16 @@ function signalB(r, bld, am, data) {
 	const alrClosed = store.alarm?.extralrm?.[bld._id]?.alrClosed ?? null
 	const alrStop = store.alarm?.extralrm?.[bld._id]?.alarm ?? null
 	const bldOff = store.alarm?.extralrm?.[bld._id]?.bldOff ?? null
-	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
 	const low = store.alarm?.extralrm?.[bld._id]?.low ?? null
 	const deltaMdl = store.alarm?.extralrm?.[bld._id]?.deltaMdl ?? null
 	const openVin = store.alarm?.extralrm?.[bld._id]?.openVin ?? null
 	const notTune = store.alarm?.extralrm?.[bld._id]?.notTune ?? null
+	const debdo = store.alarm?.extralrm?.[bld._id]?.debdo ?? null
+	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
+	const battery = store.alarm?.extralrm?.[bld._id]?.battery ?? null
+	const sb = store.alarm?.extralrm?.[bld._id]?.sb ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
-	const debdo = store.alarm?.extralrm?.[bld._id]?.debdo ?? null
-	const battery = store.alarm?.extralrm?.[bld._id]?.battery ?? null
 
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
@@ -111,8 +112,9 @@ function signalB(r, bld, am, data) {
 	if (extralrmS) r.signal[bld._id].push(...Object.values(extralrmS))
 	if (debdo) r.signal[bld._id].push(...Object.values(debdo))
 	if (battery) r.signal[bld._id].push(battery)
-	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (supply) r.signal[bld._id].push(supply)
+	if (sb) r.signal[bld._id].push(sb)
+	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []))
 	if (bldOff) r.signal[bld._id].push(bldOff)
 	r.signal[bld._id].sort((a, b) => {

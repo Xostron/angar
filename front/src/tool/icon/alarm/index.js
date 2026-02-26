@@ -35,6 +35,7 @@ const data = {
 	ozon: '/img/alarm/ozon.svg',
 	battery: '/img/alarm/battery.svg',
 	supply: '/img/alarm/battery.svg',
+	sb: '/img/alarm/battery.svg',
 	bldOff:'/img/alarm/alr.svg'
 }
 export default data

@@ -21,14 +21,19 @@ function supply(idB, clrId, idsS, retain) {
 	// if (!state) return false
 	const noSupplyIds = idsS?.some((id) => isExtralrm(idB, id, 'supply'))
 	const noSupply =
-		isExtralrm(idB, null, 'supply') || isExtralrm(idB, null, 'battery') || noSupplyIds
+		isExtralrm(idB, null, 'supply') ||
+		isExtralrm(idB, null, 'battery') ||
+		noSupplyIds ||
+		isExtralrm(bld._id, null, 'sb')
+
 	console.log(
 		'\t Нет питания nosupply=',
 		noSupply,
 		'=',
 		isExtralrm(idB, null, 'supply'),
 		isExtralrm(idB, null, 'battery'),
-		noSupplyIds
+		noSupplyIds,
+		isExtralrm(bld._id, null, 'sb'),
 	)
 
 	// Питание отключено

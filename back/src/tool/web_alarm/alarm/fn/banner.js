@@ -26,10 +26,11 @@ function bannerB(r, bld) {
 	// Склад не работает: требуется калибровка клапанов
 	r.banner.notTune ??= {}
 	r.banner.notTune[bld._id] = store.alarm?.extralrm?.[bld._id]?.notTune
-	// Авария питания. Ручной сброс
+	// Авария питания. батарея || Ручной сброс
 	r.banner.battery ??= {}
-	r.banner.battery[bld._id] = store.alarm?.extralrm?.[bld._id]?.battery
-	// Авария питания
+	r.banner.battery[bld._id] =
+		store.alarm?.extralrm?.[bld._id]?.battery || store.alarm?.extralrm?.[bld._id]?.sb
+	// Авария питания. сигнал
 	r.banner.supply ??= {}
 	r.banner.supply[bld._id] ??= {}
 	r.banner.supply[bld._id][bld._id] = store.alarm?.extralrm?.[bld._id]?.supply ?? null

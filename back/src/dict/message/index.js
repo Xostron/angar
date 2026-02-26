@@ -202,9 +202,10 @@ const data = {
 		count: true,
 		code: 'supply',
 		typeSignal: 'critical',
-		msg: 'Авария питания',
+		msg: 'Авария питания (сигнал)',
 		flt: [true],
 	},
+
 	// Приточный клапан открыт, темп канала > темп продукта
 	39: {
 		count: false,
@@ -326,9 +327,16 @@ const data = {
 	},
 	103: {
 		count: true,
-		code: 'battery',
+		code: 'sb',
 		typeSignal: 'critical',
 		msg: 'Авария питания (Ручной сброс)',
+		flt: [true],
+	},
+	106: {
+		count: true,
+		code: 'battery',
+		typeSignal: 'critical',
+		msg: 'Авария питания (батарея)',
 		flt: [true],
 	},
 	104: {

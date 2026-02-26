@@ -84,12 +84,12 @@ function exception(err) {
 }
 
 function testBattery() {
-	// store.battery = !store.battery
+	// store.battery = true
 	// blink
 	// if (store.testBattery) store.battery = false
 	// if (!store.testBattery) {
-	// 	store.testBattery = true
-	// 	store.battery = true
+		// store.testBattery = true
+		// store.battery = true
 	// }
 }
 

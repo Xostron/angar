@@ -101,7 +101,8 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 	const supply =
 		isExtralrm(bld._id, null, 'supply') ||
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
-		isExtralrm(bld._id, null, 'battery')
+		isExtralrm(bld._id, null, 'battery') ||
+		isExtralrm(bld._id, null, 'sb')
 	// CO2 запущен
 	const isRunCO2 =
 		acc?.byTime?.work ||
@@ -121,7 +122,7 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		isCN && !alrAuto && !flagFinish, //9
 		isN && !alrAuto && !flagFinish, //10
 		isCC, //11
-		alarm||supply,
+		alarm || supply,
 	]
 }
 

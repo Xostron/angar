@@ -28,10 +28,10 @@ function fanAccel(obj, s) {
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrState = value?.[el._id]?.state === 'alarm' ? true : false
 		// Авария питания
-		const battery = isExtralrm(idB, null, 'battery')
+		const sb = isExtralrm(idB, null, 'sb')
 		// Кнопка выключения склада
 		const bldOff = isExtralrm(idB, null, 'bldOff')
-		out(obj, output, el, local, !!ban, alrStop, isAlrState, battery, bldOff)
+		out(obj, output, el, local, !!ban, alrStop, isAlrState, sb, bldOff)
 	}
 }
 
