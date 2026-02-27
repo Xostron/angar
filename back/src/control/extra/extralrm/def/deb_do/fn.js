@@ -34,7 +34,7 @@ function set(bld, arr, obj, accDeb, acc, watch, count) {
 
 		const delta = accDeb[el._id].at(-1).date - accDeb[el._id][0].date
 
-		// Время между последними состояниями больше порога дребезга -> ОК
+		// Время между 1 и последним состояниями больше порога дребезга -> ОК
 		if (delta > watch) return
 
 		// Время меньше порога -> установка аварии
