@@ -30,7 +30,7 @@ function supplyB(bld, sect, obj, s, se, m, automode, acc, data) {
 
 	acc._alarm = Object.values(acc.o).some((el) => !!el)
 
-	console.log(882, acc._alarm, acc, Object.values(acc.o))
+	// console.log(882, acc._alarm, acc, Object.values(acc.o))
 	return acc?._alarm ?? false
 }
 

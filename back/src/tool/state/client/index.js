@@ -1,8 +1,8 @@
-const fnPrepare = require('./prepare');
-const api = require('@tool/api');
+const fnPrepare = require('./prepare')
+const api = require('@tool/api')
 
-const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-const offset = new Date().getTimezoneOffset();
+const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+const offset = new Date().getTimezoneOffset()
 
 const apiConfig = (data, params) => ({
 	method: 'POST',
@@ -16,7 +16,7 @@ const apiConfig = (data, params) => ({
 	},
 	data,
 	params,
-});
+})
 
 /**
  * Собрать данные по складам и отправить на Админ-сервер
@@ -31,35 +31,29 @@ module.exports = async function state() {
 			console.log(
 				'\x1b[32m%s\x1b[0m',
 				`IP ${process.env.IP} не является публичным, пропуск отправки данных на Tenta`,
-			);
-			return false;
+			)
+			return false
 		}
 
 		// Формирование state (значения данных по PC)
-		console.log('\x1b[32m%s\x1b[0m', 'POS->Tenta: 1. Подготовка данных...');
-		const o = await fnPrepare();
-		console.log(
-			'\x1b[32m%s\x1b[0m',
-			'POS->Tenta: 1. ✅Подготовка пройдена',
-		);
+		console.log('\x1b[32m%s\x1b[0m', 'POS->Tenta: 1. Подготовка данных...')
+		const o = await fnPrepare()
+		console.log('\x1b[32m%s\x1b[0m', 'POS->Tenta: 1. ✅Подготовка пройдена')
 
 		// Если данные не готовы -> пропуск итерации
 		if (!o) {
 			console.log(
 				'\x1b[32m%s\x1b[0m',
 				'POS->Tenta: 2. ✅Данные не готовы. Операция закончена',
-			);
-			return false;
+			)
+			return false
 		}
 
-		const { result, hub, present, diffing } = o;
+		const { result, hub, present, diffing } = o
 		// Если изменений не было не отправляем запрос
 		if (!result.length) {
-			console.log(
-				'\x1b[32m%s\x1b[0m',
-				'POS->Tenta: 2. Изменений не было. Операция закончена',
-			);
-			return false;
+			console.log('\x1b[32m%s\x1b[0m', 'POS->Tenta: 2. Изменений не было. Операция закончена')
+			return false
 		}
 
 		// Передать данные INIT или delta
@@ -67,14 +61,14 @@ module.exports = async function state() {
 			'\x1b[32m%s\x1b[0m',
 			'POS->Tenta: 2. Соединение с Tenta...',
 			process.env.API_URI,
-		);
+		)
 
 		// hub.init = true Первый пул данных был отправлен
 		// Первый пул данных (при перезапуске ангара) { type: 'init' }
 		// Последующие данные params = null
-		const params = hub?.init ? null : { type: 'init' };
-		const config = apiConfig(result, params);
-		const response = await api(config);
+		const params = hub?.init ? null : { type: 'init' }
+		const config = apiConfig(result, params)
+		const response = await api(config)
 		if (result.length <= 12) {
 			// console.log(9900, 'result', JSON.stringify(result, null, ' '), result?.length)
 			// console.log(
@@ -89,7 +83,7 @@ module.exports = async function state() {
 			'Подготовлено данных:',
 			result?.length,
 			Object.values(diffing ?? [])?.length,
-		);
+		)
 		// Запрос не успешен
 		if (!response.data) {
 			// || +diffing?.temp?.value === 15) {
@@ -98,32 +92,29 @@ module.exports = async function state() {
 				'❌Нет соединения с Tenta',
 				response?.message,
 				diffing?.temp?.value,
-			);
-			throw new Error(
-				'POS->Tenta: 3. ❌Не удалось передать данные на Tenta',
-			);
+			)
+			throw new Error('POS->Tenta: 3. ❌Не удалось передать данные на Tenta')
 		}
-		console.log(
-			'\x1b[32m%s\x1b[0m',
-			'2.5. ✅Аккумулятор обновлен',
-			result?.length,
-		);
+		console.log('\x1b[32m%s\x1b[0m', '2.5. ✅Аккумулятор обновлен', result?.length)
 		// Запрос успешен, обновляем прошлые значения
 		// Инициализация пройдена
-		hub.init = new Date();
+		hub.init = new Date()
 		// Последние данные были успешны переданы
-		hub.last = new Date();
+		hub.last = new Date()
 		// Обновление прошлых значений: если различий не было (diffing),
-		// то сохраняем текущий state (present), иначе прошлые+новые различия
-		hub.state = diffing === null ? present : { ...hub.state, ...diffing };
-		console.log(
-			'\x1b[32m%s\x1b[0m',
-			'3. ✅POS->Tenta: Данные переданы',
-			result?.length,
-		);
+		// то сохраняем текущий state (present), иначе прошлые + различия
+		// hub.state = diffing === null ? present : { ...hub.state, ...diffing };
+		// Раньше было как выше, и при первом прогоне hub.state = ссылке на present
+		// Что привело к тому, что прошлые значения на сложных объектах всегда были обновлены по ссылке
+		// Поэтому в hub.state - сохраняются клоны объектов
+		hub.state =
+			diffing === null
+				? JSON.parse(JSON.stringify(present))
+				: JSON.parse(JSON.stringify({ ...hub.state, ...diffing }))
+		console.log('\x1b[32m%s\x1b[0m', '3. ✅POS->Tenta: Данные переданы', result?.length)
 		// console.log(4, o.result)
-		return true;
+		return true
 	} catch (error) {
-		throw error;
+		throw error
 	}
-};
+}

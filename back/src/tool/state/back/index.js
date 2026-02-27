@@ -1,11 +1,11 @@
-const { convertPC, convertSec, convertTenta, deltaTol } = require('../fn')
+const { convertPC, convertSec, convertTenta } = require('../fn')
 const transformStore = require('@routes/api/tenta/read/store/transform')
 const transformPC = require('@routes/api/tenta/read/pc/transform')
 const { data: store, dataDir } = require('@store')
 const tolerance = require('../fn/tolerance.json')
 const { readTO } = require('@tool/json')
+const deltaTol = require('../fn/delta')
 const fsp = require('fs').promises
-
 /**
  * API GET State: для запросов от Tenta
  * Подготовка state для Админ-сервера (с учетом delta-дребезга и расчета delta-изменений)
@@ -43,10 +43,12 @@ module.exports = async function prepareRes(type) {
 		diffing = !past || type === 'init' ? null : deltaTol(present, past, sens, tolerance)
 		// Формируем данные для Admin: источник diffing (изменения) или present (полные данные)
 		result = convertTenta(diffing ?? present, data.pc._id)
-
 		// Фиксируем изменения
+		// store.past = diffing === null ? present : { ...store.past, ...diffing }
 		store.past =
-			diffing === null ? present  : { ...store.past, ...diffing }
+			diffing === null
+				? JSON.parse(JSON.stringify(present))
+				: JSON.parse(JSON.stringify({ ...store.past, ...diffing }))
 		return { result, present }
 	} catch (error) {
 		console.error('\x1b[33m%s\x1b[0m', 'Запрос state от Админ: ❌Ошибка', error)
