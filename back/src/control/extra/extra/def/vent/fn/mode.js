@@ -52,7 +52,8 @@ function fnModeMsg(bld, code, acc) {
 			key = 147
 			break
 	}
-	const arrCode = ['off', 'ventOn', 'time', 'combiCold']
+	const arrCode = ['off', 'on', 'time', 'combiCold']
+	console.log(99002, code, key)
 	delUnused(arrCode, code, bld, key, 'vent')
 }
 

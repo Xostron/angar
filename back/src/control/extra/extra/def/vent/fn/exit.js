@@ -55,6 +55,8 @@ function exit(bld, obj, code, s, alarm, ban, prepare, acc, resultFan) {
  * @returns {boolean} true разрешить ВВ, false запретить ВВ
  */
 function fnCheck(bld, obj, code, s, alarm, ban, prepare) {
+	// Режим выключен - разрешить для выключения
+	if (code == 'off' || code=='on') return true
 	// Вычисление причин запрета ВВ
 	const reason = fnReason(bld, obj, code, s, alarm, ban, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
@@ -136,7 +138,7 @@ function clear(bld, acc, resultFan, ...args) {
 	resultFan.stg.push(null)
 	args[0] ? delExtra(bld._id, null, 'vent', 'wait') : null
 	args[1] ? delExtra(bld._id, null, 'vent', 'work') : null
-	args[2] ? delExtra(bld._id, null, 'vent', 'ventOn') : null
+	args[2] ? delExtra(bld._id, null, 'vent', 'on') : null
 }
 
 module.exports = { exit }

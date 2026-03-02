@@ -49,7 +49,7 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 	const ventWork =
 		isExtra(bld._id, null, 'vent', 'wait') ||
 		isExtra(bld._id, null, 'vent', 'work') ||
-		isExtra(bld._id, null, 'vent', 'ventOn')
+		isExtra(bld._id, null, 'vent', 'on')
 	// 11. Работает доп вентиляция
 	const durWork = isExtra(bld._id, null, 'durVent', 'work')
 	if (

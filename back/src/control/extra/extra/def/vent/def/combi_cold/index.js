@@ -5,7 +5,7 @@ const { readAcc } = require('@store/index')
 
 // Комби-холод. Тпродукта достигла задания
 function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
-	delExtra(bld._id, null, 'vent', 'ventOn')
+	delExtra(bld._id, null, 'vent', 'on')
 	acc.CC ??= {}
 	// Аккумулятор склада комби-холодильника
 	const accCold = readAcc(bld._id, 'combi')?.cold

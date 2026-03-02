@@ -201,7 +201,7 @@ const useOutputStore = create((set, get) => ({
 		set({ settingAu: {} })
 	},
 	hasChangedSettingAu(build, type) {
-		console.log('hasChangedSettingAu', get().settingAu?.value)
+		// console.log('hasChangedSettingAu', get().settingAu?.value)
 		if (type === 'menu') return false
 		return get().settingAu?.value ? true : false
 	},

@@ -7,12 +7,13 @@ const { compareTime } = require('@tool/command/time')
 // Режим вентиляции: Выкл
 // Склад обычный, комби-обычный
 function fnOff(obj, s, m, bld, alarm, prepare, acc, resultFan) {
+	acc.byTime = {}
+	acc.CC = {}
 	resultFan.force.push(false)
 	resultFan.stg.push(null)
 	delExtra(bld._id, null, 'vent', 'wait')
 	delExtra(bld._id, null, 'vent', 'work')
-	delExtra(bld._id, null, 'vent', 'ventOn')
-
+	delExtra(bld._id, null, 'vent', 'check')
 }
 
 module.exports = fnOff
