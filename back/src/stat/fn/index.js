@@ -4,8 +4,10 @@ const { getIdSB, getOwnerClr } = require('@tool/get/building')
 const hyst = {
 	voltage: {
 		delta: 10,
-		min: 375,
-		max: 440,
+		// min: 375,
+		// max: 440,
+		min: 190,
+		max: 250,
 	},
 }
 

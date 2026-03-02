@@ -16,7 +16,6 @@ function delUnused(arrCode, code, bld, codeMsg, type) {
 			delExtra(bld._id, null, type, el)
 			return
 		}
-		console.log(99009, type, codeMsg, el)
 		wrExtra(bld._id, null, type, msgB(bld, codeMsg), el)
 	})
 }

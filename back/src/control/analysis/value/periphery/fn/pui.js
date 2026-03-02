@@ -46,10 +46,10 @@ const puiTCP = (doc, result, val) => {
  * @returns
  */
 function fnCache(id, v) {
-	// Если нет счетчика, выход
+	// Если нет электросчетчика, выход
 	if (!v) return
 	// Кол-во попыток
-	const approach = 3
+	const approach = 5
 	// Фиксируем попытки - 1 попытка=1 цикл
 	store.heap.analysis[id] ??= 0
 

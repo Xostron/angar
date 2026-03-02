@@ -38,8 +38,8 @@ function pLog(data, arr, value, level, force) {
 
 		// Если не было изменений показаний - логируем раз в 10 мин
 		if (!check(value?.[_id], store.prev[_id], level) && !force) {
+			// Первый цикл
 			if (!store.heap.voltage[_id].min10) {
-				// Первый цикл
 				logger[level]({ message: message(data, el, level, value) })
 				store.heap.voltage[_id].min10 = new Date()
 				return
@@ -51,9 +51,11 @@ function pLog(data, arr, value, level, force) {
 			store.heap.voltage[_id].min10 = new Date()
 			return
 		}
-		
+		// Обновляем прошлое состояние
+		fnPrev(_id, value[_id], level)
+		// Было изменение (текущее напряжение больше-равно/меньше-равно предыдущего состояния)
+		// Первый цикл
 		if (!store.heap.voltage[_id].min1) {
-			// Первый цикл
 			logger[level]({ message: message(data, el, level, value) })
 			store.heap.voltage[_id].min1 = new Date()
 			return
