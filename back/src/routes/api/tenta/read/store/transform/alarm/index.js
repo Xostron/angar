@@ -5,6 +5,7 @@ function alarm(idB, idS, data) {
 	const timer = Object.values(data?.alarm?.timer?.[idB] ?? {}).map((el) => ({
 		code: el?.type,
 		msg: el?.msg,
+		desc: el?.desc,
 	}))
 	// Аварии секции
 	if (idS) {
@@ -14,7 +15,7 @@ function alarm(idB, idS, data) {
 				let alr = data?.alarm?.bar?.[idB]?.[idS]?.[code]?.[0]
 				if (['antibliz', 'alrClosed'].includes(code))
 					alr = data?.alarm?.bar?.[idB]?.[idS]?.[code]
-				return alr ? { code, msg: alr?.msg } : null
+				return alr ? { code, msg: alr?.msg, decs: alr?.desc } : null
 			})
 			.filter((el) => !!el)
 		a.push(...timer)
@@ -23,7 +24,7 @@ function alarm(idB, idS, data) {
 	const a = Object.keys(data?.alarm?.barB?.[idB] ?? {})
 		.map((k) => {
 			const alr = data?.alarm?.barB?.[idB]?.[k]?.[0]
-			return alr ? { code: k, msg: alr?.msg } : null
+			return alr ? { code: k, msg: alr?.msg, decs: alr?.desc } : null
 		})
 		.filter((el) => !!el)
 

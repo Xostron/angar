@@ -1,24 +1,22 @@
 function banner(idB, data) {
 	return Object.keys(data?.alarm?.banner ?? {})
-		.map((k) => {
-			const ba =
-				k === 'local'
-					? Object.values(data?.alarm?.banner?.[k]?.[idB] ?? {})?.filter(
-							(el) => el !== null,
-						)
-					: data?.alarm?.banner?.[k]?.[idB]
-			switch (k) {
-				case 'local':
-					return ba?.length ? { code: k, msg: ba?.[0]?.msg } : null
-				case 'connect':
-					return ba ? { code: k, msg: ba.msg } : null
-				case 'notTune':
-					return ba ? { code: k, msg: ba.msg } : null
-				case 'battery':
-					return ba ? { code: k, msg: ba.msg } : null
-				case 'supply':
-					const r = Object.values(ba ?? {}).filter(el=>!!el)
-					return r?.length ? { code: k, msg: r?.[0]?.msg } : null
+		.map((key) => {
+			const ba = data?.alarm?.banner?.[key]?.[idB]
+			switch (key) {
+				case 'local': {
+					const r = Object.values(ba ?? {})?.filter((el) => !!el)
+					return r?.length ? { code: key, msg: r?.[0]?.msg } : null
+				}
+				case 'supply': {
+					const r = Object.values(ba ?? {}).filter((el) => !!el)
+					return r?.length ? { code: key, msg: r?.[0]?.msg } : null
+				}
+				default:
+					// case 'connect':
+					// case 'notTune':
+					// case 'battery':
+					// case 'sb':
+					return ba ? { code: key, msg: ba.msg } : null
 			}
 		})
 		.filter((el) => !!el)

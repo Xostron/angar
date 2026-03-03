@@ -68,7 +68,7 @@ function fnTransform(bld, data, section, fan, result) {
 	result[bld._id + 'alarm'] = Object.keys(data?.alarm?.barB?.[bld._id] ?? {})
 		.map((k) => {
 			const alr = data?.alarm?.barB?.[bld._id]?.[k]?.[0];
-			return alr ? { code: k, msg: alr?.msg } : null;
+			return alr ? { code: k, msg: alr?.msg, desc: alr?.desc } : null;
 		})
 		.filter((el) => !!el);
 	// Сообщение достижений
@@ -76,7 +76,7 @@ function fnTransform(bld, data, section, fan, result) {
 	// console.log(99001, result?.[bld._id + 'note'])
 	// Таймеры запретов
 	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map(
-		(el) => ({ code: el?.type, msg: el?.msg })
+		(el) => ({ code: el?.type, msg: el?.msg, desc: el?.desc })
 	);
 	result[bld._id + 'alarm'].push(...timer);
 
