@@ -16,6 +16,7 @@ function vlvLimB(building, section, obj, s, se, m, automode, acc, data) {
 		wrExtralrm(building._id, null, 'vlvLim', msgB(building, 33))
 		acc._alarm = true
 	}
+	return acc._alarm
 }
 
 module.exports = vlvLimB

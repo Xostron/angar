@@ -5,7 +5,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 // Нет питания электродвигателя клапана
 function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 	// console.log(5500, m.vlvAll)
-	const arrIn = m.vlvAll.filter((el) => el.type === 'in')
+	// const arrIn = m.vlvAll.filter((el) => el.type === 'in')
 
 	for (const v of m.vlvAll) {
 		acc[v._id] ??= {}
@@ -25,9 +25,16 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 		}
 	}
 	// Если авария приточного клапана, то выключаем весь склад
-	const alr = arrIn.some((el) => acc?.[el._id]?._alarm)
-	// console.log(55001, alr)
+	// const alr = arrIn.some((el) => acc?.[el._id]?._alarm)
+	const alr = isAlr(m.vlvAll, acc)
+	console.log(55001, alr)
 	return alr
 }
 
 module.exports = vlvCrash
+
+// Если авария приточного клапана, то выключаем весь склад
+function isAlr(vlv, acc) {
+	const alr = vlv.filter((el) => el.type === 'in').some((el) => acc?.[el._id]?._alarm)
+	return alr
+}
