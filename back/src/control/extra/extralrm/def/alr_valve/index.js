@@ -21,7 +21,7 @@ function alarmV(bld, sect, obj, s, se, m, automode, acc, data) {
 		// long(bld, obj, v, s, acc,prepare, 'open')
 		long(bld, obj, v, s, acc, prepare, 'close')
 	}
-	// console.log(756, acc)
+
 	return acc._alarm ?? false
 }
 

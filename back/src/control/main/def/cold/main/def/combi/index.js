@@ -6,6 +6,7 @@ const { mech } = require('@tool/command/mech')
 const target = require('../../fn/tgt')
 const coolers = require('./coolers')
 const fanCombi = require('./fan')
+const { achieveTgt } = require('../../check/achieve')
 
 // Комбинированный - холодильник
 function main(bld, obj, bdata, alr) {
@@ -36,8 +37,9 @@ function main(bld, obj, bdata, alr) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.combi(bld, obj, bdata, alr)
 	}
-	// console.log(88, 'Аккумулятор комби холодильника')
-	// console.log(accAuto.cold)
+	console.log(88, 'Аккумулятор комби холодильника')
+	console.log(accAuto)
+	achieveTgt(bld, accAuto.cold, s)
 }
 
 module.exports = main

@@ -97,7 +97,7 @@ const def = {
 		},
 		close(idV, val, state, acc) {
 			if (state === 'icls' && val <= 0 && !acc[idV].waitC) acc[idV].waitC = new Date()
-			console.log('Точка отсчета close', acc[idV].waitC)
+			// console.log('Точка отсчета close', acc[idV].waitC)
 		},
 	},
 	// Установка флага аварии клапана

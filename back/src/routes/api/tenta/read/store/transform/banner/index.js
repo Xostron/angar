@@ -8,7 +8,7 @@ function banner(idB, data) {
 					return r?.length ? { code: key, msg: r?.[0]?.msg } : null
 				}
 				case 'supply': {
-					const r = Object.values(ba ?? {}).filter((el) => !!el)
+					const r = Object.values(ba ?? {})?.filter((el) => !!el)
 					return r?.length ? { code: key, msg: r?.[0]?.msg } : null
 				}
 				default:
