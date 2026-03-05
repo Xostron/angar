@@ -1,6 +1,6 @@
 const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
-const denied = require('../../fn/denied')
+const denied = require('../../fn/denied/def')
 
 /**
  * Склад Холодильник: Логика испарителей

@@ -1,10 +1,10 @@
 const checkDefrost = require('../../fn/check')
 const cooler = require('../../def_cooler')
-const denied = require('../../fn/denied')
-// const { initSoftsol } = require('../../fn/change/soft_solenoid')
+const denied = require('../../fn/denied/def')
 const { isAlr } = require('@tool/message/auto')
-const { data: store } = require('@store')
 const { isAllStarted } = require('@store/index')
+const { data: store } = require('@store')
+// const { initSoftsol } = require('../../fn/change/soft_solenoid')
 
 /**
  * Склад Комби: Логика испарителей
@@ -67,7 +67,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	// Режим секции true-Авто
 	const sectM = retain?.[bld._id]?.mode?.[sect._id]
 	denied.off(bld._id, mS, s, fnChange, accAuto, alrAuto, sectM)
-	denied.offByTcnl(bld._id, mS, s, fnChange, accAuto, alrAuto, sectM)
+	denied.offByTcnl(bld._id, mS, s, se, fnChange, accAuto, alrAuto, sectM)
 	// console.log(`-------------------${bld?.name} end-------------------`)
 }
 

@@ -16,6 +16,8 @@ async function accAlarm(obj) {
 	}
 	clear(obj.data, obj.acc)
 	// Сохранение текущих аварий в файл
+	console.log(99, Object.keys(store.alarm))
+	console.log(991, store.alarm.auto)
 	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }
 
