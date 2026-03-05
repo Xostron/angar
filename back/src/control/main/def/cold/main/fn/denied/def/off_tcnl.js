@@ -87,13 +87,11 @@ function regulQ(s, se, fnChange, accAuto, clr) {
 	accAuto.cold ??= {}
 	accAuto.cold[clr.sectionId] ??= {}
 	// Вкл ВНО испарителя
-	if (
-		!accAuto?.cold?.[clr.sectionId]?.onQ &&
-		se.hin <= s.mois.humidity - (s.mois?.hysteresisHum ?? 1)
-	)
+	if (!accAuto?.cold?.[clr.sectionId]?.onQ && se.hin <= s.mois.humidity)
 		accAuto.cold[clr.sectionId].onQ = 1
 	// Выкл ВНО испарителя
-	if (se.hin >= s.mois.humidity) accAuto.cold[clr.sectionId].onQ = 0
+	if (se.hin >= s.mois.humidity + -(s.mois?.hysteresisHum ?? 1))
+		accAuto.cold[clr.sectionId].onQ = 0
 
 	console.log(
 		661,
