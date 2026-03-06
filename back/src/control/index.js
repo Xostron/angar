@@ -14,6 +14,7 @@ const save = require('./save')
 const data = require('./data')
 const battery = require('@tool/scripts/battery')
 const Aboc = require('@tool/abort_controller')
+const writeStore = require('./save/store')
 
 // Контроль работы склада
 async function control() {
@@ -25,6 +26,9 @@ async function control() {
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
 		await Aboc.asycall(analysis)(obj)
+
+		// for (const key of ['auto', 'extralrm', 'extra']) console.log(990, key, store.alarm[key])
+
 		// Логика
 		Aboc.call(main)(obj)
 		// Выхода: Команды управления
@@ -61,7 +65,11 @@ async function loop() {
 			'\x1b[36m%s\x1b[0m',
 			`\n-------------------Начало Process ID: ${process.pid}-------------------`,
 		)
+		// Инициализация глобального аккумулятора (сомнительно!)
+		// await writeStore()
+		// Основной цикл программы
 		await control()
+		// Сброс флага первого цикла
 		store._first = false
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
 		console.log(
@@ -88,8 +96,8 @@ function testBattery() {
 	// blink
 	// if (store.testBattery) store.battery = false
 	// if (!store.testBattery) {
-		// store.testBattery = true
-		// store.battery = true
+	// store.testBattery = true
+	// store.battery = true
 	// }
 }
 

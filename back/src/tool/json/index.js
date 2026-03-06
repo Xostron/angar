@@ -1,5 +1,4 @@
 const { retainDir, factoryDir, dataDir } = require('@store')
-const store = require('@store/index')
 const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')

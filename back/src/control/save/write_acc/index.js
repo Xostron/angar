@@ -9,15 +9,22 @@ const cbAcc = require('./fn')
  * @param {*} obj
  */
 async function accAlarm(obj) {
+	// for (const key of ['auto', 'extralrm', 'extra']) console.log(991, key, store.alarm[key])
+
+	// Первый цикл: инициализация аккумулятора
 	if (store._first) {
 		obj.acc = await readOne('acc.json', accDir)
 		store.alarm.module = obj.acc?.module
 		store.alarm.auto = obj.acc?.auto
+		store.alarm.timer = obj.acc?.timer
+		store.alarm.extralrm = obj.acc?.extralrm
+		// store.alarm.extra = obj.acc?.extra
 	}
 	clear(obj.data, obj.acc)
 	// Сохранение текущих аварий в файл
-	console.log(99, Object.keys(store.alarm))
-	console.log(991, store.alarm.auto)
+	// console.log(99, Object.keys(store.alarm))
+	// for (const key of ['auto', 'extralrm', 'extra']) console.log(992, key, store.alarm[key])
+
 	await createAndModifySync(store.alarm, 'acc', accDir, cbAcc)
 }
 

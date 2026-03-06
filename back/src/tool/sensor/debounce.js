@@ -15,7 +15,7 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 	// 2. Состояние датчика не аварийное
 	// Очищаем время слежения за датчиком и обновляем аккумулятор hold:
 
-	if (!hold || v.state !== 'alarm' ) {
+	if (!hold || v.state !== 'alarm') {
 		store.debounce[idSens] = {}
 		if (!v.raw && !hold) return v
 		return !v.raw ? hold : v
@@ -48,11 +48,11 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 
 function debDI(sig, value, equip, result) {
 	// Разрешенные сигналы для антидребезга:
-	// Низкая температура канала, переключатель на щите, 
+	// Низкая температура канала, переключатель на щите,
 	// работа от генератора, перегрев кабеля, питание в норме
 	const rel = ['low', 'local', 'gen', 'cable', 'supply']
-	if (!rel.includes(sig.type)) {
-		// Сигнал без проверкаи антидребезга
+	// Сигнал без проверки антидребезга + в первом цикле проверка отменяется
+	if (!rel.includes(sig.type) || store._first) {
 		result[sig._id] = value
 		return
 	}
@@ -71,9 +71,10 @@ function debDI(sig, value, equip, result) {
  * @param {*} sig
  * @param {*} v Показание датчика
  * @param {*} last Прошлое значение
+ * @return {} v | last
  */
 function debounceDI(idB, sig, v, last) {
-	// Очищаем время слежения за датчиком и обновляем аккумулятор hold:
+	// Очищаем ВРЕМЯ СЛЕЖЕНИЯ за датчиком и обновляем аккумулятор hold:
 	// 1. значение датчика в аккумуляторе hold отсутсвует,
 	// 2. Новое показание равно прошлому
 	if (v === last) {
@@ -99,4 +100,3 @@ function debounceDI(idB, sig, v, last) {
 }
 
 module.exports = { debounce, debDI }
-
