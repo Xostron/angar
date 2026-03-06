@@ -18,7 +18,7 @@ async function accAlarm(obj) {
 		store.alarm.auto = obj.acc?.auto
 		store.alarm.timer = obj.acc?.timer
 		store.alarm.extralrm = obj.acc?.extralrm
-		// store.alarm.extra = obj.acc?.extra
+		store.alarm.extra = obj.acc?.extra
 	}
 	clear(obj.data, obj.acc)
 	// Сохранение текущих аварий в файл
