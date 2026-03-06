@@ -30,7 +30,7 @@ function vSensor(equip, val, retain, result) {
 
 		// Обработанное значение датчика
 		const r = valid(s, owner, val, equip, retain)
-		// Антидребезг датчика^ из аккумулятора или обработанное значение
+		// Антидребезг датчика: из аккумулятора или обработанное значение
 		result[s._id] = debounce(
 			owner?.building?._id,
 			s._id,
