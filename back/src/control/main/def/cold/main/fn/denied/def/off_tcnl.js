@@ -21,10 +21,15 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
 		accAuto.cold[clr.sectionId] ??= {}
 		// Все э-ты подогрева включены: фиксируем точку отсчета для выключения испарителя
 		if (isAllStarted(clr.sectionId)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
-		else accAuto.cold[clr.sectionId].allStarted = null
+		else {
+			accAuto.cold[clr.sectionId].allStarted = null
+			// Сброс состояния regulQ (вкл/выкл ВНО по заданию влажности)
+			accAuto.cold[clr.sectionId].onQ = 0
+		}
 
 		// Точки отсчета нет -> канал еще прогревается (испаритель не отключаем)
-		if (!accAuto?.cold?.[clr.sectionId]?.allStarted) return
+		if (!accAuto?.cold?.[clr.sectionId]?.allStarted)
+			return console.log(412, 'канал еще прогревается')
 
 		// Точка отсчета есть -> - начинаем отсчет времени "Настройка Холодильник С"
 		const time = compareTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait)
@@ -86,24 +91,21 @@ module.exports = offByTcnl
 function regulQ(s, se, fnChange, accAuto, clr) {
 	accAuto.cold ??= {}
 	accAuto.cold[clr.sectionId] ??= {}
+	accAuto.cold[clr.sectionId].onQ ??= 0
 	// Вкл ВНО испарителя
-	if (!accAuto?.cold?.[clr.sectionId]?.onQ && se.hin <= s.mois.humidity)
-		accAuto.cold[clr.sectionId].onQ = 1
+	if (se.hin <= s.mois.humidity) accAuto.cold[clr.sectionId].onQ = 1
 	// Выкл ВНО испарителя
-	if (se.hin >= s.mois.humidity + -(s.mois?.hysteresisHum ?? 1))
+	if (se.hin >= s.mois.humidity + (s.mois?.hysteresisHum ?? 1))
 		accAuto.cold[clr.sectionId].onQ = 0
 
 	console.log(
 		661,
 		'Регулирование по влажности 1',
-		!accAuto?.cold?.[clr.sectionId]?.onQ,
-		'&&',
 		se.hin,
 		'<=',
-		s.mois.humidity - (s.mois?.hysteresisHum ?? 1),
+		s.mois.humidity,
 		'=',
-		!accAuto?.cold?.[clr.sectionId]?.onQ &&
-			se.hin <= s.mois.humidity - (s.mois?.hysteresisHum ?? 1),
+		se.hin <= s.mois.humidity,
 	)
 	console.log(
 		662,
@@ -111,8 +113,10 @@ function regulQ(s, se, fnChange, accAuto, clr) {
 		se.hin,
 		'>=',
 		s.mois.humidity,
+		'+',
+		s.mois?.hysteresisHum ?? 1,
 		'=',
-		se.hin >= s.mois.humidity,
+		se.hin >= s.mois.humidity + (s.mois?.hysteresisHum ?? 1),
 	)
 	console.log(6655, 'Регулирование по влажности', 'RESULT = ', accAuto?.cold?.[clr.sectionId])
 	fnChange(0, accAuto?.cold?.[clr.sectionId]?.onQ ?? 0, 0, 0, null, clr)
