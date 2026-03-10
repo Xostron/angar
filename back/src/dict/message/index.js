@@ -80,6 +80,12 @@ const data = {
 		typeSignal: 'sensor',
 		msg: 'Температура улицы ниже допустимой (по продукту)',
 	},
+	120: {
+		code: 'hout3',
+		type: 'hout',
+		typeSignal: 'sensor',
+		msg: 'Влажность улицы выше допустимой (точка росы)',
+	},
 	// ======= Сообщения Achieve ======= flt: [true] - включить отправку в push
 	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
 	150: { order: 2, code: 'target', msg: '' },

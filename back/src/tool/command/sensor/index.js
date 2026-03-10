@@ -3,7 +3,7 @@
  * @param {string} idB id склада
  * @param {string} idS id секции
  * @param {object} obj Глобальные данные
- * @returns 
+ * @returns
  */
 function sensor(idB, idS, obj) {
 	const { value, data } = obj
@@ -14,7 +14,9 @@ function sensor(idB, idS, obj) {
 		// Влажность улицы - max
 		hout: value?.total?.hout?.min,
 		// Абс влажность улицы
-		hAbsOut: isNaN(+value?.humAbs?.out?.com) ? +value?.humAbs?.out?.[idB] : +value?.humAbs?.out?.com,
+		hAbsOut: isNaN(+value?.humAbs?.out?.com)
+			? +value?.humAbs?.out?.[idB]
+			: +value?.humAbs?.out?.com,
 		// Температура потолка
 		tin: value?.total?.[idB]?.tin?.min,
 		// Влажность продукта - max
@@ -57,6 +59,8 @@ function sensorBuilding(idB, obj) {
 		// Максимальная температура продукта по складу (по всем секция в авто режиме)
 		tprd: value?.total?.[idB]?.tprd?.min,
 		tcnl: value?.total?.[idB]?.tcnl?.min,
+		// Точка росы
+		point: value?.total?.[idB]?.point,
 		// // Склад холодильник: Датчики по камере и испарителю
 		// cooler: cooler(idB, obj),
 		// Датчики по камере и испарителю
@@ -66,7 +70,7 @@ function sensorBuilding(idB, obj) {
 	return o
 }
 
-// Секция: Датчики по испарителю 
+// Секция: Датчики по испарителю
 function coolerS(idB, idS, obj) {
 	const { value, data } = obj
 	const r = data.cooler.reduce((acc, clr) => {
@@ -82,9 +86,9 @@ function coolerS(idB, idS, obj) {
 		return acc
 	}, {})
 	// Температура продукта
-	r.tprd = value?.total?.[idB]?.tprd?.min,
-	// Датчик СО2
-	r.co2 = value?.total?.[idS]?.co2?.max
+	;((r.tprd = value?.total?.[idB]?.tprd?.min),
+		// Датчик СО2
+		(r.co2 = value?.total?.[idS]?.co2?.max))
 	return r
 }
 

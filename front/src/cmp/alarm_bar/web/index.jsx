@@ -24,7 +24,6 @@ export default function AlarmBar({ setActive }) {
 	const fnAction = alr.length || tmr.length ? action : null
 	// стили
 	const { cl, span, grid, cursor } = fnStyle(alr, tmr, show)
-
 	return (
 		<>
 			<nav

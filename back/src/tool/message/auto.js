@@ -17,7 +17,7 @@ function rs(idB, automode, arr) {
 
 	arr.forEach((o, idx) => {
 		if (o.set && !d?.[o.msg.code]) d[o.msg.code] = { id: idx, ...o.msg }
-		if (o.reset) delete d[o.msg.code]
+		if (o.reset) delete d?.[o.msg.code]
 	})
 }
 

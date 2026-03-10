@@ -1,6 +1,6 @@
 const { msgB } = require('@tool/message')
 
-function alarm(s, seB, building, acc, bdata) {
+function drying(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn } = seB
 	// Абсолютная влажность улицы выше допустимой при сушке
 	// console.log(
@@ -80,4 +80,4 @@ function alarm(s, seB, building, acc, bdata) {
 	]
 }
 
-module.exports = alarm
+module.exports = drying

@@ -25,6 +25,7 @@ function bar(r, bld, sect, am, start) {
 	const tout3 = store.alarm.auto?.[bld._id]?.[am]?.tout3 ?? null
 	const hout1 = store.alarm.auto?.[bld._id]?.[am]?.hout1 ?? null
 	const hout2 = store.alarm.auto?.[bld._id]?.[am]?.hout2 ?? null
+	const hout3 = store.alarm.auto?.[bld._id]?.[am]?.hout3 ?? null
 	const ahout1 = store.alarm.auto?.[bld._id]?.[am]?.ahout1 ?? null
 	const ahout2 = store.alarm.auto?.[bld._id]?.[am]?.ahout2 ?? null
 	const co2work = store.alarm.extra?.[bld._id]?.co2?.work ?? null
@@ -49,6 +50,7 @@ function bar(r, bld, sect, am, start) {
 	r.bar[bld._id][sect._id] ??= {}
 	r.bar[bld._id][sect._id].tout ??= []
 	r.bar[bld._id][sect._id].hout ??= []
+	r.bar[bld._id][sect._id].point ??= []
 
 	r.bar[bld._id][sect._id].alrClosed = alrClosed || alrClosedB
 	r.bar[bld._id][sect._id].antibliz = antibliz
@@ -73,6 +75,7 @@ function bar(r, bld, sect, am, start) {
 	if (tout3) r.bar[bld._id][sect._id].tout.push(tout3)
 	if (hout1) r.bar[bld._id][sect._id].hout.push(hout1)
 	if (hout2) r.bar[bld._id][sect._id].hout.push(hout2)
+	if (hout3) r.bar[bld._id][sect._id].hout.push(hout3)
 	if (ahout1) r.bar[bld._id][sect._id].hout.push(ahout1)
 	if (ahout2) r.bar[bld._id][sect._id].hout.push(ahout2)
 }

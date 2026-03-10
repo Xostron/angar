@@ -3,6 +3,7 @@ const data = {
 	cooling: ['cooling', 'Охлаждение'],
 	cure: ['cure', 'Лечение'],
 	cooling2: ['cooling2', 'Доп. охлаждение'],
+	heat: ['heat', 'Нагрев'],
 }
 
 module.exports = data

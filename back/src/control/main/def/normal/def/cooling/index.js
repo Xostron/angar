@@ -34,9 +34,10 @@ function valve(s, se, sectionId, acc, CO2work) {
 	const open = se.tcnl > acc.tcnl + s.cooling.hysteresisIn
 	const close = se.tcnl < acc.tcnl - s.cooling.hysteresisIn
 	const forceCls = acc.finish && !CO2work
+	const forceOpn = acc?.vlvHeat
 	// console.log('\tКлапаны, режим хранение, секция', sectionId)
 	// console.table([{ open, close, forceCls }], ['open', 'close', 'forceCls'])
-	return { open, close, forceCls, forceOpn: false }
+	return { open, close, forceCls, forceOpn }
 }
 
 function fan(s, se, alr, sectionId, acc) {

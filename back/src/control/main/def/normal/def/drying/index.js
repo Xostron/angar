@@ -79,6 +79,7 @@ function valve(s, se, sectionId, acc, CO2work) {
 	console.log('\tКлапаны сушка', 'open', open, 'close', close, 'forceOpn', forceOpn)
 	return { open, close, forceOpn, forceCls: false }
 }
+
 function fan(s, se, alr, sectionId, acc) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	const force = forceByTout

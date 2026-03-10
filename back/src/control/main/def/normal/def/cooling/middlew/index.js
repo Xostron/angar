@@ -13,23 +13,23 @@ function submode(bld, obj, s, seB, acc) {
 	if (!s) return
 	// Минимальная температура продукта (ограничение по температуре задания)
 	acc.tprdMin = obj.retain?.[bld._id]?.cooling?.tprdMin ?? null
-
-	// ========= Доп. Охлаждение =========
+	// ========= Доп. Охлаждение + =========
 	const x2 = acc.tprdMin + s.mois.max
 	// set
 	// console.log(11,'set Охлаждение+', x2, '<=', seB.tprd ,'&&', acc?.submode?.[0], '===' ,sm?.cooling?.[0])
-	if (x2 <= seB.tprd && acc?.submode?.[0] === sm?.cooling?.[0]) acc.submode = sm.cooling2
+	if (x2 <= seB.tprd && acc?.submode?.[0] === sm.cooling[0]) acc.submode = sm.cooling2
 	// reset
 	// console.log(11,'reset Охлаждение+', x2, '-' ,s.cooling.hysteresisIn, '>' ,seB.tprd ,'&&', acc?.submode?.[0], '===' ,sm?.cooling2?.[0])
 	if (x2 - s.cooling.hysteresisIn > seB.tprd && acc?.submode?.[0] === sm?.cooling2?.[0])
 		acc.submode = sm.cooling
 	// check
-	if (acc?.submode?.[0] === sm?.cooling2?.[0]) {
+	if (acc?.submode?.[0] === sm.cooling2[0]) {
 		// console.log(11, 'check охлаждение+')
 		acc.setting = {
 			cooling: s.cooling,
 			mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 },
 		}
+		delete acc?.vlvHeat
 		return
 	}
 
@@ -39,7 +39,7 @@ function submode(bld, obj, s, seB, acc) {
 	if (
 		s.mois.humidity + s.cure.hysteresisJump < seB.hin &&
 		seB.tprd <= acc.tgt &&
-		acc?.submode?.[0] === sm?.cooling?.[0]
+		acc?.submode?.[0] === sm.cooling[0]
 	) {
 		acc.submode = sm.cure
 	}
@@ -60,6 +60,33 @@ function submode(bld, obj, s, seB, acc) {
 	if (acc?.submode?.[0] === sm?.cure?.[0]) {
 		// console.log(2, 'check лечение')
 		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
+		delete acc?.vlvHeat
+		return
+	}
+
+	// ========= Нагрев =========
+	// set
+	if (seB.tprd <= s.cooling.target - s.heat.hysteresisIn && acc?.submode?.[0] === sm.cooling[0]) {
+		acc.submode = sm.heat
+		// Флаг для принудительного открытия клапанов при включении режима нагрев
+		acc.vlvHeat = true
+	}
+	// reset
+	if (seB.tprd >= s.cooling.target && acc?.submode?.[0] === sm.heat[0]) {
+		acc.submode = sm.cooling
+		delete acc?.vlvHeat
+	}
+	// check
+	if (acc?.submode?.[0] === sm.heat[0]) {
+		// console.log(11, 'check Нагрев')
+		acc.setting = {
+			cooling: {
+				...s.cooling,
+				hysteresisIn: s.heat.hysteresisIn,
+				minChannel: s.heat.minChannel,
+			},
+			mois: { ...s.mois, outMax: s.heat.outMax, differenceMax: s.heat?.differenceMax },
+		}
 		return
 	}
 
@@ -84,7 +111,7 @@ function target(bld, obj, s, seB, acc) {
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 		console.log(
-			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`
+			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
 		)
 	}
 	// Пересчет в полночь TODO
@@ -114,9 +141,15 @@ function message(bld, obj, s, seB, am, acc) {
 	if (isCombiCold(bld, am, s)) return
 	if (!s) return
 
-	// Продукт достиг температуры задания
-	// В режиме лечения - Продукт достиг не активен
-	if (seB.tprd <= acc.tgt && !acc.finish && acc.submode?.[0] !== sm.cure[0]) {
+	// Продукт достиг температуры задания:
+	// 1 Тпрод меньше-равно заданию
+	// 2 подрежим не лечение И не нагрев
+	if (
+		seB.tprd <= acc.tgt &&
+		!acc.finish &&
+		acc.submode?.[0] !== sm.cure[0] &&
+		acc?.submode?.[0] === sm.heat[0]
+	) {
 		// Истекшее время "Продукт достиг задания"
 		acc.finish = obj.retain?.[bld._id]?.cooling?.finish
 			? obj.retain?.[bld._id]?.cooling?.finish
@@ -124,8 +157,15 @@ function message(bld, obj, s, seB, am, acc) {
 		wrAchieve(bld._id, 'cooling', msgB(bld, 15, runTime(acc.finish, 1)))
 	}
 
-	// Сброс: 1)темп продукта вышла из зоны   2)если перешли в подрежим лечения
-	if (seB.tprd - s.cooling.hysteresisIn > acc.tgt || acc.submode?.[0] === sm.cure[0]) {
+	// Сброс:
+	// 1 темп продукта вышла из зоны
+	// 2 подрежим лечения
+	// 3 подрежим нагрева
+	if (
+		seB.tprd - s.cooling.hysteresisIn > acc.tgt ||
+		acc.submode?.[0] === sm.cure[0] ||
+		acc?.submode?.[0] === sm.heat[0]
+	) {
 		acc.finish = null
 		delAchieve(bld._id, 'cooling', mes[15].code)
 	}
