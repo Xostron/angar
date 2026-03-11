@@ -8,7 +8,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	// Удаление СО2
 	// const extraCO2 = readAcc(bld._id, 'building', 'co2')
 	// Удаление co2 в работе
-	const CO2work = isExtra(bld._id, null, 'co2', 'work')
+	const isCO2work = isExtra(bld._id, null, 'co2', 'work')
 	// Таймер запретов - закрываем клапана, выключаем вентиляторы
 	let ban = !!store.alarm.timer?.[bld._id]?.[am]
 
@@ -19,49 +19,31 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	const alrSe = alrSens(se)
 	const a = [
 		[alrS, 'Доп. аварии. для секции'],
-		[(alrAm && !CO2work), 'Авария авторежима', 'alrAm:', alrAm, '!CO2work:', !CO2work],
-		[ban,'таймер запретов'],
-		[alrBld,'авария склада'],
-		[alrAlw,'alrAlw'],
-		[alrSe,'alrSe'],
+		[alrAm && !isCO2work, 'Авария авторежима', 'alrAm:', alrAm, '!isCO2work:', !isCO2work],
+		[ban, 'таймер запретов'],
+		[alrBld, 'авария склада'],
+		[alrAlw, 'alrAlw'],
+		[alrSe, 'alrSe'],
 	]
 	// Сумма аварий: доп. аварии, Авария авторежима, таймер запретов, авария склада
-	// const alr = alrS || (alrAm && !CO2work) || ban || alrBld || alrAlw || alrSe
-	const alr = a.filter(e=>e[0]===true)?.length !== 0
-		console.log(
+	const alr = a.filter((e) => e[0] === true)?.length !== 0
+	console.log(
 		'\t',
-		666, 'Сумма аварий',
+		666,
+		'Сумма аварий',
 		sect?.name,
 		'alr ',
 		alr,
-		' = ', a.filter(e=>e[0])
+		' = ',
+		a.filter((e) => e[0]),
 	)
 
-	// console.log(
-	// 	'\t',
-	// 	666,
-	// 	sect?.name,
-	// 	'alr ',
-	// 	alr,
-	// 	' = ',
-	// 	alrS,
-	// 	'||',
-	// 	alrAm && !CO2work,
-	// 	'||',
-	// 	ban,
-	// 	'||',
-	// 	alrBld,
-	// 	'||',
-	// 	alrAlw,
-	// 	'||',
-	// 	alrSe
-	// )
 	//********** Логика авто **********
 	// Пользовательские расчеты
 	if (def[am]?.middlew) def[am]?.middlew(bld, sect, obj, s, se, seB, alr, acc)
 
 	// Клапан
-	const v = def[am].valve(s, se, sect._id, acc, CO2work)
+	const v = def[am].valve(sect._id, obj, m, s, se, acc, isCO2work)
 	fnValve(v, sect._id, s)
 
 	// Вентилятор
@@ -72,7 +54,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	resultFan.notDur.push(notDur)
 	// Запись аккумулятора
 	const automode = obj.retain?.[bld._id]?.automode
-	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
+	const t = bld?.type == 'normal' ? (automode ?? bld?.type) : bld?.type
 	store.acc[bld._id][t] = { ...acc }
 	return { alr, v }
 }

@@ -68,8 +68,6 @@ function submode(bld, obj, s, seB, acc) {
 	// set
 	if (seB.tprd <= s.cooling.target - s.heat.hysteresisIn && acc?.submode?.[0] === sm.cooling[0]) {
 		acc.submode = sm.heat
-		// Флаг для принудительного открытия клапанов при включении режима нагрев
-		acc.vlvHeat = true
 	}
 	// reset
 	if (seB.tprd >= s.cooling.target && acc?.submode?.[0] === sm.heat[0]) {
@@ -87,6 +85,8 @@ function submode(bld, obj, s, seB, acc) {
 			},
 			mois: { ...s.mois, outMax: s.heat.outMax, differenceMax: s.heat?.differenceMax },
 		}
+		// Флаг для принудительного открытия клапанов при включении режима нагрев
+		acc.vlvHeat ??= true
 		return
 	}
 

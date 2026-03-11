@@ -34,8 +34,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(
 				bld,
 				153,
-				`t задания канала = ${s.drying.channelMin} °С, t задания продукта = ${tprd} °С`
-			)
+				`t задания канала = ${s.drying.channelMin} °С, t задания продукта = ${tprd} °С`,
+			),
 		)
 		acc.f1 = true
 	} else {
@@ -47,7 +47,7 @@ function middlewB(bld, obj, s, seB, am, acc) {
 		wrAchieve(
 			bld._id,
 			'drying',
-			msgB(bld, 154, `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`)
+			msgB(bld, 154, `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`),
 		)
 		acc.f2 = true
 	} else {
@@ -62,8 +62,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(
 				bld,
 				155,
-				`t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${seB.tprd} °С`
-			)
+				`t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${seB.tprd} °С`,
+			),
 		)
 		acc.f3 = true
 	} else {
@@ -72,7 +72,7 @@ function middlewB(bld, obj, s, seB, am, acc) {
 	}
 }
 
-function valve(s, se, sectionId, acc, CO2work) {
+function valve(idS, obj, m, s, se, acc, isCO2work) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
@@ -80,7 +80,7 @@ function valve(s, se, sectionId, acc, CO2work) {
 	return { open, close, forceOpn, forceCls: false }
 }
 
-function fan(s, se, alr, sectionId, acc) {
+function fan(s, se, alr, idS, acc) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	const force = forceByTout
 	const start = !alr || force

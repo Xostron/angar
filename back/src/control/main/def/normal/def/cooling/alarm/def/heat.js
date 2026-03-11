@@ -60,7 +60,7 @@ function heat(s, seB, building, acc, bdata) {
 			msg: msgB(building, 120),
 		},
 	]
-	r.forEach((el) => console.log(124, el.set, el.reset))
+	// r.forEach((el) => console.log(124, el.set, el.reset))
 	return r
 }
 

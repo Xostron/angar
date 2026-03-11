@@ -3,7 +3,7 @@ const { data: store } = require('@store')
 
 function cooling(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	console.log(124, 'alarm cooling')
+	// console.log(124, 'alarm cooling')
 	// В нагреве игнорируются аварии 0 1 4 6
 	// В нагреве появляется новая авария "Влажность улицы выше допустимой (точка росы)"
 	const r = [
@@ -62,7 +62,7 @@ function cooling(s, seB, building, acc, bdata) {
 			msg: msgB(building, 120),
 		},
 	]
-	r.forEach((el) => console.log(123, el.set, el.reset))
+	// r.forEach((el) => console.log(123, el.set, el.reset))
 	return r
 }
 
