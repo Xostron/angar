@@ -1,6 +1,8 @@
 const path = require('path')
 
 const data = {
+	// Подключение к MongoDB (null если не доступно)
+	db: null,
 	// Кэш модулей выхода
 	cacheDO: {},
 	// Работа от батареи true|false

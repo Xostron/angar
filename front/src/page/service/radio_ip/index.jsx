@@ -1,12 +1,14 @@
 import Radio from '@cmp/fields/radio'
 import { notification } from '@cmp/notification'
-import useEquipStore from '@store/equipment'	
+import useEquipStore from '@store/equipment'
+import useServiceStore from '@store/service'
 
-
-
-export default function RadioIp({ props }) {
-	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
+export default function RadioIp() {
+	const req_ip = useServiceStore((s) => s.req_ip)
+	const setReqIp = useServiceStore((s) => s.setReqIp)
+	const info = useServiceStore((s) => s.info)
 	const apiInfo = useEquipStore((s) => s.apiInfo)
+
 	return (
 		<div className='page-service-row'>
 			<span style={{ fontSize: '20px' }}><b>IP сервера:</b> {apiInfo?.ip}</span>

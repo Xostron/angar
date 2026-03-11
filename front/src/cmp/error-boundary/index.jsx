@@ -9,7 +9,7 @@ class ErrorBoundary extends React.Component {
 			error: null, 
 			errorInfo: null,
 			errorId: null,
-			countdown: 10
+			countdown: 60
 		}
 		this.countdownTimer = null
 	}
@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component {
 			error: error,
 			errorInfo: errorInfo,
 			errorId: errorId,
-			countdown: 10
+			countdown: 60
 		})
 
 		// Запускаем таймер обратного отсчета
@@ -111,7 +111,7 @@ class ErrorBoundary extends React.Component {
 		if (this.countdownTimer) {
 			clearInterval(this.countdownTimer)
 		}
-		this.setState({ hasError: false, error: null, errorInfo: null, errorId: null, countdown: 10 })
+		this.setState({ hasError: false, error: null, errorInfo: null, errorId: null, countdown: 60 })
 	}
 
 	render() {

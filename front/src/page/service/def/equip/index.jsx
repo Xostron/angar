@@ -5,13 +5,12 @@ import { notification } from '@cmp/notification'
 import useEquipStore from '@store/equipment'
 
 
-export default function Equip({ props }) {
-	const { req_ip } = props
+export default function Equip() {
 	const [file, setFile] = useState()
 	const apiInfo = useEquipStore((s) => s.apiInfo)
 	const [statInfo, setStatInfo] = useState()
 	useEffect(() => {
-		get('stat', req_ip)
+		get('stat')
 			.then((o) => {
 				console.log('stat',o)
 				setStatInfo(o)
@@ -19,7 +18,7 @@ export default function Equip({ props }) {
 			.catch((e) => {
 				notification.error(e.message)
 			})
-	}, [req_ip])
+	}, [])
 	
 
 	// Стили для таблицы
@@ -58,7 +57,7 @@ export default function Equip({ props }) {
 			<div className='page-service-row'>
 				<Btn
 					title='Обновить конфигурацию оборудования по сети'
-					onClick={() => onEquip(req_ip)}
+					onClick={() => onEquip()}
 				/>
 			</div>
 			<div className='page-service-row'>
@@ -158,7 +157,6 @@ export default function Equip({ props }) {
 }
 
 
-// Выполнить обновление конфигурации оборудования через файл
 function onEquipFile(file) {
 	if(!file) {
 		notification.error('Файл не выбран')
@@ -179,9 +177,9 @@ function onEquipFile(file) {
 			)
 		})
 }
-// Выполнить обновление конфигурации оборудования по сети
-function onEquip(req_ip) {
-	get('equipment', req_ip)
+
+function onEquip() {
+	get('equipment')
 		.then((o) => {
 			if(o.result) {
 				const date = new Date(o.result)
@@ -200,7 +198,6 @@ function onEquip(req_ip) {
 		})
 }
 
-// Переключение экранной клавиатуры
 function onKeyboardToggle(value) {
 	post('keyboard', { value })
 		.then((o) => {

@@ -1,63 +1,50 @@
 const { createLogger } = require('winston')
 const { customLevels, hourlyT } = require('./config')
+const { mongoT } = require('./db_transport')
 
-/**
- * Вышло предупреждение превышение в логе кол-во регистраторов
- * MaxListenersExceededWarning: Possible EventEmitter memory leak detected.
- * 11 end listeners added to [DerivedLogger]. MaxListeners is 10.
- * Use emitter.setMaxListeners() to increase limit
- * Разбил на несколько логеров, предупреждение исчезло!
- */
+const peripheryLevels = ['fan', 'valve', 'heating', 'cooler', 'aggregate', 'device', 'voltage']
+const eventLevels = ['alarm', 'event', 'activity']
+const sensLevels = ['sensor']
+const wattLevels = ['watt']
+
+// Собрать транспорты: файл + MongoDB (если доступна)
+function transports(levels) {
+	const arr = levels.map((l) => hourlyT(l))
+	for (const l of levels) {
+		const mt = mongoT(l)
+		if (mt) arr.push(mt)
+	}
+	return arr
+}
 
 // Диспетчер для периферийных устройств
 const logger = createLogger({
 	levels: customLevels,
 	handleExceptions: false,
-	// Ставим 'silly', чтобы при желании логировать всё подряд
-	// level: 'silly',
-	transports: [
-		// hourlyT('error'),
-		// hourlyT('warn'),
-		// hourlyT('info'),
-		// hourlyT('http'),
-		// hourlyT('verbose'),
-		// hourlyT('debug'),
-		// hourlyT('silly'),
-
-		// hourlyT('solenoid'),
-		// hourlyT('compressor'),
-		// hourlyT('condenser'),
-		hourlyT('fan'),
-		hourlyT('valve'),
-		hourlyT('heating'),
-		hourlyT('cooler'),
-		hourlyT('aggregate'),
-		hourlyT('device'),
-		hourlyT('voltage'),
-	],
+	transports: transports(peripheryLevels),
 })
+logger.setMaxListeners(peripheryLevels.length * 2 + 2)
 
 // Диспетчер для сообщений: аварийные, информационные, действия пользователей
 const loggerEvent = createLogger({
 	levels: customLevels,
 	handleExceptions: false,
-	transports: [hourlyT('alarm'), hourlyT('event'), hourlyT('activity')],
+	transports: transports(eventLevels),
 })
+loggerEvent.setMaxListeners(eventLevels.length * 2 + 2)
 
 // Диспетчер логов показаний датчиков
 const loggerSens = createLogger({
 	levels: customLevels,
 	handleExceptions: false,
-	transports: [hourlyT('sensor')],
+	transports: transports(sensLevels),
 })
 
 // Диспетчер логов электросчетчика
 const loggerWatt = createLogger({
 	levels: customLevels,
 	handleExceptions: false,
-	transports: [hourlyT('watt')],
+	transports: transports(wattLevels),
 })
 
 module.exports = { logger, loggerSens, loggerWatt, loggerEvent }
-
-

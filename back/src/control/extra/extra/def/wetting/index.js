@@ -58,10 +58,10 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 	const bldStatus = retain[bld._id].start;
 	// Состояние секции выкл (null||undefined)/ Авто(true) / Ручное (false???)
 	const secStatus =
-	bld?.type === 'cold' ? true : retain[bld._id]?.mode?.[sect._id];
+		bld?.type === 'cold' ? true : retain[bld._id]?.mode?.[sect._id];
 	// Датчик влажности продукта
 	const hin = se.hin;
-	
+
 	const { mode, sp, hysteresis, work, stop } = s.wetting;
 	// Нет увлажнителей Выходим
 	if(!wettingS.length) return

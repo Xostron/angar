@@ -2,15 +2,18 @@ import { useState } from 'react'
 import Btn from '@cmp/fields/btn'
 import Input from '@cmp/fields/input'
 import useWarn from '@store/warn'
+import useServiceStore from '@store/service'
 import Accordion from '@cmp/accordion'
 import { get, post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import axios from 'axios'
 
-export default function Network({ props }) {
-	const { req_ip, setReqIp, info, setInfo, ttyS, setTtyS } = props
+export default function Network() {
+	const req_ip = useServiceStore((s) => s.req_ip)
+	const info = useServiceStore((s) => s.info)
+	const ttyS = useServiceStore((s) => s.ttyS)
+	const fetchNetInfo = useServiceStore((s) => s.fetchNetInfo)
 	const [ip, setIp] = useState()
-	// Модальные окна
 	const warn = useWarn((s) => s.warn)
 
 	return (
@@ -23,7 +26,7 @@ export default function Network({ props }) {
 				<Input value={ip} setValue={setIp} auth={false} placeholder='192.168.1.100' keyboard="numeric" />
 				<Btn title='Установить IP вручную' onClick={() => set_ip(ip)} />
 				<div className='page-service-row'>
-					<Btn title='Обновить список' onClick={() => onNetInfo(req_ip, setInfo, setTtyS)} />
+					<Btn title='Обновить список' onClick={() => fetchNetInfo()} />
 				</div>
 			</div>
 			<Accordion
@@ -73,8 +76,7 @@ export default function Network({ props }) {
 								cls: 'network-modal',
 								req_ip,
 								info,
-								resload: () => onNetInfo(req_ip, setInfo, setTtyS),
-
+								resload: () => fetchNetInfo(),
 							},
 							'ethernet'
 						)
@@ -93,7 +95,7 @@ export default function Network({ props }) {
 						)
 					}
 				/>
-				<Btn title='Перезагрузка сети' onClick={() => onReloadNet(req_ip, setInfo, setTtyS)} />
+				<Btn title='Перезагрузка сети' onClick={() => onReloadNet()} />
 				<Btn title='Проверка связи' onClick={()=>checkInternet()} />
 			</div>
 
@@ -125,7 +127,6 @@ export default function Network({ props }) {
 	)
 }
 
-// Функция валидации IP-адреса
 function validateIP(ip) {
 	if (!ip) return false
 	const ipRegex =
@@ -133,14 +134,14 @@ function validateIP(ip) {
 	return ipRegex.test(ip) && ip !== '0.0.0.0'
 }
 
-function set_ip(ip, req_ip) {
+function set_ip(ip) {
 	if (!validateIP(ip)) {
 		notification.warning(
 			'Некорректный IP адрес. Укажите валидный IP адрес (например: 192.168.1.100)'
 		)
 		return
 	}
-	post('set_ip', { ip }, req_ip)
+	post('set_ip', { ip })
 		.then((r) => {
 			if (r.success) {
 				notification.success(`IP адрес установлен: ${r.message}`)
@@ -155,12 +156,11 @@ function set_ip(ip, req_ip) {
 		})
 }
 
-// Перезагрузка сети
-function onReloadNet(req_ip, setInfo, setTtyS) {
-	get('reload_net', req_ip)
+function onReloadNet() {
+	get('reload_net')
 		.then(() => {
 			notification.success('Перезагрузка сети запущена')
-			onNetInfo(req_ip, setInfo, setTtyS)
+			useServiceStore.getState().fetchNetInfo()
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка перезагрузки сети', {
@@ -168,23 +168,6 @@ function onReloadNet(req_ip, setInfo, setTtyS) {
 			})
 		})
 }
-
-// Обновить сеть
-function onNetInfo(req_ip, setInfo, setTtyS) {
-	get('net_info', req_ip)
-		.then((o) => {
-			notification.success('Информация о сети обновлена')
-			setInfo(o.net)
-			setTtyS(o.ttyS)
-		})
-		.catch((e) => {
-			notification.error(e.message || 'Ошибка обновления информации о сети', {
-				errorId: e.id,
-			})
-			setInfo(null)
-		})
-}
-
 
 function checkInternet() {
 	axios.get('https://tenta-api.flet.su/').then((result) => {

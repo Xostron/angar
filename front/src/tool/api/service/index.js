@@ -1,4 +1,9 @@
 import api from '../config';
+import useServiceStore from '@store/service';
+
+function getReqIp(ip) {
+	return ip || useServiceStore.getState().req_ip || '127.0.0.1';
+}
 
 // Функция для обработки и форматирования ошибок API
 function formatApiError(error, endpoint) {
@@ -81,14 +86,15 @@ function formatApiError(error, endpoint) {
 	return formattedError;
 }
 
-function get(code, ip = '127.0.0.1') {
+function get(code, ip) {
+	const resolvedIp = getReqIp(ip);
 	return new Promise((resolve, reject) => {
 		const endpoint = `web/service/${code}`;
 		const config = {
 			method: 'GET',
 			maxBodyLength: Infinity,
 			url: endpoint,
-			baseURL: 'http://' + ip + ':4000/api/',
+			baseURL: 'http://' + resolvedIp + ':4000/api/',
 			headers: {
 				'Content-Type': 'application/json',
 				'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -110,14 +116,15 @@ function get(code, ip = '127.0.0.1') {
 	});
 }
 
-function del(code, ip = '127.0.0.1') {
+function del(code, ip) {
+	const resolvedIp = getReqIp(ip);
 	return new Promise((resolve, reject) => {
 		const endpoint = `web/service/${code}`;
 		const config = {
 			method: 'DELETE',
 			maxBodyLength: Infinity,
 			url: endpoint,
-			baseURL: 'http://' + ip + ':4000/api/',
+			baseURL: 'http://' + resolvedIp + ':4000/api/',
 			headers: {
 				'Content-Type': 'application/json',
 				'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -139,14 +146,15 @@ function del(code, ip = '127.0.0.1') {
 	});
 }
 
-function post(code, data, ip = '127.0.0.1') {
+function post(code, data, ip) {
+	const resolvedIp = getReqIp(ip);
 	return new Promise((resolve, reject) => {
 		const endpoint = `web/service/${code}`;
 		const config = {
 			method: 'POST',
 			maxBodyLength: Infinity,
 			url: endpoint,
-			baseURL: 'http://' + ip + ':4000/api/',
+			baseURL: 'http://' + resolvedIp + ':4000/api/',
 			headers: {
 				'Cache-Control': 'no-cache, no-store, must-revalidate',
 				Pragma: 'no-cache',
@@ -155,7 +163,7 @@ function post(code, data, ip = '127.0.0.1') {
 			timeout: 10000,
 			data,
 		};
-		console.log('post', code, data, ip);
+		console.log('post', code, data, resolvedIp);
 		// Для обычных данных
 		if (code !== 'file')
 			config.headers['Content-Type'] = 'application/json';

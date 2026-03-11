@@ -9,11 +9,11 @@ import globalErrorHandler from '@tool/error-handler'
 import router from './router'
 import Auth from '@cmp/auth'
 import View from '@cmp/view'
+import HistoryBar from '@cmp/history_bar'
 import './style.css'
 import './style_large.css'
 import AutoLogout from './cmp/auto_logout'
 
-// Инициализируем глобальный обработчик ошибок
 globalErrorHandler.init()
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -34,5 +34,6 @@ root.render(
 		{/* Автоматический logout */}
 		<AutoLogout />
 		<RouterProvider router={router} />
+		<HistoryBar />
 	</ErrorBoundary>
 )

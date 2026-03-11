@@ -30,7 +30,7 @@ function Version() {
 				console.log(e)
 			})
 	}, [])
-	console.log('apiInfo', apiInfo)
+	// console.log('apiInfo', apiInfo)
 	const VERSION = process.env.VERSION
 	// const NAME = process.env.NAME
 	// Версия front, URL сервера
@@ -43,7 +43,7 @@ function Version() {
 		<div style={stl}>
 			<Helmet title={title} />
 			{!mb && <StatusWS />}
-			{apiInfo.battery && apiInfo.battery < 100 && <span>Батарея: {apiInfo.battery}%</span>}
+			{apiInfo?.battery && apiInfo?.battery < 100 && <span>Батарея: {apiInfo?.battery}%</span>}
 			{V}
 			{N}
 		</div>

@@ -1,28 +1,38 @@
 #!/usr/bin/env node
-require('module-alias/register')
-const fs = require('fs')
-var debug = require('debug')('angar:server')
-const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '../../.env') })
-const { data: store, retainDir, accDir, dataDir } = require('@store')
-const { server, io } = require('@tool/server')
-const onConnection = require('../socket/on/def')
-const app = require('@root/app')
-const apiRouter = require('@routes/api')
-const indexRouter = require('@routes/index')
-const activityMiddlew = require('@root/middleware/activity')
-const createError = require('http-errors')
-const loopInit = require('@root/client/init')
-const loopState = require('@root/client/state')
-const loop = require('@root/control')
-const { statOnTime } = require('@root/stat')
-const { delay } = require('@tool/command/time')
-const logs = require('@tool/logs')
-const info = require('@root/client/info')
-const readRetain = require('@tool/retain/recovery')
+require('module-alias/register');
+const fs = require('fs');
+var debug = require('debug')('angar:server');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+
+// Подключение к MongoDB (до импорта модулей, зависящих от БД/логгера)
+const dbState = require('@tool/db/state');
+try {
+	dbState.connect('angar');
+	dbState.connect('logs');
+} catch (e) {
+	console.log('MongoDB недоступна, запись в БД отключена');
+}
+
+const { data: store, retainDir, accDir, dataDir } = require('@store');
+const { server, io } = require('@tool/server');
+const onConnection = require('../socket/on/def');
+const app = require('@root/app');
+const apiRouter = require('@routes/api');
+const indexRouter = require('@routes/index');
+const activityMiddlew = require('@root/middleware/activity');
+const createError = require('http-errors');
+const loopInit = require('@root/client/init');
+const loopState = require('@root/client/state');
+const loop = require('@root/control');
+const { statOnTime } = require('@root/stat');
+const { delay } = require('@tool/command/time');
+const logs = require('@tool/logs');
+const info = require('@root/client/info');
+const readRetain = require('@tool/retain/recovery');
 // const passport = require('passport');
 
-if (process.env.NODE_ENV === 'development') {
+if (['development', 'READ'].includes(process.env.NODE_ENV)) {
 	console.log('Подключение .env ', path.join(__dirname, '../../.env'));
 	require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 	console.log('NODE_ENV ', process.env?.NODE_ENV);
@@ -58,10 +68,40 @@ app.use(function (err, req, res, next) {
 	res.render('error');
 });
 
+// Основная БД → store
+store.db = dbState.get('angar');
+
+// TTL-индексы: angar (8 дней), logs (14 дней)
+dbState.ensureIndexes(
+	'angar',
+	['alarm', 'input', 'equip'],
+	'ts',
+	8 * 24 * 60 * 60,
+);
+dbState.ensureIndexes(
+	'logs',
+	[
+		'fan',
+		'valve',
+		'heating',
+		'cooler',
+		'aggregate',
+		'device',
+		'voltage',
+		'alarm',
+		'event',
+		'activity',
+		'sensor',
+		'watt',
+	],
+	'ts',
+	14 * 24 * 60 * 60,
+);
+
 // Инициализация папок: data, data/retain, retain/data.json, data/acc, data/acc/acc.json
 // data/state, data/state/state.json
-readRetain()
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir)
+readRetain();
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 if (!fs.existsSync(retainDir)) {
 	fs.mkdirSync(retainDir);
 	fs.writeFileSync(path.join(retainDir, 'data.json'), '{}');
@@ -133,7 +173,7 @@ function onListening() {
 process.on('SIGINT', async function () {
 	console.log(
 		'\x1b[32m%s\x1b[0m',
-		`Запуск останова системы (max ${process.env.COUNT ?? 30} сек)...`
+		`Запуск останова системы (max ${process.env.COUNT ?? 30} сек)...`,
 	);
 	store.shutdown = true;
 	let count = 0;
