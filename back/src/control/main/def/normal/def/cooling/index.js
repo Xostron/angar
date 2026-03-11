@@ -54,27 +54,28 @@ module.exports = data
 /**
  * Контроль принудительного открытия приточных
  * клапанов секции в подрежиме нагрева
- * @param {*} obj
- * @param {*} m
- * @param {*} acc
+ * @param {*} obj Глобальный объект по состоянию склада
+ * @param {*} m Рама секции
+ * @param {*} acc Аккумулятор авторежима
  * @returns {boolean} true - вкл принудительное открытие
  */
 function heatOpen(idS, obj, m, acc) {
+	acc.firstHeat ??= {}
 	// Подрежим не нагрев, выходим
 	if (acc?.submode?.[0] !== sm.heat[0]) {
-		delete acc?.firstHeat
+		delete acc?.firstHeat?.[idS]
 		return false
 	}
 	// Флаг для принудительного открытия клапанов при включении режима нагрев
-	acc.firstHeat ??= true
+	acc.firstHeat[idS] ??= true
 	// Ждем у всех приточных клапанов секции состояния "открыто"
 	const isOpn = m.vlvS
 		.filter((el) => el.type === 'in' && obj.value[el._id].state !== 'alr')
 		.some((el) => obj.value[el._id].state === 'opn')
 
-	if (!isOpn && acc.firstHeat) {
+	if (!isOpn && acc?.firstHeat?.[idS]) {
 		return true
 	}
-	acc.firstHeat = false
+	acc.firstHeat[idS] = false
 	return false
 }

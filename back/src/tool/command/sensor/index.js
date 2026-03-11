@@ -82,13 +82,12 @@ function coolerS(idB, idS, obj) {
 			pin: value?.total?.[idS]?.cooler?.[clr._id]?.pin?.max,
 			pout: value?.total?.[idS]?.cooler?.[clr._id]?.pout?.max,
 		}
-
 		return acc
 	}, {})
 	// Температура продукта
-	;((r.tprd = value?.total?.[idB]?.tprd?.min),
-		// Датчик СО2
-		(r.co2 = value?.total?.[idS]?.co2?.max))
+	r.tprd = value?.total?.[idB]?.tprd?.min
+	// Датчик СО2
+	r.co2 = value?.total?.[idS]?.co2?.max
 	return r
 }
 

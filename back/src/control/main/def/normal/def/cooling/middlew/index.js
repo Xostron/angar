@@ -29,7 +29,6 @@ function submode(bld, obj, s, seB, acc) {
 			cooling: s.cooling,
 			mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 },
 		}
-		delete acc?.vlvHeat
 		return
 	}
 
@@ -60,7 +59,6 @@ function submode(bld, obj, s, seB, acc) {
 	if (acc?.submode?.[0] === sm?.cure?.[0]) {
 		// console.log(2, 'check лечение')
 		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
-		delete acc?.vlvHeat
 		return
 	}
 
@@ -72,7 +70,6 @@ function submode(bld, obj, s, seB, acc) {
 	// reset
 	if (seB.tprd >= s.cooling.target && acc?.submode?.[0] === sm.heat[0]) {
 		acc.submode = sm.cooling
-		delete acc?.vlvHeat
 	}
 	// check
 	if (acc?.submode?.[0] === sm.heat[0]) {
@@ -85,8 +82,6 @@ function submode(bld, obj, s, seB, acc) {
 			},
 			mois: { ...s.mois, outMax: s.heat.outMax, differenceMax: s.heat?.differenceMax },
 		}
-		// Флаг для принудительного открытия клапанов при включении режима нагрев
-		acc.vlvHeat ??= true
 		return
 	}
 

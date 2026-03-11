@@ -201,7 +201,7 @@ function file() {
 			);
 			writeConfig(result);
 			console.log(99011, 'Конфигурация из файла успешно установлена!');
-			res.status(200).json({ resilt: 'ok' });
+			res.status(200).json({ result: 'ok' });
 		} catch (error) {
 			res.status(409).json({ error: error.toString() });
 		}
