@@ -10,6 +10,7 @@ const dict = {
 	5: 'работает внутренняя вентиляция',
 	6: 'комбинированный склад работает в режиме холодильника',
 	7: 'склад работает по авто режиму',
+	8: 'внутренняя вентиляция выключена',
 }
 
 /**
@@ -51,7 +52,17 @@ function fnReason(prepare, resultFan) {
 	// console.log(9900, resultFan)
 	const ok = acc.byDur?.queue?.[0] && acc.byDur?.queue?.[1] && resultFan.start.includes(true)
 	const rfStg = getRFstg(resultFan.stg)
-	return [!s?.vent?.add, cmd.notDur, !bstart, !secAuto, CO2work, !!rfStg, isCC, ok]
+	return [
+		!s?.vent?.add,
+		cmd.notDur,
+		!bstart,
+		!secAuto,
+		CO2work,
+		!!rfStg,
+		isCC,
+		ok,
+		s?.vent?.mode === 'off',
+	]
 }
 
 module.exports = { fnCheck, clear }

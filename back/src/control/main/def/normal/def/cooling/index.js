@@ -72,7 +72,7 @@ function heatOpen(idS, obj, m, acc, alr) {
 	// Ждем у всех приточных клапанов секции состояния "открыто"
 	const isOpn = m.vlvS
 		.filter((el) => el.type === 'in' && obj.value[el._id].state !== 'alr')
-		.some((el) => obj.value[el._id].state === 'opn')
+		.some((el) => obj.value[el._id].state === 'opn' || obj.value[el._id].val >= 100)
 
 	if (!isOpn && acc?.firstHeat?.[idS]) {
 		return true
