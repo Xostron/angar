@@ -27,7 +27,7 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 	// Если авария приточного клапана, то выключаем весь склад
 	// const alr = arrIn.some((el) => acc?.[el._id]?._alarm)
 	const alr = isAlr(m.vlvAll, acc)
-	console.log(55001, alr)
+	// console.log(55001, alr)
 	return alr
 }
 

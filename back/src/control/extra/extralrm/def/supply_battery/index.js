@@ -39,7 +39,7 @@ function sb(bld, sect, obj, s, se, m, automode, acc, data) {
 	// Фиксируем колебания
 	// blink(bld, store.battery, acc)
 
-	console.log(7700, acc, store.debounce.battery)
+	// console.log(7700, acc, store.debounce.battery)
 	return acc?._alarm ?? false
 }
 

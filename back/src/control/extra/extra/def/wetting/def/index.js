@@ -15,16 +15,16 @@ module.exports = def;
 function on(obj, ctrlWet) {
 	const { run } = obj;
 	if (!run) {
-		console.log(
-			'Увлажнитель (ВКЛ): Запуск увлажнителя не возможен. Напорные вентиляторы не работают.'
-		);
+		// console.log(
+		// 	'Увлажнитель (ВКЛ): Запуск увлажнителя не возможен. Напорные вентиляторы не работают.'
+		// );
 		ctrlWet(false, 'Напорные вентиляторы не работают.');
 		return;
 	}
 	// Запускаем
-	console.log(
-		`Увлажнитель (ВКЛ): Запускаем увлажнение. ${new Date().toLocaleString()}`
-	);
+	// console.log(
+	// 	`Увлажнитель (ВКЛ): Запускаем увлажнение. ${new Date().toLocaleString()}`
+	// );
 	ctrlWet(true);
 }
 
@@ -35,11 +35,11 @@ function off(obj, ctrlWet) {
 	ctrlWet(false);
 
 	if (!status) {
-		console.log('Увлажнитель (ВЫКЛ): Увлажнение уже выключено');
+		// console.log('Увлажнитель (ВЫКЛ): Увлажнение уже выключено');
 		return;
 	}
 	// Останавливаем
-	console.log(
-		`Увлажнитель (ВЫКЛ): Останавливаем увлажнение. ${new Date().toLocaleString()}`
-	);
+	// console.log(
+	// 	`Увлажнитель (ВЫКЛ): Останавливаем увлажнение. ${new Date().toLocaleString()}`
+	// );
 }

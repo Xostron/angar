@@ -43,7 +43,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	if (def[am]?.middlew) def[am]?.middlew(bld, sect, obj, s, se, seB, alr, acc)
 
 	// Клапан
-	const v = def[am].valve(sect._id, obj, m, s, se, acc, isCO2work)
+	const v = def[am].valve(sect._id, obj, m, s, se, acc, isCO2work, alr)
 	fnValve(v, sect._id, s)
 
 	// Вентилятор

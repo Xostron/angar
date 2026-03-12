@@ -44,7 +44,7 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	reset(bld, null, acc, store.debounce, mode)
 	set(bld, null, reason, store.debounce, acc, watch)
 	blink(bld, null, acc)
-	console.log(7704, 'Склад, Авария =', acc._alarm)
+	// console.log(7704, 'Склад, Авария =', acc._alarm)
 	return acc._alarm
 }
 

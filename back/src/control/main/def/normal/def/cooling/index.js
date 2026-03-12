@@ -31,13 +31,14 @@ function middlewB(building, obj, s, seB, am, acc, alrBld) {
 	message(building, obj, s, seB, am, acc)
 }
 
-function valve(idS, obj, m, s, se, acc, isCO2work) {
+function valve(idS, obj, m, s, se, acc, isCO2work, alr) {
 	const open = se.tcnl > acc.tcnl + acc?.setting?.cooling?.hysteresisIn ?? 0.3
 	const close = se.tcnl < acc.tcnl - acc?.setting?.cooling?.hysteresisIn ?? 0.3
 	const forceCls = acc.finish && !isCO2work
-	const forceOpn = heatOpen(idS, obj, m, acc)
+	const forceOpn = heatOpen(idS, obj, m, acc, alr)
 	// console.log('\tКлапаны, режим хранение, секция', acc)
 	console.table([{ open, close, forceCls, forceOpn }], ['open', 'close', 'forceCls', 'forceOpn'])
+	console.log(acc.submode, alr, '\n')
 	return { open, close, forceCls, forceOpn }
 }
 
@@ -59,10 +60,10 @@ module.exports = data
  * @param {*} acc Аккумулятор авторежима
  * @returns {boolean} true - вкл принудительное открытие
  */
-function heatOpen(idS, obj, m, acc) {
+function heatOpen(idS, obj, m, acc, alr) {
 	acc.firstHeat ??= {}
 	// Подрежим не нагрев, выходим
-	if (acc?.submode?.[0] !== sm.heat[0]) {
+	if (acc?.submode?.[0] !== sm.heat[0] || alr) {
 		delete acc?.firstHeat?.[idS]
 		return false
 	}

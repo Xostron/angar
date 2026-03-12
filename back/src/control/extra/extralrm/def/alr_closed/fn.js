@@ -28,7 +28,7 @@ function check(bld, sect, s, automode, mode, acc) {
 		delExtralrm(bld._id, sect?._id, 'alrClosed')
 	}
 
-	console.log(5501, 'запрет АНТ', !!arr.filter((el) => el[0]).length)
+	// console.log(5501, 'запрет АНТ', !!arr.filter((el) => el[0]).length)
 
 	return denied
 }
@@ -48,7 +48,7 @@ function set(bld, sect, reason, accDeb, acc, watch) {
 	// Уже в аварии || нет причины || секция выкл - выходим из итерации, сброс времени
 	if (acc._alarm || !reason) {
 		accDeb.alrClosed[ownerId] = null
-		console.log(5502, 'нет сигнала')
+		// console.log(5502, 'нет сигнала')
 		return
 	}
 
@@ -57,7 +57,7 @@ function set(bld, sect, reason, accDeb, acc, watch) {
 
 	// Ждем по таймеру
 	if (!compareTime(accDeb.alrClosed[ownerId], watch))
-		return console.log(5503, 'Ждем', remTime(accDeb.alrClosed[ownerId], watch))
+		return //console.log(5503, 'Ждем', remTime(accDeb.alrClosed[ownerId], watch))
 
 	// Время прошло -> устанавливаем аварию низкой температуры канала
 	// Авария ручной сброс

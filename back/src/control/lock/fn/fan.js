@@ -119,7 +119,7 @@ function fan(obj, s) {
 		store.heap.lock[id] ??= {}
 		store.heap.lock[id].low = true
 	})
-	console.log(4402, store.heap.lock)
+	// console.log(4402, store.heap.lock)
 }
 
 module.exports = fan

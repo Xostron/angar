@@ -39,7 +39,7 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 	// Устройства озонаторы
 	// Готовность работы озонаторов (есть ли хотя бы один рабочий озонатор)
 	const oz = getOzon(bld, obj, m)
-	console.log(1100, 'Озонатор', oz)
+	// console.log(1100, 'Озонатор', oz)
 	// Если Окуривание еще не в работе И озонатор не готов, то выключаем озонатор
 	if ((!oz.ready && !doc.work && stg?.on) || s?.smoking?.on) {
 		store.retain[bld._id].setting ??= {}

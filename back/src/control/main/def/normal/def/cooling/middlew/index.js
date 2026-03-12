@@ -16,11 +16,10 @@ function submode(bld, obj, s, seB, acc) {
 	// ========= Доп. Охлаждение + =========
 	const x2 = acc.tprdMin + s.mois.max
 	// set
-	// console.log(11,'set Охлаждение+', x2, '<=', seB.tprd ,'&&', acc?.submode?.[0], '===' ,sm?.cooling?.[0])
-	if (x2 <= seB.tprd && acc?.submode?.[0] === sm.cooling[0]) acc.submode = sm.cooling2
+	if (x2 <= seB.tprd && (acc?.submode?.[0] === sm.cooling[0] || !acc?.submode?.[0]))
+		acc.submode = sm.cooling2
 	// reset
-	// console.log(11,'reset Охлаждение+', x2, '-' ,s.cooling.hysteresisIn, '>' ,seB.tprd ,'&&', acc?.submode?.[0], '===' ,sm?.cooling2?.[0])
-	if (x2 - s.cooling.hysteresisIn > seB.tprd && acc?.submode?.[0] === sm?.cooling2?.[0])
+	if (x2 - s.cooling.hysteresisIn > seB.tprd && acc?.submode?.[0] === sm.cooling2[0])
 		acc.submode = sm.cooling
 	// check
 	if (acc?.submode?.[0] === sm.cooling2[0]) {
@@ -38,7 +37,7 @@ function submode(bld, obj, s, seB, acc) {
 	if (
 		s.mois.humidity + s.cure.hysteresisJump < seB.hin &&
 		seB.tprd <= acc.tgt &&
-		acc?.submode?.[0] === sm.cooling[0]
+		(acc?.submode?.[0] === sm.cooling[0] || !acc?.submode?.[0])
 	) {
 		acc.submode = sm.cure
 	}
@@ -50,21 +49,22 @@ function submode(bld, obj, s, seB, acc) {
 	) {
 		acc.submode = sm.cooling
 	}
-	// Уменьшение разницы продукт-канал
-	if (seB.tprd + 0.2 <= acc.tgt && acc?.submode?.[0] === sm?.cure?.[0])
-		acc.setting.cooling.differenceValue = 0
-	else if (seB.tprd > acc.tgt && acc?.submode?.[0] === sm?.cure?.[0])
-		acc.setting.cooling.differenceValue = s.cure.differenceValue
 	// check
 	if (acc?.submode?.[0] === sm?.cure?.[0]) {
 		// console.log(2, 'check лечение')
 		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
+		// Уменьшение разницы продукт-канал
+		if (seB.tprd + 0.2 <= acc.tgt) acc.setting.cooling.differenceValue = 0
+		else if (seB.tprd > acc.tgt) acc.setting.cooling.differenceValue = s.cure.differenceValue
 		return
 	}
 
 	// ========= Нагрев =========
 	// set
-	if (seB.tprd <= s.cooling.target - s.heat.hysteresisIn && acc?.submode?.[0] === sm.cooling[0]) {
+	if (
+		seB.tprd <= s.cooling.target - s.heat.hysteresisIn &&
+		(acc?.submode?.[0] === sm.cooling[0] || !acc?.submode?.[0])
+	) {
 		acc.submode = sm.heat
 	}
 	// reset
@@ -79,8 +79,9 @@ function submode(bld, obj, s, seB, acc) {
 				...s.cooling,
 				hysteresisIn: s.heat.hysteresisIn,
 				minChannel: s.heat.minChannel,
+				differenceMax: s.heat?.differenceMax,
 			},
-			mois: { ...s.mois, outMax: s.heat.outMax, differenceMax: s.heat?.differenceMax },
+			mois: { ...s.mois, outMax: s.heat.outMax },
 		}
 		return
 	}
@@ -96,8 +97,9 @@ function submode(bld, obj, s, seB, acc) {
  */
 function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
-	// Температура задания канала
-	acc.tcnl = seB.tprd - acc.setting.cooling.differenceValue
+	// Температура задания канала (? нагрев : охлаждение(лечение, охл+))
+	acc.tcnl =
+		acc?.submode?.[0] === sm.heat[0] ? seB.tout : seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
 
 	// Задание на сутки

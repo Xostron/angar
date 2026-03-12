@@ -35,7 +35,7 @@ function fnValve(data, idS, s) {
 		delay: s.sys.wait,
 		kIn: s.sys.cf.kIn,
 		kOut: s.sys.cf.kOut.k,
-		type: open ? 'open' : 'close',
+		type: open || forceOpn ? 'open' : 'close',
 	}
 	setACmd('vlv', idS, o)
 }
