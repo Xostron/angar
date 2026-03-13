@@ -124,7 +124,6 @@ async function transform(bldId, secId) {
 				value: data?.total?.tout?.min?.toFixed(1) ?? undefined,
 				state: data?.total?.tout?.state,
 			};
-			console.log(44444,result['temp'])
 			// Влажность улицы (макс)
 			result['rh'] = {
 				value: data?.total?.hout?.max?.toFixed(1) ?? undefined,

@@ -149,14 +149,14 @@ function fnSensOut(equip, result, idsB) {
 	fnMsgs(building, tout, 'tout', 'normal')
 	fnMsgs(building, hout, 'hout', 'normal')
 
-	// 	// Погода
-	// 	// Прогноз погоды (температура улицы)
+		// Погода
+		// Прогноз погоды (температура улицы)
 	// 	console.log(66, idsB)
-	// 		const tweather = idsB.filter(idB=>result[idB].tweather.state==='on')
+			const tweather = idsB.filter(idB=>result[idB].tweather.state==='on')
 	// 		// Прогноз погоды (влажность улицы)
 	// 		// const hweather = result[bld._id].hweather
 
-	// console.log(6666,tweather)
+	console.log(6666,tweather)
 
 	result.total = {
 		// Температура улицы (мин) среди всех складов данной pc
@@ -178,7 +178,7 @@ function fnSensOut(equip, result, idsB) {
 		},
 	}
 
-	// idsB.forEach((idB) => console.log(66, result.total[idB].tweather))
+	idsB.forEach((idB) => console.log(66, result[idB].tweather))
 
 	// console.log(666, result.total.tout, result.total result.humAbs.out)
 }

@@ -80,6 +80,7 @@ function submode(bld, obj, s, seB, acc) {
 				hysteresisIn: s.heat.hysteresisIn,
 				minChannel: s.heat.minChannel,
 				differenceMax: s.heat?.differenceMax,
+				differenceMin: s.heat?.differenceMin,
 			},
 			mois: { ...s.mois, outMax: s.heat.outMax },
 		}
