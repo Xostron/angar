@@ -50,8 +50,8 @@ function heat(s, seB, building, acc, bdata) {
 			set: hout > acc?.setting?.mois?.outMax,
 			reset: hout + acc?.setting?.mois?.hysteresisRel < acc?.setting?.mois?.outMax,
 			msg: msgB(building, 10),
-			// 4 Температура улицы выше допустимой для охлаждения
 		},
+		// 4 Температура улицы выше допустимой для охлаждения
 		{
 			set: tout >= tprd + acc?.setting?.cooling?.differenceMin,
 			reset:
