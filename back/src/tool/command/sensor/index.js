@@ -21,7 +21,7 @@ function sensor(idB, idS, obj) {
 		tin: value?.total?.[idB]?.tin?.min,
 		// Влажность продукта - max
 		hin: value?.total?.[idB]?.hin?.min,
-		// Абсолютная влажность проукта
+		// Абсолютная влажность продукта
 		hAbsIn: isNaN(+value?.humAbs?.in?.[idB]) ? null : +value?.humAbs?.in?.[idB],
 		// Минимальная температура продукта по секции
 		tprd: value?.total?.[idB]?.tprd?.min,

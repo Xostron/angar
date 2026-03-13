@@ -99,7 +99,7 @@ function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
 	// Температура задания канала (? нагрев : охлаждение(лечение, охл+))
 	acc.tcnl =
-		acc?.submode?.[0] === sm.heat[0] ? seB.tout : seB.tprd - acc.setting.cooling.differenceValue
+		acc?.submode?.[0] === sm.heat[0] ? seB.tprd : seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
 
 	// Задание на сутки

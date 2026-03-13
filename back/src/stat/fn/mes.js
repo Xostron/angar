@@ -35,11 +35,11 @@ function message(data, el, level, value) {
 			break
 		case 'voltage':
 			secId = el.sectionId
-			v = [value[el._id].Ua, value[el._id].Ub, value[el._id].Uc]
+			v = [value[el._id]?.Ua, value[el._id]?.Ub, value[el._id]?.Uc]
 			break
 		case 'watt':
 			secId = el.sectionId
-			v = value[el._id].Pa + value[el._id].Pb + value[el._id].Pc
+			v = value[el._id]?.Pa + value[el._id]?.Pb + value[el._id]?.Pc
 			break
 		case 'sensor':
 			el.owner.type == 'section'

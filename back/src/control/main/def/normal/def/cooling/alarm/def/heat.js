@@ -3,7 +3,27 @@ const { data: store } = require('@store')
 
 function heat(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	console.log(124, 'alarm heat', tprd, tout, acc?.setting?.cooling?.differenceMax)
+	console.log(
+		124,
+		'alarm heat',
+		tprd,
+		tout,
+		acc?.setting?.cooling?.differenceMax,
+		acc?.setting?.cooling?.hysteresisOut,
+	)
+	// console.log(
+	// 	'set = ',
+	// 	tout <= tprd - acc?.setting?.cooling?.differenceMax,
+	// 	tout,
+	// 	'<=',
+	// 	tprd - acc?.setting?.cooling?.differenceMax,
+	// )
+	// console.log(
+	// 	'reset = ',
+	// 	tout - acc?.setting?.cooling?.hysteresisOut > tprd - acc?.setting?.cooling?.differenceMax,
+	// 	tout - acc?.setting?.cooling?.hysteresisOut,
+	// 	tprd - acc?.setting?.cooling?.differenceMax,
+	// )
 	// В нагреве игнорируются аварии 0 1 4 6
 	// В нагреве появляется новая авария "Влажность улицы выше допустимой (точка росы)"
 	const r = [
@@ -58,7 +78,7 @@ function heat(s, seB, building, acc, bdata) {
 			msg: msgB(building, 120),
 		},
 	]
-	r.forEach((el) => console.log(124, el.set, el.reset))
+	// r.forEach((el) => console.log(124, el.set, el.reset))
 	return r
 }
 

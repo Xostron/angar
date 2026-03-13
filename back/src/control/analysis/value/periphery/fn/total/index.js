@@ -7,42 +7,9 @@ const { state, fnState, toutVsWeather } = require('@tool/sensor/total')
 module.exports = function total(equip, result, retain) {
 	const { sensor, section, building, cooler, weather } = equip
 
+	// Общие уличные датчики и погода
 	const idsB = building.map((el) => el._id)
-	// Температура улицы (мин) среди всех складов данной pc
-	let flt = (el) =>
-		idsB.includes(el.owner.id) && el.type === 'tout' && result?.[el._id]?.state === 'on'
-	let fltA = (el) => idsB.includes(el.owner.id) && el.type === 'tout'
-	const tout = state(sensor, result, flt, fltA)
-
-	// Влажность улицы (макс) среди всех складов данной pc
-	flt = (el) =>
-		idsB.includes(el.owner.id) && el.type === 'hout' && result?.[el._id]?.state === 'on'
-	fltA = (el) => idsB.includes(el.owner.id) && el.type === 'hout'
-	const hout = state(sensor, result, flt, fltA)
-
-	// Аварийные сообщения для обычного склада
-	fnMsgs(building, tout, 'tout', 'normal')
-	fnMsgs(building, hout, 'hout', 'normal')
-
-	result.total = {
-		// Температура улицы (мин) среди всех складов данной pc
-		tout,
-		// Влажность улицы (макс) среди всех складов данной pc
-		hout,
-	}
-
-	// Абсолютная влажность
-	result.humAbs = {
-		// внешняя
-		out: {
-			com: calc(tout?.min, hout?.max, 'Внешняя абс влажность'),
-			// [bld._id] от погоды
-		},
-		// продукт
-		in: {
-			// [bld._id]
-		},
-	}
+	fnSensOut(equip, result, idsB)
 
 	// По складу
 	for (const bld of building) {
@@ -89,7 +56,7 @@ module.exports = function total(equip, result, retain) {
 		fltA = (el) => el.owner.id === bld._id && el.type === 'hin'
 		const hin = state(sensor, result, flt, fltA)
 		// 1. Выведены из работы
-		if (hin.max === null && hin.state === 'off') (hin.max = 85), (hin.min = 85)
+		if (hin.max === null && hin.state === 'off') ((hin.max = 85), (hin.min = 85))
 		// 2. Датчик в аварии - остается аварийным
 		// Когда склад с одним агрегатом (датччики давления могут быть привязаны к складу)
 		// Давление всасывания
@@ -110,27 +77,30 @@ module.exports = function total(equip, result, retain) {
 		const hweather = result[bld._id].hweather
 		// Температура улицы склада
 		const tout = { ...result?.total?.tout } ?? {}
-		tout.min = toutVsWeather(tout.min, tweather)
+		// tout.min = toutVsWeather(tout.min, tweather)
 		// Абс влажность улицы
 		result.humAbs.out[bld._id] = calc(
 			tout?.min,
 			result.total?.hout?.max,
-			`${bld.name}:Абс.влажность улицы`
+			`${bld.name}:Абс.влажность улицы`,
 		)
 		// const hout =
 
 		// Результат (данные с датчиков для алгоритма)
 		result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, tout, co2 }
+		// result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, co2 }
+
 		// Абсолютная влажность продукта
 		result.humAbs.in[bld._id] = calc(
 			result.total[bld._id].tprd.min,
 			result.total[bld._id].hin.max,
-			`${bld.name}:Абс.влажность продукта`
+			`${bld.name}:Абс.влажность продукта`,
 		)
+
 		// Точка росы
 		result.total[bld._id].point = dewpoint(
 			result.total?.[bld._id]?.tout?.min,
-			result?.total?.hout?.max
+			result?.total?.hout?.max,
 		)
 	}
 
@@ -158,4 +128,57 @@ module.exports = function total(equip, result, retain) {
 		}, {})
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
+}
+
+function fnSensOut(equip, result, idsB) {
+	const { sensor, building } = equip
+
+	// Температура улицы (мин) среди всех складов данной pc
+	let flt = (el) =>
+		idsB.includes(el.owner.id) && el.type === 'tout' && result?.[el._id]?.state === 'on'
+	let fltA = (el) => idsB.includes(el.owner.id) && el.type === 'tout'
+	const tout = state(sensor, result, flt, fltA)
+
+	// Влажность улицы (макс) среди всех складов данной pc
+	flt = (el) =>
+		idsB.includes(el.owner.id) && el.type === 'hout' && result?.[el._id]?.state === 'on'
+	fltA = (el) => idsB.includes(el.owner.id) && el.type === 'hout'
+	const hout = state(sensor, result, flt, fltA)
+
+	// Аварийные сообщения для обычного склада
+	fnMsgs(building, tout, 'tout', 'normal')
+	fnMsgs(building, hout, 'hout', 'normal')
+
+	// 	// Погода
+	// 	// Прогноз погоды (температура улицы)
+	// 	console.log(66, idsB)
+	// 		const tweather = idsB.filter(idB=>result[idB].tweather.state==='on')
+	// 		// Прогноз погоды (влажность улицы)
+	// 		// const hweather = result[bld._id].hweather
+
+	// console.log(6666,tweather)
+
+	result.total = {
+		// Температура улицы (мин) среди всех складов данной pc
+		tout,
+		// Влажность улицы (макс) среди всех складов данной pc
+		hout,
+	}
+
+	// Абсолютная влажность
+	result.humAbs = {
+		// внешняя
+		out: {
+			com: calc(tout?.min, hout?.max, 'Внешняя абс влажность'),
+			// [bld._id] от погоды
+		},
+		// продукт
+		in: {
+			// [bld._id]
+		},
+	}
+
+	// idsB.forEach((idB) => console.log(66, result.total[idB].tweather))
+
+	// console.log(666, result.total.tout, result.total result.humAbs.out)
 }

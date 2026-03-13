@@ -84,7 +84,19 @@ async function transform(bldId, secId) {
 		};
 		// Точка росы
 		result[bldId + 'point'] = { value: data?.total?.[bldId]?.point };
-
+		
+		// // Температура улицы склада
+		// result[bldId + 'tout'] = { value: data?.total?.[bldId]?.tout };
+		
+		// // Абсолютная влажность продукта
+		// result[bldId + 'ah'] = {
+		// 	value: data?.humAbs?.out?.[bldId],
+		// 	state: checkS(
+		// 		data?.total?.[bldId]?.tout?.state,
+		// 		data?.total?.hout?.state
+		// 	),
+		// };
+		
 		// Увлажнители: агрегация
 		fnWetting(bldId, data, { section, device }, result);
 
@@ -112,6 +124,7 @@ async function transform(bldId, secId) {
 				value: data?.total?.tout?.min?.toFixed(1) ?? undefined,
 				state: data?.total?.tout?.state,
 			};
+			console.log(44444,result['temp'])
 			// Влажность улицы (макс)
 			result['rh'] = {
 				value: data?.total?.hout?.max?.toFixed(1) ?? undefined,
