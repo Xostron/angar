@@ -38,7 +38,6 @@ function valve(idS, obj, m, s, se, acc, isCO2work, alr) {
 	const forceOpn = heatOpen(idS, obj, m, acc, alr)
 	// console.log('\tКлапаны, режим хранение, секция', acc)
 	console.table([{ open, close, forceCls, forceOpn }], ['open', 'close', 'forceCls', 'forceOpn'])
-	console.log(acc.submode, alr, '\n')
 	return { open, close, forceCls, forceOpn }
 }
 
@@ -46,7 +45,6 @@ function fan(s, se, alr, idS, acc) {
 	// Условие пуска ВНО: нет аварии И {задание продукта не достигнуто ИЛИ удаление СО2}
 	const alright = !acc.finish
 	const start = !alr && alright
-	// console.log(8801, start, '=', !alr, alright)
 	return { start }
 }
 

@@ -30,7 +30,7 @@ function writeTCP(host, port, opt) {
 					resolve(true)
 				})
 				.catch((e) => {
-					console.log(9900, 'Ошибка запись', opt.name, opt.ip)
+					console.error(9900, 'Ошибка запись', opt.name, opt.ip)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

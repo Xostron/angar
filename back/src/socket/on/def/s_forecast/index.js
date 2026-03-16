@@ -5,6 +5,6 @@ module.exports = function sForecast(io, socket) {
 		console.log(552, 's_forecast', arg)
 		forecast(arg.build)
 			.then((data) => callback(data))
-			.catch(console.log)
+			.catch(console.error)
 	})
 }

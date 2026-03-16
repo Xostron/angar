@@ -89,12 +89,12 @@ function manager(data) {
 			);
 			const connectionName = connectionNameBuf.toString().trim();
 
-			console.log(
-				'Interface:',
-				iface,
-				'Connection name:',
-				connectionName
-			);
+			// console.log(
+			// 	'Interface:',
+			// 	iface,
+			// 	'Connection name:',
+			// 	connectionName
+			// );
 
 			const { mode, ip, mask, gateway, dns } = data;
 
@@ -126,23 +126,23 @@ function manager(data) {
 			}
 
 			const cidr = maskToCidr(mask);
-			console.log('step 1: manager', ip, mask, gateway, dns, cidr);
+			// console.log('step 1: manager', ip, mask, gateway, dns, cidr);
 			execSync(
 				`nmcli con mod "${connectionName}" ipv4.addresses ${ip}/${cidr}`
 			);
-			console.log('step 2: manager', ip, mask, gateway, dns, cidr);
+			// console.log('step 2: manager', ip, mask, gateway, dns, cidr);
 			execSync(
 				`nmcli con mod "${connectionName}" ipv4.gateway ${
 					gateway || ''
 				}`
 			);
-			console.log('step 3: manager', ip, mask, gateway, dns, cidr);
+			// console.log('step 3: manager', ip, mask, gateway, dns, cidr);
 			execSync(`nmcli con mod "${connectionName}" ipv4.dns "${dns}"`);
-			console.log('step 4: manager', ip, mask, gateway, dns, cidr);
+			// console.log('step 4: manager', ip, mask, gateway, dns, cidr);
 			execSync(`nmcli con mod "${connectionName}" ipv4.method manual`);
-			console.log('step 5: manager', ip, mask, gateway, dns, cidr);
+			// console.log('step 5: manager', ip, mask, gateway, dns, cidr);
 			execSync(`nmcli con up "${connectionName}"`);
-			console.log('step 6: manager', ip, mask, gateway, dns, cidr);
+			// console.log('step 6: manager', ip, mask, gateway, dns, cidr);
 			result = {
 				success: true,
 				message: `Сетевой интерфейс ${iface} переведен в статический режим`,

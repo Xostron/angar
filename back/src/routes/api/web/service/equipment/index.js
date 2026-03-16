@@ -7,7 +7,7 @@ function equip() {
 			await init()
 			res.json({ result: new Date() })
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			res.status(400).json(error)
 		}
 	}

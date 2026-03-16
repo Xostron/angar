@@ -1,6 +1,8 @@
 const { msgB } = require('@tool/message')
 const { compareTime } = require('@tool/command/time')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { readAcc } = require('@store/index')
+const sm = require('@dict/submode')
 
 // Установка аварии
 function set(bld, s, acc, term) {
@@ -40,25 +42,26 @@ function reset(bld, s, acc, term) {
  * @returns {boolean} true разрешить, false - очистить аккумулятор и запретить
  */
 function fnCheck(bld, obj, s, automode, m, acc) {
-	// Очищаем аккумулятор и игнорируем слежение:
-	// 1. Склад не в авторежиме хранения
-	// 2. Нет приточных клапанов
-	// 3. Нет секции в авто
-	// 4. Нет настроек watch|wait
-	// 5. Склад выключен
+	const t = bld?.type === 'normal' ? (automode ?? bld?.type) : bld?.type
+	const accAuto = readAcc(bld._id, t)
 
 	// Поиск по секциям, хотя бы 1 в авто => true
 	const modeS = obj?.data?.section
 		?.filter((el) => el.buildingId === bld._id)
 		?.some((el) => obj?.retain?.[bld._id]?.mode?.[el._id])
-	if (
-		automode !== 'cooling' ||
-		!m?.vlvIn?.length ||
-		!modeS ||
-		!s.cooling.wait ||
-		!s.cooling.watch ||
-		!obj.retain[bld._id].start
-	) {
+
+	const reason = [
+		[automode !== 'cooling', 'Склад не в авторежиме хранения'],
+		[!m?.vlvIn?.length, 'Нет приточных клапанов'],
+		[!modeS, 'Нет секции в авто'],
+		[!s?.cooling?.wait, 'Нет настроек watch'],
+		[!s?.cooling?.watch, 'Нет настроек watch'],
+		[!obj.retain[bld._id].start, 'Склад выключен'],
+		[accAuto?.submode?.[0] === sm.heat[0], 'Режим нагрева'],
+	]
+
+	const alr = reason.filter((el) => el[0])
+	if (alr?.length) {
 		fnReset(bld, acc)
 		return false
 	}

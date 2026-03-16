@@ -7,12 +7,13 @@ const { stateSum } = require('@tool/fan')
 // Низкая температура канала склада
 // Здесь учитывать режим секции не нужно, если авария возникла, то это окончательно
 function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
+	const modeData = obj.retain?.[bld._id]?.mode ?? {}
 	// Режим секции: хотя бы одна в авто
-	const modeA = Object.values(obj.retain[bld._id].mode).some(
+	const modeA = Object.values(modeData).some(
 		(el) => el === true || el === undefined,
 	)
 	// Режим секции: хотя бы одна в ручном
-	const modeM = Object.values(obj.retain[bld._id].mode).some((el) => el === false)
+	const modeM = Object.values(modeData).some((el) => el === false)
 	let mode
 	if (modeA) mode = true
 	else if (!modeA && modeM) mode = false

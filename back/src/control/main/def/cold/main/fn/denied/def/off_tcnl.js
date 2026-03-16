@@ -29,7 +29,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
 
 		// Точки отсчета нет -> канал еще прогревается (испаритель не отключаем)
 		if (!accAuto?.cold?.[clr.sectionId]?.allStarted)
-			return console.log(412, 'канал еще прогревается')
+			return console.log('\t offByTcnl: канал еще прогревается')
 
 		// Точка отсчета есть -> - начинаем отсчет времени "Настройка Холодильник С"
 		const time = compareTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait)
@@ -40,7 +40,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
 			// и испаритель получает обледенение и начинает оттайку
 			fnChange(null, 1, 0, 0, null, clr)
 			return console.log(
-				413,
+				'\t',
 				clr.name,
 				accAuto?.cold?.[clr.sectionId]?.allStarted,
 				wait,
@@ -69,8 +69,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
 			: regulQ(s, se, fnChange, accAuto, clr)
 
 		console.log(
-			414,
-			'Низкая температура канала, испаритель выключен.',
+			'\tНизкая температура канала, испаритель выключен.',
 			'ВНО заблокирован = ',
 			!a.filter((e) => e[0]).length,
 		)

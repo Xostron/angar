@@ -15,15 +15,15 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 			const clr = mS.coolerS.find((el) => el._id === pair[0])
 			if (!clr) return
 			const a = [
-				[!alrAuto, '!alrAuto'],
-				[sectM === false, 'sectM'],
-				[s?.smoking?.on, 's?.smoking?.on'],
-				[s?.ozon?.on, 's?.ozon?.on'],
-				[!s?.coolerCombi?.on, '!s?.coolerCombi?.on'],
+				[!alrAuto, 'В режиме обычного склада (нет аварий авторежима)'],
+				[sectM === false, 'Секция в ручном режиме'],
+				[s?.smoking?.on, 'Включено окуривание'],
+				[s?.ozon?.on, 'Включен озонатор'],
+				[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
 			]
 
 			console.log(
-				'Проходим по парам испарителей и одиночкам',
+				'\toffDenied: Проходим по парам испарителей и одиночкам',
 				a.filter((e) => e[0]),
 			)
 			a.filter((e) => e[0] === true)?.length !== 0
@@ -40,22 +40,23 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 		// 2.1. Полное отключение пары
 		if (denied.every((el) => el)) {
 			// Испаритель запрещен к работе, но ВНО испарителя не блокируется при:
-			// 1. в режиме обычного склада (нет аварий авторежима)
+			// 1. В режиме обычного склада (нет аварий авторежима)
 			// 2. Секция в ручном режиме
 			// 3. Включено окуривание
-			// 4. выключено оборудование испарителя
+			// 4. Включен озонатор
+			// 5. Выключено оборудование испарителя
 			pair.forEach((idClr) => {
 				const clr = mS.coolerS.find((el) => el._id === idClr)
 				const a = [
-					[!alrAuto, '!alrAuto'],
-					[sectM === false, 'sectM === false'],
-					[s?.smoking?.on, 's?.smoking?.on'],
-					[s?.ozon?.on, 's?.ozon?.on'],
-					[!s?.coolerCombi?.on, '!s?.coolerCombi?.on'],
+					[!alrAuto, 'В режиме обычного склада (нет аварий авторежима)'],
+					[sectM === false, 'Секция в ручном режиме'],
+					[s?.smoking?.on, 'Включено окуривание'],
+					[s?.ozon?.on, 'Включен озонатор'],
+					[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
 				]
 
 				console.log(
-					'Полное отключение пары',
+					'\toffDenied: Полное отключение пары',
 					a.filter((e) => e[0]),
 				)
 				a.filter((e) => e[0] === true).length !== 0
@@ -88,7 +89,6 @@ function offDenied(idB, mS, s, fnChange, accAuto, alrAuto, sectM) {
 }
 
 module.exports = offDenied
-
 
 /**
  * Поиск парных испарителей

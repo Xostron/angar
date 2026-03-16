@@ -59,7 +59,7 @@ function fnMake(o, type = 'read') {
 			})
 			.catch((err) => {
 				clearSignal(signal, onAbort)
-				console.log(err)
+				console.error(err)
 			})
 	})
 }

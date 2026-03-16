@@ -29,7 +29,7 @@ async function write(obj) {
 		}
 		return ok;
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	}
 }
 

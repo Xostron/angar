@@ -3,14 +3,14 @@ const { data: store } = require('@store')
 
 function heat(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	console.log(
-		124,
-		'alarm heat',
-		tprd,
-		tout,
-		acc?.setting?.cooling?.differenceMax,
-		acc?.setting?.cooling?.hysteresisOut,
-	)
+	// console.log(
+	// 	124,
+	// 	'alarm heat',
+	// 	tprd,
+	// 	tout,
+	// 	acc?.setting?.cooling?.differenceMax,
+	// 	acc?.setting?.cooling?.hysteresisOut,
+	// )
 	// console.log(
 	// 	'set = ',
 	// 	tout <= tprd - acc?.setting?.cooling?.differenceMax,

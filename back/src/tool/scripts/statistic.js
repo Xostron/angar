@@ -23,14 +23,14 @@ function getAllFiles(dirPath, arrayOfFiles = []) {
 			} catch (error) {
 				console.error(
 					`Ошибка при чтении файла ${filePath}:`,
-					error.message
+					error.message,
 				);
 			}
 		});
 	} catch (error) {
 		console.error(
 			`Ошибка при чтении директории ${dirPath}:`,
-			error.message
+			error.message,
 		);
 	}
 
@@ -77,7 +77,7 @@ function info() {
 				} catch (error) {
 					console.error(
 						`Ошибка при получении размера файла ${file}:`,
-						error.message
+						error.message,
 					);
 				}
 			});
@@ -124,14 +124,14 @@ function removeDirectoryContents(dirPath) {
 			} catch (error) {
 				console.error(
 					`Ошибка при удалении ${filePath}:`,
-					error.message
+					error.message,
 				);
 			}
 		});
 	} catch (error) {
 		console.error(
 			`Ошибка при очистке директории ${dirPath}:`,
-			error.message
+			error.message,
 		);
 	}
 }

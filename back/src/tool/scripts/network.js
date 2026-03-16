@@ -33,19 +33,19 @@ function wifi_list() {
 					message: 'Не на Linux системе',
 				});
 			}
-			console.log('step 1: list wifi start');
+			// console.log('step 1: list wifi start');
 			const result = execSync('nmcli device wifi list');
-			console.log('step 2: list wifi result', result);
+			// console.log('step 2: list wifi result', result);
 			// Convert Buffer to string
 			const wifiListString = result.toString('utf8');
-			console.log('step 3: list wifi result:', wifiListString);
+			// console.log('step 3: list wifi result:', wifiListString);
 
 			// Parse the text output to JSON
 			const list = parseWifiList(wifiListString);
-			console.log('step 4: list wifi result:', list);
+			// console.log('step 4: list wifi result:', list);
 			resolve(list);
 		} catch (e) {
-			console.log('step 0: list wifi error', e);
+			// console.log('step 0: list wifi error', e);
 			reject(e);
 		}
 	});
@@ -63,14 +63,14 @@ function wifi_connect(bssid, ssid, password) {
 			}
 			// Экранируем кавычки в SSID для безопасности
 			const escapedSsid = ssid.replace(/"/g, '\\"');
-			console.log('step 1: connect wifi', ssid, password);
+			// console.log('step 1: connect wifi', ssid, password);
 			const result = execSync(
 				`nmcli device wifi connect ${
 					bssid || escapedSsid
 				} password ${password}`
 				// { encoding: 'utf8' }
 			);
-			console.log('step 2: connect wifi', ssid, password, result);
+			// console.log('step 2: connect wifi', ssid, password, result);
 
 			// Проверяем результат на наличие ошибок в сообщении
 			const hasError =
@@ -85,7 +85,7 @@ function wifi_connect(bssid, ssid, password) {
 				resolve({ success: true, message: result });
 			}
 		} catch (e) {
-			console.log('step 3: connect wifi error', ssid, password, e);
+			// console.log('step 3: connect wifi error', ssid, password, e);
 			const errorMessage = e.stdout
 				? e.stdout.toString('utf8')
 				: e.stderr
@@ -105,7 +105,7 @@ function disconnect_wifi() {
 					message: 'Не на Linux системе',
 				});
 			}
-			console.log('step 1: disconnect wifi - finding wifi interface');
+			// console.log('step 1: disconnect wifi - finding wifi interface');
 			// Находим имя WiFi интерфейса
 			const interfaceResult = execSync(
 				'nmcli -t -f DEVICE,TYPE device | grep wifi | cut -d: -f1'
@@ -116,13 +116,13 @@ function disconnect_wifi() {
 				throw new Error('WiFi интерфейс не найден');
 			}
 
-			console.log('step 2: disconnect wifi interface', wifiInterface);
+			// console.log('step 2: disconnect wifi interface', wifiInterface);
 			// Используем 2>&1 для объединения stdout и stderr, и || true чтобы игнорировать ошибки
 			const result = execSync(
 				`nmcli device disconnect ${wifiInterface} 2>&1 || true`
 			);
 			const output = result.toString();
-			console.log('step 3: disconnect wifi result', output);
+			// console.log('step 3: disconnect wifi result', output);
 
 			// Проверяем успешность по наличию "Выполнено" или "successfully" в выводе
 			const isSuccess =
@@ -140,7 +140,7 @@ function disconnect_wifi() {
 				throw new Error(output || 'Не удалось отключить WiFi');
 			}
 		} catch (e) {
-			console.log('step 4: disconnect wifi error', e);
+			// console.log('step 4: disconnect wifi error', e);
 			const errorMessage = e.message || e.toString();
 			reject({ success: false, message: errorMessage });
 		}
@@ -151,18 +151,18 @@ function disconnect_wifi() {
 function switching(type = 'wifi', state = 'on') {
 	return new Promise((resolve, reject) => {
 		try {
-			console.log(
-				'step 1: Turn on or off in NetworkManager start',
-				type,
-				state
-			);
+			// console.log(
+			// 	'step 1: Turn on or off in NetworkManager start',
+			// 	type,
+			// 	state
+			// );
 			const result = execSync(`nmcli device ${type} ${state}`);
-			console.log(
-				'step 2: Turn on or off in NetworkManager result',
-				type,
-				state,
-				result
-			);
+			// console.log(
+			// 	'step 2: Turn on or off in NetworkManager result',
+			// 	type,
+			// 	state,
+			// 	result
+			// );
 			// Get updated network info after switching
 			get_net_info()
 				.then((netInfo) => {
@@ -176,19 +176,19 @@ function switching(type = 'wifi', state = 'on') {
 				})
 				.catch(reject)
 				.finally(() => {
-					console.log(
-						'step 3: Turn on or off in NetworkManager finish',
-						type,
-						state
-					);
+					// console.log(
+					// 	'step 3: Turn on or off in NetworkManager finish',
+					// 	type,
+					// 	state
+					// );
 				});
 		} catch (e) {
-			console.log(
-				'step 4: Turn on or off in NetworkManager error`',
-				type,
-				state,
-				e
-			);
+			// console.log(
+			// 	'step 4: Turn on or off in NetworkManager error`',
+			// 	type,
+			// 	state,
+			// 	e
+			// );
 			reject(e);
 		}
 	});

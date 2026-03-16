@@ -29,8 +29,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	const alr = a.filter((e) => e[0] === true)?.length !== 0
 	console.log(
 		'\t',
-		666,
-		'Сумма аварий',
+		'Автоматический режим, сумма аварий',
 		sect?.name,
 		'alr ',
 		alr,

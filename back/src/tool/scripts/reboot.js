@@ -17,7 +17,7 @@ function reboot() {
 				if (stderr) {
 					console.error(`stderr: ${stderr}`);
 				}
-				console.log(`stdout: ${stdout}`);
+				// console.log(`stdout: ${stdout}`);
 			}
 		);
 	}, 5000);

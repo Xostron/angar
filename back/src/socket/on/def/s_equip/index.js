@@ -8,6 +8,6 @@ module.exports = function sEquip(io, socket) {
 			.then((result) => {
 				callback(result, 'ok')
 			})
-			.catch(console.log)
+			.catch(console.error)
 	})
 }

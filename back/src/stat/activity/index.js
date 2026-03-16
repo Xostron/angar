@@ -66,7 +66,7 @@ function activity(code, o) {
 				},
 			})
 		})
-		.catch(console.log)
+		.catch(console.error)
 }
 
 module.exports = { webLog, mobileLog }

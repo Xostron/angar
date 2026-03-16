@@ -1,5 +1,6 @@
-const { logger, loggerSens, loggerWatt } = require('@tool/logger')
-const { message, checkTyp } = require('../fn')
+const { logger, loggerSens, loggerWatt } = require('@tool/logger');
+const { checkTyp } = require('../fn');
+const message = require('../fn/mes');
 
 /**
  * Логирование датчиков (total) с заданным периодом store.tStat
@@ -11,13 +12,13 @@ const { message, checkTyp } = require('../fn')
  * @param {boolean} force принудительное логирование
  */
 function pLogTotal(total, building, force) {
-	if (!total) return
+	if (!total) return;
 	building.forEach((bld) => {
-		const val = total[bld._id]
-		;['hin', 'tprdL', 'tin'].forEach((el) => {
-			const m = checkTyp(el, bld)
-			if (!m && !force) return
-			const type = ['hin', 'tin'].includes(el) ? el + 'L' : el
+		const val = total[bld._id];
+		['hin', 'tprdL', 'tin'].forEach((el) => {
+			const m = checkTyp(el, bld);
+			if (!m && !force) return;
+			const type = ['hin', 'tin'].includes(el) ? el + 'L' : el;
 			loggerSens['sensor']({
 				message: {
 					bldId: bld._id,
@@ -25,9 +26,9 @@ function pLogTotal(total, building, force) {
 					state: val[el]?.state,
 					value: val[el]?.[m],
 				},
-			})
-		})
-	})
+			});
+		});
+	});
 }
 
 /**
@@ -39,20 +40,22 @@ function pLogTotal(total, building, force) {
  * @returns
  */
 function pLogSensor(data, arr, value, level) {
-	if (!arr?.length) return
+	if (!arr?.length) return;
 	arr.forEach((el) => {
 		switch (level) {
 			case 'sensor':
-				loggerSens[level]({ message: message(data, el, level, value) })
-				break
+				loggerSens[level]({ message: message(data, el, level, value) });
+				break;
 			case 'watt':
-				loggerWatt['watt']({ message: message(data, el, level, value) })
-				break
+				loggerWatt['watt']({
+					message: message(data, el, level, value),
+				});
+				break;
 			default:
-				logger['watt']({ message: message(data, el, level, value) })
-				break
+				logger['watt']({ message: message(data, el, level, value) });
+				break;
 		}
-	})
+	});
 }
 
 /**
@@ -64,21 +67,21 @@ function pLogSensor(data, arr, value, level) {
  * @returns
  */
 function pLogBindingAI(data, arr, value, level) {
-	if (!arr?.length) return
-	let ai = arr.filter((el) => el.type === 'ai')
-	if (!ai?.length) return
+	if (!arr?.length) return;
+	let ai = arr.filter((el) => el.type === 'ai');
+	if (!ai?.length) return;
 	ai = ai.map((s) => {
 		// Пока что владельцами binding аналоговых входов являются ВНО
-		const own = data?.[s.owner.type]?.find((el) => el._id === s.owner.id)
-		s.owner.id = own.owner.id
-		s.owner.type = own.owner.type
-		s.type = 'vai'
-		s.name = `Ток ${own?.name ?? ''}`
-		return s
-	})
+		const own = data?.[s.owner.type]?.find((el) => el._id === s.owner.id);
+		s.owner.id = own.owner.id;
+		s.owner.type = own.owner.type;
+		s.type = 'vai';
+		s.name = `Ток ${own?.name ?? ''}`;
+		return s;
+	});
 	ai.forEach((el) => {
-		loggerSens[level]({ message: message(data, el, 'bindingAi', value) })
-	})
+		loggerSens[level]({ message: message(data, el, 'bindingAi', value) });
+	});
 }
 
-module.exports = { pLogTotal, pLogSensor, pLogBindingAI }
+module.exports = { pLogTotal, pLogSensor, pLogBindingAI };

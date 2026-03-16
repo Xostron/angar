@@ -20,7 +20,7 @@ function auto_login(flag = true) {
 				console.error(`stderr: ${stderr}`);
 				reject(stderr);
 			}
-			console.log('auto_login', stdout);
+			// console.log('auto_login', stdout);
 			resolve(stdout);
 		});
 	});

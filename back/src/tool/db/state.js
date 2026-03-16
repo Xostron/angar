@@ -7,7 +7,7 @@ let mongojs = null
 try {
 	mongojs = require('mongojs')
 } catch {
-	console.log('MongoDB: mongojs не установлен, работа с БД отключена')
+	console.warn('MongoDB: mongojs не установлен, работа с БД отключена')
 }
 
 const RECONNECT_INTERVAL = 30_000
@@ -28,7 +28,7 @@ function connect(name) {
 
 	const base = process.env.BD_URI
 	if (!base) {
-		console.log(`MongoDB [${name}]: BD_URI не задан`)
+		console.warn(`MongoDB [${name}]: BD_URI не задан`)
 		return null
 	}
 
@@ -42,11 +42,11 @@ function connect(name) {
 
 		const db = mongojs(uri)
 		db.on('error', () => {
-			console.log(`MongoDB [${name}]: нет связи`)
+			console.warn(`MongoDB [${name}]: нет связи`)
 			scheduleReconnect(name)
 		})
 		db.on('connect', () => {
-			console.log(`MongoDB [${name}]: связь установлена`)
+			console.warn(`MongoDB [${name}]: связь установлена`)
 			stopReconnect(name)
 		})
 
@@ -77,7 +77,7 @@ function scheduleReconnect(name) {
 	if (timers.has(name)) return
 	timers.set(name, setTimeout(() => {
 		timers.delete(name)
-		console.log(`MongoDB [${name}]: попытка переподключения...`)
+		console.warn(`MongoDB [${name}]: попытка переподключения...`)
 		connect(name)
 	}, RECONNECT_INTERVAL))
 }

@@ -235,7 +235,7 @@ function saveSettings() {
 		api(config)
 			.then((r) => res.status(200).json({ result: 'ok' }))
 			.catch((err) => {
-				console.log('service/saveSettings error:', err);
+				console.error('service/saveSettings error:', err);
 				res.status(400).json({ error: err.toString() });
 			});
 	};
@@ -258,7 +258,7 @@ function getSettings() {
 				res.status(200).json({ result: 'ok' });
 			})
 			.catch((err) => {
-				console.log('service/getSettings error:', err);
+				console.error('service/getSettings error:', err);
 				res.status(400).json({ error: err.toString() });
 			});
 	};

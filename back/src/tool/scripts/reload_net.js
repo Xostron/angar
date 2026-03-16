@@ -10,12 +10,12 @@ function reload_net() {
 		const path = '/etc/NetworkManager/NetworkManager.conf';
 		try {
 			if (fs.existsSync(path)) {
-				console.log('reload_net path', path);
+				// console.log('reload_net path', path);
 				let content = fs.readFileSync(path, 'utf8');
 				const managedRegex = /^(\s*managed\s*=\s*)false(\s*)$/m;
 				if (managedRegex.test(content)) {
 					content = content.replace(managedRegex, '$1true$2');
-					console.log('reload_net content', content);
+					// console.log('reload_net content', content);
 					fs.writeFileSync(path, content, 'utf8');
 				}
 			}
@@ -27,7 +27,7 @@ function reload_net() {
 					e.message,
 			});
 		}
-		console.log('reload_net restart NetworkManager');
+		// console.log('reload_net restart NetworkManager');
 		try {
 			execSync('sudo systemctl restart NetworkManager', {
 				encoding: 'utf8',

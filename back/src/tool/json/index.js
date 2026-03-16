@@ -31,7 +31,7 @@ function write(data, ph = dataDir, ref, toRetain) {
 				resolve()
 			})
 			.catch((error) => {
-				console.log('\x1b[31m%s\x1b[0m', 'Ошибка сохранение json: ', error)
+				console.error('\x1b[31m%s\x1b[0m', 'Ошибка сохранение json: ', error)
 				reject(error)
 			})
 	})
@@ -76,7 +76,7 @@ function readOne(filename, ph = dataDir) {
 			})
 			.catch((err) => {
 				resolve(null)
-				console.log('@@@@', err)
+				console.error('@@@@', err)
 			})
 	})
 }
@@ -159,7 +159,7 @@ function writeSync(data, ph = dataDir, ref, toRetain) {
 			fs.writeFileSync(filepath, d)
 		}
 	} catch (error) {
-		console.log('\x1b[31m%s\x1b[0m', 'Ошибка сохранение json: ', error)
+		console.error('\x1b[31m%s\x1b[0m', 'Ошибка сохранение json: ', error)
 	}
 }
 

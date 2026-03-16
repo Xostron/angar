@@ -59,17 +59,17 @@ function get_net_info() {
 					})
 					.filter(Boolean);
 			} catch (e) {
-				console.warn('Ошибка при получении ttyS из dmesg:', e.message);
+				// console.warn('Ошибка при получении ttyS из dmesg:', e.message);
 				// Не прерываем выполнение, просто оставляем ttyS пустым
 			}
 
 			const result = { net, ttyS };
 			resolve(result);
 		} catch (e) {
-			console.error(
-				'Ошибка при получении сетевой информации:',
-				e.message
-			);
+			// console.error(
+			// 	'Ошибка при получении сетевой информации:',
+			// 	e.message
+			// );
 			reject(e);
 		}
 	});

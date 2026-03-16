@@ -17,34 +17,20 @@ function transports(levels) {
 	return arr
 }
 
+function create(levels, max) {
+	const log = createLogger({ levels: customLevels, handleExceptions: false })
+	log.setMaxListeners(max)
+	for (const t of transports(levels)) log.add(t)
+	return log
+}
+
 // Диспетчер для периферийных устройств
-const logger = createLogger({
-	levels: customLevels,
-	handleExceptions: false,
-	transports: transports(peripheryLevels),
-})
-logger.setMaxListeners(peripheryLevels.length * 2 + 2)
-
+const logger = create(peripheryLevels, peripheryLevels.length * 2 + 2)
 // Диспетчер для сообщений: аварийные, информационные, действия пользователей
-const loggerEvent = createLogger({
-	levels: customLevels,
-	handleExceptions: false,
-	transports: transports(eventLevels),
-})
-loggerEvent.setMaxListeners(eventLevels.length * 2 + 2)
-
+const loggerEvent = create(eventLevels, eventLevels.length * 2 + 2)
 // Диспетчер логов показаний датчиков
-const loggerSens = createLogger({
-	levels: customLevels,
-	handleExceptions: false,
-	transports: transports(sensLevels),
-})
-
+const loggerSens = create(sensLevels, 20)
 // Диспетчер логов электросчетчика
-const loggerWatt = createLogger({
-	levels: customLevels,
-	handleExceptions: false,
-	transports: transports(wattLevels),
-})
+const loggerWatt = create(wattLevels, 20)
 
 module.exports = { logger, loggerSens, loggerWatt, loggerEvent }

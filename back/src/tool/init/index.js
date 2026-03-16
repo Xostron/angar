@@ -66,7 +66,7 @@ async function init() {
 			.then((_) => equipment())
 			// отправка рамы на клиент
 			.then((data) => cEquip(data))
-			.catch(console.log)
+			.catch(console.error)
 	);
 }
 

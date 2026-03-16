@@ -3,7 +3,7 @@ const { execSync } = require('child_process');
 function update() {
 	return new Promise((resolve, reject) => {
 		// обновление кода через git от имени пользователя tenta
-		console.log('Обновление кода через git от имени пользователя tenta...');
+		// console.log('Обновление кода через git от имени пользователя tenta...');
 
 		const commands = [
 			'cd /home/tenta/apps',
@@ -19,10 +19,10 @@ function update() {
 		// Выполняем команды от имени tenta с использованием пароля
 		try {
 			const out = execSync(fullCommand);
-			console.log(out);
+			// console.log(out);
 			resolve(true);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			reject(error);
 		}
 	});

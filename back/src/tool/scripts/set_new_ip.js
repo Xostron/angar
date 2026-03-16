@@ -45,11 +45,11 @@ function set_new_ip(ip) {
 		throw e;
 	}
 
-	console.log('IP обновлён на', ip);
-	console.log('Сборка ...');
+	// console.log('IP обновлён на', ip);
+	// console.log('Сборка ...');
 	rebuild()
 		.then(() => {
-			console.log('Перезапуск pm2...');
+			// console.log('Перезапуск pm2...');
 			pm2('start', '/home/tenta/apps/ecosystem/ecosystem.config.js');
 		})
 		.catch((e) => {

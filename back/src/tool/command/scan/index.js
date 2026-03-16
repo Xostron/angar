@@ -29,7 +29,7 @@ function scan(bld, obj) {
 	const m = mechB(bld?._id, bld?.type, obj)
 
 	// Аккумулятор для хранения промежуточных вычислений (авторежим)
-	const t = bld?.type == 'normal' ? automode ?? bld?.type : bld?.type
+	const t = bld?.type === 'normal' ? automode ?? bld?.type : bld?.type
 	const accAuto = readAcc(bld._id, t)
 
 	// TODO не используется

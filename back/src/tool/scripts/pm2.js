@@ -15,13 +15,13 @@ function pm2(code, type = 'all') {
 				
 				exec(command, (error, stdout, stderr) => {
 					if (error) {
-						console.error(
-							`Ошибка 1 при выполнении pm2 ${code}: ${error.message}`
-						);
+						// console.error(
+						// 	`Ошибка 1 при выполнении pm2 ${code}: ${error.message}`
+						// );
 						return;
 					}
 					if (stderr) {
-						console.error(`stderr: ${stderr}`);
+						// console.error(`stderr: ${stderr}`);
 						return;
 					}
 				});
@@ -31,9 +31,9 @@ function pm2(code, type = 'all') {
 				message: `code: ${code} всех процессов pm2 через 5 секунд...`,
 			});
 		} catch (error) {
-			console.error(
-				`Ошибка при выполнении pm2 ${code}: ${error.message}`
-			);
+			// console.error(
+			// 	`Ошибка при выполнении pm2 ${code}: ${error.message}`
+			// );
 			reject({ success: false, error: error.message });
 		}
 	});

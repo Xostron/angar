@@ -232,7 +232,7 @@ function aggregate(db, name, pipeline, options = {}) {
 		cursor.toArray((err, docs) => {
 			// console.log("docs", docs.length);
 			if (err) {
-				console.log(err);
+				console.error(err);
 				// Если ошибка связана с размером буфера (результат слишком большой для BSON)
 				if (
 					err.code === 'ERR_OUT_OF_RANGE' ||
@@ -255,7 +255,7 @@ function aggregate(db, name, pipeline, options = {}) {
 						),
 					);
 				}
-				console.log(err);
+				console.error(err);
 				return reject(err);
 			}
 			resolve(docs);

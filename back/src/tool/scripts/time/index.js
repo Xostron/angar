@@ -18,13 +18,13 @@ function sync() {
 // Установка времени
 function set(dt) {
 	return new Promise((resolve, reject) => {
-		console.log('set_time dt', dt, typeof dt);
+		// console.log('set_time dt', dt, typeof dt);
 		if (process.platform !== 'linux') {
 			return reject(new Error('Not a Linux system'));
 		}
 		// sudo timedatectl set-time 'YYYY-MM-DD HH:MM:SS'
 		const cmd = `sudo timedatectl set-time '${dt}'`;
-		console.log('set_time cmd', cmd);
+		// console.log('set_time cmd', cmd);
 		try {
 			const result = execSync(cmd);
 			resolve(result);
