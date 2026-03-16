@@ -37,7 +37,8 @@ module.exports = async function prepareRes(type) {
 		// Мясо - Полное содержимое секции и карточки секций
 		for (const sec of data.section)
 			present[sec._id] = await transformStore(sec.buildingId, sec._id)
-		// Актуальные данные
+
+		// Актуальные данные - Преобразуем в одноуровневый объект с составными ключами
 		present = { ...convertPC(resPC), ...convertSec(present) }
 		// delta-изменения:
 		diffing = !past || type === 'init' ? null : deltaTol(present, past, sens, tolerance)

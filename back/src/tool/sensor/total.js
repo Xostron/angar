@@ -29,6 +29,7 @@ function fnState(sensor, result, idB, type) {
  */
 function toutVsWeather(tout, tw) {
 	// Прогноз погоды выкл или не валиден
+	// tw.value=0.5
 	if (tw.state != 'on') return tout
 	// Условие переключения температуры на прогноз погоды если датчик рабочий
 	if (tout !== null && tout > 0 && tout > tw.value && tw.value < 1) return tw.value
@@ -38,4 +39,4 @@ function toutVsWeather(tout, tw) {
 	return tout
 }
 
-module.exports = {state, fnState, toutVsWeather}
+module.exports = { state, fnState, toutVsWeather }

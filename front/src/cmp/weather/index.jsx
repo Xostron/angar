@@ -24,16 +24,16 @@ export default function Weather({}) {
 		// Температура улицы - мин
 		{ type: 'tout', ...getTotalBy('tout', 'min', build?._id) },
 		// Влажность улицы - max
-		{ type: 'hout', ...getTotal('hout', 'max') },
+		{ type: 'hout', ...getTotalBy('hout', 'max', build?._id) },
 		// Абсолютная влажность улицы
-		{ type: 'calcMois', value: humAbs?.out?.com ?? humAbs?.out?.[build._id] },
+		{ type: 'calcMois', value: humAbs?.out?.[build._id] ?? humAbs?.out?.com },
 	]
 	sens[2].state = checkS(sens?.[0]?.state, sens?.[1]?.state)
 	// const o = { company: build.company, code: build.code, name:address: build?.pc?.address?.value }
 	const cls = ['cmp-weather', mb].join(' ')
 	const clsOwner = ['cmp-weather-owner', mb].join(' ')
 	const clsSens = ['cmp-weather-sens', mb].join(' ')
-	
+
 	return (
 		<section className={cls}>
 			<Owner data={build} cls={clsOwner} />

@@ -9,12 +9,7 @@ import { checkS } from '@tool/sensor'
 
 //Параметры улицы(погода, датчики)
 export default function Outdoor() {
-	// const [build, section, type] = useEquipStore(({ build, section, curType }) => [build(),section(), curType()])
-	// const [getTotalBy, getFan, humAbs] = useInputStore(({ getTotalBy, getFan, input }) => [
-	// 	getTotalBy,
-	// 	getFan,
-	// 	input?.humAbs,
-	// ])
+
 	const mb = useViewStore((s) => s.mb())
 	const build = useEquipStore((s) => s.build())
 	const section = useEquipStore((s) => s.section())

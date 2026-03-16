@@ -21,7 +21,7 @@ module.exports = async function prepareReq() {
 	let present = {}, // Актуальное состояние ангара (Вторичная - составные ключи)
 		diffing, // delta-изменения (Вторичная - составные ключи)
 		result // ответ для Админки
-	const raw = store.value // Актуальное состояние ангара (первичная форма)
+
 	try {
 		// Рама pc
 		const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
@@ -35,19 +35,19 @@ module.exports = async function prepareReq() {
 		// }
 
 		// Собираем значения по складу
-		if (!Object.keys(raw).length) {
+		if (!Object.keys(store.value).length) {
 			// console.log('\x1b[33m%s\x1b[0m', 'Данные не готовы')
 			return null
 		}
 
 		// Карточки PC
-		const resPC = transformPC(raw, data.building, data.section, data.fan)
+		const resPC = transformPC(store.value, data.building, data.section, data.fan)
 
 		// Полное содержимое секции и карточки секций
 		for (const sec of data.section)
 			present[sec._id] = await transformStore(sec.buildingId, sec._id)
 
-		// Преобразуем в одноуровневый объект с составными ключами
+		// Актуальные данные - Преобразуем в одноуровневый объект с составными ключами
 		present = { ...convertPC(resPC), ...convertSec(present) }
 
 		// Расчет delta (первый пул данных успешно hub.init = true)
