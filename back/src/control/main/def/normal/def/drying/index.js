@@ -72,12 +72,12 @@ function middlewB(bld, obj, s, seB, am, acc) {
 	}
 }
 
-function valve(idS, obj, m, s, se, acc, isCO2work, alr) {
+function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
 	console.log('\tКлапаны сушка', 'open', open, 'close', close, 'forceOpn', forceOpn)
-	return { open, close, forceOpn, forceCls: false }
+	return { open, close, forceOpn, forceCls: false, sp: null }
 }
 
 function fan(s, se, alr, idS, acc) {

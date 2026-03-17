@@ -1,6 +1,8 @@
-const { setCmd } = require('@tool/command/set')
+const { setCmd, setCmdT } = require('@tool/command/set')
+const { data: store } = require('@store')
 const _MAX_SP = 100
 const _MIN_SP = 20
+const _HYST_VLV = 1
 
 // Записть в аналоговый выход
 function ctrlAO(o, bldId, value) {
@@ -79,4 +81,63 @@ function arrCtrlDO(idB, arr, type) {
 	})
 }
 
-module.exports = { ctrlAO, ctrlDO, ctrlV, arrCtrlDO }
+function ctrlVsp(vlv, idB, sp) {
+	const moduleOpn = vlv.module.on.id
+	const moduleCls = vlv.module.off.id
+	const chOpn = +vlv.module.on.channel - 1
+	const chCls = +vlv.module.off.channel - 1
+	// Текущая позиция клапана
+	const curpos = +store.value.retain[idB].valvePosition[vlv._id]
+	// Калибровочное время клапана
+	const maxpos = +store.value.retain[idB].valve[vlv._id]
+	// Уставка % -> время открытия
+	const spp = (+sp * maxpos) / 100
+	// Гистерезис 1%
+	const hyst = (_HYST_VLV * maxpos) / 100
+
+	if (
+		(spp < curpos + hyst && spp > curpos - hyst) ||
+		sp === null ||
+		sp === undefined ||
+		isNaN(spp)
+	)
+		return
+
+	const s = {}
+	const t = {}
+	s[idB] ??= {}
+	s[idB][moduleOpn] ??= {}
+	s[idB][moduleCls] ??= {}
+	t[idB] ??= {}
+	t[idB][moduleOpn] ??= {}
+	t[idB][moduleCls] ??= {}
+	// Открыть клапан
+	if (spp > curpos) {
+		s[idB][moduleCls][chCls] = 0
+		// уставка
+		t[idB][moduleOpn][chOpn] = {
+			value: 1,
+			time: spp,
+			type: 'on',
+			_id: vlv._id,
+		}
+	}
+
+	// Закрыть клапан
+	if (spp < curpos) {
+		s[idB][moduleOpn][chOpn] = 0
+		// уставка
+		t[idB][moduleCls][chCls] = {
+			value: 1,
+			time: spp,
+			type: 'off',
+			_id: vlv._id,
+		}
+	}
+	// Задание
+	setCmdT(t)
+	// Команда управления
+	setCmd(s)
+}
+
+module.exports = { ctrlAO, ctrlDO, ctrlV, arrCtrlDO, ctrlVsp }

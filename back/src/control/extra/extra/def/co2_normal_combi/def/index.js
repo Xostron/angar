@@ -6,6 +6,7 @@ const def = {
 	on,
 	time,
 	sensor,
+	null: () => {},
 }
 
 module.exports = def

@@ -16,17 +16,26 @@ const { delUnused } = require('@tool/command/extra')
  */
 function fnMode(prepare, s, acc) {
 	const { isCC, isCN, isN } = prepare
+	// // Обычный, комби-обычный. Режим ВВ Выкл
+	// if ((isN || isCN) && (s?.co2?.mode === 'off' || !s?.co2?.mode)) return 'off'
+	// // Обычный, комби-обычный. Режим ВВ Вкл
+	// if ((isN || isCN) && s?.co2?.mode === 'on') return 'on'
+	// // Обычный, комби-обычный. Режим ВВ время. Выберется по времени
+	// if ((isN || isCN) && s?.co2?.mode === 'time') return 'time'
+	// // Обычный, комби-обычный. Режим ВВ время. Выберется по времени
+	// if ((isN || isCN) && s?.co2?.mode === 'sensor') return 'sensor'
+	// // Комби-холод.
+	// if (isCC) return null
+	// return null
 	// Обычный, комби-обычный. Режим ВВ Выкл
-	if ((isN || isCN) && (s?.co2?.mode === 'off' || !s?.co2?.mode)) return 'off'
+	if ( (s?.co2?.mode === 'off' || !s?.co2?.mode)) return 'off'
 	// Обычный, комби-обычный. Режим ВВ Вкл
-	if ((isN || isCN) && s?.co2?.mode === 'on') return 'on'
+	if ( s?.co2?.mode === 'on') return 'on'
 	// Обычный, комби-обычный. Режим ВВ время. Выберется по времени
-	if ((isN || isCN) && s?.co2?.mode === 'time') return 'time'
+	if ( s?.co2?.mode === 'time') return 'time'
 	// Обычный, комби-обычный. Режим ВВ время. Выберется по времени
-	if ((isN || isCN) && s?.co2?.mode === 'sensor') return 'sensor'
-	// Комби-холод.
-	if (isCC) return null
-	return null
+	if ( s?.co2?.mode === 'sensor') return 'sensor'
+	return 'off'
 }
 
 function fnModeMsg(bld, code, acc) {

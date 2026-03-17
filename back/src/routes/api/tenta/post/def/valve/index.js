@@ -9,7 +9,7 @@ async function valve(obj) {
 		// Останов калибровки
 		const o = { [obj.valveId]: { _stage: null } }
 		setTune(o)
-		// console.log(1111, obj)
+		// console.log(11118, obj)
 		// Команда управления
 		fnVlv(vlv, obj)
 		Aboc.set()

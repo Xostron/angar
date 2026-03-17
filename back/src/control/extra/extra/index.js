@@ -13,7 +13,7 @@ function extra(
 	resultFan,
 	data,
 	type = 'section',
-	state = 'on'
+	state = 'on',
 ) {
 	if (!s) return
 	for (const key in def[type][state]) {
@@ -23,7 +23,7 @@ function extra(
 		else code = key
 		const acc = readAcc(building._id, section?._id ?? 'building', code)
 		// if (key === 'coOn' || key === 'coAuto' || key === 'co2NormalCombi')
-		// 	console.log(2200, 'EXTRAAAAAAAAA', key, code, alarm, resultFan)
+		// console.log(2200, 'EXTRAAAAAAAAA', type, state, key, code, alarm, resultFan)
 		// Таймер запретов TODO вентиляция, увлажнитель
 		let ban = store.alarm.timer?.[building._id]?.[key]
 		if (key === 'accelOn' || key === 'accelAuto') ban = store.alarm.timer?.[building._id]?.accel
@@ -45,7 +45,7 @@ function extraClear(
 	resultFan,
 	data,
 	type = 'section',
-	state = 'on'
+	state = 'on',
 ) {
 	for (const key in def[type][state]) {
 		def[type][state][key](
@@ -60,7 +60,7 @@ function extraClear(
 			null,
 			null,
 			null,
-			true
+			true,
 		)
 	}
 }

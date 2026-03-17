@@ -27,15 +27,22 @@ function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
  * @param {*} s Настройки склада
  */
 function fnValve(data, idS, s) {
-	const { open, close, forceOpn, forceCls } = data
+	const { open, close, forceOpn, forceCls, sp } = data
 	// Нет команд
 	if (!open && !close && !forceOpn && !forceCls) return
+
+	let type
+	if (typeof sp === 'number') type = null
+	else if (open || forceOpn) type = 'open'
+	else type = 'close'
+
 	const o = {
 		step: s.sys.step,
 		delay: s.sys.wait,
 		kIn: s.sys.cf.kIn,
 		kOut: s.sys.cf.kOut.k,
-		type: open || forceOpn ? 'open' : 'close',
+		type,
+		sp,
 	}
 	setACmd('vlv', idS, o)
 }

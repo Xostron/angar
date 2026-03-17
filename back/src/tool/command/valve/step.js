@@ -1,21 +1,49 @@
-const { ctrlV } = require('@tool/command/module_output')
+const { ctrlV, ctrlVsp } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const { compareTime, remTime } = require('../time')
 
+/**
+ * Автоматический режим
+ * @param {*} vlvS
+ * @param {*} idB
+ * @param {*} idS
+ * @param {*} retain
+ * @returns
+ */
 function fnStep(vlvS, idB, idS, retain) {
 	// Подготовка данных
 	const prepare = fnPrepare(vlvS, idS)
-	const { aCmd, vlvIn, tStep, tWait } = prepare
-
+	// const { aCmd, vlvIn, tStep, tWait } = prepare
+	console.log(9988, prepare.aCmd)
 	// Разрешение на шаг
 	if (!fnCheck(prepare, retain)) return
 
-	// Управление
 	// Аккумулятор
 	store.watchdog ??= {}
-	store.watchdog[vlvIn._id] ??= {}
-	const acc = store.watchdog[vlvIn._id]
+	store.watchdog[prepare.vlvIn._id] ??= {}
+	const acc = store.watchdog[prepare.vlvIn._id]
 
+	// Дискретное включение
+	if (typeof prepare.aCmd.sp !== 'number') {
+		byStep(idB, idS, prepare, acc)
+		delete acc.sp
+	} else {
+		// Включение на позицию
+		bySp(idB, idS, prepare, acc)
+		delete acc.work
+		delete acc.wait
+	}
+}
+
+/**
+ * Управление по шагам
+ * @param {*} idB
+ * @param {*} idS
+ * @param {*} prepare
+ * @returns
+ */
+function byStep(idB, idS, prepare, acc) {
+	const { aCmd, vlvIn, tStep, tWait } = prepare
 	// Включаем клапан
 	acc.work ??= new Date()
 	let time = compareTime(acc.work, tStep)
@@ -23,7 +51,7 @@ function fnStep(vlvS, idB, idS, retain) {
 	// Время шага не прошло - включаем клапан
 	if (!time) {
 		// console.log(99005, 'Включаем клапан', aCmd.type, remTime(acc.work, tStep))
-		ctrlV(vlvIn, idB, aCmd.type,)
+		ctrlV(vlvIn, idB, aCmd.type)
 		return
 	}
 
@@ -36,6 +64,21 @@ function fnStep(vlvS, idB, idS, retain) {
 	if (time) {
 		store.watchdog[vlvIn._id] = null
 		store.aCmd[idS].vlv = null
+	}
+}
+
+/**
+ * Управление по процентам открытия (для удаления СО2 в комби-холодильнике)
+ * @param {*} idB
+ * @param {*} idS
+ * @param {*} prepare
+ */
+function bySp(idB, idS, prepare, acc) {
+	const { aCmd, vlvIn, tStep, tWait } = prepare
+
+	if (!acc?.sp) {
+		ctrlVsp(vlvIn, idB, aCmd.sp)
+		acc.sp = new Date()
 	}
 }
 

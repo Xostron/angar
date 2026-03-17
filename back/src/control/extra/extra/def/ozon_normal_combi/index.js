@@ -40,15 +40,15 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 	// Подготовка данных
 	const prepare = fnPrepare(bld, obj, s, m)
 	const { oacc, oz, fanA, fan, accelMode, stg, idsS } = prepare
-	console.log(
-		11,
-		'Озонатор',
-		prepare?.oacc,
-		'oz.arr=',
-		prepare?.oz?.arr?.length,
-		'ready=',
-		prepare?.oz?.ready
-	)
+	// console.log(
+	// 	11,
+	// 	'Озонатор',
+	// 	prepare?.oacc,
+	// 	'oz.arr=',
+	// 	prepare?.oz?.arr?.length,
+	// 	'ready=',
+	// 	prepare?.oz?.ready
+	// )
 
 	// Проверка готовности
 	if (!checkReady(bld, s, prepare)) return
