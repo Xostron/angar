@@ -2,7 +2,7 @@ const { setCmd, setCmdT } = require('@tool/command/set')
 const { data: store } = require('@store')
 const _MAX_SP = 100
 const _MIN_SP = 20
-const _HYST_VLV = 1
+const _HYST_VLV = 3
 
 // Записть в аналоговый выход
 function ctrlAO(o, bldId, value) {
