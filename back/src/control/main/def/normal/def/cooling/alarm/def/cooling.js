@@ -57,8 +57,8 @@ function cooling(s, seB, building, acc, bdata) {
 		},
 		// 7. Влажность улицы выше допустимой (точка росы)
 		{
-			set: false,
-			reset: true,
+			set: seB.point + s.heat.point > seB.tprd,
+			reset: seB.point + s.heat.point + s.heat.hysteresisP < seB.tprd,
 			msg: msgB(building, 120),
 		},
 	]

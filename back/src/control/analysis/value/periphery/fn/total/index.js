@@ -74,7 +74,8 @@ module.exports = function total(equip, result, retain) {
 		const hweather = result[bld._id].hweather
 		// Температура улицы склада
 		const tout = { ...result?.total?.tout } ?? {}
-		tout.min = toutVsWeather(tout.min, tweather)
+		// TODO разблокировать когда мобилка будет готова
+		// tout.min = toutVsWeather(tout.min, tweather)
 		// Влажность улицы склада
 		const hout = { ...result?.total?.hout } ?? {}
 		// Абс влажность улицы

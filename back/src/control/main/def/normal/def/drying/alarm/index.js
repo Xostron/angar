@@ -41,41 +41,47 @@ function drying(s, seB, building, acc, bdata) {
 	// )
 	// console.log(99004,'Абс влажн улицы выше', hAbsOut, hAbsIn , s.mois.differenceMin, hAbsIn - s.mois.differenceMin, hAbsOut >= hAbsIn - s.mois.differenceMin)
 	return [
-		// Температура улицы не подходит при сушке
+		// 1 Температура улицы не подходит при сушке
 		{
 			set: tout > s.drying.channelMax,
 			reset: tout + s.drying.hysteresisOut < s.drying.channelMax,
 			msg: msgB(building, 1),
 		},
-		// Температура улицы ниже допустимой при сушке
+		// 2 Температура улицы ниже допустимой при сушке
 		{
 			set: tout < s.drying.min,
 			reset: tout - s.drying.hysteresisOut > s.drying.min,
 			msg: msgB(building, 2),
 		},
-		// Влажность улицы ниже допустимой при сушке
+		// 3 Влажность улицы ниже допустимой при сушке
 		{
 			set: hout < s.drying.humidityMin,
 			reset: hout - s.mois.hysteresisRel > s.drying.humidityMin,
 			msg: msgB(building, 3),
 		},
-		// Влажность улицы выше допустимой при сушке
+		// 4 Влажность улицы выше допустимой при сушке
 		{
 			set: hout > s.drying.humidityMax,
 			reset: hout + s.mois.hysteresisRel < s.drying.humidityMax,
 			msg: msgB(building, 4),
 		},
-		// Абсолютная влажность улицы ниже допустимой при сушке
+		// 5 Абсолютная влажность улицы ниже допустимой при сушке
 		{
 			set: hAbsOut < hAbsIn - s.mois.differenceMax,
 			reset: hAbsOut - s.mois.abs?.h > hAbsIn - s.mois.differenceMax,
 			msg: msgB(building, 5),
 		},
-		// Абсолютная влажность улицы выше допустимой при сушке
+		// 6 Абсолютная влажность улицы выше допустимой при сушке
 		{
 			set: hAbsOut >= hAbsIn - s.mois.differenceMin,
 			reset: hAbsOut + s.mois.abs?.h < hAbsIn - s.mois.differenceMin,
 			msg: msgB(building, 6),
+		},
+		// 7. Влажность улицы выше допустимой (точка росы)
+		{
+			set: seB.point + s.heat.point > seB.tprd,
+			reset: seB.point + s.heat.point + s.heat.hysteresisP < seB.tprd,
+			msg: msgB(building, 120),
 		},
 	]
 }
