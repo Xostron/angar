@@ -14,7 +14,7 @@ function fnStep(vlvS, idB, idS, retain) {
 	// Подготовка данных
 	const prepare = fnPrepare(vlvS, idS)
 	// const { aCmd, vlvIn, tStep, tWait } = prepare
-	console.log(9988, prepare.aCmd)
+	// console.log(9988, prepare.aCmd)
 	// Разрешение на шаг
 	if (!fnCheck(prepare, retain)) return
 

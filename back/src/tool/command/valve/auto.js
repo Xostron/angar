@@ -29,7 +29,7 @@ function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
 function fnValve(data, idS, s) {
 	const { open, close, forceOpn, forceCls, sp } = data
 	// Нет команд
-	if (!open && !close && !forceOpn && !forceCls) return
+	if (!open && !close && !forceOpn && !forceCls && typeof sp !== 'number') return
 
 	let type
 	if (typeof sp === 'number') type = null

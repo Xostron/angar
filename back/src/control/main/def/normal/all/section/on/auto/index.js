@@ -19,7 +19,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 	const alrSe = alrSens(se)
 	const a = [
 		[alrS, 'Доп. аварии. для секции'],
-		[alrAm && !isCO2work, 'Авария авторежима', 'alrAm:', alrAm, '!isCO2work:', !isCO2work],
+		[alrAm && !isCO2work, 'Авария авторежима и СО2 не активна'],
 		[ban, 'таймер запретов'],
 		[alrBld, 'авария склада'],
 		[alrAlw, 'alrAlw'],
