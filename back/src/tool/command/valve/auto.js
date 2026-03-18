@@ -16,7 +16,7 @@ function ctrlVSoft(vlvS, idB, idS, retain, forceCls, forceOpn) {
 	// Принудительное управление
 	if (checkForce(idB, idS, vlvS, forceCls, forceOpn)) return
 
-	// Шаговое управление
+	// Управление клапаном
 	fnStep(vlvS, idB, idS, retain)
 }
 

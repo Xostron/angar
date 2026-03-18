@@ -29,7 +29,7 @@ function runExtra(bld, obj, bdata) {
 	let sect = null
 	if (type === 'cold') sect = obj?.data?.section?.find((el) => el.buildingId === bld._id)
 	// Всегда TODO2 авария неисправность модулей не должна влиять на комби-холод
-	alr = alr || extralrm(bld, null, obj, s, se, m, automode, null, type, 'always')
+	alr = alr || extralrm(bld, null, obj, s, se, m, automode, type, 'always')
 	extra(bld, sect, obj, s, se, m, null, null, null, type, 'always')
 
 	// Склад выключен
@@ -39,7 +39,7 @@ function runExtra(bld, obj, bdata) {
 	} else extraClear(bld, null, obj, s, se, m, null, null, null, type, 'off')
 
 	// Склад включен
-	alr = alr || extralrm(bld, null, obj, s, se, m, automode, null, type, 'on')
+	alr = alr || extralrm(bld, null, obj, s, se, m, automode, type, 'on')
 	extra(bld, null, obj, s, se, m, alr, null, null, type, 'on')
 	return alr
 }

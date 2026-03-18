@@ -1,7 +1,7 @@
 const def = require('@control/main/def/normal/def')
 const { check } = require('@tool/command/section')
 const { extra } = require('@control/extra/extra')
-const { valve } = require('./fn')
+const { valve } = require('./valve')
 const auto = require('./auto')
 
 // Обработка секции в авторежиме

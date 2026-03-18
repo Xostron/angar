@@ -20,12 +20,12 @@ function build(start, building, obj, s, se, m, am, accAuto, resultFan, bdata) {
 	let alrBld = false,
 		alrAm = false
 	// Доп. аварии и доп. функции (always - всегда выполняются)
-	alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'always')
+	alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, 'building', 'always')
 
 	if (start) {
 		// Склад включен
 		// Доп. аварии и доп. функции (on - выполнение при включенном складе)
-		alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, null, 'building', 'on')
+		alrBld = alrBld || extralrm(building, null, obj, s, se, m, am, 'building', 'on')
 		extra(building, null, obj, s, se, m, null, resultFan, null, 'building', 'on')
 		// Промежуточные расчеты
 		def[am]?.middlewB(building, obj, s, se, am, accAuto, alrBld)

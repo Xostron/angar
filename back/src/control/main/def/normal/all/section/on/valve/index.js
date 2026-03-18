@@ -16,14 +16,14 @@ const flyingVlv = require('@tool/command/valve/flying')
  */
 function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 	if (!vlvS.length) return
-	// 1. Аварии
-	// 2. Принудительное закрытие
+	// Принудительное закрытие
+	// 1. Аварии по секции
+	// 2. Команда: принудительное закрытие
 	// 3. Нет рабочих ВНО у секции
-	// 4. Поиск закрытого концевика, если положение клапана = 0
-	const lookCls = fnLookCls(bld, sect, vlvS, obj)
-	const forceCls = alr || v.forceCls || !fanS.length || lookCls
-	// console.log(8800, 'forceCls =', alr, '||', v.forceCls, '||', !fanS.length, '||', lookCls)
+	// 4. Поиск закрытого концевика, если положение клапана = 0%
+	const forceCls = alr || v.forceCls || !fanS.length || fnLookCls(bld, sect, vlvS, obj)
 
+	// Управление приточным клапаном
 	ctrlVSoft(
 		vlvS,
 		bld._id,
@@ -33,8 +33,9 @@ function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 			valvePosition: obj.retain?.[bld._id]?.valvePosition,
 		},
 		forceCls,
-		v.forceOpn
+		v.forceOpn,
 	)
+	
 	// Выпускной клапан (следит за приточным клапаном)
 	flyingVlv(bld._id, sect._id, obj, vlvS, s, forceCls)
 }
