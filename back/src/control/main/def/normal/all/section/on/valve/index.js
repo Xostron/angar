@@ -1,5 +1,6 @@
-const { ctrlVSoft, fnLookCls } = require('@tool/command/valve/auto')
-const flyingVlv = require('@tool/command/valve/flying')
+const ctrlVin = require('@tool/command/valve/vin')
+const { fnLookCls } = require('@tool/command/valve')
+const flyingVout = require('@tool/command/valve/vout')
 
 /**
  * Приточный клапан (шаговое управление) TODO12
@@ -24,7 +25,7 @@ function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 	const forceCls = alr || v.forceCls || !fanS.length || fnLookCls(bld, sect, vlvS, obj)
 
 	// Управление приточным клапаном
-	ctrlVSoft(
+	ctrlVin(
 		vlvS,
 		bld._id,
 		sect._id,
@@ -35,9 +36,9 @@ function valve(bld, sect, vlvS, fanS, obj, alr, v, accAuto, s) {
 		forceCls,
 		v.forceOpn,
 	)
-	
+
 	// Выпускной клапан (следит за приточным клапаном)
-	flyingVlv(bld._id, sect._id, obj, vlvS, s, forceCls)
+	flyingVout(bld._id, sect._id, obj, vlvS, s, forceCls)
 }
 
 module.exports = { valve }

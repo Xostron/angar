@@ -1,6 +1,5 @@
-const { ctrlV, ctrlVsp } = require('@tool/command/module_output')
 const { data: store } = require('@store')
-const { compareTime, remTime } = require('../time')
+const def = require('./def')
 
 /**
  * Автоматический режим
@@ -10,7 +9,7 @@ const { compareTime, remTime } = require('../time')
  * @param {*} retain
  * @returns
  */
-function fnStep(vlvS, idB, idS, retain) {
+function fnMode(vlvS, idB, idS, retain) {
 	// Подготовка данных
 	const prepare = fnPrepare(vlvS, idS)
 	// const { aCmd, vlvIn, tStep, tWait } = prepare
@@ -23,63 +22,10 @@ function fnStep(vlvS, idB, idS, retain) {
 	store.watchdog[prepare.vlvIn._id] ??= {}
 	const acc = store.watchdog[prepare.vlvIn._id]
 
-	// Дискретное включение
-	if (typeof prepare.aCmd.sp !== 'number') {
-		byStep(idB, idS, prepare, acc)
-		delete acc.sp
-	} else {
-		// Включение на позицию
-		bySp(idB, idS, prepare, acc)
-		delete acc.work
-		delete acc.wait
-	}
-}
-
-/**
- * Управление по шагам
- * @param {*} idB
- * @param {*} idS
- * @param {*} prepare
- * @returns
- */
-function byStep(idB, idS, prepare, acc) {
-	const { aCmd, vlvIn, tStep, tWait } = prepare
-	// Включаем клапан
-	acc.work ??= new Date()
-	let time = compareTime(acc.work, tStep)
-
-	// Время шага не прошло - включаем клапан
-	if (!time) {
-		// console.log(99005, 'Включаем клапан', aCmd.type, remTime(acc.work, tStep))
-		ctrlV(vlvIn, idB, aCmd.type)
-		return
-	}
-
-	// Время шага прошло - стоп клапана - задержка
-	ctrlV(vlvIn, idB, 'stop')
-	acc.wait ??= new Date()
-
-	time = compareTime(acc.wait, tWait)
-	// Задержка прошла - очищаем аккумулятор
-	if (time) {
-		store.watchdog[vlvIn._id] = null
-		store.aCmd[idS].vlv = null
-	}
-}
-
-/**
- * Управление по процентам открытия (для удаления СО2 в комби-холодильнике)
- * @param {*} idB
- * @param {*} idS
- * @param {*} prepare
- */
-function bySp(idB, idS, prepare, acc) {
-	const { aCmd, vlvIn, tStep, tWait } = prepare
-
-	if (!acc?.sp) {
-		ctrlVsp(vlvIn, idB, aCmd.sp)
-		acc.sp = new Date()
-	}
+	// Выбор управления
+	typeof prepare.aCmd.sp !== 'number'
+		? def.fnStep(idB, idS, prepare, acc)
+		: def.fnSp(idB, idS, prepare, acc)
 }
 
 /**
@@ -120,7 +66,7 @@ function fnPrepare(vlvS, idS) {
 	return { aCmd, vlvIn, tStep, tWait }
 }
 
-module.exports = fnStep
+module.exports = fnMode
 
 // Расчеты для работы клапана в режиме шага (Xсек - откр/закр, Yсек - стоит)
 // Расчеты сохраняются в store.watchdog.[valveId]

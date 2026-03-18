@@ -1,6 +1,6 @@
 const { data: store, readAcc } = require('@store')
 const def = require('@control/main/def/normal/def')
-const { fnValve } = require('@tool/command/valve/auto')
+const { configCmdV } = require('@tool/command/valve')
 const fnAlarm = require('./fn/alarm')
 
 /**
@@ -42,7 +42,7 @@ function auto(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrAm, 
 
 	// Клапаны
 	const v = def[am].valve(bld, sect._id, obj, m, s, se, am, acc, isCO2work, alr)
-	fnValve(v, sect._id, s)
+	configCmdV(v, sect._id, s)
 
 	// ВНО
 	const f = def[am].fan(s, se, alr, sect._id, acc)

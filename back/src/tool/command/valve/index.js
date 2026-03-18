@@ -1,6 +1,8 @@
 const { readAcc } = require('@store/index')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { isErrM } = require('@tool/message/plc_module')
+const { setACmd } = require('@tool/command/set')
+const { data: store } = require('@store')
 
 /**
  * Анализ сигналов: Состояние клапана
@@ -54,10 +56,69 @@ function isLongVlv(idB, v, type = 'open') {
 	return acc?.[v._id]?.alarmCls
 }
 
+/**
+ * АВТО: Формирование команды управления клапаном
+ * @param {*} data Состояние клапана
+ * @param {*} idS ИД секции
+ * @param {*} s Настройки склада
+ */
+function configCmdV(data, idS, s) {
+	const { open, close, forceOpn, forceCls, sp } = data
+	// Нет команд
+	if (!open && !close && !forceOpn && !forceCls && typeof sp !== 'number') return
+
+	let type
+	if (typeof sp === 'number') type = null
+	else if (open || forceOpn) type = 'open'
+	else type = 'close'
+
+	const o = {
+		step: s.sys.step,
+		delay: s.sys.wait,
+		kIn: s.sys.cf.kIn,
+		kOut: s.sys.cf.kOut.k,
+		type,
+		sp,
+	}
+	setACmd('vlv', idS, o)
+}
+
+/**
+ * Принудительно закрывать, если позиция приточного
+ * клапана = 0мс && нет концевика закрытого положения &&
+ * авто команда на закрытие
+ * @param {*} bld Рама склада
+ * @param {*} sect Рама секции
+ * @param {*} vlvS Массив клапана
+ * @param {*} obj Глобальные данные
+ * @returns {boolean} true - принудительно закрыть
+ */
+function fnLookCls(bld, sect, vlvS, obj) {
+	// Авто: Команда на закрытие
+	const cmdCls = store.aCmd?.[sect._id]?.vlv?.type === 'close'
+	// Все настройки склада
+	const s = store?.calcSetting?.[bld._id] ?? {}
+	// Приточный клапан
+	const v = vlvS.find((el) => el.type === 'in')
+	// Положение клапана, мс
+	const pos = +obj.retain?.[bld._id]?.valvePosition?.[v._id]
+	// Состояние клапана { open: false, close: false, crash: false, val: 61, state: 'popn' }
+	const o = obj?.value?.[v._id]
+
+	// Если позиция приточного клапана = 0мс && нет концевика закрытого положения
+	// console.log(8801, 'Поиск концевика', pos === 0 && !o?.close && cmdCls, pos, o?.val, o?.close, cmdCls)
+
+	// Принудительно закрывать
+	if (pos === 0 && !o?.close && cmdCls) return true
+	return false
+}
+
 module.exports = {
 	stateV,
 	curStateV,
 	isLongVlv,
+	configCmdV,
+	fnLookCls,
 }
 
 /**
