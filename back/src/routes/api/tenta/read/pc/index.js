@@ -9,9 +9,10 @@ function pc() {
 				readOne('fan'), // Считываем данные вентиляторов
 				readOne('section'), // Считываем данные секций
 				readOne('building'), // Считываем данные складов
+				readOne('cooler'),
 			]
-			const [fan, section, building] = await Promise.all(p)
-			const result = transform(store.value, building, section, fan)
+			const rack = await Promise.all(p)
+			const result = transform(store.value, rack)
 			res.json(result)
 		} catch (error) {
 			console.log(error)

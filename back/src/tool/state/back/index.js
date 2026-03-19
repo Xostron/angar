@@ -33,7 +33,7 @@ module.exports = async function prepareRes(type) {
 		}
 
 		// Мясо - Карточки PC
-		const resPC = transformPC(raw, data.building, data.section, data.fan)
+		const resPC = transformPC(raw, data)
 		// Мясо - Полное содержимое секции и карточки секций
 		for (const sec of data.section)
 			present[sec._id] = await transformStore(sec.buildingId, sec._id)

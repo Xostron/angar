@@ -1,5 +1,5 @@
 const { msgBB } = require('@tool/message')
-const { wrExtralrm, delExtralrm } = require('@tool/message/extralrm')
+const { wrExtralrm, delExtralrm, isExtralrm } = require('@tool/message/extralrm')
 
 /**
  * Функция слежения и генерации аварии дребезга
@@ -10,7 +10,7 @@ const { wrExtralrm, delExtralrm } = require('@tool/message/extralrm')
  */
 function set(bld, reason, obj, accDeb, acc, watch, count) {
 	// Уже в аварии - выходим из итерации
-	if (acc._alarm) return
+	if (acc._alarm || isExtralrm(bld._id, null, 'sb')) return (acc._alarm = true)
 
 	accDeb.battery ??= []
 	const last = accDeb.battery.at(-1)

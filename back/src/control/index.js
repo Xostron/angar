@@ -22,6 +22,7 @@ async function control() {
 		// console.log(1100, store.retain)
 		// Проверка состояния батареи
 		battery()
+		// testBattery()
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
@@ -46,7 +47,6 @@ async function control() {
 		// Сохранение пользовательских настроек склада retain/data.json
 		await Aboc.asycall(save)(obj)
 		// await delay(2500)
-		// testBattery()
 		Aboc.refresh()
 		if (store._cycle_ms_ < 50) await delay(1000)
 		return true
@@ -93,12 +93,10 @@ function exception(err) {
 
 function testBattery() {
 	// store.battery = true
+
 	// blink
-	// if (store.testBattery) store.battery = false
-	// if (!store.testBattery) {
-	// store.testBattery = true
-	// store.battery = true
-	// }
+	if (!store.battery) return (store.battery = true)
+	if (store.battery) return (store.battery = false)
 }
 
 module.exports = loop

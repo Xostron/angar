@@ -41,7 +41,7 @@ module.exports = async function prepareReq() {
 		}
 
 		// Карточки PC
-		const resPC = transformPC(store.value, data.building, data.section, data.fan)
+		const resPC = transformPC(store.value, data)
 
 		// Полное содержимое секции и карточки секций
 		for (const sec of data.section)
