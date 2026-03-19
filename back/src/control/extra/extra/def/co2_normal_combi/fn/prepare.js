@@ -6,9 +6,9 @@ const { def } = require('@tool/command/fan/duration/prepare')
 
 function fnPrepare(bld, obj, s, m) {
 	// Массив секций
-	let idsS = getIdsS(obj.data.section, bld._id)
+	const idsSAll = getIdsS(obj.data.section, bld._id)
 	// Массив секций в авто
-	idsS = idsS.filter((idS) => obj.retain[bld._id].mode?.[idS])
+	const idsS = idsSAll.filter((idS) => obj.retain[bld._id].mode?.[idS])
 	// Авторежим склада
 	const am = obj.retain?.[bld._id]?.automode
 	// Авария авторежима
@@ -60,6 +60,7 @@ function fnPrepare(bld, obj, s, m) {
 		ccFlagFinish,
 		flagFinish,
 		idsS,
+		idsSAll,
 		vlvClosed,
 		fan,
 		point,

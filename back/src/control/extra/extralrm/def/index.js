@@ -25,7 +25,6 @@ const ozon = require('./ozon')
 const hCoolerCrash = require('./heating_cooler')
 const fCoolerCrash = require('./flap_cooler')
 const bldOff = require('./bld_off')
-// const supply = require('./supply')
 const supplyB = require('./supply_b')
 const sb = require('./supply_battery')
 
@@ -44,7 +43,6 @@ const def = {
 			vlvLim,
 			antibliz,
 			overVlv,
-			// supply,
 		},
 	},
 	building: {

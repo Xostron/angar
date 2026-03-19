@@ -14,7 +14,7 @@ const dict = {
 	9: 'склад работает по авто режиму', //комби-обычный
 	10: 'склад работает по авто режиму', //обычный
 	11: 'обнаружена авария',
-	// 12: 'склад работает в режиме комби-холодильника', 
+	// 12: 'склад работает в режиме комби-холодильника',
 }
 
 /**
@@ -86,6 +86,7 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		ccFlagFinish,
 		flagFinish,
 		idsS,
+		idsSAll,
 		vlvClosed,
 		fan,
 		point,
@@ -100,7 +101,7 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		isExtralrm(bld._id, null, 'local') || idsS.some((idS) => isExtralrm(bld._id, idS, 'local'))
 	const supply =
 		isExtralrm(bld._id, null, 'supply') ||
-		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
+		idsSAll.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
 		isExtralrm(bld._id, null, 'battery') ||
 		isExtralrm(bld._id, null, 'sb')
 	// CO2 запущен
