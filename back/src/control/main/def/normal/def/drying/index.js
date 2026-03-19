@@ -38,6 +38,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			),
 		)
 		acc.f1 = true
+		delAchieve(bld._id, 'drying', 'drying2')
+		delAchieve(bld._id, 'drying', 'drying3')
 	} else {
 		acc.f1 = false
 		delAchieve(bld._id, 'drying', 'drying1')
@@ -50,6 +52,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(bld, 154, `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`),
 		)
 		acc.f2 = true
+		delAchieve(bld._id, 'drying', 'drying1')
+		delAchieve(bld._id, 'drying', 'drying3')
 	} else {
 		acc.f2 = false
 		delAchieve(bld._id, 'drying', 'drying2')
@@ -66,9 +70,11 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			),
 		)
 		acc.f3 = true
+		delAchieve(bld._id, 'drying', 'drying1')
+		delAchieve(bld._id, 'drying', 'drying2')
 	} else {
 		acc.f3 = false
-		delAchieve(bld._id, 'drying', 'drying-3')
+		delAchieve(bld._id, 'drying', 'drying3')
 	}
 }
 

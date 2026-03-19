@@ -95,7 +95,6 @@ function fnTransform(bld, data, rack, result) {
 		// const f = fan.filter(
 			// 	(el) => el.type == 'fan' && sec.includes(el.owner.id)
 		// );
-		console.log(f)
 		const run = f.some((el) => store.value?.[el._id]?.state === 'run');
 		result[bld._id + 'fan'] = run ? 'run' : 'stop';
 	}
