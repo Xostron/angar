@@ -25,7 +25,7 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 	//
 	// Если в системе нет соленоидов подгрева, то разрешаем регулировать ПЧ
 	if (!solHeat?.length) {
-		acc.sol.value = true
+		acc.solh.value = true
 		return false
 	}
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
@@ -38,9 +38,9 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 
 	// Команда на включение соленоида подогрева
 	if (on) {
-		acc.sol.value = true
+		acc.solh.value = true
 		// Включаем и ждем (пока ждем запрещаем регулировать ПЧ)
-		if (!compareTime(acc.sol.date, acc.delaySolHeat)) {
+		if (!compareTime(acc.solh.date, acc.delaySolHeat)) {
 			acc.busy = false
 			return true
 		}
@@ -54,22 +54,22 @@ function fnSolHeat(idB, acc, solHeat, on, off, obj, s, where) {
 		// Выключение, если все ВНО и ПЧ выключены
 		if (where === 'cold' && acc.order === -1 && !acc.fc.value) {
 			// Ждем и выключаем соленоид подогрева
-			if (!compareTime(acc.sol.date, acc.delaySolHeat)) {
+			if (!compareTime(acc.solh.date, acc.delaySolHeat)) {
 				// console.log(4442, 'ждем...', acc.delaySolHeat)
 				acc.busy = false
 				return true
 			}
-			acc.sol.value = false
-			// console.log(4442, acc.sol)
+			acc.solh.value = false
+			// console.log(4442, acc.solh)
 		}
 		// Сигнал на выключение есть, но условия для отключения соленоида подогрева не наступили
 		// Обновляем точку отсчета отключения соленоида подгрева
-		acc.sol.date = new Date()
+		acc.solh.date = new Date()
 		// Разрешаем регулировать ПЧ
 		return false
 	}
 	// Обновляем точку отсчета отключения соленоида подгрева
-	acc.sol.date = new Date()
+	acc.solh.date = new Date()
 	// По-умолчанию, если имеются соленоиды подогрева запрещаем регулировать ПЧ
 	if (solHeat?.length) return true
 }

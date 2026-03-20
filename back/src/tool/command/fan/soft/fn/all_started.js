@@ -7,27 +7,19 @@
  * Логика включения прогрева канала: функция cold - src\tool\command\fan\soft\fn\on_off.js
  * @param {*} acc
  */
-function initAllStarted(acc, fans) {
-	const r =
-		acc.order >= fans.length - 1 &&
-		!!acc.fc &&
-		acc.fc.value &&
-		acc.fc.sp >= 100 &&
-		acc.sol.value
-	if (r) acc.allStarted = new Date()
+function initAllStarted(acc, fans, fanFC) {
+	const reason = [
+		[acc.order >= fans.length - 1, 'Запущены все ВНО'],
+		[acc.solh.value, 'Соленоиды подогрева'],
+	]
+	if (fanFC) reason.push([acc?.fc?.value && acc?.fc?.sp >= 100, 'ВНО ПЧ на 100%'])
+	console.log(22, reason)
+	const r = reason.filter((el) => el[0] === false)
+	// Если имеется хотя бы одна причина = false, то allStarted=null цеполчка подогрева не запущена
+	if (!r.length) acc.allStarted = new Date()
 	else acc.allStarted = null
-	
-	console.log(
-		411,
-		'allstarted =[',
-		acc.order >= fans.length - 1,
-		!!acc.fc,
-		acc.fc.value,
-		acc.fc.sp >= 100,
-		acc.sol.value,
-		'] =',
-		r,
-	)
+
+	console.log(411, 'allstarted=', acc.allStarted, r)
 }
 
 module.exports = initAllStarted

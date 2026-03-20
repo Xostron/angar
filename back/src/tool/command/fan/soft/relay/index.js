@@ -55,7 +55,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// 6. Непосредственное вкл/выкл
 	turnOn(null, fans, solHeat, bld._id, acc, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
-	initAllStarted(acc, fans)
+	initAllStarted(acc, fans, fanFC)
 	// console.log(112, idS)
 	// console.table(acc)
 }

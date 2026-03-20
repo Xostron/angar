@@ -27,9 +27,9 @@ function init(bld, secId, obj, bdata, s, where, type, fansLength) {
 	a.date ??= new Date()
 	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ
 	a.busySol ??= false
-	a.sol ??= {}
-	a.sol.value ??= false
-	a.sol.date ??= new Date()
+	a.solh ??= {}
+	a.solh.value ??= false
+	a.solh.date ??= new Date()
 	// true - 2 этап ПЧ, false - 2 этап пройден -> регулирование по реле
 	a.busy ??= false
 	if (type == 'fc') {
@@ -72,9 +72,9 @@ module.exports = init
 // 	a.date ??= new Date()
 // 	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ
 // 	a.busySol ??= false
-// 	a.sol ??= {}
-// 	a.sol.value ??= false
-// 	a.sol.date ??= new Date()
+// 	a.solh ??= {}
+// 	a.solh.value ??= false
+// 	a.solh.date ??= new Date()
 // 	// true - 2 этап ПЧ, false - 2 этап пройден -> регулирование по реле
 // 	a.busy ??= false
 // 	// Задание главного ВНО с ПЧ
@@ -103,9 +103,9 @@ module.exports = init
 // 	a.date ??= new Date()
 // 	// true - 1 этап соленоид подогрева, false - 1 этап пройден -> регулирование по ПЧ
 // 	a.busySol ??= false
-// 	a.sol ??= {}
-// 	a.sol.value ??= false
-// 	a.sol.date ??= new Date()
+// 	a.solh ??= {}
+// 	a.solh.value ??= false
+// 	a.solh.date ??= new Date()
 // 	// true - регулирование по ПЧ, false - регулирование по кол-ву ВНО
 // 	a.busy = false
 // 	// Задание главного ВНО с ПЧ

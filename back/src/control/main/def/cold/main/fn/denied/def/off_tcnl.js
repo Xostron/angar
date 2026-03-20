@@ -2,7 +2,7 @@ const { isAllStarted } = require('@store/index')
 const { compareTime, remTime } = require('@tool/command/time')
 
 /**
- * Выключение испарителя по температуре канала
+ * Выключение соленоида испарителя по температуре канала
  * ВНО испарителя вкл/выкл в зависимости от задания влажности s.mois.humidity
  * @param {*} idB
  * @param {*} mS

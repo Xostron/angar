@@ -38,14 +38,15 @@ function turnOn(fanFC, fans, solHeat, idB, acc, max, off, isCC) {
 		f?.ao?.id ? ctrlAO(f, idB, _MAX_SP) : null
 		// console.log('\tDO ВНО', f.name, 'ВКЛ')
 	})
+
 	solHeat.forEach((el) => {
 		if (offCC) {
 			ctrlDO(el, idB, 'off')
 			return
 		}
-		ctrlDO(el, idB, acc.sol.value ? 'on' : 'off')
+		ctrlDO(el, idB, acc.solh.value ? 'on' : 'off')
 
-		// console.log('\tDO соленоиды подгрева', el.name, acc.sol.value ? 'ВКЛ' : 'ВЫКЛ')
+		// console.log('\tDO соленоиды подгрева', el.name, acc.solh.value ? 'ВКЛ' : 'ВЫКЛ')
 	})
 }
 
