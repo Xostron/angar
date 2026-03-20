@@ -14,7 +14,7 @@ const save = require('./save')
 const data = require('./data')
 const battery = require('@tool/scripts/battery')
 const Aboc = require('@tool/abort_controller')
-const writeStore = require('./save/store')
+const writeStore = require('./save/extra')
 
 // Контроль работы склада
 async function control() {
@@ -66,7 +66,7 @@ async function loop() {
 			`\n-------------------Начало Process ID: ${process.pid}-------------------`,
 		)
 		// Инициализация глобального аккумулятора (сомнительно!)
-		// await writeStore()
+		await writeStore()
 		// Основной цикл программы
 		await control()
 		// Сброс флага первого цикла
