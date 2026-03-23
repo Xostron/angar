@@ -41,7 +41,6 @@ function valid(sens, owner, val, equip, retain) {
 	let r = { raw, value, state: state(raw, on) }
 	// Проверка диапазонов
 	range(r, sens)
-	if (sens.type === 'tprd') console.log(33, sens.name, r)
 	return r
 }
 

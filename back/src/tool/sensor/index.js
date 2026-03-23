@@ -39,7 +39,6 @@ function vSensor(equip, val, retain, result) {
 			retain,
 			s,
 		)
-		if (s.type === 'tprd') console.log(223, s.type, s.name, result[s._id])
 		// Вторая обработка только для датчиков влажности улицы и продукта
 		// result[s._id] = fnHinHout(owner?.building?._id, s, result[s._id], retain)
 		// if (s.type === 'hout')
