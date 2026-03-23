@@ -13,7 +13,7 @@ function initAllStarted(acc, fans, fanFC) {
 		[acc.solh.value, 'Соленоиды подогрева'],
 	]
 	if (fanFC) reason.push([acc?.fc?.value && acc?.fc?.sp >= 100, 'ВНО ПЧ на 100%'])
-	console.log(22, reason)
+	// console.log(22, reason)
 	const r = reason.filter((el) => el[0] === false)
 	// Если имеется хотя бы одна причина = false, то allStarted=null цеполчка подогрева не запущена
 	if (!r.length) acc.allStarted = new Date()

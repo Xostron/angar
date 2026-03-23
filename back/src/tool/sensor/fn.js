@@ -41,6 +41,7 @@ function valid(sens, owner, val, equip, retain) {
 	let r = { raw, value, state: state(raw, on) }
 	// Проверка диапазонов
 	range(r, sens)
+	if (sens.type === 'tprd') console.log(33, sens.name, r)
 	return r
 }
 
@@ -160,7 +161,7 @@ function range(r, sens) {
 function webSensAlarm(r, bld, sect, sens) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
 	if (
-		r.state === 'alarm' &&
+		r?.state === 'alarm' &&
 		!store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id]
 	) {
 		sect?.name
@@ -233,7 +234,6 @@ function isValidWeather(weather) {
 	if (!updateTime) return false
 	return now - updateTime >= expire ? false : true
 }
-
 
 module.exports = {
 	valid,

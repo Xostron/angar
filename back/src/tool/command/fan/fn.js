@@ -35,13 +35,13 @@ function fnACmd(bld, resultFan, obj, bdata) {
 			[isExtralrm(idB, idS, 'vlvLim'), 'Нет питания концевиков данной секции'],
 		]
 		if (a.filter((el) => el[0]).length > 0) {
-			console.log(
-				11,
-				'Секция',
-				idS,
-				'Плавный пуск: ВНО выключены из-за:',
-				a.filter((el) => el[0]),
-			)
+			// console.log(
+			// 	11,
+			// 	'Секция',
+			// 	idS,
+			// 	'Плавный пуск: ВНО выключены из-за:',
+			// 	a.filter((el) => el[0]),
+			// )
 			setACmd('fan', idS, { delay, type: 'off', force: null, max: null })
 			return
 		}

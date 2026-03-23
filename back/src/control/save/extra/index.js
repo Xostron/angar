@@ -55,12 +55,12 @@ function initExtra(acc, section) {
 				store.acc[idB] ??= {}
 				store.acc[idB][name] ??= {}
 				store.acc[idB][name][code] = acc[idB][name]?.[code] ?? {}
-				console.log(
-					11,
-					code,
-					'инициализирован',
-					Object.values(acc[idB][name]?.[code] ?? {}),
-				)
+				// console.log(
+				// 	11,
+				// 	code,
+				// 	'инициализирован',
+				// 	Object.values(acc[idB][name]?.[code] ?? {}),
+				// )
 			}
 		}
 	}

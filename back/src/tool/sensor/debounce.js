@@ -17,8 +17,8 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 
 	if (!hold || v.state !== 'alarm') {
 		store.debounce[idSens] = {}
-		if (!v.raw && !hold) return v
-		return !v.raw ? hold : v
+		if ((v.raw === null || v.raw === undefined) && !hold) return v
+		return v.raw === null || v.raw === undefined ? hold : v
 	}
 
 	// Антидребезг (подсовываем значение из аккумулятора в течении времени антидребезга,
