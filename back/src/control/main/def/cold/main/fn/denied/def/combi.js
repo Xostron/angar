@@ -58,7 +58,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		'работа запрещена combi',
 		store.denied[bld._id][clr._id],
 		'',
-		// a.filter((e) => e[0]),
+		a.filter((e) => e[0]),
 	)
 	// Работа испарителя запрещена? false - Нет.
 	if (!store.denied[bld._id][clr._id]) return false
