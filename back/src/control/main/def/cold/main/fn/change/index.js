@@ -51,7 +51,9 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	f !== null
 		? fan.forEach((el) => {
 				ctrlDO(el, idB, f ? 'on' : 'off')
-				if (el?.ao?.id) ctrlAO(el, idB, f ? _MAX_SP : _MIN_SP)
+				let sp = f ? _MAX_SP : _MIN_SP
+				sp = accAuto?.cold?.[clr._id]?.offPressureSP ?? sp
+				if (el?.ao?.id) ctrlAO(el, idB, sp)
 			})
 		: null
 
@@ -59,7 +61,7 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	h !== null ? heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off')) : null
 
 	// Заслонки
-	ctrlFlap(idB, flap, accAuto.cold, isCN)
+	ctrlFlap(idB, clr._id, flap, accAuto.cold, isCN)
 
 	// Доп состояние слива воды
 	accAuto.cold ??= {}
@@ -81,10 +83,12 @@ module.exports = { oneChange, oneChangeCombi, ctrlFlap }
  * @param {*} accCold Аккумулятор комби-холода
  * @param {*} isCN Склад в режиме комби-холодильника
  */
-function ctrlFlap(idB, flap = [], accCold, isCN = true) {
-	// TODO: ИЗМЕНЕНО: Заслонка оттайки (открывается при оттайке и сливе воды)
+function ctrlFlap(idB, idClr, flap = [], accCold, isCN = true) {
+	// TODO old: Заслонка оттайки (открывается при оттайке и сливе воды)
 	// const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
-	// Заслонка оттайки (открывается при оттайке)
-	const flapOn = isCN && accCold.defrostAll
+
+	// TODO new:Заслонка оттайки (открывается при оттайке) ИЛИ
+	// ИЛИ по флагу высокого давления (см. src\control\main\def\cold\main\fn\denied\def\pressure\action.js)
+	const flapOn = (isCN && accCold.defrostAll) || accCold?.[idClr]?.offPressure
 	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
 }

@@ -39,4 +39,34 @@ function transformClr(doc, data) {
 	}
 }
 
-module.exports = { transformClr, getClr }
+/**
+ * Поиск парных испарителей
+ * @param {*} mS Механизмы секции
+ * @returns {string[][]} ИД испарителей объединенные в пары по одинаковому ВНО
+ */
+function coupleClr(mS) {
+	const hashClr = mS.coolerS.reduce((rlt, el) => {
+		rlt[el._id] = el
+		return rlt
+	}, {})
+	// Разбиваем испарители секции на пары по признаку одинаковых ВНО
+	const couple = mS.allFanClr.reduce((rlt, el, i) => {
+		// el - ВНО какого-то испарителя
+		const uid = el.module.id + '' + el.module.channel
+		// Испарители с одинаковыми ВНО
+		const pairC = []
+		// Берем испаритель и его ВНО (hashClr[idClr].fan) проверяем на схожесть с el по uid
+		for (const idClr in hashClr) {
+			const f = hashClr[idClr].fan.find((ff) => ff.module.id + '' + ff.module.channel === uid)
+			if (f) {
+				pairC.push(idClr)
+				delete hashClr[idClr]
+			}
+		}
+		rlt.push(pairC)
+		return rlt
+	}, [])
+	return couple
+}
+
+module.exports = { transformClr, getClr, coupleClr }

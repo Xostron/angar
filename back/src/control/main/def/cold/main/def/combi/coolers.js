@@ -4,6 +4,7 @@ const denied = require('../../fn/denied/def')
 const { isAlr } = require('@tool/message/auto')
 const { isAllStarted } = require('@store/index')
 const { data: store } = require('@store')
+const { coupleClr } = require('@tool/command/mech/fn')
 // const { initSoftsol } = require('../../fn/change/soft_solenoid')
 
 /**
@@ -32,7 +33,10 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		const stateCooler = obj.value?.[clr._id]
 		// Проверка: Запрет работы испарителя
 		// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
-		if (denied.combi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) || isAllStarted(clr.sectionId))
+		if (
+			denied.combi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) ||
+			isAllStarted(clr.sectionId)
+		)
 			continue
 		// Датчики секции и испарителя
 		const seClr = { ...seS, cooler: {} }
@@ -66,8 +70,11 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	const alrAuto = isAlr(bld._id, automode)
 	// Режим секции true-Авто
 	const sectM = retain?.[bld._id]?.mode?.[sect._id]
-	denied.off(bld._id, mS, s, fnChange, accAuto, alrAuto, sectM)
+	const couple = coupleClr(mS)
+	denied.off(bld._id, mS, couple, s, fnChange, accAuto, alrAuto, sectM)
+	// denied.pressure(bld._id, sect._id, mS, couple, s, seS, fnChange, accAuto, alrAuto, sectM, obj)
 	denied.offByTcnl(bld._id, mS, s, se, fnChange, accAuto, alrAuto, sectM)
+
 	// console.log(`-------------------${bld?.name} end-------------------`)
 }
 

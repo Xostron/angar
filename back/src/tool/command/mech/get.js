@@ -62,4 +62,8 @@ function getVno(idB, idS, obj, binding, fan) {
 		})
 }
 
-module.exports = { getDevice, getVnoClr, getVno }
+function isWorkVno(fan, value) {
+	return fan.every((el) => value?.outputEq?.[el._id])
+}
+
+module.exports = { getDevice, getVnoClr, getVno, isWorkVno }
