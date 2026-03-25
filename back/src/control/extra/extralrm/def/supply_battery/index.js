@@ -2,10 +2,8 @@ const { data: store } = require('@store')
 const { set, reset, blink } = require('./fn')
 const { getSumSigBld, getSignalList } = require('@tool/command/signal')
 /**
- * Авария питания. Ручной сброс
- * Источник аварии:
- * 1. Питание от батареи
- * 2. Сигнал "Питание в норме"
+ * Генерация сообщения "Авария питания. Ручной сброс"
+ * Подсчет сигналов склада, секции, батареи
  * @param {*} bld
  * @param {*} sect
  * @param {*} obj
@@ -27,7 +25,7 @@ function sb(bld, sect, obj, s, se, m, automode, acc, data) {
 	const sigS = getSignalList(bld?._id, obj, 'supply').map((el) => obj.value?.[el?._id] ?? null)
 
 	const sig = [store.battery, sigB, ...sigS]
-	// Кол-во взведенных сигналов в reason, изменение данного числа будет
+	// reason - кол-во взведенных сигналов, изменение данного числа будет
 	// говорить о переключении питания
 	const reason = sig.reduce((acc, el, i) => {
 		if (el) acc++

@@ -4,7 +4,7 @@ const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm'
 const { data: store } = require('@store')
 const { getS } = require('@tool/get/building')
 
-// Авария питания: сигнал и батарея - откл всего склада и генерация сообщения
+// Авария питания: сигнал склада, секции и батарея (генерация сообщений "Авария питания (сигнал), авария питания (батарея)")
 function supplyB(bld, sect, obj, s, se, m, automode, acc, data) {
 	acc.o ??= {}
 	const reason = getReason(bld, obj)
