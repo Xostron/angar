@@ -1,7 +1,7 @@
 const { data: store } = require('@store')
 
 // Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
-function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM) {
+function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 	// Итог по всем испарителям (для полной очистки аккумулятора секции)
 	const allDeniedSect = []
 	// Проходим по парам испарителей и одиночкам
@@ -20,12 +20,13 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM) {
 				[s?.ozon?.on, 'Включен озонатор'],
 				[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
 			]
-
+			// Пара испарителей выведена из работы
+			const off = isOffPair(pair, mS, obj.value)
 			console.log(
-				'\toffDenied: Проходим по парам испарителей и одиночкам',
+				'\toffDenied: один испаритель',
 				a.filter((e) => e[0]),
 			)
-			a.filter((e) => e[0] === true)?.length !== 0
+			a.filter((e) => e[0] === true)?.length !== 0 && !off
 				? fnChange(0, null, 0, 0, null, clr)
 				: fnChange(0, 0, 0, 0, null, clr)
 			return
@@ -53,12 +54,14 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM) {
 					[s?.ozon?.on, 'Включен озонатор'],
 					[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
 				]
-
 				console.log(
-					'\toffDenied: Полное отключение пары',
+					'\toffDenied: Полное отключение пары, из-за этих причин ВНО не заблокирован',
 					a.filter((e) => e[0]),
 				)
-				a.filter((e) => e[0] === true).length !== 0
+				// Пара испарителей выведена из работы
+				const off = isOffPair(pair, mS, obj.value)
+				console.log('\tПара испарителей выведена из работы', off)
+				a.filter((e) => e[0] === true).length !== 0 && !off
 					? fnChange(0, null, 0, 0, null, clr)
 					: fnChange(0, 0, 0, 0, null, clr)
 			})
@@ -75,18 +78,15 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM) {
 			fnChange(0, null, 0, 0, null, clr)
 		})
 	})
-
-	// Полная очистка секции (Все испарители секции запрещены)
-	// console.log('@@@@@@@@@@@@@@',allDeniedSect)
-	// if (allDeniedSect.every((el) => el)) {
-	// 	delete accAuto?.cold?.afterD
-	// 	delete accAuto?.cold?.timeAD
-	// 	delete accAuto?.cold?.defrostAllFinish
-	// 	delete accAuto?.cold?.drainAll
-	// 	delete accAuto?.cold?.defrostAll
-	// }
 }
 
 module.exports = offDenied
 
-
+// Блокировка ВНО испарителей, если вся пара выведена из работы
+function isOffPair(pair, mS, value) {
+	const r = pair.filter((idClr) => {
+		const fan = mS.coolerS.find((el) => el._id === idClr)?.fan?.[0]
+		return value[fan._id].state != 'alarm' && value[fan._id].state !== 'off'
+	})
+	return !r.length
+}

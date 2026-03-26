@@ -22,9 +22,10 @@ function getVnoClr(idB, idS, obj, coolerS) {
 	// Вно испарителей (все вно, включая дубляжи)
 	const fanClrRaw = coolerS.flatMap((el) => el.fan)
 	// Вно испарителей (только рабочие state!=alarm и state!=off)
-	let fanClr = fanClrRaw.filter(
-		(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id],
-	)
+	let fanClr = fanClrRaw.filter((el) => {
+		// return value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id]
+		return value[el._id].state != 'alarm' && value[el._id].state != 'off'
+	})
 	// Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
 	fanClr = Object.values(
 		fanClr.reduce((acc, el, i) => {

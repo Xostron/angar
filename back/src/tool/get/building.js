@@ -72,13 +72,13 @@ function getIdsS(section, idB) {
 }
 
 /**
- * Получить секции-авто|руч
+ * Получить секции в режиме авто | руч
  * @param {*} idB Ид склада
  * @param {*} obj Глобальные данные
- * @returns {boolean} true - существует секция в авто
+ * @param {boolean} mod Модификатор 
+ * @returns {object[]} mod = false - массив ИД секций, mod = true - массив рамы секций
  */
 function getSectAM(idB, section, obj, mod = false) {
-	// Получить секции в авто
 	const r = section.filter(
 		(el) => el.buildingId == idB && obj.retain?.[idB]?.mode?.[el._id] !== null,
 	)
@@ -86,7 +86,7 @@ function getSectAM(idB, section, obj, mod = false) {
 }
 
 /**
- * Получить секции-авто
+ * Получить секции в режиме авто
  * @param {*} idB Ид склада
  * @param {*} obj Глобальные данные
  * @param {boolean} mod Тип результата

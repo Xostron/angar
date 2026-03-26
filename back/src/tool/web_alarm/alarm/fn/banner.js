@@ -29,7 +29,7 @@ function bannerB(r, bld) {
 	// Авария питания. батарея || Ручной сброс
 	r.banner.battery ??= {}
 	r.banner.battery[bld._id] =
-		store.alarm?.extralrm?.[bld._id]?.battery || store.alarm?.extralrm?.[bld._id]?.sb
+		 store.alarm?.extralrm?.[bld._id]?.sb || store.alarm?.extralrm?.[bld._id]?.battery
 	// Авария питания. сигнал
 	r.banner.supply ??= {}
 	r.banner.supply[bld._id] ??= {}

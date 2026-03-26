@@ -23,10 +23,10 @@ function set(bld, reason, obj, accDeb, acc, watch, count) {
 	// Проверка на дребезг, после count переключений
 	if (accDeb.battery.length < count) return
 
+	// Время между последними состояниями (delta) больше интервала контроля -> нет аварии
 	const delta = accDeb.battery.at(-1).date - accDeb.battery[0].date
-	// Время между последними состояниями больше порога дребезга -> ОК
 	if (delta > watch) return
-	//Время меньше порога -> установка аварии
+	// Время меньше порога -> установка аварии
 	wrExtralrm(bld._id, null, 'sb', msgBB(bld, 103))
 	acc._alarm = true
 }

@@ -1,29 +1,6 @@
-const msg = require('@dict/message')
+const mes = require('@dict/message')
 
-/**
- * Если есть "авария питания (ручной сброс)" ИЛИ Питание отключено,
- * то блокируем все пуши, кроме battery ИЛИ supply
- * @param {*} idB
- * @param {*} data
- * @param {*} list
- * @returns {} undefined | 0 - авариq нет, пуши формируются как обычно
- * >0 - авария питания, все пуши игнорируются кроме аварии питания
- */
-function fnBattery(idB, data) {
-	const r = []
-	const battery = data.alarm?.banner?.battery?.[idB]
-	const supply = Object.values(data.alarm?.banner?.supply?.[idB] ?? {})?.[0]
-	if (battery) {
-		r.push(battery)
-		return r
-	}
-	if (supply) {
-		r.push(supply)
-		return r
-	}
-}
-
-function find(idB, data) {
+function all(idB, data) {
 	const r = []
 	// Формирование актуального списка пушей
 	// Нет связи с модулями (обратитесь в техподдержку)
@@ -42,14 +19,14 @@ function find(idB, data) {
 	return r
 }
 
-module.exports = { fnBattery, find }
+module.exports = all
 
 /**
  *
  * @returns Список всех сообщений для пушей flt[0] === true
  */
 function fnNeed() {
-	const need = Object.values(msg)
+	const need = Object.values(mes)
 		.filter((el) => el.flt && el.flt[0] === true)
 		.map((el) => el.msg)
 	return need

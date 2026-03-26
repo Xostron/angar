@@ -25,13 +25,16 @@ function sb(bld, sect, obj, s, se, m, automode, acc, data) {
 	const sigS = getSignalList(bld?._id, obj, 'supply').map((el) => obj.value?.[el?._id] ?? null)
 
 	const sig = [store.battery, sigB, ...sigS]
+	/*
 	// reason - кол-во взведенных сигналов, изменение данного числа будет
 	// говорить о переключении питания
 	const reason = sig.reduce((acc, el, i) => {
 		if (el) acc++
 		return acc
 	}, 0)
-
+	*/
+	// reason -  есть хотя бы одна авария, флаг срабатываний авари питания
+	const reason = sig.some(el=>!!el)
 	reset(bld, acc, store.debounce)
 	set(bld, reason, obj, store.debounce, acc, watch, count)
 	// Фиксируем колебания
