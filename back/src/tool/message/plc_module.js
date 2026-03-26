@@ -56,7 +56,7 @@ function delModule(idB, idM) {
 
 // Проверка внесен ли модуль в список неисправных
 function isErrM(idB, idM) {
-	return !!store.alarm.module?.[idB]?.[idM]
+	return !!store.alarm?.module?.[idB]?.[idM]
 }
 
 // Есть ли неисправные модули в системе

@@ -4,6 +4,7 @@ const { msgBS } = require('@tool/message')
 const { getB, getBS } = require('@tool/get/building')
 const { getListSens } = require('@tool/get/sensor')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
+const { isErrM } = require('@tool/message/plc_module')
 
 /**
  * Анализ датчика и настройка
@@ -161,7 +162,8 @@ function webSensAlarm(r, bld, sect, sens) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
 	if (
 		r?.state === 'alarm' &&
-		!store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id]
+		!store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id] &&
+		!isErrM(bld._id, sens?.module?.id)
 	) {
 		sect?.name
 			? wrExtralrm(bld._id, sect?._id, sens._id, msgBS(bld, sect, sens, 100))

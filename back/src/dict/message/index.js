@@ -232,6 +232,12 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Температура канала ниже рекомендованной',
 	},
+	42: {
+		code: 'check_supply',
+		typeSignal: 'info',
+		msg: 'Подготовка агрегата. ',
+	},
+
 	// beep alarm
 	65: [
 		{
