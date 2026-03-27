@@ -11,7 +11,6 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	store.denied[bld._id] ??= {}
 	const idsS = getIdsS(obj.data.section, bld._id)
 	// Проверка питания
-	// const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain)
 	const supplySt = checkSupply(bld, sect, clr, idsS, obj.retain)
 	// Готов ли агрегат
 	const aggr = isReadyAgg(obj.value, bld._id, clr.aggregateListId)

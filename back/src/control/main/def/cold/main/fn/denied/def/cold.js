@@ -16,7 +16,7 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const { start, s, se, m, accAuto } = bdata
 	store.denied[bld._id] ??= {}
 	const idsS = getIdsS(obj.data.section, bld._id)
-	const supplySt = checkSupply(bld._id, clr._id, idsS, obj.retain)
+	const supplySt = checkSupply(bld, sect, clr, idsS, obj.retain)
 	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
 
 	store.denied[bld._id][clr._id] =
