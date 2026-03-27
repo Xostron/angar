@@ -24,11 +24,11 @@ function vSensor(equip, val, retain, result) {
 		if (s.type === 'ai') {
 			own = equip?.[s.owner.type].find((el) => el._id === s.owner.id)
 			owner = getBS(own, equip)
+			s.name = 'Ток ' + own?.name ?? ''
 		} else {
 			// Владелец датчика (секция или склад)
 			owner = getBS(s, equip)
 		}
-
 		// Обработанное значение датчика
 		const r = valid(s, owner, val, equip, retain)
 		// Антидребезг датчика: из аккумулятора или обработанное значение

@@ -1,5 +1,6 @@
 const tSens = require('@dict/sensor')
 const { state } = require('./fn')
+const { isErrM } = require('@tool/message/plc_module')
 
 /**
  * Анализ датчика и настройка
@@ -17,18 +18,11 @@ function valid(sens, owner, val, equip, retain) {
 	const corr = retain?.[building._id]?.[sens._id]?.corr ?? 0
 	const on = retain?.[building._id]?.[sens._id]?.on ?? true
 
-	// Истинное значение датчика
-	let v = val?.[sens?.module?.id]?.[sens.module?.channel - 1] ?? null
-
-	// Для датчика из binding (type='ai')
-	if (sens?.moduleId && sens?.channel) {
-		v = val?.[sens?.moduleId]?.[sens?.channel - 1] ?? null
-	}
-
 	// Округленное истинное значение
-	let raw = getRaw(sens, v)
-	const code = sens?.type === ' ai' ? 'ai' : 'default'
-	raw = check[code](sens, raw, val)
+	let raw = getRaw(sens, val)
+	// Проверка значения с модуля
+	const code = sens?.type === 'ai' ? 'ai' : 'default'
+	raw = check[code](building, sens, raw, val)
 
 	// Значение датчика с коррекцией (используется в алгоритмах)
 	const value = raw !== null ? +(raw + +corr).toFixed(sens?.accuracy || 1) : null
@@ -40,20 +34,20 @@ function valid(sens, owner, val, equip, retain) {
 
 // Проверка сырых показаний (raw) датчика
 const check = {
-	default(sens, raw, val) {
+	default(bld, sens, raw, val) {
 		// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
 		if (String(raw).length > 8) raw = null
 		// Модуль в ошибке
-		if (val?.[sens?.module?.id]?.error) raw = null
+		if (isErrM(bld._id, sens?.module?.id)) raw = null
 		// isNaN
 		if (isNaN(raw)) raw = null
 		return raw
 	},
-	ai(sens, raw, val) {
+	ai(bld, sens, raw, val) {
 		// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
 		if (String(raw).length > 8) raw = 0
 		// Модуль в ошибке
-		if (val?.[sens?.moduleId]?.error) raw = null
+		if (isErrM(bld._id, sens?.moduleId)) raw = 0
 		// isNaN
 		if (isNaN(raw)) raw = 0
 		return raw
@@ -61,11 +55,19 @@ const check = {
 }
 
 // Округленное истинное значение
-function getRaw(sens, v) {
+function getRaw(sens, val) {
 	// Датчик не объявлен в админке
 	if (!sens?.module?.id && !sens?.moduleId) return null
 	if (typeof sens?.module?.channel !== 'number' && typeof sens?.channel !== 'number') return null
 
+	// Истинное значение датчика
+	let v = val?.[sens?.module?.id]?.[sens.module?.channel - 1] ?? null
+	// Для датчика из binding (type='ai')
+	if (sens?.moduleId && sens?.channel) {
+		v = val?.[sens?.moduleId]?.[sens?.channel - 1] ?? null
+	}
+
+	// Округленное
 	return +v?.toFixed(sens?.accuracy || 1) ?? null
 }
 
