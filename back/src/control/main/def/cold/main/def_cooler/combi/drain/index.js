@@ -10,7 +10,7 @@ function drain(fnChange, accCold, acc, se, s, bld, clr) {
 	const time = compareTime(acc.state.drain, s.coolerCombi.water)
 	const tmp = se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
 	console.log(7771, 'drain', time, tmp)
-	ctrlFlap(bld._id, clr.flap, accCold)
+	ctrlFlap(bld._id, clr._id, clr.flap, accCold)
 	// Время не прошло
 	if (!time) return
 	// Время прошло -> выключаем слив воды

@@ -89,6 +89,6 @@ function ctrlFlap(idB, idClr, flap = [], accCold, isCN = true) {
 
 	// TODO new:Заслонка оттайки (открывается при оттайке) ИЛИ
 	// ИЛИ по флагу высокого давления (см. src\control\main\def\cold\main\fn\denied\def\pressure\action.js)
-	const flapOn = (isCN && accCold.defrostAll) || accCold?.[idClr]?.offPressure
+	const flapOn = (isCN && accCold?.defrostAll) || accCold?.[idClr]?.offPressure
 	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
 }
