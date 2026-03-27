@@ -53,7 +53,7 @@ const check = {
 		// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
 		if (String(raw).length > 8) raw = 0
 		// Модуль в ошибке
-		if (val?.[sens?.module?.id]?.error) raw = null
+		if (val?.[sens?.moduleId]?.error) raw = null
 		// isNaN
 		if (isNaN(raw)) raw = 0
 		return raw
