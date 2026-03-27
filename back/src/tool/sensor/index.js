@@ -1,7 +1,8 @@
 const { data: store } = require('@store')
 const { getBS } = require('@tool/get/building')
 const { debounce } = require('./debounce')
-const { webSensAlarm, valid } = require('./fn')
+const { webSensAlarm } = require('./fn')
+const valid = require('./valid')
 const stateWeather = require('./weather')
 /**
  * Анализ датчиков
