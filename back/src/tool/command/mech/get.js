@@ -57,7 +57,7 @@ function getVno(idB, idS, obj, binding, fan) {
 				!retain?.[idB]?.fan?.[idS]?.[el._id],
 		)
 		.map((el) => {
-			const ao = binding.find((b) => b.owner.id === el._id)
+			const ao = binding.find((b) => b.owner.id === el._id && b.type==='ao')
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})

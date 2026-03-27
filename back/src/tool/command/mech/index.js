@@ -42,21 +42,9 @@ function mech(obj, idS, idB) {
 	const { allFanClr, fanClr } = getVnoClr(idB, idS, { retain, value }, coolerS)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
-	// // Напорные ВНО секции (только рабочие)
+	// Напорные ВНО секции (только рабочие)
 	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
-	// const fanSS = fan
-	// 	.filter(
-	// 		(el) =>
-	// 			el.owner.id === idS &&
-	// 			el.type === 'fan' &&
-	// 			value[el._id].state != 'alarm' &&
-	// 			!retain?.[idB]?.fan?.[idS]?.[el._id],
-	// 	)
-	// 	.map((el) => {
-	// 		const ao = binding.find((b) => b.owner.id === el._id)
-	// 		if (!ao) return el
-	// 		return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
-	// 	})
+
 	// Напорные ВНО секции/камеры + ВНО испарителей: обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...fanSS, ...fanClr]
 
