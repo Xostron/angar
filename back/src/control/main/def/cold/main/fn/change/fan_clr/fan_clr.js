@@ -9,7 +9,7 @@ function ctrlFanClr(idB, f, clr, s, se, accCold) {
 	// 0 выкл, 1 включить
 	clr.fan.forEach((el) => {
 		ctrlDO(el, idB, f ? 'on' : 'off')
-		const sp = f ? getSP(idB, clr, el, se, accCold) : _MIN_SP
+		const sp = f ? getSP(idB, clr, el, s, se, accCold) : _MIN_SP
 		if (el?.ao?.id) ctrlAO(el, idB, sp)
 	})
 }
@@ -29,7 +29,7 @@ function getSP(idB, clr, fan, s, se, accCold) {
 	let sp = _MAX_SP
 	sp = byCurrent(sp, clr, fan, s, se, accCold)
 	// sp = accCold?.[clr._id]?.offPressureSP ?? sp
-
+	console.log(12, sp, accCold?.[clr._id]?.current.sp)
 	return sp
 }
 

@@ -3,8 +3,24 @@ const _MAX_SP = 100
 const _MIN_SP = 20
 const _BEGIN_SP = 70
 
+/**
+ * Пошаговое изменение задание ПЧ испарителя в
+ * зависимости от тока двигателя ВНО испарителя
+ * @param {*} sp
+ * @param {*} clr
+ * @param {*} fan
+ * @param {*} s
+ * @param {*} se
+ * @param {*} acc
+ * @returns {numbers} Задание ВНО испарителя
+ */
 function byCurrent(sp, clr, fan, s, se, acc) {
-	console.log(11, clr._id, fan._id, se[fan._id], isNaN(se[fan._id]), sp)
+	console.log(11, acc)
+	// // Инициализация
+	acc[clr._id] ??= {}
+	acc[clr._id].current ??= {}
+	acc[clr._id].current.sp ??= _BEGIN_SP
+	acc[clr._id].current.date ??= null
 	// У ВНО испарителя нет датчика тока - стандартное задание ПЧ
 	if (!check(fan, se)) return sp
 
@@ -12,12 +28,9 @@ function byCurrent(sp, clr, fan, s, se, acc) {
 	// Команда на повышение/понижение задания
 	const { on, off } = onOff(fan, s, se)
 
-	// // Инициализация
-	acc[clr._id].current ??= {}
-	acc[clr._id].current.sp ??= _BEGIN_SP
-	acc[clr._id].current.date ??= null
 	// Изменение уставки ПЧ испарителя acc[clr._id].current.sp
 	regul(clr, fan, s, se, acc, on, off)
+
 	return acc[clr._id].current.sp
 }
 
