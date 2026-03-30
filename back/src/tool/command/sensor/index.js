@@ -1,3 +1,5 @@
+const { getIdsS } = require('@tool/get/building')
+
 /**
  * Показания датчиков секции для расчетов авторежимов
  * @param {string} idB id склада
@@ -38,6 +40,7 @@ function sensor(idB, idS, obj) {
 // Показания датчиков склада для расчетов авторежимов
 function sensorBuilding(idB, obj) {
 	const { value, data } = obj
+
 	const o = {
 		// Погода: температура, влажность
 		tw: value?.total?.tweather ?? null,
@@ -66,6 +69,12 @@ function sensorBuilding(idB, obj) {
 		// Датчики по камере и испарителю
 		// cooler: coolerB(idB, obj),
 	}
+
+	// Датчики ток ВНО
+	const aiFan = data.binding.filter((el) => el.type === 'ai' && el.owner.type === 'fan')
+	aiFan.forEach((el) => {
+		o[el.owner.id] = value[el._id]
+	})
 	// console.log(333, 'склад', idB, 'абс вл. улицы', o.hAbsOut, 'абс влажность продукта', o.hAbsIn)
 	return o
 }

@@ -1,3 +1,5 @@
+const { data: store } = require('@store')
+
 /**
  * Рама испарителей секции
  * @param {*} data Рама склада из глобальных данных obj
@@ -40,26 +42,28 @@ function transformClr(doc, data) {
 }
 
 /**
- * Поиск парных испарителей
+ * Поиск парных испарителей секции
  * @param {*} mS Механизмы секции
+ * @param {boolean} mod Проверка готовности испарителя к работе: false - не готов, true - готов
  * @returns {string[][]} ИД испарителей объединенные в пары по одинаковому ВНО
  */
-function coupleClr(mS) {
+function coupleClr(idB, mS, mod = false) {
 	const hashClr = mS.coolerS.reduce((rlt, el) => {
 		rlt[el._id] = el
 		return rlt
 	}, {})
+
 	// Разбиваем испарители секции на пары по признаку одинаковых ВНО
 	const couple = mS.allFanClr.reduce((rlt, el, i) => {
 		// el - ВНО какого-то испарителя
-		const uid = el.module.id + '' + el.module.channel
+		const mid = el.module.id + '' + el.module.channel
 		// Испарители с одинаковыми ВНО
 		const pairC = []
 		// Берем испаритель и его ВНО (hashClr[idClr].fan) проверяем на схожесть с el по uid
 		for (const idClr in hashClr) {
-			const f = hashClr[idClr].fan.find((ff) => ff.module.id + '' + ff.module.channel === uid)
+			const f = hashClr[idClr].fan.find((ff) => ff.module.id + '' + ff.module.channel === mid)
 			if (f) {
-				pairC.push(idClr)
+				if (isReadyClr(idB, hashClr[idClr], f, mod)) pairC.push(idClr)
 				delete hashClr[idClr]
 			}
 		}
@@ -67,6 +71,13 @@ function coupleClr(mS) {
 		return rlt
 	}, [])
 	return couple
+}
+
+// Готов ли испаритель: false - Выведен из работы, true - готов
+function isReadyClr(idB, clr, fan, mod) {
+	if (!mod) return true
+	// store.retain[idB].fan[clr.sectionId][fan._id] = true - выведен из работы
+	return !store.retain?.[idB]?.fan?.[clr.sectionId]?.[fan._id]
 }
 
 module.exports = { transformClr, getClr, coupleClr }

@@ -1,6 +1,8 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 // const { softsol } = require('./soft_solenoid')
 const { isCombiCold } = require('@tool/combi/is')
+const ctrlFanClr = require('./fan_clr/fan_clr')
+const ctrlFlap = require('./flap')
 const _MAX_SP = 100
 const _MIN_SP = 20
 
@@ -37,9 +39,13 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	const idB = bld._id
 	const { start, s, se, m, accAuto, automode } = bdata
+	accAuto.cold ??= {}
+	accAuto.cold[clr._id] ??= {}
+	accAuto.cold[clr._id].state ??= {}
+	accAuto.cold[clr._id].sp ??= {}
 	const { solenoid, fan, heating, flap = [] } = clr
-	// Склад работает в режиме комби-холодильника
-	const isCN = isCombiCold(bld, automode, s)
+	const isCN = isCombiCold(bld, automode, s) // Склад работает в режиме комби-холодильника
+
 	// Управление механизмами
 	// Ступенчатое управление соленоидами
 	// softsol(idB, solenoid, sl, f, h, clr, accAuto)
@@ -48,14 +54,7 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	sl !== null ? solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off')) : null
 
 	// ВНО испарителя (null - игнор команды, 0 - выкл, 1 - вкл)
-	f !== null
-		? fan.forEach((el) => {
-				ctrlDO(el, idB, f ? 'on' : 'off')
-				let sp = f ? _MAX_SP : _MIN_SP
-				sp = accAuto?.cold?.[clr._id]?.offPressureSP ?? sp
-				if (el?.ao?.id) ctrlAO(el, idB, sp)
-			})
-		: null
+	ctrlFanClr(idB, f, clr, s, se, accAuto.cold)
 
 	// Оттайка
 	h !== null ? heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off')) : null
@@ -64,9 +63,6 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	ctrlFlap(idB, clr._id, flap, accAuto.cold, isCN)
 
 	// Доп состояние слива воды
-	accAuto.cold ??= {}
-	accAuto.cold[clr._id] ??= {}
-	accAuto.cold[clr._id].state ??= {}
 	accAuto.cold[clr._id].state.add = add ? new Date() : false
 	// Обновление времени включения состояния
 	if (code) accAuto.cold[clr._id].state[code] = new Date()
@@ -75,20 +71,3 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 }
 
 module.exports = { oneChange, oneChangeCombi, ctrlFlap }
-
-/**
- * Вкл/Выкл заслонок
- * @param {*} idB ИД склада
- * @param {*} flap Массив заслонок
- * @param {*} accCold Аккумулятор комби-холода
- * @param {*} isCN Склад в режиме комби-холодильника
- */
-function ctrlFlap(idB, idClr, flap = [], accCold, isCN = true) {
-	// TODO old: Заслонка оттайки (открывается при оттайке и сливе воды)
-	// const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
-
-	// TODO new:Заслонка оттайки (открывается при оттайке) ИЛИ
-	// ИЛИ по флагу высокого давления (см. src\control\main\def\cold\main\fn\denied\def\pressure\action.js)
-	const flapOn = (isCN && accCold?.defrostAll) || accCold?.[idClr]?.offPressure
-	flap.forEach((el) => ctrlDO(el, idB, flapOn ? 'on' : 'off'))
-}

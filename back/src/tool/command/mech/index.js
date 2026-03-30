@@ -39,6 +39,7 @@ function mech(obj, idS, idB) {
 	// 		return acc
 	// 	}, {}),
 	// )
+	// ВНО испарителей: все и только рабочие
 	const { allFanClr, fanClr } = getVnoClr(idB, idS, { retain, value }, coolerS)
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)

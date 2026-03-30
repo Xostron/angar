@@ -2,21 +2,18 @@ function action(idB, idS, mS, couple, s, seS, fnChange, accAuto, alrAuto, sectM,
 	const accept = accAuto?.cold?.[idS].pressure
 	if (!accept) return
 
-	// Отключение (или 50%) испарителей для секции - разрешено
-
-	// Сортировка по возрастанию длины (парные испарители будут отключаться в последнюю очередь)
-	// Отключения с конца очереди (последний одиночный испаритель - первый на отключение)
+	// Порядок отключения (или 50%) испарителей секции начиная с 0-го
 	couple.reverse().sort((a, b) => a.length - b.length)
-
+console.log(13, couple)
 	// Отключаем испарители начиная с одиночных испарителей, порядок отключения с конца
 	// Список отключенных испарителей
 	accAuto.cold[idS].queue ??= []
 
-	couple.forEach((pair) => {
-		const code = pair.length > 1 ? 'pair' : 'single'
+	// couple.forEach((pair) => {
+	// 	const code = pair.length > 1 ? 'pair' : 'single'
 
-		def[code](pair, mS, fnChange, accAuto, reason)
-	})
+	// 	def[code](pair, mS, fnChange, accAuto, reason)
+	// })
 }
 
 module.exports = action

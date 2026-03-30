@@ -1,5 +1,6 @@
 const check = require('./check')
 const action = require('./action')
+const { coupleClr } = require('@tool/command/mech/fn')
 
 /**
  * если включили все соленоиды и вентиляторы испарителей, давление выше максимума:
@@ -16,7 +17,8 @@ const action = require('./action')
  * @param {*} fnChange
  * @param {*} obj
  */
-function pressure(idB, idS, mS, couple, s, seS, fnChange, accAuto, alrAuto, sectM, obj) {
+function pressure(idB, idS, mS, s, seS, fnChange, accAuto, alrAuto, sectM, obj) {
+	const couple = coupleClr(idB, mS, true)
 	const reason = check(idS, mS, s, seS, accAuto, sectM, obj)
 	action(idB, idS, mS, couple, s, seS, fnChange, accAuto, alrAuto, sectM, obj, reason)
 }
