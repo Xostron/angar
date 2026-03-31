@@ -1,6 +1,8 @@
 const { onTime } = require('@tool/command/time')
-const coldAchieve = require('./cold')
-const combiAchieve = require('./combi')
+const coldAchieve = require('./achieve/cold_achieve')
+const def = require('./achieve/combi_achieve')
+const sm = require('@dict/submode')
+const { readAcc } = require('@store/index')
 
 // check - позволяет испарителю не зациклиться на каком-то одном режиме
 // он дает испарителю выбор действий.
@@ -38,13 +40,21 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
 	console.log(
-		'\n\t',5554,'Проверка условий принятия решений, tprd =',
+		'\n\t',
+		5554,
+		'Проверка условий принятия решений, tprd =',
 		se.tprd,
 		'target=',
-		accCold.tgtTprd
+		accCold.tgtTprd,
 	)
 
-	if (combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr)) return
+	// Проверка достижения combiAchieve
+	// 12. Режим хранения(нагрев)
+	let t = bld?.type === 'normal' ? (automode ?? bld?.type) : bld?.type
+	const accAuto = readAcc(bld._id, t)
+	t = accAuto.submode?.[0] === sm.heat[0] ? 'combiAchieveHeat' : 'combiAchieve'
+	console.log(9999, t, accAuto.submode?.[0])
+	if (accAuto.submode?.[0] && def[t](fnChange, code, accCold, acc, se, s, bld, clr)) return console.log(9998, "ДОСТИГНУТА")
 
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
 	// let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
@@ -54,7 +64,11 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// Вкл испаритель + включенный соленоид => Охлаждение
 	if (se.cooler.tmpCooler <= s.coolerCombi.cold) ven = 1
 	// Выкл испаритель => набор холода
-	if (se.cooler.tmpCooler!==null && se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold) ven = 0
+	if (
+		se.cooler.tmpCooler !== null &&
+		se.cooler.tmpCooler > s.coolerCombi.cold + s.coolerCombi.deltaCold
+	)
+		ven = 0
 
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return

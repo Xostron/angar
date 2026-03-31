@@ -15,7 +15,7 @@ const _BEGIN_SP = 70
  * @returns {numbers} Задание ВНО испарителя
  */
 function byCurrent(sp, clr, fan, s, se, acc) {
-	console.log(11, acc)
+	// console.log(11, acc)
 	// // Инициализация
 	acc[clr._id] ??= {}
 	acc[clr._id].current ??= {}

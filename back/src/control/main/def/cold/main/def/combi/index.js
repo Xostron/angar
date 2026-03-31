@@ -1,5 +1,5 @@
 const defrostAll = require('@tool/combi/defrost_drain')
-const { achieveTgt } = require('../../check/achieve')
+const { achieveTgt } = require('../../check/achieve/tcnl_achieve')
 const { clearBuild } = require('../../fn/denied/fn')
 const { sensor } = require('@tool/command/sensor')
 const { oneChangeCombi } = require('../../fn/change')
