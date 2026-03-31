@@ -36,16 +36,40 @@ function byCurrent(sp, clr, fan, s, se, acc) {
 
 module.exports = byCurrent
 
+/**
+ * Разрешение на регулирование по току
+ * @param {*} fan 
+ * @param {*} se 
+ * @returns 
+ */
 function check(fan, se) {
 	if (isNaN(se[fan._id])) return false
 }
 
+/**
+ * Сигнал на увеличение/уменьшение задания ПЧ испарителя
+ * @param {*} fan 
+ * @param {*} s 
+ * @param {*} se 
+ * @returns 
+ */
 function onOff(fan, s, se) {
 	const on = se[fan._id] < fan?.passport?.current - s?.fan?.hystC
 	const off = se[fan._id] > fan?.passport?.current + s?.fan?.hystC
 	return { on, off }
 }
 
+/**
+ * Изменение задания ПЧ испарителя
+ * @param {*} clr 
+ * @param {*} fan 
+ * @param {*} s 
+ * @param {*} se 
+ * @param {*} acc 
+ * @param {*} on 
+ * @param {*} off 
+ * @returns 
+ */
 function regul(clr, fan, s, se, acc, on, off) {
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {

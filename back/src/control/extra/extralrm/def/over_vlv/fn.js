@@ -3,6 +3,8 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { isCombiCold } = require('@tool/combi/is')
 const { isExtra } = require('@tool/message/extra')
+const { data: store, readAcc } = require('@store')
+const sm = require('@dict/submode')
 
 function set(bld, sect, obj, m, s, acc, term) {
 	// Логика
@@ -52,6 +54,9 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 		isExtra(bld._id, null, 'vent', 'on')
 	// 11. Работает доп вентиляция
 	const durWork = isExtra(bld._id, null, 'durVent', 'work')
+	// 12. Режим хранения(нагрев)
+	const t = bld?.type === 'normal' ? (automode ?? bld?.type) : bld?.type
+	const accAuto = readAcc(bld._id, t)
 	if (
 		!obj.retain[bld._id].start ||
 		!obj.retain[bld._id].mode?.[sect._id] ||
@@ -62,7 +67,8 @@ function fnCheck(bld, sect, obj, m, vlvIn, s, automode, acc) {
 		isCC ||
 		co2work ||
 		ventWork ||
-		durWork
+		durWork ||
+		accAuto?.submode?.[0] === sm.heat[0]
 	) {
 		fnReset(bld, sect, acc)
 		return false
