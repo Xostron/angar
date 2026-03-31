@@ -1,10 +1,9 @@
 const { wrAchieve, delAchieve, updAchieve } = require('@tool/message/achieve')
-const { elapsedTime, runTime } = require('@tool/command/time')
+const { runTime } = require('@tool/command/time')
 const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
-const { data: store } = require('@store')
 
 /**
  * Определение подрежима
@@ -99,13 +98,18 @@ function submode(bld, obj, s, seB, acc) {
 function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
 	// Температура задания канала (? нагрев : охлаждение(лечение, охл+))
-	console.log(13, seB.tprd , acc.setting.cooling.differenceValue,seB.tprd + acc.setting.cooling.differenceValue )
+	console.log(
+		13,
+		seB.tprd,
+		acc.setting.cooling.differenceValue,
+		seB.tprd + acc.setting.cooling.differenceValue,
+	)
 	acc.tcnl =
 		acc?.submode?.[0] === sm.heat[0]
 			? seB.tprd + acc.setting.cooling.differenceValue
 			: seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
-console.log(14, acc.tcnl)
+	console.log(14, acc.tcnl)
 	// Задание на сутки
 	// Момент запуска режима - Температура задания продукта
 	if (acc?.tgt === undefined) {
@@ -149,7 +153,7 @@ function message(bld, obj, s, seB, am, acc) {
 		seB.tprd <= acc.tgt &&
 		!acc.finish &&
 		acc.submode?.[0] !== sm.cure[0] &&
-		acc?.submode?.[0] === sm.heat[0]
+		acc?.submode?.[0] !== sm.heat[0]
 	) {
 		// Истекшее время "Продукт достиг задания"
 		acc.finish = obj.retain?.[bld._id]?.cooling?.finish
