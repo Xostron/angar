@@ -34,7 +34,9 @@ function submode(bld, obj, s, seB, acc) {
 	// set
 	if (
 		seB.tprd <= s.cooling.target - s.heat.hysteresisIn &&
-		(acc?.submode?.[0] === sm.cooling[0] || !acc?.submode?.[0])
+		(acc?.submode?.[0] === sm.cooling[0] ||
+			!acc?.submode?.[0] ||
+			(acc?.submode?.[0] === sm.cure[0] && seB.tout>seB.tprd+s.cooling.hysteresisOut))
 	) {
 		acc.submode = sm.heat
 	}
@@ -64,7 +66,9 @@ function submode(bld, obj, s, seB, acc) {
 	if (
 		s.mois.humidity + s.cure.hysteresisJump < seB.hin &&
 		seB.tprd <= acc.tgt &&
-		(acc?.submode?.[0] === sm.cooling[0] || !acc?.submode?.[0])
+		(acc?.submode?.[0] === sm.cooling[0] ||
+			!acc?.submode?.[0] ||
+			(acc?.submode?.[0] === sm.heat[0] && seB.tout < seB.tprd))
 	) {
 		acc.submode = sm.cure
 	}
