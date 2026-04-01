@@ -4,6 +4,7 @@ const { msgB } = require('@tool/message')
 const mes = require('@dict/message')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
+const isChange = require('@tool/is_change')
 
 /**
  * Определение подрежима
@@ -36,7 +37,8 @@ function submode(bld, obj, s, seB, acc) {
 		seB.tprd <= s.cooling.target - s.heat.hysteresisIn &&
 		(acc?.submode?.[0] === sm.cooling[0] ||
 			!acc?.submode?.[0] ||
-			(acc?.submode?.[0] === sm.cure[0] && seB.tout>seB.tprd+s.cooling.hysteresisOut))
+			(acc?.submode?.[0] === sm.cure[0] &&
+				seB.tout > seB.tprd + s.cooling.hysteresisOut + s.heat.differenceMax))
 	) {
 		acc.submode = sm.heat
 	}
@@ -68,7 +70,7 @@ function submode(bld, obj, s, seB, acc) {
 		seB.tprd <= acc.tgt &&
 		(acc?.submode?.[0] === sm.cooling[0] ||
 			!acc?.submode?.[0] ||
-			(acc?.submode?.[0] === sm.heat[0] && seB.tout < seB.tprd))
+			(acc?.submode?.[0] === sm.heat[0] && seB.tout < seB.tprd + s.heat.differenceMax))
 	) {
 		acc.submode = sm.cure
 	}
@@ -102,26 +104,23 @@ function submode(bld, obj, s, seB, acc) {
 function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
 	// Температура задания канала (? нагрев : охлаждение(лечение, охл+))
-	console.log(
-		13,
-		seB.tprd,
-		acc.setting.cooling.differenceValue,
-		seB.tprd + acc.setting.cooling.differenceValue,
-	)
 	acc.tcnl =
 		acc?.submode?.[0] === sm.heat[0]
 			? seB.tprd + acc.setting.cooling.differenceValue
 			: seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
-	console.log(14, acc.tcnl)
+
 	// Задание на сутки
+
 	// Момент запуска режима - Температура задания продукта
-	if (acc?.tgt === undefined) {
+	if (acc?.tgt === undefined || acc?.isChange(s.cooling.decrease, s.cooling.target)) {
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 		console.log(
 			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
 		)
+		// Указанные настройки изменились?
+		acc.isChange = isChange(s.cooling.decrease, s.cooling.target)
 	}
 	// Пересчет в полночь TODO
 	if (new Date().getHours() == 0 && !acc.mdnt) {
