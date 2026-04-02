@@ -40,26 +40,13 @@ function submode(bld, obj, s, seB, acc) {
 			(acc?.submode?.[0] === sm.cure[0] &&
 				seB.tout > seB.tprd + s.cooling.hysteresisOut + s.heat.differenceMax))
 	) {
+		console.log(1, 'heat set')
 		acc.submode = sm.heat
 	}
 	// reset
 	if (seB.tprd >= s.cooling.target && acc?.submode?.[0] === sm.heat[0]) {
+		console.log(1, 'heat reset')
 		acc.submode = sm.cooling
-	}
-	// check
-	if (acc?.submode?.[0] === sm.heat[0]) {
-		acc.setting = {
-			cooling: {
-				...s.cooling,
-				hysteresisIn: s.heat.hysteresisIn,
-				minChannel: s.heat.minChannel,
-				differenceMax: s.heat?.differenceMax,
-				differenceMin: s.heat?.differenceMin,
-				differenceValue: s.heat?.differenceValue,
-			},
-			mois: { ...s.mois, outMax: s.heat.outMax },
-		}
-		return
 	}
 
 	// ========= Лечение =========
@@ -72,6 +59,7 @@ function submode(bld, obj, s, seB, acc) {
 			!acc?.submode?.[0] ||
 			(acc?.submode?.[0] === sm.heat[0] && seB.tout < seB.tprd + s.heat.differenceMax))
 	) {
+		console.log(3, 'cure set')
 		acc.submode = sm.cure
 	}
 	// reset
@@ -80,15 +68,36 @@ function submode(bld, obj, s, seB, acc) {
 		(s.mois.humidity > seB.hin || seB.tprd > acc.tgt + s.cooling.hysteresisIn) &&
 		acc?.submode?.[0] === sm?.cure?.[0]
 	) {
+		console.log(3, 'cure reset')
 		acc.submode = sm.cooling
 	}
-	// check
+	
+	/* ================== ACCEPT ================== */
+	// accept heat
+	if (acc?.submode?.[0] === sm.heat[0]) {
+		acc.setting = {
+			cooling: {
+				...s.cooling,
+				hysteresisIn: s.heat.hysteresisIn,
+				minChannel: s.heat.minChannel,
+				differenceMax: s.heat?.differenceMax,
+				differenceMin: s.heat?.differenceMin,
+				differenceValue: s.heat?.differenceValue,
+			},
+			mois: { ...s.mois, outMax: s.heat.outMax },
+		}
+		console.log(2, 'heat set')
+		return
+	}
+
+	// accept cure
 	if (acc?.submode?.[0] === sm?.cure?.[0]) {
 		// console.log(2, 'check лечение')
 		acc.setting = { cooling: { ...s.cooling, ...s.cure }, mois: s.mois }
 		// Уменьшение разницы продукт-канал
 		if (seB.tprd + 0.2 <= acc.tgt) acc.setting.cooling.differenceValue = 0
 		else if (seB.tprd > acc.tgt) acc.setting.cooling.differenceValue = s.cure.differenceValue
+		console.log(4, 'cure set')
 		return
 	}
 
