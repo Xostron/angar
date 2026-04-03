@@ -25,7 +25,6 @@ const data = {
 
 function middlewB(bld, obj, s, seB, am, acc) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd, tcnl } = seB
-
 	// ************************************************
 	if (tout < s.drying.channelMin) {
 		wrAchieve(
@@ -66,7 +65,7 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(
 				bld,
 				155,
-				`t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${seB.tprd} °С`,
+				`t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${tprd} °С`,
 			),
 		)
 		acc.f3 = true
@@ -76,6 +75,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 		acc.f3 = false
 		delAchieve(bld._id, 'drying', 'drying3')
 	}
+	acc.tgt = tprd
+	acc.tcnl = s.drying.channelMax
 }
 
 function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {

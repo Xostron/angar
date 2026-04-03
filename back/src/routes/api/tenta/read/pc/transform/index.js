@@ -1,5 +1,6 @@
 const { checkS } = require('@tool/get/sensor');
 const { data: store } = require('@store');
+const banner = require('../../store/transform/banner')
 
 // Данные по pc (карточки складов)
 function transform(data, rack) {
@@ -81,6 +82,10 @@ function fnTransform(bld, data, rack, result) {
 		(el) => ({ code: el?.type, msg: el?.msg, desc: el?.desc })
 	);
 	result[bld._id + 'alarm'].push(...timer);
+
+	// result[bld._id + 'banner'] = banner(bld._id, data) ?? null
+
+	// console.log(222, result[bld._id + 'banner'])
 
 	// Общее состояние ВНО (кроме холодильника)
 	if (bld.type !== 'cold') {

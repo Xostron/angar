@@ -8,6 +8,7 @@ const banner = require('./banner')
 const sections = require('./sections')
 const push = require('./push')
 const fnWetting = require('./device/wetting')
+const sp = require('./sp')
 /**
  * Трансформация данных о здании и секциях с использованием сенсоров и оборудования.
  *
@@ -56,6 +57,7 @@ async function transform(bldId, secId) {
 		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0
 		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null
 		result[bldId + 'banner'] = banner(bldId, data) ?? null
+
 		// обработка пуш
 		result[bldId + 'push'] = push(bldId, section, data) ?? null
 		// Разгонный вентилятор склада
@@ -102,6 +104,10 @@ async function transform(bldId, secId) {
 		// Краткая информация по секциям (карточки)
 		sections(bldId, type, section, data, { heating, valve, fan, cooler }, result)
 
+		// Рассчитанные задания авторежима:
+		result[bldId + 'sp'] = sp(bldId, type, bldData?.automode)
+
+		// Для обычного и комби склада
 		if (type !== 'cold') {
 			// Расчетная абсолютная влажность улицы
 			result['ah'] = {

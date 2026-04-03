@@ -71,7 +71,7 @@ function submode(bld, obj, s, seB, acc) {
 		console.log(3, 'cure reset')
 		acc.submode = sm.cooling
 	}
-	
+
 	/* ================== ACCEPT ================== */
 	// accept heat
 	if (acc?.submode?.[0] === sm.heat[0]) {
@@ -118,7 +118,7 @@ function target(bld, obj, s, seB, acc) {
 			? seB.tprd + acc.setting.cooling.differenceValue
 			: seB.tprd - acc.setting.cooling.differenceValue
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
-
+	acc.tcnl = isNaN(acc.tcnl) ? undefined : +acc.tcnl.toFixed(1)
 	// Задание на сутки
 
 	// Момент запуска режима - Температура задания продукта
