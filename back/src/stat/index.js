@@ -5,6 +5,7 @@ const { delay } = require('@tool/command/time');
 const { readTO } = require('@tool/json');
 const pLogVoltage = require('./voltage');
 const { data: store } = require('@store');
+const firstLog = require('./_first')
 
 /**
  * Статистика - сбор данных по изменению (Главный цикл)
@@ -32,6 +33,8 @@ function statOnChange(obj, history) {
 	historyLog(event, store.prev.event, 'event', force);
 	// achieve - сообщения достижений
 	historyLog(achieve, store.prev.achieve, 'event', force);
+	// Перезагрузка POS
+	firstLog(data.building, 'event')
 
 	// Устройства (состояние озонатор, увлажнитель и т.д.), кроме электроизмерений
 	const dvc = data.device.filter((el) => el.device.code !== 'pui');

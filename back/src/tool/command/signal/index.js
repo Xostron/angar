@@ -6,10 +6,10 @@ const { data: store } = require('@store')
 
 /**
  * Получить раму сигнала
- * @param {*} ownerId 
- * @param {*} obj 
- * @param {*} type 
- * @returns 
+ * @param {*} ownerId
+ * @param {*} obj
+ * @param {*} type
+ * @returns
  */
 function getSig(ownerId, obj, type) {
 	return obj.data?.signal?.find((o) => o.owner.id === ownerId && o.type == type) ?? null
