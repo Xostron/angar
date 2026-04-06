@@ -91,25 +91,25 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
  */
 function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 	// "Температура задания достигнута"
-	console.log(
-		17,
-		se.tprd,
-		'>=',
-		accCold.tgtTprd,
-		'&&',
-		se.hin,
-		'<=',
-		s.mois.humidity,
-		'&&',
-		accCold.timeAD === null,
-		se.tprd >= accCold.tgtTprd && se.hin <= s.mois.humidity && accCold.timeAD === null,
-	)
-	console.log(
-		18,
-		accCold.flagFinish &&
-			se.tprd >= accCold.tgtTprd - s.cooling.hysteresisIn &&
-			se.hin <= s?.mois?.humidity,
-	)
+	// console.log(
+	// 	17,
+	// 	se.tprd,
+	// 	'>=',
+	// 	accCold.tgtTprd,
+	// 	'&&',
+	// 	se.hin,
+	// 	'<=',
+	// 	s.mois.humidity,
+	// 	'&&',
+	// 	accCold.timeAD === null,
+	// 	se.tprd >= accCold.tgtTprd && se.hin <= s.mois.humidity && accCold.timeAD === null,
+	// )
+	// console.log(
+	// 	18,
+	// 	accCold.flagFinish &&
+	// 		se.tprd >= accCold.tgtTprd - s.cooling.hysteresisIn &&
+	// 		se.hin <= s?.mois?.humidity,
+	// )
 
 	if (
 		accCold.tgtTprd !== null &&
@@ -145,7 +145,6 @@ function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 		se.tprd >= accCold.tgtTprd - s.cooling.hysteresisIn &&
 		se.hin <= s?.mois?.humidity
 	) {
-		console.log(18)
 		// Точка отсчета для обдува датчиков по достижению задания
 		accCold.finishTarget ??= new Date()
 		// accCold.blow ??= new Date()
@@ -165,7 +164,6 @@ function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 		delAchieve(bld._id, bld.type, mes[80].code)
 	}
 	// Не блокировать
-	console.log(19)
 	return false
 }
 

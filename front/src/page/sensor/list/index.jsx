@@ -12,7 +12,11 @@ export default function List({ data, type }) {
 	return type === 'pui' ? (
 		<Pui data={data} />
 	) : (
-		<section className='list-sen' onClick={onClick}>
+		<section
+			className='list-sen'
+			style={{ gridTemplateRows: `repeat(${data?.length ?? 1}, var(--fsz65))` }}
+			onClick={onClick}
+		>
 			{data.map((el) => (
 				<Row key={el._id} data={el} />
 			))}

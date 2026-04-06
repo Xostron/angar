@@ -13,7 +13,7 @@
 	display: grid;
 	grid-area: 2/2/2/7;
 	grid-template-columns: 30% repeat(5, 1fr);
-	grid-template-rows: repeat(12, var(--fsz65));
+	/* grid-template-rows: repeat(15, var(--fsz65)); */
 	grid-row-gap: var(--fsz10);
 	grid-column-gap: var(--fsz10);
 	overflow-y: scroll;

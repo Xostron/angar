@@ -75,13 +75,12 @@ function cooler(equip, val, retain, result) {
 		// Агрегированное состояние true - работа, false - стоп
 		result[clr._id].flap.state = arrFl.some((el) => result[clr._id].flap[el._id])
 
-		// 7. Датчики испарителя (температура всасывания, давления всасывания/нагентания)
-		sensor
-			.filter((el) => el.owner.id === clr._id)
-			.forEach((s) => {
-				if (s.type === 'cooler') arrM.add(s?.module?.id)
-				result[clr._id].sensor[s._id] = result[s._id]
-			})
+		// 7. Датчики испарителя (температура всасывания, давления всасывания/нагентания, ток ВНО)
+		const arrSen = [...getAi(arrF, binding), ...sensor.filter((el) => el.owner.id === clr._id)]
+		arrSen.forEach((s) => {
+			if (s.type === 'cooler') arrM.add(s?.module?.id)
+			result[clr._id].sensor[s._id] = result[s._id]
+		})
 		// ********************************************************************************
 		// Состояние испарителя
 		result[clr._id].state = state(result[clr._id], clr, equip, arrM)
@@ -196,4 +195,15 @@ function isAlrmByClr(clr, idB, equip, arrM) {
 function findMdl(arr, id) {
 	const elem = arr.find((el) => el.owner.id === id)
 	return elem?.moduleId ?? elem?.module?.id
+}
+
+/**
+ * Получить раму датчиков тока ВНО испарителя
+ * @param {*} fan Массив ВНО испарителя
+ * @param {*} binding Рама binding
+ * @returns {object[]} Массив датчиков тока
+ */
+function getAi(fan, binding) {
+	const idFans = fan.map((el) => el._id)
+	return binding.filter((el) => idFans.includes(el.owner.id) && el.type === 'ai')
 }

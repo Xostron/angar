@@ -29,7 +29,39 @@ function section(doc, data) {
 			if (ai) el.ai = { _id: ai._id, id: ai?.moduleId, channel: ai?.channel }
 			return el
 		})
-	// Обратная связи от ПЧ (ток двигателя)
+
+	// Испаритель
+	const cooler = correct(data?.cooler.filter((el) => el.sectionId === doc._id))
+
+	// Испаритель: сленоиды, датчики, aggregateListId
+	cooler?.forEach((el) => {
+		el.aggregate = data?.aggregate?.find((a) => a._id == el.aggregateListId)
+		el.fan = data?.fan
+			?.filter((f) => f.owner.id === el._id)
+			?.map((f) => {
+				const ao = data?.binding?.find((b) => b.owner.id === f._id)
+				const ai = data.binding.find((b) => b.owner.id === f._id && b.type === 'ai')
+				if (ao) f.ao = { id: ao?.moduleId, channel: ao?.channel }
+				if (ai) f.ai = { _id: ai._id, id: ai?.moduleId, channel: ai?.channel }
+				return f
+			})
+		// к напорным ВНО секции добавляем ВНО испарителя
+		el.solHeat = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'channel')
+		el.flap = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'flap')
+
+		const aifc = el.fan
+			.filter((f) => !!f?.ai?.id)
+			.map((f) => {
+				// Делаем копию элементов, чтобы не влиять на исходный массив ВНО fan
+				const r = { ...f }
+				r.name = `Ток ${r.name}`
+				r._id = r.ai._id
+				return r
+			})
+		el.sensor = [...data?.sensor.filter((s) => s.owner.id === el._id), ...aifc]
+	})
+
+	// ВНОС секции: ток двигателя
 	const aifc = fan
 		.filter((el) => !!el?.ai?.id)
 		.map((el) => {
@@ -39,9 +71,7 @@ function section(doc, data) {
 			r._id = r.ai._id
 			return r
 		})
-	// const aifc = correct(
-	// 	data.binding.filter((el) => el.owner.id === doc._id && ['aifc'].includes(el.type)),
-	// )
+
 	// Дополнительные вентиляторы
 	const fanAux = data.fan.filter((el) => el.owner.id === doc._id && el.type === 'aux')
 	// Клапаны
@@ -52,25 +82,7 @@ function section(doc, data) {
 	const signal = correct(data.signal.filter((el) => listId.includes(el.owner.id)))
 	// Подогрев клапанов
 	const heating = correct(data.heating.filter((el) => el?.owner?.id === doc._id))
-	// Испаритель
-	const cooler = correct(data?.cooler.filter((el) => el.sectionId === doc._id))
 
-	// Испаритель: сленоиды, датчики, aggregateListId
-	cooler?.forEach((el) => {
-		el.sensor = data?.sensor.filter((s) => s.owner.id === el._id)
-		el.aggregate = data?.aggregate?.find((a) => a._id == el.aggregateListId)
-		el.fan = data?.fan
-			?.filter((f) => f.owner.id === el._id)
-			?.map((f) => {
-				const ao = data?.binding?.find((b) => b.owner.id === f._id)
-				if (!ao) return f
-				return { ...f, ao: { id: ao?.moduleId, channel: ao?.channel } }
-			})
-		// к напорным ВНО секции добавляем ВНО испарителя
-		el.solHeat = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'channel')
-		el.flap = data?.heating?.filter((sol) => sol.owner.id == el._id && sol.type == 'flap')
-		// console.log(555, el)
-	})
 	// Давление всасывания агрегата
 	const coolerIds = cooler?.map((el) => el._id) ?? []
 	const pin = data.sensor.filter((el) => coolerIds.includes(el.owner.id) && el.type === 'pin')
