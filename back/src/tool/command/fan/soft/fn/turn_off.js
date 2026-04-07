@@ -2,7 +2,6 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const ignore = require('./ignore')
 const { readAcc } = require('@store/index')
-const _MAX_SP = 100
 const _MIN_SP = 20
 
 /**

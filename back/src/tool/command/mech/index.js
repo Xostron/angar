@@ -123,7 +123,7 @@ function mechB(bId, type, obj) {
 	const flapClrAll =
 		data?.heating?.filter((el) => clrsId.includes(el.owner.id) && el.type === 'flap') ?? []
 
-	// Все вентиляторы склада: напорные, разгонные вно испарителей
+	// Все вентиляторы склада: напорные, разгонные, вно испарителей
 	const fanAll = data?.fan
 		?.filter((el) => idS.includes(el.owner.id))
 		.map((el) => {

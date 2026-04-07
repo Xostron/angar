@@ -29,7 +29,8 @@ function transformClr(doc, data) {
 		fan: data.fan
 			.filter((el) => el.owner.id === doc._id)
 			.map((el) => {
-				const ao = data?.binding.find((b) => b.owner.id === el._id)
+				const ao = data?.binding.find((b) => b.owner.id === el._id && b.type==='ao')
+				const ai = data?.binding.find((b) => b.owner.id === el._id && b.type==='ai')
 				return !ao ? el : { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			}),
 		// Оттайка

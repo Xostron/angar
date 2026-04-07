@@ -4,13 +4,17 @@ const _MAX_SP = 100
 const _MIN_SP = 20
 
 function ctrlFanClr(idB, f, clr, s, se, accCold) {
+	console.log(123, clr.name, f)
 	// Игнор команды
-	if (f === null) return
+	if (f === null) return console.log(1233, 'No action')
 	// 0 выкл, 1 включить
 	clr.fan.forEach((el) => {
 		ctrlDO(el, idB, f ? 'on' : 'off')
 		const sp = f ? getSP(idB, clr, el, s, se, accCold) : _MIN_SP
-		if (el?.ao?.id) ctrlAO(el, idB, sp)
+		console.log(130, 'Задание = ', sp)
+		if (el?.ao?.id) {
+			ctrlAO(el, idB, sp)
+		}
 	})
 }
 
@@ -28,8 +32,6 @@ function ctrlFanClr(idB, f, clr, s, se, accCold) {
 function getSP(idB, clr, fan, s, se, accCold) {
 	let sp = _MAX_SP
 	sp = byCurrent(sp, clr, fan, s, se, accCold)
-	// sp = accCold?.[clr._id]?.offPressureSP ?? sp
-	console.log(12, sp, accCold?.[clr._id]?.current.sp)
 	return sp
 }
 

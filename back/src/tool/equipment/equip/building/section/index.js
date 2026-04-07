@@ -39,7 +39,7 @@ function section(doc, data) {
 		el.fan = data?.fan
 			?.filter((f) => f.owner.id === el._id)
 			?.map((f) => {
-				const ao = data?.binding?.find((b) => b.owner.id === f._id)
+				const ao = data?.binding?.find((b) => b.owner.id === f._id && b.type === 'ao')
 				const ai = data.binding.find((b) => b.owner.id === f._id && b.type === 'ai')
 				if (ao) f.ao = { id: ao?.moduleId, channel: ao?.channel }
 				if (ai) f.ai = { _id: ai._id, id: ai?.moduleId, channel: ai?.channel }
