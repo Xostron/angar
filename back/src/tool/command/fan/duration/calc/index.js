@@ -25,8 +25,9 @@ function calc(bld, prepare, resultFan) {
 
 	// Вычисление времени работы ВНО: Защита от отрицательного времени, сбрасываем очередь
 	const deltaTime = acc.byDur.queue[1].date - acc.byDur.queue[0].date
-	if (deltaTime < _MIN_DELTA_TIME) {
+	if (Number.isNaN(deltaTime) && deltaTime < _MIN_DELTA_TIME) {
 		acc.byDur.queue = []
+		clear(bld, prepare)
 		return
 	}
 
@@ -35,10 +36,12 @@ function calc(bld, prepare, resultFan) {
 	spTime = spTime > s.vent.max_add ? s.vent.max_add : spTime
 
 	// console.log(
-	// 	'\tspTime',
+	// 	222,'spTime',
+	// 	deltaTime, s.vent.add,
 	// 	spTime,
 	// 	's.vent.max_add',
 	// 	s.vent.max_add,
+	// 	acc.byDur.queue[1].date,
 	// 	remTime(acc.byDur.queue[1].date, spTime)
 	// )
 
