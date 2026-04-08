@@ -21,7 +21,8 @@ function valid(sens, owner, val, equip, retain) {
 	// Округленное истинное значение
 	let raw = getRaw(sens, val)
 	// Проверка значения с модуля
-	const code = sens?.type === 'ai' ? 'ai' : 'default'
+	// const code = sens?.type === 'ai' ? 'ai' : 'default'
+	const code = 'default'
 	raw = check[code](building, sens, raw, val)
 
 	// Значение датчика с коррекцией (используется в алгоритмах)
@@ -43,15 +44,15 @@ const check = {
 		if (isNaN(raw)) raw = null
 		return raw
 	},
-	ai(bld, sens, raw, val) {
-		// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
-		if (String(raw).length > 8) raw = 0
-		// Модуль в ошибке
-		if (isErrM(bld._id, sens?.moduleId)) raw = 0
-		// isNaN
-		if (isNaN(raw)) raw = 0
-		return raw
-	},
+	// ai(bld, sens, raw, val) {
+	// 	// Авария датчика (+ авария по антидребезгу находится в tool/debounce_sensor)
+	// 	if (String(raw).length > 8) raw = 0
+	// 	// Модуль в ошибке
+	// 	if (isErrM(bld._id, sens?.moduleId)) raw = 0
+	// 	// isNaN
+	// 	if (isNaN(raw)) raw = 0
+	// 	return raw
+	// },
 }
 
 // Округленное истинное значение

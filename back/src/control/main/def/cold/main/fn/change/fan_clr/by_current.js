@@ -1,7 +1,6 @@
 const { compareTime } = require('@tool/command/time')
 const _MAX_SP = 100
-const _MIN_SP = 20
-const _BEGIN_SP = 70
+
 
 /**
  * Пошаговое изменение задание ПЧ испарителя в
@@ -19,7 +18,7 @@ function byCurrent(sp, clr, fan, s, se, acc) {
 	// // Инициализация
 	acc[clr._id] ??= {}
 	acc[clr._id].current ??= {}
-	acc[clr._id].current.sp ??= _BEGIN_SP
+	acc[clr._id].current.sp ??= s?.fan?.startSp
 	acc[clr._id].current.date ??= null
 	// У ВНО испарителя нет датчика тока - стандартное задание ПЧ
 	if (!check(fan, se)) return sp
@@ -109,13 +108,12 @@ function regul(clr, fan, s, se, acc, on, off) {
 	if (off) {
 		console.log(127, 'regul off')
 		// Задание ПЧ дошло до min%
-		if (acc[clr._id].current.sp <= acc[clr._id].current.sp) {
-			acc[clr._id].current.sp = _BEGIN_SP
+		if (acc[clr._id].current.sp <= s?.fan?.startSp) {
+			acc[clr._id].current.sp = s?.fan?.startSp
 			return
 		}
 		acc[clr._id].current.sp -= s.fan.step
 		acc[clr._id].current.sp =
-			acc[clr._id].current.sp < _BEGIN_SP ? _BEGIN_SP : acc[clr._id].current.sp
-		// acc[clr._id].current.date = new Date()
+			acc[clr._id].current.sp < s?.fan?.startSp ? s?.fan?.startSp : acc[clr._id].current.sp
 	}
 }
