@@ -82,14 +82,16 @@ function webSensAlarm(r, bld, sect, sens) {
 	if (
 		r?.state === 'alarm' &&
 		!store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id] &&
-		!isErrM(bld._id, sens?.module?.id)
+		!isErrM(bld._id, sens?.module?.id) &&
+		sens.type !== 'ai'
 	) {
 		sect?.name
 			? wrExtralrm(bld._id, sect?._id, sens._id, msgBS(bld, sect, sens, 100))
 			: wrExtralrm(bld._id, 'sensor', sens._id, msgBS(bld, 'sensor', sens, 100))
 	}
 	// Если валидный - удаляем аварию
-	if (r.state !== 'alarm') delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
+	if (r.state !== 'alarm' || sens.type === 'ai')
+		delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
 }
 
 /**
