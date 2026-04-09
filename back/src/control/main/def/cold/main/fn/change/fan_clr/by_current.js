@@ -42,7 +42,10 @@ module.exports = byCurrent
  * @returns true - разрешено регулирование АО
  */
 function check(fan, se) {
+	// Нет датчика
 	if (isNaN(se?.[fan._id]?.value)) return false
+	// Не выбраны характеристики двигателя
+	if (!fan?.actuator?.current) return false
 	return true
 }
 
