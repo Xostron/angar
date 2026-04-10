@@ -1,7 +1,7 @@
 const { msgB } = require('@tool/message')
 const { data: store } = require('@store')
 
-function heat(s, seB, building, acc, bdata) {
+function defrost(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
 	// console.log(
 	// 	124,
@@ -61,10 +61,10 @@ function heat(s, seB, building, acc, bdata) {
 		},
 		// 5 Температура улицы ниже допустимой для охлаждения
 		{
-			set: tout <= tprd - acc?.setting?.cooling?.differenceMax,
+			set: tout <= tprd + acc?.setting?.cooling?.differenceMax,
 			reset:
 				tout - acc?.setting?.cooling?.hysteresisOut >
-				tprd - acc?.setting?.cooling?.differenceMax,
+				tprd + acc?.setting?.cooling?.differenceMax,
 			msg: msgB(building, 16),
 		},
 		// 6 В нагреве игнор
@@ -84,4 +84,4 @@ function heat(s, seB, building, acc, bdata) {
 	return r
 }
 
-module.exports = heat
+module.exports = defrost

@@ -15,12 +15,12 @@ function submode(bld, obj, s, seB, acc) {
 	acc.setting = {
 		cooling: {
 			...s.cooling,
-			hysteresisIn: s.heat.hysteresisIn,
-			minChannel: s.heat.minChannel,
-			differenceMax: s.heat?.differenceMax,
-			differenceMin: s.heat?.differenceMin,
+			hysteresisIn: s.defrost?.hysteresisIn,
+			minChannel: s.defrost?.minChannel,
+			differenceMax: s.defrost?.differenceMax,
+			differenceMin: s.defrost?.differenceMin,
 		},
-		mois: { ...s.mois, outMax: s.heat.outMax },
+		mois: { ...s.mois, outMax: s.defrost?.outMax },
 	}
 	return
 }
@@ -30,15 +30,14 @@ function submode(bld, obj, s, seB, acc) {
  */
 function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
-	// Температура задания канала 
+	// Температура задания канала
 	acc.tcnl = seB.tprd
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
 
 	// Задание на сутки
 	// Момент запуска режима - Температура задания продукта
-	if (acc?.tgt === undefined|| acc?.isChange(s.cooling.decrease, s.cooling.target)) {
-		acc.tgt = seB.tprd - acc.setting.cooling.decrease
-		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
+	if (acc?.tgt === undefined || acc?.isChange(s.cooling.decrease, s.cooling.target)) {
+		acc.tgt = acc.setting.cooling.target
 		console.log(
 			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
 		)
@@ -75,24 +74,21 @@ function message(bld, obj, s, seB, am, acc) {
 	// Продукт достиг температуры задания:
 	// 1 Тпрод меньше-равно заданию
 	// 2 подрежим не лечение И не нагрев
-	if (
-		seB.tprd <= acc.tgt &&
-		!acc.finish
-	) {
+	if (seB.tprd >= acc.tgt && !acc.finish) {
 		// Истекшее время "Продукт достиг задания"
 		acc.finish = obj.retain?.[bld._id]?.defrost?.finish
 			? obj.retain?.[bld._id]?.defrost?.finish
 			: new Date()
-		wrAchieve(bld._id, 'defrost', msgB(bld, 15, runTime(acc.finish, 1)))
+
+		wrAchieve(bld._id, 'defrost', msgB(bld, 15, runTime(acc.finish, 1), 'Дефростация. '))
+		store.retain[bld._id].automode = 'cooling'
 	}
 
 	// Сброс:
 	// 1 темп продукта вышла из зоны
 	// 2 подрежим лечения
 	// 3 подрежим нагрева
-	if (
-		seB.tprd - s.cooling.hysteresisIn > acc.tgt
-	) {
+	if (seB.tprd - s.cooling.hysteresisIn < acc.tgt) {
 		acc.finish = null
 		delAchieve(bld._id, 'defrost', mes[15].code)
 	}

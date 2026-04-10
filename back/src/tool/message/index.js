@@ -14,11 +14,11 @@ function msg(building, section, code, msg = '') {
 	return o
 }
 // Склада
-function msgB(building, code, msg = '') {
+function msgB(building, code, msg = '', msgStart = '') {
 	const o = { ...mes[code] }
 	o.title = ''
 	o.buildingId = building._id
-	o.msg = msg ? o.msg + ' ' + msg : o.msg
+	o.msg = msg ? msgStart + o.msg + ' ' + msg : msgStart + o.msg
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
 	return o
