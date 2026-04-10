@@ -4,7 +4,7 @@ const { data: store, readAcc } = require('@store')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
 
-// Автоматический режим: Охлаждение
+// Автоматический режим: Дефростация
 const data = {
 	// Аварии режима
 	alarm,
@@ -58,7 +58,7 @@ module.exports = data
 
 /**
  * Контроль принудительного открытия приточных
- * клапанов секции в подрежиме нагрева
+ * клапанов секции в режиме дефростации
  * @param {*} obj Глобальный объект по состоянию склада
  * @param {*} m Рама секции
  * @param {*} acc Аккумулятор авторежима

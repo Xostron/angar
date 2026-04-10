@@ -17,8 +17,8 @@ const data = [
 		_id: 2,
 		type: '',
 		parent: '',
-		value: 'Нагрев',
-		list: ['heat', 'Нагрев'],
+		value: 'Дефростация',
+		list: ['defrost', 'Дефростация'],
 	},
 ]
 

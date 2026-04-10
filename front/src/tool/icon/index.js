@@ -6,7 +6,7 @@ import alarm from './alarm'
 import calcMois from './calc_mois'
 import heating from './heating'
 import product from './product'
-import mode from './mode'
+// import mode from './mode'
 import isAlarm from './alarm'
 import automode from './automode'
 import pui from './pui'
@@ -21,7 +21,7 @@ const def = {
 	calcMois,
 	heating,
 	product,
-	mode,
+	// mode,
 	automode,
 	co2: { on: '/img/cold/co/co2.svg' },
 	pressure: { on: '/img/periphery/pressure/on.svg' },

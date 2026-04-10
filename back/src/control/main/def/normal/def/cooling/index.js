@@ -4,7 +4,7 @@ const { data: store, readAcc } = require('@store')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
 
-// Автоматический режим: Охлаждение
+// Автоматический режим: Хранение
 const data = {
 	// Аварии режима
 	alarm,
@@ -63,32 +63,3 @@ function fan(s, se, alr, idS, acc) {
 }
 
 module.exports = data
-
-/**
- * Контроль принудительного открытия приточных
- * клапанов секции в подрежиме нагрева
- * @param {*} obj Глобальный объект по состоянию склада
- * @param {*} m Рама секции
- * @param {*} acc Аккумулятор авторежима
- * @returns {boolean} true - вкл принудительное открытие
- */
-function heatOpen(bld, idS, obj, m, acc, am, s, alr) {
-	acc.firstHeat ??= {}
-	// Подрежим не нагрев || аварии || комби-холод
-	if (acc?.submode?.[0] !== sm.heat[0] || alr || isCombiCold(bld, am, s)) {
-		delete acc?.firstHeat?.[idS]
-		return false
-	}
-	// Флаг для принудительного открытия клапанов при включении режима нагрев
-	acc.firstHeat[idS] ??= true
-	// Ждем у всех приточных клапанов секции состояния "открыто"
-	const isOpn = m.vlvS
-		.filter((el) => el.type === 'in' && obj.value[el._id].state !== 'alr')
-		.some((el) => obj.value[el._id].state === 'opn' || obj.value[el._id].val >= 100)
-
-	if (!isOpn && acc?.firstHeat?.[idS]) {
-		return true
-	}
-	acc.firstHeat[idS] = false
-	return false
-}

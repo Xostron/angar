@@ -17,7 +17,7 @@ export default function List({ list }) {
 			const end = start + 10
 			setArr(list?.slice(start, end))
 		},
-		[page, list]
+		[page, list],
 	)
 
 	if (!list?.length) return null
