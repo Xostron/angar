@@ -5,6 +5,7 @@ const mes = require('@dict/message')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
 const { data: store } = require('@store')
+const isChange = require('@tool/is_change')
 
 /**
  * Настройки подрежима Дефростация (Нагрев)
@@ -29,18 +30,20 @@ function submode(bld, obj, s, seB, acc) {
  */
 function target(bld, obj, s, seB, acc) {
 	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
-	// Температура задания канала (? нагрев : охлаждение(лечение, охл+))
+	// Температура задания канала 
 	acc.tcnl = seB.tprd
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel
 
 	// Задание на сутки
 	// Момент запуска режима - Температура задания продукта
-	if (acc?.tgt === undefined) {
+	if (acc?.tgt === undefined|| acc?.isChange(s.cooling.decrease, s.cooling.target)) {
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 		console.log(
 			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
 		)
+		// Указанные настройки изменились?
+		acc.isChange = isChange(s.cooling.decrease, s.cooling.target)
 	}
 	// Пересчет в полночь TODO
 	if (new Date().getHours() == 0 && !acc.mdnt) {
@@ -74,9 +77,7 @@ function message(bld, obj, s, seB, am, acc) {
 	// 2 подрежим не лечение И не нагрев
 	if (
 		seB.tprd <= acc.tgt &&
-		!acc.finish &&
-		acc.submode?.[0] !== sm.cure[0] &&
-		acc?.submode?.[0] === sm.heat[0]
+		!acc.finish
 	) {
 		// Истекшее время "Продукт достиг задания"
 		acc.finish = obj.retain?.[bld._id]?.defrost?.finish
@@ -90,9 +91,7 @@ function message(bld, obj, s, seB, am, acc) {
 	// 2 подрежим лечения
 	// 3 подрежим нагрева
 	if (
-		seB.tprd - s.cooling.hysteresisIn > acc.tgt ||
-		acc.submode?.[0] === sm.cure[0] ||
-		acc?.submode?.[0] === sm.heat[0]
+		seB.tprd - s.cooling.hysteresisIn > acc.tgt
 	) {
 		acc.finish = null
 		delAchieve(bld._id, 'defrost', mes[15].code)
