@@ -106,15 +106,17 @@ function finishSmokingOzon(dataB, resultB, key) {
 function fnCooling(data) {
 	if (!data) return
 	for (const idB in data) {
-		store.retain[idB].cooling ??= {}
+		const am = store.retain[idB].automode
+		
+		store.retain[idB][am] ??= {}
 		// Мин. темп. продукта в режиме хранения
-		store.retain[idB].cooling.tprdMin =
-			store.retain[idB].automode === 'cooling'
-				? data?.[idB]?.cooling?.tprdMin ?? data?.[idB]?.combi?.tprdMin
+		store.retain[idB][am].tprdMin =
+			store.retain[idB].automode === 'cooling' || store.retain[idB].automode === 'defrost'
+				? (data?.[idB]?.[am]?.tprdMin ?? data?.[idB]?.combi?.tprdMin)
 				: null
 		// Дата и время: продукт достиг задания в режиме хранения
-		store.retain[idB].cooling.finish =
-			data?.[idB]?.cooling?.finish ?? data?.[idB]?.combi?.finish
+		if (store.retain[idB].automode === 'cooling' || store.retain[idB].automode === 'defrost')
+			store.retain[idB][am].finish = data?.[idB]?.[am]?.finish ?? data?.[idB]?.combi?.finish
 	}
 }
 

@@ -30,6 +30,7 @@ function middlewB(building, obj, s, seB, am, acc, alrBld) {
 	target(building, obj, s, seB, acc, alrBld)
 	// Сообщения
 	message(building, obj, s, seB, am, acc)
+	console.log(9911, acc)
 }
 
 function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {
@@ -67,7 +68,7 @@ module.exports = data
 function heatOpen(bld, idS, obj, m, acc, am, s, alr) {
 	acc.firstHeat ??= {}
 	// Подрежим не нагрев || аварии || комби-холод
-	if (acc?.submode?.[0] !== sm.heat[0] || alr || isCombiCold(bld, am, s)) {
+	if (alr || isCombiCold(bld, am, s)) {
 		delete acc?.firstHeat?.[idS]
 		return false
 	}

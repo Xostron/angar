@@ -11,21 +11,17 @@ const { data: store } = require('@store')
  */
 function submode(bld, obj, s, seB, acc) {
 	if (!s) return
-	// check
-	if (acc?.submode?.[0] === sm.heat[0]) {
-		// console.log(11, 'check Нагрев')
-		acc.setting = {
-			cooling: {
-				...s.cooling,
-				hysteresisIn: s.heat.hysteresisIn,
-				minChannel: s.heat.minChannel,
-				differenceMax: s.heat?.differenceMax,
-				differenceMin: s.heat?.differenceMin,
-			},
-			mois: { ...s.mois, outMax: s.heat.outMax },
-		}
-		return
+	acc.setting = {
+		cooling: {
+			...s.cooling,
+			hysteresisIn: s.heat.hysteresisIn,
+			minChannel: s.heat.minChannel,
+			differenceMax: s.heat?.differenceMax,
+			differenceMin: s.heat?.differenceMin,
+		},
+		mois: { ...s.mois, outMax: s.heat.outMax },
 	}
+	return
 }
 
 /**
@@ -58,7 +54,7 @@ function target(bld, obj, s, seB, acc) {
 	if (new Date().getHours() != 0) acc.mdnt = false
 
 	// Фиксация минимальной температуры продукта (ограничение по температуре задания)
-	acc.tprdMin = acc.tprdMin === null ? seB.tprd : acc.tprdMin
+	acc.tprdMin = acc.tprdMin === null || acc.tprdMin === undefined ? seB.tprd : acc.tprdMin
 	acc.tprdMin = seB.tprd < acc.tprdMin ? seB.tprd : acc.tprdMin
 	acc.tprdMin = acc.tprdMin < acc.tgt ? acc.tgt : acc.tprdMin
 	// console.log(3300, 'Мин темп продукта', acc.tprdMin)
@@ -83,10 +79,10 @@ function message(bld, obj, s, seB, am, acc) {
 		acc?.submode?.[0] === sm.heat[0]
 	) {
 		// Истекшее время "Продукт достиг задания"
-		acc.finish = obj.retain?.[bld._id]?.cooling?.finish
-			? obj.retain?.[bld._id]?.cooling?.finish
+		acc.finish = obj.retain?.[bld._id]?.defrost?.finish
+			? obj.retain?.[bld._id]?.defrost?.finish
 			: new Date()
-		wrAchieve(bld._id, 'cooling', msgB(bld, 15, runTime(acc.finish, 1)))
+		wrAchieve(bld._id, 'defrost', msgB(bld, 15, runTime(acc.finish, 1)))
 	}
 
 	// Сброс:
@@ -99,14 +95,14 @@ function message(bld, obj, s, seB, am, acc) {
 		acc?.submode?.[0] === sm.heat[0]
 	) {
 		acc.finish = null
-		delAchieve(bld._id, 'cooling', mes[15].code)
+		delAchieve(bld._id, 'defrost', mes[15].code)
 	}
 
 	const txt = `T зад. канала = ${acc.tcnl?.toFixed(1) ?? '--'}°C. Т зад. прод. = ${acc.tgt?.toFixed(1) ?? '--'}°C`
-	wrAchieve(bld._id, 'cooling', msgB(bld, 150, txt))
+	wrAchieve(bld._id, 'defrost', msgB(bld, 150, txt))
 
 	// Обновление времени в сообщении "Продукт достиг температуры"
-	if (acc.finish) wrAchieve(bld._id, 'cooling', msgB(bld, 15, runTime(acc.finish, 1)))
+	if (acc.finish) wrAchieve(bld._id, 'defrost', msgB(bld, 15, runTime(acc.finish, 1)))
 }
 
 module.exports = { submode, target, message }

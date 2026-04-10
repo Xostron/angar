@@ -21,6 +21,8 @@ const dict = {
 	16: 'настройка "Вентиляция": количество вентиляторов = 0', //обычный, комби-обычный
 	17: 'обнаружена авария',
 	18: 'Низкая температура канала',
+	19: 'склад работает по авто режиму', //комби-обычный, дефростация
+	20: 'склад работает по авто режиму', //обычный, дефростация
 }
 
 /**
@@ -56,7 +58,7 @@ function exit(bld, obj, code, s, alarm, ban, prepare, acc, resultFan) {
  */
 function fnCheck(bld, obj, code, s, alarm, ban, prepare) {
 	// Режим выключен - разрешить для выключения
-	if (code == 'off' || code=='on') return true
+	if (code == 'off' || code == 'on') return true
 	// Вычисление причин запрета ВВ
 	const reason = fnReason(bld, obj, code, s, alarm, ban, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
@@ -127,6 +129,8 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		(isCN || isN) && !s?.vent?.max, // 16
 		alarm || supply, //17
 		alrClosed, //18
+		isCN && am === 'defrost' && !flagFinish && !alrAuto, //19
+		isN && am === 'defrost' && !flagFinish && !alrAuto, //20
 	]
 }
 

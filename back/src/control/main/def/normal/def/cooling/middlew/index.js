@@ -143,7 +143,7 @@ function target(bld, obj, s, seB, acc) {
 	if (new Date().getHours() != 0) acc.mdnt = false
 
 	// Фиксация минимальной температуры продукта (ограничение по температуре задания)
-	acc.tprdMin = acc.tprdMin === null ? seB.tprd : acc.tprdMin
+	acc.tprdMin = acc.tprdMin === null || acc.tprdMin === undefined ? seB.tprd : acc.tprdMin
 	acc.tprdMin = seB.tprd < acc.tprdMin ? seB.tprd : acc.tprdMin
 	acc.tprdMin = acc.tprdMin < acc.tgt ? acc.tgt : acc.tprdMin
 	// console.log(3300, 'Мин темп продукта', acc.tprdMin)
