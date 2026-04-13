@@ -18,10 +18,12 @@ import { ms } from '@src/tool/datetime'
 export default function Settings({}) {
 	const { type, build } = useParams()
 	const curB = useEquipStore((s) => s.getCurB(build))
+	// Список кодов настроек
 	const kindList = useEquipStore((s) => s.getKindList(build))
 
 	// ***************** Калибровка клапанов *****************
 	const bldType = useEquipStore((s) => s.list?.[curB]?.type)
+	// Рама секции + оборудование секции
 	const equipSect = useEquipStore((s) => s.list?.[curB]?.section)
 
 	// Изменение и запись настроек

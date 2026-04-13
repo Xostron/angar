@@ -45,7 +45,7 @@ const useOutputStore = create((set, get) => ({
 	},
 	setHid(name, bool) {
 		const output = get().hid
-		output[name] = { hid: bool }
+		output[name] = { hid: !bool }
 		set({ output })
 	},
 	// Установить: команды управления (пуск-стоп)
