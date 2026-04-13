@@ -4,17 +4,19 @@ import Switch from '@cmp/fields/switch'
 import Text from '@cmp/fields/text'
 import useInputStore from '@store/input'
 
-export default function Data({ prd, bType }) {
+export default function Data({ prd, bType, style }) {
 	let { build } = useParams()
 	// Время сушки в днях
-	const [count, day, inp] = useInputStore(({ input }) => [
-		input?.retain?.[build]?.drying?.acc,
-		input?.retain?.[build]?.setting?.drying?.[prd]?.day?.day ?? input?.factory?.drying?.[prd]?.day?.day,
-		input?.retain,
-	])
-	if (bType=='cold') return
+	const count = useInputStore(({ input }) => input?.retain?.[build]?.drying?.count)
+	// Прошло дней
+	const day = useInputStore(
+		({ input }) =>
+			input?.retain?.[build]?.setting?.drying?.[prd]?.day?.day ??
+			input?.factory?.drying?.[prd]?.day?.day,
+	)
+	if (bType == 'cold') return
 	return (
-		<div className='data'>
+		<div className='data' style={style}>
 			<IconText
 				data={{
 					value: 'Постоянный вентилятор',

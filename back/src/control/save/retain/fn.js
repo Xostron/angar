@@ -107,7 +107,7 @@ function fnCooling(data) {
 	if (!data) return
 	for (const idB in data) {
 		const am = store.retain[idB].automode
-		
+
 		store.retain[idB][am] ??= {}
 		// Мин. темп. продукта в режиме хранения
 		store.retain[idB][am].tprdMin =
@@ -146,28 +146,32 @@ function fnDryingCount(building) {
 		store.retain[idB].drying.acc ??= 0
 
 		// Фиксируем точку отсчета работы сушки
-		if (
+		const t =
 			store.retain?.[idB]?.start &&
 			store.retain[idB]?.automode == 'drying' &&
 			!store.retain[idB]?.drying?.date
-		) {
-			store.retain[idB].drying.date = new Date()
-		}
+
+		if (t) store.retain[idB].drying.date = new Date()
+
 		// Сушка выключена / склад выключен - сохраняем в аккумулятор
+		// Сбрасываем кол-во дней в сушке и выходим
 		if (
 			(!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') &&
 			store.retain?.[idB]?.drying?.date
 		) {
-			store.retain[idB].drying.acc = store.retain[idB].drying.count
-			delete store.retain?.[idB]?.drying?.date
-			delete store.retain?.[idB]?.drying?.count
+			// store.retain[idB].drying.acc = store.retain[idB].drying.count
+			store.retain[idB].drying.date = null
+			store.retain[idB].drying.count = null
+			return
 		}
 
+		// Сушка включена -> подсчет времени
 		const dt = store.retain?.[idB]?.drying?.date
 
 		// Нажата кнопка обнулить
 		if (isZero(idB)) {
-			store.retain[idB].drying = { acc: 0 }
+			console.log(4321, 'zeroooooooooooooooooooooooooooo')
+			return (store.retain[idB].drying = { acc: null, date: null, count: null })
 		}
 
 		// Подсчет дней

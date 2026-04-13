@@ -122,7 +122,10 @@ function target(bld, obj, s, seB, acc) {
 	// Задание на сутки
 
 	// Момент запуска режима - Температура задания продукта
-	if (acc?.tgt === undefined || acc?.isChange(s.cooling.decrease, s.cooling.target)) {
+	if (
+		acc?.tgt === undefined ||
+		(!!acc?.isChange && acc?.isChange(s.cooling.decrease, s.cooling.target))
+	) {
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
 		console.log(

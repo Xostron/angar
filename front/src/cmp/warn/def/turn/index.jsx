@@ -45,12 +45,15 @@ export default function Entry({ data, entryCode }) {
 	}))
 	// Список режимов
 	const aAm = Object.values(defImg.automode)
+	const styleData = am === 'drying' ? { opacity: 1 } : { opacity: 0.3, pointerEvents: 'none' }
 
 	return (
 		<div className='entry'>
 			<Title bType={bType} />
 			<Line {...{ bType, am, actAutomode, aAm, pr, actProduct, aProd }} />
-			<Data prd={product?.code} bType={bType} />
+
+			<Data prd={product?.code} bType={bType} style={styleData} />
+
 			<Footer name={bStart} act1={action} act2={clear} act3={zero} bType={bType} />
 		</div>
 	)
