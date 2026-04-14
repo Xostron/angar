@@ -9,7 +9,7 @@ const { getSectAM } = require('@tool/get/building')
 function turnOff(idB, section, obj) {
 	const sectAM = getSectAM(idB, section, obj)
 	const start = obj?.retain?.[idB]?.start
-	console.log(9991, sectAM, 'Блокировка пуш', !sectAM?.length && !start)
+	// console.log(9991, sectAM, 'Блокировка пуш', !sectAM?.length && !start)
 	return !sectAM?.length && !start
 }
 

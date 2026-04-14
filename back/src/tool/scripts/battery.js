@@ -5,7 +5,7 @@ const BAT_STATUS_PATH = '/sys/class/power_supply/BAT0/status'
 
 function battery() {
 	if (process.platform !== 'linux') return
-	// console.log('Проверка состояния электропитания')
+	// console.log(1, 'Проверка состояния электропитания')
 	try {
 		const batStatus = fs.readFileSync(BAT_STATUS_PATH, 'utf8').trim()
 		store.battery = batStatus === 'Discharging'

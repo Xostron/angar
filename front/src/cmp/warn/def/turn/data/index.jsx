@@ -7,7 +7,9 @@ import useInputStore from '@store/input'
 export default function Data({ prd, bType, style }) {
 	let { build } = useParams()
 	// Время сушки в днях
-	const count = useInputStore(({ input }) => input?.retain?.[build]?.drying?.count)
+	const count = useInputStore(
+		({ input }) => input?.retain?.[build]?.drying?.count ?? input?.retain?.[build]?.drying?.acc,
+	)
 	// Прошло дней
 	const day = useInputStore(
 		({ input }) =>

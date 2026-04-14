@@ -1,6 +1,7 @@
 const { msgB } = require('@tool/message')
 const alarm = require('./alarm')
 const { wrAchieve, delAchieve } = require('@tool/message/achieve')
+const { data: store } = require('@store')
 
 // Автоматический режим: Сушка
 const data = {
@@ -77,6 +78,11 @@ function middlewB(bld, obj, s, seB, am, acc) {
 	}
 	acc.tgt = tprd
 	acc.tcnl = s.drying.channelMax
+	
+	// По достижению кол-ва дней в сушке -> переход в хранение
+	if (store.retain?.[bld._id]?.drying === s.drying.day) {
+		store.retain[bld._id].automode = 'cooling'
+	}
 }
 
 function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {

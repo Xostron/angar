@@ -81,6 +81,7 @@ function message(bld, obj, s, seB, am, acc) {
 			: new Date()
 
 		wrAchieve(bld._id, 'defrost', msgB(bld, 15, runTime(acc.finish, 1), 'Дефростация. '))
+		// По достижению заданной темп продукта -> переход в хранение
 		store.retain[bld._id].automode = 'cooling'
 	}
 

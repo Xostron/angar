@@ -60,6 +60,7 @@ async function transform(bldId, secId) {
 
 		// обработка пуш
 		result[bldId + 'push'] = push(bldId, section, data) ?? null
+		console.log(9988, result[bldId + 'push'])
 		// Разгонный вентилятор склада
 		result[bldId + 'accel'] = f
 		// Абсолютная влажность продукта

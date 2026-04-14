@@ -1,5 +1,7 @@
 /**
- * abortController
+ * abortController - это встроенный API-интерфейс, позволяющий принудительно 
+ * останавливать (прерывать) асинхронные операции в любой момент.
+ * 
  * При получении команды оператора с мобильного/web приложения
  * Основной цикл программы перывается и переходит к концу выполнения
  * цикла для сохранения пользовательских данных в retain.js и далее цикл
@@ -20,21 +22,30 @@
  */
 const data = {
 	controller: new AbortController(),
-	// Сигнал для нативных функции, которые работают с флагом (setTimeout, fetch etc )
+	/**
+	 * Сигнал для нативных функции, которые работают
+	 * с флагом (setTimeout, fetch etc )
+	 */
 	get signal() {
 		return this.controller.signal
 	},
-	// Сигнал на прерывание
+	/**
+	 * Сигнал на прерывание
+	 */
 	set() {
 		console.log('................ABOC SET')
 		this.controller.abort()
 	},
-	// Проверка: произошло прерывание
+	/**
+	 * Проверка: произошло прерывание
+	 */
 	check() {
 		// console.log('...............ABOC RETURN', this.controller.signal.aborted)
 		return this.controller.signal.aborted
 	},
-	// Обновление контроллера после срабатывания
+	/**
+	 * Обновление контроллера после срабатывания
+	 */
 	refresh() {
 		if (this.check()) {
 			this.controller = new AbortController()

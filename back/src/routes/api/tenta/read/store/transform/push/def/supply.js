@@ -26,6 +26,7 @@ function supply(idB, data) {
 		r.msg = 'Авария питания'
 		return r
 	}
+	return null
 }
 
 module.exports = supply

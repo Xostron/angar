@@ -15,7 +15,7 @@ function push(idB, section, obj) {
 	// Обнаружена авария питания
 	const r = supply(idB, obj)
 	// console.log(5500, 'r', r)
-	if (r) return r
+	if (r) return [r]
 
 	// Формирование актуального списка пушей
 	return all(idB, obj)

@@ -1,6 +1,6 @@
 const { setTuneTime, setPos } = require('@tool/command/set')
 const { curStateV } = require('@tool/command/valve')
-const { isZero } = require('@tool/zero')
+const { isZero, zero } = require('@tool/zero')
 const { data: store } = require('@store')
 
 // Прогресс открытия/закрытия клапана (сохранение в retain)
@@ -143,9 +143,9 @@ function fnDateBuild(building) {
 function fnDryingCount(building) {
 	for (const { _id: idB } of building) {
 		store.retain[idB].drying ??= {}
-		store.retain[idB].drying.acc ??= 0
+		// store.retain[idB].drying.acc ??= 0
 
-		// Фиксируем точку отсчета работы сушки
+		// 1. Фиксируем точку отсчета работы сушки
 		const t =
 			store.retain?.[idB]?.start &&
 			store.retain[idB]?.automode == 'drying' &&
@@ -153,15 +153,16 @@ function fnDryingCount(building) {
 
 		if (t) store.retain[idB].drying.date = new Date()
 
-		// Сушка выключена / склад выключен - сохраняем в аккумулятор
+		// 2. Сушка выключена / склад выключен - сохраняем в аккумулятор
 		// Сбрасываем кол-во дней в сушке и выходим
 		if (
 			(!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') &&
 			store.retain?.[idB]?.drying?.date
 		) {
-			// store.retain[idB].drying.acc = store.retain[idB].drying.count
+			store.retain[idB].drying.acc = store.retain[idB].drying.count
 			store.retain[idB].drying.date = null
 			store.retain[idB].drying.count = null
+			zero(null, false)
 			return
 		}
 
@@ -170,15 +171,17 @@ function fnDryingCount(building) {
 
 		// Нажата кнопка обнулить
 		if (isZero(idB)) {
-			console.log(4321, 'zeroooooooooooooooooooooooooooo')
-			return (store.retain[idB].drying = { acc: null, date: null, count: null })
+			store.retain[idB].drying.date = null
+			store.retain[idB].drying.count = null
+			// обнулить счетчик сушки
+			zero(null, false)
+			return
 		}
 
 		// Подсчет дней
 		if (dt) {
 			const dd = typeof dt == 'string' ? new Date(dt) : dt
-			store.retain[idB].drying.count =
-				store.retain[idB].drying.acc + (new Date() - dd) / (24 * 60 * 60 * 1000)
+			store.retain[idB].drying.count = (new Date() - dd) / (24 * 60 * 60 * 1000)
 		}
 	}
 }

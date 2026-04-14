@@ -40,7 +40,7 @@ function submode(bld, obj, s, seB, acc) {
 			(acc?.submode?.[0] === sm.cure[0] &&
 				seB.tout > seB.tprd + s.cooling.hysteresisOut + s.heat.differenceMax))
 	) {
-		console.log(1, 'heat set')
+		// console.log(1, 'heat set')
 		acc.submode = sm.heat
 	}
 	// reset
@@ -59,7 +59,7 @@ function submode(bld, obj, s, seB, acc) {
 			!acc?.submode?.[0] ||
 			(acc?.submode?.[0] === sm.heat[0] && seB.tout < seB.tprd + s.heat.differenceMax))
 	) {
-		console.log(3, 'cure set')
+		// console.log(3, 'cure set')
 		acc.submode = sm.cure
 	}
 	// reset
@@ -68,7 +68,7 @@ function submode(bld, obj, s, seB, acc) {
 		(s.mois.humidity > seB.hin || seB.tprd > acc.tgt + s.cooling.hysteresisIn) &&
 		acc?.submode?.[0] === sm?.cure?.[0]
 	) {
-		console.log(3, 'cure reset')
+		// console.log(3, 'cure reset')
 		acc.submode = sm.cooling
 	}
 
@@ -86,7 +86,7 @@ function submode(bld, obj, s, seB, acc) {
 			},
 			mois: { ...s.mois, outMax: s.heat.outMax },
 		}
-		console.log(2, 'heat set')
+		// console.log(2, 'heat set')
 		return
 	}
 
@@ -97,7 +97,7 @@ function submode(bld, obj, s, seB, acc) {
 		// Уменьшение разницы продукт-канал
 		if (seB.tprd + 0.2 <= acc.tgt) acc.setting.cooling.differenceValue = 0
 		else if (seB.tprd > acc.tgt) acc.setting.cooling.differenceValue = s.cure.differenceValue
-		console.log(4, 'cure set')
+		// console.log(4, 'cure set')
 		return
 	}
 
