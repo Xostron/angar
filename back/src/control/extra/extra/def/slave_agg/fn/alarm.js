@@ -19,7 +19,9 @@ function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 		if (['oil', 'run'].includes(el.code)) return
 		const be = state[el.code]?.value
 		// Сброс аварийных сообщений от предупреждающих beep
-		if (!el.alarm && !be) {
+		// Условие сброса аварии высокого давления, если пропал сигнал
+		const pressure = !be && el.code==='pressure'
+		if (!el.alarm && !be || pressure) {
 			delExtralrm(agg.buildingId, owner, el.code)
 			acc[owner][el.code] = false
 		}
