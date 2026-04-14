@@ -78,9 +78,15 @@ function middlewB(bld, obj, s, seB, am, acc) {
 	}
 	acc.tgt = tprd
 	acc.tcnl = s.drying.channelMax
-	
+
 	// По достижению кол-ва дней в сушке -> переход в хранение
-	if (store.retain?.[bld._id]?.drying === s.drying.day) {
+	console.log(
+		123,
+		store.retain?.[bld._id]?.drying?.count,
+		s.drying.day,
+		store.retain?.[bld._id]?.drying?.count >= s.drying.day,
+	)
+	if (store.retain?.[bld._id]?.drying?.count >= s.drying.day) {
 		store.retain[bld._id].automode = 'cooling'
 	}
 }
