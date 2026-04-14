@@ -22,7 +22,7 @@ async function control() {
 		// console.log(1100, store.retain)
 		// Проверка состояния батареи
 		battery()
-		testBattery()
+		// testBattery()
 		// Начало отсчета цикла
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
