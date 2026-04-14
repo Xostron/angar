@@ -92,7 +92,7 @@ function exception(err) {
 }
 
 function testBattery() {
-	store.battery = true
+	// store.battery = true
 
 	// blink
 	// if (!store.battery) return (store.battery = true)
