@@ -50,13 +50,13 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 		delete store?.heap?.ozon
 		delExtra(idB, null, 'ozon1')
 		delExtra(idB, null, 'ozon2')
-		arrCtrlDO(idB, oz.arr, 'off')
+		arrCtrlDO(idB, oz.arr, 'off', s)
 		return
 	}
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrlDO(idB, arr, 'off')
+		if (accelMode !== 'on') arrCtrlDO(idB, arr, 'off', s)
 		delete doc.work
 		delete doc.wait
 		delExtra(idB, null, 'ozon1')
@@ -72,8 +72,8 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 	if (!time) {
 		wrExtra(idB, null, 'ozon1', msgB(bld, 91, `Работа ${remTime(doc.work, stg.work * h)}`))
 		delExtra(idB, null, 'ozon2')
-		arrCtrlDO(idB, arr, 'on')
-		arrCtrlDO(idB, oz.arr, 'on')
+		arrCtrlDO(idB, arr, 'on', s)
+		arrCtrlDO(idB, oz.arr, 'on', s)
 		return
 	}
 
@@ -81,8 +81,8 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 	doc.wait ??= new Date()
 	delExtra(idB, null, 'ozon1')
 	wrExtra(idB, null, 'ozon2', msgB(bld, 91, `Ожидание ${remTime(doc.wait, stg.wait * h)}`))
-	arrCtrlDO(idB, arr, 'off')
-	arrCtrlDO(idB, oz.arr, 'off')
+	arrCtrlDO(idB, arr, 'off', s)
+	arrCtrlDO(idB, oz.arr, 'off', s)
 	time = compareTime(doc.wait, stg.wait * h)
 	if (time) {
 		doc.work = null

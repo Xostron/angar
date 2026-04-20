@@ -37,7 +37,7 @@ function smoking(
 	data,
 	ban,
 	resultFan,
-	clear = false
+	clear = false,
 ) {
 	const idB = building._id
 	if (clear) return fnClear(idB)
@@ -51,7 +51,7 @@ function smoking(
 	// Выключено окуривание
 	if (!stg || !stg?.on) {
 		// Если режим разгонных вент. ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrlDO(idB, arr, 'off')
+		if (accelMode !== 'on') arrCtrlDO(idB, arr, 'off', s)
 		delete doc.work
 		delete doc.wait
 		delExtra(idB, null, 'smoking1')
@@ -68,10 +68,10 @@ function smoking(
 			idB,
 			null,
 			'smoking1',
-			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`)
+			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`),
 		)
 		delExtra(idB, null, 'smoking2')
-		arrCtrlDO(idB, arr, 'on')
+		arrCtrlDO(idB, arr, 'on', s)
 		return
 	}
 
@@ -82,9 +82,9 @@ function smoking(
 		idB,
 		null,
 		'smoking2',
-		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
+		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`),
 	)
-	arrCtrlDO(idB, arr, 'off')
+	arrCtrlDO(idB, arr, 'off', s)
 	time = compareTime(doc.wait, stg.wait * h)
 	if (time) {
 		doc.work = null

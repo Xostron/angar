@@ -52,7 +52,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва
 	checkOff.relay(off, acc, where)
 	// 6. Непосредственное вкл/выкл
-	turnOn(null, fans, solHeat, bld._id, acc, max, off, isCC)
+	turnOn(null, fans, solHeat, bld._id, acc, s, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
 	initAllStarted(acc, fans, fanFC)
 	// console.log(112, idS)

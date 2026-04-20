@@ -2,13 +2,13 @@ const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 
 // СО2: Вкл
-function on(building, co2, value) {
-	arrCtrlDO(building._id, co2, 'on')
+function on(building, co2, value, acc, se, s) {
+	arrCtrlDO(building._id, co2, 'on', s)
 }
 
 // СО2: Выкл
-function off(building, co2, value) {
-	arrCtrlDO(building._id, co2, 'off')
+function off(building, co2, value, acc, se, s) {
+	arrCtrlDO(building._id, co2, 'off', s)
 }
 
 // СО2: По времени

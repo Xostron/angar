@@ -3,8 +3,8 @@ const { arrCtrlDO } = require('@tool/command/module_output')
 const { msgB } = require('@tool/message')
 
 // Оттайка слива воды: Вкл
-function on(building, arr, value, acc) {
-	arrCtrlDO(building._id, arr, 'on')
+function on(building, arr, value, acc, se, s, m) {
+	arrCtrlDO(building._id, arr, 'on', s)
 	if (!acc?.on) {
 		acc.on = true
 		acc.off = false
@@ -14,8 +14,8 @@ function on(building, arr, value, acc) {
 }
 
 // Оттайка слива воды: Выкл
-function off(building, arr, value, acc) {
-	arrCtrlDO(building._id, arr, 'off')
+function off(building, arr, value, acc, se, s, m) {
+	arrCtrlDO(building._id, arr, 'off', s)
 	if (!acc?.off) {
 		acc.off = true
 		acc.on = false

@@ -1,6 +1,5 @@
 const { setCmd, setCmdT } = require('@tool/command/set')
 const { data: store } = require('@store')
-const _MAX_SP = 100
 const _MIN_SP = 20
 const _HYST_VLV = 3
 
@@ -73,7 +72,8 @@ function ctrlV(vlv, buildingId, type) {
  * @param {string} idB ИД склада
  * @param {string} type Тип команды: 'on'|'off'
  */
-function arrCtrlDO(idB, arr, type) {
+function arrCtrlDO(idB, arr, type, s) {
+	const _MAX_SP = s?.fan?.maxsp ?? 100
 	arr?.forEach((el) => {
 		ctrlDO(el, idB, type)
 		if (el?.ao) ctrlAO(el, idB, type === 'off' ? _MIN_SP : _MAX_SP)

@@ -3,14 +3,13 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { isCombiCold } = require('@tool/combi/is')
 const ctrlFanClr = require('./fan_clr/fan_clr')
 const ctrlFlap = require('./flap')
-const _MAX_SP = 100
 const _MIN_SP = 20
 
 // Склад холодильник (пока без ступеней и без заслонки оттайки на 18.11.2025)
 function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 	const { start, s, se, m, accAuto } = bdata
 	const { solenoid, fan, heating } = clr
-
+	const _MAX_SP = s.fan.maxsp ?? 100
 	// Управление механизмами
 	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	// Ступенчатое управление соленоидами

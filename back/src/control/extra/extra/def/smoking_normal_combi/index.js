@@ -46,7 +46,7 @@ function smoking(
 	data,
 	ban,
 	resultFan,
-	clear = false
+	clear = false,
 ) {
 	const idB = building._id
 	if (clear) return fnClear(idB)
@@ -81,7 +81,7 @@ function smoking(
 	if (!stg || !stg?.on) {
 		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off')
+		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off', s)
 		soft(idB, idsS, fan, obj, s, false)
 		delete doc.work
 		delete doc.wait
@@ -103,11 +103,11 @@ function smoking(
 			idB,
 			null,
 			'smoking1',
-			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`)
+			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`),
 		)
 		delExtra(idB, null, 'smoking2')
 		// Вкл разгонные
-		arrCtrlDO(idB, fanA, 'on')
+		arrCtrlDO(idB, fanA, 'on', s)
 		// Вкл ВНО секции
 		soft(idB, idsS, fan, obj, s, true)
 		return
@@ -119,9 +119,9 @@ function smoking(
 		idB,
 		null,
 		'smoking2',
-		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`)
+		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`),
 	)
-	arrCtrlDO(idB, fanA, 'off')
+	arrCtrlDO(idB, fanA, 'off', s)
 	soft(idB, idsS, fan, obj, s, false)
 	time = compareTime(doc.wait, stg.wait * h)
 

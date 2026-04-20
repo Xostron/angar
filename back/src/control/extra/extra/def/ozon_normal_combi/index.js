@@ -65,8 +65,8 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 		wrExtra(idB, null, 'ozon1', msgB(bld, 91, `Работа ${remTime(oacc.work, stg.work * h)}`))
 		delExtra(idB, null, 'ozon2')
 		// Вкл разгонные
-		arrCtrlDO(idB, fanA, 'on')
-		arrCtrlDO(idB, oz.arr, 'on')
+		arrCtrlDO(idB, fanA, 'on', s)
+		arrCtrlDO(idB, oz.arr, 'on', s)
 		// Вкл ВНО секции
 		soft(idB, idsS, fan, obj, s, true, 'ozon')
 		delete oacc?.wait
@@ -77,8 +77,8 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 	oacc.wait ??= new Date()
 	wrExtra(idB, null, 'ozon2', msgB(bld, 91, `Ожидание ${remTime(oacc.wait, stg.wait * h)}`))
 	delExtra(idB, null, 'ozon1')
-	arrCtrlDO(idB, fanA, 'off')
-	arrCtrlDO(idB, oz.arr, 'off')
+	arrCtrlDO(idB, fanA, 'off', s)
+	arrCtrlDO(idB, oz.arr, 'off', s)
 	soft(idB, idsS, fan, obj, s, false, 'ozon')
 
 	// Время ожидания прошло - завершаем озонацию

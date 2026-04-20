@@ -1,6 +1,5 @@
 const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
-const _MAX_SP = 100
 const _MIN_SP = 20
 
 /**
@@ -15,6 +14,7 @@ const _MIN_SP = 20
  * false: Регулирование по кол-ву ВНО
  */
 function regul(acc, fanFC, on, off, s) {
+	const _MAX_SP = s.fan.maxsp ?? 100
 	if (!fanFC) return false
 	// Актализируем точку отсчета для реле ВНО, пока регулирование по ПЧ
 	if (acc.busy) acc.date = new Date()
@@ -84,7 +84,8 @@ function checkOn(on, acc, s, length) {
  * @param {object} aCmd Авто - команда на вкл/выкл ВНО
  * @returns
  */
-function checkOff_FC(off, acc) {
+function checkOff_FC(off, acc, s) {
+	const _MAX_SP = s.fan.maxsp ?? 100
 	if (!off) return
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
 	if (!compareTime(acc.date, acc.delayRelay)) return
@@ -123,7 +124,8 @@ function checkOff_Relay(off, acc) {
  * @param {*} idB Склад Id
  * @param {*} acc Аккумулятор
  */
-function turnOn(fan, idB, acc) {
+function turnOn(fan, idB, acc, s) {
+	const _MAX_SP = s.fan.maxsp ?? 100
 	if (fan.fanFC) {
 		ctrlAO(fan.fanFC, idB, acc.fc.sp)
 		ctrlDO(fan.fanFC, idB, acc.fc.value ? 'on' : 'off')

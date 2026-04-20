@@ -40,7 +40,7 @@ function relay(idB, idS, fan, obj, s, se, start, key) {
 	checkOn(on, acc, s, fan.fans.length)
 	checkOff_Relay(off, acc)
 	// ВКЛ
-	turnOn(fan, idB, acc)
+	turnOn(fan, idB, acc, s)
 }
 
 /**
@@ -82,13 +82,13 @@ function fc(idB, idS, fan, obj, s, se, start, key) {
 
 	// Регулирование по ПЧ после ожидания соленоида подогрева
 	acc.busy = regul(acc, fan.fanFC, on, off, s)
-	if (acc.busy) (on = false), (off = false)
+	if (acc.busy) ((on = false), (off = false))
 	console.log(3, idS, key, 'ПП', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, s, fan.fans.length)
 	checkOff_FC(off, acc)
 	// ВКЛ
-	turnOn(fan, idB, acc)
+	turnOn(fan, idB, acc, s)
 }
 
 function getAcc(idS, key) {

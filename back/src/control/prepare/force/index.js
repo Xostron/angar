@@ -12,9 +12,9 @@ module.exports = function force(obj) {
 		const start = retain?.[bld._id]?.start
 		if (start) continue
 		// Секции склада в авто
-		let section = data.section.filter((s) => s?.buildingId === bld?._id)
+		let section = data.section.filter((sec) => sec?.buildingId === bld?._id)
 		section = section.filter(
-			(s) => retain?.[bld._id]?.mode?.[s._id] || retain?.[bld._id]?.mode?.[s._id] === null
+			(sec) => retain?.[bld._id]?.mode?.[sec._id] || retain?.[bld._id]?.mode?.[sec._id] === null
 		)
 		if (!section?.length) continue
 

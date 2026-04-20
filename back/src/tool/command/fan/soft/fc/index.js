@@ -57,7 +57,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва
 	checkOff.fc(off, acc)
 	// 6. Непосредственное вкл/выкл
-	turnOn(fanFC, fans, solHeat, bld._id, acc, max, off, isCC)
+	turnOn(fanFC, fans, solHeat, bld._id, acc, s, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
 	initAllStarted(acc, fans, fanFC)
 	// console.log(112, idS)
