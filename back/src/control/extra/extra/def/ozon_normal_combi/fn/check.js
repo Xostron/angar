@@ -23,7 +23,7 @@ function checkReady(bld, s, prepare) {
 		// Очистка аккумуляторов
 		clearOacc(bld._id, oacc)
 		// Выкл озонатора
-		arrCtrlDO(bld._id, oz.arr, 'off', s)
+		arrCtrlDO(bld._id, oz.arr, 'off')
 		return false
 	}
 	return true
@@ -42,9 +42,9 @@ function checkOn(bld, obj, s, prepare) {
 	if (!stg || !stg?.on) {
 		clearOacc(bld._id, oacc)
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrlDO(bld._id, fanA, 'off', s)
+		if (accelMode !== 'on') arrCtrlDO(bld._id, fanA, 'off')
 		soft(bld._id, idsS, fan, obj, s, false)
-		arrCtrlDO(bld._id, oz.arr, 'off', s)
+		arrCtrlDO(bld._id, oz.arr, 'off')
 		return false
 	}
 	return true

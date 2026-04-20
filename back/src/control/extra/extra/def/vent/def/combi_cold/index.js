@@ -26,7 +26,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 		delExtra(bld._id, null, 'vent', 'work')
 		return
 	}
-	// Время ожидания прошло достижения задания. Работа ВВ
+	// Время ожидания достижения задания прошло. Работа ВВ
 	acc.CC.work ??= new Date()
 	delExtra(bld._id, null, 'vent', 'wait')
 	wrExtra(

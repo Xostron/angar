@@ -8,7 +8,7 @@ const _MIN_SP = 20
  * @param {*} acc Аккумулятор
  */
 function turnOn(fanFC, fans, solHeat, idB, acc, s, max, off, isCC) {
-	const _MAX_SP = s.fan.maxsp ?? 100
+	const _MAX_SP = s?.fan?.maxsp ?? 100
 	// Флаг = сигнал на выключение && комби-холодильник && релейные ВНО выключены &&
 	// && ПЧ на минимальном задании
 	const offCC = off && isCC && acc.order < 0 && acc.fc.sp <= _MIN_SP

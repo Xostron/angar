@@ -15,7 +15,7 @@ function on(building, arr, value, acc, se, s, m) {
 
 // Оттайка слива воды: Выкл
 function off(building, arr, value, acc, se, s, m) {
-	arrCtrlDO(building._id, arr, 'off', s)
+	arrCtrlDO(building._id, arr, 'off')
 	if (!acc?.off) {
 		acc.off = true
 		acc.on = false

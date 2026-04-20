@@ -77,8 +77,8 @@ function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, cle
 	oacc.wait ??= new Date()
 	wrExtra(idB, null, 'ozon2', msgB(bld, 91, `Ожидание ${remTime(oacc.wait, stg.wait * h)}`))
 	delExtra(idB, null, 'ozon1')
-	arrCtrlDO(idB, fanA, 'off', s)
-	arrCtrlDO(idB, oz.arr, 'off', s)
+	arrCtrlDO(idB, fanA, 'off')
+	arrCtrlDO(idB, oz.arr, 'off')
 	soft(idB, idsS, fan, obj, s, false, 'ozon')
 
 	// Время ожидания прошло - завершаем озонацию

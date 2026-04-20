@@ -8,7 +8,7 @@ function on(building, co2, value, acc, se, s) {
 
 // СО2: Выкл
 function off(building, co2, value, acc, se, s) {
-	arrCtrlDO(building._id, co2, 'off', s)
+	arrCtrlDO(building._id, co2, 'off')
 }
 
 // СО2: По времени

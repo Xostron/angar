@@ -83,7 +83,7 @@ function onOff(fan, s, se) {
  * @returns
  */
 function regul(clr, fan, s, se, acc, on, off) {
-	const _MAX_SP = s.fan.maxsp ?? 100
+	const _MAX_SP = s?.fan?.maxsp ?? 100
 	acc[clr._id].current.date ??= new Date()
 	// Время ожидания следующего шага
 	const time = compareTime(acc[clr._id].current.date, s.fan.next)

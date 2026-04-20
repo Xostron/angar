@@ -13,7 +13,7 @@ const _MIN_SP = 20
  * false: Регулирование по кол-ву ВНО
  */
 function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
-	const _MAX_SP = s.fan.maxsp ?? 100
+	const _MAX_SP = s?.fan?.maxsp ?? 100
 	if (aCmd.force && (max === null || max === -1)) return false
 	if (!fanFC) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО

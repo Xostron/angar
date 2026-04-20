@@ -30,7 +30,7 @@ function ctrlFanClr(idB, f, clr, s, se, accCold) {
  * @return {number} задание ПЧ, %
  */
 function getSP(idB, clr, fan, s, se, accCold) {
-	let sp = s.fan.maxsp ?? _MAX_SP
+	let sp = s?.fan?.maxsp ?? _MAX_SP
 	sp = byCurrent(sp, clr, fan, s, se, accCold)
 	return sp
 }

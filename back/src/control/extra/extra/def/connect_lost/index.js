@@ -9,7 +9,7 @@ function connectLost(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	acc.flag ??= {}
 	if (isErrMs(bld._id, obj?.data?.module)) {
 		// Есть неисправный модуль -> выключаем данные выхода
-		arrCtrlDO(bld._id, m.connectLost, 'off', s)
+		arrCtrlDO(bld._id, m.connectLost, 'off')
 		// Сообщение
 		if (!acc.on) {
 			acc.on = true

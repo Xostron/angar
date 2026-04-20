@@ -1,7 +1,7 @@
 const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
-const { data: store } = require('@store')
+const { data: store, readAcc } = require('@store')
 const dict = {
 	0: 'таймер запрета', //обычный склад, комби-обычный
 	1: 'вентиляторы неисправны',
@@ -110,8 +110,8 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
 		isExtralrm(bld._id, null, 'battery') ||
 		isExtralrm(bld._id, null, 'sb')
-	// Таймер запрета охлаждения
-	const banCooling = store.alarm.timer?.[bld._id]?.cooling
+	// Таймер запрета охлаждения для комби-холодильника
+	const banCooling = forCC(bld, code)
 	// console.log(15, '========================', ban, banCooling)
 	return [
 		ban && code !== 'combiCold', //0
@@ -135,7 +135,7 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		alrClosed, //18
 		isCN && am === 'defrost' && !flagFinish && !alrAuto, //19
 		isN && am === 'defrost' && !flagFinish && !alrAuto, //20
-		banCooling && code === 'combiCold', //21
+		banCooling, //21
 	]
 }
 
@@ -151,3 +151,21 @@ function clear(bld, acc, resultFan, ...args) {
 }
 
 module.exports = { exit }
+
+/**
+ * Для комби-холодильника: задание достигнуто сбрасывается
+ * после обдува датчиков, если установлен тамер запрета охлаждения, то обдува
+ * делать не нужно и "сброс темп достигнута" тоже сразу сбрасывать
+ */
+function forCC(bld, code) {
+	// Таймер запрета охлаждения
+	const banCooling = store.alarm.timer?.[bld._id]?.cooling && code === 'combiCold'
+
+	if (banCooling) {
+		// Аккумулятор склада комби-холодильника
+		const accCold = readAcc(bld._id, 'combi')?.cold
+		accCold.finishTarget = null
+	}
+
+	return banCooling
+}

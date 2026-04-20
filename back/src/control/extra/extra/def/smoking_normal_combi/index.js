@@ -81,7 +81,7 @@ function smoking(
 	if (!stg || !stg?.on) {
 		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
-		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off', s)
+		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
 		delete doc.work
 		delete doc.wait
@@ -121,7 +121,7 @@ function smoking(
 		'smoking2',
 		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`),
 	)
-	arrCtrlDO(idB, fanA, 'off', s)
+	arrCtrlDO(idB, fanA, 'off')
 	soft(idB, idsS, fan, obj, s, false)
 	time = compareTime(doc.wait, stg.wait * h)
 
