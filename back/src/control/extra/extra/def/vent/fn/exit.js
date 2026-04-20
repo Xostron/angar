@@ -1,6 +1,7 @@
 const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
+const { data: store } = require('@store')
 const dict = {
 	0: 'таймер запрета', //обычный склад, комби-обычный
 	1: 'вентиляторы неисправны',
@@ -23,6 +24,7 @@ const dict = {
 	18: 'Низкая температура канала',
 	19: 'склад работает по авто режиму', //комби-обычный, дефростация
 	20: 'склад работает по авто режиму', //обычный, дефростация
+	21: 'таймер запрета "Охлаждения"', // если вкл таймер запрета охлаждения в комби-холодильнике
 }
 
 /**
@@ -108,7 +110,9 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
 		isExtralrm(bld._id, null, 'battery') ||
 		isExtralrm(bld._id, null, 'sb')
-
+	// Таймер запрета охлаждения
+	const banCooling = store.alarm.timer?.[bld._id]?.cooling
+	// console.log(15, '========================', ban, banCooling)
 	return [
 		ban && code !== 'combiCold', //0
 		!fan.length, //1
@@ -131,6 +135,7 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		alrClosed, //18
 		isCN && am === 'defrost' && !flagFinish && !alrAuto, //19
 		isN && am === 'defrost' && !flagFinish && !alrAuto, //20
+		banCooling && code === 'combiCold', //21
 	]
 }
 
