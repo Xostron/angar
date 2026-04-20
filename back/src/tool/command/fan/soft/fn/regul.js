@@ -1,5 +1,4 @@
 const { compareTime } = require('@tool/command/time')
-const _MIN_SP = 20
 
 /**
  * Регулирование ПЧ (Аналоговый выход ВНО)
@@ -14,6 +13,7 @@ const _MIN_SP = 20
  */
 function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 	const _MAX_SP = s?.fan?.maxsp ?? 100
+	const _MIN_SP = s?.fan?.min ?? 20
 	if (aCmd.force && (max === null || max === -1)) return false
 	if (!fanFC) return false
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
@@ -23,7 +23,7 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {
 		acc.fc.value = true
-		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
+		acc.fc.sp = acc.fc.sp < _MIN_SP ? _MIN_SP : acc.fc.sp
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
 		if (acc.fc.sp >= _MAX_SP) return false
 		const time = compareTime(acc.fc.date, acc.delayFC)
@@ -35,17 +35,17 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 		// Ограничение max задания ПЧ
 		acc.fc.sp = acc.fc.sp > _MAX_SP ? _MAX_SP : acc.fc.sp
 		// Ограничение min задания ПЧ
-		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
+		acc.fc.sp = acc.fc.sp < _MIN_SP ? _MIN_SP : acc.fc.sp
 		acc.fc.date = new Date()
 	}
 
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
 		acc.fc.value = true
-		if (magic(acc, isCC)) return false
+		if (forCCoff(acc, isCC, s)) return false
 		// Задание ПЧ дошло до min% && не все ВНО выкл  => разрешаем регулировать по кол-ву ВНО
-		if (acc.fc.sp <= s.fan.min && acc.order >= 0) {
-			acc.fc.sp = s.fan.min
+		if (acc.fc.sp <= _MIN_SP && acc.order >= 0) {
+			acc.fc.sp = _MIN_SP
 			// // Частоту ПЧ обратно увеличиваем на 100%, а ВНО релейное - отключаем
 			// acc.fc.sp = 100
 			// console.log(1122, acc.fc)
@@ -58,7 +58,7 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 		}
 		// Время стабилизации прошло
 		acc.fc.sp -= s.fan.step
-		acc.fc.sp = acc.fc.sp < s.fan.min ? s.fan.min : acc.fc.sp
+		acc.fc.sp = acc.fc.sp < _MIN_SP ? _MIN_SP : acc.fc.sp
 		acc.fc.date = new Date()
 		// console.log(1124, acc.fc)
 	}
@@ -67,8 +67,10 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 	return true
 }
 
-// Комби-холод. Обычное управление: Отключение ПЧ, если все релейные ВНО выключены и задание ПЧ < min
-function magic(acc, isCC) {
+// Комби-холод. Обычное управление: Отключение ПЧ, если все релейные ВНО
+// выключены и задание ПЧ <= min
+function forCCoff(acc, isCC, s) {
+	const _MIN_SP = s?.fan?.min ?? 20
 	// Комби-холод
 	// console.log(1121, isCC, acc.order, acc.fc.sp, '<=', _MIN_SP)
 	if (isCC && acc.order === -1 && acc.fc.sp <= _MIN_SP) {
