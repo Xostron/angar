@@ -12,44 +12,64 @@ function fan(obj, s) {
 	const once = {}
 	// Только по ВНО секциям
 	for (const f of data.fan) {
+		// Только для напорных ВНО type=fan
 		if (f.type !== 'fan') continue
+		// Если ВНО испарителя - не блокируем
 		if (f.owner.type === 'cooler') continue
+		// Если не найден модуль дискретного выхода - не блокируем
 		const mdl = f?.module?.id
 		if (!output[mdl]) continue
 
 		// Id cклада
 		const idB = getIdB(mdl, data.module)
+		// Склад
 		const bld = data.building.find((el) => el._id == idB)
-		// Комби склад в режиме холодильника
+		// Тип склада: комби-холодильник
 		const isCC = isCombiCold(bld, retain?.[idB]?.automode, s)
+		// Массив ИД секций склада
 		const idsS = getIdsS(obj.data.section, idB)
+		// Режим секции текущего ВНО
+		const mode = retain?.[idB]?.mode?.[f.owner.id]
 		// Игнор блокировки: включено окуривание или озонатор
 		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
+
 		// Блокировки:
-		// Авария питания. Ручной сброс
-		const sb = isExtralrm(bld._id, f.owner.id, 'sb')
+
+		// Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
+		const sb =
+			// isExtralrm(bld._id, null, 'supply') ||
+			// idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
+			// isExtralrm(bld._id, null, 'battery') ||
+			isExtralrm(bld._id, null, 'sb')
+
 		// Состояние вентилятора: авария / выведен из работы
 		const isAlrOff =
 			value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
-		// местный режим (aCmd.end - флаг о плавном останове вентиляторов)
+
+		// Переключатель на щите (aCmd.end - флаг о плавном останове вентиляторов)
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
 		// Нажат аварийный стоп
 		const alrStop = isExtralrm(idB, null, 'alarm') && !store.aCmd?.[f.owner.id]?.fan?.end
+
 		// Секция выключена (null)
 		let offS = (retain?.[idB]?.mode?.[f.owner.id] ?? null) === null && !ignore
+
 		// Склад выключен и секция в авторежиме
 		const lockAuto = !retain?.[idB]?.start && retain?.[idB]?.mode?.[f.owner.id] && !ignore
-		// Кнопка выключения склада
+
+		// Кнопка выключения склада (сигнал)
 		const bldOff = isExtralrm(idB, null, 'bldOff')
-		// Низкая температура канала в авто
-		const mode = retain?.[idB]?.mode?.[f.owner.id]
+
+		// Низкая температура канала в авто: aLowB (склад), aLow (секции)
 		const aLowB = isExtralrm(idB, null, 'alrClosed') && mode === true
 		const aLow = idsS.some(
 			(idS) =>
 				isExtralrm(idB, idS, 'alrClosed') && (mode === true || mode === undefined) && !isCC,
 		)
-		// Низкая температура канала в ручной режим: Однократная блокировка ВНО, для обычного и комби-обычного
+
+		// Низкая температура канала в ручном режиме: Однократная блокировка ВНО
+		// для обычного и комби-обычного
 		const lowB =
 			isExtralrm(idB, null, 'alrClosed') &&
 			mode === false &&
@@ -62,6 +82,7 @@ function fan(obj, s) {
 				!store.heap.lock?.[idS]?.low &&
 				!isCC,
 		)
+		// Массив однократных блокировок, список блокировок [Низкая температура канала в ручном режиме]
 		once[idB] = lowB
 		idsS.forEach((idS) => (once[idS] = low))
 
@@ -113,9 +134,12 @@ function fan(obj, s) {
 			low,
 		)
 	}
-	// Низкая темп канала: ручной режим - флаги 1кратной блокировки
+	// Флаги однократных блокировок
 	Object.entries(once).forEach(([id, low]) => {
-		if (!low) return
+		if (!low) {
+			store.heap.lock[id] = {}
+			return
+		}
 		store.heap.lock[id] ??= {}
 		store.heap.lock[id].low = true
 	})
