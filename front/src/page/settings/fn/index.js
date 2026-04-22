@@ -56,7 +56,19 @@ function sty(data, sum) {
  * @returns
  */
 function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
-	const { fct, bldType, type: code, build: buildingId, equipSect, retainTune, tune, hid, prd, curPrd, show } = obj
+	const {
+		fct,
+		bldType,
+		type: code,
+		build: buildingId,
+		equipSect,
+		retainTune,
+		tune,
+		hid,
+		prd,
+		curPrd,
+		show,
+	} = obj
 	const data = { head: [], list: [] }
 	// Настройка: Калибровка клапанов
 	if (code === 'tuneup' && bldType !== 'cold') {
@@ -79,7 +91,13 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	data.head = ['Значения', 'Заводские', 'Ед. измерения'].slice(0, max - 1)
 
 	// Окно подтверждения warn
-	data.warn = { type: 'warn', title: `${fct?.name}`, text: `Сохранить настройки?`, fnYes: sendSettingAu, code }
+	data.warn = {
+		type: 'warn',
+		title: `${fct?.name}`,
+		text: `Сохранить настройки?`,
+		fnYes: sendSettingAu,
+		code,
+	}
 
 	return data
 }
@@ -95,7 +113,7 @@ function setting(list, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
 function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
 	let result = []
 	// Добавление в строку кнопки "скрыть\показать неактивные настройки"
-	if (mark._code === 'text-collapse' && prd == curPrd) {
+	if (mark._code.includes('text-collapse') && prd == curPrd) {
 		const name = `${code}.${mark._code}`
 		const dataHid = hid?.name?.hid
 		mark.list.length = 2
@@ -104,7 +122,7 @@ function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
 
 	if (!!show && show.includes(mark?._code)) mark.list.forEach((el) => (el._acv = true))
 
-	if (mark._type === 'txt' || mark._code == 'text-collapse')
+	if (mark._type === 'txt' || mark._code.includes('text-collapse'))
 		result = [
 			{
 				field: 'title',

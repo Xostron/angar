@@ -58,6 +58,8 @@ const data = {
 	start: {},
 	// Web клиент: Режим работы секции (true - Авто, false - Ручной, null - Выкл)
 	mode: {},
+	// ИД цикла (счетчик)
+	cycleId: 0,
 	// Время начало цикла
 	tick: +new Date().getTime(),
 	// Текущие позиции клапанов
@@ -81,7 +83,7 @@ const data = {
 	acc: {},
 	// Аккумулятор (куча) для расчетов (здесь можно хранить всякое)
 	// valve - для управления в ручном режиме
-	heap: { fan: {}, smoking: {}, valve: {}, ozon: {}, analysis: {}, lock:{}, voltage:{} },
+	heap: { fan: {}, smoking: {}, valve: {}, ozon: {}, analysis: {}, lock: {}, voltage: {} },
 	// Аварии клапанов
 	alarmV: {},
 	// Аварии для логики

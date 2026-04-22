@@ -9,11 +9,11 @@ function tenta(router) {
 	router.post('/tenta/write/:code', write())
 	// Состояние входов/выходов датчиков
 	router.get('/tenta/value', value())
-	// Чтение мяса для Виктора
+	// Чтение мяса для Виктора (карточки, внутренности секции)
 	router.use('/tenta/read', read())
 	// Данные для аналитики по погоде
 	router.get('/tenta/advice', advice())
-	// Данные state - Обмен данными через ЦС
+	// Полные данные state - для актуализации админка периодически спрашивает
 	router.get('/tenta/state', state())
 }
 

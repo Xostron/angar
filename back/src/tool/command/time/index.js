@@ -15,10 +15,7 @@ function ms(hm) {
 // Задержка, мс
 function delay(t = 0) {
 	return new Promise((resolve, reject) => {
-		if (t <= 0) return resolve(false)
-		setTimeout(() => {
-			resolve(true)
-		}, t)
+		setTimeout(resolve, t, t <= 0 ? false : true)
 	})
 }
 
@@ -165,8 +162,8 @@ function elapsedTime(date) {
 		Math.trunc(r % 60) < 10
 			? '0' + Math.trunc(r % 60)
 			: Math.trunc(r % 60) >= 60
-			? '00'
-			: Math.trunc(r % 60)
+				? '00'
+				: Math.trunc(r % 60)
 	return `${hh}ч ${mm}м`
 }
 

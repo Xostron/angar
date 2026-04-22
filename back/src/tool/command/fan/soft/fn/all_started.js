@@ -19,7 +19,7 @@ function initAllStarted(acc, fans, fanFC) {
 	if (!r.length) acc.allStarted = new Date()
 	else acc.allStarted = null
 
-	console.log(411, 'allstarted=', acc.allStarted, r)
+	// console.log(411, 'allstarted=', acc.allStarted, r)
 }
 
 module.exports = initAllStarted

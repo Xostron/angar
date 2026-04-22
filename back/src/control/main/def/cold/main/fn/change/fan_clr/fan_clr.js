@@ -4,14 +4,14 @@ const _MAX_SP = 100
 const _MIN_SP = 20
 
 function ctrlFanClr(idB, f, clr, s, se, accCold) {
-	console.log(123, clr.name, f)
+	// console.log(123, clr.name, f)
 	// Игнор команды
-	if (f === null) return console.log(1233, 'No action')
+	if (f === null) return //console.log(1233, 'No action')
 	// 0 выкл, 1 включить
 	clr.fan.forEach((el) => {
 		ctrlDO(el, idB, f ? 'on' : 'off')
 		const sp = f ? getSP(idB, clr, el, s, se, accCold) : _MIN_SP
-		console.log(130, 'Задание = ', sp)
+		// console.log(130, 'Задание = ', sp)
 		if (el?.ao?.id) {
 			ctrlAO(el, idB, sp)
 		}

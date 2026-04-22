@@ -19,7 +19,7 @@ const writeStore = require('./save/extra')
 // Контроль работы склада
 async function control() {
 	try {
-		// console.log(1100, store.retain)
+		console.log(1100, store.cycleId)
 		// Проверка состояния батареи
 		battery()
 		// testBattery()
@@ -49,6 +49,8 @@ async function control() {
 		// await delay(2500)
 		Aboc.refresh()
 		if (store._cycle_ms_ < 50) await delay(1000)
+		// Счетчик циклов
+		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
 		return true
 	} catch (error) {
 		await delay(5000)
@@ -93,7 +95,6 @@ function exception(err) {
 
 function testBattery() {
 	// store.battery = true
-
 	// blink
 	// if (!store.battery) return (store.battery = true)
 	// if (store.battery) return (store.battery = false)

@@ -4,6 +4,7 @@ const { isReadyAgg, clearCombi } = require('../fn')
 const { isAlr } = require('@tool/message/auto')
 const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { getIdsS } = require('@tool/get/building')
+const sm = require('@dict/submode')
 
 // Склад Комби: Запрет работы испарителя
 function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
@@ -34,10 +35,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		[alr, 'Аварии extralarm'],
 		[!aggr, 'Агрегат не готов'],
 		[!supplySt, 'Ожидание агрегата после выключения питания'],
-		[
-			!store.toAuto?.[bld._id]?.[sect._id],
-			'Подготовка секции к авто не пройдена',
-		],
+		[!store.toAuto?.[bld._id]?.[sect._id], 'Подготовка секции к авто не пройдена'],
 		[!alrAuto, 'Нет аварий авторежима'],
 		[automode != 'cooling', 'Склад не в режиме Хранения'],
 		[fansOff, 'ВНО испарителей выведены из работы'],
@@ -49,6 +47,18 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		[alrClosed, 'alrClosed'],
 		[off, 'Настройка "Испаритель холодильного оборудования выключен"'],
 		[bldOff, 'Кнопка выключения склада'],
+		[
+			store.alarm.timer?.[bld._id]?.cooling && accAuto.submode?.[0] === sm.cooling[0],
+			'Таймер запрета охлаждения',
+		],
+		[
+			store.alarm.timer?.[bld._id]?.heat && accAuto.submode?.[0] === sm.heat[0],
+			'Таймер запрета нагрева',
+		],
+		[
+			store.alarm.timer?.[bld._id]?.cure && accAuto.submode?.[0] === sm.cure[0],
+			'Таймер запрета лечения',
+		],
 	]
 	store.denied[bld._id][clr._id] = a.filter((e) => e[0] === true)?.length !== 0
 	console.log(
