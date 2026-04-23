@@ -1,38 +1,36 @@
-const { fill, cb } = require('./fn')
-const { debugJson } = require('@tool/json')
+const setting = require('./setting.js')
 const { data: store } = require('@store')
-const coefVlv = require('./fn/coef_vlv')
-const coefAbs = require('./fn/coef_abs')
-const coefPress = require('./fn/coef_press')
-const coefCO2 = require('./fn/coef_co2')
+const vCoef = require('./v_coef.js')
 
-function setting(bld, obj) {
-	const { retain, factory } = obj
-	const codeP = retain?.[bld._id]?.product?.code
-	// console.log(999, 'Аккумулятор гистерезисов', store.heap)
-	// список настроек склада
-	const kind = bld?.kindList
-	const r = {}
-	// по настройкам склада
-	for (const key of kind) {
-		const isPrd = factory?.[key]?._prd
-		fill(r, retain?.[bld._id]?.setting?.[key], factory?.[key], cb, key, codeP, isPrd)
-	}
-	// Системные настройки: Коэф-ты выпуск. клапана в зависимости от темп. улицы
-	r.sys ??= {}
-	r.sys.cf = coefVlv(r.sys, bld, obj)
-	// Настройки влажности: Гистерезис абсолютной влажности в зависимости от температуры продукта
-	r.mois ??= {}
-	r.mois.abs = coefAbs(r.mois, bld, obj)
-	// Настройки вентиляторов: Давление в канале в зависимости от влажности продукта
-	r.fan ??= {}
-	r.fan.pressure = coefPress(r.fan, bld, obj)
-	// Настройки СО2: Время ожидания в зависимости от температуры продукта
-	r.co2 ??= {}
-	r.co2.wait = coefCO2(r.co2, bld, obj)
-	// Готовые настройки на сервере (для проверки)
-	// debugJson({ newnew: r }, ph.resolve(__dirname))
-	return r
+// Настройки в которых имеются "Коэффициент в зависимости от"
+const _STG = [
+	['sys', 'cf', 'kOut'],
+	['fan', 'pressure'],
+	['mois', 'abs'],
+	['mois', 'hout'],
+	['co2', 'wait'],
+]
+/**
+ * 1) Собираем данные для отображения в настройках клиента
+ * "Коэффициент в зависимости от" - активный
+ * 2) Сохраняем в аккумулятор (store.calcSetting) "готовые" настройки для алгоритма
+ *
+ * где bldId - id склада, key - код настройки ('sys', 'fan', 'mois')
+ * @param {*} obj Глобальные данные склада
+ * @param {*} v Глобальные данные склада для клиента Web
+ * @returns
+ */
+const calcSetting = (v, obj) => {
+	if (!v) return
+	obj.data.building.forEach((bld) => {
+		// "готовые" настройки для алгоритма
+		store.calcSetting[bld._id] = setting(bld, obj)
+		// Собираем данные для отображения в настройках клиента
+		v.coef ??= {}
+		v.coef[bld._id] ??= {}
+		vCoef(v, bld._id)
+		console.log(111, v.coef)
+	})
 }
 
-module.exports = setting
+module.exports = calcSetting

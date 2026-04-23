@@ -6,39 +6,42 @@ const { data: store } = require('@store')
  * @param {object} obj глобальные данные
  * @returns {number} абс влажность
  */
-function coefAbs(stg, bld, obj) {
+function coefHout(stg, bld, obj) {
 	const { value, data } = obj
+
 	store.heap[bld._id] ??= {}
 	const heap = store.heap[bld._id]
-	heap.mois ??= {}
-	// Температура продукта и гистерезис
-	const tprd = value?.total?.[bld._id]?.tprd?.min
-	const hyst = 0.2
+	heap.moisHout ??= {}
 
-	let habs = stg?.abs3
+	// Температура продукта и гистерезис
+	const tout = value.total?.tout?.min
+	const hyst = 0.2
+	// console.log(tout, hyst)
+
+	let hout = stg?.hout3
 	// от большего к меньшему
 	// ***************************
-	if (tprd < stg?.abs2?.t || heap.mois.abs2) {
-		heap.mois.abs2 = true
-		habs = stg?.abs2
+	if (tout < stg?.hout2?.t || heap.moisHout.hout2) {
+		heap.moisHout.hout2 = true
+		hout = stg?.hout2
 	}
-	if (heap.mois.abs2 && tprd - hyst > stg?.abs2?.t) {
-		heap.mois.abs2 = false
-		habs = stg?.abs3
+	if (heap.moisHout.hout2 && tout - hyst > stg?.hout2?.t) {
+		heap.moisHout.hout2 = false
+		hout = stg?.hout3
 	}
 
 	// ***************************
-	if (tprd < stg?.abs1?.t || heap.mois.abs1) {
-		heap.mois.abs1 = true
-		habs = stg?.abs1
+	if (tout < stg?.hout1?.t || heap.moisHout.hout1) {
+		heap.moisHout.hout1 = true
+		hout = stg?.hout1
 	}
-	if (heap.mois.abs1 && tprd - hyst > stg?.abs1?.t) {
-		heap.mois.abs1 = false
-		habs = stg?.abs2
+	if (heap.moisHout.hout1 && tout - hyst > stg?.hout1?.t) {
+		heap.moisHout.hout1 = false
+		hout = stg?.hout2
 	}
 
-	// console.log(3333, 'Коэффициенты влажности', 'tprd', tprd, '< X;', 'Влажность: habs', habs)
-	return habs
+	console.log(3333, 'Коэффициенты влажности', 'tout', tout, '< X;', 'Влажность: hout', hout)
+	return hout
 }
 
-module.exports = coefAbs
+module.exports = coefHout

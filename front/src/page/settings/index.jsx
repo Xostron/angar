@@ -47,6 +47,7 @@ export default function Settings({}) {
 	const show = fnAct(prd, factory?.[type], coef, retain)
 	// Заводские настройки - рама
 	const fct = useEquipStore((s) => s.getFactory(type, hid, skip, prd?.code, curPrd))
+	console.log(11, skip)
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
@@ -96,6 +97,7 @@ export default function Settings({}) {
 		curPrd,
 		show,
 	}
+
 	let data = rack(o, setSettingAu, sendSettingAu, sendTune, onSwitch)
 
 	// ***************** Стили *****************
@@ -131,8 +133,19 @@ export default function Settings({}) {
 
 // Спрятанные настройки
 function fnSkip(prd, factory, coef, retain) {
-	let o = prd?.code ? factory?.[prd?.code] ?? factory : null
-	let cf = coef ? Object.keys(coef) : null
+	// Список полей настроек, массив названия полей
+	let o = prd?.code ? (factory?.[prd?.code] ?? factory) : null
+	const oKeys = Object.keys(o ?? {})
+	// Активные настройки - массив названия полей
+	let cfKeys = coef ? Object.keys(coef) : null
+	
+	console.log(22, o, coef, oKeys)
+
+	// Массив полей настроек которые необходимо скрыть
+	for (const key in coef) {
+		const oKey = oKeys.
+	}
+
 	return coef && o
 		? Object?.entries(o).reduce((acc, [code, val]) => {
 				const nv = retain?.[code] ?? {}
@@ -146,13 +159,13 @@ function fnSkip(prd, factory, coef, retain) {
 					if ((one && two) || one != two) acc.push(code)
 				}
 				return acc
-		  }, [])
+			}, [])
 		: null
 }
 
 // Активная настройка
 function fnAct(prd, factory, coef, retain) {
-	let o = prd?.code ? factory?.[prd?.code] ?? factory : null
+	let o = prd?.code ? (factory?.[prd?.code] ?? factory) : null
 	let cf = coef ? Object.keys(coef) : null
 	return coef && o
 		? Object.entries(o).reduce((acc, [code, val]) => {
@@ -171,6 +184,6 @@ function fnAct(prd, factory, coef, retain) {
 						acc.push(code)
 				}
 				return acc
-		  }, [])
+			}, [])
 		: null
 }
