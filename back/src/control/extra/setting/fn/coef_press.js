@@ -24,16 +24,16 @@ function coefPress(stg, bld, obj) {
 	// Режим сушка, хранение(лечение) -> максимальные настройки
 	if (am === 'drying' || submode?.[0] === 'cure') pressure = { p: stg?.maxp ?? 201 }
 
-	console.log(
-		3333,
-		'Коэффициенты давления',
-		'hin',
-		hin,
-		'< X;',
-		'Работа по давление: pressure',
-		pressure,
-		submode,
-	)
+	// console.log(
+	// 	3333,
+	// 	'Коэффициенты давления',
+	// 	'hin',
+	// 	hin,
+	// 	'< X;',
+	// 	'Работа по давление: pressure',
+	// 	pressure,
+	// 	submode,
+	// )
 	return pressure
 }
 
@@ -79,5 +79,3 @@ function fnClassic(stg, bld, hin, hyst) {
 
 	return pressure
 }
-
-

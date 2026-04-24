@@ -291,6 +291,6 @@ button,
 .btn-chc {
 	width: var(--fsz45);
 	height: var(--fsz45);
-	margin-top: 7%;
+	/* margin-top: 7%; */
 	background-color: var(--background);
 }

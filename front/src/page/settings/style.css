@@ -37,6 +37,7 @@
 	font-size: var(--fsz28);
 	font-family: Q-SemiBold;
 	/* overflow-x: hidden; */
+	/* background-color: red; */
 	.line{
 		margin-top: 0;
 	}

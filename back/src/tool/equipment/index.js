@@ -11,7 +11,7 @@ function equipment() {
 	return new Promise((resolve, reject) => {
 		fsp.readdir(dataDir)
 			.then(readTO)
-			.then((_) => Promise.all([equip(_), getInfo()]))
+			.then((data) => Promise.all([equip(data), getInfo()]))
 			.then(([r, info = {}]) => {
 				info.apiUri = process.env.API_URI;
 				info.port = process.env.PORT;

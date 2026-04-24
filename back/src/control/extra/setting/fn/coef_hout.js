@@ -40,7 +40,7 @@ function coefHout(stg, bld, obj) {
 		hout = stg?.hout2
 	}
 
-	console.log(3333, 'Коэффициенты влажности', 'tout', tout, '< X;', 'Влажность: hout', hout)
+	// console.log(3333, 'Коэффициенты влажности', 'tout', tout, '< X;', 'Влажность: hout', hout)
 	return hout
 }
 

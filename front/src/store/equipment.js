@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 const useEquipStore = create((set, get) => ({
 	list: [],
@@ -9,11 +9,11 @@ const useEquipStore = create((set, get) => ({
 	apiInfo: {},
 	// сохранить в стейт list[]
 	initE: (r) => {
-		if (!r) return;
-		set({ factory: r?.factory });
-		set({ list: r?.building });
-		set({ weather: r?.weather ?? {} });
-		set({ apiInfo: r?.apiInfo });
+		if (!r) return
+		set({ factory: r?.factory })
+		set({ list: r?.building })
+		set({ weather: r?.weather ?? {} })
+		set({ apiInfo: r?.apiInfo })
 	},
 	// установить индекс массива (для навигации по стейту list[])
 	setCurB: (i) => set({ curB: i }),
@@ -39,10 +39,18 @@ const useEquipStore = create((set, get) => ({
 
 	getFactory(type, hid, skip, prd, curPrd) {
 		let list = get()?.factory?.[type]?._prd
-			? get()?.factory?.[type]?.[prd] ?? null
-			: get()?.factory?.[type]?.list ?? null
+			? (get()?.factory?.[type]?.[prd] ?? null)
+			: (get()?.factory?.[type]?.list ?? null)
 		const name = get()?.factory?.[type]?._name
 		if (!list) return null
+		// console.log(11, hid, skip, list)
+		const r = { name, list }
+		if (curPrd !== prd) return r
+		const hidKeys = Object.keys(hid)?.map((el) => el.split('.').at(-1))
+		const rr = list.filter((el) => {
+			if (!skip.includes(el._code) || hidKeys) return true
+		})
+		console.log('TODO', 99, rr, hidKeys)
 		return hid && skip && curPrd == prd
 			? { name, list: list.filter((el) => !!skip && !skip.includes(el?._code)) }
 			: { name, list }

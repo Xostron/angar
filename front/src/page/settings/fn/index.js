@@ -112,33 +112,30 @@ function setting(list, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
 // Формирование строки
 function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
 	let result = []
-	// Добавление в строку кнопки "скрыть\показать неактивные настройки"
-	if (mark._code.includes('text-collapse') && prd == curPrd) {
-		const name = `${code}.${mark._code}`
-		const dataHid = hid?.name?.hid
-		mark.list.length = 2
-		mark.list.push({ _code: name, type: 'b', hid: dataHid ?? true })
+	// if (mark._code.includes('text-collapse')) console.log(11, mark.list)
+// console.log(mark)
+	// 1 ячейка по-умолчанию
+	const cell = {
+		field: mark._type === 'txt' || mark._code.includes('text-collapse') ? 'title' : 'iconText',
+		icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : '',
+		value: mark._name,
 	}
 
+	// Добавляем в ячейку - раму для кнопки скрыть/показать
+	if (mark._code.includes('text-collapse') && prd == curPrd) {
+		// Добавление в строку кнопки "скрыть\показать неактивные настройки"
+		const name = `${code}.${mark._code}`
+		const vHid = hid?.[name]?.hid
+		cell.hid = { value: name, hid: vHid ?? true }
+		// { _code: name, type: 'b', hid: vHid ?? true }
+		// { field: 'b', value: ml._code, hid: ml.hid }
+	}
+
+	// Флаг "Отключить редактирование" если кнопка скрыть/показать = скрыть
 	if (!!show && show.includes(mark?._code)) mark.list.forEach((el) => (el._acv = true))
 
-	if (mark._type === 'txt' || mark._code.includes('text-collapse'))
-		result = [
-			{
-				field: 'title',
-				icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : '',
-				value: mark._name,
-			},
-		]
-	else
-		result = [
-			{
-				field: 'iconText',
-				icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : '',
-				value: mark._name,
-			},
-		]
-
+	result.push(cell)
+	// Форматируем остальные ячейки
 	column(code, result, mark, buildingId, setSettingAu)
 
 	return result
