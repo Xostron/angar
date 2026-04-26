@@ -219,6 +219,7 @@ function setTick() {
 	data.tick = +new Date().getTime()
 }
 // Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
+// TODO42 добавить температура канала < задания канала
 function isAllStarted(idS) {
 	return data.watchdog.softFan?.[idS]?.allStarted
 }

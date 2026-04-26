@@ -17,7 +17,7 @@ const { ctrlDO } = require('@tool/command/module_output')
 const { data: store, readAcc } = require('@store')
 const { isExtra } = require('@tool/message/extra')
 const { isAllStarted } = require('@store/index')
-
+// Depriciated
 function softsol(idB, solenoid, sl, f, h, clr, accAuto) {
 	// Удаление co2 в работе
 	const CO2work = isExtra(idB, null, 'co2', 'work')

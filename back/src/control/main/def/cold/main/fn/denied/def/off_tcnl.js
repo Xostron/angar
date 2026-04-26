@@ -59,7 +59,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
 		// 5. Настройка: Выключено оборудование испарителя
 		const a = [
 			[!alrAuto, 'В режиме обычного склада (аварии авторежима)'],
-			[sectM === false, 'Секция не в ручном режиме'],
+			[sectM === false, 'Секция в ручном режиме'],
 			[s?.smoking?.on, 'окуривание'],
 			[s?.ozon?.on, 'озонирование'],
 			[!s?.coolerCombi?.on, 'Выключено оборудование испарителя'],
