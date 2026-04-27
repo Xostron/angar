@@ -47,7 +47,7 @@ function aggB(bld, agg, equip, val, retain, result) {
 			const owner = doc._id + '_' + el._id
 			if (!doc.aggregate?.slave)
 				result[doc._id].compressor[el._id].state = stateC(
-					result[doc._id].compressor[el._id].beep
+					result[doc._id].compressor[el._id].beep,
 				)
 			else {
 				result[doc._id].compressor[el._id].state = stateCSlave(
@@ -55,7 +55,7 @@ function aggB(bld, agg, equip, val, retain, result) {
 					bld._id,
 					owner,
 					doc,
-					equip
+					equip,
 				)
 			}
 		})
@@ -68,11 +68,11 @@ function aggB(bld, agg, equip, val, retain, result) {
 			el?.signal
 				?.sort((a, b) => a?.order - b?.order)
 				?.forEach((e) =>
-					result[doc._id].condenser[el._id].fan.push(result[e._id] ? 'run' : 'stop')
+					result[doc._id].condenser[el._id].fan.push(result[e._id] ? 'run' : 'stop'),
 				)
 			// Состояние конденсатора
 			result[doc._id].condenser[el._id].state = result[doc._id].condenser[el._id].fan.some(
-				(el) => el === 'run'
+				(el) => el === 'run',
 			)
 				? 'run'
 				: 'stop'
@@ -118,7 +118,7 @@ function stateCSlave(o = {}, bldId, owner, agg, equip) {
 	// 4. Состояние Стоп (по-умолчанию)
 	return 'stop'
 }
-// Состояние агрегата
+// Состояние агрегата: run, stop, alarm
 function stateA(o = {}, total = false) {
 	let arr
 	if (total) arr = Object.values(o)

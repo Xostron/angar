@@ -30,7 +30,6 @@ function factory(data) {
 			obj[key].list.sort((a, b) => a._order - b._order)
 		}
 	}
-	// console.log(222, obj.sys.onion[11])
 	return obj
 }
 

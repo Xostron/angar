@@ -6,27 +6,39 @@
  * @param {object} retain Объект полей пользовательских значений
  * @param {boolean} mode
  * @returns {object[]} массив названий полей,
- * которых необходимо скрыть (mode=true)/показать (mode=false)
+ * которых необходимо скрыть (mode=true)/активная настройка (mode=false)
  */
-function fnSkip(prd, factory, coef, retain, mode = true) {
+function fnSkip(prd, factory, coef, retain, hid, mode = true) {
 	// Список полей настроек, массив названия полей
-	let o = prd?.code ? (factory?.[prd?.code] ?? factory) : null
-	const oKeys = Object.keys(o ?? {})
-	const oKey = []
+	const list = prd ? (factory?.[prd] ?? factory) : null
+	// Коды полей настроек
+	const keys = Object.keys(list ?? {})
 	// Массив полей настроек, которые необходимо скрыть/показать
+	const aKey = []
+	// Кнопки скрыть/показать
+	const hidKeys = Object.entries(hid)?.map((el) => [
+		el?.[0]?.split('.')?.at(-1),
+		el?.[1] ?? false,
+	])
+	// Список кодов настроек которые необходимо скрыть (mode=true)/показать (mode=false)
 	for (const key in coef) {
-		// console.log(22, key)
-		const r = oKeys.filter((el) => {
-			// console.log(el)
+		const r = keys.filter((el) => {
+			// Пропускаем поля настроек, которые должны показываться всегда
 			if (!el.includes(key) || el.includes('text-collapse')) return false
-			const rtn = retain[el]
-			const rtnFct = { ...o[el], ...rtn }
-			// console.log(33, key, el, coef[key], rtnFct, isEqual(coef[key], rtnFct, mode))
-			return mode ? !isEqual(coef[key], rtnFct) : isEqual(coef[key], rtnFct)
+			// Пользовательские значения поля настройки
+			const rtn = retain?.[el]
+			// Значение поля настройки: заводская + пользовательская
+			const rtnFct = { ...list[el], ...rtn }
+			// Сравниваем активную настройку от ангара (истинную) с значением поля настройки заводская + пользовательская
+			// Значение кнопки
+			const hh = hidKeys.find((h) => el.includes(h?.[0]))
+			// Результат: скрытые настройки (mode=true)/активная настройка (mode=false)
+			return mode ? !isEqual(coef[key], rtnFct, hh) : isEqual(coef[key], rtnFct)
 		})
-		oKey.push(...r)
+		aKey.push(...r)
 	}
-	return oKey
+
+	return aKey
 }
 
 //
@@ -34,10 +46,14 @@ function fnSkip(prd, factory, coef, retain, mode = true) {
  * Сравнение объектов (вложенные объекты не поддерживаются)
  * @param {object} eq1
  * @param {object} eq2
+ * @param {object[]} Кнопки скрыть/показать: undefined|false - скрыть, true - показать
  * @returns {boolean} true объекты равны
  */
-function isEqual(eq1 = {}, eq2 = {}) {
+function isEqual(eq1 = {}, eq2 = {}, hh = []) {
+	// Объекты разные по размеру ИЛИ нажата ли кнопка скрыть(undefined|false)/показать(true) -> не равны (показывать)
 	if (Object.keys(eq1).length !== Object.keys(eq2).length) return false
+	if (hh?.[1]) return true
+	// Проверка ключ-значение
 	for (const key in eq1) {
 		if (eq1[key] != eq2?.[key]) return false
 	}

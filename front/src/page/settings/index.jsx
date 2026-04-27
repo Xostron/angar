@@ -51,11 +51,13 @@ export default function Settings({}) {
 	// Состояние кнопок свернуть/показать спрятанные настройки
 	const hid = useOutputStore((s) => s.hid)
 	// skip - настройки которые необходимо скрыть, настройки которые нужно показать
-	const skip = fnSkip(prd, factory?.[type], coef, retain)
-	const show = fnSkip(prd, factory?.[type], coef, retain, false)
+	const skip = fnSkip(prd?.code, factory?.[type], coef, retain, hid)
+	// const skip = []
+	// const show = []
+	const show = fnSkip(prd?.code, factory?.[type], coef, retain, hid, false)
 	// Заводские настройки - отфильтрованная рама (с учетом скрытых настроек)
-	const fct = useEquipStore((s) => s.getFactory(type, hid, skip, prd?.code, curPrd))
-	console.log(33, hid)
+	const fct = useEquipStore((s) => s.getFactory(type, skip, prd?.code, curPrd))
+	console.log(33, fct, factory?.[type])
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
@@ -100,10 +102,10 @@ export default function Settings({}) {
 		equipSect,
 		retainTune,
 		tune,
-		hid,
 		prd: prd?.code,
 		curPrd,
 		show,
+		skip,
 	}
 
 	let data = rack(o, setSettingAu, sendSettingAu, sendTune, onSwitch)

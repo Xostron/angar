@@ -65,7 +65,7 @@ export default function Cell({ data, i, j }) {
 		case 'iconText':
 			return <IconText cls='cell-w' data={data} style={st} title={data.code} />
 		case 'input':
-			const disabled = (hid?.[`${type}.text-collapse`]?.hid ?? true) && data._acv
+			// const disabled = (hid?.[`${type}.text-collapse`] ?? true) && data._acv
 			return (
 				<Input
 					cls={cl}
@@ -74,7 +74,7 @@ export default function Cell({ data, i, j }) {
 					max={data.max}
 					step={data.step}
 					value={value}
-					disabled={disabled}
+					// disabled={disabled}
 					setValue={(val) => {
 						setValue(val)
 						data.setValue(val)
@@ -109,28 +109,23 @@ export default function Cell({ data, i, j }) {
 				/>
 			)
 		case 'title':
-			return <Title data={data} hid={hid} type={type} st={st} cl={cl} />
+			return <Title data={data} st={st} cl={cl} />
 		case 'head':
 			return (
 				<div className='usual' style={st}>
 					{data.value}
 				</div>
 			)
-		// case 'b':
-		// 	const dH = hid?.[`${type}.text-collapse`]
-		// 	const x = dH ? dH?.hid : data.hid
-		// 	return <BtnHid style={st} cls={cl} value={data.value} hid={x} />
 		default:
 			return <Text cls='cell-w' data={data} style={st} />
 	}
 }
 
-function Title({ data, hid, type, st, cl }) {
-	const x = hid?.[data?.hid?.value]?.hid
+function Title({ data, st, cl }) {
 	return (
 		<div className='title' style={st}>
 			<span>{data.value}</span>
-			{data.hid && <BtnHid style={st} cls={cl} value={data?.hid?.value} hid={x} />}
+			{data.nameHid && <BtnHid style={st} cls={cl} nameHid={data?.nameHid} />}
 		</div>
 	)
 }

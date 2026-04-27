@@ -64,10 +64,10 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 		equipSect,
 		retainTune,
 		tune,
-		hid,
 		prd,
 		curPrd,
 		show,
+		skip
 	} = obj
 	const data = { head: [], list: [] }
 	// Настройка: Калибровка клапанов
@@ -83,7 +83,7 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	data.title = { name: fct?.name, bName: 'Сохранить' }
 
 	// Строки с настройками
-	data.list = setting(fct?.list, code, buildingId, setSettingAu, hid, prd, curPrd, show)
+	data.list = setting(fct?.list, code, buildingId, setSettingAu, prd, curPrd, show, skip)
 
 	// Максимальное кол-во ячеек в строке (для правильной css отрисовки)
 	const max = Math.max(...data.list.map((el) => el?.length))
@@ -103,17 +103,17 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 }
 
 // Форматирование строк
-function setting(list, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
-	return !list
-		? []
-		: list.map((el) => row(el, code, buildingId, setSettingAu, hid, prd, curPrd, show))
+function setting(list, code, buildingId, setSettingAu, prd, curPrd, show,skip) {
+	return !list ? [] : list.map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd, show, skip))
+	
+	return !list ? [] : list.filter(el=>!skip.includes(el._code)).map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd, show, skip))
 }
 
 // Формирование строки
-function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
+function row(mark, code, buildingId, setSettingAu, prd, curPrd, show) {
 	let result = []
 	// if (mark._code.includes('text-collapse')) console.log(11, mark.list)
-// console.log(mark)
+	// console.log(mark)
 	// 1 ячейка по-умолчанию
 	const cell = {
 		field: mark._type === 'txt' || mark._code.includes('text-collapse') ? 'title' : 'iconText',
@@ -124,11 +124,7 @@ function row(mark, code, buildingId, setSettingAu, hid, prd, curPrd, show) {
 	// Добавляем в ячейку - раму для кнопки скрыть/показать
 	if (mark._code.includes('text-collapse') && prd == curPrd) {
 		// Добавление в строку кнопки "скрыть\показать неактивные настройки"
-		const name = `${code}.${mark._code}`
-		const vHid = hid?.[name]?.hid
-		cell.hid = { value: name, hid: vHid ?? true }
-		// { _code: name, type: 'b', hid: vHid ?? true }
-		// { field: 'b', value: ml._code, hid: ml.hid }
+		cell.nameHid = `${code}.${mark._code}`
 	}
 
 	// Флаг "Отключить редактирование" если кнопка скрыть/показать = скрыть
@@ -201,9 +197,6 @@ function column(code, result, mark, buildingId, setSettingAu) {
 				break
 			case 'txt':
 				result.push({ field: 'head', value: ml._name })
-				break
-			case 'b':
-				result.push({ field: 'b', value: ml._code, hid: ml.hid })
 				break
 			default:
 				break

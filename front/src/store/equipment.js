@@ -1,3 +1,4 @@
+import fnSkip from '@src/page/settings/skip'
 import { create } from 'zustand'
 
 const useEquipStore = create((set, get) => ({
@@ -37,23 +38,25 @@ const useEquipStore = create((set, get) => ({
 		return signal?._id
 	},
 
-	getFactory(type, hid, skip, prd, curPrd) {
+	getFactory(type, skip, prd, curPrd) {
+		// Список заводских настроек
 		let list = get()?.factory?.[type]?._prd
 			? (get()?.factory?.[type]?.[prd] ?? null)
 			: (get()?.factory?.[type]?.list ?? null)
+		// Имя настройки
 		const name = get()?.factory?.[type]?._name
+
 		if (!list) return null
-		// console.log(11, hid, skip, list)
-		const r = { name, list }
-		if (curPrd !== prd) return r
-		const hidKeys = Object.keys(hid)?.map((el) => el.split('.').at(-1))
-		const rr = list.filter((el) => {
-			if (!skip.includes(el._code) || hidKeys) return true
-		})
-		console.log('TODO', 99, rr, hidKeys)
-		return hid && skip && curPrd == prd
-			? { name, list: list.filter((el) => !!skip && !skip.includes(el?._code)) }
-			: { name, list }
+
+		// Настройки для неосновного продукта, показываем полные настройки
+		if (curPrd !== prd) return { name, list }
+		// return { name, list }
+		// Настройки текущего продукта (здесь можно скрывать/показывать группы настроек)
+
+		return {
+			name,
+			list: list.filter((el) => !skip.includes(el._code)),
+		}
 	},
 
 	getKindList(idB) {
