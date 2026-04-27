@@ -13,7 +13,7 @@ const { compareTime, remTime } = require('@tool/command/time')
  * @param {*} alrAuto
  * @param {*} sectM
  */
-function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
+function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 	const wait = (s?.coolerCombi?.allStarted ?? 60) * 1000
 	mS.coolerS.forEach((clr) => {
 		// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
@@ -21,7 +21,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM) {
 		accAuto.cold ??= {}
 		accAuto.cold[clr.sectionId] ??= {}
 		// Все э-ты подогрева включены: фиксируем точку отсчета для выключения испарителя
-		if (isAllStarted(clr.sectionId)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
+		if (isAllStarted(idB, clr.sectionId, obj)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
 		else {
 			accAuto.cold[clr.sectionId].allStarted = null
 			// Сброс состояния regulQ (вкл/выкл ВНО по заданию влажности)

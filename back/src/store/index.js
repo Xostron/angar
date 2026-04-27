@@ -218,10 +218,26 @@ function setToOffBuild(obj) {
 function setTick() {
 	data.tick = +new Date().getTime()
 }
-// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
+//
 // TODO42 добавить температура канала < задания канала
-function isAllStarted(idS) {
-	return data.watchdog.softFan?.[idS]?.allStarted
+/**
+ * Комби: Флаг для отключения испарителя^
+ * true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
+ * false - нельзя откл испаритель, датчик канала неисправен
+ * @param {*} idB
+ * @param {*} idS
+ * @param {*} obj
+ * @returns {boolean}
+ */
+function isAllStarted(idB, idS, obj) {
+	// Задание канала
+	const tcnl = readAcc(idB, 'combi')?.tcnl
+	// Текущая температура канала секции
+	const seTcnl = obj.value?.total?.[idS]?.tcnl?.min
+	// Датчик неисправен -> false ()
+	if (seTcnl === null) return false
+	console.log(123, tcnl, seTcnl)
+	return data.watchdog.softFan?.[idS]?.allStarted && seTcnl < tcnl
 }
 
 // Базовая директория проекта

@@ -9,7 +9,6 @@ export default function Message() {
 	const [hid, setHid] = useState(true)
 	const [achieve] = useInputStore(({ alarm }) => [alarm.achieve])
 
-
 	// Подсветка "синим" - продукт достиг задания
 	let cl = ['mes']
 	useEffect(
@@ -21,7 +20,7 @@ export default function Message() {
 			document.addEventListener('click', onClick)
 			return (_) => document.removeEventListener('click', onClick)
 		},
-		[hid]
+		[hid],
 	)
 	let arr = achieve?.[build]
 	if (!arr?.length) return null
@@ -29,7 +28,6 @@ export default function Message() {
 	const act = arr.find((el) => el?.order === 1)
 	if (act) cl.push('act')
 	cl = cl.join(' ')
-
 
 	return (
 		<div className='mes-container'>
@@ -39,7 +37,9 @@ export default function Message() {
 				))}
 			</div>
 			<div className={cl} onClick={(_) => setHid(false)}>
-				<p className='text'>{arr[0]?.msg}</p>
+				<p className='text' title={arr[0]?.msg}>
+					{arr[0]?.msg}
+				</p>
 			</div>
 		</div>
 	)

@@ -19,7 +19,6 @@ const writeStore = require('./save/extra')
 // Контроль работы склада
 async function control() {
 	try {
-		console.log(1100, store.cycleId)
 		// Проверка состояния батареи
 		battery()
 		// testBattery()
@@ -65,7 +64,7 @@ async function loop() {
 		const bgn = hrtime()
 		console.log(
 			'\x1b[36m%s\x1b[0m',
-			`\n-------------------Начало Process ID: ${process.pid}-------------------`,
+			`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}-------------------`,
 		)
 		// Инициализация глобального аккумулятора (сомнительно!)
 		await writeStore()

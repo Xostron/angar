@@ -35,7 +35,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 		// Комби: Флаг для отключения испарителя, true - все вспомагательные механизмы подогрева канала запущены -> можно отключать испаритель
 		if (
 			denied.combi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) ||
-			isAllStarted(clr.sectionId)
+			isAllStarted(bld._id, clr.sectionId, obj)
 		)
 			continue
 		// Датчики секции и испарителя
@@ -73,7 +73,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	const couple = coupleClr(bld._id, mS)
 	denied.off(bld._id, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj)
 	// denied.pressure(bld._id, sect._id, mS, s, seS, fnChange, accAuto, alrAuto, sectM, obj)
-	denied.offByTcnl(bld._id, mS, s, se, fnChange, accAuto, alrAuto, sectM)
+	denied.offByTcnl(bld._id, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj)
 
 	// console.log(`-------------------${bld?.name} end-------------------`)
 }

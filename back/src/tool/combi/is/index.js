@@ -44,7 +44,7 @@ function isСoolerCombiVNO(bld, idS, obj, bdata) {
 	// Если температура канала низкая и включены все механизмы подогрева,
 	// то выключаем испарители, при этом при выключенных испарителях,
 	// здесь происходит блокировка ВНО секции, но их не нужно в этой ситуации блокировать
-	if (isAllStarted(idS)) {
+	if (isAllStarted(bld._id, idS, obj)) {
 		// кол-во пропускаемых циклов = 2
 		store.cycle.ccVno[idS] = new Date()
 		return true
