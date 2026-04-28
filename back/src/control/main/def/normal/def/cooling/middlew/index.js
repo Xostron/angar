@@ -26,7 +26,11 @@ function submode(bld, obj, s, seB, acc) {
 		// console.log(11, 'check охлаждение+')
 		acc.setting = {
 			cooling: s.cooling,
-			mois: { ...s.mois, outMax: s.mois.outMax2, differenceMin: s.mois?.differenceMin2 },
+			mois: {
+				...s.mois,
+				hout: { ...(s.mois.hout ?? {}), max: s.mois.outMax2 },
+				differenceMin: s.mois?.differenceMin2,
+			},
 		}
 		return
 	}
@@ -84,7 +88,7 @@ function submode(bld, obj, s, seB, acc) {
 				differenceMin: s.heat?.differenceMin,
 				differenceValue: s.heat?.differenceValue,
 			},
-			mois: { ...s.mois, outMax: s.heat.outMax },
+			mois: { ...s.mois },
 		}
 		// console.log(2, 'heat set')
 		return

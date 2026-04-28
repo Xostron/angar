@@ -40,6 +40,7 @@ function drying(s, seB, building, acc, bdata) {
 	// 	s.mois.differenceMin
 	// )
 	// console.log(99004,'Абс влажн улицы выше', hAbsOut, hAbsIn , s.mois.differenceMin, hAbsIn - s.mois.differenceMin, hAbsOut >= hAbsIn - s.mois.differenceMin)
+
 	return [
 		// 1 Температура улицы не подходит при сушке
 		{
@@ -55,14 +56,14 @@ function drying(s, seB, building, acc, bdata) {
 		},
 		// 3 Влажность улицы ниже допустимой при сушке
 		{
-			set: hout < s.drying.humidityMin,
-			reset: hout - s.mois.hysteresisRel > s.drying.humidityMin,
+			set: hout < s.mois?.hout?.min,
+			reset: hout - s.mois.hysteresisRel > s.mois?.hout?.min,
 			msg: msgB(building, 3),
 		},
 		// 4 Влажность улицы выше допустимой при сушке
 		{
-			set: hout > s.drying.humidityMax,
-			reset: hout + s.mois.hysteresisRel < s.drying.humidityMax,
+			set: hout > s.mois?.hout?.max,
+			reset: hout + s.mois.hysteresisRel < s.mois?.hout?.max,
 			msg: msgB(building, 4),
 		},
 		// 5 Абсолютная влажность улицы ниже допустимой при сушке

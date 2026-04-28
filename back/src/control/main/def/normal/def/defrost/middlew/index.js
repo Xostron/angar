@@ -20,7 +20,7 @@ function submode(bld, obj, s, seB, acc) {
 			differenceMax: s.defrost?.differenceMax,
 			differenceMin: s.defrost?.differenceMin,
 		},
-		mois: { ...s.mois, outMax: s.defrost?.outMax },
+		mois: { ...s.mois },
 	}
 	return
 }

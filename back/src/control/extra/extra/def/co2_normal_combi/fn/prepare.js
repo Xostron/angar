@@ -42,7 +42,7 @@ function fnPrepare(bld, obj, s, m) {
 	// Относительная влажность улицы
 	const hout = obj.value.total?.hout?.max
 	// Макс. внешняя отн. влажность
-	const isHout = fnIsHout(hout, s, am)
+	const isHout = fnIsHout(hout, s)
 	// Температура улицы
 	const tout = obj.value.total?.tout?.min
 	// Если данные невалидны (valid=false), то запрет выполнение СО2
@@ -83,10 +83,6 @@ module.exports = fnPrepare
  * @return {boolean} true - предупреждение влажность улицы выше допустимой,
  * false - влажность подходит/слежение в настройках выключена
  */
-function fnIsHout(hout, s, am = 'cooling') {
-	// Максимальная внешн. отн. влажность: настройки Сушка или Влажность
-	const t = am === 'drying' ? am : 'mois'
-	// Название поля
-	const f = t === 'drying' ? 'humidityMax' : 'outMax'
-	return s?.co2?.hout ? hout >= s?.[t]?.[f] : false
+function fnIsHout(hout, s) {
+	return s?.co2?.hout ? hout >= s?.mois?.hout?.max : false
 }

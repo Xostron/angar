@@ -50,7 +50,6 @@ const useOutputStore = create((set, get) => ({
 		const output = get().hid
 		output[name] = !bool
 		set({ output })
-		console.log(22)
 	},
 	/**
 	 * Спрятанные настройки

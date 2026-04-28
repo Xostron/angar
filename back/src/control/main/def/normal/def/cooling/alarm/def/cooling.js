@@ -3,7 +3,7 @@ const { data: store } = require('@store')
 
 function cooling(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	// console.log(124, 'alarm cooling')
+	console.log(124, acc?.setting?.mois?.hout?.min, acc?.setting?.mois?.hout?.max)
 	// В нагреве игнорируются аварии 0 1 4 6
 	// В нагреве появляется новая авария "Влажность улицы выше допустимой (точка росы)"
 	const r = [
@@ -23,14 +23,14 @@ function cooling(s, seB, building, acc, bdata) {
 		},
 		// 2 Влажность улицы ниже допустимой при охлаждении
 		{
-			set: hout < acc?.setting?.mois?.outMin,
-			reset: hout - acc?.setting?.mois?.hysteresisRel > acc?.setting?.mois?.outMin,
+			set: hout < acc?.setting?.mois?.hout?.min,
+			reset: hout - acc?.setting?.mois?.hysteresisRel > acc?.setting?.mois?.hout?.min,
 			msg: msgB(building, 9),
 		},
 		// 3 Влажность улицы выше допустимой при охлаждении
 		{
-			set: hout > acc?.setting?.mois?.outMax,
-			reset: hout + acc?.setting?.mois?.hysteresisRel < acc?.setting?.mois?.outMax,
+			set: hout > acc?.setting?.mois?.hout?.max,
+			reset: hout + acc?.setting?.mois?.hysteresisRel < acc?.setting?.mois?.hout?.max,
 			msg: msgB(building, 10),
 		},
 		// 4 Температура улицы выше допустимой для охлаждения
