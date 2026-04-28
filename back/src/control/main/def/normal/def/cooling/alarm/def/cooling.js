@@ -3,7 +3,7 @@ const { data: store } = require('@store')
 
 function cooling(s, seB, building, acc, bdata) {
 	const { tout, hout, hAbsOut, hAbsIn, tprd } = seB
-	console.log(124, acc?.setting?.mois?.hout?.min, acc?.setting?.mois?.hout?.max)
+	// console.log(124, 'alarm cooling')
 	// В нагреве игнорируются аварии 0 1 4 6
 	// В нагреве появляется новая авария "Влажность улицы выше допустимой (точка росы)"
 	const r = [
