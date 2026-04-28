@@ -60,7 +60,7 @@ function isEqual(eq1 = {}, eq2 = {}, hh = []) {
 	return true
 }
 
-export default fnSkip
+export { fnSkip, isEqual }
 
 // // Активная настройка
 // function fnAct(prd, factory, coef, retain) {

@@ -66,8 +66,8 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 		tune,
 		prd,
 		curPrd,
-		show,
-		skip
+		// show,
+		// skip
 	} = obj
 	const data = { head: [], list: [] }
 	// Настройка: Калибровка клапанов
@@ -83,7 +83,7 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	data.title = { name: fct?.name, bName: 'Сохранить' }
 
 	// Строки с настройками
-	data.list = setting(fct?.list, code, buildingId, setSettingAu, prd, curPrd, show, skip)
+	data.list = setting(fct?.list, code, buildingId, setSettingAu, prd, curPrd)
 
 	// Максимальное кол-во ячеек в строке (для правильной css отрисовки)
 	const max = Math.max(...data.list.map((el) => el?.length))
@@ -103,14 +103,18 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 }
 
 // Форматирование строк
-function setting(list, code, buildingId, setSettingAu, prd, curPrd, show,skip) {
-	return !list ? [] : list.map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd, show, skip))
-	
-	return !list ? [] : list.filter(el=>!skip.includes(el._code)).map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd, show, skip))
+function setting(list, code, buildingId, setSettingAu, prd, curPrd) {
+	return !list ? [] : list.map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd))
+
+	return !list
+		? []
+		: list
+				.filter((el) => !skip.includes(el._code))
+				.map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd, show, skip))
 }
 
-// Формирование строки
-function row(mark, code, buildingId, setSettingAu, prd, curPrd, show) {
+// Формирование строки (1 ячейка оглавление, остальные ячейки в mark.list (функция column))
+function row(mark, code, buildingId, setSettingAu, prd, curPrd) {
 	let result = []
 	// if (mark._code.includes('text-collapse')) console.log(11, mark.list)
 	// console.log(mark)
@@ -128,7 +132,7 @@ function row(mark, code, buildingId, setSettingAu, prd, curPrd, show) {
 	}
 
 	// Флаг "Отключить редактирование" если кнопка скрыть/показать = скрыть
-	if (!!show && show.includes(mark?._code)) mark.list.forEach((el) => (el._acv = true))
+	// if (!!show && show.includes(mark?._code)) mark.list.forEach((el) => (el._acv = true))
 
 	result.push(cell)
 	// Форматируем остальные ячейки
@@ -137,7 +141,7 @@ function row(mark, code, buildingId, setSettingAu, prd, curPrd, show) {
 	return result
 }
 
-// Колонки строки
+// Ячейки строки
 function column(code, result, mark, buildingId, setSettingAu) {
 	mark.list.forEach((ml) => {
 		const obj = { build: buildingId, type: code, name: mark._code + '.' + ml._code }

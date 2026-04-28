@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 import useEquipStore from '@store/equipment'
 import useOutputStore from '@store/output'
 import useInputStore from '@store/input'
@@ -12,12 +11,12 @@ import './style.css'
 import SubHead from './sub_head'
 import { rack, sty } from './fn'
 import def from './def'
-import { ms } from '@src/tool/datetime'
-import fnSkip from './skip'
 
 //Настройки склада
 export default function Settings({}) {
 	const { type, build } = useParams()
+	// EquipStore - Рама
+	// Склад
 	const curB = useEquipStore((s) => s.getCurB(build))
 	// Меню настроек
 	const kindList = useEquipStore((s) => s.getKindList(build))
@@ -29,35 +28,26 @@ export default function Settings({}) {
 	const setTune = useOutputStore((s) => s.setTune)
 	const tune = useOutputStore((s) => s.tune)
 	const sendTune = useOutputStore((s) => s.sendTune)
+	// Пользовательские значения калибровки
 	const retainTune = useInputStore((s) => s.input?.retain?.[build]?.valve)
 
-	// Изменение и запись настроек
+	// Изменение, запись настроек, было ли изменение(для подсветки измененных значений)
 	const setSettingAu = useOutputStore((s) => s.setSettingAu)
 	const sendSettingAu = useOutputStore((s) => s.sendSettingAu)
-	const hasChangedSettingAu = useOutputStore((s) => s.hasChangedSettingAu)
+	const hasChanged = useOutputStore((s) => s.hasChangedSettingAu(build, type))
 
-	// Выбранный продукт
+	// Выбранный продукт, чьи настройки хотят посмотреть
 	const prd = useOutputStore((s) => s.prd)
 	// Продукт склада
 	const curPrd = useInputStore((s) => s.input?.retain?.[build]?.product?.code)
-	// Заводские настройки - значения
-	const factory = useInputStore((s) => s.input?.factory)
-	// Пользовательские настройки - значения
-	const retain = useInputStore((s) => s.input?.retain?.[build]?.setting?.[type]?.[prd?.code])
 
-	// Спрятанные настройки
-	// Активные коэффициенты
-	const coef = useInputStore((s) => s.input.coef?.[build]?.[type])
-	// Состояние кнопок свернуть/показать спрятанные настройки
-	const hid = useOutputStore((s) => s.hid)
+	// ***************** Спрятанные настройки *****************
 	// skip - настройки которые необходимо скрыть, настройки которые нужно показать
-	const skip = fnSkip(prd?.code, factory?.[type], coef, retain, hid)
-	// const skip = []
-	// const show = []
-	const show = fnSkip(prd?.code, factory?.[type], coef, retain, hid, false)
-	// Заводские настройки - отфильтрованная рама (с учетом скрытых настроек)
-	const fct = useEquipStore((s) => s.getFactory(type, skip, prd?.code, curPrd))
-	console.log(33, fct, factory?.[type])
+	const skip = useOutputStore((s) => s.getSkip(build, type))
+	// Заводские настройки - Рама
+	const fct = useEquipStore((s) => s.getFactory(skip, type, prd?.code, curPrd))
+
+	// console.log(33, fct)
 
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
@@ -84,11 +74,9 @@ export default function Settings({}) {
 	}
 
 	useEffect(() => {
-		setLink({ action: onDialog, hasChanged: hasChangedSettingAu(build, type) })
-		return () => {
-			return setLink(null)
-		}
-	}, [hasChangedSettingAu(build, type)])
+		setLink({ action: onDialog, hasChanged: hasChanged })
+		return () => setLink(null)
+	}, [hasChanged])
 
 	// ***************** Экран - Меню *****************
 	if (type === 'menu') return <Menu />
@@ -104,8 +92,8 @@ export default function Settings({}) {
 		tune,
 		prd: prd?.code,
 		curPrd,
-		show,
-		skip,
+		// show,
+		// skip,
 	}
 
 	let data = rack(o, setSettingAu, sendSettingAu, sendTune, onSwitch)
@@ -117,12 +105,7 @@ export default function Settings({}) {
 		<main className='sett' style={st}>
 			<SubHead title={data.title} head={data.head} st={sth} dataWarn={data.warn} />
 			<List data={data} st={stl} />
-			<Nav
-				st={stn}
-				cur={type}
-				dialog={onDialog}
-				hasChanged={hasChangedSettingAu(build, type)}
-			/>
+			<Nav st={stn} cur={type} dialog={onDialog} hasChanged={hasChanged} />
 		</main>
 	)
 

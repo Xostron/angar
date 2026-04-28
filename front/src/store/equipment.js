@@ -1,5 +1,7 @@
-import fnSkip from '@src/page/settings/skip'
+// import { fnSkip } from '@src/page/settings/skip'
 import { create } from 'zustand'
+import useOutputStore from './output'
+import useInputStore from './input'
 
 const useEquipStore = create((set, get) => ({
 	list: [],
@@ -38,7 +40,7 @@ const useEquipStore = create((set, get) => ({
 		return signal?._id
 	},
 
-	getFactory(type, skip, prd, curPrd) {
+	getFactory(skip, type, prd, curPrd) {
 		// Список заводских настроек
 		let list = get()?.factory?.[type]?._prd
 			? (get()?.factory?.[type]?.[prd] ?? null)
@@ -50,9 +52,8 @@ const useEquipStore = create((set, get) => ({
 
 		// Настройки для неосновного продукта, показываем полные настройки
 		if (curPrd !== prd) return { name, list }
-		// return { name, list }
-		// Настройки текущего продукта (здесь можно скрывать/показывать группы настроек)
 
+		// Настройки текущего продукта (здесь можно скрывать/показывать группы настроек)
 		return {
 			name,
 			list: list.filter((el) => !skip.includes(el._code)),

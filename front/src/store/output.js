@@ -11,6 +11,8 @@ import {
 	sAutomode,
 	sWarming,
 } from '@socket/emit'
+import { isEqual } from '@src/page/settings/skip'
+import useInputStore from './input'
 // import useAuthStore from './auth'
 
 // Данные на сервер
@@ -36,17 +38,69 @@ const useOutputStore = create((set, get) => ({
 	settingAu: {},
 	// Прогрев секции
 	warming: {},
-	// Скрытие настроек
+	// Состояние кнопок скрытых настроек
 	hid: {},
 	// Выбранный продукт
 	prd: '',
 	setPrd(prd) {
 		set({ prd })
 	},
+	// Управление кнопками скрытых настроек
 	setHid(name, bool) {
 		const output = get().hid
 		output[name] = !bool
 		set({ output })
+		console.log(22)
+	},
+	/**
+	 * Спрятанные настройки
+	 * @param {object} prd Продукт
+	 * @param {object} factory Объект полей заводских значений
+	 * @param {object} coef Объект полей активных коэффициентов
+	 * @param {object} retain Объект полей пользовательских значений
+	 * @param {boolean} mode
+	 * @returns {object[]} массив названий полей,
+	 * которых необходимо скрыть (mode=true)/активная настройка (mode=false)
+	 */
+	getSkip(build, type, mode = true) {
+		const hid = get().hid
+		const prd = get().prd?.code
+		// Спрятанные настройки
+		const inputStore = useInputStore.getState()?.input
+		const factory = inputStore?.factory?.[type]
+		const retain = inputStore?.retain?.[build]?.setting?.[type]?.[prd]
+		const coef = inputStore?.coef?.[build]?.[type]
+
+		// Список полей настроек, массив названия полей
+		const list = prd ? (factory?.[prd] ?? factory) : null
+		// Коды полей настроек
+		const keys = Object.keys(list ?? {})
+		// Массив полей настроек, которые необходимо скрыть/показать
+		const aKey = []
+		// Кнопки скрыть/показать
+		const hidKeys = Object.entries(hid)?.map((el) => [
+			el?.[0]?.split('.')?.at(-1),
+			el?.[1] ?? false,
+		])
+		// Список кодов настроек которые необходимо скрыть (mode=true)/показать (mode=false)
+		for (const key in coef) {
+			const r = keys.filter((el) => {
+				// Пропускаем поля настроек, которые должны показываться всегда
+				if (!el.includes(key) || el.includes('text-collapse')) return false
+				// Пользовательские значения поля настройки
+				const rtn = retain?.[el]
+				// Значение поля настройки: заводская + пользовательская
+				const rtnFct = { ...list[el], ...rtn }
+				// Сравниваем активную настройку от ангара (истинную) с значением поля настройки заводская + пользовательская
+				// Значение кнопки
+				const hh = hidKeys.find((h) => el.includes(h?.[0]))
+				// Результат: скрытые настройки (mode=true)/активная настройка (mode=false)
+				return mode ? !isEqual(coef[key], rtnFct, hh) : isEqual(coef[key], rtnFct)
+			})
+			aKey.push(...r)
+		}
+
+		return aKey
 	},
 	// Установить: команды управления (пуск-стоп)
 	setO(out1, out2, type, vlvId) {
