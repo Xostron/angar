@@ -235,7 +235,7 @@ function isAllStarted(idB, idS, obj) {
 	const seTcnl = obj.value?.total?.[idS]?.tcnl?.min
 	// Датчик неисправен -> false ()
 	if (seTcnl === null) return false
-	console.log(123, tcnl, seTcnl)
+	// console.log(123, tcnl, seTcnl)
 	return data.watchdog.softFan?.[idS]?.allStarted && seTcnl < tcnl
 }
 

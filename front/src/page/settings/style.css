@@ -31,7 +31,7 @@
 	padding: 0 var(--fsz15);
 }
 .title {
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	gap: var(--fsz10);
 	font-size: var(--fsz28);
@@ -41,11 +41,12 @@
 	.line{
 		margin-top: 0;
 	}
+
 }
 .title > span {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	/* white-space: nowrap; */
+	/* overflow: hidden; */
+	/* text-overflow: ellipsis; */
 }
 .usual {
 	display: flex;

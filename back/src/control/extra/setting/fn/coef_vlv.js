@@ -34,7 +34,7 @@ function coefVlv(s, bld, obj) {
 		kIn = 1
 	}
 
-	// console.log(5555, 'Коэффициенты клапана', 'tout', tout, '<', s.outOn, { kOut, kIn })
+	console.log(5555, 'Коэффициенты клапана',  { kOut, kIn })
 	return { kOut, kIn }
 }
 
@@ -44,10 +44,10 @@ function outOn(bld, s, tout, tprd, hyst) {
 	const heap = store.heap[bld._id]
 	heap.coef ??= {}
 
-	let kOut = {k:s?.outDefault}
+	let kOut = {k:s?.oDefault}
 
 	// подключение к коэффициентам
-	if (tout < s.outOn || heap.coef.onOut) {
+	if (tout < s.oOn || heap.coef.onOut) {
 		heap.coef.onOut = true
 		// ***************************
 		if (tout < tprd - s?.out1?.temp || heap.coef.out1) {
@@ -56,7 +56,7 @@ function outOn(bld, s, tout, tprd, hyst) {
 		}
 		if (heap.coef.out1 && tout - hyst > tprd - s?.out1?.temp) {
 			heap.coef.out1 = false
-			kOut = {k:s?.outDefault}
+			kOut = {k:s?.oDefault}
 		}
 
 		// ***************************
@@ -80,9 +80,9 @@ function outOn(bld, s, tout, tprd, hyst) {
 		// ***************************
 	}
 	// откл от коэффициентов
-	if (heap.coef.onOut && tout > s.outOn + hyst) {
+	if (heap.coef.onOut && tout > s.oOn + hyst) {
 		heap.coef.onOut = false
-		kOut = {k:s?.outDefault}
+		kOut = {k:s?.oDefault}
 	}
 
 	return kOut

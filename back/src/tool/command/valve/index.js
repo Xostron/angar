@@ -75,8 +75,8 @@ function configCmdV(data, idS, s) {
 	const o = {
 		step: s.sys.step,
 		delay: s.sys.wait,
-		kIn: s.sys.cf.kIn,
-		kOut: s.sys.cf.kOut.k,
+		kIn: s.sys.out.kIn,
+		kOut: s.sys.out.kOut.k,
 		type,
 		sp,
 	}

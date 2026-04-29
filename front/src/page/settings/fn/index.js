@@ -18,9 +18,10 @@ function sty(data, sum) {
 	}
 
 	// Таблица
+	// const firstCell = `calc(100% - ${col} * var(--fsz180) - ${col} * var(--fsz10))`
 	const stl = {
 		gridArea: `2/2/2/${col + 3}`,
-		gridTemplateColumns: `1fr repeat(${col}, var(--fsz180))`,
+		gridTemplateColumns: `auto repeat(${col}, var(--fsz180))`,
 		gridTemplateRows: `repeat(${ll},var(--fsz65))`,
 	}
 
@@ -83,7 +84,7 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	data.title = { name: fct?.name, bName: 'Сохранить' }
 
 	// Строки с настройками
-	data.list = setting(fct?.list, code, buildingId, setSettingAu, prd, curPrd)
+	data.list = setting(fct?.list, code, buildingId, setSettingAu, prd === curPrd)
 
 	// Максимальное кол-во ячеек в строке (для правильной css отрисовки)
 	const max = Math.max(...data.list.map((el) => el?.length))
@@ -103,18 +104,12 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 }
 
 // Форматирование строк
-function setting(list, code, buildingId, setSettingAu, prd, curPrd) {
-	return !list ? [] : list.map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd))
-
-	return !list
-		? []
-		: list
-				.filter((el) => !skip.includes(el._code))
-				.map((el) => row(el, code, buildingId, setSettingAu, prd, curPrd, show, skip))
+function setting(list, code, idB, setSettingAu, showHid) {
+	return !list ? [] : list.map((el) => row(el, code, idB, setSettingAu, showHid))
 }
 
 // Формирование строки (1 ячейка оглавление, остальные ячейки в mark.list (функция column))
-function row(mark, code, buildingId, setSettingAu, prd, curPrd) {
+function row(mark, code, idB, setSettingAu, showHid) {
 	let result = []
 	// if (mark._code.includes('text-collapse')) console.log(11, mark.list)
 	// console.log(mark)
@@ -126,7 +121,7 @@ function row(mark, code, buildingId, setSettingAu, prd, curPrd) {
 	}
 
 	// Добавляем в ячейку - раму для кнопки скрыть/показать
-	if (mark._code.includes('text-collapse') && prd == curPrd) {
+	if (mark._code.includes('text-collapse') && showHid) {
 		// Добавление в строку кнопки "скрыть\показать неактивные настройки"
 		cell.nameHid = `${code}.${mark._code}`
 	}
@@ -136,15 +131,15 @@ function row(mark, code, buildingId, setSettingAu, prd, curPrd) {
 
 	result.push(cell)
 	// Форматируем остальные ячейки
-	column(code, result, mark, buildingId, setSettingAu)
+	column(code, result, mark, idB, setSettingAu)
 
 	return result
 }
 
 // Ячейки строки
-function column(code, result, mark, buildingId, setSettingAu) {
+function column(code, result, mark, idB, setSettingAu) {
 	mark.list.forEach((ml) => {
-		const obj = { build: buildingId, type: code, name: mark._code + '.' + ml._code }
+		const obj = { build: idB, type: code, name: mark._code + '.' + ml._code }
 		const setValue = (value) => setSettingAu({ value, ...obj })
 		switch (ml.type) {
 			case 'number':

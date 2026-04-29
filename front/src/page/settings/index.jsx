@@ -46,9 +46,6 @@ export default function Settings({}) {
 	const skip = useOutputStore((s) => s.getSkip(build, type))
 	// Заводские настройки - Рама
 	const fct = useEquipStore((s) => s.getFactory(skip, type, prd?.code, curPrd))
-
-	// console.log(33, fct)
-
 	// Окно подтверждения сохранения
 	const navigate = useNavigate()
 	// При переключении по навигации
@@ -92,8 +89,6 @@ export default function Settings({}) {
 		tune,
 		prd: prd?.code,
 		curPrd,
-		// show,
-		// skip,
 	}
 
 	let data = rack(o, setSettingAu, sendSettingAu, sendTune, onSwitch)

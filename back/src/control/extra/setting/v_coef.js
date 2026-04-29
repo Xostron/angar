@@ -1,16 +1,8 @@
 const { data: store } = require('@store')
 
-// Настройки в которых имеются "Коэффициент в зависимости от"
-const _STG = [
-	['sys', 'cf', 'kOut'],
-	['fan', 'pressure'],
-	['mois', 'abs'],
-	['mois', 'hout'],
-	['co2', 'wait'],
-]
 
 const ref = {
-	sys: [['cf', 'kOut']],
+	sys: [['out', 'kOut']],
 	fan: [['pressure']],
 	mois: [['abs'], ['hout']],
 	co2: [['wait']],

@@ -19,7 +19,7 @@ function flyingVlv(idB, idS, obj, vlvS, s, forceOff) {
 		// Позиция, %
 		posIn: vlvPercent(vIn?._id, obj.retain?.[idB]),
 		// Коэффициент выпускного клапана
-		k: s.sys?.cf?.kOut?.k ?? 1,
+		k: s.sys?.out?.kOut?.k ?? 1,
 		// Коэффициент пропорциональности (из админки)
 		kp: vIn?.kp ?? 1,
 	}

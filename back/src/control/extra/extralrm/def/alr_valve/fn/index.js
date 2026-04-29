@@ -74,7 +74,7 @@ const def = {
 	wait: {
 		open(bld, v, obj, s) {
 			// Время шага открытия
-			const total = s.sys.step * 1000 * s.sys.cf.kIn
+			const total = s.sys.step * 1000 * s.sys.out.kIn
 			// х% от шага клапана
 			const wait = total * ((s?.overVlv?.long ?? 10) / 100)
 			return { total, wait }

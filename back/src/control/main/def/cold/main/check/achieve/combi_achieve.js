@@ -19,7 +19,6 @@ const { remTime } = require('@tool/command/time')
  * 			false - не блокировать
  */
 function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
-	console.log(16)
 	// "Температура задания достигнута"
 	if (
 		accCold.tgtTprd !== null &&

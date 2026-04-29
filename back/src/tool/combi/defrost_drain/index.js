@@ -26,8 +26,10 @@ function defrostAll(idB, accCold, cooler, obj, s) {
 	if (accCold.drainAll) accCold.afterD = new Date()
 
 	// Время прошло -> сбрасываем время ожидания
-	if (accCold.timeAD) (accCold.afterD = null), (accCold.timeAD = null)
-	// Время ожидания после слива воды (конечная точка)(слив воды был закончен)
+	if (accCold.timeAD) ((accCold.afterD = null), (accCold.timeAD = null))
+	// Время ожидания после слива воды (конечная точка)(слив воды был закончен) -
+	// испаритель переходит в режим набора холода/охлаждения и здесь в течении "Время ожидания после слива воды afterDrain",
+	// блокируется проверка датчика температуры всасывания, чтобы испаритель повторно не ушел в оттайку
 	accCold.timeAD =
 		accCold.afterD &&
 		compareTime(accCold.afterD, s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain)
@@ -43,7 +45,7 @@ function consoleTable(accCold, s) {
 		'\n---------------------------------------defrostALL---------------------------------------',
 		`timeAD = compareTime(${accCold.afterD}, ${
 			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
-		})`
+		})`,
 	)
 	console.table(
 		[
@@ -52,7 +54,7 @@ function consoleTable(accCold, s) {
 				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
 			},
 		],
-		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)']
+		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)'],
 	)
 	console.table(
 		[
@@ -62,6 +64,10 @@ function consoleTable(accCold, s) {
 				'timeAD(Время_после_слива)': accCold.timeAD,
 			},
 		],
-		['drainAll(Слив_воды_окончен)', 'afterD(Ожидание_после_слива)', 'timeAD(Время_после_слива)']
+		[
+			'drainAll(Слив_воды_окончен)',
+			'afterD(Ожидание_после_слива)',
+			'timeAD(Время_после_слива)',
+		],
 	)
 }

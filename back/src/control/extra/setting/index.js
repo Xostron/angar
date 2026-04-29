@@ -2,14 +2,7 @@ const setting = require('./setting.js')
 const { data: store } = require('@store')
 const vCoef = require('./v_coef.js')
 
-// Настройки в которых имеются "Коэффициент в зависимости от"
-const _STG = [
-	['sys', 'cf', 'kOut'],
-	['fan', 'pressure'],
-	['mois', 'abs'],
-	['mois', 'hout'],
-	['co2', 'wait'],
-]
+
 /**
  * 1) Собираем данные для отображения в настройках клиента
  * "Коэффициент в зависимости от" - активный

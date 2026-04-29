@@ -9,8 +9,9 @@ function readTCP(host, port, opt) {
 			wrDebMdl(opt._id)
 			return resolve({ error: 'Не указан IP модуля', info: opt })
 		}
+		if (host === '192.168.21.135') console.log(11, host, opt?.name, opt?.slaveId)
 		const socket = new net.Socket()
-		const cl = new modbus.client.TCP(socket)
+		const cl = new modbus.client.TCP(socket, opt?.slaveId)
 		const optTCP = {
 			host,
 			port,
@@ -46,6 +47,8 @@ function readTCP(host, port, opt) {
 					// 	console.log('Чтение DO', opt.name, opt.ip)
 					// 	console.table(r)
 					// }
+					if (host === '192.168.21.135') console.log(12, opt.name, r, w)
+
 					resolve([r, w])
 				})
 				.catch((e) => {
