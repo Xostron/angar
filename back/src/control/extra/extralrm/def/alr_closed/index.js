@@ -25,23 +25,13 @@ function alrClosed(bld, sect, obj, s, se, m, automode, acc, data) {
 		mm[mode] == 'Авто'
 			? getSignal(sect?._id, obj, 'low') && !!isRunning.arr.length
 			: getSignal(sect?._id, obj, 'low')
-
-	// console.log(
-	// 	5500,
-	// 	sect.name,
-	// 	isRunning,
-	// 	'reason ANT = ',
-	// 	reason,
-	// 	'[',
-	// 	getSignal(sect?._id, obj, 'low'),
-	// 	!!isRunning.arr.length,
-	// 	']',
-	// )
+	const moduleId = getSig(sect?._id, obj, 'low')?.module?.id
+	// console.log(99, 'alrClosed-section', moduleId, reason)
 
 	if (check(bld, sect, s, automode, mode, acc)) return
 	reset(bld, sect, acc, store.debounce, mode)
 	set(bld, sect, reason, store.debounce, acc, watch, mode)
-	blink(bld, sect, acc)
+	blink(bld, sect, acc, moduleId)
 
 	// console.log(5504, sect.name, 'Авария = ', acc)
 

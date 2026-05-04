@@ -25,7 +25,7 @@ function calc(bld, prepare, resultFan) {
 
 	// Вычисление времени работы ВНО: Защита от отрицательного времени, сбрасываем очередь
 	const deltaTime = acc.byDur.queue[1].date - acc.byDur.queue[0].date
-	if (Number.isNaN(deltaTime) && deltaTime < _MIN_DELTA_TIME) {
+	if (isNaN(deltaTime)) {
 		acc.byDur.queue = []
 		clear(bld, prepare)
 		return

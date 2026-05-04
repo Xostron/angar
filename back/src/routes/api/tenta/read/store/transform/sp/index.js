@@ -7,7 +7,7 @@ function sp(bldId, type, automode) {
 
 	if (type === 'cold') {
 		const r = { tprd: acc.target }
-		console.log(9999, r)
+		// console.log(9999, r)
 		return r
 	}
 	const r = {
@@ -16,7 +16,7 @@ function sp(bldId, type, automode) {
 		p: store.calcSetting?.[bldId]?.fan?.pressure?.p,
 		hin: acc.setting?.mois?.humidity,
 	}
-	console.log(999, r)
+	// console.log(999, r)
 	return r
 }
 

@@ -1,0 +1,964 @@
+{
+  "state": [
+    {
+      "key": "temp",
+      "value": {
+        "value": "-9.9",
+        "state": "on"
+      },
+      "owner": "680750f9201c4a1f34dce635"
+    },
+    {
+      "key": "rh",
+      "value": {
+        "value": "85.0",
+        "state": "on"
+      },
+      "owner": "680750f9201c4a1f34dce635"
+    },
+    {
+      "key": "ah",
+      "value": {
+        "value": 1.8,
+        "state": "on"
+      },
+      "owner": "680750f9201c4a1f34dce635"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5eproduct",
+      "value": "onion",
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5emode",
+      "value": "cooling",
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5ecount",
+      "value": 0.006748275462962963,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5eon",
+      "value": true,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5erh",
+      "value": {
+        "value": "86.6",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5emin",
+      "value": {
+        "value": "21.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5emax",
+      "value": {
+        "value": "22.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5ecrash",
+      "value": 0,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5ealarm",
+      "value": [
+        {
+          "code": "tout",
+          "msg": "Температура улицы ниже допустимой (по продукту)"
+        },
+        {
+          "code": "hout",
+          "msg": "Влажность улицы выше допустимой"
+        },
+        {
+          "code": "co2wait",
+          "msg": "Удаление СО2. Ожидание 01:51:01"
+        },
+        {
+          "code": "ventWait",
+          "msg": "Внутренняя вентиляция. Ожидание 55:34"
+        },
+        {
+          "code": "long",
+          "msg": "Превышено время закрытия"
+        }
+      ],
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5enote",
+      "value": [
+        {
+          "order": 1,
+          "code": "finish",
+          "msg": "t продукта в задании 00ч 00м",
+          "title": "",
+          "buildingId": "6800b88d56c6a01c90ecbc5e",
+          "uid": "26e28000-4c9f-41fb-a1d2-74acf3b74435",
+          "date": "30.04.2026, 12:21:58"
+        },
+        {
+          "order": 2,
+          "code": "target",
+          "msg": " T зад. канала = 18.5°C. Т зад. прод. = 21.0°C",
+          "title": "",
+          "buildingId": "6800b88d56c6a01c90ecbc5e",
+          "uid": "b321b3fd-8779-4311-8cd5-bc822b14a7a5",
+          "date": "30.04.2026, 12:21:52"
+        }
+      ],
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5efan",
+      "value": "stop",
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "buildings",
+      "value": [
+        "6800b88d56c6a01c90ecbc5e"
+      ],
+      "owner": "680750f9201c4a1f34dce635"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5ebanner",
+      "value": [],
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5epush",
+      "value": [
+        {
+          "code": "sensor",
+          "typeSignal": "sensor",
+          "msg": "Неисправность датчика",
+          "flt": [
+            true
+          ],
+          "title": "Секция 1. CO2:",
+          "buildingId": "6800b88d56c6a01c90ecbc5e",
+          "uid": "68ce3894-fc20-4ca9-85db-55023ff1c292",
+          "date": "14.04.2026, 15:32:24"
+        },
+        {
+          "count": false,
+          "code": "alrValve",
+          "typeSignal": "critical",
+          "msg": "Превышено время закрытия",
+          "flt": [
+            true
+          ],
+          "title": "Секция 1. Приточный клапан:",
+          "buildingId": "6800b88d56c6a01c90ecbc5e",
+          "uid": "42eeefe0-de70-4fd0-9bcc-4394d6ecaa4c",
+          "date": "30.04.2026, 10:57:41"
+        },
+        {
+          "count": false,
+          "code": "alrValve",
+          "typeSignal": "critical",
+          "msg": "Превышено время закрытия",
+          "flt": [
+            true
+          ],
+          "title": "Секция 2. Приточный клапан:",
+          "buildingId": "6800b88d56c6a01c90ecbc5e",
+          "uid": "6506963e-46f8-4209-bdc2-7363d2d931ea",
+          "date": "30.04.2026, 10:57:55"
+        }
+      ],
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5eaccel",
+      "value": "run",
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5eahb",
+      "value": {
+        "value": 15.8,
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5etempb",
+      "value": {
+        "value": "22.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5erhb",
+      "value": {
+        "value": "86.6",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5epoint",
+      "value": {
+        "value": -11.9
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5etout",
+      "value": {
+        "value": "-9.9",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5ehout",
+      "value": {
+        "value": "85.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5eah",
+      "value": {
+        "value": 1.8,
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5ewetting",
+      "value": false,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bbc056c6a01c90ecbc84mode",
+      "value": true,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bbc056c6a01c90ecbc84min",
+      "value": {
+        "value": "21.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bbc056c6a01c90ecbc84max",
+      "value": {
+        "value": "22.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bbc056c6a01c90ecbc84fan",
+      "value": "stop",
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bbc056c6a01c90ecbc84heating",
+      "value": true,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bcdd56c6a01c90ecbc90",
+      "value": {
+        "val": 0,
+        "state": "cls"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bd1056c6a01c90ecbc94",
+      "value": {
+        "val": 0,
+        "state": "cls"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bdcc05912407c0b68bd3mode",
+      "value": false,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bdcc05912407c0b68bd3min",
+      "value": {
+        "value": "20.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bdcc05912407c0b68bd3max",
+      "value": {
+        "value": "21.0",
+        "state": "on"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bdcc05912407c0b68bd3fan",
+      "value": "stop",
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bdcc05912407c0b68bd3heating",
+      "value": true,
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800be9d05912407c0b68bdf",
+      "value": {
+        "val": 0,
+        "state": "cls"
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800b88d56c6a01c90ecbc5esp",
+      "value": {
+        "tprd": 21,
+        "tcnl": 18.5,
+        "p": 150,
+        "hin": 90
+      },
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "alarm",
+      "value": [
+        {
+          "code": "tout",
+          "msg": "Температура улицы ниже допустимой (по продукту)"
+        },
+        {
+          "code": "hout",
+          "msg": "Влажность улицы выше допустимой"
+        }
+      ],
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "sections",
+      "value": [
+        "6800bbc056c6a01c90ecbc84"
+      ],
+      "owner": "6800b88d56c6a01c90ecbc5e"
+    },
+    {
+      "key": "6800bc1856c6a01c90ecbc87",
+      "value": {
+        "value": 21,
+        "state": "on"
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bc2f56c6a01c90ecbc88",
+      "value": {
+        "value": 22,
+        "state": "on"
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bbd556c6a01c90ecbc85",
+      "value": {
+        "value": 24.1,
+        "state": "on"
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bc5456c6a01c90ecbc89",
+      "value": {
+        "value": 0,
+        "state": "on"
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bcaa56c6a01c90ecbc8e",
+      "value": {
+        "value": "stop",
+        "ao": 20
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bc8d56c6a01c90ecbc8c",
+      "value": "stop",
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bc6a56c6a01c90ecbc8a",
+      "value": "stop",
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bcdd56c6a01c90ecbc90",
+      "value": {
+        "val": 0,
+        "state": "cls"
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800bd1056c6a01c90ecbc94",
+      "value": {
+        "val": 0,
+        "state": "cls"
+      },
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "valve",
+      "value": [
+        "6800bcdd56c6a01c90ecbc90",
+        "6800bd1056c6a01c90ecbc94"
+      ],
+      "owner": "6800bbc056c6a01c90ecbc84"
+    },
+    {
+      "key": "6800be1105912407c0b68bd6",
+      "value": {
+        "value": 20,
+        "state": "on"
+      },
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800be2205912407c0b68bd7",
+      "value": {
+        "value": 21,
+        "state": "on"
+      },
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800bde605912407c0b68bd4",
+      "value": {
+        "value": 18,
+        "state": "on"
+      },
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800bdfb05912407c0b68bd5",
+      "value": {
+        "value": 19,
+        "state": "on"
+      },
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800be3505912407c0b68bd8",
+      "value": {
+        "value": 0,
+        "state": "on"
+      },
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800be4a05912407c0b68bd9",
+      "value": "stop",
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800be7305912407c0b68bdb",
+      "value": "stop",
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800be8705912407c0b68bdd",
+      "value": "stop",
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "6800be9d05912407c0b68bdf",
+      "value": {
+        "val": 0,
+        "state": "cls"
+      },
+      "owner": "6800bdcc05912407c0b68bd3"
+    },
+    {
+      "key": "valve",
+      "value": [
+        "6800be9d05912407c0b68bdf"
+      ],
+      "owner": "6800bdcc05912407c0b68bd3"
+    }
+  ],
+  "retain": {
+    "automode": "cooling",
+    "product": {
+      "_id": "66d0886536e7e1b1ff9e0788",
+      "name": "Лук",
+      "code": "onion"
+    },
+    "start": true,
+    "valvePosition": {
+      "6800bcdd56c6a01c90ecbc90": 0,
+      "6800bd1056c6a01c90ecbc94": 0,
+      "6800be9d05912407c0b68bdf": 0
+    },
+    "cooling": {
+      "tprdMin": 21,
+      "finish": "2026-04-30T09:21:58.278Z"
+    },
+    "datestop": null,
+    "datestart": "2026-03-13T05:54:46.405Z",
+    "drying": {
+      "acc": 0.006748275462962963,
+      "tprdMin": null,
+      "date": null,
+      "count": null
+    },
+    "smoking": {},
+    "mode": {
+      "6800bdcc05912407c0b68bd3": false,
+      "6800bbc056c6a01c90ecbc84": true
+    },
+    "fan": {
+      "6800bbc056c6a01c90ecbc84": {
+        "6800bc8d56c6a01c90ecbc8c": false,
+        "6800bcaa56c6a01c90ecbc8e": false,
+        "6800bc6a56c6a01c90ecbc8a": false
+      },
+      "6800bdcc05912407c0b68bd3": {
+        "6800be4a05912407c0b68bd9": false
+      }
+    },
+    "setting": {
+      "fan": {
+        "onion": {
+          "next": {
+            "next": "5"
+          },
+          "wait": {
+            "wait": "5"
+          },
+          "step": {
+            "step": "30"
+          }
+        }
+      },
+      "cooling": {
+        "onion": {
+          "target": {
+            "target": "20"
+          },
+          "decrease": {
+            "decrease": "1"
+          },
+          "differenceMin": {
+            "differenceMin": "0"
+          },
+          "differenceMax": {
+            "differenceMax": "25"
+          },
+          "differenceValue": {
+            "differenceValue": "2.5"
+          },
+          "minOut": {
+            "minOut": "-15"
+          },
+          "minChannel": {
+            "minChannel": "1.8"
+          },
+          "hysteresisIn": {
+            "hysteresisIn": "0.1"
+          },
+          "hysteresisOut": {
+            "hysteresisOut": "0.5"
+          }
+        }
+      },
+      "wetting": {
+        "onion": {
+          "mode": {
+            "mode": "sensor"
+          },
+          "stop": {
+            "stop": "00:01"
+          },
+          "work": {
+            "work": "00:01"
+          },
+          "sp": {
+            "sp": "70"
+          }
+        }
+      },
+      "coolerCombi": {
+        "onion": {
+          "water": {
+            "water": "00:01"
+          },
+          "defrostWork": {
+            "defrostWork": "00:30"
+          },
+          "stop": {
+            "stop": "00:00"
+          },
+          "max": {
+            "max": "1"
+          },
+          "work": {
+            "work": "00:01"
+          },
+          "wait": {
+            "wait": "00:01"
+          },
+          "on": {
+            "on": false
+          },
+          "afterDrain": {
+            "afterDrain": "00:01"
+          },
+          "defrostOn": {
+            "defrostOn": "-15"
+          },
+          "allStarted": {
+            "allStarted": "5"
+          }
+        }
+      },
+      "mois": {
+        "onion": {
+          "humidity": {
+            "humidity": "90"
+          },
+          "outMax": {
+            "outMax": "90"
+          },
+          "abs3": {
+            "h": "0.1"
+          },
+          "abs2": {
+            "h": "0.1"
+          },
+          "abs1": {
+            "h": "0.1"
+          },
+          "differenceMin2": {
+            "differenceMin2": "0.1"
+          },
+          "hysteresisRel": {
+            "hysteresisRel": "1"
+          },
+          "max": {
+            "max": "20"
+          }
+        }
+      },
+      "co2": {
+        "mode": {
+          "mode": "time"
+        },
+        "onion": {
+          "add": {
+            "add": "100"
+          },
+          "mode": {
+            "mode": "on"
+          }
+        },
+        "work": {
+          "work": "00:01"
+        },
+        "wait3": {
+          "w": "03:01"
+        },
+        "max": {
+          "max": "1"
+        },
+        "wait2": {
+          "w": "02:01"
+        },
+        "wait1": {
+          "w": "01:01"
+        }
+      },
+      "vent": {
+        "onion": {
+          "work": {
+            "work": "00:03"
+          },
+          "mode": {
+            "mode": "auto"
+          },
+          "max": {
+            "max": "2"
+          },
+          "wait": {
+            "wait": "01:01"
+          },
+          "add": {
+            "add": "10"
+          },
+          "max_add": {
+            "max_add": "00:02"
+          }
+        }
+      },
+      "antibliz": {
+        "count": {
+          "count": "3"
+        }
+      },
+      "sys": {
+        "onion": {
+          "debCount": {
+            "debCount": "5"
+          },
+          "debDO": {
+            "debDO": "10"
+          },
+          "debWait": {
+            "debWait": "00:30"
+          },
+          "acTcnl": {
+            "acTcnl": "15"
+          },
+          "out2": {
+            "temp": "8",
+            "k": "0.3"
+          },
+          "out1": {
+            "temp": "5",
+            "k": "0.7"
+          },
+          "out3": {
+            "temp": "10",
+            "k": "0.2"
+          },
+          "step": {
+            "step": "3"
+          },
+          "debdi": {
+            "debdi": "1"
+          },
+          "wait": {
+            "wait": "10"
+          },
+          "rcount": {
+            "rcount": "10"
+          },
+          "rwatch": {
+            "rwatch": "00:01"
+          },
+          "acWatch": {
+            "acWatch": "00:01"
+          }
+        }
+      },
+      "smoking": {
+        "on": false,
+        "work": {
+          "work": "0.01"
+        },
+        "wait": {
+          "wait": "0.01"
+        }
+      },
+      "idle": {
+        "co2": {
+          "begin": "00:00",
+          "end": "00:00"
+        },
+        "wetting": {
+          "begin": "00:00"
+        },
+        "vent": {
+          "begin": "00:00",
+          "end": "00:00"
+        }
+      },
+      "cure": {
+        "onion": {
+          "minOut": {
+            "minOut": "-15"
+          }
+        }
+      },
+      "overVlv": {
+        "time": {
+          "time": "01:01"
+        },
+        "wait": {
+          "wait": "00:01"
+        }
+      },
+      "drying": {
+        "onion": {
+          "channelMin": {
+            "channelMin": "11"
+          },
+          "humidityMax": {
+            "humidityMax": "85"
+          },
+          "channelMax": {
+            "channelMax": "15"
+          },
+          "day": {
+            "day": "4"
+          }
+        }
+      },
+      "ozon": {
+        "work": {
+          "work": "0.01"
+        },
+        "wait": {
+          "wait": "0.02"
+        },
+        "max": {
+          "max": "2"
+        },
+        "on": false
+      },
+      "accel": {
+        "mode": {
+          "mode": "time"
+        },
+        "wait": {
+          "wait": "00:01"
+        },
+        "work": {
+          "work": "00:01"
+        }
+      },
+      "heat": {
+        "onion": {
+          "minChannel": {
+            "minChannel": "2"
+          },
+          "outMax": {
+            "outMax": "87"
+          },
+          "point": {
+            "point": "-5"
+          },
+          "differenceMax": {
+            "differenceMax": "3.8"
+          },
+          "hysteresisP": {
+            "hysteresisP": "0.3"
+          },
+          "differenceValue": {
+            "differenceValue": "3.5"
+          },
+          "differenceMin": {
+            "differenceMin": "10"
+          }
+        }
+      },
+      "defrost": {
+        "onion": {
+          "minChannel": {
+            "minChannel": "2"
+          },
+          "differenceMax": {
+            "differenceMax": "0"
+          },
+          "differenceMin": {
+            "differenceMin": "15"
+          },
+          "point": {
+            "point": "1"
+          },
+          "outMax": {
+            "outMax": "90"
+          },
+          "hysteresisIn": {
+            "hysteresisIn": "0.2"
+          }
+        }
+      }
+    },
+    "update": {
+      "setting": {
+        "sys": {
+          "onion": "2026-03-19T07:16:34.646Z"
+        },
+        "fan": {
+          "onion": "2025-11-17T13:16:40.457Z"
+        },
+        "cooling": {
+          "onion": "2026-04-10T11:54:56.932Z"
+        },
+        "overVlv": "2026-03-04T09:43:57.043Z",
+        "drying": {
+          "onion": "2026-04-14T12:34:13.098Z"
+        },
+        "vent": {
+          "onion": "2026-03-20T08:38:53.683Z"
+        },
+        "smoking": "2026-01-14T06:23:40.828Z",
+        "co2": "2026-03-20T08:38:35.600Z",
+        "idle": "2026-03-27T14:28:20.656Z",
+        "mois": {
+          "onion": "2026-02-26T07:25:53.447Z"
+        },
+        "ozon": "2026-01-14T06:21:28.941Z",
+        "wetting": {
+          "onion": "2026-02-26T13:25:19.143Z"
+        },
+        "antibliz": "2026-02-26T09:49:00.249Z",
+        "heat": {
+          "onion": "2026-03-31T07:10:37.855Z"
+        },
+        "defrost": {
+          "onion": "2026-04-10T12:50:03.732Z"
+        }
+      }
+    },
+    "6800b96a56c6a01c90ecbc68": {
+      "on": true
+    },
+    "valve": {
+      "6800bcdd56c6a01c90ecbc90": 15000,
+      "6800bd1056c6a01c90ecbc94": 25000,
+      "6800be9d05912407c0b68bdf": 25000
+    },
+    "6800be1105912407c0b68bd6": {
+      "on": true
+    },
+    "6800be2205912407c0b68bd7": {
+      "on": true
+    },
+    "ozon": {
+      "work": null,
+      "wait": null
+    },
+    "tweather": {
+      "on": true
+    },
+    "defrost": {
+      "tprdMin": 20
+    }
+  }
+}

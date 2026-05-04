@@ -32,7 +32,6 @@
 const { stateEq } = require('@tool/fan');
 const { arrCtrlDO } = require('@tool/command/module_output');
 const { delExtra, wrExtra } = require('@tool/message/extra');
-// const { wrExtralrm, delExtralrm } = require('@tool/message/extralrm');
 const { msg } = require('@tool/message');
 const beep = require('./check/beep');
 const check = require('./check');

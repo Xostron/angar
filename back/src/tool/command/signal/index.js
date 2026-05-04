@@ -27,7 +27,7 @@ function getSignal(ownerId, obj, type) {
 	return obj.value?.[t?._id] ?? null
 }
 
-// Получить сигнал (авария двигателя) вентилятора
+// Получить значение сигнал (авария двигателя) вентилятора
 function getSignalFan(fanId, obj) {
 	return obj.value?.[fanId]?.qf
 }
@@ -130,6 +130,17 @@ function getSumSigBld(idB, obj, type, alr = true) {
 	return alr ? arr.some((el) => obj.value?.[el._id]) : arr.every((el) => obj.value?.[el._id])
 }
 
+/**
+ * Найти все сигналы типа type и вернуть массив элементов рамы
+ * @param {*} idB
+ * @param {*} obj
+ * @param {*} type
+ * @returns
+ */
+function getSigBld(idB, obj, type) {
+	const arr = obj.data?.signal?.filter((el) => el.owner.id === idB && el.type == type) ?? null
+	return arr
+}
 module.exports = {
 	getSig,
 	getSignal,
@@ -140,4 +151,5 @@ module.exports = {
 	sigDfl,
 	getSumSig,
 	getSumSigBld,
+	getSigBld
 }

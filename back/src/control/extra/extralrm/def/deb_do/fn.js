@@ -38,7 +38,7 @@ function set(bld, arr, obj, accDeb, acc, watch, count) {
 		if (delta > watch) return
 
 		// Время меньше порога -> установка аварии
-		wrExtralrm(bld._id, 'debdo', el._id, msgBB(bld, 102, ownerName, el.name))
+		wrExtralrm(bld._id, 'debdo', el._id, msgBB(bld, 102, ownerName, el.name), [el?.module?.id])
 		acc._alarm = true
 		acc[el._id].alarm = true
 		acc.flag = true

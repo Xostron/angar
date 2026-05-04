@@ -1,5 +1,5 @@
 const { msgB } = require('@tool/message')
-const { getSumSigBld } = require('@tool/command/signal')
+const { getSumSigBld, getSigBld } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Местное управление (сигнал склада)
@@ -7,6 +7,7 @@ function localB(bld, section, obj, s, se, m, automode, acc, data) {
 	// Сигнал по складу и секциям
 	// Сигнал только по складу
 	const sig = getSumSigBld(bld._id, obj, 'local', false)
+	const moduleId = getSigBld(bld._id, obj, 'local')?.map((el) => el?.module?.id)
 	// Сброс
 	if (sig === true || sig === null) {
 		delExtralrm(bld._id, null, 'local')
@@ -14,7 +15,7 @@ function localB(bld, section, obj, s, se, m, automode, acc, data) {
 	}
 	// Установка
 	if (sig === false && !acc._alarm) {
-		wrExtralrm(bld._id, null, 'local', msgB(bld, 27))
+		wrExtralrm(bld._id, null, 'local', msgB(bld, 27), moduleId)
 		acc._alarm = true
 	}
 	// console.log(9900, 'Переключатель на щите склада', bld._id, sig)

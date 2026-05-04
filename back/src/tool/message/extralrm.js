@@ -16,14 +16,14 @@ function isExtralrm(idB, idS, code) {
  * @param {*} idS ИД секции
  * @param {*} code Код аварии
  * @param {*} o Объект аварийного сообщения
- * @param {*} mod Модификация (Авария склада - в моб. приложении склад будет
- * окрашиваться в красный) true - o.count=true, false|null - o.count=false
+ * @param {*} moduleId какому модулю принадлежит сигнал
  * @returns
  */
-function wrExtralrm(idB, idS, code, o, mod) {
+function wrExtralrm(idB, idS, code, o, moduleId) {
 	store.alarm.extralrm ??= {}
 	store.alarm.extralrm[idB] ??= {}
-	o = fnMod(o, mod)
+	// o = fnMod(o, mod)
+	o.moduleId = moduleId
 	if (!idS) {
 		!isExtralrm(idB, idS, code)
 			? (store.alarm.extralrm[idB][code] = o)
@@ -31,6 +31,7 @@ function wrExtralrm(idB, idS, code, o, mod) {
 					...store.alarm.extralrm[idB][code],
 					msg: o.msg,
 					count: o.count,
+					moduleId: o.moduleId,
 				})
 		return
 	}
@@ -41,6 +42,7 @@ function wrExtralrm(idB, idS, code, o, mod) {
 				...store.alarm.extralrm[idB][idS][code],
 				msg: o.msg,
 				count: o.count,
+				moduleId: o.moduleId,
 			})
 }
 // Удалить из extralrm (доп. аварии)
@@ -52,25 +54,25 @@ function delExtralrm(idB, idS, code) {
 	delete store.alarm?.extralrm?.[idB]?.[idS]?.[code]
 }
 
-/**
- * Модификация сообщения: пометка count (что сообщение является аварией склада)
- * Пометка необходима для счетчика аварий и изменения цвета карточки склада в аварии
- * @param {*} o Объект аварийного сообщения
- * @param {*} mod Модификация (Авария склада - в моб. приложении склад будет
- * окрашиваться в красный) true - o.count=true, false|null - o.count=false
- * @returns Объект аварийного сообщения
- */
-function fnMod(o, mod) {
-	if (mod === undefined) return o
-	if (mod === true) {
-		o.count = true
-		return o
-	}
-	if ([false, null].includes(mod)) {
-		o.count = false
-		return o
-	}
-}
+// /**
+//  * Модификация сообщения: пометка count (что сообщение является аварией склада)
+//  * Пометка необходима для счетчика аварий и изменения цвета карточки склада в аварии
+//  * @param {*} o Объект аварийного сообщения
+//  * @param {*} mod Модификация (Авария склада - в моб. приложении склад будет
+//  * окрашиваться в красный) true - o.count=true, false|null - o.count=false
+//  * @returns Объект аварийного сообщения
+//  */
+// function fnMod(o, mod) {
+// 	if (mod === undefined) return o
+// 	if (mod === true) {
+// 		o.count = true
+// 		return o
+// 	}
+// 	if ([false, null].includes(mod)) {
+// 		o.count = false
+// 		return o
+// 	}
+// }
 
 /**
  *  Аварии возникающие в секции, но останавливающие работу всего склада

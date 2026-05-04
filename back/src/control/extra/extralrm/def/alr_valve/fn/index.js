@@ -134,7 +134,8 @@ const def = {
 				bld._id,
 				idS,
 				'alrValve',
-				msgV(bld, section, typeV, type === 'open' ? 30 : 31)
+				msgV(bld, section, typeV, type === 'open' ? 30 : 31),
+				[v?.module?.on?.id, v?.module?.off?.id],
 			)
 			// Фильтрация: только для клапанов секций в авто
 			if (!prepare.onIdsS.includes(idS)) return

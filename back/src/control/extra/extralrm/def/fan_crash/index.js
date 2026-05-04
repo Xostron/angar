@@ -9,6 +9,9 @@ function fanCrash(bld, sect, obj, s, se, m, automode, acc, data) {
 	for (const f of m.fanSAll) {
 		acc[f._id] ??= {}
 		const sig = getSignalFan(f?._id, obj)
+		const moduleId = obj?.data?.signal
+			?.filter((el) => el.type === 'fan' && el?.owner?.id === f._id)
+			?.map((el) => el?.module?.id)
 		// Сброс
 		if (!sig) {
 			delExtralrm(bld._id, sect._id, 'fanCrash' + f._id)
@@ -16,7 +19,9 @@ function fanCrash(bld, sect, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[f._id].alarm) {
-			wrExtralrm(bld._id, sect._id, 'fanCrash' + f._id, msgF(bld, sect, f.name, 35))
+			wrExtralrm(bld._id, sect._id, 'fanCrash' + f._id, msgF(bld, sect, f.name, 35), [
+				moduleId,
+			])
 			acc[f._id]._alarm = true
 		}
 		sumAlarm.push(acc?.[f._id]?._alarm)

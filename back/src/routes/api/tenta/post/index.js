@@ -15,7 +15,7 @@ function write() {
 			.then((_) => feedback(obj))
 			.then((r) => {
 				console.log('Команда от Мобилки выполнена')
-				console.log('Ответ:', r)
+				console.log('Ответ:', JSON.stringify(r ?? {}, null, '  '))
 				res.status(200).json(r)
 			})
 			.catch((error) => {
@@ -37,7 +37,7 @@ async function feedback(obj) {
 	let repeat = 0
 
 	// Ждем завершение текщего основного цикла программы
-	while (cur === store.cycleId) {
+	while (cur + 1 >= store.cycleId) {
 		// Ждем 1 сек
 		const done = await delay(1000)
 		repeat += done ? 1 : 0
@@ -49,7 +49,7 @@ async function feedback(obj) {
 		// console.log(1, 'Ждем конца цикла', cur, store.cycleId, cur === store.cycleId, repeat)
 	}
 
-	// console.log(2, 'Подготовка ответа')
+	console.log(2, 'Подготовка ответа', cur, store.cycleId)
 	// Дождались изменения: state ангара (карточки складов и т.д.), retain склада
 	const { result = [], present = [] } = await prepare('init')
 	return {

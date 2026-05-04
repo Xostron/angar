@@ -56,8 +56,7 @@ function set(bld, sect, reason, accDeb, acc, watch) {
 	if (!accDeb?.alrClosed?.[ownerId]) accDeb.alrClosed[ownerId] = new Date()
 
 	// Ждем по таймеру
-	if (!compareTime(accDeb.alrClosed[ownerId], watch))
-		return //console.log(5503, 'Ждем', remTime(accDeb.alrClosed[ownerId], watch))
+	if (!compareTime(accDeb.alrClosed[ownerId], watch)) return //console.log(5503, 'Ждем', remTime(accDeb.alrClosed[ownerId], watch))
 
 	// Время прошло -> устанавливаем аварию низкой температуры канала
 	// Авария ручной сброс
@@ -77,11 +76,11 @@ function reset(bld, sect, acc, accDeb, mode) {
 }
 
 // Сообщение
-function blink(bld, sect, acc) {
+function blink(bld, sect, acc, moduleId) {
 	// Если уже в аварии, то выходи
 	if (acc?._alarm) {
 		const o = sect?._id ? msg(bld, sect, 26, '(Ручной сброс)') : msgB(bld, 26, '(Ручной сброс)')
-		wrExtralrm(bld._id, sect?._id, 'alrClosed', o)
+		wrExtralrm(bld._id, sect?._id, 'alrClosed', o, [moduleId])
 		return
 	}
 	// Не в аварии - создаем-удаляем сообщение

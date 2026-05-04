@@ -1,5 +1,5 @@
 const { msgV } = require('@tool/message')
-const { getSignal } = require('@tool/command/signal')
+const { getSignal, getSig } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { getMode } = require('@tool/retain/get')
 
@@ -10,7 +10,7 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 		acc[v._id] ??= {}
 		// Значение сигнала: авария двигателя
 		const sig = getSignal(v?._id, obj, 'vlvCrash')
-
+		const moduleId = getSig(v?._id, obj, 'vlvCrash')?.module?.id
 		const typeV = v.type === 'in' ? 'Приточный' : 'Выпускной'
 
 		// Сброс
@@ -20,7 +20,9 @@ function vlvCrash(building, section, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[v._id]._alarm) {
-			wrExtralrm(building._id, 'vlvCrash', v._id, msgV(building, section, typeV, 34))
+			wrExtralrm(building._id, 'vlvCrash', v._id, msgV(building, section, typeV, 34), [
+				moduleId,
+			])
 			acc[v._id]._alarm = true
 		}
 	}

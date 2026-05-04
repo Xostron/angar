@@ -33,7 +33,8 @@ function fCoolerCrash(building, section, obj, s, se, m, automode, acc, data) {
 				building._id,
 				'fCoolerCrash',
 				h._id,
-				msgClr(building, obj.data.cooler, el.owner.id, 105)
+				msgClr(building, obj.data.cooler, el.owner.id, 105),
+				[h?.module?.id],
 			)
 	}
 }

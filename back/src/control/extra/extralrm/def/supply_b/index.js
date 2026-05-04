@@ -1,5 +1,5 @@
 const { msgB, msgBB, msg } = require('@tool/message')
-const { getSumSigBld, getSignalList } = require('@tool/command/signal')
+const { getSumSigBld, getSignalList, getSigBld } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm, isExtralrm } = require('@tool/message/extralrm')
 const { data: store } = require('@store')
 const { getS } = require('@tool/get/building')
@@ -39,7 +39,7 @@ module.exports = supplyB
 function message(el, bld, section) {
 	switch (el.id) {
 		case 'bld':
-			wrExtralrm(bld._id, null, 'supply', { date: new Date(), ...msgB(bld, 38) })
+			wrExtralrm(bld._id, null, 'supply', { date: new Date(), ...msgB(bld, 38) }, el.moduleId)
 			break
 		case 'battery':
 			wrExtralrm(bld._id, null, 'battery', msgBB(bld, 106))
@@ -47,10 +47,16 @@ function message(el, bld, section) {
 		default:
 			// секции
 			const sect = section.find((sect) => sect._id == el.id)
-			wrExtralrm(bld._id, el.id, 'supply', {
-				date: new Date(),
-				...msg(bld, sect, 38),
-			})
+			wrExtralrm(
+				bld._id,
+				el.id,
+				'supply',
+				{
+					date: new Date(),
+					...msg(bld, sect, 38),
+				},
+				el.moduleId,
+			)
 			break
 	}
 }
@@ -77,9 +83,14 @@ function getReason(bld, obj) {
 		...getSignalList(bld?._id, obj, 'supply').map((el) => ({
 			id: el.owner.id,
 			v: obj.value?.[el?._id] ?? null,
+			moduleId: [el?.module?.id],
 		})),
 		{ id: 'battery', v: store.battery },
-		{ id: 'bld', v: getSumSigBld(bld._id, obj, 'supply') },
+		{
+			id: 'bld',
+			v: getSumSigBld(bld._id, obj, 'supply'),
+			moduleId: getSigBld(bld._id, obj, 'supply')?.map((el) => el?.module?.id),
+		},
 	]
 	return reason
 }

@@ -1,11 +1,11 @@
 const { msgB } = require('@tool/message')
-const { getSumSigBld } = require('@tool/command/signal')
+const { getSumSigBld, getSigBld } = require('@tool/command/signal')
 const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Кнопка выкючения склада (все выкл и закрываются клапаны)
 function bldOff(bld, section, obj, s, se, m, automode, acc, data) {
 	const sig = getSumSigBld(bld._id, obj, 'bldOff', true)
-
+	// const moduleId = getSigBld(bld._id, obj, 'bldOff')?.map((el) => el?.module?.id)
 	// Сброс
 	if (sig === false || sig === null) {
 		delExtralrm(bld._id, null, 'bldOff')

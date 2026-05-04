@@ -26,18 +26,10 @@ function beep(wettings, value, bld, sect) {
 
 		if (a.length) {
 			const s = `${el.device.name} ${el.order}: ${a.join(', ')}`;
-			// console.log(
-			// 	'wrExtralrm',
-			// 	bldId,
-			// 	secId,
-			// 	el._id,
-			// 	msg(bld, sect, 160, s)
-			// );
 			wrExtralrm(bldId, 'wetting', el._id, msg(bld, sect, 160, s));
 			// выключаем увлажнитель
 			arrCtrlDO(bldId, [el], 'off');
 		} else {
-			// console.log('\n\n\n\ndelExtralrm', bldId, sect, el._i);
 			delExtralrm(bldId,  'wetting', el._id);
 		}
 

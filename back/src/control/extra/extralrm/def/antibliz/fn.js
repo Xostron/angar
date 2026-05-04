@@ -9,7 +9,7 @@ function set(bld, sect, obj, vlvS, acc, s) {
 	// Уже в аварии - выходим из итерации
 	if (acc._alarm) return
 	// Размер очереди для фиксации состояний клапана
-	const count = ((s?.antibliz?.count ?? 3)) * 2
+	const count = (s?.antibliz?.count ?? 3) * 2
 	const watch = s?.antibliz?.time ?? 30 * 60 * 1000
 	// ['cls', 'other','cls', 'other','cls]
 	acc.queue ??= []
@@ -34,7 +34,10 @@ function set(bld, sect, obj, vlvS, acc, s) {
 	// Время между последними состояниями больше  -> Авария false
 	if (delta >= watch) return
 	//Время меньше порога -> Авария true
-	wrExtralrm(bld._id, sect._id, 'antibliz', msg(bld, sect, 13))
+	const moduleId = obj?.data?.signal
+		?.filter((el) => el.type === 'off' && el.owner.id === vlvIn._id)
+		?.map((el) => el?.module?.id)
+	wrExtralrm(bld._id, sect._id, 'antibliz', msg(bld, sect, 13), [moduleId])
 	acc._alarm = true
 }
 
