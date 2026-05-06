@@ -73,7 +73,6 @@ function msgBeep(building, beep, name = '', alarm = true) {
 	o.buildingId = building._id
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
-	// o.moduleId =
 	return o
 }
 

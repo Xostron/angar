@@ -1,4 +1,4 @@
-const { getSignal } = require('@tool/command/signal')
+const { getSignal, getSig } = require('@tool/command/signal')
 const { reset, set, blink, check } = require('../alr_closed/fn')
 const mm = require('@dict/def/mode_section')
 const { data: store } = require('@store')
@@ -9,9 +9,7 @@ const { stateSum } = require('@tool/fan')
 function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	const modeData = obj.retain?.[bld._id]?.mode ?? {}
 	// Режим секции: хотя бы одна в авто
-	const modeA = Object.values(modeData).some(
-		(el) => el === true || el === undefined,
-	)
+	const modeA = Object.values(modeData).some((el) => el === true || el === undefined)
 	// Режим секции: хотя бы одна в ручном
 	const modeM = Object.values(modeData).some((el) => el === false)
 	let mode
@@ -30,6 +28,7 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 		mode === true
 			? getSignal(bld?._id, obj, 'low') && !!isRunning.arr.length
 			: getSignal(bld?._id, obj, 'low')
+	const moduleId = getSig(sect?._id, obj, 'low')?.module?.id
 	// console.log(
 	// 	7700,
 	// 	isRunning,
@@ -44,7 +43,7 @@ function alrClosedB(bld, sect, obj, s, se, m, automode, acc, data) {
 	if (check(bld, sect, s, automode, mode, acc)) return
 	reset(bld, null, acc, store.debounce, mode)
 	set(bld, null, reason, store.debounce, acc, watch)
-	blink(bld, null, acc)
+	blink(bld, null, acc, moduleId)
 	// console.log(7704, 'Склад, Авария =', acc._alarm)
 	return acc._alarm
 }

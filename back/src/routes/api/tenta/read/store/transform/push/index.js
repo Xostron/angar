@@ -23,7 +23,7 @@ function push(idB, section, obj) {
 
 	// Отфильтровать аварии возникшие из-за неисправности модулей
 	r = fnModule(idB, obj, r)
-	console.log(1144, r)
+	// console.log(1144, r)
 	return r
 }
 

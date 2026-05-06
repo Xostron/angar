@@ -19,9 +19,7 @@ function fanCrash(bld, sect, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[f._id].alarm) {
-			wrExtralrm(bld._id, sect._id, 'fanCrash' + f._id, msgF(bld, sect, f.name, 35), [
-				moduleId,
-			])
+			wrExtralrm(bld._id, sect._id, 'fanCrash' + f._id, msgF(bld, sect, f.name, 35), moduleId)
 			acc[f._id]._alarm = true
 		}
 		sumAlarm.push(acc?.[f._id]?._alarm)
