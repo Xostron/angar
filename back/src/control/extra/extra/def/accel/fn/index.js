@@ -1,4 +1,6 @@
 const { ctrlDO } = require('@tool/command/module_output')
+const { getStateClr } = require('@tool/cooler')
+const { getSectAuto } = require('@tool/get/building')
 
 // Разгонные вентиляторы: Вкл
 function on(building, fanA) {
@@ -46,9 +48,36 @@ function temp(building, fanA, acc, se, s) {
 	if (tprd - tin + hyst < s.accel.difference) off(building._id, fanA)
 }
 
+/**
+ * Разрешение работы разгонника
+ * @param {*} bld
+ * @param {*} m
+ * @param {*} acc
+ * @param {*} se
+ * @param {*} s
+ * @return {boolean} true разрешить, false запретить
+ */
+function check(bld, obj) {
+	const idsS = getSectAuto(bld._id, obj)
+	for (const idS of idsS) {
+		const st = getStateClr(idS, obj)
+		// 'Включена оттайка или слив воды' - запрет работы разгонника
+		if (st.includes('off-off-on') || st.includes('off-off-off-add')) return false
+	}
+	return true
+}
+
+function clear(bld, fanA, acc) {
+	off(bld, fanA)
+	delete acc?.work
+	delete acc?.wait
+}
+
 module.exports = {
 	on,
 	time,
 	temp,
 	off,
+	check,
+	clear,
 }

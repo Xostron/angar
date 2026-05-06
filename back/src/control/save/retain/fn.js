@@ -22,7 +22,7 @@ function positionVlv(obj) {
 
 		// Частично открыт (Клапан остановлен и находится в промежуточном положении)
 		if (state === 'popn') {
-			const cur = vlvPos?.[buildingId][vlv._id]
+			const cur = vlvPos?.[buildingId]?.[vlv._id]
 			// ограничение диапазона хода
 			let value = cur > total ? total : cur
 			value = cur < 0 ? 0 : cur

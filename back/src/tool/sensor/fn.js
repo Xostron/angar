@@ -79,19 +79,27 @@ function state(raw, on) {
 // Аварийные сообщения о неисправности датчика
 function webSensAlarm(r, bld, sect, sens) {
 	// Если не валидный, то добавляем в аварию (для отображения на странице Сигналы)
+
 	if (
 		r?.state === 'alarm' &&
-		!store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id] &&
+		// !store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id] &&
+		!store.alarm?.extralrm?.[bld?._id]?.['sensor']?.[sens?._id] &&
 		!isErrM(bld._id, sens?.module?.id) &&
 		sens.type !== 'ai'
 	) {
 		sect?.name
-			? wrExtralrm(bld._id, sect?._id, sens._id, msgBS(bld, sect, sens, 100))
-			: wrExtralrm(bld._id, 'sensor', sens._id, msgBS(bld, 'sensor', sens, 100))
+			? wrExtralrm(bld._id, sect?._id, sens._id, msgBS(bld, sect, sens, 100), [
+					sens?.module?.id,
+				])
+			: wrExtralrm(bld._id, 'sensor', sens._id, msgBS(bld, 'sensor', sens, 100), [
+					sens?.module?.id,
+				])
 	}
 	// Если валидный - удаляем аварию
-	if (r.state !== 'alarm' || sens.type === 'ai')
+	// if (sens.name === 'CO2') console.log(123, bld, sect, sens)
+	if (r.state !== 'alarm' || sens.type === 'ai') {
 		delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
+	}
 }
 
 /**
