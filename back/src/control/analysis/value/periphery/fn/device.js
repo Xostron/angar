@@ -67,6 +67,7 @@ function sum(section, device, result, code) {
 	result.total ??= {}
 	section.forEach((doc) => {
 		const arr = device.filter((el) => el.sectionId === doc._id && el.device.code === code)
+		if (!arr?.length) return
 		result.total[doc._id] ??= {}
 		result.total[doc._id].device ??= {}
 		result.total[doc._id].device[code] = stateSum(arr, result)

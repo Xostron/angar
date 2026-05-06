@@ -14,6 +14,7 @@ async function cold(result, idS, idB, obj) {
 
 	// дт. состояния СО2
 	value[idS + 'co2'] = data?.total?.[idS]?.device?.co2
+
 	// дт. состояния увлажнение
 	value[idS + 'wetting'] = data?.total?.[idS]?.device?.wetting
 	// дт. состояния Озонатора
@@ -41,9 +42,9 @@ async function cold(result, idS, idB, obj) {
 				state: data[el?._id]?.state,
 				mode: data[el?._id]?.name,
 				ao: data[el._id]?.ao,
-				level:data[el._id]?.level,
-				sh:data[el._id]?.solHeat?.state,
-				fl:data[el._id]?.flap?.state
+				level: data[el._id]?.level,
+				sh: data[el._id]?.solHeat?.state,
+				fl: data[el._id]?.flap?.state,
 			}
 			get('cooler', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))
 			get('pin', el._id, 'cooler', sensor).forEach((e) => fe(e, result.value, data))

@@ -83,6 +83,7 @@ module.exports = async function state() {
 			'Подготовлено данных:',
 			result?.length,
 			Object.values(diffing ?? [])?.length,
+			// JSON.stringify(result, null, ' ')
 		)
 		// Запрос не успешен
 		if (!response.data) {
