@@ -7,17 +7,18 @@ const { data: store } = require('@store')
  * @return {*} Прочитанные данные с модуля / данные с модуля из кэша
  */
 function fnCacheDO(v, mdl) {
-	// Для модулей чтения пропускаем проверку
+	// Модули входов - пропускаем (КЭШ не предусмотрен)
 	if (mdl.use === 'r') return v
-	if (!mdl?._id) return v
-	// Для модулей записи (w), чтения-записи (rw) проверка считанных данных
+	
+	// Для модулей записи (w), чтения-записи (rw)
+	// Если данные с модуля не прочитаны - вернуть КЭШ
 	if (!v) {
-		// Данные ошибочны - возвращаем кэш
 		console.log(mdl.name, mdl.ip, 'Данные взяты из кэша')
-		return store?.cacheDO?.[mdl._id]
+		return store?.cacheDO?.[mdl.ip]
 	}
-	// Данные ОК, обновляем кэш
-	store.cacheDO[mdl._id] = v
+	
+	// Данные с модуля - успешно прочитаны, обновляем кэш, возврат
+	store.cacheDO[mdl.ip] = v
 	console.log(mdl.name, mdl.ip, 'Данные с модуля')
 	return v
 }

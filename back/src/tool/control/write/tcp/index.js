@@ -7,7 +7,7 @@ const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
 function writeTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
 		const socket = new net.Socket()
-		const cl = new modbus.client.TCP(socket)
+		const cl = new modbus.client.TCP(socket, opt?.slaveId)
 		const optTCP = {
 			host,
 			port,

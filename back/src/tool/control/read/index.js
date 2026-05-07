@@ -14,34 +14,39 @@ async function read(arr, obj) {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
 			if (Aboc.check()) return
-			const idM = arr[i]._id
-			// Разрешение на чтение модуля
-			if (!timeout(arr[i]?.buildingId, arr[i]._id, arr[i].ip, arr[i])) continue
+			// ИД модуля: массив ИД string[] - дублеры от разных складов
+			const idsM = arr[i]._id
+			const idsB = arr[i].buildingId
 
-			// Чтение
+			// Разрешение на чтение
+			if (!timeout(idsB, idsM, arr[i].ip, arr[i])) continue
+
+			// Чтение 
 			let v = await make(arr[i])
-			// TODO Кэш для модулей DO
+
+			// Кэш для модулей DO
 			v = fnCacheDO(v, arr[i])
 			// флаг первого запуска сервера
 			store.startup = false
-			const buildingId = arr[i].buildingId
+
+			// Пауза перед опросом следующего модуля (без этой паузы модули читаются не стабильно)
 			await pause(store.tPause)
-			// Ошибка модуля -> если ответ от модуля не массив чисел => модуль не прочитан
+
+			// Ошибка модуля (ответ от модуля не массив чисел) => модуль не прочитан - пропускаем итерацию
 			if (!(v instanceof Array)) {
-				data[idM] = v
-				data.error = buildingId
+				set(idsM, v, data)
+				data.error = idsB
 				continue
 			}
+
 			// Модуль прочитан без ошибок
 			switch (arr[i].use) {
 				case 'r':
 				case 'w':
-					data[idM] = v[0]
+					set(idsM, v[0], data)
 					break
 				case 'rw':
-					data[idM] ??= {}
-					data[idM].input = v[0]
-					data[idM].output = v[1]
+					setRW(idsM, v, data)
 					break
 				default:
 					break
@@ -53,23 +58,24 @@ async function read(arr, obj) {
 	}
 }
 
+
+
+
 // Пауза
 function pause(n) {
 	return new Promise((res) => setTimeout(res, n))
 }
 
-module.exports = read
+function set(idsM, v, data) {
+	idsM.forEach((idM) => (data[idM] = v))
+}
 
-// /**
-//  *
-//  * @param {object} o Данные о модуле
-//  * @returns {Promise<[][]>} Массив значений [[...input], [...output]] модуля
-//  */
-// async function makeOld(o, { signal } = {}) {
-// 	switch (o.interface) {
-// 		case 'rtu':
-// 			return await readRTU(o.ip, o.port, o)
-// 		case 'tcp':
-// 			return await readTCP(o.ip, o.port, o)
-// 	}
-// }
+function setRW(idsM, v, data) {
+	idsM.forEach((idM) => {
+		data[idM] ??= {}
+		data[idM].input = v[0]
+		data[idM].output = v[1]
+	})
+}
+
+module.exports = read

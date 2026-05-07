@@ -14,7 +14,7 @@ export default function Sensor({ data, cls, type = 'normal', withImg = false }) 
 	const input = useInputStore(({ input }) => input)
 	const {sect} = useParams()
 	let wetting = ''
-	if (sect) wetting = input?.total?.[sect]?.device.wetting
+	if (sect) wetting = input?.total?.[sect]?.device?.wetting
 	// Датчик / Датчик + разгонный
 	const row = useCallback((el, i) => {
 		let cmp = false

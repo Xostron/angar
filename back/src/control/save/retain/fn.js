@@ -5,12 +5,12 @@ const { data: store } = require('@store')
 
 // Прогресс открытия/закрытия клапана (сохранение в retain)
 function positionVlv(obj) {
-	const { output, data, value, retain } = obj
+	const { data, value, retain } = obj
 	data.valve?.forEach((vlv) => {
 		const idOn = vlv?.module?.on?.id
 		if (!idOn) return
-		const buildingId = output[idOn].buildingId
 		const section = data.section.find((s) => vlv.sectionId.includes(s._id))
+		const buildingId = section.buildingId
 		const total = retain?.[section?.buildingId]?.valve?.[vlv._id]
 		const state = curStateV(vlv._id, value)
 		// Текущее положение клапана из retain

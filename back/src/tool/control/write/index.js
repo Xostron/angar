@@ -1,44 +1,52 @@
-const { timeout } = require('@tool/message/plc_module');
-const make = require('../make');
-const Aboc = require('@tool/abort_controller');
+const { timeout } = require('@tool/message/plc_module')
+const make = require('../make')
+const Aboc = require('@tool/abort_controller')
 /**
  * Записать данные в модули
  * @param {*} obj Глобальные данные о складе
  * @returns
  */
-async function write(obj) {
+async function write(arr) {
+	console.log(9911, arr)
 	try {
 		// TDOD Режим только чтения без записи в модуля
 		if (process.env.NODE_ENV === 'READ') {
-			console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-			return null;
+			console.log('process.env.NODE_ENV', process.env.NODE_ENV)
+			return null
 		}
-		if (!obj) return null;
-		const ok = {};
-		for (const i in obj) {
-			if (Aboc.check()) return;
+		if (!arr.length) return null
+
+		const ok = {}
+		for (const m of arr) {
+			if (Aboc.check()) return
+
+			const idsM = m._id
+			const idsB = m.buildingId
+
 			// Проверка модуля (антидребезг или ошибка модуля)
-			if (!timeout(obj[i]?.buildingId, obj[i]._id, obj[i].ip, obj[i]))
-				continue;
+			if (!timeout(idsB, idsM, m.ip, m)) continue
 
 			// Запись данных в модуль
-			v = await make(obj[i], 'write');
-			await pause(100);
-			const k = obj[i].name + ' Порт ' + obj[i].port;
-			ok[k] = v;
+			v = await make(m, 'write')
+
+			await pause(100)
+
+			const k = m.name + m.ip + (m.slaveId ?? '')
+			ok[k] = v
 		}
-		return ok;
+		// console.log(9922, ok)
+		return ok
 	} catch (error) {
-		console.error(error);
+		console.error(error)
 	}
 }
 
 // Пауза
 function pause(n) {
-	return new Promise((res) => setTimeout(res, n));
+	return new Promise((res) => setTimeout(res, n))
 }
 
-module.exports = write;
+module.exports = write
 
 // Запись данных в модуль
 // async function makeOld(o) {

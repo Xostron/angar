@@ -1,6 +1,6 @@
 const { cValue } = require('@socket/emit')
 const { readAll } = require('@tool/json')
-const read = require('./read')
+const readM = require('./read')
 const value = require('./value')
 const { data: store } = require('@store')
 const Aboc = require('@tool/abort_controller')
@@ -16,7 +16,7 @@ async function analysis(obj) {
 	// Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
 	// Опрос модулей по сети
-	let v = await read(obj)
+	let v = await readM(obj)
 	// Анализ - данные для клиента и работы алгоритма
 	v = Aboc.call(value)(v, obj)
 	// Настройки складов (обработанные для расчетов)
@@ -26,6 +26,3 @@ async function analysis(obj) {
 }
 
 module.exports = analysis
-
-
-
