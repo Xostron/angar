@@ -182,6 +182,8 @@ const useOutputStore = create((set, get) => ({
 		const tune = get().tune
 		sTune(tune)
 		console.log(4402, 'Команды калибровки', tune)
+		// После отправки команды калибровки клапанов, очистить хранилище
+		set({ tune: {} })
 	},
 	// Установить: настройки датчиков
 	setSens(obj) {

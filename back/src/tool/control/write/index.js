@@ -7,7 +7,7 @@ const Aboc = require('@tool/abort_controller')
  * @returns
  */
 async function write(arr) {
-	console.log(9911, arr)
+	// console.log(9911, arr)
 	try {
 		// TDOD Режим только чтения без записи в модуля
 		if (process.env.NODE_ENV === 'READ') {

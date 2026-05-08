@@ -34,13 +34,15 @@ function setCmd(obj) {
 		return
 	}
 	data.command ??= {}
-	for (const build in obj) {
-		data.command[build] ??= {}
-		for (const mdl in obj[build]) {
-			data.command[build][mdl] ??= {}
-			for (const channel in obj[build][mdl]) {
-				const val = obj[build][mdl][channel]
-				data.command[build][mdl][channel] = val
+	for (const idB in obj) {
+		// Простая проверка, проход только по ключам ObjectId
+		if (idB?.length < data.oidLength) continue
+		data.command[idB] ??= {}
+		for (const idM in obj[idB]) {
+			data.command[idB][idM] ??= {}
+			for (const channel in obj[idB][idM]) {
+				const val = obj[idB][idM][channel]
+				data.command[idB][idM][channel] = val
 			}
 		}
 	}
