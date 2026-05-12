@@ -7,22 +7,13 @@ function readM(obj) {
 		// json-файлы: конфигурация модулей
 		readJson(['module', 'equipment', 'building'])
 			.then(([module, equipment, building]) => {
-				if (!building || !building?.length) return []
+				if (!building || !building?.length) return {}
 				// Подготовка модулей
 				const arr = collect(module, equipment)
-				// console.log(9999, arr)
 				// Опрос модулей по сети
 				return read(arr, obj)
 			})
 			.then((r) => {
-				// let r = {}
-				// arr.forEach((o) => {
-				// 	if (!o) return
-				// 	r.error ??= []
-				// 	if (o.error) r.error.push(o.error)
-				// 	delete o.error
-				// 	r = { ...r, ...o }
-				// })
 				// console.log(99, 'Прочитанные данные с модулей', r)
 				resolve(r)
 			})
@@ -53,7 +44,7 @@ function collect(module, equipment) {
 	const map = new Map()
 	module.forEach((m) => {
 		if (!m?.ip || !m?.equipmentId) return
-		
+
 		const id = m.ip + (m?.slaveId ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
