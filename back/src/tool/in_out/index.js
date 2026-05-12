@@ -36,6 +36,7 @@ function uniDO(data, val) {
  * Имеется аналоговое управление (ВНО)
  * @param {*} obj Глобальный объект с информацией о PC
  * @param {*} f Рама исполнительного механизма
+ * @returns {object} Рама аналогового выхода
  */
 function getAO(binding = [], f) {
 	if (!binding || !f) return

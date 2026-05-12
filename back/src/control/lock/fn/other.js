@@ -3,6 +3,7 @@ const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { data: store } = require('@store')
 const { out, ao, outV, fn } = require('./index')
+const { hasOutput } = require('@tool/get/module')
 
 // Блокировки разгонных вентиляторов (обычный склад и холодильник)
 function fanAccel(obj, s) {
@@ -10,10 +11,10 @@ function fanAccel(obj, s) {
 	for (const el of data.fan) {
 		if (el.type !== 'accel') continue
 		if (el.owner.type === 'cooler') continue
-		const mdl = el?.module?.id
-		if (!output[mdl]) continue
+		const idM = el?.module?.id
+		if (!hasOutput(output, idM)) continue
 		// Id cклада
-		const idB = getIdB(mdl, data.module)
+		const idB = getIdB(idM, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// Блокировки
 		// местный режим
@@ -39,10 +40,10 @@ function fanAccel(obj, s) {
 function heating(obj) {
 	const { value, data, retain, output } = obj
 	for (const el of data.heating) {
-		const mdl = el?.module?.id
-		if (!output[mdl]) continue
+		const idM = el?.module?.id
+		if (!hasOutput(output, idM)) continue
 		// Id cклада
-		const idB = getIdB(mdl, data.module)
+		const idB = getIdB(idM, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
 		const local =
@@ -59,10 +60,10 @@ function heating(obj) {
 function device(obj) {
 	const { value, data, retain, output } = obj
 	for (const el of data.device) {
-		const mdl = el?.module?.id
-		if (!output[mdl]) continue
+		const idM = el?.module?.id
+		if (!hasOutput(output, idM)) continue
 		// Id cклада
-		const idB = getIdB(mdl, data.module)
+		const idB = getIdB(idM, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
 		const local =
@@ -83,10 +84,10 @@ function fnSolHeat(obj) {
 	// По соленоидам подогрева -> owner испаритель -> owner секция
 	for (const el of arr) {
 		const idS = data.cooler?.find(({ _id }) => _id === el.owner.id)?.sectionId
-		const mdl = el?.module?.id
-		if (!output[mdl]) continue
+		const idM = el?.module?.id
+		if (!hasOutput(output, idM)) continue
 		// Id cклада
-		const idB = getIdB(mdl, data.module)
+		const idB = getIdB(idM, data.module)
 		const idsS = getIdsS(obj.data.section, idB)
 		// местный режим
 		// const local = isExtralrm(idB, idS, 'local')

@@ -4,6 +4,7 @@ const { getIdB } = require('@tool/get/building')
 const { data: store } = require('@store')
 const { isCombiCold } = require('@tool/combi/is')
 const { out, ao, outV, fn } = require('./index')
+const { hasOutput } = require('@tool/get/module')
 
 // Блокировки напорных вентиляторов (обычный склад)
 // Если склад выключен, а секция в ручном режиме - не блокировать ВНО
@@ -17,11 +18,11 @@ function fan(obj, s) {
 		// Если ВНО испарителя - не блокируем
 		if (f.owner.type === 'cooler') continue
 		// Если не найден модуль дискретного выхода - не блокируем
-		const mdl = f?.module?.id
-		if (!output[mdl]) continue
+		const idM = f?.module?.id
+		if (!hasOutput(output, idM)) continue
 
 		// Id cклада
-		const idB = getIdB(mdl, data.module)
+		const idB = getIdB(idM, data.module)
 		// Склад
 		const bld = data.building.find((el) => el._id == idB)
 		// Тип склада: комби-холодильник
