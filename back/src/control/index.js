@@ -1,3 +1,5 @@
+const hrtime = process.hrtime.bigint
+const os = require('os')
 const writeVal = require('@tool/control/write/index')
 const { cValue, cAlarm } = require('@socket/emit')
 const { data: store } = require('@store')
@@ -5,7 +7,6 @@ const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
 const { statOnChange } = require('../stat')
 const analysis = require('./analysis')
-const hrtime = process.hrtime.bigint
 const { zero } = require('@tool/zero')
 const writeLock = require('./lock')
 const convCmd = require('./output')
@@ -62,9 +63,11 @@ async function loop() {
 	while (!store.shutdown) {
 		// Точка отсчета цикла
 		const bgn = hrtime()
+		// Кол-во ядер ПЛК
+		const total = os.cpus().length
 		console.log(
 			'\x1b[36m%s\x1b[0m',
-			`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}-------------------`,
+			`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`,
 		)
 		// Инициализация глобального аккумулятора (сомнительно!)
 		await writeStore()

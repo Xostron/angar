@@ -88,7 +88,7 @@ function transform(cmd, mdls, out) {
 	// Команды управления - частично переписывают Маску выходов
 	// по складам
 	for (const idB in cmd) {
-		console.log(1144, cmd[idB])
+		// console.log(1144, cmd[idB])
 		// по модулям склада
 		for (const idM in cmd?.[idB]) {
 			// по каналу модуля
