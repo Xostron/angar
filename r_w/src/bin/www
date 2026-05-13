@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+require('module-alias/register')
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../../.env'), silent: true })
+const app = require('@root/app')
+
+const PORT = process.env.PORT || 3000
+const HOST = process.env.HOST || '0.0.0.0'
+
+start()
+
+async function start() {
+	try {
+		// Передаем объект с port и host
+		const addr = await app.listen({ port: Number(PORT), host: HOST })
+		console.log(`Сервер запущен на ${addr}`)
+	} catch (error) {
+		console.error('Ошибка при старте сервера:', error)
+		process.exit(1)
+	}
+}
+
+process.on('SIGTERM', () => graceful('SIGTERM'))
+process.on('SIGINT', () => graceful('SIGINT'))
+
+async function graceful(code) {
+	console.log(`\nЗакрываем микросервис. Код ${code}`)
+	try {
+		// Закрываем все сетевые соединения
+		await app.close()
+		console.log('Микросервис успешно остановлен.')
+		process.exit(0)
+	} catch (err) {
+		console.error('Ошибка при плавном закрытии:', err)
+		process.exit(1)
+	}
+}

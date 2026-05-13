@@ -15,8 +15,9 @@ async function analysis(obj) {
 	await readAll(obj)
 	// Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
-	// Опрос модулей по сети
+	// Опрос модулей по сети (режим монолита/микросервеса)
 	let v = await readM(obj)
+	console.log(111, v)
 	// Анализ - данные для клиента и работы алгоритма
 	v = Aboc.call(value)(v, obj)
 	// Настройки складов (обработанные для расчетов)

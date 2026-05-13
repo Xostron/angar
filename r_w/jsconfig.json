@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "node10",
+		"baseUrl": ".",
+		"allowJs": true,
+		"module": "commonjs",
+		"paths": {
+			"@root/*": ["*"],
+			"@routes": ["src/routes/*"],
+			"@store/*": ["src/store/*"],
+			"@tool/*": ["src/tool/*"],
+			"@worker": ["src/worker/*"]
+			// "@dict/*": ["src/dict/*"],
+			// "@util": ["src/util/*"],
+			// "@control": ["src/control/*"],
+			// "@data": ["data/*"],
+		}
+	}
+}

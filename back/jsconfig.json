@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "node",
+		"moduleResolution": "node10",
 		"baseUrl": ".",
 		"allowJs": true,
 		"module": "commonjs",

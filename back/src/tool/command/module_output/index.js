@@ -86,9 +86,9 @@ function ctrlVsp(vlv, idB, sp) {
 	const chOpn = +vlv.module.on.channel - 1
 	const chCls = +vlv.module.off.channel - 1
 	// Текущая позиция клапана
-	const curpos = +store.value.retain[idB].valvePosition[vlv._id]
+	const curpos = +store.value.retain?.[idB]?.valvePosition?.[vlv._id]
 	// Калибровочное время клапана
-	const maxpos = +store.value.retain[idB].valve[vlv._id]
+	const maxpos = +store.value.retain?.[idB]?.valve?.[vlv._id]
 	// Уставка % -> время открытия
 	const spp = (+sp * maxpos) / 100
 	// Гистерезис 1%
