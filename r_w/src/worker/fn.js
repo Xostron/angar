@@ -1,39 +1,39 @@
-const arrData = require('./data')
-
-// partition(arrData, 4)
-
 /**
  * Распределение модулей по потокам
- * @param {*} arr массив модулей на чтение
+ * @param {*} mdls Массив модулей на чтение
  * @param {*} num Кол-во потоков
- * @returns {object[][]} Возвращаем подмассивы с модулями, 
+ * @returns {object[][]} Возвращаем подмассивы с модулями,
  * для каждого потока свой набор модулей
  */
-function partition(arr, num) {
+function partition(mdls, num) {
 	// Массив массивов
-	const dataThread = new Array(num).fill()
+	const parts = new Array(num).fill()
 	let i = 0
 	// По модулям
-	while (i < arr.length) {
+	while (i < mdls.length) {
 		// По потокам
-		dataThread.forEach((_, j) => {
+		parts.forEach((_, j) => {
 			// Создание подмассива
-			if (!(dataThread[j] instanceof Array)) dataThread[j] = []
+			if (!(parts[j] instanceof Array)) parts[j] = []
 			// Добавляем модуль в подмассив
-			arr[i] ? dataThread[j].push(arr[i]) : null
+			mdls[i] ? parts[j].push(mdls[i]) : null
 			// следующий модуль
 			i++
 		})
 	}
 	// Возвращаем результат массив с подмассивами, кол-во подмассивов равно кол-ву потоков
-	// console.log(55, dataThread, arr.length)
-	return dataThread
+	// console.log(55, parts, mdls.length)
+	return parts
 }
 
-function delay(time = 0) {
-	return new Promise((resolve, reject) => {
-		setTimeout(resolve, time, !time ? false : true)
-	})
+/**
+ * Проверка кол-во модулей в results должно быть === кол-во модулей на чтение
+ * @param {*} results Результат чтения модулей
+ * @param {*} length Кол-во модулей, который должен содержать результат
+ * @returns
+ */
+function check(results, length = 0) {
+	if (Object.keys(results).length >= length) return results
 }
 
-module.exports = {partition, delay}
+module.exports = { partition, check }

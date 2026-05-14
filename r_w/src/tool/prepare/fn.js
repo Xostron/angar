@@ -1,3 +1,28 @@
+const readJson = require('@tool/json').read
+const read = require('@tool/control/read')
+
+// Опрос модулей
+function readM(obj) {
+	return new Promise((resolve, reject) => {
+		// json-файлы: конфигурация модулей
+		readJson(['module', 'equipment', 'building'])
+			.then(([module, equipment, building]) => {
+				if (!building || !building?.length) return {}
+				// Подготовка модулей
+				const arr = collect(module, equipment)
+				// Опрос модулей по сети
+				return read(arr, obj)
+			})
+			.then((r) => {
+				// console.log(99, 'Прочитанные данные с модулей', r)
+				resolve(r)
+			})
+			.catch(reject)
+	})
+}
+
+module.exports = readM
+
 /**
  * Собираем модули на чтение
  *
@@ -10,8 +35,8 @@
  * Данная функция группирует модули по IP. Ключ _id ИД модуля, содержит в себе
  * ИД общих модулей, которые принадлежат разным складам на ПОСе.
  *
- * @param {*} module Рама модулей
- * @param {*} equipment Рама оборудования
+ * @param {*} module
+ * @param {*} equipment
  */
 function collect(module, equipment) {
 	const map = new Map()

@@ -9,19 +9,18 @@ const HOST = process.env.HOST || '0.0.0.0'
 
 start()
 
+process.on('SIGTERM', () => graceful('SIGTERM'))
+process.on('SIGINT', () => graceful('SIGINT'))
+
 async function start() {
 	try {
 		// Передаем объект с port и host
-		const addr = await app.listen({ port: Number(PORT), host: HOST })
-		console.log(`Сервер запущен на ${addr}`)
+		await app.listen({ port: Number(PORT), host: HOST })
 	} catch (error) {
 		console.error('Ошибка при старте сервера:', error)
 		process.exit(1)
 	}
 }
-
-process.on('SIGTERM', () => graceful('SIGTERM'))
-process.on('SIGINT', () => graceful('SIGINT'))
 
 async function graceful(code) {
 	console.log(`\nЗакрываем микросервис. Код ${code}`)
