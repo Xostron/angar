@@ -22,7 +22,9 @@
 		"dotenv": "^17.4.2",
 		"fastify": "^5.8.5",
 		"jsmodbus": "^4.0.10",
-		"module-alias": "^2.3.4"
+		"module-alias": "^2.3.4",
+		"serialport": "^13.0.0",
+		"uuid": "^11.1.1"
 	},
 	"devDependencies": {
 		"nodemon": "^3.1.14",

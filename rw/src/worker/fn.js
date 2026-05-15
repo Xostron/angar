@@ -1,11 +1,12 @@
 /**
  * Проверка кол-во модулей в results должно быть === кол-во модулей на чтение
- * @param {*} results Результат чтения модулей
- * @param {*} length Кол-во модулей, который должен содержать результат
- * @returns
+ * @param {*} count Кол-во потоков
+ * @param {*} countWorker Кол-во завершенных потоков
+ * @returns {boolean} true все потоки завершены => все модули прочитаны
  */
-function check(results, length = 0) {
-	if (Object.keys(results).length >= length) return results
+function check(count, countWorker) {
+	if (countWorker >= count) return true
+	return false
 }
 
 module.exports = { check }

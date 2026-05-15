@@ -1,7 +1,7 @@
 const { rhr } = require('../fn')
 const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
-const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
+const { wrDebMdl, delDebMdl, delModule } = require('@tool/module/timeout')
 
 // Чтение данных RTU модуля
 function readRTU(path, position, opt) {

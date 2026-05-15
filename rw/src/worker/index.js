@@ -1,18 +1,16 @@
+require('module-alias/register')
 const { parentPort, workerData, Worker, isMainThread } = require('worker_threads')
-const readTCP = require('../read/read_tcp')
 const { check } = require('./fn')
 const { store } = require('@store')
-const { delay } = require('../tool/time')
+const read = require('@tool/control/read')
 
 // Если Node.js зашел в этот файл как в Воркер, вызываем функцию принудительно
 if (!isMainThread) {
-	fnThread()
+	readThread()
 }
 
 /**
  * Потоковое чтение модулей
- * @param {object[][]} parts Подмассивы с модулями, для каждого потока свой набор модулей
- * @param {number} length Кол-во модулей
  * @param {number} count Настройка кол-ва потоков
  * @returns {object} Объект с ключами ИД модулей и значениями входов/выходов
  */
@@ -28,40 +26,48 @@ async function readThread(count) {
 
 module.exports = readThread
 
-// Менеджер запуска воркеров и сбора результата
+/**
+ * Менеджер запуска воркеров и сбора результата
+ * @param {*} count Кол-во потоков
+ * @returns 
+ */
 function manager(count) {
 	return new Promise((resolve, reject) => {
 		const length = store.mdls.length
 		// Запуск воркеров
 		let results = {}
+		if (!length) return resolve(results)
+		// Кол-во завершенных воркеров
+		let countWorker = 0
+		// Создание потоков
 		for (let i = 0; i < count; i++) {
 			const part = store.parts[i]
 			const worker = new Worker(__filename, {
 				workerData: { id: i, arr: part },
 			})
 
-			// Слушаем ответ от потока
+			// Слушаем ответ от потока, собираем результат
 			worker.on('message', (r) => {
-				// console.log(`Получен ответ от Worker ${i}`, result)
 				results = { ...results, ...r }
-				if (check(results, length)) resolve(results)
+				console.log('Поток в работе', i)
 			})
 
 			// При ошибке выполнения
 			worker.on('error', (reason) => {
 				part.forEach((mdl, i) => {
-					results[mdl.ip + '_' + mdl.name] = `Worker ${i}. Error ${reason}`
+					mdl._id.forEach((id) => (results[id] = `Worker ${i}. Error ${reason}`))
 				})
-				if (check(results, length)) resolve(results)
 			})
 
-			// Остановка воркера по причине ОС
+			// Завершение работы воркера, очистка воркера из памяти
 			worker.on('exit', (code) => {
 				part.forEach((mdl, i) => {
-					if (results[mdl.ip + '_' + mdl.name] === undefined)
-						results[mdl.ip + '_' + mdl.name] = `Worker ${i}. Exit ${code}`
+					if (results[mdl._id[0]] === undefined)
+						mdl._id.forEach((id) => (results[id] = `Worker ${i}. Exit ${code}`))
 				})
-				if (check(results, length)) resolve(results)
+				console.log('Поток завершен', i)
+				countWorker++
+				if (check(count, countWorker)) resolve(results)
 			})
 		}
 	})
@@ -69,15 +75,8 @@ function manager(count) {
 
 // Обработчик потока - читаем модули
 async function threadAction() {
-	// 2. Мы внутри воркера (Сотрудник).
-	// Читаем данные из "чемоданчика" (workerData)
+	// arr - модули на чтение в данном потоке
 	const { id, arr } = workerData
-	const r = {}
-	for (const mdl of arr) {
-		r[mdl.ip + '_' + mdl.name] = await readTCP(mdl.ip, mdl.port, mdl)
-		// Пауза перед опросом следующего модуля (без этой паузы модули читаются не стабильно)
-		await delay(store.tPause)
-	}
-	// console.log(`Воркер ${id} в работе`)
+	const r = await read(arr)
 	parentPort.postMessage(r)
 }

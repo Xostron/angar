@@ -1,22 +1,24 @@
-const hrtime = process.hrtime.bigint
 const os = require('os')
-// const readThread = require('../worker')
+const hrtime = process.hrtime.bigint
 const { store } = require('@store')
-const collect = require('../tool/module/collect')
+const readThread = require('../worker')
 const { delay } = require('../tool/time')
+const collect = require('../tool/module/collect')
+const Aboc = require('@tool/abort_controller')
 
 // Опрос модулей
 async function main(count) {
 	try {
 		// Получить раму модулей и распределить на потоки
 		collect(count)
-		console.log(33, store.parts.length)
 		// Чтение модулей
-		// const r = await readThread(count)
+		const r = await readThread(count)
 		// Сохраняем в аккумулятор
 		// store.value = r
-		// console.log(22, r)
+		console.log(99, r)
+		Aboc.refresh()
 		await delay(5000)
+
 	} catch (error) {
 		console.error(99, error)
 		await delay(5000)
@@ -33,7 +35,7 @@ async function loop() {
 		let sp = 3
 		let count = total - 1 > sp ? sp : total - 1
 		console.log('****************CYCLE******************')
-		console.log(`Всего ядер ${total}, доступно ядер ${count}, запускаем опрос модулей\n`)
+		console.log(`Всего ядер ${total}, доступно ${count}`)
 
 		await main(count)
 

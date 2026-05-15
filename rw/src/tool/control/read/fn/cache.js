@@ -1,4 +1,4 @@
-const { data: store } = require('@store')
+const { store } = require('@store')
 
 /**
  * Для защиты от дребезга выходных модулей

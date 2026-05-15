@@ -1,15 +1,16 @@
-const { data: store } = require('@store')
-const { timeout } = require('@tool/message/plc_module')
+const { store } = require('@store')
 const make = require('../make')
 const fnCacheDO = require('./fn/cache')
 const Aboc = require('@tool/abort_controller')
+const { timeout } = require('@tool/module/timeout')
+const { delay } = require('@tool/time')
+
 /**
  * Чтение модулей
  * @param {*} arr Массив модулей
- * @param {*} obj Глобальные данные по складу
  * @returns {Promise<object>} Объект: ключ-id модуля, значение-массив показаний модуля
  */
-async function read(arr, obj) {
+async function read(arr) {
 	try {
 		const data = {}
 		for (let i = 0; i < arr.length; i++) {
@@ -21,16 +22,16 @@ async function read(arr, obj) {
 			// Разрешение на чтение
 			if (!timeout(idsB, idsM, arr[i].ip, arr[i])) continue
 
-			// Чтение 
+			// Чтение
 			let v = await make(arr[i])
 
 			// Кэш для модулей DO
 			v = fnCacheDO(v, arr[i])
 			// флаг первого запуска сервера
-			store.startup = false
+			store._startup = false
 
 			// Пауза перед опросом следующего модуля (без этой паузы модули читаются не стабильно)
-			await pause(store.tPause)
+			await delay(store.tPause)
 
 			// Ошибка модуля (ответ от модуля не массив чисел) => модуль не прочитан - пропускаем итерацию
 			if (!(v instanceof Array)) {
@@ -56,14 +57,6 @@ async function read(arr, obj) {
 	} catch (error) {
 		console.error('ERROR', error)
 	}
-}
-
-
-
-
-// Пауза
-function pause(n) {
-	return new Promise((res) => setTimeout(res, n))
 }
 
 function set(idsM, v, data) {

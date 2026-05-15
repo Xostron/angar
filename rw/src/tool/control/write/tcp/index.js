@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const net = require('net')
 const { regist } = require('./fn')
-const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
+const { wrDebMdl, delDebMdl, delModule } = require('@tool/module/timeout')
 
 // Запись данных для TCP/IP модуля
 function writeTCP(host, port, opt) {
@@ -23,10 +23,6 @@ function writeTCP(host, port, opt) {
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
-					// if (opt.ip === '192.168.21.126')
-					// console.log(666, 'write', opt.ip, opt.value)
-					// console.log(9900, 'Запись', opt.name, opt.ip)
-					// console.table(opt.value)
 					resolve(true)
 				})
 				.catch((e) => {

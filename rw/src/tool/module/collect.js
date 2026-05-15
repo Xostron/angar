@@ -10,7 +10,6 @@ const { store } = require('@store')
  */
 function collect(count) {
 	// Если нет флага обновления рамы ИЛИ нет модулей ИЛИ нет оборудования - выходим
-	console.log(333, !store._update, !store.module.length, !Object.keys(store.equipment).length)
 	if (!store._update || !store.module.length || !Object.keys(store.equipment).length) return
 
 	// Преобразуем модуль+оборудование, убираем дубляжи
@@ -18,8 +17,8 @@ function collect(count) {
 
 	// Разбиваем модули на потоки и сохраняем в store.parts
 	store.parts = partition(store.mdls, count)
+
 	store._update = false
-	console.log(33, 'collect is done')
 }
 
 /**
@@ -30,9 +29,8 @@ function collect(count) {
  * @returns {object[]} mdls - массив рамы модуль+оборудование
  */
 function transform() {
-	const { module, equipment } = store
 	const map = new Map()
-	module.forEach((m) => {
+	store.module.forEach((m) => {
 		if (!m?.ip || !m?.equipmentId) return
 
 		const id = m.ip + (m?.slave ?? '')
@@ -42,7 +40,7 @@ function transform() {
 				...m,
 				_id: [m._id],
 				buildingId: [m.buildingId],
-				...equipment[m.equipmentId],
+				...store.equipment[m.equipmentId],
 			})
 
 		// В коллекции уже есть такой модуль, редактируем ключ _id и buildingId
@@ -79,7 +77,6 @@ function partition(mdls, count) {
 		})
 	}
 	// Возвращаем результат массив с подмассивами, кол-во подмассивов равно кол-ву потоков
-	// console.log(55, parts, mdls.length)
 	return parts
 }
 

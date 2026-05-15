@@ -1,7 +1,7 @@
 const modbus = require('jsmodbus')
 const net = require('net')
 const { rhr } = require('../fn')
-const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
+const { wrDebMdl, delDebMdl, delModule } = require('@tool/module/timeout')
 
 function readTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
@@ -9,7 +9,6 @@ function readTCP(host, port, opt) {
 			wrDebMdl(opt._id)
 			return resolve({ error: 'Не указан IP модуля', info: opt })
 		}
-		// if (host === '192.168.21.135') console.log(11, host, opt?.name, opt?.slaveId)
 		const socket = new net.Socket()
 		const cl = new modbus.client.TCP(socket, opt?.slaveId)
 		const optTCP = {
@@ -43,12 +42,6 @@ function readTCP(host, port, opt) {
 					r = convUint32DO(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
-					// if (opt.use === 'w') {
-					// 	console.log('Чтение DO', opt.name, opt.ip)
-					// 	console.table(r)
-					// }
-					// if (host === '192.168.21.135') console.log(12, opt.name, r, w)
-
 					resolve([r, w])
 				})
 				.catch((e) => {

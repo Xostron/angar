@@ -1,6 +1,6 @@
 const modbus = require('jsmodbus')
 const { SerialPort } = require('serialport')
-const { wrDebMdl, delDebMdl, delModule } = require('@tool/message/plc_module')
+const { wrDebMdl, delDebMdl, delModule } = require('@tool/module/timeout')
 
 // Запись данных для RTU модуля
 function writeRTU(path, position, opt) {
