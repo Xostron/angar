@@ -6,12 +6,12 @@
  */
 function getMdl(mdls, idM) {
 	const mdl = mdls.find((el) => el._id.includes(idM))
-	const id = getId(mdl?.ip, mdl?.slaveId)
+	const id = getId(mdl?.ip, mdl?.slave)
 	return { mdl, id }
 }
 
-function getId(ip, slaveId = '') {
-	return ip + '.' + slaveId
+function getId(ip, slave = '') {
+	return ip + '.' + slave
 }
 
 /**

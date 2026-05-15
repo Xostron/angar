@@ -3,6 +3,7 @@ const readTCP = require('../read/read_tcp')
 const { check } = require('./fn')
 const { store } = require('@store')
 const { delay } = require('../tool/time')
+const fnParts = require('./partition')
 
 // Если Node.js зашел в этот файл как в Воркер, вызываем функцию принудительно
 if (!isMainThread) {
@@ -29,12 +30,16 @@ async function readThread(parts, length, count) {
 module.exports = readThread
 
 // Менеджер запуска воркеров и сбора результата
-function manager(parts, count, length) {
+function manager(mdls, count) {
 	return new Promise((resolve, reject) => {
+		// Распределение модулей по потокам
+		fnParts(mdls, count)
+		const length = mdls?.length ?? 0
+
 		// Запуск воркеров
 		let results = {}
 		for (let i = 0; i < count; i++) {
-			const part = parts[i]
+			const part = store.parts[i]
 			const worker = new Worker(__filename, {
 				workerData: { id: i, arr: part },
 			})

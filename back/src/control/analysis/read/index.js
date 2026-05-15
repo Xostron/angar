@@ -43,7 +43,7 @@ function collect(module, equipment) {
 	module.forEach((m) => {
 		if (!m?.ip || !m?.equipmentId) return
 
-		const id = m.ip + (m?.slaveId ?? '')
+		const id = m.ip + (m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
 			return map.set(id, {

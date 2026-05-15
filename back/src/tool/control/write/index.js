@@ -31,7 +31,7 @@ async function write(arr) {
 
 			await pause(100)
 
-			const k = m.name + m.ip + (m.slaveId ?? '')
+			const k = m.name + m.ip + (m.slave ?? '')
 			ok[k] = v
 		}
 		// console.log(9922, ok)

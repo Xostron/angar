@@ -13,7 +13,7 @@ function collectMdls(module, equipment) {
 	// Проход по модулям
 	const map = new Map()
 	module.forEach((m) => {
-		const id = m.ip + (m?.slaveId ?? '')
+		const id = m.ip + (m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
 			return map.set(id, {
@@ -37,7 +37,7 @@ function collectMdls(module, equipment) {
  * Маска выходов
  * Маска создается на основе прочитанных данных с модулей выхода
  *
- * Маска формируется с ключами IP+slaveID, чтобы отфильтровать дублирующиеся модули,
+ * Маска формируется с ключами IP+slave, чтобы отфильтровать дублирующиеся модули,
  * те модули, которые одновременно используются в нескольких складах на данном ПОСе
  *
  * @param {object} outputM Значения выходов модулей (с дублирующимися модулями)
@@ -122,13 +122,13 @@ function prepare(out, mdls) {
 	// По ключу out
 	for (const id in out) {
 		// Рама модуля (module+equipment)
-		const mdl = mdls.find((el) => getId(el.ip, el.slaveId) === id)
+		const mdl = mdls.find((el) => getId(el.ip, el.slave) === id)
 		arr.push({ ...mdl, value: out[id] })
 	}
 	return arr
 	// mdls.forEach((m) => {
 	// 	// Ключи out
-	// 	const id = m.ip + (m?.slaveId ?? '')
+	// 	const id = m.ip + (m?.slave ?? '')
 
 	// 	// Если нет значения у модуля - пропускаем
 	// 	if (!out[id]) return

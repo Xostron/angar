@@ -1,13 +1,16 @@
+const { store } = require('@store')
+
 /**
  * Распределение модулей по потокам
  * @param {*} mdls Массив модулей на чтение
- * @param {*} num Кол-во потоков
+ * @param {*} count Кол-во потоков
  * @returns {object[][]} Возвращаем подмассивы с модулями,
  * для каждого потока свой набор модулей
  */
-function partition(mdls, num) {
+function partition(mdls, count) {
+	if (!mdls?.length) return
 	// Массив массивов
-	const parts = new Array(num).fill()
+	const parts = new Array(count).fill()
 	let i = 0
 	// По модулям
 	while (i < mdls.length) {
@@ -26,14 +29,15 @@ function partition(mdls, num) {
 	return parts
 }
 
-/**
- * Проверка кол-во модулей в results должно быть === кол-во модулей на чтение
- * @param {*} results Результат чтения модулей
- * @param {*} length Кол-во модулей, который должен содержать результат
- * @returns
- */
-function check(results, length = 0) {
-	if (Object.keys(results).length >= length) return results
+// Распределение модулей - перерасчет при обновлении рамы
+function fnParts(mdls, count) {
+	// Расчет рапсределения модулей:
+	// 1. Нет распределенных модулей
+	// 2. Первый цикл
+	// 3. Флаг обновления рамы
+	if (!store.parts?.length || store._first || store._update) {
+		store.parts = partition(mdls, count)
+	}
 }
 
-module.exports = { partition, check }
+module.exports = fnParts

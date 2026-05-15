@@ -1,22 +1,20 @@
 const hrtime = process.hrtime.bigint
 const os = require('os')
-const { partition } = require('../worker/fn')
 const readThread = require('../worker')
 const { store } = require('@store')
+const collect = require('../tool/module/collect')
 
 // Опрос модулей
 async function main(count) {
 	try {
 		// Получить раму модулей
-		
-		// Распределение модулей по потокам
-		const parts = partition(mdls, count)
+		const mdls = collect()
 		// Чтение модулей
-		const r = await readThread(parts, mdls.length, count)
+		const r = await readThread(mdls, count)
 		// Сохраняем в аккумулятор
 		store.value = r
 	} catch (error) {
-		console.log(99, error)
+		console.error(99, error)
 		await delay(5000)
 	}
 }
@@ -35,6 +33,8 @@ async function loop() {
 		await main(count)
 
 		const end = ((Number(hrtime() - bgn) / 1e6) | 0) / 1000
+		// Флаг первого цикла
+		store._first = false
 		console.log('Время цикла = ', end, 'сек\n')
 	}
 }
