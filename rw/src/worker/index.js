@@ -3,7 +3,6 @@ const readTCP = require('../read/read_tcp')
 const { check } = require('./fn')
 const { store } = require('@store')
 const { delay } = require('../tool/time')
-const fnParts = require('./partition')
 
 // Если Node.js зашел в этот файл как в Воркер, вызываем функцию принудительно
 if (!isMainThread) {
@@ -17,10 +16,10 @@ if (!isMainThread) {
  * @param {number} count Настройка кол-ва потоков
  * @returns {object} Объект с ключами ИД модулей и значениями входов/выходов
  */
-async function readThread(parts, length, count) {
+async function readThread(count) {
 	if (isMainThread) {
 		// Если вызван в главном потоке, отрабатывает Менеджер создания воркеров
-		return manager(parts, length, count)
+		return manager(count)
 	} else {
 		// Если вызван Воркером, отрабатывает обработчик потока - чтение модулей
 		await threadAction()
@@ -30,12 +29,9 @@ async function readThread(parts, length, count) {
 module.exports = readThread
 
 // Менеджер запуска воркеров и сбора результата
-function manager(mdls, count) {
+function manager(count) {
 	return new Promise((resolve, reject) => {
-		// Распределение модулей по потокам
-		fnParts(mdls, count)
-		const length = mdls?.length ?? 0
-
+		const length = store.mdls.length
 		// Запуск воркеров
 		let results = {}
 		for (let i = 0; i < count; i++) {

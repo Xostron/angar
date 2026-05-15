@@ -5,8 +5,8 @@ const api = axios.create({
 	// авто добавление кук
 	withCredentials: true,
 	// Базовый url
-	baseURL: process.env.IP_ANGAR,
-	timeout: 10000,
+	baseURL: process.env.URI_A,
+	timeout: 5000,
 })
 
 // Добавляем интерцептор, который сработает перед каждым запросом

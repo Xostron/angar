@@ -3,11 +3,15 @@ require('module-alias/register')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env'), silent: true })
 const app = require('@root/app')
+const loopInit = require('@root/client/init')
+const loop = require('@root/control')
 
-const PORT = process.env.PORT || 3000
-const HOST = process.env.HOST || '0.0.0.0'
+const PORT = process.env.PORT_RW || 4001
+const HOST = process.env.IP_RW || 'localhost'
 
 start()
+loopInit().then().catch(console.error)
+loop().then().catch(console.error)
 
 process.on('SIGTERM', () => graceful('SIGTERM'))
 process.on('SIGINT', () => graceful('SIGINT'))

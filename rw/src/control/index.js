@@ -1,18 +1,22 @@
 const hrtime = process.hrtime.bigint
 const os = require('os')
-const readThread = require('../worker')
+// const readThread = require('../worker')
 const { store } = require('@store')
 const collect = require('../tool/module/collect')
+const { delay } = require('../tool/time')
 
 // Опрос модулей
 async function main(count) {
 	try {
-		// Получить раму модулей
-		const mdls = collect()
+		// Получить раму модулей и распределить на потоки
+		collect(count)
+		console.log(33, store.parts.length)
 		// Чтение модулей
-		const r = await readThread(mdls, count)
+		// const r = await readThread(count)
 		// Сохраняем в аккумулятор
-		store.value = r
+		// store.value = r
+		// console.log(22, r)
+		await delay(5000)
 	} catch (error) {
 		console.error(99, error)
 		await delay(5000)
@@ -28,6 +32,7 @@ async function loop() {
 		// Доступно ядер
 		let sp = 3
 		let count = total - 1 > sp ? sp : total - 1
+		console.log('****************CYCLE******************')
 		console.log(`Всего ядер ${total}, доступно ядер ${count}, запускаем опрос модулей\n`)
 
 		await main(count)

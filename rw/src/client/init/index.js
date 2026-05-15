@@ -1,5 +1,6 @@
-const { delay } = require('../time')
-const store = require('@store')
+const api = require('@tool/api')
+const { delay } = require('@tool/time')
+const { store } = require('@store')
 
 /**
  * Запрос рамы модулей и оборудования
@@ -7,24 +8,15 @@ const store = require('@store')
  */
 async function loopInit() {
 	while (true) {
-		await init()
-		store._update = true
+		init()
 		// обновление конфигурации склада каждые 7 минут
-		await delay(process.env?.PERIOD ?? 420001)
+		await delay(store._period ?? 420001)
 	}
 }
 
 module.exports = loopInit
 
 async function init() {
-	// TODO: Пропуск инициализации на локальном хосте
-	if (['127.0.0.1', 'localhost'].includes(process.env.IP_ANGAR)) {
-		console.log(
-			'\x1b[32m%s\x1b[0m',
-			`IP ангара ${process.env.IP_ANGAR} не является публичным, пропуск инициализации`,
-		)
-		return
-	}
 	const config = {
 		method: 'GET',
 		url: 'rw/init',
@@ -32,5 +24,11 @@ async function init() {
 	}
 
 	const r = await api(config)
-	console.log(r)
+	if (!r?.data || !r?.data?.module || !r?.data?.equipment) return
+
+	// Флаг рама обновлена
+	store._update = true
+	store.module = r.data.module
+	store.equipment = r.data.equipment
+	console.log(11, 'Рама получена')
 }
