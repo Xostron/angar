@@ -46,7 +46,7 @@ async function control() {
 		await Aboc.asycall(save)(obj)
 		// // обнулить счетчик сушки
 		// Aboc.call(zero)(null, false)
-		// await delay(2500)
+		// await delay(4000)
 		Aboc.refresh()
 		if (store._cycle_ms_ < 50) await delay(1000)
 		// Счетчик циклов

@@ -53,11 +53,9 @@ async function transform(bldId, secId) {
 			store.value?.building?.[bldId]?.submode?.[0] ?? bldData?.automode ?? null
 		// Сообщение достижений
 		result[bldId + 'note'] = data.alarm?.achieve?.[bldId] ?? null
-		// console.log(99001, result?.[bldId + 'note'])
 		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0
 		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null
 		result[bldId + 'banner'] = banner(bldId, data) ?? null
-
 		// обработка пуш
 		result[bldId + 'push'] = push(bldId, section, data) ?? null
 		// Разгонный вентилятор склада

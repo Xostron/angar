@@ -46,7 +46,7 @@ function manager(count) {
 				workerData: { id: i, arr: part },
 			})
 
-			// Слушаем ответ от потока, собираем результат
+			// Слушаем ответ от потока (threadAction), собираем результат
 			worker.on('message', (r) => {
 				results = { ...results, ...r }
 				console.log('Поток в работе', i)

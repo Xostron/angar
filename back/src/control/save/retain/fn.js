@@ -103,11 +103,10 @@ function finishSmokingOzon(dataB, resultB, key) {
  * @param {*} data Текущее состояние процесса
  * @returns
  */
-function fnCooling(data) {
+function fnCooling(data, building) {
 	if (!data) return
-	for (const idB in data) {
+	for (const { _id: idB } of building) {
 		const am = store.retain[idB].automode
-
 		store.retain[idB][am] ??= {}
 		// Мин. темп. продукта в режиме хранения
 		store.retain[idB][am].tprdMin =
