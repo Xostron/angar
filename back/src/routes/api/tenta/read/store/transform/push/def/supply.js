@@ -19,7 +19,7 @@ function supply(idB, obj) {
 	// Слежение за появлением-сбросом аварии
 	upSupply(idB, total)
 	downSupply(idB, total)
-	const r = supplyTimeout()
+	const r = supplyTimeout(idB, total)
 	// Авария только что сбросилась
 	if (r) return r
 
@@ -36,7 +36,7 @@ function fnMes(from, till) {
 	const r = mes[38]
 	// Если указан диапазон, то отобразить его в пуш сообщении
 	const txt =
-		from && till ? ` с ${from.toLocaleString('ru')} по ${from.toLocaleString('ru')}` : ''
+		from && till ? ` с ${from.toLocaleString('ru')} по ${till.toLocaleString('ru')}` : ''
 	r.msg = 'Авария питания' + txt
 
 	return r
@@ -61,7 +61,7 @@ function upSupply(idB, total) {
  * @param {*} total
  */
 function downSupply(idB, total) {
-	if (!total && !store.retain[idB].downSupply && store?.retain?.[idB]?.upSupply) {
+	if (!total && !store.retain?.[idB]?.downSupply && store?.retain?.[idB]?.upSupply) {
 		store.retain ??= {}
 		store.retain[idB] ??= {}
 		store.retain[idB].downSupply = new Date()
@@ -75,13 +75,24 @@ const _TIME = 5 * 60 * 1000
  * в пуш отправляем только одно сообщение "Авария питания с .. по .."
  * @returns
  */
-function supplyTimeout() {
+function supplyTimeout(idB, total) {
+	// Если нет времени появления/сброса аварии - выходим
 	if (!store?.retain?.[idB]?.upSupply || !store?.retain?.[idB]?.downSupply) return
-	const time = compareTime(store?.retain?.[idB]?.downSupply, _TIME)
+
+	// Если время появления/сброса аварии существует и снова появилась авариz питания
+	//  в теччении 5 минут -> Сброс времени для перерегистрации
+	if (total) return clear(idB)
+
 	// Ожидание 5 мин
+	const time = compareTime(store?.retain?.[idB]?.downSupply, _TIME)
 	if (!time) return fnMes(store?.retain?.[idB]?.upSupply, store?.retain?.[idB]?.downSupply)
 	// Время прошло, очистка времени и выкл игнора пуша
+	clear(idB)
+
+	return
+}
+
+function clear(idB) {
 	store.retain[idB].upSupply = null
 	store.retain[idB].downSupply = null
-	return
 }
