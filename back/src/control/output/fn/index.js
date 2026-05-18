@@ -13,7 +13,7 @@ function collectMdls(module, equipment) {
 	// Проход по модулям
 	const map = new Map()
 	module.forEach((m) => {
-		const id = m.ip + (m?.slave ?? '')
+		const id = m.ip + m.equipmentId +(m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
 			return map.set(id, {
@@ -122,7 +122,7 @@ function prepare(out, mdls) {
 	// По ключу out
 	for (const id in out) {
 		// Рама модуля (module+equipment)
-		const mdl = mdls.find((el) => getId(el.ip, el.slave) === id)
+		const mdl = mdls.find((el) => getId(el.ip, el.equipmentId, el.slave) === id)
 		arr.push({ ...mdl, value: out[id] })
 	}
 	return arr

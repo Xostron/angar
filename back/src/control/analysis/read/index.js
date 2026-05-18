@@ -10,6 +10,7 @@ function readM(obj) {
 				if (!building || !building?.length) return {}
 				// Подготовка модулей
 				const arr = collect(module, equipment)
+                console.log(11, 'модули на чтение', arr)
 				// Опрос модулей по сети
 				return read(arr, obj)
 			})
@@ -43,7 +44,7 @@ function collect(module, equipment) {
 	module.forEach((m) => {
 		if (!m?.ip || !m?.equipmentId) return
 
-		const id = m.ip + (m?.slave ?? '')
+		const id = m.ip + m.equipmentId +(m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
 			return map.set(id, {
