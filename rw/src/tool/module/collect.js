@@ -33,7 +33,7 @@ function transform() {
 	store.module.forEach((m) => {
 		if (!m?.ip || !m?.equipmentId) return
 
-		const id = m.ip + (m?.slave ?? '')
+		const id = m.ip + m.equipmentId + (m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
 			return map.set(id, {
