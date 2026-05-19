@@ -2,7 +2,7 @@ require('module-alias/register')
 const { parentPort, workerData, Worker, isMainThread } = require('worker_threads')
 const { check } = require('./fn')
 const { store } = require('@store')
-const read = require('@tool/control/read')
+const read = require('@tool/plc/read')
 
 // Если Node.js зашел в этот файл как в Воркер, вызываем функцию принудительно
 if (!isMainThread) {

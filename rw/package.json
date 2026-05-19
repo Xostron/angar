@@ -7,6 +7,7 @@
 		"@routes": "src/routes",
 		"@store": "src/store",
 		"@tool": "src/tool",
+		"@worker": "src/worker",
 		"@util": "src/util"
 	},
 	"scripts": {

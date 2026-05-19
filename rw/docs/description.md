@@ -5,6 +5,76 @@
 
 ## 2. Данные необходимые для записи в модули
 
+```
+[
+  {
+    _id: [ '69fb44b9c35ea05200898e05', '69fb44d4c35ea05200898e86' ],
+    ip: '192.168.21.127',
+    port: 502,
+    buildingId: [ '69fb44b9c35ea05200898d95', '69fb44d4c35ea05200898e12' ],
+    equipmentId: '66ec21f42249b6e2416a8778',
+    timeout: 3,
+    name: 'МУ210-402',
+    interface: 'tcp',
+    use: 'w',
+    wr: {
+      channel: 16,
+      start: 470,
+      step: 1,
+      type: 'boolean',
+      on: 1,
+      noreverse: false
+    },
+    value: [
+      1, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 1, 0,
+      1, 0, 0, 0
+    ]
+  },
+  {
+    _id: [ '69fb44b9c35ea05200898e04', '69fb44d4c35ea05200898e85' ],
+    ip: '192.168.21.126',
+    port: 502,
+    buildingId: [ '69fb44b9c35ea05200898d95', '69fb44d4c35ea05200898e12' ],
+    equipmentId: '66cee314eeb92a11d628b024',
+    timeout: 3,
+    name: 'МК210-301',
+    interface: 'tcp',
+    use: 'rw',
+    re: { channel: 6, start: 51, step: 1, type: 'boolean' },
+    wr: { channel: 8, on: 1, start: 470, step: 1, type: 'boolean' },
+    value: [
+      0, 1, 1, 0, 1, 0,
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0
+    ]
+  },
+  {
+    _id: [ '69fb44b9c35ea05200898e09', '69fb44d4c35ea05200898e8a' ],
+    ip: '192.168.21.131',
+    port: 502,
+    buildingId: [ '69fb44b9c35ea05200898d95', '69fb44d4c35ea05200898e12' ],
+    equipmentId: '6800b77056c6a01c90ecbc5d',
+    timeout: 3,
+    name: 'МВ210-501AO',
+    interface: 'tcp',
+    use: 'w',
+    wr: {
+      channel: 8,
+      noreverse: true,
+      on: 10,
+      start: 3000,
+      step: 1,
+      type: 'int'
+    },
+    value: [
+      20, 100, 0, 21,
+      20,   0, 0,  0
+    ]
+  }
+]
+```
+
 ## 3. Результат чтения модулей, передаваемых на сервер ангара
 
 ```
@@ -73,4 +143,3 @@
 
 ```
 
-## 4. Результат записи модулей, передаваемых на сервер ангара

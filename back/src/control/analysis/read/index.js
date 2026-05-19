@@ -1,5 +1,6 @@
 const readJson = require('@tool/json').read
 const read = require('@tool/control/read')
+const { collectMdls } = require('../../output/fn')
 
 // Опрос модулей
 function readM(obj) {
@@ -9,7 +10,7 @@ function readM(obj) {
 			.then(([module, equipment, building]) => {
 				if (!building || !building?.length) return {}
 				// Подготовка модулей
-				const arr = collect(module, equipment)
+				const arr = collectMdls(module, equipment)
                 // console.log(11, 'модули на чтение', arr)
 				// Опрос модулей по сети
 				return read(arr, obj)
@@ -23,42 +24,3 @@ function readM(obj) {
 }
 
 module.exports = readM
-
-/**
- * Собираем модули на чтение
- *
- * Старая логика: Избыточный опрос. Когда на ПОСе несколько складов, в этих складах могут
- * быть общие модули, имеющие одинаковый IP, система делала опрос модулей для каждого
- * склада и соответсвенно одинаковые IP опрашивались по N раз. (N - кол-во складов)
- *
- * Новая логика: Уйти от избыточного опроса и опрашивать модули с одинаковыми
- * IP один раз за цикл.
- * Данная функция группирует модули по IP. Ключ _id ИД модуля, содержит в себе
- * ИД общих модулей, которые принадлежат разным складам на ПОСе.
- *
- * @param {*} module
- * @param {*} equipment
- */
-function collect(module, equipment) {
-	const map = new Map()
-	module.forEach((m) => {
-		if (!m?.ip || !m?.equipmentId) return
-
-		const id = m.ip + m.equipmentId +(m?.slave ?? '')
-		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
-		if (!map.has(id))
-			return map.set(id, {
-				...m,
-				_id: [m._id],
-				buildingId: [m.buildingId],
-				...equipment[m.equipmentId],
-			})
-
-		// В коллекции уже есть такой модуль, редактируем ключ _id и buildingId
-		// данный модуль может использоваться несколькими складами
-		const cur = map.get(m.ip)
-		cur._id.push(m._id)
-		cur.buildingId.push(m.buildingId)
-	})
-	return [...map.values()]
-}

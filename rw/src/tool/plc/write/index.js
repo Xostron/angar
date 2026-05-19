@@ -1,4 +1,4 @@
-const { timeout } = require('@tool/message/plc_module')
+const { timeout } = require('@tool/message')
 const make = require('../make')
 const Aboc = require('@tool/abort_controller')
 /**
@@ -6,7 +6,7 @@ const Aboc = require('@tool/abort_controller')
  * @param {*} obj Глобальные данные о складе
  * @returns
  */
-async function write(arr) {
+async function write(arr=[]) {
 	try {
 		// TDOD Режим только чтения без записи в модуля
 		if (process.env.NODE_ENV === 'READ') {
@@ -45,16 +45,3 @@ function pause(n) {
 }
 
 module.exports = write
-
-// Запись данных в модуль
-// async function makeOld(o) {
-// 	switch (o.interface) {
-// 		case 'rtu':
-// 			return await writeRTU(o.ip, o.port, o)
-
-// 		case 'tcp':
-// 			return await writeTCP(o.ip, o.port, o)
-// 		default:
-// 			return
-// 	}
-// }

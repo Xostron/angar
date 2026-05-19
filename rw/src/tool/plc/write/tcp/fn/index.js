@@ -1,4 +1,4 @@
-const { int } = require('@tool/control/read/fn')
+const { int } = require('@tool/plc/read/fn')
 
 function regist(opt) {
 	// Стартовый адрес

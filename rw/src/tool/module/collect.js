@@ -12,8 +12,8 @@ function collect(count) {
 	// Если нет флага обновления рамы ИЛИ нет модулей ИЛИ нет оборудования - выходим
 	if (!store._update || !store.module.length || !Object.keys(store.equipment).length) return
 
-	// Преобразуем модуль+оборудование, убираем дубляжи
-	store.mdls = transform()
+	// Рама: Преобразуем модуль+оборудование, убираем дубляжи
+	store.mdls = collectMdls(store.module, store.equipment)
 
 	// Разбиваем модули на потоки и сохраняем в store.parts
 	store.parts = partition(store.mdls, count)
@@ -22,17 +22,24 @@ function collect(count) {
 }
 
 /**
- * Собираем модули на чтение
- * Данная функция группирует модули по IP+slave {ip+slave:{_id:[],...}}. Ключ _id ИД модуля, содержит в себе
- * ИД общих модулей, которые принадлежат разным складам на ПОСе.
+ * Собрать массив уникальных модулей:
+ * Уйти от избыточного опроса и опрашивать модули с одинаковыми
+ * id = m.ip + m.equipmentId +(m?.slave ?? '') один раз за цикл.
+ * Данная функция группирует модули по id = m.ip + m.equipmentId +(m?.slave ?? '').
+ * Ключ _id ИД модуля, содержит в себе ИД общих модулей,
+ * которые принадлежат разным складам на ПОСе.
  *
- * @returns {object[]} mdls - массив рамы модуль+оборудование
+ * @param {object[]} module Рама модулей
+ * @param {object} equipment Рама оборудования
+ * @return {object[]} Массив модулей (модуль+equipment) без дубляжей
  */
-function transform() {
-	const map = new Map()
-	store.module.forEach((m) => {
-		if (!m?.ip || !m?.equipmentId) return
+function collectMdls(module, equipment) {
+	// Если нет рамы, выходим
+	if (!module?.length || !Object.keys(equipment ?? {})?.length) return []
 
+	// Проход по модулям
+	const map = new Map()
+	module.forEach((m) => {
 		const id = m.ip + m.equipmentId + (m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
@@ -40,15 +47,16 @@ function transform() {
 				...m,
 				_id: [m._id],
 				buildingId: [m.buildingId],
-				...store.equipment[m.equipmentId],
+				...equipment[m.equipmentId],
 			})
 
-		// В коллекции уже есть такой модуль, редактируем ключ _id и buildingId
+		// В коллекции уже есть такой модуль, редактируем ключ _id, buildingId
 		// данный модуль может использоваться несколькими складами
-		const cur = map.get(m.ip)
+		const cur = map.get(id)
 		cur._id.push(m._id)
 		cur.buildingId.push(m.buildingId)
 	})
+	// console.log(9911, [...map.values()])
 	return [...map.values()]
 }
 
