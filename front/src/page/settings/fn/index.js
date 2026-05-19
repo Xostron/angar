@@ -111,8 +111,6 @@ function setting(list, code, idB, setSettingAu, showHid) {
 // Формирование строки (1 ячейка оглавление, остальные ячейки в mark.list (функция column))
 function row(mark, code, idB, setSettingAu, showHid) {
 	let result = []
-	// if (mark._code.includes('text-collapse')) console.log(11, mark.list)
-	// console.log(mark)
 	// 1 ячейка по-умолчанию
 	const cell = {
 		field: mark._type === 'txt' || mark._code.includes('text-collapse') ? 'title' : 'iconText',

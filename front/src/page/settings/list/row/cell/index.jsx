@@ -16,6 +16,7 @@ export default function Cell({ data, i, j }) {
 	const val = {}
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
+	
 	val[data.code] = useInputStore(({ input }) => {
 		if (!code) return null
 		if (
@@ -50,9 +51,8 @@ export default function Cell({ data, i, j }) {
 	}, [type, prd])
 
 	// Подсветка - Изменение поля
-	const name = data?.code?.split('.')
 	let hasChanged
-	if (name?.length === 2) hasChanged = !!settingAu?.value?.[name[0]]?.[name[1]]
+	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
 	else hasChanged = !!settingAu?.value?.[data.code]
 	let cl = ['cell-w']
 	if (hasChanged) cl.push('changed')
@@ -65,7 +65,6 @@ export default function Cell({ data, i, j }) {
 		case 'iconText':
 			return <IconText cls='cell-w' data={data} style={st} title={data.code} />
 		case 'input':
-			// const disabled = (hid?.[`${type}.text-collapse`] ?? true) && data._acv
 			return (
 				<Input
 					cls={cl}

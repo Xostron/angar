@@ -78,7 +78,7 @@ const useOutputStore = create((set, get) => ({
 		const aKey = []
 		// Кнопки скрыть/показать
 		const hidKeys = Object.entries(hid)?.map((el) => [
-			el?.[0]?.split('.')?.at(-1),
+			el?.[0]?.split('_')?.at(-1),
 			el?.[1] ?? false,
 		])
 		// Список кодов настроек которые необходимо скрыть (mode=true)/показать (mode=false)

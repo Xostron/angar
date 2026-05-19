@@ -10,7 +10,7 @@ function readM(obj) {
 				if (!building || !building?.length) return {}
 				// Подготовка модулей
 				const arr = collect(module, equipment)
-                console.log(11, 'модули на чтение', arr)
+                // console.log(11, 'модули на чтение', arr)
 				// Опрос модулей по сети
 				return read(arr, obj)
 			})
