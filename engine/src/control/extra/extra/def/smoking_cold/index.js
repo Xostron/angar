@@ -1,0 +1,115 @@
+const { compareTime, runTime, remTime } = require('@tool/command/time')
+const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
+const { arrCtrlDO } = require('@tool/command/module_output')
+const { data: store } = require('@store')
+const { msgB } = require('@tool/message')
+const h = 3600000
+
+/**
+ * Окуривание для ХОЛОДИЛЬНИКА:
+ * 1 Выключить склад
+ * 2 Зайти в настройки "Окуривание"
+ * 3 Настроить время и в поле "ВКЛЮЧИТЬ" выбрать вкл
+ * 4 Дождаться конца окуривания: сообщения о завершении попадают на страницу "СИГНАЛЫ"
+ * @param {*} building
+ * @param {*} section
+ * @param {*} obj
+ * @param {*} s
+ * @param {*} se
+ * @param {*} m
+ * @param {*} alarm
+ * @param {*} acc
+ * @param {*} data
+ * @param {*} ban
+ * @param {*} resultFan
+ * @param {*} clear
+ * @returns
+ */
+function smoking(
+	building,
+	section,
+	obj,
+	s,
+	se,
+	m,
+	alarm,
+	acc,
+	data,
+	ban,
+	resultFan,
+	clear = false
+) {
+	const idB = building._id
+	if (clear) return fnClear(idB)
+
+	const stg = s?.smoking
+	// Все вентиляторы склада
+	const arr = collect(m)
+	const doc = obj.retain?.[idB]?.smoking ?? {}
+	store.smoking[idB] = doc
+	const accelMode = s.cooler?.accel ?? s.coolerCombi?.accel ?? s.accel?.mode
+	// Выключено окуривание
+	if (!stg || !stg?.on) {
+		// Если режим разгонных вент. ВКЛ - то блокируем выключение
+		if (accelMode !== 'on') arrCtrlDO(idB, arr, 'off')
+		delete doc.work
+		delete doc.wait
+		delExtra(idB, null, 'smoking1')
+		delExtra(idB, null, 'smoking2')
+		return
+	}
+	// Включено окуривание
+	// Работаем - включаются вентиляторы
+	doc.work ??= new Date()
+	let time = compareTime(doc.work, stg.work * h)
+
+	if (!time) {
+		wrExtra(
+			idB,
+			null,
+			'smoking1',
+			msgB(building, 82, `Работа ${remTime(doc.work, stg.work * h)}`),
+		)
+		delExtra(idB, null, 'smoking2')
+		arrCtrlDO(idB, arr, 'on', s)
+		return
+	}
+
+	// Время работы прошло
+	doc.wait ??= new Date()
+	delExtra(idB, null, 'smoking1')
+	wrExtra(
+		idB,
+		null,
+		'smoking2',
+		msgB(building, 82, `Ожидание ${remTime(doc.wait, stg.wait * h)}`),
+	)
+	arrCtrlDO(idB, arr, 'off')
+	time = compareTime(doc.wait, stg.wait * h)
+	if (time) {
+		doc.work = null
+		doc.wait = null
+		delExtra(idB, null, 'smoking1')
+		delExtra(idB, null, 'smoking2')
+	}
+}
+
+module.exports = smoking
+
+/**
+ * Получить все вентиляторы холодильника
+ * @param {object} m Исполнительные механизмы склада
+ * @returns
+ */
+function collect(m) {
+	// для холодильника без ПЧ
+	const arr = m.fanA ?? []
+	m?.cold?.cooler.forEach(({ fan = [] }) => {
+		fan ? arr.push(...fan) : null
+	})
+	return arr
+}
+
+function fnClear(idB) {
+	delExtra(idB, null, 'smoking')
+}

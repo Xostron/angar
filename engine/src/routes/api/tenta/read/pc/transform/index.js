@@ -1,0 +1,106 @@
+const { checkS } = require('@tool/get/sensor');
+const { data: store } = require('@store');
+const banner = require('../../store/transform/banner')
+
+// Данные по pc (карточки складов)
+function transform(data, rack) {
+	const {building, section, fan, cooler} = rack
+	const { tout, hout } = data?.total ?? {};
+	const result = {
+		// Температура улицы (мин)
+		temp: { value: tout?.min?.toFixed(1) ?? undefined, state: tout?.state },
+		// Влажность улицы (макс)
+		rh: { value: hout?.max?.toFixed(1) ?? undefined, state: hout?.state },
+		// Расчетная абсолютная влажность улицы
+		ah: {
+			value: data?.humAbs?.out?.com ?? undefined,
+			state: checkS(tout?.state, hout?.state),
+		},
+	};
+
+	// По складам
+	building?.forEach((el) => fnTransform(el, data, rack, result));
+
+	// GVM Данные для холодильника
+	if (building?.every((el) => el.type == 'cold')) {
+		// Удаляем не нужные ключи для Холодильника
+		delete result.temp;
+		delete result.rh;
+		delete result.ah;
+	}
+
+	return result;
+}
+
+module.exports = transform;
+
+function fnTransform(bld, data, rack, result) {
+	const {building, section, fan, cooler} = rack
+	// TODO:rrp  Надо проверить почему undefined записан как строка
+	if (!bld._id || bld._id === 'undefined') return;
+	// Тип склада
+	result[bld._id + 'product'] =
+		data?.retain?.[bld._id]?.product?.code ?? null;
+	result[bld._id + 'mode'] =
+		store.value?.building?.[bld._id]?.submode?.[0] ??
+		data?.retain?.[bld._id]?.automode ??
+		null;
+	result[bld._id + 'count'] =
+		data?.retain?.[bld._id]?.drying?.count ??
+		data?.retain?.[bld._id]?.drying?.acc ??
+		0;
+	result[bld._id + 'on'] = data?.retain?.[bld._id]?.start ?? null;
+	// Влажность продукта (hin)
+	result[bld._id + 'rh'] = {
+		value: data?.total?.[bld._id]?.hin?.max?.toFixed(1) ?? undefined,
+		state: data?.total?.[bld._id]?.hin?.state,
+	};
+	// Температура продукта (tprd)
+	result[bld._id + 'min'] = {
+		value: data?.total?.[bld._id]?.tprd?.min?.toFixed(1) ?? undefined,
+		state: data?.total?.[bld._id]?.tprd?.state,
+	};
+	result[bld._id + 'max'] = {
+		value: data?.total?.[bld._id]?.tprd?.max?.toFixed(1) ?? undefined,
+		state: data?.total?.[bld._id]?.tprd?.state,
+	};
+
+	// Количество аварий
+	result[bld._id + 'crash'] = data?.alarm?.count?.[bld._id] ?? null;
+	// Об авариях
+	result[bld._id + 'alarm'] = Object.keys(data?.alarm?.barB?.[bld._id] ?? {})
+		.map((k) => {
+			const alr = data?.alarm?.barB?.[bld._id]?.[k]?.[0];
+			return alr ? { code: k, msg: alr?.msg, desc: alr?.desc } : null;
+		})
+		.filter((el) => !!el);
+	// Сообщение достижений
+	result[bld._id + 'note'] = data.alarm?.achieve?.[bld._id] ?? null
+	// console.log(99001, result?.[bld._id + 'note'])
+	// Таймеры запретов
+	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map(
+		(el) => ({ code: el?.type, msg: el?.msg, desc: el?.desc })
+	);
+	result[bld._id + 'alarm'].push(...timer);
+
+	// result[bld._id + 'banner'] = banner(bld._id, data) ?? null
+
+	// console.log(222, result[bld._id + 'banner'])
+
+	// Общее состояние ВНО (кроме холодильника)
+	if (bld.type !== 'cold') {
+		const sec = section
+			.filter((el) => el.buildingId == bld._id)
+			.map((el) => el._id);
+	
+		const idsClr = cooler.filter((el) => sec.includes(el.sectionId)).map((el) => el._id)
+		const f = fan.filter(
+			(el) => el.type == 'fan' && (sec.includes(el.owner.id) || idsClr.includes(el.owner.id))
+		);
+		// const f = fan.filter(
+			// 	(el) => el.type == 'fan' && sec.includes(el.owner.id)
+		// );
+		const run = f.some((el) => store.value?.[el._id]?.state === 'run');
+		result[bld._id + 'fan'] = run ? 'run' : 'stop';
+	}
+}
