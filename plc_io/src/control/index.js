@@ -7,6 +7,7 @@ const collect = require('@tool/module/collect')
 // const getOutput = require('@tool/module/get_output')
 // const write = require('@tool/plc/write')
 const { fnThreadPool } = require('../worker')
+const post = require('../client/value')
 
 // Опрос модулей
 async function main(count) {
@@ -15,9 +16,10 @@ async function main(count) {
 		collect(count)
 		// Потоковое чтение модулей и сохранение в аккумулятор
 		store.value = await fnThreadPool(count)
+		// Отправка данных на сервер Ангара
+		await post()
 		// Задержка 10 сек
 		await delay(10000)
-		// Отправка данных на сервер Ангара
 	} catch (error) {
 		console.error(99, error)
 		await delay(3000)

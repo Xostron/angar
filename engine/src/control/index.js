@@ -48,9 +48,6 @@ async function control() {
 		// Aboc.call(zero)(null, false)
 		// await delay(4000)
 		Aboc.refresh()
-		if (store._cycle_ms_ < 50) await delay(1000)
-		// Счетчик циклов
-		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
 		return true
 	} catch (error) {
 		await delay(5000)
@@ -73,6 +70,10 @@ async function loop() {
 		await writeStore()
 		// Основной цикл программы
 		await control()
+		// В режиме микросервиса
+		process.env.MODE ? await delay(2000) : null
+		// Счетчик циклов
+		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
 		// Сброс флага первого цикла
 		store._first = false
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0

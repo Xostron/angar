@@ -19,7 +19,7 @@ module.exports = loopInit
 async function init() {
 	const config = {
 		method: 'GET',
-		url: 'rw/init',
+		url: 'io/init',
 		headers: {},
 	}
 
@@ -31,4 +31,5 @@ async function init() {
 	store.module = r.data.module
 	store.equipment = r.data.equipment
 	console.log('Сервер ангара: Рама получена')
+	return true
 }
