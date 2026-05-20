@@ -1,33 +1,25 @@
 const os = require('os')
 const hrtime = process.hrtime.bigint
 const { store } = require('@store')
-const readThread = require('@worker')
 const { delay } = require('@tool/time')
 const collect = require('@tool/module/collect')
-const Aboc = require('@tool/abort_controller')
-const getOutput = require('@tool/module/get_output')
-const write = require('@tool/plc/write')
+// const Aboc = require('@tool/abort_controller')
+// const getOutput = require('@tool/module/get_output')
+// const write = require('@tool/plc/write')
+const { fnThreadPool } = require('../worker')
 
 // Опрос модулей
 async function main(count) {
 	try {
-		// Чтение модулей
 		// Получить раму модулей (store.mdls) и распределить на потоки (store.parts)
 		collect(count)
-		// Потоковое чтение модулей
-		const r = await readThread(count)
-		// Сохраняем в аккумулятор
-		store.value = r
-
-		// Запись модулей
-		store.output = getOutput(store.mdls, store.value, store.out)
-		await write(store.output)
-
-		Aboc.refresh()
-		await delay(5000)
+		// Потоковое чтение модулей и сохранение в аккумулятор
+		store.value = await fnThreadPool(count)
+		// Задержка 10 сек
+		await delay(10000)
 	} catch (error) {
 		console.error(99, error)
-		await delay(5000)
+		await delay(3000)
 	}
 }
 

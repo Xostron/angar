@@ -4,79 +4,115 @@ const { check } = require('./fn')
 const { store } = require('@store')
 const read = require('@tool/plc/read')
 
-// Если Node.js зашел в этот файл как в Воркер, вызываем функцию принудительно
-if (!isMainThread) {
-	readThread()
+// Пул многоразовых потоков
+let pool = null
+
+// Инициализация пула потоков
+/**
+ *
+ * @param {*} count Настройка: кол-во потоков
+ * @returns
+ */
+function initPool(count) {
+	if (!isMainThread || pool) return
+	pool = []
+
+	// Создание многоразовых воркеров
+	for (let i = 0; i < count; i++) createWorker(i)
 }
 
+function createWorker(idx) {
+	const worker = new Worker(__filename, { workerData: { idx } })
+	pool[idx] = worker
+	// Воркер упал, создаем новый воркер
+	worker.on('exit', (code) => {
+		console.log('Worker Exit. Код', code)
+		createWorker(idx)
+	})
+}
+
+// Многоразовый поток
 /**
- * Потоковое чтение модулей
- * @param {number} count Настройка кол-ва потоков
+ *
+ * @param {*} count
  * @returns {object} Объект с ключами ИД модулей и значениями входов/выходов
  */
-async function readThread(count) {
+async function fnThreadPool(count) {
+	// Для главного потока
 	if (isMainThread) {
-		// Если вызван в главном потоке, отрабатывает Менеджер создания воркеров
+		// инициализация пула потоков
+		initPool(count)
 		return manager(count)
-	} else {
-		// Если вызван Воркером, отрабатывает обработчик потока - чтение модулей
-		await threadAction()
 	}
 }
 
-module.exports = readThread
+module.exports = { fnThreadPool, initPool }
 
 /**
- * Менеджер запуска воркеров и сбора результата
- * @param {*} count Кол-во потоков
- * @returns 
+ * Менеджер многоразовых потоков
+ * @param {*} count
+ * @returns
  */
 function manager(count) {
 	return new Promise((resolve, reject) => {
+		// Модули на чтение
 		const length = store.mdls.length
-		// Запуск воркеров
+		// Результат чтения модулей
 		let results = {}
 		if (!length) return resolve(results)
+
 		// Кол-во завершенных воркеров
-		let countWorker = 0
-		// Создание потоков
+		let finishedWorkers = 0
+
+		// Создаем воркеры (потоки)
 		for (let i = 0; i < count; i++) {
+			const worker = pool[i]
+			// Порция модулей на поток
 			const part = store.parts[i]
-			const worker = new Worker(__filename, {
-				workerData: { id: i, arr: part },
-			})
+			// Время вывполнения потока
+			const start = new Date()
 
-			// Слушаем ответ от потока (threadAction), собираем результат
-			worker.on('message', (r) => {
+			// Отправляем задачу потоку
+			worker.postMessage(part)
+
+			// Слушаем ответ от потока (одноразовый)
+			worker.once('message', (r) => {
 				results = { ...results, ...r }
-				console.log('Поток в работе', i)
+				// Время обработки потока
+				const end = (new Date() - start) / 1000
+				console.log('Поток в работе', i, end, 's')
+
+				if (check(count, ++finishedWorkers, pool)) {
+					console.log('Потоки завершены')
+					resolve(results)
+				}
 			})
 
-			// При ошибке выполнения
-			worker.on('error', (reason) => {
+			// Ошибка потока
+			worker.once('error', (reason) => {
+				// Записываем в результат по модулям потока - причину ошибки
 				part.forEach((mdl, i) => {
 					mdl._id.forEach((id) => (results[id] = `Worker ${i}. Error ${reason}`))
 				})
-			})
-
-			// Завершение работы воркера, очистка воркера из памяти
-			worker.on('exit', (code) => {
-				part.forEach((mdl, i) => {
-					if (results[mdl._id[0]] === undefined)
-						mdl._id.forEach((id) => (results[id] = `Worker ${i}. Exit ${code}`))
-				})
-				console.log('Поток завершен', i)
-				countWorker++
-				if (check(count, countWorker)) resolve(results)
+				console.log('Ошибка потока', i, reason)
+				if (check(count, ++finishedWorkers, pool)) {
+					console.log('Потоки завершены')
+					resolve(results)
+				}
 			})
 		}
 	})
 }
 
-// Обработчик потока - читаем модули
-async function threadAction() {
-	// arr - модули на чтение в данном потоке
-	const { id, arr } = workerData
-	const r = await read(arr)
-	parentPort.postMessage(r)
+// Обработчик потоков - action
+if (!isMainThread) {
+	const { idx } = workerData // id получаем один раз при старте
+
+	// Слушаем данные для воркера от главного потока
+	parentPort.on('message', async (part) => {
+		// Чтение модулей
+		const r = await read(part)
+		// Результат чтения
+		parentPort.postMessage(r)
+	})
 }
