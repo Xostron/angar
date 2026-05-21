@@ -5,7 +5,7 @@ const post = require('./post')
 function plc_io(router) {
 	// Запрос рамы модулей и оборудования
 	router.get('/io/init', get())
-	// Прием опроса модулей
+	// Прием данных опроса модулей
 	router.post('/io/value', post())
 }
 

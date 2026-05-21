@@ -1,5 +1,5 @@
 const { io } = require('@tool/server')
-const Aboc = require('@tool/abort_controller')
+// const Aboc = require('@tool/abort_controller')
 const { data: store } = require('@store')
 const { insert } = require('@tool/db')
 
@@ -28,7 +28,7 @@ function saveToDB(code, data) {
 // Широковещательные сообщения (всем клиентам)
 // значения сигналов
 function cValue(data) {
-	if (Aboc.check()) return
+	// if (Aboc.check()) return
 	io.volatile.emit('c_input', data)
 	saveToDB('input', data)
 }

@@ -7,7 +7,7 @@ const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
 const { statOnChange } = require('../stat')
 const analysis = require('./analysis')
-const { zero } = require('@tool/zero')
+// const { zero } = require('@tool/zero')
 const writeLock = require('./lock')
 const convCmd = require('./output')
 const main = require('./main')
@@ -16,6 +16,7 @@ const data = require('./data')
 const battery = require('@tool/scripts/battery')
 const Aboc = require('@tool/abort_controller')
 const writeStore = require('./save/extra')
+const outputIO = require('../client/plc_io')
 
 // Контроль работы склада
 async function control() {
@@ -27,23 +28,29 @@ async function control() {
 		const obj = JSON.parse(data)
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
 		await Aboc.asycall(analysis)(obj)
-
+		// await analysis(obj)
 		// for (const key of ['auto', 'extralrm', 'extra']) console.log(990, key, store.alarm[key])
 
 		// Логика
 		Aboc.call(main)(obj)
+		// main(obj)
 		// Выхода: Команды управления
 		Aboc.call(convCmd)(obj)
+		// convCmd(obj)
 		// Выхода: Блокировки
 		Aboc.call(writeLock)(obj)
-		// Выхода: Запись в модули
-		await writeVal(obj.output)
+		// writeLock(obj)
+		// Выхода: Запись в модули -> В режиме микросервиса
+		process.env.MODE ? outputIO(obj.output) : await writeVal(obj.output)
 		// Аварии для web
 		const alr = await Aboc.asycall(webAlarm)(obj)
+		// const alr = await webAlarm(obj)
 		// Статистика
 		Aboc.call(statOnChange)(obj, alr?.history)
+		// statOnChange(obj, alr?.history)
 		// Сохранение пользовательских настроек склада retain/data.json
 		await Aboc.asycall(save)(obj)
+		// await save(obj)
 		// // обнулить счетчик сушки
 		// Aboc.call(zero)(null, false)
 		// await delay(4000)

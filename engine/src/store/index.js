@@ -34,6 +34,9 @@ const data = {
 	tWarming: 60,
 	// Период повторной проверки модуля, 1мин
 	tTCP: 1,
+	// Флаг сервер опроса модулей PLC_IO на связи
+	timestampIO: null,
+
 	/** 
 	Антидребезг неисправности модуля ПЛК, 1мин 
 	(в течении данного времени будут совершать попытки прочитать модуль, 
@@ -168,6 +171,13 @@ const data = {
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
 }
 
+/**
+ * Обновление флага сервер ангара на связи
+ */
+function live() {
+	data.timestampIO = new Date()
+}
+
 //
 /**
  * Получить ссылку на аккумулятор (дополнительные вычисления в auto,extra,extralrm)
@@ -267,4 +277,5 @@ module.exports = {
 	setToOffSection: toggleMode('toOffSection'),
 	setToOffBuild,
 	readAcc,
+	live,
 }

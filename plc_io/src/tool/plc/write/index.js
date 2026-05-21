@@ -1,12 +1,14 @@
-const { timeout } = require('@tool/message')
+const { timeout } = require('../../module/timeout')
+const { store } = require('@store/index')
 const make = require('../make')
-const Aboc = require('@tool/abort_controller')
+const { delay } = require('../../time')
+// const Aboc = require('@tool/abort_controller')
 /**
  * Записать данные в модули
  * @param {*} obj Глобальные данные о складе
  * @returns
  */
-async function write(arr=[]) {
+async function write(arr = []) {
 	try {
 		// TDOD Режим только чтения без записи в модуля
 		if (process.env.NODE_ENV === 'READ') {
@@ -17,7 +19,7 @@ async function write(arr=[]) {
 
 		const ok = {}
 		for (const m of arr) {
-			if (Aboc.check()) return
+			// if (Aboc.check()) return
 
 			const idsM = m._id
 			const idsB = m.buildingId
@@ -28,7 +30,7 @@ async function write(arr=[]) {
 			// Запись данных в модуль
 			v = await make(m, 'write')
 
-			await pause(100)
+			await delay(store.tPause)
 
 			const k = m.name + m.ip + (m.slaveId ?? '')
 			ok[k] = v
@@ -39,9 +41,5 @@ async function write(arr=[]) {
 	}
 }
 
-// Пауза
-function pause(n) {
-	return new Promise((res) => setTimeout(res, n))
-}
 
 module.exports = write

@@ -69,15 +69,7 @@ module.exports = async function state() {
 		const params = hub?.init ? null : { type: 'init' }
 		const config = apiConfig(result, params)
 		const response = await api(config)
-		if (result.length <= 12) {
-			// console.log(9900, 'result', JSON.stringify(result, null, ' '), result?.length)
-			// console.log(
-			// 	9900,
-			// 	'diffing',
-			// 	JSON.stringify(diffing, null, ' '),
-			// 	Object.values(diffing ?? [])?.length
-			// )
-		}
+
 		console.log(
 			'\x1b[32m%s\x1b[0m',
 			'Подготовлено данных:',

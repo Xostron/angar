@@ -10,6 +10,7 @@ const Aboc = require('@tool/abort_controller')
 function value(val, obj) {
 	// Преобразование прочитанных входов/выходов
 	const data = Aboc.call(periphery)(val, obj)
+	// const data = periphery(val, obj)
 	if (!data) return
 	// Данные для главного цикла
 	obj.value = { ...data }

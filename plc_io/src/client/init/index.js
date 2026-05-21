@@ -30,6 +30,6 @@ async function init() {
 	store._update = true
 	store.module = r.data.module
 	store.equipment = r.data.equipment
-	console.log('Сервер ангара: Рама получена')
+	console.log('Рама модулей и оборудования получена от ангара')
 	return true
 }

@@ -16,7 +16,7 @@ const obj = {
 		aggregate: [],
 		binding: [],
 		device: [],
-		weather:{}
+		weather: {},
 	},
 	// файл json - Сохраненые настройки, калибровки, режимы
 	// retain: {},
@@ -25,7 +25,7 @@ const obj = {
 	// Опрос модулей + анализ
 	value: null,
 	// Запись в модули
-	output: {},
+	output: [],
 	connection: '',
 	prepareToAuto: {},
 }

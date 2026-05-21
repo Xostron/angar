@@ -7,17 +7,17 @@ const collect = require('@tool/module/collect')
 // const getOutput = require('@tool/module/get_output')
 // const write = require('@tool/plc/write')
 const { fnThreadPool } = require('../worker')
-const post = require('../client/value')
+const postV = require('../client/value')
 
 // Опрос модулей
-async function main(count) {
+async function main() {
 	try {
 		// Получить раму модулей (store.mdls) и распределить на потоки (store.parts)
-		collect(count)
+		collect(store.count)
 		// Потоковое чтение модулей и сохранение в аккумулятор
-		store.value = await fnThreadPool(count)
+		store.v = await fnThreadPool(store.count)
 		// Отправка данных на сервер Ангара
-		await post()
+		await postV()
 		// Задержка 10 сек
 		await delay(10000)
 	} catch (error) {
@@ -35,11 +35,11 @@ async function loop() {
 		// Задание кол-во ядер
 		let sp = 3
 		// Доступно ядер
-		let count = total - 1 > sp ? sp : total - 1
+		store.count = total - 1 > sp ? sp : total - 1
 		console.log('****************CYCLE******************')
-		console.log(`Всего ядер ${total}, доступно ${count}`)
+		console.log(`Всего ядер ${total}, доступно ${store.count}`)
 
-		await main(count)
+		await main()
 
 		const end = ((Number(hrtime() - bgn) / 1e6) | 0) / 1000
 		// Флаг первого цикла

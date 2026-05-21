@@ -1,5 +1,5 @@
 const fastify = require('fastify')
-// const ordersRoutes = require('./routes/orders')
+const engineRouters = require('./routes')
 
 // Инициализация fastify, подключение логирования
 const app = fastify({
@@ -7,12 +7,7 @@ const app = fastify({
 		process.env.NODE_ENV === 'development' ? { transport: { target: 'pino-pretty' } } : true,
 })
 
-// ping
-app.get('/health', async () => {
-	return { status: 'OK', timestamp: new Date() }
-})
-
 // Роуты
-// app.register(ordersRoutes, { prefix: '/api/v1' })
+app.register(engineRouters, { prefix: '/api/engine' })
 
 module.exports = app

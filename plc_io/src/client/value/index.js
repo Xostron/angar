@@ -1,5 +1,5 @@
 const api = require('@tool/api')
-const { store } = require('@store')
+const { store } = require('@store/index')
 
 const apiConfig = (data, params) => ({
 	method: 'POST',
@@ -15,22 +15,31 @@ const apiConfig = (data, params) => ({
 	params,
 })
 
-async function post() {
+/**
+ * Отправка данных опроса модулей на сервер ангара
+ * @returns
+ */
+async function postV() {
 	try {
-		if (!Object.keys(store.value ?? {}).length)
+		if (!Object.keys(store.v ?? {}).length)
 			return console.log('Данные опроса модулей не готовы')
-		const config = apiConfig(store.value, {})
-		const response = await api(config)
-		// console.log(response)
+
+		const config = apiConfig(store.v, {})
+		const r = await api(config)
+
 		// Запрос не успешен
-		if (!response.data) {
-			throw new Error('PLC_IO->ENGINE. ❌Не удалось передать данные на ангар')
+		if (!r.data) {
+			throw new Error('PLC_IO->ENGINE. ❌Не удалось передать данные опроса модулей на ангар')
 		}
-		console.log('\x1b[32m%s\x1b[0m', 'Данные успешно отправлены на ангар')
+		console.log(
+			'\x1b[32m%s\x1b[0m',
+			'PLC_IO->ENGINE. Данные c опроса модулей успешно отправлены на ангар',
+		)
+		store.live()
 		return true
 	} catch (error) {
 		throw error
 	}
 }
 
-module.exports = post
+module.exports = postV
