@@ -7,7 +7,6 @@ const { delay } = require('@tool/command/time')
 const webAlarm = require('@tool/web_alarm')
 const { statOnChange } = require('../stat')
 const analysis = require('./analysis')
-// const { zero } = require('@tool/zero')
 const writeLock = require('./lock')
 const convCmd = require('./output')
 const main = require('./main')
@@ -29,8 +28,6 @@ async function control() {
 		// Анализ данных с модулей ПЛК и отправка на Web-клиент
 		await Aboc.asycall(analysis)(obj)
 		// await analysis(obj)
-		// for (const key of ['auto', 'extralrm', 'extra']) console.log(990, key, store.alarm[key])
-
 		// Логика
 		Aboc.call(main)(obj)
 		// main(obj)
@@ -50,9 +47,10 @@ async function control() {
 		// statOnChange(obj, alr?.history)
 		// Сохранение пользовательских настроек склада retain/data.json
 		await Aboc.asycall(save)(obj)
+
+		// В режиме микросервиса
+		process.env.MODE ? await delay(300) : null
 		// await save(obj)
-		// // обнулить счетчик сушки
-		// Aboc.call(zero)(null, false)
 		// await delay(4000)
 		Aboc.refresh()
 		return true
@@ -77,8 +75,7 @@ async function loop() {
 		await writeStore()
 		// Основной цикл программы
 		await control()
-		// В режиме микросервиса
-		process.env.MODE ? await delay(2000) : null
+
 		// Счетчик циклов
 		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
 		// Сброс флага первого цикла

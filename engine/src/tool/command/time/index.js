@@ -1,4 +1,6 @@
 const { data: store } = require('@store')
+// const Aboc = require('@tool/abort_controller')
+
 /**
  * Преобразование hh:mm (string) в миллисекунды
  * @param {*} hm hh:mm (string), 01:42
@@ -15,7 +17,11 @@ function ms(hm) {
 // Задержка, мс
 function delay(t = 0) {
 	return new Promise((resolve, reject) => {
-		setTimeout(resolve, t, t <= 0 ? false : true)
+		setTimeout(() => resolve(t <= 0 ? false : true), t)
+		// Aboc.controller.signal?.addEventListener('abort', () => {
+		// 	clearTimeout(id)
+		// 	resolve(t <= 0 ? false : true)
+		// })
 	})
 }
 

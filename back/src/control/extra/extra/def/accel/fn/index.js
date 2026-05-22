@@ -1,4 +1,5 @@
 const { ctrlDO } = require('@tool/command/module_output')
+const { compareTime } = require('@tool/command/time')
 const { getStateClr } = require('@tool/cooler')
 const { getSectAuto } = require('@tool/get/building')
 
@@ -16,21 +17,21 @@ function off(building, fanA) {
 }
 // Разгонные вентиляторы: По времени
 function time(building, fanA, acc, se, s) {
-	const cur = +new Date().getTime()
-	// Фиксируем время работы
-	if (!acc?.work) acc.work = cur + s.accel.work / 1
-
-	// Вентиляторы в работе
-	if (acc.work > cur) on(building._id, fanA)
-
-	// Фиксируем время ожидания
-	if (acc.work < cur && !acc.wait) acc.wait = cur + s.accel.wait / 1
-
-	if (acc.work && acc.wait > cur) off(building._id, fanA)
-
-	if (acc.work && acc.wait < cur) {
-		delete acc.work
-		delete acc.wait
+	acc.work ??= new Date()
+	let time = compareTime(acc.work, s.accel.work)
+	// Работа разгонных ВНО
+	if (!time) {
+		on(building, fanA)
+		return
+	}
+	// Время работы прошло, выкл разгонник
+	acc.wait ??= new Date()
+	off(building, fanA)
+	//  Время ожидания прошло, очищаем аккумулятор для перезапуска разгонников
+	time = compareTime(acc.wait, s.accel.wait)
+	if (time) {
+		delete acc?.work
+		delete acc?.wait
 	}
 }
 
@@ -39,13 +40,13 @@ function temp(building, fanA, acc, se, s) {
 	const { tprd, tin } = se
 	const hyst = 0.3
 	// Отключено
-	if (tprd == null || tin == null) return off(building._id, fanA)
+	if (tprd == null || tin == null) return off(building, fanA)
 
 	// Вкл
-	if (tprd - tin > s.accel.difference) on(building._id, fanA)
+	if (tprd - tin > s.accel.difference) on(building, fanA)
 
 	// Выкл
-	if (tprd - tin + hyst < s.accel.difference) off(building._id, fanA)
+	if (tprd - tin + hyst < s.accel.difference) off(building, fanA)
 }
 
 /**

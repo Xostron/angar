@@ -49,7 +49,7 @@ const data = {
 	refresh() {
 		if (this.check()) {
 			this.controller = new AbortController()
-			console.log('...................ABOC NEW')
+			console.log('...................ABOC REFRESH')
 		}
 	},
 	// Обертка для вызываемой функции - если сигнал не взведен, то вызов функции fn

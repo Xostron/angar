@@ -19,7 +19,7 @@ async function main() {
 		// Отправка данных на сервер Ангара
 		await postV()
 		// Задержка 10 сек
-		await delay(10000)
+		Object.keys(store.v ?? {}).length ? await delay(60000) : await delay(5000)
 	} catch (error) {
 		console.error(99, error)
 		await delay(3000)

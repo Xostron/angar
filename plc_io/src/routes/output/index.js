@@ -1,6 +1,7 @@
 const { fnThreadPool } = require('@worker')
 const { store } = require('@store/index')
 const write = require('@tool/plc/write')
+const { delay } = require('@tool/time')
 
 /**
  * Запрос значений модулей
@@ -15,21 +16,35 @@ async function output(request, reply) {
 	// Запрос от ангара пришел, обновляем флаг связи
 	store.live()
 
-	// Даные на запись от ангара
+	// Данные на запись от ангара
 	const out = request.body
-	console.log(11, 'Данные на запись', out)
-	if (!out?.length) {
-		console.log('Запись выходов: пустые данные от ангара')
-		return { timestamp: new Date() }
-	}
+	console.log(
+		11,
+		'Данные на запись',
+		JSON.stringify(out.map((el) => ({ id: el._id, value: el.value }))),
+	)
+	if (check(out)) return { timestamp: new Date() }
 
 	// Запись модулей выхода
 	await write(out)
+	await delay(100)
 	// Чтение модулей
 	store.v = await fnThreadPool(store.count)
 	// Отвечаем ангару актуальными значениями модулей
-	console.log(22, JSON.stringify(store.v))
+	console.log('\x1b[32m%s\x1b[0m', 'Модули выходов успешно записаны', JSON.stringify(store.v))
 	return { timestamp: new Date(), v: store.v }
 }
 
 module.exports = output
+
+/**
+ * Разрешение на запись модулей
+ * @param {object[]} out Данные на запись от ангара
+ * @returns {boolean} true - запрет записи
+ */
+function check(out) {
+	const reason = [[!out?.length, 'Нет данных для записи']]
+	const r = reason.filter(([v, mes]) => v)
+	if (!!r.length) console.log('Запись выходов заблокирована по причине:', r)
+	return !!r.length
+}
