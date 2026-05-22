@@ -26,7 +26,6 @@ function convCmd(obj) {
 	// Подготовка данных для отправки на запись
 	obj.output = prepare(out, mdls)
 	// console.log(22,'На запись', obj.output)
-	console.log(8811, store.command)
 	// Очистка стека команд управления (импульсное управление)
 	setCmd(null)
 }

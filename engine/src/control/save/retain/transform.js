@@ -39,10 +39,8 @@ function transform(obj) {
 	fnDryingCount(obj.data.building)
 	// 8. web - команды управления
 	Aboc.call(fnWeb)()
-	// fnWeb()
 	// 9. mobile - команды
 	Aboc.call(fnMobile)()
-	// fnMobile()
 }
 
 module.exports = transform

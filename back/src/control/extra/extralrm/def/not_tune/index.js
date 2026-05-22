@@ -20,7 +20,7 @@ function notTune(bld, _, obj, s, se, m, automode, acc, data) {
 		break
 	}
 	// Регистрация ошибки
-	if (!isOK && !acc._alarm) {
+	if (!isOK) {
 		wrExtralrm(bld._id, null, 'notTune', msgB(bld, 90))
 		acc._alarm = true
 	}

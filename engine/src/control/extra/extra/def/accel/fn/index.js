@@ -1,6 +1,8 @@
+const { isCombiCold } = require('@tool/combi/is')
 const { ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 const { getStateClr } = require('@tool/cooler')
+const { stateEq } = require('@tool/fan')
 const { getSectAuto } = require('@tool/get/building')
 
 // Разгонные вентиляторы: Вкл
@@ -49,6 +51,19 @@ function temp(building, fanA, acc, se, s) {
 	if (tprd - tin + hyst < s.accel.difference) off(building, fanA)
 }
 
+// Разгонные вентиляторы: Холод: в режиме комби-холод
+// работает синхронно с ВНО секциями и ВНО испарителя.
+// В режиме комби-обычный - остановлен
+function cold(building, fanA, acc, se, s, m, obj) {
+	// Хотя бы один вентилятор запущен
+	const run = m.fanB.some((f) => stateEq(f._id, obj.value))
+	// Комби-холод
+	const isCC = isCombiCold(building, obj.retain?.[building._id]?.automode, s)
+	// console.log(11,run, isCC,  m.fanB)
+	if (run && isCC) return on(building, fanA)
+	off(building, fanA)
+}
+
 /**
  * Разрешение работы разгонника
  * @param {*} bld
@@ -78,6 +93,7 @@ module.exports = {
 	on,
 	time,
 	temp,
+	cold,
 	off,
 	check,
 	clear,

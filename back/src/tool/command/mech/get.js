@@ -53,7 +53,7 @@ function getVno(idB, idS, obj, binding, fan) {
 			(el) =>
 				el.owner.id === idS &&
 				el.type === 'fan' &&
-				value[el._id].state != 'alarm' &&
+				value?.[el._id]?.state != 'alarm' &&
 				!retain?.[idB]?.fan?.[idS]?.[el._id],
 		)
 		.map((el) => {

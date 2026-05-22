@@ -36,7 +36,7 @@ function transform(obj) {
 	// 6. Дата и время: вкл/выкл склада
 	fnDateBuild(obj.data.building)
 	// 7. Счетчик дней в авторежиме сушки
-	fnDryingCount(obj.data.building)	
+	fnDryingCount(obj.data.building)
 	// 8. web - команды управления
 	Aboc.call(fnWeb)()
 	// 9. mobile - команды

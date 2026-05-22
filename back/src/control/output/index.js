@@ -18,15 +18,14 @@ function convCmd(obj) {
 
 	// Команды управления
 	transform(store.command, mdls, out)
-	
+
 	// Команды управления клапаном (по времени)
 	tracking(out, mdls, retain)
-	
+
 	// console.log(9944, out)
 	// Подготовка данных для отправки на запись
 	obj.output = prepare(out, mdls)
 	// console.log(22,'На запись', obj.output)
-
 	// Очистка стека команд управления (импульсное управление)
 	setCmd(null)
 }

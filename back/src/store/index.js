@@ -34,6 +34,9 @@ const data = {
 	tWarming: 60,
 	// Период повторной проверки модуля, 1мин
 	tTCP: 1,
+	// Флаг сервер опроса модулей PLC_IO на связи
+	timestampIO: null,
+
 	/** 
 	Антидребезг неисправности модуля ПЛК, 1мин 
 	(в течении данного времени будут совершать попытки прочитать модуль, 
@@ -110,7 +113,8 @@ const data = {
 	// Прогрев секции
 	warming: {},
 	accWarm: {},
-
+	// Данные от микросервиса plc_io (опрос модуей)
+	v: {},
 	// Данные после анализа
 	value: {},
 	// Антидребезг аналоговых/дискретных сигналов - буфер прошлых показаний датчиков
@@ -165,6 +169,13 @@ const data = {
 	retainDir: path.join(process.env.PATH_RETAIN),
 	factoryDir: path.join(process.env.PATH_FACTORY),
 	accDir: path.join(process.env.PATH_DATA, 'acc'),
+}
+
+/**
+ * Обновление флага сервер ангара на связи
+ */
+function live() {
+	data.timestampIO = new Date()
 }
 
 //
@@ -266,4 +277,5 @@ module.exports = {
 	setToOffSection: toggleMode('toOffSection'),
 	setToOffBuild,
 	readAcc,
+	live,
 }

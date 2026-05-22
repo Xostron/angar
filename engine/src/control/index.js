@@ -30,26 +30,22 @@ async function control() {
 		// await analysis(obj)
 		// Логика
 		Aboc.call(main)(obj)
-		// main(obj)
 		// Выхода: Команды управления
 		Aboc.call(convCmd)(obj)
-		// convCmd(obj)
 		// Выхода: Блокировки
 		Aboc.call(writeLock)(obj)
 		// writeLock(obj)
 		// Выхода: Запись в модули -> В режиме микросервиса
-		process.env.MODE ? outputIO(obj.output) : await writeVal(obj.output)
+		process.env.MODE === true ? await outputIO(obj.output) : await writeVal(obj.output)
 		// Аварии для web
 		const alr = await Aboc.asycall(webAlarm)(obj)
-		// const alr = await webAlarm(obj)
 		// Статистика
 		Aboc.call(statOnChange)(obj, alr?.history)
-		// statOnChange(obj, alr?.history)
 		// Сохранение пользовательских настроек склада retain/data.json
 		await Aboc.asycall(save)(obj)
 
 		// В режиме микросервиса
-		process.env.MODE ? await delay(300) : null
+		process.env.MODE === true ? await delay(5000) : null
 		// await save(obj)
 		// await delay(4000)
 		Aboc.refresh()

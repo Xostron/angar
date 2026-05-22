@@ -16,16 +16,13 @@ async function analysis(obj) {
 	// Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
 	// Опрос модулей по сети (режим монолита/микросервеса)
-	let v = process.env.MODE ? store.v : await readM(obj)
+	let v = process.env.MODE === true ? store.v : await readM(obj)
 	// Анализ - данные для клиента и работы алгоритма
 	v = Aboc.call(value)(v, obj)
-	// v = value(v, obj)
 	// Настройки складов (обработанные для расчетов)
 	Aboc.call(calcSetting)(v, obj)
-	// calcSetting(v, obj)
 	// Передача мяса по Socket.io на web-клиент
 	await Aboc.asycall(cValue)(v)
-	// await cValue(v)
 }
 
 module.exports = analysis
