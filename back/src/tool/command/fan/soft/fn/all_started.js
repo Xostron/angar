@@ -68,7 +68,7 @@ function edictumII(acc, s, o) {
 	if (!o.on && !o.off && !acc?.edictumII) acc.edictumII = new Date()
 
 	// Время (мс), после которого будет считаться что канал прогрева полностью включен
-	let t = Math.max(s?.fan?.next ?? 0, s?.fan?.delay ?? 0) * 1000 + _TIME
+	let t = Math.max(s?.fan?.next ?? 0, s?.fan?.delay ?? 0) * 1000
 	const time = compareTime(acc.edictumII, t)
 	if (!time) return false
 	// Время прошло, активности прогрева так и нет (из-за ограничения по давлению канала)
