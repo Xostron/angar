@@ -1,3 +1,5 @@
+const { compareTime } = require('@tool/command/time')
+const _TIME = 2 * 60 * 1000 // 2 мин
 /**
  * Комби-холод: регулирование температуры канала по заданию канала
  *
@@ -8,14 +10,14 @@
  * Логика включения прогрева канала: функция cold - src\tool\command\fan\soft\fn\on_off.js
  * @param {*} acc
  */
-function initAllStarted(acc, fans, fanFC) {
+function initAllStarted(acc, fans, fanFC, s, o) {
 	const eI = edictumI(acc, fans, fanFC)
-	const eII = edictumII(acc, fans, fanFC)
+	const eII = edictumII(acc, s, o)
 
 	// Флаг прогрев канала активен
 	acc.allStarted = eI || eII ? new Date() : null
 
-	// console.log(411, 'allstarted=', acc.allStarted, r)
+	console.log(4110, 'allstarted=', acc.allStarted, eI, eII)
 }
 
 module.exports = initAllStarted
@@ -28,10 +30,10 @@ module.exports = initAllStarted
  * @param {*} acc
  * @param {*} fans
  * @param {*} fanFC
- * @returns
+ * @returns {boolean} true - условия активны ()
  */
 function edictumI(acc, fans, fanFC) {
-	// Условия 1: для подогрев канала полностью включен:
+	// Условия 1: прогрев канала полностью включен:
 	// 1. все ВНО секции в работе
 	// 2. соленоиды подогрева включены
 	const reason = [
@@ -53,7 +55,24 @@ function edictumI(acc, fans, fanFC) {
  * @param {*} acc
  * @param {*} fans
  * @param {*} fanFC
+ * @returns {boolean}
  */
-function edictumII(acc, fans, fanFC) {
-	return false
+function edictumII(acc, s, o) {
+	// Если активность регулирования каналом прогрева есть, то условие false
+	if (o.on || o.off) {
+		acc.edictumII = null
+		return false
+	}
+	// Если активности регулирования нет, то засекаем время, после которого
+	// установим флаг канал прогрева на максимуме = полность включен
+	if (!o.on && !o.off && !acc?.edictumII) acc.edictumII = new Date()
+
+	// Время (мс), после которого будет считаться что канал прогрева полностью включен
+	let t = Math.max(s?.fan?.next ?? 0, s?.fan?.delay ?? 0) * 1000 + _TIME
+	const time = compareTime(acc.edictumII, t)
+	if (!time) return false
+	// Время прошло, активности прогрева так и нет (из-за ограничения по давлению канала)
+	// Включаем флаг прогрев канала
+	console.log(4111, t)
+	return true
 }

@@ -59,7 +59,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 6. Непосредственное вкл/выкл
 	turnOn(fanFC, fans, solHeat, bld._id, acc, s, max, off, isCC)
 	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
-	initAllStarted(acc, fans, fanFC)
+	initAllStarted(acc, fans, fanFC, s, { on, off })
 	// console.log(112, idS)
 	// console.table(acc)
 }
