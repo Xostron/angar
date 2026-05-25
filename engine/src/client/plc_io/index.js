@@ -10,29 +10,33 @@ const apiConfig = (data, params = {}) => ({
 	params,
 })
 
+/**
+ * Отправка данных на запись модулей + обновление опроса модулей
+ * @param {object[]} out Массив модулей (module+equipment+value) на запись
+ * @returns
+ */
 async function outputIO(out) {
 	try {
-		if (!out) return console.log('Данные о выходах не сформированы на PLC_IO')
+		if (!out) return console.log('back->plc_io', 'Нет данных для записи')
 
-		const o = checkChange(out)
-		console.log(11, 'На запись', o.length)
-		if (!o) return console.log('Данные о выходах не изменялись, не отправляем на PLC_IO')
+		// Наличие изменений
+		const o = isChange(out)
+		if (!o) return console.log('back->plc_io', 'Нет изменений для записи')
 
+		// Запрос back->plc_io
 		const r = await api(apiConfig(o))
-		// Запрос не успешен
-		if (!r.data)
-			throw new Error('ENGINE->PLC_IO. ❌Не удалось передать данные о выходах на PLC_IO')
 
-		console.log(
-			'\x1b[32m%s\x1b[0m',
-			'ENGINE->PLC_IO. Данные о выходах успешно отправлены на PLC_IO',
-			'Ответ от plc_io',
-			JSON.stringify(r.data),
-		)
+		// Ошибка запроса
+		if (!r.data) throw new Error('❌back->plc_io: Ошибка запроса')
 
+		console.log('\x1b[32m%s\x1b[0m', 'back->plc_io. Запрос успешно обработан')
+
+		// Флаг PLC_IO на связи
 		live()
-		// Сохраняем в аккумулятор актуальные значения модулей
+
+		// Обновление опроса модулей
 		store.v = r.data.v
+
 		return true
 	} catch (error) {
 		console.error(error)
@@ -42,20 +46,20 @@ async function outputIO(out) {
 module.exports = outputIO
 
 /**
- * Проверка на изменения
+ * Наличие изменений
+ * Сравнение текущего состояния выходов === с состоянием выходов после алгоритма
  *
- * @param {*} out
- * @returns {boolean} true - Изменения есть, оптравка на запись на PLC_IO
- * false - изменений нет, блокируем отправку на PLC_IO
+ * @param {object[]} out массив модулей на запись для PLC_IO
+ * @returns {object[] | boolean} 	object[] - массив модулей на запись для PLC_IO (отфильтрованные)
+ * 									false - изменений нет, блокируем отправку на PLC_IO
  */
-function checkChange(out) {
+function isChange(out) {
 	const o = out.filter((el) => {
 		if (
 			JSON.stringify(el.value) !==
 			JSON.stringify(store.v[el._id[0]]?.output ?? store.v[el._id[0]])
-		) {
+		)
 			return true
-		}
 	})
 	return o.length ? o : false
 }

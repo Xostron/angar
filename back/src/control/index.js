@@ -36,7 +36,8 @@ async function control() {
 		Aboc.call(writeLock)(obj)
 		// writeLock(obj)
 		// Выхода: Запись в модули -> В режиме микросервиса
-		process.env.MODE === true ? await outputIO(obj.output) : await writeVal(obj.output)
+		console.log(123, process.env.MODE)
+		process.env.MODE === 'micro' ? await outputIO(obj.output) : await writeVal(obj.output)
 		// Аварии для web
 		const alr = await Aboc.asycall(webAlarm)(obj)
 		// Статистика
@@ -45,7 +46,7 @@ async function control() {
 		await Aboc.asycall(save)(obj)
 
 		// В режиме микросервиса
-		process.env.MODE === true ? await delay(5000) : null
+		process.env.MODE === 'micro' ? await delay(300) : null
 		// await save(obj)
 		// await delay(4000)
 		Aboc.refresh()
