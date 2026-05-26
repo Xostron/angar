@@ -15,7 +15,7 @@ function off(fnChange, accAuto, acc, se, s, bld, clr) {
 		if (accAuto.defrostAllFinish) {
 			acc.state.waitDefrost = null
 			accAuto.targetDT = new Date()
-			fnChange(0, 0, 0, 1, 'drain', clr)
+			fnChange(0, 0, 0, 1, 0, 'drain', clr)
 			return
 		}
 		console.log('\tНе все испарители закончили оттайку, ждем')
@@ -31,7 +31,7 @@ function off(fnChange, accAuto, acc, se, s, bld, clr) {
 	// вкл обдув: напорный вентилятор - 1, соленоид - 0, обогрев - 0
 	if (time) {
 		accAuto.finishTarget = null
-		return fnChange(0, 1, 0, 0, 'blow', clr)
+		return fnChange(0, 1, 0, 0, 0, 'blow', clr)
 	}
 
 	check.cold(fnChange, 'off', accAuto, acc, se, s, bld, clr)

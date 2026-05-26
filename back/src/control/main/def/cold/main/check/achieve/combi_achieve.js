@@ -43,7 +43,7 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		accCold.flagFinish ??= new Date()
 		if (code === 'off') return true
 		// Флаг продукт достиг задания для гистерезиса
-		fnChange(0, 0, 0, 0, 'off', clr)
+		fnChange(0, 0, 0, 0, 0, 'off', clr)
 		return true
 	}
 	// "Температура задания достигнута" ожидаем выход из гистерезиса
@@ -58,7 +58,7 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 		// accCold.blow ??= new Date()
 		acc.state.off = new Date()
 		if (code === 'off') return true
-		fnChange(0, 0, 0, 0, 'off', clr)
+		fnChange(0, 0, 0, 0, 0, 'off', clr)
 		return true
 	}
 	// Сброс "Температура задания достигнута" по гистерезису
@@ -134,7 +134,7 @@ function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 		accCold.flagFinish ??= new Date()
 		if (code === 'off') return true
 		// Флаг продукт достиг задания для гистерезиса
-		fnChange(0, 0, 0, 0, 'off', clr)
+		fnChange(0, 0, 0, 0, 0, 'off', clr)
 		return true
 	}
 	// "Температура задания достигнута" ожидаем выход из гистерезиса
@@ -149,7 +149,7 @@ function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 		// accCold.blow ??= new Date()
 		acc.state.off = new Date()
 		if (code === 'off') return true
-		fnChange(0, 0, 0, 0, 'off', clr)
+		fnChange(0, 0, 0, 0, 0, 'off', clr)
 		return true
 	}
 	// Сброс "Температура задания достигнута" по гистерезису

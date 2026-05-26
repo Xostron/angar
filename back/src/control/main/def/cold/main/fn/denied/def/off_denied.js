@@ -1,4 +1,5 @@
 const { data: store } = require('@store')
+const { isOffPair } = require('@tool/cooler')
 
 // Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
 function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
@@ -27,8 +28,8 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 				a.filter((e) => e[0]),
 			)
 			a.filter((e) => e[0] === true)?.length !== 0 && !off
-				? fnChange(0, null, 0, 0, null, clr)
-				: fnChange(0, 0, 0, 0, null, clr)
+				? fnChange(0, null, 0, 0, 0, null, clr)
+				: fnChange(0, 0, 0, 0, 0, null, clr)
 			return
 		}
 		// 2. Для парных испарителей (1 ВНО на двоих и более испарителей)
@@ -62,8 +63,8 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 				const off = isOffPair(pair, mS, obj.value)
 				console.log('\tПара испарителей выведена из работы', off)
 				a.filter((e) => e[0] === true).length !== 0 && !off
-					? fnChange(0, null, 0, 0, null, clr)
-					: fnChange(0, 0, 0, 0, null, clr)
+					? fnChange(0, null, 0, 0, 0, null, clr)
+					: fnChange(0, 0, 0, 0, 0, null, clr)
 			})
 			return
 		}
@@ -75,18 +76,9 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 			const idClr = pair[i]
 			const clr = mS.coolerS.find((el) => el._id === idClr)
 			console.log('Частичное отключение пары')
-			fnChange(0, null, 0, 0, null, clr)
+			fnChange(0, null, 0, 0, 0, null, clr)
 		})
 	})
 }
 
 module.exports = offDenied
-
-// Блокировка ВНО испарителей, если вся пара выведена из работы
-function isOffPair(pair, mS, value) {
-	const r = pair.filter((idClr) => {
-		const fan = mS.coolerS.find((el) => el._id === idClr)?.fan?.[0]
-		return value[fan._id].state != 'alarm' && value[fan._id].state !== 'off'
-	})
-	return !r.length
-}

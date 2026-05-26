@@ -14,14 +14,20 @@ const { compareTime } = require('@tool/command/time')
 function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 	const _MAX_SP = s?.fan?.maxsp ?? 100
 	const _MIN_SP = s?.fan?.min ?? 20
+	console.log(0)
 	if (aCmd.force && (max === null || max === -1)) return false
+	console.log(1)
 	if (!fanFC) return false
+	console.log(2)
 	// Авария Антидребезг ВНО - разрешаем регулировать по кол-ву ВНО
 	if (acc.stable) return false
+	console.log(3)
 	// Акутализируем точку отсчета для реле ВНО, пока регулирование по ПЧ
 	if (acc.busy) acc.date = new Date()
+		console.log(4)
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {
+		console.log(5)
 		acc.fc.value = true
 		acc.fc.sp = acc.fc.sp < _MIN_SP ? _MIN_SP : acc.fc.sp
 		// Задание ПЧ дошло до 100% => разрешаем регулировать по кол-ву ВНО
@@ -37,10 +43,12 @@ function regul(acc, fanFC, on, off, s, aCmd, max, isCC) {
 		// Ограничение min задания ПЧ
 		acc.fc.sp = acc.fc.sp < _MIN_SP ? _MIN_SP : acc.fc.sp
 		acc.fc.date = new Date()
+		console.log(6)
 	}
 
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
+		console.log(7)
 		acc.fc.value = true
 		if (forCCoff(acc, isCC, s)) return false
 		// Задание ПЧ дошло до min% && не все ВНО выкл  => разрешаем регулировать по кол-ву ВНО

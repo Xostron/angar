@@ -6,7 +6,7 @@ const ctrlFlap = require('./flap')
 const _MIN_SP = 20
 
 // Склад холодильник (пока без ступеней и без заслонки оттайки на 18.11.2025)
-function oneChange(bdata, idB, sl, f, h, add, code, clr) {
+function oneChange(bdata, idB, sl, f, h, add, fl, code, clr, obj) {
 	const { start, s, se, m, accAuto } = bdata
 	const { solenoid, fan, heating } = clr
 	const _MAX_SP = s?.fan?.maxsp ?? 100
@@ -35,15 +35,16 @@ function oneChange(bdata, idB, sl, f, h, add, code, clr) {
 }
 
 // Для комбинированного (ступенчатое, заслонка оттайки)
-function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
+function oneChangeCombi(bdata, bld, sl, f, h, add, fl, code, clr, obj) {
 	const idB = bld._id
 	const { start, s, se, m, accAuto, automode } = bdata
+
 	accAuto.cold ??= {}
 	accAuto.cold[clr._id] ??= {}
 	accAuto.cold[clr._id].state ??= {}
 	accAuto.cold[clr._id].sp ??= {}
 	const { solenoid, fan, heating, flap = [] } = clr
-	const isCN = isCombiCold(bld, automode, s) // Склад работает в режиме комби-холодильника
+	const isCС = isCombiCold(bld, automode, s) // Склад работает в режиме комби-холодильника
 
 	// Управление механизмами
 	// Ступенчатое управление соленоидами
@@ -59,14 +60,14 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, code, clr) {
 	h !== null ? heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off')) : null
 
 	// Заслонки
-	ctrlFlap(idB, clr._id, flap, accAuto.cold, isCN)
+	ctrlFlap(idB, clr, flap, accAuto.cold, obj.retain, fl, isCС)
 
 	// Доп состояние слива воды
 	accAuto.cold[clr._id].state.add = add ? new Date() : false
 	// Обновление времени включения состояния
 	if (code) accAuto.cold[clr._id].state[code] = new Date()
 
-	console.log('\t', 5555, 'Смена режима ', clr.name, code, ' = ', sl, f, h, add)
+	console.log('\t', 5555, 'Смена режима ', clr.name, code, ' = ', sl, f, h, add, fl)
 }
 
 module.exports = { oneChange, oneChangeCombi, ctrlFlap }

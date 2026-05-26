@@ -14,8 +14,8 @@ function main(bld, obj, bdata, alr) {
 	const { start, automode, s, se, m, accAuto } = bdata
 
 	// Управление испарителем
-	const fnChange = (sl, f, h, add, code, clr) =>
-		oneChangeCombi(bdata, bld, sl, f, h, add, code, clr)
+	const fnChange = (sl, f, h, add, fl, code, clr) =>
+		oneChangeCombi(bdata, bld, sl, f, h, add, fl, code, clr, obj)
 
 	// Синхронизация оттайки-слива_воды испарителей
 	defrostAll(bld._id, accAuto.cold, m.cold.cooler, obj, s)
@@ -43,4 +43,3 @@ function main(bld, obj, bdata, alr) {
 }
 
 module.exports = main
-

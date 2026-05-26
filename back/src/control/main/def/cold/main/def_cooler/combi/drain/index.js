@@ -10,7 +10,7 @@ function drain(fnChange, accCold, acc, se, s, bld, clr) {
 	const time = compareTime(acc.state.drain, s.coolerCombi.water)
 	const tmp = se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
 	console.log(7771, 'drain', time, tmp)
-	ctrlFlap(bld._id, clr._id, clr.flap, accCold)
+	ctrlFlap(bld._id, clr._id, clr.flap, accCold, {})
 	// Время не прошло
 	if (!time) return
 	// Время прошло -> выключаем слив воды
@@ -19,7 +19,7 @@ function drain(fnChange, accCold, acc, se, s, bld, clr) {
 	if (tmp) {
 		// Флаг включения оттайки на всех испарителях
 		accCold.defrostAll = new Date()
-		return fnChange(0, 0, 1, 0, 'defrost', clr)
+		return fnChange(0, 0, 1, 0, 0, 'defrost', clr)
 	}
 	check.combi(fnChange, 'drain', accCold, acc, se, s, bld, clr)
 }

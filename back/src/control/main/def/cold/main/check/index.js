@@ -26,14 +26,14 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
 		if (code === 'drain' && !accAuto.drainAll) return
-		return fnChange(1, 0, 0, 0, 'frost', clr)
+		return fnChange(1, 0, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
 		acc.state.frost = new Date()
-		return fnChange(0, 1, 0, 0, 'blow', clr)
+		return fnChange(0, 1, 0, 0, 0, 'blow', clr)
 	} else {
 		// if (code === 'cooling') return
-		return fnChange(1, 1, 0, 0, 'cooling', clr)
+		return fnChange(1, 1, 0, 0, 0, 'cooling', clr)
 	}
 }
 
@@ -54,7 +54,8 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	const accAuto = readAcc(bld._id, t)
 	t = accAuto.submode?.[0] === sm.heat[0] ? 'combiAchieveHeat' : 'combiAchieve'
 	console.log(9999, t, accAuto.submode?.[0])
-	if (accAuto.submode?.[0] && def[t](fnChange, code, accCold, acc, se, s, bld, clr)) return console.log(9998, "ДОСТИГНУТА")
+	if (accAuto.submode?.[0] && def[t](fnChange, code, accCold, acc, se, s, bld, clr))
+		return console.log(9998, 'ДОСТИГНУТА')
 
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
 	// let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
@@ -73,14 +74,14 @@ function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	if ((!sol && !ven) || (sol && !ven)) {
 		if (code === 'frost') return
 		if (code === 'drain' && !accCold?.drainAll) return
-		return fnChange(1, 0, 0, 0, 'frost', clr)
+		return fnChange(1, 0, 0, 0, 0, 'frost', clr)
 	} else if (!sol && ven) {
 		if (code === 'blow') return
 		acc.state.frost = new Date()
-		return fnChange(0, 1, 0, 0, 'blow', clr)
+		return fnChange(0, 1, 0, 0, 0, 'blow', clr)
 	} else {
 		//TODO if (code === 'cooling') return
-		return fnChange(1, 1, 0, 0, 'cooling', clr)
+		return fnChange(1, 1, 0, 0, 0, 'cooling', clr)
 	}
 }
 

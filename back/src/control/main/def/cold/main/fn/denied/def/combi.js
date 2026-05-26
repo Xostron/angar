@@ -31,12 +31,12 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	// Кнопка выключения склада
 	const bldOff = isExtralrm(bld._id, null, 'bldOff')
 
-    // Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
-		const sb =
-        // isExtralrm(bld._id, null, 'supply') ||
-        // idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
-        // isExtralrm(bld._id, null, 'battery') ||
-        isExtralrm(bld._id, null, 'sb')
+	// Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
+	const sb =
+		// isExtralrm(bld._id, null, 'supply') ||
+		// idsS.some((idS) => isExtralrm(bld._id, idS, 'supply')) ||
+		// isExtralrm(bld._id, null, 'battery') ||
+		isExtralrm(bld._id, null, 'sb')
 
 	const a = [
 		[!start, 'Склад выкл'],
@@ -67,7 +67,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 			store.alarm.timer?.[bld._id]?.cure && accAuto.submode?.[0] === sm.cure[0],
 			'Таймер запрета лечения',
 		],
-        [sb,'Авария питания']
+		[sb, 'Авария питания'],
 	]
 	store.denied[bld._id][clr._id] = a.filter((e) => e[0] === true)?.length !== 0
 	console.log(
@@ -86,6 +86,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	clearCombi(bld._id, sect._id, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM)
 
 	// console.log('\tОстановка из-за ошибок:', store.denied[bld._id][clr._id])
+	// Запрет работы испарителя
 	return true
 }
 

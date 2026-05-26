@@ -11,8 +11,8 @@ function main(bld, obj, bdata, alr) {
 	const { data, retain } = obj
 	const { start, s, se: seB, m, accAuto, supply } = bdata
 
-	const fnChange = (sl, f, h, add, code, clr) =>
-		oneChange(bdata, bld._id, sl, f, h, add, code, clr)
+	const fnChange = (sl, f, h, add, fl, code, clr) =>
+		oneChange(bdata, bld._id, sl, f, h, add, fl, code, clr, obj)
 	// Синхронизация оттайки-слива_воды испарителей
 	defrostAll(bld._id, accAuto, m.cold.cooler, obj, s)
 	// По камере
