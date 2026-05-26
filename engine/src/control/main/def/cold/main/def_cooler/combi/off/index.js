@@ -16,7 +16,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 		if (accCold.defrostAllFinish) {
 			acc.state.waitDefrost = null
 			accCold.targetDT = new Date()
-			fnChange(0, 0, 0, 1, 'drain', clr)
+			fnChange(0, 0, 0, 1, 0, 'drain', clr)
 			return
 		}
 		console.log('\tНе все испарители закончили оттайку, ждем')
@@ -26,7 +26,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	// Время работы в текущем режиме
 	onTime('off', acc)
 
-	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова 
+	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова
 	// по достижению задания
 	if (accCold.finishTarget) {
 		console.log('\toff', 'Выключен по достижению задания', s?.coolerCombi?.stop)
@@ -38,8 +38,8 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 			msgB(
 				bld,
 				80,
-				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`
-			)
+				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`,
+			),
 		)
 		return
 	}

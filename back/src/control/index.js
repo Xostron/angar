@@ -47,7 +47,7 @@ async function control() {
 		// В режиме микросервиса
 		process.env.MODE === 'micro' ? await delay(300) : null
 		// await save(obj)
-		await delay(3000)
+		// await delay(4000)
 		Aboc.refresh()
 		return true
 	} catch (error) {

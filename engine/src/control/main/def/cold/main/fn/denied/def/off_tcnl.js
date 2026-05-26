@@ -21,7 +21,8 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 		accAuto.cold ??= {}
 		accAuto.cold[clr.sectionId] ??= {}
 		// Все э-ты подогрева включены: фиксируем точку отсчета для выключения испарителя
-		if (isAllStarted(idB, clr.sectionId, obj)) accAuto.cold[clr.sectionId].allStarted ??= new Date()
+		if (isAllStarted(idB, clr.sectionId, obj))
+			accAuto.cold[clr.sectionId].allStarted ??= new Date()
 		else {
 			accAuto.cold[clr.sectionId].allStarted = null
 			// Сброс состояния regulQ (вкл/выкл ВНО по заданию влажности)
@@ -39,7 +40,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 			// Принудительно оставляем ВНО включенным, так как Шахин переходя в ожидание,
 			// выключает этот ВНО и остается работать один соленоид холода,
 			// и испаритель получает обледенение и начинает оттайку
-			fnChange(null, 1, 0, 0, null, clr)
+			fnChange(null, 1, 0, 0, 0, null, clr)
 			return console.log(
 				'\t',
 				clr.name,
@@ -66,7 +67,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 		]
 
 		a.filter((e) => e[0] === true)?.length !== 0
-			? fnChange(0, null, 0, 0, null, clr)
+			? fnChange(0, null, 0, 0, 0, null, clr)
 			: regulQ(s, se, fnChange, accAuto, clr)
 
 		console.log(
@@ -119,5 +120,5 @@ function regulQ(s, se, fnChange, accAuto, clr) {
 		se.hin >= s.mois.humidity + (s.mois?.hysteresisHum ?? 1),
 	)
 	console.log(6655, 'Регулирование по влажности', 'RESULT = ', accAuto?.cold?.[clr.sectionId])
-	fnChange(0, accAuto?.cold?.[clr.sectionId]?.onQ ?? 0, 0, 0, null, clr)
+	fnChange(0, accAuto?.cold?.[clr.sectionId]?.onQ ?? 0, 0, 0, 0, null, clr)
 }

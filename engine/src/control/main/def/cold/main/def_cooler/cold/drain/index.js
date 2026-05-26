@@ -17,7 +17,7 @@ function drain(fnChange, accAuto, acc, se, s, bld, clr) {
 	if (tmp) {
 		// Флаг включения оттайки на всех испарителях
 		accAuto.defrostAll = new Date()
-		return fnChange(0, 0, 1, 0, 'defrost', clr)
+		return fnChange(0, 0, 1, 0, 0, 'defrost', clr)
 	}
 	check.cold(fnChange, 'drain', accAuto, acc, se, s, bld, clr)
 }

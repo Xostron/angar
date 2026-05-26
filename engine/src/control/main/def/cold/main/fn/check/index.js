@@ -14,12 +14,12 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 		stateCooler,
 		!!def.cold[stateCooler],
 		'Неисправность модулей=',
-		stateCooler?.status === 'alarm'
+		stateCooler?.status === 'alarm',
 	)
 	// Проверка состояния
 	if (!def?.cold?.[stateCooler]) {
 		console.log('\tПроверка состояния - bad', stateCooler)
-		fnChange(0, 0, 0, 0, null, clr)
+		fnChange(0, 0, 0, 0, 0, null, clr)
 		return true
 	}
 	// Уже в оттайке или сливе. Пропускаем и + проверка на повторы
@@ -29,7 +29,7 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 		// TODO Авария при достижение максимума
 		if (acc.state.defrostCount > max)
 			console.log(
-				`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`
+				`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`,
 			)
 		return false
 	}
@@ -48,7 +48,7 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')
 		// Флаг входа в оттайку всех испарителей
 		accAuto.defrostAll = new Date()
-		fnChange(0, 0, 1, 0, 'defrost', clr)
+		fnChange(0, 0, 1, 0, 0, 'defrost', clr)
 		return true
 	}
 	// Очистка флага
@@ -75,11 +75,11 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld)
 		stateCooler,
 		!!def.combi[stateCooler],
 		'Неисправность модулей=',
-		stateCooler?.status === 'alarm'
+		stateCooler?.status === 'alarm',
 	)
 	// Проверка состояния
 	if (!def?.combi?.[stateCooler]) {
-		fnChange(0, 0, 0, 0, null, clr)
+		fnChange(0, 0, 0, 0, 0, null, clr)
 		return true
 	}
 	// Уже в оттайке (ожидание) или сливе. Пропускаем и + проверка на повторы
@@ -89,7 +89,7 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld)
 		// TODO Авария при достижение максимума
 		if (acc.state.defrostCount > maxCombi)
 			console.log(
-				`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${maxCombi}`
+				`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${maxCombi}`,
 			)
 		return false
 	}
@@ -109,11 +109,11 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld)
 		acc.state.defrostCount += 1
 		console.log(
 			'\tОттайка по ',
-			tmp ? 'тмп. дт. всасывания' : time ? 'времени между интервалами' : 'один за всех'
+			tmp ? 'тмп. дт. всасывания' : time ? 'времени между интервалами' : 'один за всех',
 		)
 		// Флаг входа в оттайку всех испарителей
 		accCold.defrostAll = new Date()
-		fnChange(0, 0, 1, 0, 'defrost', clr)
+		fnChange(0, 0, 1, 0, 0, 'defrost', clr)
 		return true
 	}
 	// Очистка флага

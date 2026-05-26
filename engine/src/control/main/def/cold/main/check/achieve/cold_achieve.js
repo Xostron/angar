@@ -29,7 +29,7 @@ function coldAchieve(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		if (!accAuto.finishTarget) accAuto.finishTarget = new Date()
 		// Флаг продукт достиг задания для гистерезиса
 		accAuto.flagFinish = new Date()
-		fnChange(0, 0, 0, 0, 'off', clr)
+		fnChange(0, 0, 0, 0, 0, 'off', clr)
 		return true
 	}
 	// "Температура задания достигнута" ожидаем выход из гистерезиса
@@ -38,7 +38,7 @@ function coldAchieve(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		accAuto.finishTarget ??= new Date()
 		if (code === 'off') return true
 		acc.state.off = new Date()
-		fnChange(0, 0, 0, 0, 'off', clr)
+		fnChange(0, 0, 0, 0, 0, 'off', clr)
 		return true
 	}
 

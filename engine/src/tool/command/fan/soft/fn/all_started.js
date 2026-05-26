@@ -1,5 +1,5 @@
 const { compareTime } = require('@tool/command/time')
-const _TIME = 2 * 60 * 1000 // 2 мин
+const _TIME = 1 * 60 * 1000 // 1 мин
 /**
  * Комби-холод: регулирование температуры канала по заданию канала
  *
@@ -68,11 +68,10 @@ function edictumII(acc, s, o) {
 	if (!o.on && !o.off && !acc?.edictumII) acc.edictumII = new Date()
 
 	// Время (мс), после которого будет считаться что канал прогрева полностью включен
-	let t = Math.max(s?.fan?.next ?? 0, s?.fan?.delay ?? 0) * 1000 + _TIME
+	let t = Math.max(s?.fan?.wait ?? 30) * 1000 + _TIME
 	const time = compareTime(acc.edictumII, t)
 	if (!time) return false
 	// Время прошло, активности прогрева так и нет (из-за ограничения по давлению канала)
 	// Включаем флаг прогрев канала
-	console.log(4111, t)
 	return true
 }

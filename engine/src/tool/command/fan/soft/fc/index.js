@@ -37,7 +37,9 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 
 	// 2. Регулирование по давлению/темпе канала
 	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)
-	// console.log(110, idS, 'on', on, 'off', off)
+
+	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
+	initAllStarted(acc, fans, fanFC, s, { on, off })
 
 	// Доп: Прогрев клапанов
 	if (aCmd.warming) ((on = true), (off = false))
@@ -51,15 +53,13 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 4. Регулирование ПЧ
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, isCC)
 	if (acc.busy || acc.busySol) ((on = false), (off = false))
-	// console.log(112, 'on', on, 'off', off, acc.fc)
+	console.log(112, 'on', on, 'off', off, max, acc)
 	// 5. Регулирование Релейных ВНО: увеличение кол-ва
 	checkOn(on, acc, s, fans.length, aCmd, max)
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва
 	checkOff.fc(off, acc)
 	// 6. Непосредственное вкл/выкл
 	turnOn(fanFC, fans, solHeat, bld._id, acc, s, max, off, isCC)
-	// Доп: Комби-холод. Все вспомагательные механизмы подогрева канала запущены
-	initAllStarted(acc, fans, fanFC, s, { on, off })
 	// console.log(112, idS)
 	// console.table(acc)
 }

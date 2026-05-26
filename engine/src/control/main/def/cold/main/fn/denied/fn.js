@@ -23,7 +23,7 @@ function isReadyAgg(value, idB, aggListId) {
 function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	console.log(
 		'\x1b[33m%s\x1b[0m',
-		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе'
+		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе',
 	)
 	delete accAuto?.[clr._id]
 	delete accAuto?.afterD
@@ -39,7 +39,7 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	)
 		return
 	// Выключение всех узлов испарителя
-	fnChange(0, 0, 0, 0, null, clr)
+	fnChange(0, 0, 0, 0, 0, null, clr)
 
 	delete accAuto?.[clr._id]
 }
@@ -59,7 +59,7 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 function clearCombi(bldId, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM) {
 	console.log(
 		'\t\x1b[33m%s\x1b[0m',
-		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе'
+		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе',
 	)
 	delete accAuto?.cold?.[clr._id]
 }
