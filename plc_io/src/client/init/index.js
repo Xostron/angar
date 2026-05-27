@@ -1,6 +1,6 @@
 const api = require('@tool/api')
 const { delay } = require('@tool/time')
-const { store } = require('@store')
+const { store } = require('@store/index')
 
 /**
  * Запрос рамы модулей и оборудования
@@ -25,7 +25,7 @@ async function init() {
 
 	const r = await api(config)
 	if (!r?.data || !r?.data?.module || !r?.data?.equipment) return
-
+	store.live()
 	// Флаг рама обновлена
 	store._update = true
 	store.module = r.data.module
