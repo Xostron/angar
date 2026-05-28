@@ -7,16 +7,20 @@ const { store } = require('@store/index')
  *
  * @param {*} request Объект запроса, который содержит все данные о запросе
  * @param {*} reply Объект ответа, с помощью которого можно отправить ответ клиенту
- * @returns { timestamp: new Date(), alarmMdl: {} }
+ * @returns { timestamp: new Date(), alarm: {} }
  * alarmMdl - аварийные сообщения
  *
  */
-async function status(request, reply) {
-	// Запрос от ангара пришел, обновляем флаг связи
-	console.log(11, store.timestamp)
+async function reset(request, reply) {
+	// Сброс аварии и аккумулятора антидребезга модулей
+	store.alarm.module = {}
+	store.debMdl = {}
+
+	// Обновление флага связи
 	store.live()
+
 	// Отвечаем ангару
-	return { timestamp: new Date(), alarmMdl: {} }
+	return { timestamp: new Date(), alarm: store?.alarm?.module ?? {} }
 }
 
-module.exports = status
+module.exports = reset

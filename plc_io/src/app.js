@@ -28,6 +28,6 @@ const app = fastify({
 })
 
 // Роуты
-app.register(engineRouters, { prefix: '/api/engine' })
+app.register(engineRouters, { prefix: '/api/back' })
 
 module.exports = app

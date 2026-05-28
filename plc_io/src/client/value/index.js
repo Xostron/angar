@@ -24,16 +24,16 @@ async function postV() {
 		if (!Object.keys(store.v ?? {}).length)
 			return console.log('Данные опроса модулей не готовы')
 
-		const config = apiConfig(store.v, {})
+		const config = apiConfig({ v: store.v, alarm: store.alarm.module }, {})
 		const r = await api(config)
 
 		// Запрос не успешен
 		if (!r.data) {
-			throw new Error('PLC_IO->ENGINE. ❌Не удалось передать данные опроса модулей на ангар')
+			throw new Error('PLC_IO->BACK. ❌Не удалось передать данные опроса модулей на ангар')
 		}
 		console.log(
 			'\x1b[32m%s\x1b[0m',
-			'PLC_IO->ENGINE. Данные c опроса модулей успешно отправлены на ангар',
+			'PLC_IO->BACK. Данные c опроса модулей успешно отправлены на ангар',
 		)
 		store.live()
 		return true

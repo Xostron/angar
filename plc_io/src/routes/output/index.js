@@ -27,13 +27,13 @@ async function output(request, reply) {
 
 	// Запись модулей выхода
 	await write(out)
-	// Задержка 100мс для вступления изменений выходов в силу 
+	// Задержка 100мс для вступления изменений выходов в силу
 	await delay(100)
 	// Опрос модулей - получаем актуальные данные
 	store.v = await fnThreadPool(store.count)
 	// Отвечаем ангару актуальными значениями модулей
 	console.log('\x1b[32m%s\x1b[0m', 'Модули выходов успешно записаны', JSON.stringify(store.v))
-	return { timestamp: new Date(), v: store.v }
+	return { timestamp: new Date(), v: store.v, alarm: store?.alarm?.module ?? {} }
 }
 
 module.exports = output

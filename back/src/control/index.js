@@ -15,7 +15,7 @@ const data = require('./data')
 const battery = require('@tool/scripts/battery')
 const Aboc = require('@tool/abort_controller')
 const writeStore = require('./save/extra')
-const outputIO = require('../client/plc_io')
+const writeIO = require('../client/plc_io/write')
 
 // Контроль работы склада
 async function control() {
@@ -36,7 +36,7 @@ async function control() {
 		Aboc.call(writeLock)(obj)
 		// writeLock(obj)
 		// Выхода: Запись в модули -> В режиме микросервиса
-		process.env.MODE === 'micro' ? await outputIO(obj.output) : await writeVal(obj.output)
+		process.env.MODE === 'micro' ? await writeIO(obj.output) : await writeVal(obj.output)
 		// Аварии для web
 		const alr = await Aboc.asycall(webAlarm)(obj)
 		// Статистика

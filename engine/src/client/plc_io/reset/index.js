@@ -4,7 +4,7 @@ const { data: store, live } = require('@store')
 const apiConfig = (data, params = {}) => ({
 	method: 'POST',
 	maxBodyLength: Infinity,
-	url: 'engine/output',
+	url: 'back/reset',
 	headers: { 'Content-Type': 'application/json' },
 	data,
 	params,
@@ -15,35 +15,32 @@ const apiConfig = (data, params = {}) => ({
  * @param {object[]} out Массив модулей (module+equipment+value) на запись
  * @returns
  */
-async function outputIO(out) {
+async function ResetIO(reset) {
 	try {
-		if (!out) return console.log('back->plc_io', 'Нет данных для записи')
+		if (!reset) return console.log('back->plc_io (reset)', 'Нет данных для записи')
 
-		// Наличие изменений
-		const o = isChange(out)
-		if (!o) return console.log('back->plc_io', 'Нет изменений для записи')
-
-		// Запрос back->plc_io
-		const r = await api(apiConfig(o))
+		// Запрос back->plc_io (reset)
+		const r = await api(apiConfig(reset))
 
 		// Ошибка запроса
-		if (!r.data) throw new Error('❌back->plc_io: Ошибка запроса')
+		if (!r.data) throw new Error('❌back->plc_io (reset): Ошибка запроса')
 
-		console.log('\x1b[32m%s\x1b[0m', 'back->plc_io. Запрос успешно обработан')
+		console.log('\x1b[32m%s\x1b[0m', 'back->plc_io (reset): Запрос успешно обработан')
 
 		// Флаг PLC_IO на связи
 		live()
 
 		// Обновление опроса модулей
 		store.v = r.data.v
-
+		// Обновление списка аварий
+		store.alarm.module = r.data.alarm
 		return true
 	} catch (error) {
 		console.error(error)
 	}
 }
 
-module.exports = outputIO
+module.exports = ResetIO
 
 /**
  * Наличие изменений

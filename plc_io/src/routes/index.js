@@ -1,16 +1,16 @@
-const status = require('./status')
-const value = require('./value')
+// const value = require('./value')
 const output = require('./output')
+const reset = require('./reset')
 
 // Запросы от микросервиса ангара
-// prefix = /api/engine
+// prefix = /api/back
 async function connectRouters(app, options) {
-	// Запрос статуса модулей
-	app.get('/status', status)
-	// Запрос значений модулей
-	app.get('/value', value)
+	// // Запрос значений модулей
+	// app.get('/value', value)
 	// Данные для записи модулей
 	app.post('/output', output)
+	// Сброс аварий модулей
+	app.post('/reset', reset)
 }
 
 module.exports = connectRouters
