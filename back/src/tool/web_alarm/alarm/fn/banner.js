@@ -29,7 +29,7 @@ function bannerB(r, bld) {
 	// Авария питания. батарея || Ручной сброс
 	r.banner.battery ??= {}
 	r.banner.battery[bld._id] =
-		 store.alarm?.extralrm?.[bld._id]?.sb || store.alarm?.extralrm?.[bld._id]?.battery
+		store.alarm?.extralrm?.[bld._id]?.sb || store.alarm?.extralrm?.[bld._id]?.battery
 	// Авария питания. сигнал
 	r.banner.supply ??= {}
 	r.banner.supply[bld._id] ??= {}
@@ -37,6 +37,9 @@ function bannerB(r, bld) {
 	// Нажата кнопка выключения склада
 	r.banner.bldOff ??= {}
 	r.banner.bldOff[bld._id] = store.alarm?.extralrm?.[bld._id]?.bldOff
+	// Нет связи с сервером опроса модулей
+	r.banner.plcio ??= {}
+	r.banner.plcio[bld._id] = store.alarm?.extralrm?.[bld._id]?.plcio
 }
 
 module.exports = { banner, bannerB }

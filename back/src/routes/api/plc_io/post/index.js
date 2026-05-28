@@ -1,6 +1,7 @@
 const { data: store } = require('@store')
 const { live } = require('@store/index')
 
+// Прием данных от PLC_IO. Значения опроса модулей
 function post() {
 	return function (req, res) {
 		// Сохраняем в аккумулятор данные опроса модулей

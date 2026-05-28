@@ -1,5 +1,5 @@
 const { msgM } = require('@tool/message')
-const { store } = require('@store')
+const { store } = require('@store/index')
 const { compareTime } = require('@tool/time')
 
 /**
@@ -43,6 +43,7 @@ function wrDebMdl(idsM) {
 	idsM.forEach((idM) => {
 		if (!store.debMdl?.[idM]) store.debMdl[idM] = new Date()
 	})
+	console.log(44, idsM, store.debMdl)
 }
 
 // Удалить модуль из списка антидребезга

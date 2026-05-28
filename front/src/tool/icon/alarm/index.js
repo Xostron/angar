@@ -36,6 +36,7 @@ const data = {
 	battery: '/img/alarm/battery.svg',
 	supply: '/img/alarm/battery.svg',
 	sb: '/img/alarm/battery.svg',
-	bldOff:'/img/alarm/alr.svg'
+	bldOff: '/img/alarm/alr.svg',
+	plcio: '/img/alarm/connect.svg',
 }
 export default data

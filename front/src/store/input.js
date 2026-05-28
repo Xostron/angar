@@ -127,6 +127,7 @@ const useInputStore = create((set, get) => ({
 		const battery = get()?.alarm?.banner?.battery?.[idB]
 		const supply = Object.values(get()?.alarm?.banner?.supply?.[idB] ?? {}).filter((el) => el)
 		const bldOff = get()?.alarm?.banner?.bldOff?.[idB]
+		const plcio = get()?.alarm?.banner?.plcio?.[idB]
 
 		local.length ? arr.push(local[0]) : null
 		connect ? arr.push(connect) : null
@@ -134,6 +135,7 @@ const useInputStore = create((set, get) => ({
 		battery ? arr.push(battery) : null
 		supply.length ? arr.push(supply[0]) : null
 		bldOff ? arr.push(bldOff) : null
+		plcio ? arr.push(plcio) : null
 		return arr
 	},
 	// Вернуть массив аварий-баннеров для секции

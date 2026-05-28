@@ -17,7 +17,8 @@ const apiConfig = (data, params = {}) => ({
  */
 async function ResetIO(reset) {
 	try {
-		if (!reset) return console.log('back->plc_io (reset)', 'Нет данных для записи')
+		// Если нет сигнала сброса, то ничего не отправляем
+		if (!reset) return console.log('back->plc_io (reset)', 'Нет команды сброса аварии модулей')
 
 		// Запрос back->plc_io (reset)
 		const r = await api(apiConfig(reset))

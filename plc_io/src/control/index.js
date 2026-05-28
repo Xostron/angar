@@ -1,6 +1,6 @@
 const os = require('os')
 const hrtime = process.hrtime.bigint
-const { store } = require('@store')
+const { store } = require('@store/index')
 const { delay } = require('@tool/time')
 const collect = require('@tool/module/collect')
 // const Aboc = require('@tool/abort_controller')
@@ -19,7 +19,9 @@ async function main() {
 		// Отправка данных на сервер Ангара
 		await postV()
 		// Задержка 10 сек
-		Object.keys(store.v ?? {}).length ? await delay(60000) : await delay(5000)
+		Object.keys(store.v ?? {}).length ? await delay(10000) : await delay(5000)
+		// console.log(11, store.debMdl)
+		// console.log(22, store.alarm.module)
 	} catch (error) {
 		console.error(99, error)
 		await delay(3000)

@@ -78,6 +78,7 @@ function signalB(r, bld, am, data) {
 	const supply = store.alarm?.extralrm?.[bld._id]?.supply ?? null
 	const battery = store.alarm?.extralrm?.[bld._id]?.battery ?? null
 	const sb = store.alarm?.extralrm?.[bld._id]?.sb ?? null
+	const plcio = store.alarm?.extralrm?.[bld._id]?.plcio ?? null
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
@@ -117,6 +118,7 @@ function signalB(r, bld, am, data) {
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []))
 	if (bldOff) r.signal[bld._id].push(bldOff)
+	if (plcio) r.signal[bld._id].push(plcio)
 	r.signal[bld._id].sort((a, b) => {
 		const [d1, m1, o1] = a.date.split('.')
 		const aa = [m1, d1, o1].join('.')

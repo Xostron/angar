@@ -27,6 +27,7 @@ const fCoolerCrash = require('./flap_cooler')
 const bldOff = require('./bld_off')
 const supplyB = require('./supply_b')
 const sb = require('./supply_battery')
+const plcio = require('./plc_io')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -67,7 +68,8 @@ const def = {
 			vlvCrash,
 			hCoolerCrash,
 			fCoolerCrash,
-			bldOff
+			bldOff,
+			plcio,
 		},
 	},
 	// Доп. аварии холодильника
@@ -85,13 +87,25 @@ const def = {
 			debdo,
 			sb,
 			ozon,
+			plcio,
 		},
 	},
 	// Комбинированный склад (холодильник)
 	combi: {
 		on: { banTimer, genB },
 		off: {},
-		always: { connect, localB, fanCrash, alrStop, supplyB, co2, aggregate, notTune, ozon },
+		always: {
+			connect,
+			localB,
+			fanCrash,
+			alrStop,
+			supplyB,
+			co2,
+			aggregate,
+			notTune,
+			ozon,
+			plcio,
+		},
 	},
 }
 

@@ -13,8 +13,10 @@ const { store } = require('@store/index')
  */
 async function reset(request, reply) {
 	// Сброс аварии и аккумулятора антидребезга модулей
+	console.log(33, reset)
 	store.alarm.module = {}
 	store.debMdl = {}
+	store.timeout = {}
 
 	// Обновление флага связи
 	store.live()

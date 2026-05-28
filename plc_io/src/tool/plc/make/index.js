@@ -1,3 +1,5 @@
+const { wrDebMdl } = require('../../module/timeout')
+
 const def = {
 	read: {
 		rtu: require('../read/rtu'),
@@ -16,9 +18,10 @@ async function make(elem, type = 'read') {
 		// Чтение|запись данных модуля
 		v = await fnMake(elem, type)
 	} catch (error) {
-		if (error.name === 'AbortError')
+		if (error.name === 'AbortError') {
 			console.log(`Ошибка ${t} модуля: Запрос отменен по таймауту`, error.message, elem.ip)
-		else {
+			wrDebMdl(elem._id)
+		} else {
 			console.log(`Ошибка ${t} модуля`, error, elem.ip)
 		}
 	}

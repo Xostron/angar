@@ -237,7 +237,14 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Подготовка агрегата. ',
 	},
-
+	// Нажата кнопка выключения склада
+	43: {
+		count: true,
+		code: 'plcio',
+		typeSignal: 'critical',
+		msg: 'Нет связи с сервером опроса модулей',
+		flt: [true],
+	},
 	// beep alarm
 	65: [
 		{
