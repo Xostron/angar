@@ -1,4 +1,4 @@
-const { store } = require('@store')
+const { store } = require('@store/index')
 const make = require('../make')
 const fnCacheDO = require('./fn/cache')
 const Aboc = require('@tool/abort_controller')
@@ -8,11 +8,14 @@ const { delay } = require('@tool/time')
 /**
  * Чтение модулей
  * @param {*} arr Массив модулей
- * @returns {Promise<object>} Объект: ключ-id модуля, значение-массив показаний модуля
+ * @returns {Promise<object>} result = {v: {idM1:[1,1,1,1], idM1:[1,1,1,1],...},
+ * cacheDO:{idM:[1,1,1,1], ...}
+ * alarmMdl:{idB:{idM1:{...mes},idM:{...mes}}},
+ * debMdl:{idB:{idM1:{...mes},idM:{...mes}}} }
  */
 async function read(arr) {
 	try {
-		const data = {}
+		const result = { v: {}, cacheDO: {}, alarmMdl: {}, debMdl: {} }
 		for (let i = 0; i < arr.length; i++) {
 			if (Aboc.check()) return
 			// ИД модуля: массив ИД string[] - дублеры от разных складов
@@ -35,8 +38,8 @@ async function read(arr) {
 
 			// Ошибка модуля (ответ от модуля не массив чисел) => модуль не прочитан - пропускаем итерацию
 			if (!(v instanceof Array)) {
-				set(idsM, v, data)
-				data.error = idsB
+				set(idsM, v, result)
+				// result.error = idsB
 				continue
 			}
 
@@ -44,31 +47,37 @@ async function read(arr) {
 			switch (arr[i].use) {
 				case 'r':
 				case 'w':
-					set(idsM, v[0], data)
+					set(idsM, v[0], result)
 					break
 				case 'rw':
-					setRW(idsM, v, data)
+					setRW(idsM, v, result)
 					break
 				default:
 					break
 			}
 		}
-		return data
+		return result
 	} catch (error) {
 		console.error('ERROR', error)
 	}
 }
 
-function set(idsM, v, data) {
-	idsM.forEach((idM) => (data[idM] = v))
+function set(idsM, v, result) {
+	idsM.forEach((idM) => (result.v[idM] = v))
+	result.alarmMdl = store.alarm.module
+	result.cacheDO = store.cacheDO
+	result.debMdl = store.debMdl
 }
 
-function setRW(idsM, v, data) {
+function setRW(idsM, v, result) {
 	idsM.forEach((idM) => {
-		data[idM] ??= {}
-		data[idM].input = v[0]
-		data[idM].output = v[1]
+		result.v[idM] ??= {}
+		result.v[idM].input = v[0]
+		result.v[idM].output = v[1]
 	})
+	result.alarmMdl = store.alarm.module
+	result.cacheDO = store.cacheDO
+	result.debMdl = store.debMdl
 }
 
 module.exports = read

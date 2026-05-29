@@ -8,10 +8,12 @@ const collect = require('@tool/module/collect')
 // const write = require('@tool/plc/write')
 const { fnThreadPool } = require('../worker')
 const postV = require('../client/value')
+const { getRack } = require('../client/rack')
 
 // Опрос модулей
 async function main() {
 	try {
+		await getRack('init')
 		// Получить раму модулей (store.mdls) и распределить на потоки (store.parts)
 		collect(store.count)
 		// Потоковое чтение модулей и сохранение в аккумулятор
@@ -19,9 +21,8 @@ async function main() {
 		// Отправка данных на сервер Ангара
 		await postV()
 		// Задержка 10 сек
+		console.log(991, store._first, store.debMdl, store.alarm)
 		Object.keys(store.v ?? {}).length ? await delay(10000) : await delay(5000)
-		// console.log(11, store.debMdl)
-		// console.log(22, store.alarm.module)
 	} catch (error) {
 		console.error(99, error)
 		await delay(3000)
@@ -46,6 +47,8 @@ async function loop() {
 		const end = ((Number(hrtime() - bgn) / 1e6) | 0) / 1000
 		// Флаг первого цикла
 		store._first = false
+		// Сброс аварии
+		store.reset = false
 		console.log('Время цикла = ', end, 'сек\n')
 	}
 }

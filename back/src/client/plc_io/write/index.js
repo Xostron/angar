@@ -57,7 +57,7 @@ function isChange(out) {
 	const o = out.filter((el) => {
 		if (
 			JSON.stringify(el.value) !==
-			JSON.stringify(store.v[el._id[0]]?.output ?? store.v[el._id[0]])
+			JSON.stringify(store.v?.[el._id[0]]?.output ?? store.v?.[el._id[0]])
 		)
 			return true
 	})

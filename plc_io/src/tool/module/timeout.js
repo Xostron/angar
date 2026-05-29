@@ -41,68 +41,43 @@ function timeout(idsB, idsM, ip, opt) {
 // Сохранить неисправный модуль сначала в антидребезг
 function wrDebMdl(idsM) {
 	idsM.forEach((idM) => {
-		if (!store.debMdl?.[idM]) store.debMdl[idM] = new Date()
+		if (!store.debMdl?.[idM]) {
+			store.debMdl[idM] = new Date()
+			// console.log(44, 'wr', idM, store.debMdl)
+		}
 	})
-	console.log(44, idsM, store.debMdl)
 }
 
 // Удалить модуль из списка антидребезга
 function delDebMdl(idsM) {
-	if (!idsM) return (store.debMdl = {})
+	if (!idsM || !idsM?.length) return (store.debMdl = {})
 	idsM.forEach((idM) => {
 		delete store.debMdl?.[idM]
+		// console.log(55, 'del', idM, store.debMdl)
 	})
 }
 
 // Удалить модуль из списка неисправных
 function delModule(idB, idM) {
-	if (!idM) {
+	if (!idM || !idM?.length) {
 		delete store.alarm.module?.[idB]
 		return
 	}
-	delete store.alarm.module?.[idB]?.[idM]
-}
-
-// Проверка внесен ли модуль в список неисправных
-function isErrM(idB, idsM) {
-	const arr = idsM instanceof Array ? idsM : [idsM]
-	return arr.some((idM) => !!store.alarm?.module?.[idB]?.[idM])
-}
-
-// Проверка внесен ли модуль в список неисправных (использовать только при чтении модулей)
-function isErrM2(idsB, idsM) {
-	const arr = idsM instanceof Array ? idsM : [idsM]
-	return arr.some((idM, i) => !!store.alarm?.module?.[idsB[i]]?.[idM])
-}
-
-// Есть ли неисправные модули в системе
-/**
- * Поиск неисправных модулей, с игнорирование "внешних" модулей
- * Внешний модуль отмечается в админке, неисправность данных модулей
- * не влияет на работу склада
- * Два режима выполнения:
- * 1. Без рамы модулей: простая проверка, по наличию любых неисправных модулей
- * 2. С рамой: исключаем из списка неисправных модулей, модули отмеченные как "внешний"
- * @param {string} idB ИД склада
- * @param {object[]} mdl Рама модулей
- * @returns true - есть неисправные модули
- */
-function isErrMs(idB, mdl = []) {
-	// 1. Без рамы модулей: простая проверка, по наличию любых неисправных модулей
-	if (!mdl) return Object.keys(store.alarm?.module?.[idB] ?? {}).length ? true : false
-	// 2. С рамой: исключаем из списка неисправных модулей, модули отмеченные как "внешний"
-	const aErr = Object.keys(store.alarm?.module?.[idB] ?? {}).filter((idM) => {
-		const foreign = mdl.find((el) => el._id === idM)?.foreign
-		return !foreign
-	})
-	return !!aErr?.length
+	idM.forEach((id) => delete store.alarm.module?.[idB]?.[id])
 }
 
 // Добавить модуль в список неисправных
 function wrModule(idB, idM, o) {
+	// console.log(66, 'wrModule', idM, o)
 	store.alarm.module ??= {}
 	store.alarm.module[idB] ??= {}
-	if (!store.alarm.module[idB]?.[idM]) store.alarm.module[idB][idM] = o
+	if (idM instanceof Array) {
+		idM.forEach((id) => {
+			if (!store.alarm.module[idB]?.[id]) store.alarm.module[idB][id] = o
+		})
+	} else {
+		if (!store.alarm.module?.[idB]?.[idM]) store.alarm.module[idB][idM] = o
+	}
 }
 
 /**
@@ -119,8 +94,9 @@ function wrModule(idB, idM, o) {
  * false - модуля нет в списке/еще не прошло время - разрешен
  */
 function debMdl(idsB, idsM, opt) {
+	// console.log(55, 'debMdl', idsM)
 	// Если модуля нет в списке антидребезга - разрешен
-	if (!idsM.some((el) => store.debMdl[el])) return false
+	if (!idsM.some((id) => store.debMdl?.[id])) return false
 
 	// Время антидребезга - время в течении, которого модуль будет считаться рабочим
 	const debounce = (opt?.debounce ?? store.tDeb) * 60_000
@@ -144,4 +120,37 @@ function debMdl(idsB, idsM, opt) {
 	return false
 }
 
+// Проверка внесен ли модуль в список неисправных
+function isErrM(idB, idsM) {
+	const arr = idsM instanceof Array ? idsM : [idsM]
+	return arr.some((idM) => !!store.alarm?.module?.[idB]?.[idM])
+}
+
+// Проверка внесен ли модуль в список неисправных (использовать только при чтении модулей)
+function isErrM2(idsB, idsM) {
+	const arr = idsM instanceof Array ? idsM : [idsM]
+	return arr.some((idM, i) => !!store.alarm?.module?.[idsB[i]]?.[idM])
+}
+
+/**
+ * Поиск неисправных модулей, с игнорирование "внешних" модулей
+ * Внешний модуль отмечается в админке, неисправность данных модулей
+ * не влияет на работу склада
+ * Два режима выполнения:
+ * 1. Без рамы модулей: простая проверка, по наличию любых неисправных модулей
+ * 2. С рамой: исключаем из списка неисправных модулей, модули отмеченные как "внешний"
+ * @param {string} idB ИД склада
+ * @param {object[]} mdl Рама модулей
+ * @returns true - есть неисправные модули
+ */
+function isErrMs(idB, mdl = []) {
+	// 1. Без рамы модулей: простая проверка, по наличию любых неисправных модулей
+	if (!mdl) return Object.keys(store.alarm?.module?.[idB] ?? {}).length ? true : false
+	// 2. С рамой: исключаем из списка неисправных модулей, модули отмеченные как "внешний"
+	const aErr = Object.keys(store.alarm?.module?.[idB] ?? {}).filter((idM) => {
+		const foreign = mdl.find((el) => el._id === idM)?.foreign
+		return !foreign
+	})
+	return !!aErr?.length
+}
 module.exports = { wrDebMdl, delDebMdl, timeout, delModule, isErrM, isErrMs }

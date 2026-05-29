@@ -19,7 +19,7 @@ function fnCacheDO(v, mdl) {
 	
 	// Данные с модуля - успешно прочитаны, обновляем кэш, возврат
 	store.cacheDO[mdl.ip] = v
-	console.log(mdl.name, mdl.ip, 'Данные с модуля')
+	// console.log(mdl.name, mdl.ip, 'Данные с модуля DO | DI/DO')
 	return v
 }
 

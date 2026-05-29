@@ -19,9 +19,9 @@ async function output(request, reply) {
 	// Данные на запись от ангара
 	const out = request.body
 	console.log(
-		11,
+		'\x1b[32m%s\x1b[0m',
 		'Данные на запись',
-		JSON.stringify(out.map((el) => ({ id: el._id, value: el.value }))),
+		//JSON.stringify(out.map((el) => ({ id: el._id, value: el.value }))),
 	)
 	if (check(out)) return { timestamp: new Date() }
 
@@ -32,7 +32,7 @@ async function output(request, reply) {
 	// Опрос модулей - получаем актуальные данные
 	store.v = await fnThreadPool(store.count)
 	// Отвечаем ангару актуальными значениями модулей
-	console.log('\x1b[32m%s\x1b[0m', 'Модули выходов успешно записаны', JSON.stringify(store.v))
+	console.log('\x1b[32m%s\x1b[0m', 'Модули выходов успешно записаны') //JSON.stringify(store.v))
 	return { timestamp: new Date(), v: store.v, alarm: store?.alarm?.module ?? {} }
 }
 

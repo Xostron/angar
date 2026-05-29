@@ -4,27 +4,32 @@ const engineRouters = require('./routes')
 // Инициализация fastify, подключение логирования
 const app = fastify({
 	logger: {
-		transport: {
-			target: 'pino-pretty', // если вы используете красивый вывод в консоль
-			options: {
-				translateTime: 'HH:MM:ss.l', // формат времени как у вас [16:25:44.169]
-				ignore: 'pid,hostname,req', // скрываем стандартный большой объект req и лишние поля
-			},
-		},
-		// Переносим метод и URL в саму строку сообщения INFO
-		formatters: {
-			log(object) {
-				if (object.req) {
-					object.msg = `incoming request: ${object.req.method} "${object.req.url}"`
-				}
-				return object
-			},
-		},
-		// Оставляем сериализатор пустым, чтобы объект req вообще не писался в лог
+		// Переопределяем сериализаторы, чтобы Fastify физически
+		// не мог собирать и выводить объекты 'res' и 'req' в логах
 		serializers: {
-			req: () => undefined,
+			res() {
+				return undefined
+			},
+			req() {
+				return undefined
+			},
+		},
+		transport: {
+			target: 'pino-pretty',
+			options: {
+				translateTime: 'HH:MM:ss.l',
+				ignore: 'pid,hostname,reqId,responseTime', // Игнорируем остатки полей
+				messageFormat: '{msg}',
+			},
 		},
 	},
+})
+
+// 3. Добавляем хук на завершение ответа (onResponse)
+app.addHook('onResponse', (request, reply, done) => {
+	// Логируем строго в нужном формате
+	request.log.info(`${request.method} ${request.url}`)
+	done()
 })
 
 // Роуты

@@ -68,5 +68,5 @@ const data = {
 		}
 	},
 }
-console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', data.controller)
+// console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', data.controller)
 module.exports = data

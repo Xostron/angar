@@ -16,6 +16,8 @@ const battery = require('@tool/scripts/battery')
 const Aboc = require('@tool/abort_controller')
 const writeStore = require('./save/extra')
 const writeIO = require('../client/plc_io/write')
+const resetIO = require('../client/plc_io/reset')
+const { reset } = require('@tool/reset')
 
 // Контроль работы склада
 async function control() {
@@ -37,6 +39,7 @@ async function control() {
 		// writeLock(obj)
 		// Выхода: Запись в модули -> В режиме микросервиса
 		process.env.MODE === 'micro' ? await writeIO(obj.output) : await writeVal(obj.output)
+		process.env.MODE === 'micro' ? await resetIO(obj.output) : null
 		// Аварии для web
 		const alr = await Aboc.asycall(webAlarm)(obj)
 		// Статистика
@@ -67,7 +70,8 @@ async function loop() {
 			'\x1b[36m%s\x1b[0m',
 			`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`,
 		)
-		// Инициализация глобального аккумулятора (сомнительно!)
+
+		// Инициализация глобального аккумулятора
 		await writeStore()
 		// Основной цикл программы
 		await control()
@@ -77,6 +81,8 @@ async function loop() {
 		// Сброс флага первого цикла
 		store._first = false
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
+		// Сброс флага store.reset
+		process.env.MODE === 'micro' ? null : reset(null, false, false)
 		console.log('Режим микросервиса активен', process.env.MODE === 'micro')
 		console.log(
 			'\x1b[33m%s\x1b[0m',
