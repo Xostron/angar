@@ -42,7 +42,7 @@ function createWorker(idx) {
 	pool[idx] = worker
 	// Воркер упал, создаем новый воркер
 	worker.on('exit', (code) => {
-		console.log('Worker Exit. Код', code)
+		console.log('⛔ Worker Exit. Код', code)
 		createWorker(idx)
 	})
 }
@@ -75,7 +75,6 @@ function manager(count) {
 			const start = new Date()
 
 			// Отправляем воркеру данные из основного потока (part - модули, reset - сброс аварий)
-			// console.log(3333, store.reset)
 			worker.postMessage({ part, reset: store.reset })
 
 			// Слушаем ответ от потока (одноразовый)
@@ -104,7 +103,7 @@ function manager(count) {
 				})
 				console.log('❌ Ошибка потока', i, reason)
 				if (check(count, ++finishedWorkers, pool)) {
-					console.log('Потоки завершены')
+					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)
 					resolve(results)
 				}
 			})
@@ -120,7 +119,6 @@ if (!isMainThread) {
 	parentPort.on('message', async ({ part, reset }) => {
 		// Чтение модулей
 		clear(reset)
-		// console.log(idx + 1, 'Поток начал работу', reset)
 		const r = await read(part)
 		// Результат чтения
 		parentPort.postMessage(r)
@@ -132,7 +130,4 @@ function clear(reset, r) {
 	// сброс аккумулятор воркеров
 	store.alarm.module = {}
 	store.debMdl = {}
-	// удаление ключей из результата воркера
-	// delete r?.alarmMdl
-	// delete r?.debMdl
 }

@@ -54,7 +54,6 @@ function collectMdls(module, equipment) {
 		cur._id.push(m._id)
 		cur.buildingId.push(m.buildingId)
 	})
-	// console.log(9911, [...map.values()])
 	return [...map.values()]
 }
 

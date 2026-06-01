@@ -8,7 +8,7 @@ async function extralrm() {
 		for (const key in def) await def[key]()
 
 	} catch (error) {
-		console.log(error)
+		console.error(error)
 	}
 }
 

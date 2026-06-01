@@ -10,7 +10,7 @@ const { delay } = require('../../time')
  */
 async function write(arr = []) {
 	try {
-		// TDOD Режим только чтения без записи в модуля
+		// TODO Режим только чтения без записи в модуля
 		if (process.env.NODE_ENV === 'READ') {
 			console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 			return null

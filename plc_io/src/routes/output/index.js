@@ -23,7 +23,7 @@ async function output(request, reply) {
 	if (check(out)) {
 		// Пинг
 		store.live()
-		console.log('\x1b[32m%s\x1b[0m', '🟡 output. Нет данных')
+		console.log('🟡 output. Нет данных')
 		return { timestamp: new Date() }
 	}
 
@@ -36,7 +36,7 @@ async function output(request, reply) {
 	// Пинг
 	store.live()
 	// Отвечаем ангару актуальными значениями модулей
-	console.log('\x1b[32m%s\x1b[0m', '🟢 output. Модули выходов успешно записаны') //JSON.stringify(store.v))
+	console.log('🟢 output. Модули выходов успешно записаны') //JSON.stringify(store.v))
 	return { timestamp: new Date(), v: store.v, alarm: store?.alarm?.module ?? {} }
 }
 
@@ -50,8 +50,6 @@ module.exports = output
 function check(out) {
 	const reason = [[!out?.length, 'Нет данных для записи']]
 	const r = reason.filter(([v, mes]) => v)
-	if (!!r.length) console.log('Запись выходов заблокирована по причине:', r)
+	if (!!r.length) console.log('🟡 Запись выходов заблокирована по причине:', r)
 	return !!r.length
 }
-
-

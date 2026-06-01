@@ -24,7 +24,6 @@ async function getRack() {
 	}
 
 	const r = await api(config)
-	// console.log(r.data)
 	// Нет связи с сервером ангара
 	if (!r?.data || !r?.data?.module || !r?.data?.equipment)
 		return console.log('🔴 plc_io -> back. Невозможно получить раму - нет связи с ангаром')

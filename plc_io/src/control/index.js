@@ -20,7 +20,6 @@ async function main() {
 		await extralrm()
 		// Отправка данных на сервер Ангара
 		await postV()
-		// console.log(991, store._first, store.debMdl, store.alarm)
 		await checkAlarm(store.mdls)
 		// Задержка 10 сек
 		Object.keys(store.v ?? {}).length ? await delay(10000) : await delay(5000)
@@ -40,7 +39,7 @@ async function loop() {
 		let sp = 3
 		// Доступно ядер
 		store.count = total - 1 > sp ? sp : total - 1
-		console.log('****************CYCLE******************')
+		console.log('****************CYCLE******************', new Date().toLocaleString())
 		console.log(`Всего ядер ${total}, доступно ${store.count}`)
 
 		await main()

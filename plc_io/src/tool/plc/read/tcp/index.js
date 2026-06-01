@@ -45,7 +45,7 @@ function readTCP(host, port, opt) {
 					resolve([r, w])
 				})
 				.catch((e) => {
-					console.log('Ошибка чтения DO', opt.name, opt.ip)
+					console.log('❌ Ошибка чтения DO', opt.name, opt.ip)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

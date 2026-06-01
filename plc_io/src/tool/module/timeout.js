@@ -29,11 +29,11 @@ function timeout(idsB, idsM, ip, opt) {
 			// Сбросить время
 			store.timeout[idM] = new Date()
 			// Время прошло - разрешить опрос
-			console.log(ip, opt?.name, 'Время повторного чтения прошло - Разрешить опрос')
+			console.log('📮 Время повторного чтения прошло - Разрешить опрос', ip, opt?.name)
 			return true
 		}
 		// Время не прошло - блокировать опрос модуля
-		console.log('Ожидание повторного чтения - Блокировать модуль', opt?.name, opt?.use, ip)
+		console.log('⏳ Модуль заблокирован (ожидание повторного чтения)', opt?.name, opt?.use, ip)
 		return false
 	}
 }
@@ -43,7 +43,6 @@ function wrDebMdl(idsM) {
 	idsM.forEach((idM) => {
 		if (!store.debMdl?.[idM]) {
 			store.debMdl[idM] = new Date()
-			// console.log(44, 'wr', idM, store.debMdl)
 		}
 	})
 }
@@ -53,7 +52,6 @@ function delDebMdl(idsM) {
 	if (!idsM || !idsM?.length) return (store.debMdl = {})
 	idsM.forEach((idM) => {
 		delete store.debMdl?.[idM]
-		// console.log(55, 'del', idM, store.debMdl)
 	})
 }
 
@@ -68,7 +66,6 @@ function delModule(idB, idM) {
 
 // Добавить модуль в список неисправных
 function wrModule(idB, idM, o) {
-	// console.log(66, 'wrModule', idM, o)
 	store.alarm.module ??= {}
 	store.alarm.module[idB] ??= {}
 	if (idM instanceof Array) {
@@ -94,7 +91,6 @@ function wrModule(idB, idM, o) {
  * false - модуля нет в списке/еще не прошло время - разрешен
  */
 function debMdl(idsB, idsM, opt) {
-	// console.log(55, 'debMdl', idsM)
 	// Если модуля нет в списке антидребезга - разрешен
 	if (!idsM.some((id) => store.debMdl?.[id])) return false
 
@@ -112,7 +108,7 @@ function debMdl(idsB, idsM, opt) {
 		}
 	}
 	if (flag) {
-		console.log(9955, opt.ip, opt.name, 'Модуль неисправен')
+		console.log('👁️ Модуль неисправен', opt.ip, opt.name, )
 		return true
 	}
 
