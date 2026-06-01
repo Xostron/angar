@@ -12,6 +12,7 @@ const { store } = require('@store/index')
 async function value(request, reply) {
 	// Запрос от ангара пришел, обновляем флаг связи
 	store.live()
+	console.log('🟢 value. Значения опроса модулей')
 	// Отвечаем ангару
 	return { timestamp: new Date(), v: store.v }
 }

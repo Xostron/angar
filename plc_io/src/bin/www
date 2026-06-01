@@ -3,7 +3,7 @@ require('module-alias/register')
 const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env'), silent: true })
 const app = require('@root/app')
-const loopRack = require('@root/client/rack')
+const { loopRack } = require('@root/client/rack')
 const loop = require('@root/control')
 
 const PORT = process.env.PORT_RW || 4001

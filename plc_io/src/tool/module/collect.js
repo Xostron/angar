@@ -10,15 +10,13 @@ const { store } = require('@store')
  */
 function collect(count) {
 	// Если нет флага обновления рамы ИЛИ нет модулей ИЛИ нет оборудования - выходим
-	if (!store._update || !store.module.length || !Object.keys(store.equipment).length) return
+	if (!store._handshake || !store.module.length || !Object.keys(store.equipment).length) return
 
 	// Рама: Преобразуем модуль+оборудование, убираем дубляжи
 	store.mdls = collectMdls(store.module, store.equipment)
 
 	// Разбиваем модули на потоки и сохраняем в store.parts
 	store.parts = partition(store.mdls, count)
-
-	store._update = false
 }
 
 /**

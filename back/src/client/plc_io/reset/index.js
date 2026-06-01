@@ -22,24 +22,23 @@ async function resetIO() {
 		if (!store.reset?.size)
 			return console.log(
 				'\x1b[32m%s\x1b[0m',
-				'back -> plc_io (reset): Нет команды сброса аварии модулей',
+				'🟡 back -> plc_io (reset): Нет команды сброса аварии модулей',
 			)
 
 		// Запрос back->plc_io (reset)
 		const r = await api(apiConfig({}))
 
 		// Ошибка запроса
-		if (!r.data) throw new Error('❌back -> plc_io (reset): Ошибка запроса')
+		if (!r.data) throw new Error('🔴 back -> plc_io (reset): Ошибка запроса')
 		reset(null, false, false)
-		console.log('\x1b[32m%s\x1b[0m', 'back -> plc_io (reset): Запрос успешно обработан')
-
-		// Флаг PLC_IO на связи
-		live()
+		console.log('\x1b[32m%s\x1b[0m', '🟢 back -> plc_io (reset): Запрос успешно обработан')
 
 		// Обновление опроса модулей
 		store.v = r.data.v
 		// Обновление списка аварий
 		store.alarm.module = r.data.alarm
+		// Пинг
+		live()
 		return true
 	} catch (error) {
 		console.error(error)

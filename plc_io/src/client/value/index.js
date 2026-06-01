@@ -21,24 +21,25 @@ const apiConfig = (data, params) => ({
  */
 async function postV() {
 	try {
+		// Данные не готовы
 		if (!Object.keys(store.v ?? {}).length)
-			return console.log('Данные опроса модулей не готовы')
+			return console.log('🟡 plc_io -> back. Невозможно опросить модули - нет рамы')
 
+		// Запрос
 		const config = apiConfig({ v: store.v, alarm: store.alarm.module }, {})
 		const r = await api(config)
 
 		// Запрос не успешен
 		if (!r.data) {
-			throw new Error('PLC_IO->BACK. ❌Не удалось передать данные опроса модулей на ангар')
+			throw new Error('🔴 plc_io -> back. Опрос модулей не передан - нет связи с ангаром')
 		}
-		console.log(
-			'\x1b[32m%s\x1b[0m',
-			'PLC_IO->BACK. Данные c опроса модулей успешно отправлены на ангар',
-		)
+
+		// Запрос успешен
+		console.log('🟢 plc_io -> back. Опрос модулей успешно передан на ангар')
 		store.live()
 		return true
 	} catch (error) {
-		throw error
+		console.error(error)
 	}
 }
 

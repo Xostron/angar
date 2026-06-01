@@ -14,18 +14,16 @@ const { store } = require('@store/index')
 async function reset(request, reply) {
 	// Сброс аварии и аккумулятора антидребезга модулей
 	// Очистка аккумулятора главного потока
-	console.log(123, request.body)
 	store.alarm.module = {}
 	store.debMdl = {}
-	
+	store.extralrm.live = false
 	// Взвод флага reset, для очистки в воркерах опроса модулей
 	// в конце цикла этот флаг сбрасываем
 	store.reset = true
-	
+
 	// Обновление флага связи
 	store.live()
-	
-	console.log(55, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@reset', store.reset)
+	console.log('🟢 Сброс аварий')
 	// Отвечаем ангару
 	return { timestamp: new Date(), alarm: store?.alarm?.module ?? {} }
 }

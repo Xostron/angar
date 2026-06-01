@@ -4,10 +4,10 @@ const { getMdl, getId } = require('@tool/get/module')
  * Собрать массив уникальных модулей:
  * Уйти от избыточного опроса и опрашивать модули с одинаковыми
  * id = m.ip + m.equipmentId +(m?.slave ?? '') один раз за цикл.
- * Данная функция группирует модули по id = m.ip + m.equipmentId +(m?.slave ?? ''). 
- * Ключ _id ИД модуля, содержит в себе ИД общих модулей, 
+ * Данная функция группирует модули по id = m.ip + m.equipmentId +(m?.slave ?? '').
+ * Ключ _id ИД модуля, содержит в себе ИД общих модулей,
  * которые принадлежат разным складам на ПОСе.
- * 
+ *
  * @param {object[]} module Рама модулей
  * @param {object} equipment Рама оборудования
  * @return {object[]} Массив модулей (модуль+equipment) без дубляжей
@@ -19,7 +19,7 @@ function collectMdls(module, equipment) {
 	// Проход по модулям
 	const map = new Map()
 	module.forEach((m) => {
-		const id = m.ip + m.equipmentId +(m?.slave ?? '')
+		const id = m.ip + m.equipmentId + (m?.slave ?? '')
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id))
 			return map.set(id, {
@@ -132,30 +132,6 @@ function prepare(out, mdls) {
 		arr.push({ ...mdl, value: out[id] })
 	}
 	return arr
-	// mdls.forEach((m) => {
-	// 	// Ключи out
-	// 	const id = m.ip + (m?.slave ?? '')
-
-	// 	// Если нет значения у модуля - пропускаем
-	// 	if (!out[id]) return
-
-	// 	// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
-	// 	if (!map.has(id))
-	// 		return map.set(id, {
-	// 			...m,
-	// 			_id: [m._id],
-	// 			buildingId: [m.buildingId],
-	// 			value: out[m._id],
-	// 		})
-
-	// 	// В коллекции уже есть такой модуль, редактируем ключ _id, buildingId, value
-	// 	// данный модуль может использоваться несколькими складами
-	// 	const cur = map.get(id)
-	// 	cur._id.push(m._id)
-	// 	cur.buildingId.push(m.buildingId)
-	// 	// cur.value = cur.value.map((el, i) => +el + +(out?.[m._id]?.[i] ?? 0))
-	// })
-	// return [...map.values()]
 }
 
 module.exports = { collectMdls, mask, transform, prepare, getMdl }

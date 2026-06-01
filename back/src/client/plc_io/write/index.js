@@ -17,26 +17,25 @@ const apiConfig = (data, params = {}) => ({
  */
 async function writeIO(out) {
 	try {
-		if (!out) return console.log('back->plc_io', 'Нет данных для записи')
+		if (!out) return console.log('🟡 back->plc_io (output).', 'Нет данных для записи')
 
 		// Наличие изменений
 		const o = isChange(out)
-		if (!o) return console.log('back->plc_io', 'Нет изменений для записи')
+		if (!o) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
 
 		// Запрос back->plc_io
 		const r = await api(apiConfig(o))
 
 		// Ошибка запроса
-		if (!r.data) throw new Error('❌back->plc_io: Ошибка запроса')
-
-		console.log('\x1b[32m%s\x1b[0m', 'back->plc_io. Запрос успешно обработан')
-
-		// Флаг PLC_IO на связи
-		live()
+		if (!r.data)
+			throw new Error('🔴 back->plc_io (output). Нет связи с сервером опроса модулей')
 
 		// Обновление опроса модулей
 		store.v = r.data.v
+		// Пинг
+		live()
 
+		console.log('\x1b[32m%s\x1b[0m', '🟢 back->plc_io (output). Запрос успешно обработан')
 		return true
 	} catch (error) {
 		console.error(error)

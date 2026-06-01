@@ -11,8 +11,9 @@ function get() {
 		const alarm = !Object.keys(store.alarm.module).length
 			? (acc?.module ?? {})
 			: store.alarm.module
-
+		// Пинг
 		live()
+		console.log('🟢 Рама модулей отправлена')
 		res.status(200).json({ module, equipment, alarm })
 	}
 }

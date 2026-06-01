@@ -37,7 +37,7 @@ async function control() {
 		// Выхода: Блокировки
 		Aboc.call(writeLock)(obj)
 		// writeLock(obj)
-		// Выхода: Запись в модули -> В режиме микросервиса
+		// Выхода: Запись в модули: [микросервис] : [монолит]
 		process.env.MODE === 'micro' ? await writeIO(obj.output) : await writeVal(obj.output)
 		process.env.MODE === 'micro' ? await resetIO(obj.output) : null
 		// Аварии для web

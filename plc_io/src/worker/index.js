@@ -75,7 +75,7 @@ function manager(count) {
 			const start = new Date()
 
 			// Отправляем воркеру данные из основного потока (part - модули, reset - сброс аварий)
-			console.log(3333, store.reset)
+			// console.log(3333, store.reset)
 			worker.postMessage({ part, reset: store.reset })
 
 			// Слушаем ответ от потока (одноразовый)
@@ -88,10 +88,10 @@ function manager(count) {
 				store.debMdl = { ...store.debMdl, ...(r.debMdl ?? {}) }
 				// Время обработки потока
 				const end = (new Date() - start) / 1000
-				console.log(`${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part.length}`)
+				console.log(`✔️ ${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part.length}`)
 
 				if (check(count, ++finishedWorkers, pool)) {
-					console.log(`Все потоки успешно выполнены. Общее кол-во модулей = ${length}`)
+					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)
 					resolve(results)
 				}
 			})
@@ -102,7 +102,7 @@ function manager(count) {
 				part.forEach((mdl, i) => {
 					mdl._id.forEach((id) => (results[id] = `Worker ${i}. Error ${reason}`))
 				})
-				console.log('Ошибка потока', i, reason)
+				console.log('❌ Ошибка потока', i, reason)
 				if (check(count, ++finishedWorkers, pool)) {
 					console.log('Потоки завершены')
 					resolve(results)
@@ -120,7 +120,7 @@ if (!isMainThread) {
 	parentPort.on('message', async ({ part, reset }) => {
 		// Чтение модулей
 		clear(reset)
-		console.log(idx + 1, 'Поток начал работу', reset)
+		// console.log(idx + 1, 'Поток начал работу', reset)
 		const r = await read(part)
 		// Результат чтения
 		parentPort.postMessage(r)

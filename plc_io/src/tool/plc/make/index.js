@@ -19,10 +19,10 @@ async function make(elem, type = 'read') {
 		v = await fnMake(elem, type)
 	} catch (error) {
 		if (error.name === 'AbortError') {
-			console.log(`Ошибка ${t} модуля: Запрос отменен по таймауту`, error.message, elem.ip)
+			console.log(`✖️ Ошибка ${t} модуля: Запрос отменен по таймауту`, error.message, elem.ip)
 			wrDebMdl(elem._id)
 		} else {
-			console.log(`Ошибка ${t} модуля`, error, elem.ip)
+			console.log(`✖️ Ошибка ${t} модуля`, error, elem.ip)
 		}
 	}
 	return v

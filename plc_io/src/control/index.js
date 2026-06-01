@@ -3,25 +3,26 @@ const hrtime = process.hrtime.bigint
 const { store } = require('@store/index')
 const { delay } = require('@tool/time')
 const collect = require('@tool/module/collect')
-// const Aboc = require('@tool/abort_controller')
-// const getOutput = require('@tool/module/get_output')
-// const write = require('@tool/plc/write')
 const { fnThreadPool } = require('../worker')
 const postV = require('../client/value')
-const { getRack } = require('../client/rack')
+const extralrm = require('./extralrm')
+const { checkAlarm } = require('@tool/module/get_output')
 
 // Опрос модулей
 async function main() {
 	try {
-		await getRack('init')
-		// Получить раму модулей (store.mdls) и распределить на потоки (store.parts)
+		// Преобразование рамы модулей module, equipment в удобный вид для опроса:
+		// store.mdls - module+equipment, распределение на потоки store.parts
 		collect(store.count)
 		// Потоковое чтение модулей и сохранение в аккумулятор
 		store.v = await fnThreadPool(store.count)
+		// Обработка авари
+		await extralrm()
 		// Отправка данных на сервер Ангара
 		await postV()
+		// console.log(991, store._first, store.debMdl, store.alarm)
+		await checkAlarm(store.mdls)
 		// Задержка 10 сек
-		console.log(991, store._first, store.debMdl, store.alarm)
 		Object.keys(store.v ?? {}).length ? await delay(10000) : await delay(5000)
 	} catch (error) {
 		console.error(99, error)

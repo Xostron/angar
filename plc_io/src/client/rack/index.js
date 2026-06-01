@@ -4,34 +4,32 @@ const { store } = require('@store/index')
 
 /**
  * Запрос рамы модулей и оборудования
- * Обновление каждые 7 мин
+ * Обновление каждые 7 мин по-умолчанию | Если нет рамы, то каждые 10 сек
  */
 async function loopRack() {
 	while (true) {
-		getRack()
-		// обновление конфигурации склада каждые 7 минут
-		await delay(store._period ?? 420001)
+		// Запрос рамы module, equipment
+		await getRack()
+
+		// [Обновление каждые 7 мин по-умолчанию] : [Если нет рамы, то каждые 10 сек]
+		store._handshake ? await delay(store._period ?? 420001) : await delay(10000)
 	}
 }
 
-async function getRack(type) {
+async function getRack() {
 	const config = {
 		method: 'GET',
 		url: 'io/init',
 		headers: {},
 	}
 
-	// Режим init: срабатывает всегда пока флаг store.handshake =false
-	if (type === 'init' && store._handshake)
-		return console.log('\x1b[32m%s\x1b[0m', 'Рама получена')
-
 	const r = await api(config)
+	// console.log(r.data)
+	// Нет связи с сервером ангара
 	if (!r?.data || !r?.data?.module || !r?.data?.equipment)
-		return console.log(
-			'\x1b[32m%s\x1b[0m',
-			'plc_io -> back: Инициализация рамы не пройдена (нет связи с ангаром)',
-		)
+		return console.log('🔴 plc_io -> back. Невозможно получить раму - нет связи с ангаром')
 
+	// Есть связь
 	store.live()
 
 	store.module = r.data.module
@@ -39,8 +37,8 @@ async function getRack(type) {
 	store.alarm.module = r.data.alarm ?? {}
 
 	store._handshake = true
-	console.log('\x1b[32m%s\x1b[0m', 'Рама модулей и оборудования получена от ангара')
+	console.log('🟢 Рама от ангара получена')
 	return true
 }
 
-module.exports = { loopRack, getRack }
+module.exports = { loopRack }
