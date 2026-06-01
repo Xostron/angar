@@ -13,14 +13,14 @@ function value(val, obj) {
 	if (!data) return
 	// Данные для главного цикла
 	obj.value = { ...data }
-	obj.errBuilding = val.error
+	// obj.errBuilding = val.error
 	// Данные для web клиента
 	return {
 		...data,
 		retain: obj.retain,
 		factory: obj.factory,
 		time: new Date(),
-		errBuilding: val.error,
+		errBuilding: null,
 	}
 }
 

@@ -1,6 +1,6 @@
 const { ctrlDO } = require('@tool/command/module_output')
 const { getSignal, getSig } = require('@tool/command/signal')
-const { isReset, reset } = require('@tool/reset')
+const { isReset } = require('@tool/reset')
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store')
 const { readAcc } = require('@store/index')
@@ -34,14 +34,14 @@ function onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc) {
 	if (acc?.[ownerId]?.wait && !time) {
 		DOReset(el, m.reset, bld, ownerId, 'on')
 		// Выключить флаг сброса аварии
-		reset(null, false, false)
+		// reset(null, false, false)
 	}
 
 	// По истечению 3 сек -> Выключить выход
 	if (time) {
 		DOReset(el, m.reset, bld, ownerId, 'off')
 		delete acc?.[ownerId]?.wait
-		reset(null, false, false)
+		// reset(null, false, false)
 	}
 }
 

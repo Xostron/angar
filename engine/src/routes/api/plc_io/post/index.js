@@ -8,7 +8,9 @@ function post() {
 		if (Object.keys(req?.body?.v ?? {}).length) store.v = req.body.v
 		// Сохраняем в аккумулятор аварии модулей
 		store.alarm.module = req?.body?.alarm ?? {}
+		// Пинг
 		live()
+		console.log('🟢 Значения модулей получены')
 		res.status(200).json({ result: true })
 	}
 }

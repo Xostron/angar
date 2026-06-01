@@ -135,7 +135,7 @@ function debMdl(idsB, idsM, opt) {
 		}
 	}
 	if (flag) {
-		console.log(9955, opt.ip, opt.name, 'Модуль неисправен')
+		// console.log('Модуль неисправен', opt.ip, opt.name, )
 		return true
 	}
 
