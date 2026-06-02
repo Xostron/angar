@@ -19,6 +19,16 @@ function delay(t = 0) {
 	})
 }
 
+async function delayR(t = 0, step = 1, q) {
+	step = step <= 0 ? 1 : step
+	t = Math.round(t / step)
+	while (--t > 0) {
+		console.log(123, t, q)
+		await delay(step)
+		if (q) break
+	}
+}
+
 // Преобразование в объект даты и времени {begin, end}
 function range(o) {
 	// string 23:00 => [часы, минуты]
@@ -189,4 +199,5 @@ module.exports = {
 	elapsedTime,
 	onTime,
 	remTime,
+	delayR
 }

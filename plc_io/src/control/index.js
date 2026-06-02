@@ -19,7 +19,7 @@ async function main() {
 		// Обработка авари
 		await extralrm()
 		// Отправка данных на сервер Ангара
-		await postV()
+		// await postV()
 		await checkAlarm(store.mdls)
 		// Задержка 10 сек
 		Object.keys(store.v ?? {}).length ? await delay(10000) : await delay(5000)

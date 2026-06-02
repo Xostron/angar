@@ -1,4 +1,4 @@
-const api = require('@tool/api_plc_io')
+const fnApi = require('@tool/api_plc_io')
 const { data: store, live } = require('@store')
 const { reset } = require('@tool/reset')
 
@@ -19,19 +19,17 @@ const apiConfig = (data, params = {}) => ({
 async function resetIO() {
 	try {
 		// Если нет сигнала сброса, то ничего не отправляем
-		if (!store.reset?.size)
-			return console.log(
-				'\x1b[32m%s\x1b[0m',
-				'🟡 back -> plc_io (reset): Нет команды сброса аварии модулей',
-			)
+		if (!store.reset?.size) return
 
 		// Запрос back->plc_io (reset)
+		const uri = process.env?.API_URI_PLCIO ?? 'http://192.168.21.41:4001/api/'
+		const api = fnApi(uri)
 		const r = await api(apiConfig({}))
 
 		// Ошибка запроса
 		if (!r.data) throw new Error('🔴 back -> plc_io (reset): Ошибка запроса')
 		reset(null, false, false)
-		console.log('\x1b[32m%s\x1b[0m', '🟢 back -> plc_io (reset): Запрос успешно обработан')
+		console.log('🟢 back -> plc_io (reset): Запрос успешно обработан')
 
 		// Обновление опроса модулей
 		store.v = r.data.v
@@ -41,7 +39,9 @@ async function resetIO() {
 		live()
 		return true
 	} catch (error) {
-		console.error(error)
+		if (error.code === 'ECONNREFUSED' || !error.response)
+			console.error('🔴 back->plc_io (reset). ECONNREFUSED')
+		else console.error('🔴 back->plc_io (reset). Ошибка запроса:', error.message)
 	}
 }
 

@@ -1,4 +1,4 @@
-const api = require('@tool/api_plc_io')
+const fnApi = require('@tool/api_plc_io')
 const { data: store, live } = require('@store')
 
 const apiConfig = (data, params = {}) => ({
@@ -24,21 +24,24 @@ async function writeIO(out) {
 		if (!o) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
 
 		// Запрос back->plc_io
+		const uri = process.env?.API_URI_PLCIO ?? 'http://192.168.21.41:4001/api/'
+		const api = fnApi(uri)
 		const r = await api(apiConfig(o))
 
 		// Ошибка запроса
-		if (!r.data)
-			throw new Error('🔴 back->plc_io (output). Нет связи с сервером опроса модулей')
+		if (!r.data) throw new Error('Нет связи с сервером опроса модулей')
 
 		// Обновление опроса модулей
 		store.v = r.data.v
 		// Пинг
 		live()
 
-		console.log('\x1b[32m%s\x1b[0m', '🟢 back->plc_io (output). Запрос успешно обработан')
+		console.log('🟢 back->plc_io (output). Запрос успешно обработан')
 		return true
 	} catch (error) {
-		console.error(error)
+		if (error.code === 'ECONNREFUSED' || !error.response)
+			console.error('🔴 back->plc_io (output). ECONNREFUSED')
+		else console.error('🔴 back->plc_io (output). Ошибка запроса:', error.message)
 	}
 }
 

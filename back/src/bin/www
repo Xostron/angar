@@ -24,6 +24,8 @@ const activityMiddlew = require('@root/middleware/activity');
 const createError = require('http-errors');
 const loopInit = require('@root/client/init');
 const loopState = require('@root/client/state');
+const loopRack = require('@root/client/plc_io/rack');
+const loopValue = require('@root/client/plc_io/value');
 const loop = require('@root/control');
 const { statOnTime } = require('@root/stat');
 const { delay } = require('@tool/command/time');
@@ -127,6 +129,11 @@ loop()
 
 // Вывод информации о сервере
 info().then().catch(console.error);
+// Микросервис опрос модулей
+// Рама
+loopRack().then().catch(console.error);
+// Значения модулей
+loopValue().then().catch(console.error);
 
 // Normalize a port into a number, string, or false.
 function normalizePort(val) {
