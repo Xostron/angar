@@ -37,7 +37,6 @@ function collectMdls(module) {
 	const map = new Map()
 	module.forEach((m) => {
 		const id = m.ip + m.equipmentId + (m?.slave ?? '')
-		console.log(id)
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
 		if (!map.has(id)) return map.set(id, m)
 

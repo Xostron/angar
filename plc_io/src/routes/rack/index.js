@@ -6,21 +6,24 @@ const { store } = require('@store/index')
  * @param {*} request Объект запроса, который содержит все данные о запросе
  * @param {*} reply Объект ответа, с помощью которого можно отправить ответ клиенту
  * @returns { timestamp: new Date() }
- * alarmMdl - аварийные сообщения
- *
  */
 async function rack(request, reply) {
 	const { idsB = [], module = [], alarm = {} } = request?.body
-	// Запрос от ангара пришел, обновляем флаг связи
-	store.live()
 
+	// Встраивание полученных модулей от PC в общий массив модулей store.module
 	collect(idsB, module)
 
-	store.alarm.module = request.body?.alarm ?? {}
+	// Прием аварийных сообщений
+	store.alarm.module = { ...store.alarm.module, ...alarm }
 
+	// Флаг рама получена
 	store._handshake = true
-	console.log('🟢 rack. Рама получена')
+
+	// Пинг
+	store.live()
+
 	// Отвечаем ангару
+	console.log('🟢 rack. Рама получена')
 	return { timestamp: new Date() }
 }
 
@@ -33,11 +36,10 @@ module.exports = rack
 function collect(idsB, module) {
 	// Если
 	if (!module?.length) return store.module
-	// console.log(111, idsB, module)
+
 	// Выделяем из общего числа модулей, модули которые не принадлежат данным складам
 	const mdlsB = store.module.filter((el) => el.buildingId.some((idB) => !idsB.includes(idB)))
-	// console.log(222, mdlsB)
+
 	// Складываем новые модули module + оставшиеся mdlsB
 	store.module = [...mdlsB, ...module]
-	// console.log(333, store.module)
 }
