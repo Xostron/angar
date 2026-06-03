@@ -9,7 +9,7 @@
 			"@tool/*": ["src/tool/*"],
 			"@util": ["src/util/*"],
 			"@store/*": ["src/store/*"],
-			"@root/*": ["*"],
+			"@root/*": ["src/*"],
 			"@control": ["src/control/*"],
 			"@data": ["data/*"],
 			"@socket": ["src/socket/*"],

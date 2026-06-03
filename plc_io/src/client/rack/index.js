@@ -8,7 +8,7 @@ const { store } = require('@store/index')
  */
 async function loopRack() {
 	while (true) {
-		// Запрос рамы module, equipment
+		// Запрос рамы module, аварийных сообщений alarm
 		await getRack()
 
 		// [Обновление каждые 7 мин по-умолчанию] : [Если нет рамы, то каждые 10 сек]

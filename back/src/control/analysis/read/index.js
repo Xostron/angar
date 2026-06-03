@@ -9,7 +9,7 @@ function readM(obj) {
 		readJson(['module', 'equipment', 'building'])
 			.then(([module, equipment, building]) => {
 				if (!building || !building?.length) return {}
-				// Подготовка модулей
+				// Уникальные модули
 				const arr = collectMdls(module, equipment)
                 // console.log(11, 'модули на чтение', arr)
 				// Опрос модулей по сети

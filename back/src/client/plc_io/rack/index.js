@@ -4,6 +4,8 @@ const readJson = require('@tool/json').read
 const { readOne } = require('@tool/json')
 const { data: store, accDir, live } = require('@store/index')
 const { isExtralrm } = require('@tool/message/extralrm')
+const { collectMdls } = require('@root/control/output/fn')
+
 
 const apiConfig = (data, params = {}) => ({
 	method: 'POST',
@@ -55,16 +57,24 @@ async function rackIO(uri) {
 	}
 }
 
-// Ответ микросервису rw: рама модулей и оборудования
+// Ответ микросервису rw: рама модулей (уникальные) и оборудования
 async function fnData() {
 	// Читаем раму
-	const [module, equipment] = await readJson(['module', 'equipment'])
+	const [module, equipment, building] = await readJson(['module', 'equipment', 'building'])
 	// Время жизни опроса модулей 1 час
 	module.forEach((el) => (el.expired = new Date(new Date().getTime() + 3600 * 1000)))
+
+	// Уникальные модули (без дубляжей), некоторые склады могут иметь одинаковые модули
+	const mdls = collectMdls(module, equipment)
+
 	// Получить аварии из аккумулятора из файла
 	const acc = await readOne('acc.json', accDir)
 	const alarm = !Object.keys(store.alarm.module).length ? (acc?.module ?? {}) : store.alarm.module
-	return { module, equipment, alarm }
+
+	// Владельцы модулей массив ИД складов
+	const idsB = building.map((el) => el._id)
+
+	return { idsB, module: mdls, alarm }
 }
 
 module.exports = loopRack

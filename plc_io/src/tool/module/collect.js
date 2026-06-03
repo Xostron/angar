@@ -10,11 +10,10 @@ const { store } = require('@store')
  */
 function collect(count) {
 	// Если нет флага обновления рамы ИЛИ нет модулей ИЛИ нет оборудования - выходим
-	if (!store._handshake || !store.module.length || !Object.keys(store.equipment).length) return
+	if (!store._handshake || !store.module.length ) return
 
 	// Рама: Преобразуем модуль+оборудование, убираем дубляжи
-	store.mdls = collectMdls(store.module, store.equipment)
-
+	store.mdls = collectMdls(store.module)
 	// Разбиваем модули на потоки и сохраняем в store.parts
 	store.parts = partition(store.mdls, count)
 }
@@ -28,31 +27,25 @@ function collect(count) {
  * которые принадлежат разным складам на ПОСе.
  *
  * @param {object[]} module Рама модулей
- * @param {object} equipment Рама оборудования
- * @return {object[]} Массив модулей (модуль+equipment) без дубляжей
+ * @return {object[]} Массив модулей (модуль+оборудование) без дубляжей
  */
-function collectMdls(module, equipment) {
+function collectMdls(module) {
 	// Если нет рамы, выходим
-	if (!module?.length || !Object.keys(equipment ?? {})?.length) return []
+	if (!module?.length) return []
 
 	// Проход по модулям
 	const map = new Map()
 	module.forEach((m) => {
 		const id = m.ip + m.equipmentId + (m?.slave ?? '')
+		console.log(id)
 		// Если в коллекции нет такого модуля, то добавляем и выходим из текущей итерации
-		if (!map.has(id))
-			return map.set(id, {
-				...m,
-				_id: [m._id],
-				buildingId: [m.buildingId],
-				...equipment[m.equipmentId],
-			})
+		if (!map.has(id)) return map.set(id, m)
 
 		// В коллекции уже есть такой модуль, редактируем ключ _id, buildingId
 		// данный модуль может использоваться несколькими складами
 		const cur = map.get(id)
-		cur._id.push(m._id)
-		cur.buildingId.push(m.buildingId)
+		cur._id.push(...m._id)
+		cur.buildingId.push(...m.buildingId)
 	})
 	return [...map.values()]
 }

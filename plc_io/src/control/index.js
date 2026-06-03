@@ -11,8 +11,8 @@ const { checkAlarm } = require('@tool/module/get_output')
 // Опрос модулей
 async function main() {
 	try {
-		// Преобразование рамы модулей module, equipment в удобный вид для опроса:
-		// store.mdls - module+equipment, распределение на потоки store.parts
+		// store.mdls - module+equipment Массив у никальных модулей, 
+		// store.parts - подмассивы распределенные на потоки 
 		collect(store.count)
 		// Потоковое чтение модулей и сохранение в аккумулятор
 		store.v = await fnThreadPool(store.count)
