@@ -39,7 +39,8 @@ async function loop() {
 		let sp = 3
 		// Доступно ядер
 		store.count = total - 1 > sp ? sp : total - 1
-		console.log('****************CYCLE******************', new Date().toLocaleString())
+
+		console.log(`*********[${new Date().toLocaleString()}] НАЧАЛО: Микросервис plc_io. PID:${process.pid}*********`)
 		console.log(`Всего ядер ${total}, доступно ${store.count}`)
 
 		await main()
@@ -49,7 +50,7 @@ async function loop() {
 		store._first = false
 		// Сброс аварии
 		store.reset = false
-		console.log('Время цикла = ', end, 'сек\n')
+		console.log('\x1b[33m%s\x1b[0m', 'Время цикла = ', end, 'сек\n')
 	}
 }
 

@@ -16,6 +16,7 @@ const apiConfig = (data, params = {}) => ({
 
 // Периодически отправляем раму
 async function loopRack() {
+	if (process?.env?.MODE !== 'micro') return
 	const uri = process.env?.API_URI_PLCIO ?? 'http://192.168.21.41:4001/api/'
 	while (true) {
 		rackIO(uri)

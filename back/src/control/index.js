@@ -83,7 +83,7 @@ async function loop() {
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
 		// Сброс флага store.reset
 		process.env.MODE === 'micro' ? null : reset(null, false, false)
-		console.log('Режим микросервиса активен', process.env.MODE === 'micro')
+		console.log(`Режим  ${process.env.MODE === 'micro' ? 'микросервиса' : 'монолита'} `)
 		console.log(
 			'\x1b[33m%s\x1b[0m',
 			`Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`,
