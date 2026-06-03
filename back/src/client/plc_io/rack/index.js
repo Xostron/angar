@@ -1,5 +1,5 @@
 const fnApi = require('@tool/api_plc_io')
-const { delay, delayR } = require('@tool/command/time')
+const { delay } = require('@tool/command/time')
 const readJson = require('@tool/json').read
 const { readOne } = require('@tool/json')
 const { data: store, accDir, live } = require('@store/index')
