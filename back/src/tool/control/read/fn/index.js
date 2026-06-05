@@ -10,6 +10,7 @@ function rhr(client, opt, name, options = {}, typeModule) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
+				// console.log(12, name, opt, v)
 				resolve(v)
 			})
 			.catch(reject)
@@ -25,6 +26,7 @@ function count(opt, options) {
 			return Math.trunc(opt.channel / 16) + (opt.channel % 16 ? 1 : 0)
 		case 'int':
 		case 'int10':
+		case 'int100':
 			return countMB101(opt, options)
 	}
 	return 1
@@ -42,6 +44,9 @@ function data(arr, opt, options) {
 			return a
 		case 'int10':
 			a = dataMB101(arr, opt, options, max)
+			return a
+		case 'int100':
+			a = data100(arr, opt, options, max)
 			return a
 	}
 	return arr
@@ -126,12 +131,32 @@ function dataMB101(arr, opt, options, max) {
 	// Модуль МВ210-101 Int/10
 	const status = arr.splice(opt.channel, opt.channel)
 	return arr.map((v, i) =>
-		status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false)
+		status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false),
 	)
+}
+
+// Деление на 100
+function data100(arr, opt, options, max) {
+	const { name, interface, use } = options
+	// Для вычисления отрицательных чисел
+	const limit = max / 2
+	// console.log(123, arr)
+	// // Обычный модуль int10
+	// if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8)
+	return arr.map((v) => fnLimit100(v, limit, max))
+	// Модуль МВ210-101 Int/10
+	// const status = arr.splice(opt.channel, opt.channel)
+	// return arr.map((v, i) =>
+	// 	status[i] == 0 ? fnLimit100(v, limit, max) : fnLimit100(v, limit, max, false),
+	// )
 }
 
 function fnLimit(v, limit, max, ok = true) {
 	return ok ? (v > limit ? v - max : v) / 10 : null
+}
+
+function fnLimit100(v, limit, max, ok = true) {
+	return ok ? (v > limit ? v - max : v) / 100 : null
 }
 
 module.exports = {

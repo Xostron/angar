@@ -9,7 +9,7 @@ function readTCP(host, port, opt) {
 			wrDebMdl(opt._id)
 			return resolve({ error: 'Не указан IP модуля', info: opt })
 		}
-		// if (host === '192.168.21.135') console.log(11, host, opt?.name, opt?.slave)
+		// if (host === '192.168.21.135') console.log(11, host, opt)
 		const socket = new net.Socket()
 		const cl = new modbus.client.TCP(socket, opt?.slave)
 		const optTCP = {
@@ -39,6 +39,7 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
+					// if (host === '192.168.21.135') console.log(12, opt.name, r, w)
 					convAO(opt, r)
 					r = convUint32DO(opt, r)
 					delModule(opt.buildingId, opt._id)
@@ -47,12 +48,11 @@ function readTCP(host, port, opt) {
 					// 	console.log('Чтение DO', opt.name, opt.ip)
 					// 	console.table(r)
 					// }
-					// if (host === '192.168.21.135') console.log(12, opt.name, r, w)
 
 					resolve([r, w])
 				})
 				.catch((e) => {
-					console.log('Ошибка чтения DO', opt.name, opt.ip)
+					console.log('Ошибка чтения', opt.name, opt.ip, e)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

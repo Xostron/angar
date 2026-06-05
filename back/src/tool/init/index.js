@@ -24,6 +24,7 @@ const t = [
 	'cooler',
 	'binding',
 	'weather',
+	'converter'
 ]
 
 /**

@@ -27,6 +27,7 @@ function collectMdls(module, equipment) {
 				_id: [m._id],
 				buildingId: [m.buildingId],
 				...equipment[m.equipmentId],
+				interface: m?.converterId ? 'tcp' : equipment[m.equipmentId].interface,
 			})
 
 		// В коллекции уже есть такой модуль, редактируем ключ _id, buildingId
