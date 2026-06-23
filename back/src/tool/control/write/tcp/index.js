@@ -12,6 +12,8 @@ function writeTCP(host, port, opt) {
 			host,
 			port,
 		}
+		// if (host === '192.168.21.135') console.log(13, host, port, opt)
+		// if (host === '192.168.21.125') console.log(13, host, port, opt)
 		socket.on('error', (e) => {
 			socket.end()
 			wrDebMdl(opt._id)
@@ -23,6 +25,8 @@ function writeTCP(host, port, opt) {
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
+					// if (host === '192.168.21.135') console.log(14, opt.name, i, v)
+					// if (host === '192.168.21.125') console.log(14, opt.name, i, v)
 					// if (opt.ip === '192.168.21.126')
 					// console.log(666, 'write', opt.ip, opt.value)
 					// console.log(9900, 'Запись', opt.name, opt.ip)
@@ -30,7 +34,7 @@ function writeTCP(host, port, opt) {
 					resolve(true)
 				})
 				.catch((e) => {
-					console.error(9900, 'Ошибка запись', opt.name, opt.ip)
+					console.error(9900, 'Ошибка запись', opt.name, opt.ip, e)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

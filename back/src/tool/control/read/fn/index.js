@@ -2,7 +2,7 @@
 const max = 65535
 
 // Чтение регистров
-function rhr(client, opt, name, options = {}, typeModule) {
+function rhr(client, opt, name, options = {}) {
 	return new Promise((resolve, reject) => {
 		const n = count(opt, options)
 		client
@@ -48,6 +48,9 @@ function data(arr, opt, options) {
 		case 'int100':
 			a = data100(arr, opt, options, max)
 			return a
+		case 'int':
+			// Для rtu модулей DO, которые читаются через конвертор
+			return arr.map((el) => (+el > 0 ? 1 : 0))
 	}
 	return arr
 }
@@ -89,19 +92,6 @@ function float(arr) {
 	return float32 * sign
 }
 
-function ArrintToBin(arr) {
-	const a = arr[0].toString(16)
-	const b = arr[1].toString(16)
-	return HexTobin(b + a)
-}
-
-function HexToDec(hex) {
-	return parseInt(hex, 16)
-}
-
-function HexTobin(hex) {
-	return '00000000' + parseInt(hex, 16).toString(2)
-}
 
 // Массив boolean => целое число Integer
 function int(arr) {
@@ -140,15 +130,7 @@ function data100(arr, opt, options, max) {
 	const { name, interface, use } = options
 	// Для вычисления отрицательных чисел
 	const limit = max / 2
-	// console.log(123, arr)
-	// // Обычный модуль int10
-	// if (name !== 'МВ210-101 Int/10' || interface != 'tcp' || use != 'r' || opt.channel !== 8)
 	return arr.map((v) => fnLimit100(v, limit, max))
-	// Модуль МВ210-101 Int/10
-	// const status = arr.splice(opt.channel, opt.channel)
-	// return arr.map((v, i) =>
-	// 	status[i] == 0 ? fnLimit100(v, limit, max) : fnLimit100(v, limit, max, false),
-	// )
 }
 
 function fnLimit(v, limit, max, ok = true) {

@@ -16,7 +16,7 @@ const apiConfig = (data, params = {}) => ({
 	params,
 })
 
-// Периодически отправляем раму
+// Периодически отправляем раму (модули) микросервису plcio
 async function loopRack() {
 	if (process?.env?.MODE !== 'micro') return
 	const uri = process.env?.API_URI_PLCIO ?? 'http://192.168.21.41:4001/api/'
@@ -28,7 +28,7 @@ async function loopRack() {
 }
 
 /**
- * Отправка рамы на микросервис/ы plc_io
+ * Отправка рамы на микросервис(ы) plc_io
  *
  * @param {object[]} out Массив модулей (module+equipment+value) на запись
  * @returns
@@ -64,14 +64,14 @@ async function fnData() {
 	// Время жизни опроса модулей 1 час
 	module.forEach((el) => (el.expired = new Date(new Date().getTime() + 3600 * 1000)))
 
-	// Уникальные модули (без дубляжей), некоторые склады могут иметь одинаковые модули
+	// Уникальные модули  (один и тот же модуль может существовать в нескольких складах)
 	const mdls = collectMdls(module, equipment)
 
 	// Получить аварии из аккумулятора из файла
 	const acc = await readOne('acc.json', accDir)
 	const alarm = !Object.keys(store.alarm.module).length ? (acc?.module ?? {}) : store.alarm.module
 
-	// Владельцы модулей массив ИД складов
+	// Владельцы модулей: массив ИД складов
 	const idsB = building.map((el) => el._id)
 
 	return { idsB, module: mdls, alarm }
