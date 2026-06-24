@@ -1,5 +1,6 @@
 const fnApi = require('@tool/api_plc_io')
 const { data: store, live } = require('@store')
+const { getServices } = require('@tool/api_plc_io/fn')
 
 const apiConfig = (data, params = {}) => ({
 	method: 'POST',
@@ -16,33 +17,41 @@ const apiConfig = (data, params = {}) => ({
  * @returns
  */
 async function writeIO(out) {
-	try {
-		if (!out) return console.log('🟡 back->plc_io (output).', 'Нет данных для записи')
+	if (!out) return console.log('🟡 back->plc_io (output).', 'Нет данных для записи')
 
-		// Наличие изменений
-		const o = isChange(out)
-		if (!o) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
+	// Наличие изменений
+	const o = isChange(out)
+	if (!o) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
 
-		// Запрос back->plc_io
-		const uri = process.env?.API_URI_PLCIO ?? 'http://192.168.21.41:4001/api/'
-		const api = fnApi(uri)
-		const r = await api(apiConfig(o))
+	// Запрос back->plc_io (reset)
+	const services = await getServices()
 
-		// Ошибка запроса
-		if (!r.data) throw new Error('Нет связи с сервером опроса модулей')
+	// По микросервисам
+	for (const srv of services) {
+		try {
+			const api = fnApi(srv.url)
+			const r = await api(apiConfig(o))
 
-		// Обновление опроса модулей
-		store.v = r.data.v
-		// Пинг
-		live()
+			// Ошибка запроса
+			if (!r.data) throw new Error('Нет связи с сервисом')
 
-		console.log('🟢 back->plc_io (output). Запрос успешно обработан')
-		return true
-	} catch (error) {
-		if (error.code === 'ECONNREFUSED' || !error.response)
-			console.error('🔴 back->plc_io (output). ECONNREFUSED')
-		else console.error('🔴 back->plc_io (output). Ошибка запроса:', error.message)
+			// Ответ от микросервиса:
+			// Обновленные показания датчиков
+			store.v = { ...store.v, ...r.data.v }
+
+			console.log(`🟢 back->plc_io (output ${srv.url}). Запрос успешно обработан`)
+
+			// Пинг
+			live(srv.id)
+		} catch (error) {
+			if (error.code === 'ECONNREFUSED' || !error.response)
+				console.error(`🔴 back->plc_io (output ${srv.url}). ECONNREFUSED`)
+			else
+				console.error(`🔴 back->plc_io (output ${srv.url}). Ошибка запроса:`, error.message)
+		}
 	}
+
+	return true
 }
 
 module.exports = writeIO

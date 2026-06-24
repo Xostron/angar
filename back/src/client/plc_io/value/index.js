@@ -1,20 +1,23 @@
 const fnApi = require('@tool/api_plc_io')
 const { delay } = require('@tool/command/time')
 const { data: store, live } = require('@store/index')
+const { getServices, mergeAlr } = require('@tool/api_plc_io/fn')
 const config = {
 	method: 'GET',
 	url: 'back/value',
 	headers: { 'Content-Type': 'application/json' },
 }
+const _INTERVAL = 10 * 1000
 
-// Периодически значения модулей раз в 10 сек
+// Периодический запрос у микросервиса значения модулей раз в 10 сек
 async function loopValue() {
-	if (process?.env?.MODE !== 'micro') return
-	const uri = process.env?.API_URI_PLCIO ?? 'http://192.168.21.41:4001/api/'
 	while (true) {
-		valueIO(uri)
+		// Рама микросервисов опроса модулей
+		const services = await getServices()
+
+		services.forEach(valueIO)
 		// Повторно отправляем раму каждые 10сек
-		await delay(10000)
+		await delay(_INTERVAL)
 	}
 }
 
@@ -22,30 +25,29 @@ async function loopValue() {
  * Запрос значения модулей
  * @returns
  */
-async function valueIO(uri) {
+async function valueIO(srv) {
 	try {
-		// Если нет адреса
-		if (!uri) return console.log('🟡 back -> plc_io (value): Нет адреса микросервиса plc_io')
-
 		// Запрос back->plc_io
-		const api = fnApi(uri)
+		const api = fnApi(srv.url)
 		const r = await api(config)
 
 		// Ошибка запроса
-		if (!r.data) throw new Error('🔴 back -> plc_io (value): Ошибка запроса')
+		if (!r.data) throw new Error('Нет связи с сервисом')
 
-		// Сохраняем данные
-		if (Object.keys(r?.data?.v ?? {}).length) store.v = r?.data?.v
-		store.alarm.module = r.data.alarm
+		// Ответ от микросервиса:
+		// Обновленные показания датчиков
+		store.v = { ...store.v, ...r.data.v }
+		// Обновление списка аварий
+		await mergeAlr(store.alarm.module, r.data.alarm, srv.list)
 
-		console.log('🟢 back -> plc_io (value): Значения успешно приняты')
+		console.log(`🟢 back -> plc_io (value ${srv.url}): Значения успешно приняты`)
 
 		// Пинг
-		live()
+		live(srv.id)
 	} catch (error) {
 		if (error.code === 'ECONNREFUSED' || !error.response)
-			console.error('🔴 back->plc_io (value). ECONNREFUSED')
-		else console.error('🔴 back->plc_io (value). Ошибка запроса:', error.message)
+			console.error(`🔴 back->plc_io (value ${srv.url}). ECONNREFUSED`)
+		else console.error(`🔴 back->plc_io (value ${srv.url}).`, error.message)
 	}
 }
 

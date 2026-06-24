@@ -35,7 +35,7 @@ const data = {
 	// Период повторной проверки модуля, 1мин
 	tTCP: 1,
 	// Флаг PLC_IO (сервер опроса модулей) на связи
-	timestampIO: new Date(),
+	timestampIO: {},
 	// Время дребезга аварии "Нет связи с сервером опроса модулей", 30сек
 	_TIME_IO: 30 * 1000,
 
@@ -176,8 +176,8 @@ const data = {
 /**
  * Обновление флага сервер ангара на связи
  */
-function live() {
-	data.timestampIO = new Date()
+function live(srvId) {
+	data.timestampIO[srvId] = new Date()
 }
 
 //

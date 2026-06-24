@@ -12,7 +12,9 @@
 	},
 	"scripts": {
 		"dev": "nodemon ./src/bin/www",
-		"start": "node ./src/bin/www"
+		"start": "node ./src/bin/www",
+		"dev1": "cross-env PORT=4015 nodemon ./src/bin/www",
+		"dev2": "cross-env PORT=4016 nodemon ./src/bin/www"
 	},
 	"keywords": [],
 	"author": "",
@@ -28,6 +30,7 @@
 		"uuid": "^11.1.1"
 	},
 	"devDependencies": {
+		"cross-env": "^10.1.0",
 		"nodemon": "^3.1.14",
 		"pino-pretty": "^13.1.3"
 	}
