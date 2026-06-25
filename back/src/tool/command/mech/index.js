@@ -132,15 +132,18 @@ function mechB(bId, type, obj) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
-		// Все вентиляторы склада: напорные, вно испарителей
+	// Все вентиляторы склада: напорные, вно испарителей
 	const fanB = data?.fan
-		?.filter((el) => idS.includes(el.owner.id) && el.type!=='accel')
+		?.filter((el) => idS.includes(el.owner.id) && el.type !== 'accel')
 		.map((el) => {
 			// Поиск аналогового выхода ВНО
 			const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
+console.log(123, data.io)
+	const services = data?.io?.filter((el) => el.bldId.includes(bId))
+
 	// Если склад типа холодильник
 	if (cold) fanAll.push(...cold.fan)
 
@@ -169,6 +172,7 @@ function mechB(bId, type, obj) {
 		flapClrAll,
 		sect,
 		ozon,
+		services
 	}
 }
 

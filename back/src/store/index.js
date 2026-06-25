@@ -176,7 +176,13 @@ const data = {
 /**
  * Обновление флага сервер ангара на связи
  */
-function live(srvId) {
+function live(srvId = '') {
+	// Массовое обновление флагов (при сбросе аварии)
+	if (!srvId) {
+		for (const id in data.timestampIO) data.timestampIO[id] = new Date()
+		return
+	}
+	// Обновление флага по srvId
 	data.timestampIO[srvId] = new Date()
 }
 

@@ -65,7 +65,7 @@ async function rack(srv) {
 		console.log(`🟢 back -> plc_io (rack ${srv.url}): Рама успешно отправлена`)
 
 		// Пинг
-		live(srv.id)
+		live(srv._id)
 	} catch (error) {
 		if (error.code === 'ECONNREFUSED' || !error.response)
 			console.error(`🔴 back->plc_io (rack ${srv.url}). ECONNREFUSED`)

@@ -42,7 +42,7 @@ async function writeIO(out) {
 			console.log(`🟢 back->plc_io (output ${srv.url}). Запрос успешно обработан`)
 
 			// Пинг
-			live(srv.id)
+			live(srv._id)
 		} catch (error) {
 			if (error.code === 'ECONNREFUSED' || !error.response)
 				console.error(`🔴 back->plc_io (output ${srv.url}). ECONNREFUSED`)

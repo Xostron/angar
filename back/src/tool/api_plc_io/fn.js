@@ -1,3 +1,5 @@
+const { readOne } = require("@tool/json")
+
 // Рама сервисов, также создаем url_api к микросервису
 async function getServices() {
 	const services = await readOne('io.json')

@@ -17,6 +17,7 @@ const obj = {
 		binding: [],
 		device: [],
 		weather: {},
+		io:[]
 	},
 	// файл json - Сохраненые настройки, калибровки, режимы
 	// retain: {},

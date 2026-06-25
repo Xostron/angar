@@ -43,7 +43,7 @@ async function valueIO(srv) {
 		console.log(`🟢 back -> plc_io (value ${srv.url}): Значения успешно приняты`)
 
 		// Пинг
-		live(srv.id)
+		live(srv._id)
 	} catch (error) {
 		if (error.code === 'ECONNREFUSED' || !error.response)
 			console.error(`🔴 back->plc_io (value ${srv.url}). ECONNREFUSED`)
