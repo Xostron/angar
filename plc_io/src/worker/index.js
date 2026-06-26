@@ -87,7 +87,7 @@ function manager(count) {
 				store.debMdl = { ...store.debMdl, ...(r.debMdl ?? {}) }
 				// Время обработки потока
 				const end = (new Date() - start) / 1000
-				console.log(`✔️ ${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part.length}`)
+				console.log(`✔️ ${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part.length}`, count)
 
 				if (check(count, ++finishedWorkers, pool)) {
 					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)

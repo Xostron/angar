@@ -6,7 +6,11 @@ function regist(opt) {
 	// Регистры
 	let v = opt.value.map((v) => v * (opt.wr?.on || 1))
 	// Аналоговый вывод - модуль у которого имя окончивается на "AO" и Назначение use:'w' - запись
-	if (!opt?.name?.endsWith('AO')) v = mBitTomInt(v)
+	if (opt?.name?.endsWith('AO')) return { i, v }
+	// rtu модуль дискретных выходов, подключенный через конвертер
+	if (opt?.slave) return { i, v }
+	// Все остальные модули выхода
+	v = mBitTomInt(v)
 	return { i, v }
 }
 

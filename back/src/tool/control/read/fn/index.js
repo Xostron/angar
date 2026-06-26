@@ -10,7 +10,6 @@ function rhr(client, opt, name, options = {}) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
-				// console.log(12, name, opt, v)
 				resolve(v)
 			})
 			.catch(reject)
@@ -91,7 +90,6 @@ function float(arr) {
 	}
 	return float32 * sign
 }
-
 
 // Массив boolean => целое число Integer
 function int(arr) {

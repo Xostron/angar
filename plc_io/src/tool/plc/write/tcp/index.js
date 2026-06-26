@@ -7,7 +7,7 @@ const { wrDebMdl, delDebMdl, delModule } = require('@tool/module/timeout')
 function writeTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
 		const socket = new net.Socket()
-		const cl = new modbus.client.TCP(socket, opt?.slaveId)
+		const cl = new modbus.client.TCP(socket, opt?.slave)
 		const optTCP = {
 			host,
 			port,

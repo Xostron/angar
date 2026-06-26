@@ -141,7 +141,6 @@ function mechB(bId, type, obj) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
-console.log(123, data.io)
 	const services = data?.io?.filter((el) => el.bldId.includes(bId))
 
 	// Если склад типа холодильник

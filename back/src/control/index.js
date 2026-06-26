@@ -37,9 +37,10 @@ async function control() {
 		// Выхода: Блокировки
 		Aboc.call(writeLock)(obj)
 		// writeLock(obj)
+		console.log(345, obj.data.pc?.isIo)
 		// Выхода: Запись в модули: [микросервис] : [монолит]
-		process.env.MODE === 'micro' ? await writeIO(obj.output) : await writeVal(obj.output)
-		process.env.MODE === 'micro' ? await resetIO(obj.output) : null
+		obj.data.pc?.isIo ? await writeIO(obj.output) : await writeVal(obj.output)
+		obj.data.pc?.isIo ? await resetIO(obj.output) : null
 		// Аварии для web
 		const alr = await Aboc.asycall(webAlarm)(obj)
 		// Статистика
@@ -48,11 +49,11 @@ async function control() {
 		await Aboc.asycall(save)(obj)
 
 		// В режиме микросервиса
-		process.env.MODE === 'micro' ? await delay(300) : null
+		obj.data.pc?.isIo ? await delay(300) : null
 		// await save(obj)
 		// await delay(4000)
 		Aboc.refresh()
-		return true
+		return obj.data.pc?.isIo
 	} catch (error) {
 		await delay(5000)
 		exception(error)
@@ -74,7 +75,7 @@ async function loop() {
 		// Инициализация глобального аккумулятора
 		await writeStore()
 		// Основной цикл программы
-		await control()
+		const isIo = await control()
 
 		// Счетчик циклов
 		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
@@ -82,8 +83,8 @@ async function loop() {
 		store._first = false
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
 		// Сброс флага store.reset
-		process.env.MODE === 'micro' ? null : reset(null, false, false)
-		console.log(`Режим  ${process.env.MODE === 'micro' ? 'микросервиса' : 'монолита'} `)
+		isIo ? null : reset(null, false, false)
+		console.log(`Режим  ${isIo ? 'микросервиса' : 'монолита'} `)
 		console.log(
 			'\x1b[33m%s\x1b[0m',
 			`Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`,

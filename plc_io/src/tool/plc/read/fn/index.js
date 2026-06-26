@@ -25,6 +25,7 @@ function count(opt, options) {
 			return Math.trunc(opt.channel / 16) + (opt.channel % 16 ? 1 : 0)
 		case 'int':
 		case 'int10':
+		case 'int100':
 			return countMB101(opt, options)
 	}
 	return 1
@@ -43,6 +44,12 @@ function data(arr, opt, options) {
 		case 'int10':
 			a = dataMB101(arr, opt, options, max)
 			return a
+		case 'int100':
+			a = data100(arr, opt, options, max)
+			return a
+		case 'int':
+			// Для rtu модулей DO, которые читаются через конвертор
+			return arr.map((el) => (+el > 0 ? 1 : 0))
 	}
 	return arr
 }
@@ -84,20 +91,6 @@ function float(arr) {
 	return float32 * sign
 }
 
-function ArrintToBin(arr) {
-	const a = arr[0].toString(16)
-	const b = arr[1].toString(16)
-	return HexTobin(b + a)
-}
-
-function HexToDec(hex) {
-	return parseInt(hex, 16)
-}
-
-function HexTobin(hex) {
-	return '00000000' + parseInt(hex, 16).toString(2)
-}
-
 // Массив boolean => целое число Integer
 function int(arr) {
 	const a = arr.join('')
@@ -126,12 +119,24 @@ function dataMB101(arr, opt, options, max) {
 	// Модуль МВ210-101 Int/10
 	const status = arr.splice(opt.channel, opt.channel)
 	return arr.map((v, i) =>
-		status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false)
+		status[i] == 0 ? fnLimit(v, limit, max) : fnLimit(v, limit, max, false),
 	)
+}
+
+// Деление на 100
+function data100(arr, opt, options, max) {
+	const { name, interface, use } = options
+	// Для вычисления отрицательных чисел
+	const limit = max / 2
+	return arr.map((v) => fnLimit100(v, limit, max))
 }
 
 function fnLimit(v, limit, max, ok = true) {
 	return ok ? (v > limit ? v - max : v) / 10 : null
+}
+
+function fnLimit100(v, limit, max, ok = true) {
+	return ok ? (v > limit ? v - max : v) / 100 : null
 }
 
 module.exports = {

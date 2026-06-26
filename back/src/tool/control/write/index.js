@@ -48,15 +48,4 @@ function pause(n) {
 
 module.exports = write
 
-// Запись данных в модуль
-// async function makeOld(o) {
-// 	switch (o.interface) {
-// 		case 'rtu':
-// 			return await writeRTU(o.ip, o.port, o)
 
-// 		case 'tcp':
-// 			return await writeTCP(o.ip, o.port, o)
-// 		default:
-// 			return
-// 	}
-// }

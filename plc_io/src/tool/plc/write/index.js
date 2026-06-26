@@ -32,7 +32,7 @@ async function write(arr = []) {
 
 			await delay(store.tPause)
 
-			const k = m.name + m.ip + (m.slaveId ?? '')
+			const k = m.name + m.ip + (m.slave ?? '')
 			ok[k] = v
 		}
 		return ok

@@ -8,8 +8,9 @@ const { store } = require('@store/index')
  * @returns { timestamp: new Date() }
  */
 async function rack(request, reply) {
-	const { idsB = [], module = [], alarm = {} } = request?.body
-
+	const { idsB = [], module = [], alarm = {}, max = 1 } = request?.body
+	// Кол-во потоков
+	store.max = max 
 	// Встраивание полученных модулей от PC в общий массив модулей store.module
 	collect(idsB, module)
 

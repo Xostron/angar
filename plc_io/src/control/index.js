@@ -11,8 +11,8 @@ const { checkAlarm } = require('@tool/module/get_output')
 // Опрос модулей
 async function main() {
 	try {
-		// store.mdls - module+equipment Массив у никальных модулей, 
-		// store.parts - подмассивы распределенные на потоки 
+		// store.mdls - module+equipment Массив у никальных модулей,
+		// store.parts - подмассивы распределенные на потоки
 		collect(store.count)
 		// Потоковое чтение модулей и сохранение в аккумулятор
 		store.v = await fnThreadPool(store.count)
@@ -35,12 +35,18 @@ async function loop() {
 		const bgn = hrtime()
 		// Всего ядер
 		const total = os.cpus().length
+		if (!store.max) {
+			await delay(10000)
+			continue
+		}
 		// Задание кол-во ядер
-		let sp = 3
+		let sp = store.max
 		// Доступно ядер
 		store.count = total - 1 > sp ? sp : total - 1
 
-		console.log(`*********[${new Date().toLocaleString()}] НАЧАЛО: Микросервис plc_io. PID:${process.pid}*********`)
+		console.log(
+			`*********[${new Date().toLocaleString()}] НАЧАЛО: Микросервис plc_io. PID:${process.pid}*********`,
+		)
 		console.log(`Всего ядер ${total}, доступно ${store.count}`)
 
 		await main()

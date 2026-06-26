@@ -90,6 +90,8 @@ async function fnData(srv) {
 		module: collectMdls(mdls, equipment),
 		// Неисправности модулей
 		alarm: !Object.keys(store.alarm.module).length ? (acc?.module ?? {}) : store.alarm.module,
+		// Количество потоков
+		max: srv?.max ?? 1,
 	}
 }
 

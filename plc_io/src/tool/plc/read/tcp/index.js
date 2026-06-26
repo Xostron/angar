@@ -10,7 +10,7 @@ function readTCP(host, port, opt) {
 			return resolve({ error: 'Не указан IP модуля', info: opt })
 		}
 		const socket = new net.Socket()
-		const cl = new modbus.client.TCP(socket, opt?.slaveId)
+		const cl = new modbus.client.TCP(socket, opt?.slave)
 		const optTCP = {
 			host,
 			port,
