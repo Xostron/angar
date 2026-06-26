@@ -32,7 +32,7 @@ async function output(request, reply) {
 	// Задержка 100мс для вступления изменений в силу
 	await delay(100)
 	// Опрос модулей - получаем актуальные данные
-	store.v = await fnThreadPool(store.max)
+	store.v = await fnThreadPool(store.count)
 	// Пинг
 	store.live()
 	// Отвечаем ангару актуальными значениями модулей
