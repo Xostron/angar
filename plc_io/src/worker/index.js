@@ -9,29 +9,28 @@ let pool = null
 
 /**
  * Многоразовый поток
- * @param {*} count
+ * @param {*} max
  * @returns {object} Объект с ключами ИД модулей и значениями входов/выходов
  */
-async function fnThreadPool(count) {
+async function fnThreadPool(max) {
 	// Для главного потока
 	if (isMainThread) {
 		// инициализация пула потоков
-		initPool(count)
-		return manager(count)
+		initPool(max)
+		return manager(max)
 	}
 }
 
 /**
  * Инициализация пула потоков
- * @param {*} count Настройка: кол-во потоков
+ * @param {*} max Настройка: кол-во потоков
  * @returns
  */
-function initPool(count) {
-	if (!isMainThread || pool) return
+function initPool(max) {
+	if (!isMainThread || pool || !max) return
 	pool = []
-
 	// Создание многоразовых воркеров
-	for (let i = 0; i < count; i++) createWorker(i)
+	for (let i = 0; i < max; i++) createWorker(i)
 }
 
 function createWorker(idx) {
@@ -52,25 +51,26 @@ module.exports = { fnThreadPool }
 /**
  * Менеджер многоразовых потоков
  * Выполнение в главном потоке
- * @param {*} count
+ * @param {*} max
  * @returns
  */
-function manager(count) {
+function manager(max) {
 	return new Promise((resolve, reject) => {
 		// Модули на чтение
 		const length = store.mdls.length
 		// Результат чтения модулей
 		let results = {}
-		if (!length) return resolve(results)
+		if (!length || !max) return resolve(results)
 
 		// Кол-во завершенных воркеров
 		let finishedWorkers = 0
-
 		// Создаем воркеры (потоки)
-		for (let i = 0; i < count; i++) {
+		for (let i = 0; i < max; i++) {
 			const worker = pool[i]
 			// Порция модулей на поток
 			const part = store.parts[i]
+			console.log(234, part?.length)
+
 			// Время вывполнения потока
 			const start = new Date()
 
@@ -87,9 +87,12 @@ function manager(count) {
 				store.debMdl = { ...store.debMdl, ...(r.debMdl ?? {}) }
 				// Время обработки потока
 				const end = (new Date() - start) / 1000
-				console.log(`✔️ ${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part.length}`, count)
+				console.log(
+					`✔️ ${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part?.length}`,
+					max,
+				)
 
-				if (check(count, ++finishedWorkers, pool)) {
+				if (check(max, ++finishedWorkers, pool)) {
 					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)
 					resolve(results)
 				}
@@ -102,7 +105,7 @@ function manager(count) {
 					mdl._id.forEach((id) => (results[id] = `Worker ${i}. Error ${reason}`))
 				})
 				console.log('❌ Ошибка потока', i, reason)
-				if (check(count, ++finishedWorkers, pool)) {
+				if (check(max, ++finishedWorkers, pool)) {
 					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)
 					resolve(results)
 				}
@@ -120,6 +123,7 @@ if (!isMainThread) {
 		// Чтение модулей
 		clear(reset)
 		const r = await read(part)
+
 		// Результат чтения
 		parentPort.postMessage(r)
 	})

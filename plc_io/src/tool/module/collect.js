@@ -8,14 +8,14 @@ const { store } = require('@store')
  * @returns {{mdls:object[],parts:object[][]}} mdls - массив рамы модуль+оборудование
  * parts - распределенный mdls на подмассивы, каждый подмассив это поток
  */
-function collect(count) {
+function collect(max) {
 	// Если нет флага обновления рамы ИЛИ нет модулей ИЛИ нет оборудования - выходим
-	if (!store._handshake || !store.module.length ) return
+	if (!store._handshake || !store.module.length || !max) return
 
 	// Рама: Преобразуем модуль+оборудование, убираем дубляжи
 	store.mdls = collectMdls(store.module)
 	// Разбиваем модули на потоки и сохраняем в store.parts
-	store.parts = partition(store.mdls, count)
+	store.parts = partition(store.mdls, max)
 }
 
 /**
@@ -56,10 +56,10 @@ function collectMdls(module) {
  * @returns {object[][]} Возвращаем подмассивы с модулями,
  * для каждого потока свой набор модулей
  */
-function partition(mdls, count) {
-	if (!mdls?.length) return []
+function partition(mdls, max) {
+	if (!mdls?.length || !max) return []
 	// Массив массивов
-	const parts = new Array(count).fill()
+	const parts = new Array(max).fill()
 	let i = 0
 	// По модулям
 	while (i < mdls.length) {

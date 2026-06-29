@@ -15,7 +15,12 @@ function getOutput(mdls) {
 		})
 }
 
-async function checkAlarm(mdls) {
+/**
+ * Запись модулей
+ * @param {object[]} mdls Рама модуль+оборудование
+ * @returns 
+ */
+async function writeOut(mdls) {
 	// Если связь в норме, то разрешаем запись
 	if (!store.extralrm.live) return null
 
@@ -29,4 +34,4 @@ async function checkAlarm(mdls) {
 	return true
 }
 
-module.exports = { getOutput, checkAlarm }
+module.exports = { getOutput, writeOut }

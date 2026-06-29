@@ -9,6 +9,7 @@ function rhr(client, opt, name, options = {}) {
 			.readHoldingRegisters(opt.start, n)
 			.then((r) => {
 				let v = r.response._body[name]
+				// if (opt.on===10) console.log(666, r.response._body)
 				v = data(v, opt, options)
 				resolve(v)
 			})
@@ -48,6 +49,7 @@ function data(arr, opt, options) {
 			a = data100(arr, opt, options, max)
 			return a
 		case 'int':
+			if (options?.name?.endsWith('AO')) return arr
 			// Для rtu модулей DO, которые читаются через конвертор
 			return arr.map((el) => (+el > 0 ? 1 : 0))
 	}

@@ -31,7 +31,7 @@ async function resetIO() {
 	for (const srv of services) {
 		try {
 			const api = fnApi(srv.url)
-			const r = await api(apiConfig({}))
+			const r = await api(apiConfig({ max: srv?.max ?? 1 }))
 
 			// Ошибка запроса
 			if (!r.data) throw new Error('Нет связи с сервисом')

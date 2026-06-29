@@ -17,10 +17,11 @@ const getOutput = require('@tool/module/get_output')
  */
 async function output(request, reply) {
 	// Данные на запись от ангара
-	const out = request.body
-
+	const { list, max } = request.body
+	store.max = max
+	console.log(111, store.max, typeof store.max)
 	// Проверка - нет данных
-	if (check(out)) {
+	if (check(list)) {
 		// Пинг
 		store.live()
 		console.log('🟡 output. Нет данных')
@@ -28,11 +29,13 @@ async function output(request, reply) {
 	}
 
 	// Запись модулей выхода
-	await write(out)
+	await write(list)
 	// Задержка 100мс для вступления изменений в силу
 	await delay(100)
 	// Опрос модулей - получаем актуальные данные
-	store.v = await fnThreadPool(store.count)
+	// store.v = store.max ? await fnThreadPool(store.max) : {}
+	store.v = await fnThreadPool(store.max)
+	// console.log(567, store.v)
 	// Пинг
 	store.live()
 	// Отвечаем ангару актуальными значениями модулей

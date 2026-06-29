@@ -7,6 +7,14 @@ const config = {
 	url: 'back/value',
 	headers: { 'Content-Type': 'application/json' },
 }
+
+const apiConfig = (params = {}) => ({
+	method: 'GET',
+	url: 'back/value',
+	headers: { 'Content-Type': 'application/json' },
+	params,
+})
+
 const _INTERVAL = 10 * 1000
 
 // Периодический запрос у микросервиса значения модулей раз в 10 сек
@@ -29,8 +37,8 @@ async function valueIO(srv) {
 	try {
 		// Запрос back->plc_io
 		const api = fnApi(srv.url)
-		const r = await api(config)
-
+		// const r = await api(config)
+		const r = await api(apiConfig({ max: srv?.max ?? 1 }))
 		// Ошибка запроса
 		if (!r.data) throw new Error('Нет связи с сервисом')
 

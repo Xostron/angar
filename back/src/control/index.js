@@ -37,7 +37,6 @@ async function control() {
 		// Выхода: Блокировки
 		Aboc.call(writeLock)(obj)
 		// writeLock(obj)
-		console.log(345, obj.data.pc?.isIo)
 		// Выхода: Запись в модули: [микросервис] : [монолит]
 		obj.data.pc?.isIo ? await writeIO(obj.output) : await writeVal(obj.output)
 		obj.data.pc?.isIo ? await resetIO(obj.output) : null

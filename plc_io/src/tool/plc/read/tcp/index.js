@@ -25,19 +25,20 @@ function readTCP(host, port, opt) {
 			const p = []
 			switch (opt.use) {
 				case 'r':
-					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, 'INPUT'))
+					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, ))
 					break
 				case 'w':
-					p.push(rhr(cl, opt.wr, 'valuesAsArray', 'OUTPUT'))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt))
 					break
 				case 'rw':
-					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, 'INPUT'))
-					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt, 'OUTPUT'))
+					p.push(rhr(cl, opt.re, 'valuesAsArray', opt, ))
+					p.push(rhr(cl, opt.wr, 'valuesAsArray', opt, ))
 					break
 				default:
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
+					// if (host==='192.168.21.131') console.log(888, r, w)
 					convAO(opt, r)
 					r = convUint32DO(opt, r)
 					delModule(opt.buildingId, opt._id)

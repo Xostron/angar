@@ -19,9 +19,10 @@ const apiConfig = (data, params = {}) => ({
 async function writeIO(out) {
 	if (!out) return console.log('🟡 back->plc_io (output).', 'Нет данных для записи')
 
-	// Наличие изменений
-	const o = isChange(out)
-	if (!o) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
+	// Наличие изменений -> данные на запись
+	const dataWrite = isChange(out)
+	// console.log(123, dataWrite)
+	if (!dataWrite) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
 
 	// Запрос back->plc_io (reset)
 	const services = await getServices()
@@ -30,7 +31,7 @@ async function writeIO(out) {
 	for (const srv of services) {
 		try {
 			const api = fnApi(srv.url)
-			const r = await api(apiConfig(o))
+			const r = await api(apiConfig({ list: dataWrite, max: srv?.max ?? 1 }))
 
 			// Ошибка запроса
 			if (!r.data) throw new Error('Нет связи с сервисом')
@@ -38,7 +39,7 @@ async function writeIO(out) {
 			// Ответ от микросервиса:
 			// Обновленные показания датчиков
 			store.v = { ...store.v, ...r.data.v }
-
+			// console.log(567, r.data.v)
 			console.log(`🟢 back->plc_io (output ${srv.url}). Запрос успешно обработан`)
 
 			// Пинг
@@ -72,5 +73,6 @@ function isChange(out) {
 		)
 			return true
 	})
+	// console.log()
 	return o.length ? o : false
 }

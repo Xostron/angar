@@ -6,21 +6,20 @@ const collect = require('@tool/module/collect')
 const { fnThreadPool } = require('../worker')
 const postV = require('../client/value')
 const extralrm = require('./extralrm')
-const { checkAlarm } = require('@tool/module/get_output')
+const { writeOut } = require('@tool/module/get_output')
 
 // Опрос модулей
 async function main() {
 	try {
 		// store.mdls - module+equipment Массив у никальных модулей,
 		// store.parts - подмассивы распределенные на потоки
-		collect(store.count)
+		collect(store.max)
 		// Потоковое чтение модулей и сохранение в аккумулятор
-		store.v = await fnThreadPool(store.count)
+		store.v = await fnThreadPool(store.max)
 		// Обработка авари
 		await extralrm()
-		// Отправка данных на сервер Ангара
-		// await postV()
-		await checkAlarm(store.mdls)
+		//
+		await writeOut(store.mdls)
 		// Задержка 10 сек
 		Object.keys(store.v ?? {}).length ? await delay(10000) : await delay(5000)
 	} catch (error) {
@@ -40,14 +39,14 @@ async function loop() {
 			continue
 		}
 		// Задание кол-во ядер
-		let sp = store.max
+
 		// Доступно ядер
-		store.count = total - 1 > sp ? sp : total - 1
+		store.max = total - 1 > store.max ? store.max : total - 1
 
 		console.log(
 			`*********[${new Date().toLocaleString()}] НАЧАЛО: Микросервис plc_io. PID:${process.pid}*********`,
 		)
-		console.log(`Всего ядер ${total}, доступно ${store.count}`)
+		console.log(`Всего ядер ${total}, доступно ${store.max}`)
 
 		await main()
 
