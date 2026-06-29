@@ -39,7 +39,7 @@ async function writeIO(out) {
 			// Ответ от микросервиса:
 			// Обновленные показания датчиков
 			store.v = { ...store.v, ...r.data.v }
-			// console.log(567, r.data.v)
+
 			console.log(`🟢 back->plc_io (output ${srv.url}). Запрос успешно обработан`)
 
 			// Пинг
@@ -73,6 +73,5 @@ function isChange(out) {
 		)
 			return true
 	})
-	// console.log()
 	return o.length ? o : false
 }

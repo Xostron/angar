@@ -9,7 +9,6 @@ function rhr(client, opt, name, options = {}, typeModule) {
 			.readHoldingRegisters(opt.start, n)
 			.then((r) => {
 				let v = r.response._body[name]
-				// if (opt.host==='192.168.21.131') console.log(666, r.response._body)
 				v = data(v, opt, options)
 				resolve(v)
 			})
