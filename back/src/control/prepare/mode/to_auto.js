@@ -26,7 +26,7 @@ function toAuto(obj) {
 
 		// Подготовка уже выполнена - выходим
 		if (isDone) continue
-		console.log('Подготовка к авто секции', el.name, isDone)
+		// console.log('Подготовка к авто секции', el.name, isDone)
 		// Подготовка - команда на закрытие клапанов
 		controlAO(idB, el._id, data, value)
 	}

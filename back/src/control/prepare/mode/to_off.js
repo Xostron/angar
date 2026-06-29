@@ -25,7 +25,7 @@ function toOff(obj) {
 		// Подготовка уже выполнена - выходим
 		if (isDone) continue
 		// Процесс выключения секции
-		console.log('Подготовка к выкл секции', el.name)
+		// console.log('Подготовка к выкл секции', el.name)
 		controlAO(idB, el._id, data, value, 'to_off')
 	}
 }

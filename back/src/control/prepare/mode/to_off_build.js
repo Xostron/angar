@@ -32,7 +32,7 @@ function toOffBuild(obj) {
 		}
 		// Для проверки: кол-во узлов которые требуется выключить
 		let count = section.length + fan.length
-		console.log('Подготовка к выкл склада', el.code, count)
+		// console.log('Подготовка к выкл склада', el.code, count)
 		// Выключение секций, работающие в авто
 		for (const s of section) {
 			const status = controlB(el._id, s?._id, data, value, 'launch')

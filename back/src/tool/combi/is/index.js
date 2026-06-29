@@ -83,10 +83,10 @@ function isCoolerCombiOn(bld, bdata) {
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
 	if (isCombiCold(bld, automode, s)) coolerCombiOn = s?.coolerCombi?.on ?? true
 	//
-	if (coolerCombiOn === false)
-		console.log(
-			'Комби склад. Испарители и ВНО выключены. Настройка "Испаритель холодильного оборудования" ВЫКЛ',
-		)
+	// if (coolerCombiOn === false)
+	// 	console.log(
+	// 		'Комби склад. Испарители и ВНО выключены. Настройка "Испаритель холодильного оборудования" ВЫКЛ',
+	// 	)
 	return coolerCombiOn
 }
 

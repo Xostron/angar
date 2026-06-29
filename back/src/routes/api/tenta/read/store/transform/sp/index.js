@@ -24,7 +24,7 @@ function sp(bldId, type, automode) {
 			p: store.calcSetting?.[bldId]?.fan?.pressure?.p,
 			hin: acc.setting?.mois?.humidity,
 		}
-		console.log(999, r)
+		// console.log(999, r)
 		return r
 	}
 	const r = {

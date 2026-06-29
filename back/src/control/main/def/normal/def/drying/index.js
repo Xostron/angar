@@ -89,7 +89,7 @@ function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
-	console.log('\tКлапаны сушка', 'open', open, 'close', close, 'forceOpn', forceOpn)
+	// console.log('\tКлапаны сушка', 'open', open, 'close', close, 'forceOpn', forceOpn)
 	return { open, close, forceOpn, forceCls: false, sp: null }
 }
 

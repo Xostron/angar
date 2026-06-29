@@ -36,15 +36,15 @@ function fnAlarm(bld, sect, obj, s, se, seB, m, am, acc, resultFan, alrBld, alrA
 	const alr = a.filter((e) => e[0] === true)?.length !== 0
 	// Наличие аварии для обработки доп. вентиляции
 	const notDur = alrS || ban || alrBld || alrAlw || alrSe
-	console.log(
-		'\t',
-		'Автоматический режим, сумма аварий',
-		sect?.name,
-		'alr ',
-		alr,
-		' = ',
-		a.filter((e) => e[0]),
-	)
+	// console.log(
+	// 	'\t',
+	// 	'Автоматический режим, сумма аварий',
+	// 	sect?.name,
+	// 	'alr ',
+	// 	alr,
+	// 	' = ',
+	// 	a.filter((e) => e[0]),
+	// )
 	return { alrS, isCO2work, ban, alrSe, alr, notDur }
 }
 

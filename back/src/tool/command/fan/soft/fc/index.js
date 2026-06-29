@@ -53,7 +53,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 4. Регулирование ПЧ
 	if (!acc.busySol) acc.busy = regul(acc, fanFC, on, off, s, aCmd, max, isCC)
 	if (acc.busy || acc.busySol) ((on = false), (off = false))
-	console.log(112, 'on', on, 'off', off, max, acc)
+	// console.log(112, 'on', on, 'off', off, max, acc)
 	// 5. Регулирование Релейных ВНО: увеличение кол-ва
 	checkOn(on, acc, s, fans.length, aCmd, max)
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва

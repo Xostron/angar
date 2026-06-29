@@ -38,9 +38,9 @@ function target(bld, obj, s, seB, acc) {
 	// Момент запуска режима - Температура задания продукта
 	if (acc?.tgt === undefined || acc?.isChange(s.cooling.decrease, s.cooling.target)) {
 		acc.tgt = acc.setting.cooling.target
-		console.log(
-			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
-		)
+		// console.log(
+		// 	`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
+		// )
 		// Указанные настройки изменились?
 		acc.isChange = isChange(s.cooling.decrease, s.cooling.target)
 	}
@@ -51,7 +51,7 @@ function target(bld, obj, s, seB, acc) {
 		if (seB.tprd - acc.setting.cooling.max > acc.tgt)
 			acc.tgt = seB.tprd - acc.setting.cooling.max
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
-		console.log(`Пересчет в полночь: задание=${acc.tgt}, датчик продукта=${seB.tprd}`)
+		// console.log(`Пересчет в полночь: задание=${acc.tgt}, датчик продукта=${seB.tprd}`)
 	}
 	if (new Date().getHours() != 0) acc.mdnt = false
 

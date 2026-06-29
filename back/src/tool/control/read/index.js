@@ -22,7 +22,6 @@ async function read(arr, obj) {
 			if (!timeout(idsB, idsM, arr[i].ip, arr[i])) continue
 
 			// Чтение
-			// if (arr[i].ip === '192.168.21.135') console.log(123, arr[i])
 			let v = await make(arr[i])
 			// Кэш для модулей DO
 			v = fnCacheDO(v, arr[i])

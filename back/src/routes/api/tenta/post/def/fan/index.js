@@ -7,7 +7,7 @@ async function cmd(obj) {
 	try {
 		Aboc.set()
 		const { buildingId, fanId, value, ao = null, sectionId } = obj
-		console.log(6600, obj)
+		// console.log(6600, obj)
 		const fan = await findOne('fan', { key: '_id', v: fanId })
 		// console.log(6601, fan)
 		// const sectionId = fan?.owner?.id
@@ -55,7 +55,7 @@ async function cmd(obj) {
 				[binding.moduleId]: { [binding.channel - 1]: +ao  },
 			},
 		}
-		console.log(333, s)
+		// console.log(333, s)
 		setCmd(s)
 		return true
 	} catch (error) {

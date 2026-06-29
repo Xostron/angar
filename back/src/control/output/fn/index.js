@@ -105,7 +105,7 @@ function transform(cmd, mdls, out) {
 				const { mdl, id } = getMdl(mdls, idM)
 				// console.log(1155, id)
 				if (!mdl) {
-					console.log(1177, 'не найден модуль', cmd[idB], idM)
+					// console.log(1177, 'не найден модуль', cmd[idB], idM)
 					continue
 				}
 				// Частичная перезапись значений выходов

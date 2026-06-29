@@ -47,7 +47,7 @@ function fnCheck(prepare, retain) {
 	]
 	if (reason.some((el) => el)) {
 		// Запрет управления
-		console.log(99002, 'Управление отключено по причине', reason)
+		// console.log(99002, 'Управление отключено по причине', reason)
 		return false
 	}
 	// Разрешить управление

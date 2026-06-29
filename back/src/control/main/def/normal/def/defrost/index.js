@@ -30,7 +30,6 @@ function middlewB(building, obj, s, seB, am, acc, alrBld) {
 	target(building, obj, s, seB, acc, alrBld)
 	// Сообщения
 	message(building, obj, s, seB, am, acc)
-	console.log(9911, acc)
 }
 
 function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {

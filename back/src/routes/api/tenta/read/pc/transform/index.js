@@ -76,7 +76,6 @@ function fnTransform(bld, data, rack, result) {
 		.filter((el) => !!el);
 	// Сообщение достижений
 	result[bld._id + 'note'] = data.alarm?.achieve?.[bld._id] ?? null
-	// console.log(99001, result?.[bld._id + 'note'])
 	// Таймеры запретов
 	const timer = Object.values(data?.alarm?.timer?.[bld._id] ?? {}).map(
 		(el) => ({ code: el?.type, msg: el?.msg, desc: el?.desc })
@@ -84,8 +83,6 @@ function fnTransform(bld, data, rack, result) {
 	result[bld._id + 'alarm'].push(...timer);
 
 	// result[bld._id + 'banner'] = banner(bld._id, data) ?? null
-
-	// console.log(222, result[bld._id + 'banner'])
 
 	// Общее состояние ВНО (кроме холодильника)
 	if (bld.type !== 'cold') {

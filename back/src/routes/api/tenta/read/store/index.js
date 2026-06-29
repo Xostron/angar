@@ -17,7 +17,7 @@ function getStore() {
 			delete result.valve
 			res.json({ result })
 		} catch (error) {
-			console.log('getStore error', error)
+			console.error('getStore error', error)
 			res.status(400).json({ error: error.toString() })
 		}
 	}

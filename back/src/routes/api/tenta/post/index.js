@@ -19,7 +19,7 @@ function write() {
 				res.status(200).json(r)
 			})
 			.catch((error) => {
-				console.log('error', error)
+				console.error('error', error)
 				res.status(400).json({ error })
 			})
 	}
@@ -43,13 +43,13 @@ async function feedback(obj) {
 		repeat += done ? 1 : 0
 		// Предохранитель: если за 10 сек цикл программы не изменился, то выход
 		if (repeat > 10) {
-			console.log(2, 'Выход по таймауту')
+			// console.log(2, 'Выход по таймауту')
 			return null
 		}
 		// console.log(1, 'Ждем конца цикла', cur, store.cycleId, cur === store.cycleId, repeat)
 	}
 
-	console.log(2, 'Подготовка ответа', cur, store.cycleId)
+	// console.log(2, 'Подготовка ответа', cur, store.cycleId)
 	// Дождались изменения: state ангара (карточки складов и т.д.), retain склада
 	const { result = [], present = [] } = await prepare('init')
 	return {

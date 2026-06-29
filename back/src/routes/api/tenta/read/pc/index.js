@@ -15,7 +15,7 @@ function pc() {
 			const result = transform(store.value, rack)
 			res.json(result)
 		} catch (error) {
-			console.log(error)
+			console.error(error)
 			res.status(400).json({ error: error.toString() })
 		}
 	}

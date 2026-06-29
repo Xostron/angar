@@ -24,7 +24,7 @@ function toMan(obj) {
 		}
 		// Подготовка уже выполнена - выходим
 		if (isDone) continue
-		console.log('Подготовка к ручному секции', el.name)
+		// console.log('Подготовка к ручному секции', el.name)
 		// Подготовка - останов клапанов
 		controlM(idB, el._id, data, value)
 	}

@@ -48,7 +48,7 @@ function compareTime(t, d) {
 		const now = new Date()
 		return now - t >= d
 	} catch (error) {
-		console.log('compareTime', error)
+		console.error('compareTime', error)
 		return true
 	}
 }
@@ -66,7 +66,7 @@ function runTime(date, type = 0) {
 		const s = (new Date() - date) / 1000
 		return fmtTime(s, type)
 	} catch (error) {
-		console.log('runTime', error)
+		console.error('runTime', error)
 		return ''
 	}
 }
@@ -87,7 +87,7 @@ function remTime(date, x, type = 0) {
 		const s = (x - t) / 1000
 		return fmtTime(s, type)
 	} catch (error) {
-		console.log('remTime', error)
+		console.error('remTime', error)
 		return ''
 	}
 }

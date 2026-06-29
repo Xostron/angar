@@ -17,7 +17,7 @@ function initAllStarted(acc, fans, fanFC, s, o) {
 	// Флаг прогрев канала активен
 	acc.allStarted = eI || eII ? new Date() : null
 
-	console.log(4110, 'allstarted=', acc.allStarted, eI, eII)
+	// console.log(4110, 'allstarted=', acc.allStarted, eI, eII)
 }
 
 module.exports = initAllStarted

@@ -44,18 +44,15 @@ function submode(bld, obj, s, seB, acc) {
 			(acc?.submode?.[0] === sm.cure[0] &&
 				seB.tout > seB.tprd + s.cooling.hysteresisOut + s.heat.differenceMax))
 	) {
-		// console.log(1, 'heat set')
 		acc.submode = sm.heat
 	}
 	// reset
 	if (seB.tprd >= s.cooling.target && acc?.submode?.[0] === sm.heat[0]) {
-		console.log(1, 'heat reset')
 		acc.submode = sm.cooling
 	}
 
 	// ========= Лечение =========
 	// set
-	// console.log(22, 'set лечение', s.mois.humidity + s.cure.hysteresisJump, '<', seB.hin, '&&', seB.tprd, '<=', acc.tgt, '&&', acc?.submode?.[0],'===',sm?.cooling?.[0])
 	if (
 		s.mois.humidity + s.cure.hysteresisJump < seB.hin &&
 		seB.tprd <= acc.tgt &&
@@ -132,9 +129,9 @@ function target(bld, obj, s, seB, acc) {
 	) {
 		acc.tgt = seB.tprd - acc.setting.cooling.decrease
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
-		console.log(
-			`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
-		)
+		// console.log(
+		// 	`Пересчет задания (Склад вкл/выкл): задание=${acc.tgt}, датчик продукта=${seB.tprd}`,
+		// )
 		// Указанные настройки изменились?
 		acc.isChange = isChange(s.cooling.decrease, s.cooling.target)
 	}
@@ -145,7 +142,7 @@ function target(bld, obj, s, seB, acc) {
 		if (seB.tprd - acc.setting.cooling.max > acc.tgt)
 			acc.tgt = seB.tprd - acc.setting.cooling.max
 		if (acc.tgt < acc.setting.cooling.target) acc.tgt = acc.setting.cooling.target
-		console.log(`Пересчет в полночь: задание=${acc.tgt}, датчик продукта=${seB.tprd}`)
+		// console.log(`Пересчет в полночь: задание=${acc.tgt}, датчик продукта=${seB.tprd}`)
 	}
 	if (new Date().getHours() != 0) acc.mdnt = false
 

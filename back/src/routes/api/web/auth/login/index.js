@@ -27,10 +27,10 @@ const users = {
 function login() {
 	return function (req, res, next) {
 		const { login, password } = req?.body
-		console.log('login, password', login, password)
+		// console.log('login, password', login, password)
 
 		if (users[login] && password === users[login].pwd) {
-			console.log('authentication OK')
+			// console.log('authentication OK')
 			const payload = users[login]
 			payload.login = login
 
@@ -43,7 +43,7 @@ function login() {
 
 			res.json({ access, refresh, name:users[login].fio })
 		} else {
-			console.log('wrong credentials')
+			// console.log('wrong credentials')
 			res.status(401).end()
 		}
 	}

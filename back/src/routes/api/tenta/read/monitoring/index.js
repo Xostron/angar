@@ -7,7 +7,6 @@ function monitoring() {
 			return res.status(400).json({ error: 'Не указаны обязательные параметры' })
 		}
 		const s = store?.value?.alarm?.signal[bldId]
-		// console.log(s)
 		if (!s) {
 			return res.status(404).json({ error: 'Здание не найдено: ' + bldId })
 		}
