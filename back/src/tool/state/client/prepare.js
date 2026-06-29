@@ -27,23 +27,16 @@ module.exports = async function prepareReq() {
 		const files = (await fsp.readdir(dataDir)).filter((el) => el.includes('json'))
 		const data = await readTO(files)
 
-		// Настройка в админке: Получение данных от ЦС (вкл/выкл : true/false)
-		// TODO - отключено для сервера ангара, чтобы у нас всегда формировался какой-либо state
-		// if (!data?.pc?.state?.on) {
-		// 	console.log('\x1b[33m%s\x1b[0m', 'Получение данных от ЦС выключен')
-		// 	return null
-		// }
 
-		// Собираем значения по складу
+		// Нет значений - выходим
 		if (!Object.keys(store.value).length) {
-			// console.log('\x1b[33m%s\x1b[0m', 'Данные не готовы')
 			return null
 		}
 
 		// Карточки PC
 		const resPC = transformPC(store.value, data)
 
-		// Полное содержимое секции и карточки секций
+		// Полное содержимое секций и карточки секций
 		for (const sec of data.section)
 			present[sec._id] = await transformStore(sec.buildingId, sec._id)
 
@@ -55,7 +48,7 @@ module.exports = async function prepareReq() {
 		const sens = {}
 		data.sensor.forEach((el) => (sens[el._id] = tolerance[el.type]))
 		diffing = hub.init ? deltaTol(present, hub.state, sens, tolerance) : null
-		// console.log(8806, 'Изменения', diffing, hub.init, hub.last, hub.state)
+		
 		// Формируем данные для Tenta: изменения или полные данные
 		result = convertTenta(diffing ?? present, data.pc._id)
 		return { result, hub, present, diffing }

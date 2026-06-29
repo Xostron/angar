@@ -14,11 +14,9 @@ function fnExist() {
 	const existFile = fs.existsSync(retainFile)
 	if (!exist) {
 		fs.mkdirSync(retainDir, { recursive: true });
-		console.log(`\tСоздание папки ${retainDir}`);
 	}
 	if (!existFile) {
 		fs.writeFileSync(retainFile, '{}')
-		console.log(`\tСоздание файла ${retainFile}`)
 	}
 }
 
@@ -34,7 +32,6 @@ async function recovery() {
 		fs.writeFileSync(retainFile, '{}')
 		// Перечитываем
 		data = await readOne('data.json', retainDir)
-		console.log('\tВосстановление файла')
 	}
 	return data
 }

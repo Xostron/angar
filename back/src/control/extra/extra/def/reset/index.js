@@ -28,8 +28,6 @@ function resetDO(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	const isErrm = isErrMs(bld._id, obj?.data?.module)
 
 	idBS.forEach((ownerId) => onOffDO(bld, ownerId, obj, s, se, m, isErrm, acc))
-
-	// console.log(88001, acc)
 }
 
 module.exports = resetDO

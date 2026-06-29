@@ -4,14 +4,12 @@ const mes = require('@dict/message')
 // Аварии на боковой колонке на странице "внутренности" Секции
 function bar(r, bld, sect, am, start) {
 	// склад выключен, авторежим не выбран - очищаем аварии, сообщения, таймеры запретов авторежима
-	// console.log(1100, store.alarm?.extra?.[bld._id])
 	if (!am) {
 		r.bar ??= {}
 		r.bar[bld._id] = {}
 		return
 	}
 	// Боковая панель аварий для секции
-	// const d = store.alarm.auto?.[bld._id]?.[am]?.[sect._id]
 	const smoking1 = store.alarm?.extra?.[bld._id]?.smoking1
 	const smoking2 = store.alarm?.extra?.[bld._id]?.smoking2
 	const ozon1 = store.alarm?.extra?.[bld._id]?.ozon1

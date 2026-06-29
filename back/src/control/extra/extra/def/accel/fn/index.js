@@ -59,7 +59,6 @@ function cold(building, fanA, acc, se, s, m, obj) {
 	const run = m.fanB.some((f) => stateEq(f._id, obj.value))
 	// Комби-холод
 	const isCC = isCombiCold(building, obj.retain?.[building._id]?.automode, s)
-	// console.log(11,run, isCC,  m.fanB)
 	if (run && isCC) return on(building, fanA)
 	off(building, fanA)
 }

@@ -62,8 +62,6 @@ function debDI(sig, value, equip, result) {
 	result[sig._id] = hold === undefined ? value : hold
 	// Обновляем прошлое значение
 	store.holdSensor[sig._id] = hold
-	// if (sig.type === 'local') console.log(222, sig, hold, value, store.debounce[sig._id])
-	// console.log(7700, 'DEBDI', sig.type, value, hold, store.debounce[sig._id])
 }
 
 /**

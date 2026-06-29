@@ -73,24 +73,6 @@ function alrClosed(bld, ownerId, obj, se, s, isErrm) {
 	// Сигнал на автосброс аварии низкой температуры
 	const ac = !isErrm && sig && tcnl >= s.sys.acTcnl && !isNaN(tcnl) && !accAC?._alarm
 
-	// console.log(
-	// 	8800,
-	// 	ownerId,
-	// 	'Сигнал alrClosed=',
-	// 	sig,
-
-	// 	'Автосброс = ',
-	// 	!isErrm,
-	// 	sig,
-	// 	`tcnl: ${tcnl}>=${s.sys.acTcnl} = ${tcnl >= s.sys.acTcnl}`,
-	// 	!isNaN(tcnl),
-	// 	!accAC?._alarm,
-	// 	'=',
-	// 	ac,
-	// 	'Аккумулятор alrClosed =',
-	// 	accAC
-	// )
-
 	return ac
 }
 

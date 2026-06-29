@@ -35,7 +35,6 @@ function relay(idB, idS, fan, obj, s, se, start, key) {
 	const { p } = se
 	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
-	console.log(2, idS, key, 'ПП: давление', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, s, fan.fans.length)
 	checkOff_Relay(off, acc)
@@ -78,12 +77,10 @@ function fc(idB, idS, fan, obj, s, se, start, key) {
 	const { p } = se
 	let on = p < s.fan.pressure.p
 	let off = p > s.fan.pressure.p + s.fan.hysteresisP
-	console.log(2, idS, key, 'ПП: давление', 'on=', on, 'off=', off)
 
 	// Регулирование по ПЧ после ожидания соленоида подогрева
 	acc.busy = regul(acc, fan.fanFC, on, off, s)
 	if (acc.busy) ((on = false), (off = false))
-	console.log(3, idS, key, 'ПП', 'on=', on, 'off=', off)
 	// Управление очередью вкл|выкл вентиляторов
 	checkOn(on, acc, s, fan.fans.length)
 	checkOff_FC(off, acc)

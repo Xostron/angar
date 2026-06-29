@@ -23,10 +23,10 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 			]
 			// Пара испарителей выведена из работы
 			const off = isOffPair(pair, mS, obj.value)
-			console.log(
-				'\toffDenied: один испаритель',
-				a.filter((e) => e[0]),
-			)
+			// console.log(
+			// 	'\toffDenied: один испаритель',
+			// 	a.filter((e) => e[0]),
+			// )
 			a.filter((e) => e[0] === true)?.length !== 0 && !off
 				? fnChange(0, null, 0, 0, 0, null, clr)
 				: fnChange(0, 0, 0, 0, 0, null, clr)
@@ -55,13 +55,13 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 					[s?.ozon?.on, 'Включен озонатор'],
 					[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
 				]
-				console.log(
-					'\toffDenied: Полное отключение пары, из-за этих причин ВНО не заблокирован',
-					a.filter((e) => e[0]),
-				)
+				// console.log(
+				// 	'\toffDenied: Полное отключение пары, из-за этих причин ВНО не заблокирован',
+				// 	a.filter((e) => e[0]),
+				// )
 				// Пара испарителей выведена из работы
 				const off = isOffPair(pair, mS, obj.value)
-				console.log('\tПара испарителей выведена из работы', off)
+				// console.log('\tПара испарителей выведена из работы', off)
 				a.filter((e) => e[0] === true).length !== 0 && !off
 					? fnChange(0, null, 0, 0, 0, null, clr)
 					: fnChange(0, 0, 0, 0, 0, null, clr)
@@ -75,7 +75,7 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 			// Запрещен - отключаем
 			const idClr = pair[i]
 			const clr = mS.coolerS.find((el) => el._id === idClr)
-			console.log('Частичное отключение пары')
+			// console.log('Частичное отключение пары')
 			fnChange(0, null, 0, 0, 0, null, clr)
 		})
 	})

@@ -36,7 +36,6 @@ function checkRange(begin, end, exclude) {
 		.join('')
 	begin = begin ? +begin.split(':').join('') : 0
 	end = end ? +end.split(':').join('') : 0
-	// console.log('\t', cur, begin, end, exclude)
 	// Запрет выключить
 	// Исключить запреты авторежимов, кроме текущего режима склада
 	if (exclude) return false

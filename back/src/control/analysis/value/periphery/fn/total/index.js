@@ -122,6 +122,4 @@ module.exports = function total(equip, result, retain) {
 		}, {})
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
-
-	// console.log(999, result.total, result.humAbs)
 }

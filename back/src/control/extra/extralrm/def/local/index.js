@@ -16,7 +16,6 @@ function local(bld, sect, obj, s, se, m, automode, acc, data) {
 		wrExtralrm(bld._id, sect._id, 'local', msg(bld, sect, 27), [moduleId])
 		acc._alarm = true
 	}
-	// console.log(9900, 'Переключатель на щите секции', bld._id, sect._id, sig)
 }
 
 module.exports = local

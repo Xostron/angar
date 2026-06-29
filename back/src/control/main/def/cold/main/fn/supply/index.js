@@ -32,8 +32,6 @@ function supply(idB, clrId, idsS, doc) {
 	// Сохраняем в аккумулятор, он потом сохраняется в retain
 	store.supply[idB] ??= {}
 	store.supply[idB][clrId] = doc
-	// console.log('\tПитание:, doc', doc)
-	// if (!state) return false
 	const noSupplyIds = idsS?.some((id) => isExtralrm(idB, id, 'supply'))
 	const noSupply =
 		isExtralrm(idB, null, 'supply') ||
@@ -41,15 +39,15 @@ function supply(idB, clrId, idsS, doc) {
 		noSupplyIds ||
 		isExtralrm(idB, null, 'sb')
 
-	console.log(
-		'\t Нет питания nosupply=',
-		noSupply,
-		'=',
-		isExtralrm(idB, null, 'supply'),
-		isExtralrm(idB, null, 'battery'),
-		noSupplyIds,
-		isExtralrm(idB, null, 'sb'),
-	)
+	// console.log(
+	// 	'\t Нет питания nosupply=',
+	// 	noSupply,
+	// 	'=',
+	// 	isExtralrm(idB, null, 'supply'),
+	// 	isExtralrm(idB, null, 'battery'),
+	// 	noSupplyIds,
+	// 	isExtralrm(idB, null, 'sb'),
+	// )
 
 	// Инициализация времени: Питание отключено
 	if (noSupply) {
@@ -73,17 +71,17 @@ function supply(idB, clrId, idsS, doc) {
 
 	// Питания дали раньше дельты. или вышло время ожидания
 	if (!compareTime(new Date(doc.off), timeH) || compareTime(new Date(doc.on), time)) {
-		console.log('\t\tПитание дали раньше ')
+		// console.log('\t\tПитание дали раньше ')
 		// Обнуляю время отключения
 		doc.off = null
 		return 2
 	}
-	console.log(
-		'\t\tПитание дали в ',
-		doc.on,
-		' ожидаем проверку ',
-		compareTime(new Date(doc.on), time),
-	)
+	// console.log(
+	// 	'\t\tПитание дали в ',
+	// 	doc.on,
+	// 	' ожидаем проверку ',
+	// 	compareTime(new Date(doc.on), time),
+	// )
 
 	return -2
 }

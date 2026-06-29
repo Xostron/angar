@@ -9,7 +9,6 @@ const { sigValve, sigFan, sigDfl } = require('@tool/command/signal')
  */
 function signal(equip, val, retain, result) {
 	const { signal, module, fan, valve } = equip
-	// console.log(equip)
 	for (const o of signal) {
 		switch (o.owner.type) {
 			case 'valve':

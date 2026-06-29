@@ -69,7 +69,6 @@ function fnCheck(bld, obj, code, s, alarm, ban, prepare) {
 		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
-	// console.log(77, 'Условия ВВ не подходят по причине', reason, err)
 
 	// Запретить ВВ
 	if (reason.some((el, i) => el)) {
@@ -112,7 +111,6 @@ function fnReason(bld, obj, code, s, alarm, ban, prepare) {
 		isExtralrm(bld._id, null, 'sb')
 	// Таймер запрета охлаждения для комби-холодильника
 	const banCooling = forCC(bld, code)
-	// console.log(15, '========================', ban, banCooling)
 	return [
 		ban && code !== 'combiCold', //0
 		!fan.length, //1

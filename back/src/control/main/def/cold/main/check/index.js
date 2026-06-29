@@ -39,23 +39,23 @@ function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 
 function checkCombi(fnChange, code, accCold, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log(
-		'\n\t',
-		5554,
-		'Проверка условий принятия решений, tprd =',
-		se.tprd,
-		'target=',
-		accCold.tgtTprd,
-	)
+	// console.log(
+	// 	'\n\t',
+	// 	5554,
+	// 	'Проверка условий принятия решений, tprd =',
+	// 	se.tprd,
+	// 	'target=',
+	// 	accCold.tgtTprd,
+	// )
 
 	// Проверка достижения combiAchieve
 	// 12. Режим хранения(нагрев)
 	let t = bld?.type === 'normal' ? (automode ?? bld?.type) : bld?.type
 	const accAuto = readAcc(bld._id, t)
 	t = accAuto.submode?.[0] === sm.heat[0] ? 'combiAchieveHeat' : 'combiAchieve'
-	console.log(9999, t, accAuto.submode?.[0])
+	// console.log(9999, t, accAuto.submode?.[0])
 	if (accAuto.submode?.[0] && def[t](fnChange, code, accCold, acc, se, s, bld, clr))
-		return console.log(9998, 'ДОСТИГНУТА')
+		return //console.log(9998, 'ДОСТИГНУТА')
 
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор
 	// let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид

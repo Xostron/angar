@@ -134,10 +134,7 @@ function debMdl(idsB, idsM, opt) {
 			wrModule(idB, idM, msgM(idB, opt, 110))
 		}
 	}
-	if (flag) {
-		// console.log('Модуль неисправен', opt.ip, opt.name, )
-		return true
-	}
+	if (flag) return true
 
 	// Модуль в списке антидребезга, время еще не прошло - разрешен
 	return false

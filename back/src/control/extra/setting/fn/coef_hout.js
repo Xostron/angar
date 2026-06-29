@@ -16,7 +16,6 @@ function coefHout(stg, bld, obj) {
 	// Температура продукта и гистерезис
 	const tout = value.total?.tout?.min
 	const hyst = 0.2
-	// console.log(tout, hyst)
 
 	let hout = stg?.hout3
 	// от большего к меньшему
@@ -40,7 +39,6 @@ function coefHout(stg, bld, obj) {
 		hout = stg?.hout2
 	}
 
-	// console.log(3333, 'Коэффициенты влажности', 'tout', tout, '< X;', 'Влажность: hout', hout)
 	return hout
 }
 

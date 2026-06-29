@@ -30,8 +30,7 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 		}
 
 		// Точки отсчета нет -> канал еще прогревается (испаритель не отключаем)
-		if (!accAuto?.cold?.[clr.sectionId]?.allStarted)
-			return console.log('\t offByTcnl: канал еще прогревается')
+		if (!accAuto?.cold?.[clr.sectionId]?.allStarted) return //console.log('\t offByTcnl: канал еще прогревается')
 
 		// Точка отсчета есть -> - начинаем отсчет времени "Настройка Холодильник С"
 		const time = compareTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait)
@@ -41,14 +40,15 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 			// выключает этот ВНО и остается работать один соленоид холода,
 			// и испаритель получает обледенение и начинает оттайку
 			fnChange(null, 1, 0, 0, 0, null, clr)
-			return console.log(
-				'\t',
-				clr.name,
-				accAuto?.cold?.[clr.sectionId]?.allStarted,
-				wait,
-				'Низкая температура канала, отключение испарителя через',
-				remTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait),
-			)
+			// console.log(
+			// 	'\t',
+			// 	clr.name,
+			// 	accAuto?.cold?.[clr.sectionId]?.allStarted,
+			// 	wait,
+			// 	'Низкая температура канала, отключение испарителя через',
+			// 	remTime(accAuto?.cold?.[clr.sectionId]?.allStarted, wait),
+			// )
+			return
 		}
 
 		// Время истекло
@@ -70,11 +70,11 @@ function offByTcnl(idB, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj) {
 			? fnChange(0, null, 0, 0, 0, null, clr)
 			: regulQ(s, se, fnChange, accAuto, clr)
 
-		console.log(
-			'\tНизкая температура канала, испаритель выключен.',
-			'ВНО заблокирован = ',
-			!a.filter((e) => e[0]).length,
-		)
+		// console.log(
+		// 	'\tНизкая температура канала, испаритель выключен.',
+		// 	'ВНО заблокирован = ',
+		// 	!a.filter((e) => e[0]).length,
+		// )
 	})
 }
 
@@ -99,26 +99,26 @@ function regulQ(s, se, fnChange, accAuto, clr) {
 	if (se.hin >= s.mois.humidity + (s.mois?.hysteresisHum ?? 1))
 		accAuto.cold[clr.sectionId].onQ = 0
 
-	console.log(
-		661,
-		'Регулирование по влажности 1',
-		se.hin,
-		'<=',
-		s.mois.humidity,
-		'=',
-		se.hin <= s.mois.humidity,
-	)
-	console.log(
-		662,
-		'Регулирование по влажности 0',
-		se.hin,
-		'>=',
-		s.mois.humidity,
-		'+',
-		s.mois?.hysteresisHum ?? 1,
-		'=',
-		se.hin >= s.mois.humidity + (s.mois?.hysteresisHum ?? 1),
-	)
-	console.log(6655, 'Регулирование по влажности', 'RESULT = ', accAuto?.cold?.[clr.sectionId])
+	// console.log(
+	// 	661,
+	// 	'Регулирование по влажности 1',
+	// 	se.hin,
+	// 	'<=',
+	// 	s.mois.humidity,
+	// 	'=',
+	// 	se.hin <= s.mois.humidity,
+	// )
+	// console.log(
+	// 	662,
+	// 	'Регулирование по влажности 0',
+	// 	se.hin,
+	// 	'>=',
+	// 	s.mois.humidity,
+	// 	'+',
+	// 	s.mois?.hysteresisHum ?? 1,
+	// 	'=',
+	// 	se.hin >= s.mois.humidity + (s.mois?.hysteresisHum ?? 1),
+	// )
+	// console.log(6655, 'Регулирование по влажности', 'RESULT = ', accAuto?.cold?.[clr.sectionId])
 	fnChange(0, accAuto?.cold?.[clr.sectionId]?.onQ ?? 0, 0, 0, 0, null, clr)
 }

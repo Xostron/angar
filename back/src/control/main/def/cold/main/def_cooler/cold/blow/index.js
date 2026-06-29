@@ -6,7 +6,7 @@ function blow(fnChange, accAuto, acc, se, s, bld, clr) {
 	onTime('blow', acc)
 	// Отсутсвует время включения обдува
 	if (!acc.state.blow) {
-		console.log('\tblow', 'Отсутсвует время включения обдува')
+		// console.log('\tblow', 'Отсутсвует время включения обдува')
 		// переход на набор холода
 		return check.cold(fnChange, 'blow', accAuto, acc, se, s, bld, clr)
 	}
@@ -18,7 +18,7 @@ function blow(fnChange, accAuto, acc, se, s, bld, clr) {
 	if (off > bf) {
 		// Время обдува не закончилось
 		const time = compareTime(acc.state.blow, s.cooler?.blow)
-		console.log('\tblow', 'Время обдува (после остановки)', time)
+		// console.log('\tblow', 'Время обдува (после остановки)', time)
 		if (!time) return
 	}
 	return check.cold(fnChange, 'blow',accAuto, acc, se, s, bld, clr)

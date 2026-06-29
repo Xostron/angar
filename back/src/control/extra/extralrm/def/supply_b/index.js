@@ -8,7 +8,6 @@ const { getS } = require('@tool/get/building')
 function supplyB(bld, sect, obj, s, se, m, automode, acc, data) {
 	acc.o ??= {}
 	const reason = getReason(bld, obj)
-	// console.log(1, 'reason', reason)
 	// Если взведена Авария питания (Ручной сброс) - игнорируем данную аварию
 	if (isExtralrm(bld._id, null, 'sb')) {
 		reason.forEach((el) => delMessage(el, bld, acc))
@@ -30,7 +29,6 @@ function supplyB(bld, sect, obj, s, se, m, automode, acc, data) {
 
 	acc._alarm = Object.values(acc.o).some(Boolean)
 
-	// console.log(4, acc._alarm, acc, Object.values(acc.o))
 	return acc?._alarm ?? false
 }
 

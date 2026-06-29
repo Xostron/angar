@@ -16,7 +16,6 @@ const coefHout = require('./fn/coef_hout')
 function setting(bld, obj) {
 	const { retain, factory } = obj
 	const codeP = retain?.[bld._id]?.product?.code
-	// console.log(999, 'Аккумулятор гистерезисов', store.heap)
 	// список настроек склада
 	const kind = bld?.kindList
 	const r = {}

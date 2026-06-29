@@ -8,7 +8,7 @@ function drain(fnChange, accAuto, acc, se, s, bld, clr) {
 	onTime('drain', acc)
 	const time = compareTime(acc.state.drain, s.cooler.water)
 	const tmp = se.cooler.tmpCooler <= s?.cooler?.defrostOn
-	console.log('\tdrain time=', time, 'tmp=', tmp, 'Продолжительность = ', s.cooler.water / 1000)
+	// console.log('\tdrain time=', time, 'tmp=', tmp, 'Продолжительность = ', s.cooler.water / 1000)
 	// время не окончено
 	if (!time) return
 	// Время прошло -> выключаем слив воды

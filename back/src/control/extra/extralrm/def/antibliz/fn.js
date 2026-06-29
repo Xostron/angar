@@ -16,7 +16,6 @@ function set(bld, sect, obj, vlvS, acc, s) {
 	// Концевик закрыто приточного клапана
 	const vlvIn = vlvS.find((vlv) => vlv.type === 'in')
 	const lc = obj.value[vlvIn._id]?.close
-	// console.log(1100, vlvIn, lc)
 
 	// Логика
 	// Фиксируем состояние закрытого концевика в очереди
@@ -26,7 +25,6 @@ function set(bld, sect, obj, vlvS, acc, s) {
 
 	// Из очереди отфильтровываем только состояния "клапан закрыт"
 	const onlyCls = acc.queue.filter((el) => el.state === true)
-	// console.log(1100, onlyCls)
 	// Очередь не заполнена - выходим
 	if (onlyCls.length < s?.antibliz?.count) return
 	// Очередь заполнена -> проверяем время

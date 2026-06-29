@@ -16,8 +16,9 @@ const { delay } = require('@tool/time')
 async function read(arr) {
 	try {
 		const result = { v: {}, cacheDO: {}, alarmMdl: {}, debMdl: {} }
-		console.log(123, arr?.length)
+
 		if (!arr?.length) return result
+
 		for (let i = 0; i < arr.length; i++) {
 			if (Aboc.check()) return
 			// ИД модуля: массив ИД string[] - дублеры от разных складов

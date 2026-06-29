@@ -37,7 +37,6 @@ function coefAbs(stg, bld, obj) {
 		habs = stg?.abs2
 	}
 
-	// console.log(3333, 'Коэффициенты влажности', 'tprd', tprd, '< X;', 'Влажность: habs', habs)
 	return habs
 }
 

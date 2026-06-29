@@ -116,7 +116,6 @@ function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 		se.hin <= s.mois.humidity &&
 		accCold.timeAD === null
 	) {
-		console.log(17)
 		delAchieve(bld._id, bld.type, mes[81].code)
 		wrAchieve(
 			bld._id,

@@ -23,34 +23,13 @@ function fnRunning(agg, bld, owner, cmpr, stateAgg, acc, pinV, obj, s) {
 		isExtralrm(bld._id, null, 'battery') ||
 		isExtralrm(bld._id, null, 'sb')
 	// Условие пуска
-	// console.log(
-	// 	'\tАгрегат: Условие пуска',
-	// 	!alarm && pinV.value >= pin + hysteresisP,
-	// 	'!alarm',
-	// 	!alarm,
-	// 	'формула =',
-	// 	pinV,
-	// 	'>=',
-	// 	pin,
-	// 	hysteresisP
-	// )
 	if (pinV.state === 'on' && !alarm && pinV.value >= pin + hysteresisP) acc[owner].run = true
 	// Условие стоп:
 	// Авария модулей
 	// const alrM = isAlrM(agg, obj, acc)
 	// Реле низкого давления
 	const relay = acc?.[owner]?.relay
-	// console.log(
-	// 	'\tАгрегат: Условие стоп',
-	// 	'pinV.state=',
-	// 	pinV.state,
-	// 	'alr',
-	// 	alarm,
-	// 	'pinV <= pin',
-	// 	pinV.value <= pin,
-	// 	'relay',
-	// 	relay
-	// )
+
 	if (pinV.state !== 'on' || alarm || pinV.value <= pin || relay || supply) acc[owner].run = false
 }
 

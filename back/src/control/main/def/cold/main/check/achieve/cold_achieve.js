@@ -23,7 +23,7 @@ function coldAchieve(fnChange, code, accAuto, acc, se, s, bld, clr) {
 		wrAchieve(bld._id, bld.type, msgB(bld, 80, `${accAuto.target ?? '--'} °C`))
 		delAchieve(bld._id, bld.type, mes[81].code)
 		if (code === 'off') return true
-		console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accAuto.target} тмп. задания`)
+		// console.log(code, `Выключение - тмп. продукта ${se.tprd}<=${accAuto.target} тмп. задания`)
 		acc.state.off = new Date()
 		// Точка отсчета для обдува датчиков по достижению задания
 		if (!accAuto.finishTarget) accAuto.finishTarget = new Date()

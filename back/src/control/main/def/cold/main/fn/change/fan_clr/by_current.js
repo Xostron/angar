@@ -24,7 +24,6 @@ function byCurrent(sp, clr, fan, s, se, acc) {
 	// Датчик тока есть
 	// Команда на повышение on/понижение off задания
 	const { on, off } = onOff(fan, s, se)
-	console.log(126, 'on = ', on, 'off = ', off)
 	// Изменение уставки ПЧ испарителя acc[clr._id].current.sp
 	regul(clr, fan, s, se, acc, on, off)
 
@@ -57,17 +56,6 @@ function check(fan, se) {
 function onOff(fan, s, se) {
 	const on = se[fan._id].value < +fan?.actuator?.current - (s?.fan?.hystC ?? 1)
 	const off = se[fan._id].value > +fan?.actuator?.current + (s?.fan?.hystC ?? 1)
-	console.log(
-		125,
-		se[fan._id].value,
-		'<',
-		+fan?.actuator?.current - (s?.fan?.hystC ?? 1),
-
-		'****',
-		se[fan._id].value,
-		'>',
-		+fan?.actuator?.current + (s?.fan?.hystC ?? 1),
-	)
 	return { on, off }
 }
 
@@ -87,14 +75,12 @@ function regul(clr, fan, s, se, acc, on, off) {
 	acc[clr._id].current.date ??= new Date()
 	// Время ожидания следующего шага
 	const time = compareTime(acc[clr._id].current.date, s.fan.next)
-	console.log(128, acc[clr._id].current.date, s.fan.next, time)
 	// Время шага ПЧ не прошло -> выходим
 	if (!time) return
 	acc[clr._id].current.date = new Date()
 
 	// Пошагово увеличиваем задание ПЧ
 	if (on) {
-		console.log(127, 'regul on')
 		// Задание ПЧ дошло до 100% => выход
 		if (acc[clr._id].current.sp >= _MAX_SP) {
 			acc[clr._id].current.sp = _MAX_SP
@@ -108,7 +94,6 @@ function regul(clr, fan, s, se, acc, on, off) {
 
 	// Пошагово уменьшаем задание ПЧ
 	if (off) {
-		console.log(127, 'regul off')
 		// Задание ПЧ дошло до min%
 		if (acc[clr._id].current.sp <= s?.fan?.startSp) {
 			acc[clr._id].current.sp = s?.fan?.startSp

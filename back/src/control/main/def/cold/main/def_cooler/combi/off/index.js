@@ -8,7 +8,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	// Не выключался
 	if (!acc?.state?.off) {
 		acc.state.off = new Date()
-		console.log('\toff', 'Не выключался, решаем что делать дальше')
+		// console.log('\toff', 'Не выключался, решаем что делать дальше')
 	}
 	// Проверка ожидания оттайки всех испарителей
 	if (acc?.state?.waitDefrost) {
@@ -19,7 +19,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 			fnChange(0, 0, 0, 1, 0, 'drain', clr)
 			return
 		}
-		console.log('\tНе все испарители закончили оттайку, ждем')
+		// console.log('\tНе все испарители закончили оттайку, ждем')
 		// Не все испарители закончили оттайку, ждем дальше в паузе
 		return
 	}
@@ -29,7 +29,7 @@ function off(fnChange, accCold, acc, se, s, bld, clr) {
 	//Выключен по достижению задания, здесь мы СТРОГО ЖДЕМ время останова
 	// по достижению задания
 	if (accCold.finishTarget) {
-		console.log('\toff', 'Выключен по достижению задания', s?.coolerCombi?.stop)
+		// console.log('\toff', 'Выключен по достижению задания', s?.coolerCombi?.stop)
 		// По окончанию времени достижения задания -> включается внутренняя вентиляция ОБДУВ
 		// По окончанию обдува сбрасывается accCold.finishTarget=null
 		wrAchieve(

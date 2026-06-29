@@ -31,7 +31,6 @@ function fnSolenoid(cooler, binding, val) {
 		})
 		solenoid = { ...solenoid, ...uniDO(sol, val) }
 	})
-	// console.log(555, solenoid)
 	return solenoid
 }
 

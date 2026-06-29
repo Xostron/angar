@@ -52,7 +52,7 @@ function long(bld, obj, v, s, acc, prepare, type = 'open') {
 	// console.log('ждем ', type, val, '%=', s.overVlv.long ?? 10, wait)
 
 	// Время не прошло (ждем концевика)
-	if (!time) return //console.log('Ждем', type, v._id, acc[v._id])
+	if (!time) return
 
 	// Время прошло (Концевик не сработал)
 	// console.log('авария ', type)

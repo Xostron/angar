@@ -3,14 +3,13 @@ const dewpoint = require('@tool/sensor/dewpoint')
 const { fnMsg, fnMsgs } = require('@tool/sensor/fn')
 const { state, fnState, toutVsWeather } = require('@tool/sensor/total')
 
-
 /**
  * Датчики улицы (темп, влажность, расч абс влажность, погода)
  * являются общими для складов находящихся на одном Pos-терминале
- * 
- * @param {*} equip 
- * @param {*} result 
- * @param {*} idsB 
+ *
+ * @param {*} equip
+ * @param {*} result
+ * @param {*} idsB
  */
 function sensPos(equip, result, idsB) {
 	const { sensor, building } = equip
@@ -50,10 +49,6 @@ function sensPos(equip, result, idsB) {
 			// [bld._id]
 		},
 	}
-
-	// idsB.forEach((idB) => console.log(66, result[idB].tweather))
-
-	// console.log(666, result.total.tout, result.total result.humAbs.out)
 }
 
 module.exports = sensPos

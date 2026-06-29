@@ -105,7 +105,6 @@ module.exports = async function state() {
 				? JSON.parse(JSON.stringify(present))
 				: JSON.parse(JSON.stringify({ ...hub.state, ...diffing }))
 		console.log('\x1b[32m%s\x1b[0m', '3. ✅POS->Tenta: Данные переданы', result?.length)
-		// console.log(4, o.result)
 		return true
 	} catch (error) {
 		throw error

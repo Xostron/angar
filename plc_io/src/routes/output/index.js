@@ -19,7 +19,6 @@ async function output(request, reply) {
 	// Данные на запись от ангара
 	const { list, max } = request.body
 	store.max = max
-	console.log(111, store.max, typeof store.max)
 	// Проверка - нет данных
 	if (check(list)) {
 		// Пинг

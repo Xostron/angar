@@ -33,7 +33,6 @@ async function forecast(bldId) {
 		if (o[bldId]?.automode !== 'cooling')
 			throw new Error('Ошибка: Режим склада должен быть "Хранение"')
 		const response = await api(apiConfig(o, { bldId }))
-		console.log(553, response.data)
 		if (!response.data) throw new Error('Сервер не отвечает')
 		return response.data
 	} catch (error) {

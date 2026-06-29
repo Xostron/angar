@@ -175,8 +175,6 @@ function isAlrmByAgg(doc, equip) {
 	// Проверка
 	return [...arrM].some((idM) => {
 		const t = isErrM(doc.buildingId, idM)
-		// const mdl = module.find((el) => el._id === idM)
-		// console.log(11, `Агрегат${doc.order} ${doc._id}, Модуль ${idM} ${mdl.ip}, авария=${t}`)
 		return t
 	})
 }

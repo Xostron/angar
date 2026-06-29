@@ -63,23 +63,11 @@ function smoking(
 	const fan = collect(idB, idsS, obj, stg)
 	// Разгонные ВНО
 	const fanA = m.fanA ?? []
-	// console.log(11, 'ОКУРИВАНИЕ', doc, stg, idsS)
 	// озонатор в работе -> выкл окуривание
-	if (s?.ozon?.on) {
-		// store.retain[building._id].setting ??= {}
-		// store.retain[building._id].setting.smoking ??= {}
-		// store.retain[building._id].setting.smoking.on = false
-		// delete doc.work
-		// delete doc.wait
-		// // Удаляем аккумулятор плавного пуска по завершению окуривания
-		// delete store?.heap?.smoking
-		// delExtra(idB, null, 'smoking1')
-		// delExtra(idB, null, 'smoking2')
-		return
-	}
+	if (s?.ozon?.on) return
+
 	// Запрет окуривания: нет настроек окуривания, окуривание выкл, склад вкл,
 	if (!stg || !stg?.on) {
-		// console.log('\t', 44, 'Окуривание выключено: Выключение плавного пуска')
 		// Если режим разгонных ВНО не ВКЛ - то блокируем выключение
 		if (accelMode !== 'on') arrCtrlDO(idB, fanA, 'off')
 		soft(idB, idsS, fan, obj, s, false)
@@ -92,8 +80,6 @@ function smoking(
 		return
 	}
 	// Включено окуривание
-	// console.log('Режим окуривания', runTime(doc.wait ?? doc.work))
-
 	// Работаем - включаются вентиляторы
 	doc.work ??= new Date()
 	let time = compareTime(doc.work, stg.work * h)

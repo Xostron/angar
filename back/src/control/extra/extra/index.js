@@ -21,14 +21,15 @@ function extra(
 		let code = key
 		if (key === 'coOn' || key === 'coAuto' || key === 'co2NormalCombi') code = 'co2'
 		else code = key
+
 		const acc = readAcc(building._id, section?._id ?? 'building', code)
-		// if (key === 'coOn' || key === 'coAuto' || key === 'co2NormalCombi')
-		// console.log(2200, 'EXTRAAAAAAAAA', type, state, key, code, alarm, resultFan)
+
 		// Таймер запретов TODO вентиляция, увлажнитель
 		let ban = store.alarm.timer?.[building._id]?.[key]
 		if (key === 'accelOn' || key === 'accelAuto') ban = store.alarm.timer?.[building._id]?.accel
 		else if (key === 'coOn' || key === 'coAuto' || key === 'co2NormalCombi')
 			ban = store.alarm.timer?.[building._id]?.co2
+
 		def[type][state][key](building, section, obj, s, se, m, alarm, acc, data, ban, resultFan)
 	}
 }

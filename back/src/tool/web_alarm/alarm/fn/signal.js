@@ -4,11 +4,9 @@ const { data: store } = require('@store')
 function signal(r, bld, sect, am) {
 	r.signal[bld._id] ??= []
 	// Сообщения: авторежимы, доп. аварии, доп. функции
-	// const auto = store.alarm.auto?.[bld._id]?.[am]
 	const extralrm = store.alarm.extralrm?.[bld._id]?.[sect?._id]
 	const extra = store.alarm?.extra?.[bld._id]?.[sect._id]
-	// if (auto) r.signal[bld._id].push(...Object.values(auto))
-	// if (extralrm) r.signal[bld._id].push(...Object.values(extralrm))
+
 	if (extralrm)
 		Object.values(extralrm).forEach((el) =>
 			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el)),
@@ -17,8 +15,6 @@ function signal(r, bld, sect, am) {
 		Object.values(extra).forEach((el) =>
 			el.code ? r.signal[bld._id].push(el) : r.signal[bld._id].push(...Object.values(el)),
 		)
-	// console.log(8800, r.signal[bld._id])
-	// console.log(9900, extralrm)
 }
 
 // Аварии на странице "Сигналы" (собираем по складу и суммируем с секциями)

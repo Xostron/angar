@@ -82,7 +82,6 @@ function webSensAlarm(r, bld, sect, sens) {
 
 	if (
 		r?.state === 'alarm' &&
-		// !store.alarm?.extralrm?.[bld?._id]?.[sect?._id ?? 'sensor']?.[sens?._id] &&
 		!store.alarm?.extralrm?.[bld?._id]?.['sensor']?.[sens?._id] &&
 		!isErrM(bld._id, sens?.module?.id) &&
 		sens.type !== 'ai'
@@ -96,7 +95,6 @@ function webSensAlarm(r, bld, sect, sens) {
 				])
 	}
 	// Если валидный - удаляем аварию
-	// if (sens.name === 'CO2') console.log(123, bld, sect, sens)
 	if (r.state !== 'alarm' || sens.type === 'ai') {
 		delExtralrm(bld._id, sect?._id ?? 'sensor', sens._id)
 	}
@@ -181,33 +179,3 @@ const code = {
 	hout: { off: 95, alarm: 96 },
 	tin: { off: 93, alarm: 94 },
 }
-
-/**
- * Только для датчиков влажности улицы и продукта
- * @param {*} sens Рама датчика
- * @param {*} r Показание и состояние датчика
- */
-// function fnHinHout(idB, sens, r, retain) {
-// 	const on = retain?.[idB._id]?.[sens._id]?.on ?? true
-// 	// Если Датчик влажности улицы/продукта = null (авария датчика)
-// 	// превращаем его => в 100%, и показываем только состояния off|on
-// 	if (['hout', 'hin'].includes(sens.type)) console.log(2200, sens.type, r)
-// 	// Датчики влажности продукта/улицы
-// 	if (['hout', 'hin'].includes(sens.type) && r.state == 'alarm') {
-// 		// const st = state(r.raw, on)
-// 		return {
-// 			raw: r.raw,
-// 			value: 100,
-// 			state: 'on',
-// 		}
-// 	}
-// 	if (['hout', 'hin'].includes(sens.type) && r.state == 'off') {
-// 		return {
-// 			raw: r.raw,
-// 			value: 85,
-// 			state: 'off',
-// 		}
-// 	}
-// 	// Все остальные датчики
-// 	return r
-// }

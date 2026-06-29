@@ -31,7 +31,7 @@ function oneChange(bdata, idB, sl, f, h, add, fl, code, clr, obj) {
 	// Обновление времени включения состояния
 	if (code) accAuto[clr._id].state[code] = new Date()
 
-	console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
+	// console.log('\tСмена режима ', clr.name, code, ' : ', sl, f, h, add)
 }
 
 // Для комбинированного (ступенчатое, заслонка оттайки)
@@ -67,7 +67,7 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, fl, code, clr, obj) {
 	// Обновление времени включения состояния
 	if (code) accAuto.cold[clr._id].state[code] = new Date()
 
-	console.log('\t', 5555, 'Смена режима ', clr.name, code, ' = ', sl, f, h, add, fl)
+	// console.log('\t', 5555, 'Смена режима ', clr.name, code, ' = ', sl, f, h, add, fl)
 }
 
 module.exports = { oneChange, oneChangeCombi, ctrlFlap }

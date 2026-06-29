@@ -40,15 +40,11 @@ function vSensor(equip, val, retain, result) {
 			retain,
 			s,
 		)
-		// Вторая обработка только для датчиков влажности улицы и продукта
-		// result[s._id] = fnHinHout(owner?.building?._id, s, result[s._id], retain)
-		// if (s.type === 'hout')
-		// console.log(221, s.type, result[s._id])
+
 		// Аварийные сообщения датчика
 		webSensAlarm(result[s._id], owner?.building, owner?.section, s)
 		// Обновляем прошлое значение
 		store.holdSensor[s._id] = result?.[s._id]
-		// if (s.type==='ai') console.log(884, result?.[s._id])
 	}
 	// Добавление прогноза погоды на экран настроек датчиков
 	for (const bld of building) {

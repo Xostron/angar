@@ -7,18 +7,18 @@ const { data: store } = require('@store')
 
 // Проверка на включение оттайки
 function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
-	console.log(
-		'\t',
-		5551,
-		'состояние испарителя',
-		stateCooler,
-		!!def.cold[stateCooler],
-		'Неисправность модулей=',
-		stateCooler?.status === 'alarm',
-	)
+	// console.log(
+	// 	'\t',
+	// 	5551,
+	// 	'состояние испарителя',
+	// 	stateCooler,
+	// 	!!def.cold[stateCooler],
+	// 	'Неисправность модулей=',
+	// 	stateCooler?.status === 'alarm',
+	// )
 	// Проверка состояния
 	if (!def?.cold?.[stateCooler]) {
-		console.log('\tПроверка состояния - bad', stateCooler)
+		// console.log('\tПроверка состояния - bad', stateCooler)
 		fnChange(0, 0, 0, 0, 0, null, clr)
 		return true
 	}
@@ -27,10 +27,10 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 		// Инициализация счетчика
 		if (!acc.state.defrostCount) acc.state.defrostCount = 1
 		// TODO Авария при достижение максимума
-		if (acc.state.defrostCount > max)
-			console.log(
-				`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`,
-			)
+		// if (acc.state.defrostCount > max)
+		// 	console.log(
+		// 		`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${max}`,
+		// 	)
 		return false
 	}
 
@@ -40,12 +40,12 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 			? se.cooler.tmpCooler <= s?.cooler?.defrostOn
 			: se.cooler.tmpCooler <= s?.cooler?.defrostOn && accAuto.timeAD
 	const time = compareTime(accAuto.targetDT, s.cooler.defrostWait)
-	console.log(`\t Условия Оттайки ${tmp} || ${time} || ${accAuto.defrostAll}`)
+	// console.log(`\t Условия Оттайки ${tmp} || ${time} || ${accAuto.defrostAll}`)
 	// Запуск оттайки по температуре и времени
 	if (tmp || time || accAuto.defrostAll) {
 		acc.state.defrostCount ??= 0
 		acc.state.defrostCount += 1
-		console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')
+		// console.log('\tОттайка по ', tmp ? 'тмп. дт. всасывания' : 'времени между интервалами')
 		// Флаг входа в оттайку всех испарителей
 		accAuto.defrostAll = new Date()
 		fnChange(0, 0, 1, 0, 0, 'defrost', clr)
@@ -68,15 +68,15 @@ function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
  * @returns {boolean} true-заблокировать ()
  */
 function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld) {
-	console.log(
-		'\t',
-		5552,
-		'состояние испарителя',
-		stateCooler,
-		!!def.combi[stateCooler],
-		'Неисправность модулей=',
-		stateCooler?.status === 'alarm',
-	)
+	// console.log(
+	// 	'\t',
+	// 	5552,
+	// 	'состояние испарителя',
+	// 	stateCooler,
+	// 	!!def.combi[stateCooler],
+	// 	'Неисправность модулей=',
+	// 	stateCooler?.status === 'alarm',
+	// )
 	// Проверка состояния
 	if (!def?.combi?.[stateCooler]) {
 		fnChange(0, 0, 0, 0, 0, null, clr)

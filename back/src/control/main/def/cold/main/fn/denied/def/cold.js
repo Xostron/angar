@@ -21,19 +21,19 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 
 	store.denied[bld._id][clr._id] =
 		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm'
-	console.log(
-		410,
-		clr.name,
-		sect.name,
-		'работа запрещена',
-		store.denied[bld._id][clr._id],
-		'=',
-		!start,
-		alr,
-		!aggr,
-		!supplySt,
-		stateCooler?.status === 'alarm',
-	)
+	// console.log(
+	// 	410,
+	// 	clr.name,
+	// 	sect.name,
+	// 	'работа запрещена',
+	// 	store.denied[bld._id][clr._id],
+	// 	'=',
+	// 	!start,
+	// 	alr,
+	// 	!aggr,
+	// 	!supplySt,
+	// 	stateCooler?.status === 'alarm',
+	// )
 	// console.log('\tНеисправность модулей испарителя', stateCooler?.status === 'alarm')
 	clearAchieve(bld, obj, accAuto, false, start)
 

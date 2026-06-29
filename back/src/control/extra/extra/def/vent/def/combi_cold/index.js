@@ -39,7 +39,7 @@ function fnCC(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 	resultFan.force.push(true)
 	resultFan.stg.push('coolerCombi')
 	time = compareTime(acc.CC.work, s.coolerCombi.work)
-	// console.log(77, 'ВВ комби-холод - работа')
+
 	if (time) {
 		// Время работы прошло
 		delete acc.CC?.wait

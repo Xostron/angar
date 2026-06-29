@@ -87,21 +87,21 @@ function fan(obj, s) {
 		once[idB] = lowB
 		idsS.forEach((idS) => (once[idS] = low))
 
-		console.log(
-			111,
-			f.name,
-			sb,
-			local,
-			isAlrOff,
-			offS,
-			alrStop,
-			lockAuto,
-			bldOff,
-			aLowB,
-			aLow,
-			lowB,
-			low,
-		)
+		// console.log(
+		// 	111,
+		// 	f.name,
+		// 	sb,
+		// 	local,
+		// 	isAlrOff,
+		// 	offS,
+		// 	alrStop,
+		// 	lockAuto,
+		// 	bldOff,
+		// 	aLowB,
+		// 	aLow,
+		// 	lowB,
+		// 	low,
+		// )
 		out(
 			obj,
 			output,
@@ -144,7 +144,6 @@ function fan(obj, s) {
 		store.heap.lock[id] ??= {}
 		store.heap.lock[id].low = true
 	})
-	// console.log(4402, store.heap.lock)
 }
 
 module.exports = fan

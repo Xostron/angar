@@ -102,7 +102,6 @@ function cooler(equip, val, retain, result) {
 		}, 0)
 
 		result[clr._id].level = `${level} (${arr.length})`
-		// console.log(111, 'Статус аварии испарителя', result[clr._id])
 	})
 }
 module.exports = cooler
@@ -125,7 +124,6 @@ function state(o, clr, equip, arrM) {
 	const alrMdl = isAlrmByClr(clr, idB, equip, arrM)
 	const alrFan = o?.fan?.state === 'alarm' ? true : false
 	const connectLost = isExtra(idB, null, 'connectLost')
-	// console.log(7700, idB, alrMdl, alrFan, connectLost, '===', alrMdl || alrFan || connectLost)
 	if (alrMdl || alrFan || connectLost) {
 		o.status = 'alarm'
 		return 'off-off-off'
@@ -170,18 +168,14 @@ function state(o, clr, equip, arrM) {
  */
 function isAlrmByClr(clr, idB, equip, arrM) {
 	const a = [...arrM].filter((el) => el)
-	a.forEach((idM) => {
-		const mdl = equip.module.find((el) => el._id === idM)
-		// console.log(`${clr.name} секции: ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}`)
-	})
+	// a.forEach((idM) => {
+	// 	const mdl = equip.module.find((el) => el._id === idM)
+	// })
 	return a.some((idM) => {
 		const t = isErrM(idB, idM)
-		if (t) {
-			const mdl = equip.module.find((el) => el._id === idM)
-			// console.log(
-			// 	`${clr.name} секции: ${clr.sectionId}, Модуль ${idM} ${mdl?.ip}, авария=${t}`
-			// )
-		}
+		// if (t) {
+		// 	const mdl = equip.module.find((el) => el._id === idM)
+		// }
 		return t
 	})
 }

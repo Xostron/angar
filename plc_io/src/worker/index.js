@@ -27,10 +27,13 @@ async function fnThreadPool(max) {
  * @returns
  */
 function initPool(max) {
-	if (!isMainThread || pool || !max) return
+	console.log(111, 'initPool', max)
+	if (!isMainThread || pool || !max || store.preMax===max) return console.log(222, 'already || cancel', max)
+	store.preMax = max
 	pool = []
 	// Создание многоразовых воркеров
 	for (let i = 0; i < max; i++) createWorker(i)
+	console.log(333, 'create pool', max)
 }
 
 function createWorker(idx) {
@@ -69,7 +72,6 @@ function manager(max) {
 			const worker = pool[i]
 			// Порция модулей на поток
 			const part = store.parts[i]
-			console.log(234, part?.length)
 
 			// Время вывполнения потока
 			const start = new Date()

@@ -21,10 +21,10 @@ function isReadyAgg(value, idB, aggListId) {
  * @param {*} store
  */
 function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
-	console.log(
-		'\x1b[33m%s\x1b[0m',
-		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе',
-	)
+	// console.log(
+	// 	'\x1b[33m%s\x1b[0m',
+	// 	'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе',
+	// )
 	delete accAuto?.[clr._id]
 	delete accAuto?.afterD
 	delete accAuto?.timeAD
@@ -57,10 +57,6 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
  * @returns
  */
 function clearCombi(bldId, clr, s, accAuto, fnChange, stateCooler, store, alrAuto, sectM) {
-	console.log(
-		'\t\x1b[33m%s\x1b[0m',
-		'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе',
-	)
 	delete accAuto?.cold?.[clr._id]
 }
 
@@ -72,7 +68,6 @@ function clearBuild(bld, accAuto) {
 	// Все испарители запрещены к работе -> очистка
 	del[bld.type](accAuto)
 	delAchieve(bld._id, bld.type, mes[80].code)
-	// console.log(555, bld.type, 'Все испарители запрещены')
 	return false
 }
 

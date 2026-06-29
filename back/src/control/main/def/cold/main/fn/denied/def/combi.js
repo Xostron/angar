@@ -70,15 +70,15 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 		[sb, 'Авария питания'],
 	]
 	store.denied[bld._id][clr._id] = a.filter((e) => e[0] === true)?.length !== 0
-	console.log(
-		410,
-		clr.name,
-		sect.name,
-		'работа запрещена combi',
-		store.denied[bld._id][clr._id],
-		'',
-		a.filter((e) => e[0]),
-	)
+	// console.log(
+	// 	410,
+	// 	clr.name,
+	// 	sect.name,
+	// 	'работа запрещена combi',
+	// 	store.denied[bld._id][clr._id],
+	// 	'',
+	// 	a.filter((e) => e[0]),
+	// )
 	// Работа испарителя запрещена? false - Нет.
 	if (!store.denied[bld._id][clr._id]) return false
 
