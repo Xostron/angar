@@ -5,6 +5,7 @@ const mes = require('@dict/message')
 const sm = require('@dict/submode')
 const { isCombiCold } = require('@tool/combi/is')
 const isChange = require('@tool/is_change')
+const { data: store } = require('@store/index')
 
 /**
  * Определение подрежима
@@ -112,7 +113,7 @@ function submode(bld, obj, s, seB, acc) {
  * Расчет задания
  */
 function target(bld, obj, s, seB, acc) {
-	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
+	if (!Object.keys(acc ?? {}).length || !acc?.setting || seB.tprd === null) return
 	// Температура задания канала (? нагрев : охлаждение(лечение, охл+))
 	acc.tcnl =
 		acc?.submode?.[0] === sm.heat[0]

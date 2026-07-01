@@ -29,7 +29,7 @@ function submode(bld, obj, s, seB, acc) {
  * Расчет задания
  */
 function target(bld, obj, s, seB, acc) {
-	if (!Object.keys(acc ?? {}).length || !acc?.setting) return
+	if (!Object.keys(acc ?? {}).length || !acc?.setting || seB.tprd === null) return
 	// Температура задания канала
 	acc.tcnl = seB.tprd
 	if (acc.tcnl < acc.setting.cooling.minChannel) acc.tcnl = acc.setting.cooling.minChannel

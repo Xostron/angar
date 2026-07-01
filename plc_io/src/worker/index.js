@@ -27,13 +27,11 @@ async function fnThreadPool(max) {
  * @returns
  */
 function initPool(max) {
-	console.log(111, 'initPool', max)
-	if (!isMainThread || pool || !max || store.preMax===max) return console.log(222, 'already || cancel', max)
+	if (!isMainThread || pool || !max || store.preMax===max) return 
 	store.preMax = max
 	pool = []
 	// Создание многоразовых воркеров
 	for (let i = 0; i < max; i++) createWorker(i)
-	console.log(333, 'create pool', max)
 }
 
 function createWorker(idx) {
