@@ -22,7 +22,7 @@ const calcSetting = (v, obj) => {
 		v.coef ??= {}
 		v.coef[bld._id] ??= {}
 		vCoef(v, bld._id)
-		console.log(111, v.coef[bld._id])
+		// console.log(111, v.coef[bld._id])
 	})
 }
 

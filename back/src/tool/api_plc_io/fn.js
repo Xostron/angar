@@ -1,4 +1,4 @@
-const { readOne } = require("@tool/json")
+const { readOne } = require('@tool/json')
 
 // Рама сервисов, также создаем url_api к микросервису
 async function getServices() {
@@ -11,12 +11,12 @@ async function getServices() {
  * @param {*} module Общая рама модулей
  * @param {*} list Модули микросервиса
  */
-function getMdlSrv(module, list = []) {
+function getMdlSrv(module, srv) {
 	// Список пуст - значит микросервис опрашивает все модули
-	if (!list?.length) return module
+	if (!srv.list?.length) return module.filter((el) => srv.bldId.includes(el.buildingId))
 	// Время жизни опроса модулей 1 час
 	const expired = new Date(Date.now() + 3600 * 1000)
-	return list
+	return srv.list
 		.map((mdlId) => {
 			const m = module.find((el) => el.id === mdlId)
 			if (!m) return null
@@ -32,18 +32,18 @@ function getMdlSrv(module, list = []) {
  * @param {*} now Аварии модулей от микросервиса
  * @param {*} list Список ИД модулей
  */
-async function mergeAlr(all, now, list) {
+async function mergeAlr(all, now, srv) {
 	// Рама модулей
 	const module = await readOne('module.json')
 
 	// Список модулей для данного микросервиса
-	const mdls = getMdlSrv(module, list)
+	const mdls = getMdlSrv(module, srv)
 
 	mdls.forEach(({ _id, buildingId }) => {
 		// Если авария существует в ответе от микросервисаб то сохраняем ее в all
 		if (now?.[buildingId]?.[_id]) {
 			all[buildingId] ??= {}
-			all[buildingId][_id] = nowall[buildingId][_id]
+			all[buildingId][_id] = now[buildingId][_id]
 		} else {
 			// Аварии нет в ответе от микросервиса, удаляем из all
 			delete all?.[buildingId]?.[_id]

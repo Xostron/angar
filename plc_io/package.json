@@ -13,8 +13,8 @@
 	"scripts": {
 		"dev": "nodemon ./src/bin/www",
 		"start": "node ./src/bin/www",
-		"dev1": "cross-env PORT=4015 nodemon ./src/bin/www",
-		"dev2": "cross-env PORT=4016 nodemon ./src/bin/www"
+		"dev1": "cross-env PORT=4011 nodemon ./src/bin/www",
+		"dev2": "cross-env PORT=4012 nodemon ./src/bin/www"
 	},
 	"keywords": [],
 	"author": "",

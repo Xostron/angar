@@ -17,12 +17,13 @@ const apiConfig = (data, params = {}) => ({
  * @returns
  */
 async function writeIO(out) {
-	if (!out) return console.log('🟡 back->plc_io (output).', 'Нет данных для записи')
+	if (!out) return console.log('🟡output [plc_io]: Нет данных для записи')
 
 	// Наличие изменений -> данные на запись
 	const dataWrite = isChange(out)
-	
-	if (!dataWrite) return console.log('🟡 back->plc_io (output).', 'Нет изменений для записи')
+	// console.log(11, out)
+	// console.log(22, dataWrite)
+	if (!dataWrite) return console.log('🟡output [plc_io]: Нет изменений для записи')
 
 	// Запрос back->plc_io (reset)
 	const services = await getServices()
@@ -31,7 +32,8 @@ async function writeIO(out) {
 	for (const srv of services) {
 		try {
 			const api = fnApi(srv.url)
-			const r = await api(apiConfig({ list: dataWrite, max: srv?.max ?? 1 }))
+
+			const r = await api(apiConfig({ list: flt(dataWrite, srv), max: srv?.max ?? 1 }))
 
 			// Ошибка запроса
 			if (!r.data) throw new Error('Нет связи с сервисом')
@@ -39,16 +41,14 @@ async function writeIO(out) {
 			// Ответ от микросервиса:
 			// Обновленные показания датчиков
 			store.v = { ...store.v, ...r.data.v }
-
-			console.log(`🟢 back->plc_io (output ${srv.url}). Запрос успешно обработан`)
+			console.log(`🟢output [plc_io]: ${srv.url}. Запрос успешно обработан`)
 
 			// Пинг
 			live(srv._id)
 		} catch (error) {
 			if (error.code === 'ECONNREFUSED' || !error.response)
-				console.error(`🔴 back->plc_io (output ${srv.url}). ECONNREFUSED`)
-			else
-				console.error(`🔴 back->plc_io (output ${srv.url}). Ошибка запроса:`, error.message)
+				console.error(`🔴output [plc_io]: ${srv.url}. ECONNREFUSED`)
+			else console.error(`🔴output [plc_io]: ${srv.url}. Ошибка запроса:`, error.message)
 		}
 	}
 
@@ -74,4 +74,15 @@ function isChange(out) {
 			return true
 	})
 	return o.length ? o : false
+}
+
+/**
+ * Фильтруем модули выходов для микросервиса
+ * @param {*} arr Модули на запись
+ * @param {*} srv Микросервис, к которому передаем модули на запись
+ */
+function flt(arr = [], srv) {
+	const r = arr.filter((mdl) => mdl.buildingId.some((id) => srv.bldId.includes(id)))
+	// console.log(3, srv.name, r)
+	return r
 }

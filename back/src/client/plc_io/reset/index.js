@@ -40,17 +40,18 @@ async function resetIO() {
 			// Ответ от микросервиса:
 			// Обновленные показания датчиков
 			store.v = { ...store.v, ...r.data.v }
+			
 			// Обновление списка аварий
-			await mergeAlr(store.alarm.module, r.data.alarm, srv.list)
+			await mergeAlr(store.alarm.module, r.data.alarm, srv)
 
-			console.log('🟢 back -> plc_io (reset): Запрос успешно обработан')
+			console.log('🟢reset [plc_io]: Запрос успешно обработан')
 
 			// Пинг
 			live(srv._id)
 		} catch (error) {
 			if (error.code === 'ECONNREFUSED' || !error.response)
-				console.error(`🔴 back->plc_io (reset ${srv.url}). ECONNREFUSED`)
-			else console.error(`🔴 back->plc_io (reset ${srv.url}).`, error.message)
+				console.error(`🔴reset [plc_io]: ${srv.url}. ECONNREFUSED`)
+			else console.error(`🔴reset [plc_io]: ${srv.url}.`, error.message)
 		}
 	}
 
