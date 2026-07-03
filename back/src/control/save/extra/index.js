@@ -21,8 +21,7 @@ async function writeStore() {
 			readOne('section'),
 		])
 
-		if (!acc || !Object.keys(acc ?? {}).length)
-			return console.log('Файл store.json пустой', acc)
+		if (!acc || !Object.keys(acc ?? {}).length) return //console.log('Файл store.json пустой', acc)
 
 		initExtra(acc, section)
 

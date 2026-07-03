@@ -175,7 +175,7 @@ function onTime(code, acc) {
 		acc.state[code] = new Date()
 	}
 
-	console.log('\t' + code, runTime(acc.state[code]))
+	// console.log('\t' + code, runTime(acc.state[code]))
 }
 
 module.exports = {

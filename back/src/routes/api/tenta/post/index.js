@@ -14,8 +14,8 @@ function write() {
 		def[code](obj)
 			.then((_) => feedback(obj))
 			.then((r) => {
-				console.log('Команда от Мобилки выполнена')
-				console.log('Ответ:', JSON.stringify(r ?? {}, null, '  '))
+				// console.log('Команда от Мобилки выполнена')
+				// console.log('Ответ:', JSON.stringify(r ?? {}, null, '  '))
 				res.status(200).json(r)
 			})
 			.catch((error) => {

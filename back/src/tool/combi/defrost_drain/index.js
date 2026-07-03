@@ -39,35 +39,35 @@ function defrostAll(idB, accCold, cooler, obj, s) {
 
 module.exports = defrostAll
 
-function consoleTable(accCold, s) {
-	console.log(
-		'\x1b[35m%s\x1b[0m',
-		'\n---------------------------------------defrostALL---------------------------------------',
-		`timeAD = compareTime(${accCold.afterD}, ${
-			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
-		})`,
-	)
-	console.table(
-		[
-			{
-				'defrostAll(Оттайка_начало)': accCold.defrostAll,
-				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
-			},
-		],
-		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)'],
-	)
-	console.table(
-		[
-			{
-				'drainAll(Слив_воды_окончен)': accCold.drainAll,
-				'afterD(Ожидание_после_слива)': accCold.afterD,
-				'timeAD(Время_после_слива)': accCold.timeAD,
-			},
-		],
-		[
-			'drainAll(Слив_воды_окончен)',
-			'afterD(Ожидание_после_слива)',
-			'timeAD(Время_после_слива)',
-		],
-	)
-}
+// function consoleTable(accCold, s) {
+// 	console.log(
+// 		'\x1b[35m%s\x1b[0m',
+// 		'\n---------------------------------------defrostALL---------------------------------------',
+// 		`timeAD = compareTime(${accCold.afterD}, ${
+// 			s?.coolerCombi?.afterDrain ?? s?.cooler?.afterDrain
+// 		})`,
+// 	)
+// 	console.table(
+// 		[
+// 			{
+// 				'defrostAll(Оттайка_начало)': accCold.defrostAll,
+// 				'defrostAllFinish(Оттайка_окончена)': accCold.defrostAllFinish,
+// 			},
+// 		],
+// 		['defrostAll(Оттайка_начало)', 'defrostAllFinish(Оттайка_окончена)'],
+// 	)
+// 	console.table(
+// 		[
+// 			{
+// 				'drainAll(Слив_воды_окончен)': accCold.drainAll,
+// 				'afterD(Ожидание_после_слива)': accCold.afterD,
+// 				'timeAD(Время_после_слива)': accCold.timeAD,
+// 			},
+// 		],
+// 		[
+// 			'drainAll(Слив_воды_окончен)',
+// 			'afterD(Ожидание_после_слива)',
+// 			'timeAD(Время_после_слива)',
+// 		],
+// 	)
+// }

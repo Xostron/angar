@@ -10,7 +10,7 @@ const { readAcc } = require('@store/index')
 // Проверка включения выход/охлаждение/обдув/набор холода
 function check(fnChange, code, accAuto, acc, se, s, bld, clr) {
 	onTime(code, acc)
-	console.log('\n\tПроверка условий принятия решений, tprd =', se.tprd, 'target=', accAuto.target)
+	// console.log('\n\tПроверка условий принятия решений, tprd =', se.tprd, 'target=', accAuto.target)
 	if (coldAchieve(fnChange, code, accAuto, acc, se, s, bld, clr)) return
 	let sol = ['frost', 'cooling'].includes(code) ? 1 : 0 //Соленоид
 	let ven = ['cooling', 'blow'].includes(code) ? 1 : 0 //Вентилятор

@@ -87,10 +87,10 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld)
 		// Инициализация счетчика
 		if (!acc.state.defrostCount) acc.state.defrostCount = 1
 		// TODO Авария при достижение максимума
-		if (acc.state.defrostCount > maxCombi)
-			console.log(
-				`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${maxCombi}`,
-			)
+		// if (acc.state.defrostCount > maxCombi)
+		// 	console.log(
+		// 		`\n\n\t********** Повторили Оттайку ${acc.state.defrostCount} раз, максимум =${maxCombi}`,
+		// 	)
 		return false
 	}
 	// Температура на всасывании<=Температура включения цикла разморозки -> вкл оттайки
@@ -107,10 +107,10 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld)
 		// if (acc?.state?.waitDefrost) return false
 		acc.state.defrostCount ??= 0
 		acc.state.defrostCount += 1
-		console.log(
-			'\tОттайка по ',
-			tmp ? 'тмп. дт. всасывания' : time ? 'времени между интервалами' : 'один за всех',
-		)
+		// console.log(
+		// 	'\tОттайка по ',
+		// 	tmp ? 'тмп. дт. всасывания' : time ? 'времени между интервалами' : 'один за всех',
+		// )
 		// Флаг входа в оттайку всех испарителей
 		accCold.defrostAll = new Date()
 		fnChange(0, 0, 1, 0, 0, 'defrost', clr)
