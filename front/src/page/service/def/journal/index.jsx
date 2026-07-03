@@ -44,7 +44,7 @@ function getInfo(equip, secList) {
 
 
 export default function Journal() {
-	const equip = useEquipStore(s=>s.list)
+	const equip = useEquipStore(s=>s.list) ?? []
 	// console.log(JSON.stringify(equip))
 	// Список всех секций
 	const secList = []

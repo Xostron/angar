@@ -12,11 +12,11 @@ const useEquipStore = create((set, get) => ({
 	apiInfo: {},
 	// сохранить в стейт list[]
 	initE: (r) => {
-		if (!r) return
-		set({ factory: r?.factory })
-		set({ list: r?.building })
-		set({ weather: r?.weather ?? {} })
-		set({ apiInfo: r?.apiInfo })
+		if (!r) return;
+		set({ factory: r?.factory });
+		set({ list: Array.isArray(r?.building) ? r.building : [] });
+		set({ weather: r?.weather ?? {} });
+		set({ apiInfo: r?.apiInfo });
 	},
 	// установить индекс массива (для навигации по стейту list[])
 	setCurB: (i) => set({ curB: i }),

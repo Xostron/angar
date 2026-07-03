@@ -55,7 +55,7 @@ function bindingWAO(data, val, r) {
 	if (!data) return
 	for (const o of data) {
 		// Проверка типа сигнала binding: обработка только для w, ao
-		if (!['w', 'ao'].includes(o.type)) continue
+		if (!['w', 'ao'].includes(o.type) || o.channel === null) continue
 		if (Object.hasOwn(r, o?.moduleId) || !o?.moduleId) continue
 		pull(val, o.moduleId, r)
 	}
