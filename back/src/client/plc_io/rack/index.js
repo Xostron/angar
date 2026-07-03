@@ -7,6 +7,10 @@ const _INTERVAL = 5 * 60 * 1000
 // Периодически отправляем раму (модули) микросервисам plcio
 async function loopRack() {
 	while (true) {
+		if (!store.isIo) {
+			await delay(_INTERVAL)
+			continue
+		}
 		// Рама микросервисов опроса модулей
 		const services = await getServices()
 		const module = await readOne('module.json')

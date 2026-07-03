@@ -162,7 +162,7 @@ const data = {
 	cycle: {
 		ccVno: {},
 	},
-
+	isIo: false,
 	// Папки
 	baseDir: path.join(__dirname, '..'),
 	rootDir: path.join(__dirname, '..', '..'),

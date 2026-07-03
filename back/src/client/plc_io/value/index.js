@@ -49,6 +49,10 @@ async function valueIO(srv) {
 // Периодический запрос у микросервиса значения модулей раз в 10 сек
 async function loopValue() {
 	while (true) {
+		if (!store.isIo) {
+			await delay(_INTERVAL)
+			continue
+		}
 		// Рама микросервисов опроса модулей
 		const services = await getServices()
 

@@ -74,20 +74,22 @@ async function loop() {
 		// Инициализация глобального аккумулятора
 		await writeStore()
 		// Основной цикл программы
-		const isIo = await control()
+		store.isIo = await control()
 
 		// Счетчик циклов
 		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
 		// Сброс флага первого цикла
 		store._first = false
 		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
+		const cycle = store._cycle_ms_ / 1000
+
 		// Сброс флага store.reset
-		isIo ? null : reset(null, false, false)
-		console.log(`Режим  ${isIo ? 'микросервиса' : 'монолита'} `)
-		console.log(
-			'\x1b[33m%s\x1b[0m',
-			`Время цикла ${(store._cycle_ms_ / 1000).toFixed(2) + ' сек'}`,
-		)
+		store.isIo ? null : reset(null, false, false)
+
+		console.log(`Режим  ${store.isIo ? 'микросервиса' : 'монолита'} `)
+		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${cycle.toFixed(2) + ' сек'}`)
+		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
+		if (cycle < 0.05) await delay(5000)
 	}
 	// Graceful Shutdown
 	store.end = true
