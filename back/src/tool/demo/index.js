@@ -17,7 +17,7 @@ const acc = {
 
 	stage: [
 		{
-			tprd: {start:0, end:0},
+			tprd: { start: 0, end: 0 },
 			tcnl: 0,
 			hin: 0,
 			p: 0,

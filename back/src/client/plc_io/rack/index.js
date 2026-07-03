@@ -2,6 +2,7 @@ const { delay } = require('@tool/command/time')
 const { readOne } = require('@tool/json')
 const { getServices } = require('@tool/api_plc_io/fn')
 const rack = require('./fn')
+const { data: store } = require('@store')
 const _INTERVAL = 5 * 60 * 1000
 
 // Периодически отправляем раму (модули) микросервисам plcio
