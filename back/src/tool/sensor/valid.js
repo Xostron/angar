@@ -6,11 +6,10 @@ const { isErrM } = require('@tool/message/plc_module')
  * Анализ датчика и настройка
  * @param {object} sens Рама датчика
  * @param {object} val Значения модуля
- * @param {object} equip Оборудование
  * @param {object} retain Сохраненные пользовательские данные
  * @returns {object} {raw, value, state}
  */
-function valid(sens, owner, val, equip, retain) {
+function valid(sens, owner, val, retain) {
 	// Владельцы датчика (склад и секция)
 	const { building, section } = owner
 	if (!building) return

@@ -4,7 +4,7 @@ const readM = require('./read')
 const value = require('./value')
 const { data: store } = require('@store')
 const Aboc = require('@tool/abort_controller')
-const calcSetting = require('../extra/setting')
+const { calcSetting, calcCoef } = require('../extra/setting')
 
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
@@ -15,12 +15,22 @@ async function analysis(obj) {
 	await readAll(obj)
 	// Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
+
 	// Опрос модулей по сети (режим монолита/микросервеса)
 	let v = obj.data.pc?.isIo ? store.v : await readM(obj)
+
+	// Настройки складов (обработанные для расчетов)
+	Aboc.call(calcSetting)(obj)
+
+	// Инициализация демо и контроль
+	demo(obj.data.building)
+
 	// Анализ - данные для клиента и работы алгоритма
 	v = Aboc.call(value)(v, obj)
-	// Настройки складов (обработанные для расчетов)
-	Aboc.call(calcSetting)(v, obj)
+
+	// Расчет коэффициентов настроек
+	Aboc.call(calcCoef)(v, obj)
+
 	// Передача мяса по Socket.io на web-клиент
 	await Aboc.asycall(cValue)(v)
 }
