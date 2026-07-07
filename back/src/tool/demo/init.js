@@ -65,7 +65,7 @@ function startDemo(idB, s) {
 			if (['begin', 'time', 'name'].includes(key)) continue
 			const demoS = stage[key]
 			demoS.v = demoS.a
-			demoS.k = (demoS.b - demoS.a) / (stage.time / 1000 * 2)
+			demoS.k = (demoS.b - demoS.a) / ((stage.time / 1000) * (store._cycle_ms_ / 1000) * 2)
 		}
 	})
 }
