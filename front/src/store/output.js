@@ -234,6 +234,7 @@ const useOutputStore = create((set, get) => ({
 				'ozon',
 				'heater',
 				'smoking',
+				'demo',
 			].includes(obj?.type)
 		)
 			settingAu.prdCode = get().prd?.code ?? obj?.prdCode

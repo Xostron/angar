@@ -19,7 +19,6 @@ function setting(bld, obj) {
 		const isPrd = factory?.[key]?._prd
 		fill(r, retain?.[bld._id]?.setting?.[key], factory?.[key], cb, key, codeP, isPrd)
 	}
-	
 	// Готовые настройки на сервере (для проверки)
 	// debugJson({ newnew: r }, ph.resolve(__dirname))
 

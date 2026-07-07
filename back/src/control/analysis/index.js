@@ -5,6 +5,7 @@ const value = require('./value')
 const { data: store } = require('@store')
 const Aboc = require('@tool/abort_controller')
 const { calcSetting, calcCoef } = require('../extra/setting')
+const { fnDemo } = require('@tool/demo/init')
 
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
@@ -23,7 +24,7 @@ async function analysis(obj) {
 	Aboc.call(calcSetting)(obj)
 
 	// Инициализация демо и контроль
-	demo(obj.data.building)
+	fnDemo(obj.data.building)
 
 	// Анализ - данные для клиента и работы алгоритма
 	v = Aboc.call(value)(v, obj)

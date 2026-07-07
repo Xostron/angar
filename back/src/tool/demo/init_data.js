@@ -1,4 +1,5 @@
 const data = {
+	first:null,
 	// текущая стадия
 	cur: null,
 	// Стадии: [сушка drying, хранение-охлаждение cooling, хранение-лечение cure, хранение-нагрев heat]

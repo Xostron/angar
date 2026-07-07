@@ -2,50 +2,99 @@ const { data: store } = require('@store')
 const initDD = require('./init_data')
 const { compareTime } = require('@tool/command/time')
 
-function revDemo(sens, owner, retain) {
-	// Владельцы датчика (склад и секция)
-	const { building, section } = owner
-	if (!building) return
-	const s = store.calcSetting[building._id]?.demo
-	// const demo =
-	const onSens = retain?.[building._id]?.[sens._id]?.on ?? true
-
-	raw = retain[building._id].demo.stage[curStage]
-
-	return { raw, value, state: state(raw, on) }
-}
-
-function demo(blds) {
+/**
+ * Инициализация демо
+ * @param {*} blds
+ */
+function fnDemo(blds) {
 	blds.forEach((bld) => {
 		// Настройки демо
-		const s = store.calcSetting[building._id]?.demo
-
-		// Аккумулятор демо
-		// store.retain[bld._id].demo ??= initDD
+		const s = store.calcSetting[bld._id]?.demo
+		startDemo(bld._id, s)
+		switchDemo(bld._id, s.on)
+		console.log(123, s)
+		console.log(
+			234,
+			store.retain[bld._id].demo.cur,
+			store.retain[bld._id].demo.first,
+			store.retain[bld._id].demo.stage[0],
+		)
 	})
 }
 
-module.exports = { demo, revDemo }
+module.exports = { fnDemo }
 
-// Инициализация аккумулятора Демо при старте
-function startDemo(on, demo, s) {
-	// Если демо выкл ИЛИ этап демо в работе - выходим
-	if (!on || demo?.cur !== null) return
-	// Настройки
+/**
+ * Инициализация Демо при старте
+ * @param {*} idB ИД склада
+ * @param {*} s Настройки демо
+ * @returns
+ */
+function startDemo(idB, s) {
+	// Инициализация аккумулятора демо
+	store.retain[idB].demo ??= JSON.parse(initDD)
+	const demo = store.retain[idB].demo
+
+	// При выключении склада во время демо - сбрасываем и выкл демо
+	if (!store.retain[idB].start && store.retain[idB].demo.first) {
+		store.retain[idB].demo = JSON.parse(initDD)
+		store.retain[idB].setting.demo.on.on = false
+		return
+	}
+
+	// Если демо выключена - выходим
+	if (!s.on) return (store.retain[idB].demo = JSON.parse(initDD))
+	// демо уже в работе - выходим
+	if (demo?.cur !== null) return
+
+	// Если демо только включили
+	// Настройки времени каждого этапа
 	const t = [s.drying, s.cooling, s.cure, s.heat]
-
-	// Первичная инициализация и расчет точек перехода по этапам
-	store.retain[bld._id].demo = initDD
-	const r = store.retain[bld._id].demo
-	r.cur = 0
-	r.stage.forEach((stage, i) => {
+	// При включении демо -> вкл склад
+	if (!demo.first) {
+		demo.first = true
+		store.retain[idB].start = true
+	}
+	// Устанавливаем номер начального этапа
+	demo.cur ??= 0
+	// Расчет времени начала первого этапа и продолжительность для всех этапов
+	demo.stage.forEach((stage, i) => {
 		stage.begin = i === 0 ? new Date() : null
 		stage.time = t[i]
+		for (const key in stage) {
+			if (['begin', 'time', 'name'].includes(key)) continue
+			const demoS = stage[key]
+			demoS.v = demoS.a
+			demoS.k = (demoS.b - demoS.a) / (stage.time / 1000)
+		}
 	})
 }
 
-function stopDemo(on, demo) {
-	if (!on) return (demo = initDD)
+/**
+ * Слежение за временем этапа: переключение этапов и завершение демо
+ * @param {*} on Настройки Демо: Включить
+ * @param {*} demo Аккумулятор демо
+ * @returns
+ */
+function switchDemo(idB, on) {
+	const demo = store.retain[idB].demo
+	// Склад выключе
+	// Демо выключено - сброс аккумулятора
+
+	if (demo.cur === null) return
+	// Демо включено
+	// Текущий этап
 	const stage = demo.stage[demo.cur]
+	// Время
 	const time = compareTime(stage.begin, stage.time)
+
+	// Время этапа не прошло - работаем дальше
+	if (!time) return
+
+	// Время этапа прошло
+	// Переключение этапа + проверка "все этапы пройдены"
+	if (++demo.cur > demo.stage.length) return (store.retain[idB].demo = JSON.parse(initDD))
+
+	// Следующий этап (инициализация точки отсчета)
+	stage.begin = new Date()
 }

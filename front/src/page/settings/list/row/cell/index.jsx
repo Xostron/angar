@@ -16,7 +16,7 @@ export default function Cell({ data, i, j }) {
 	const val = {}
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
-	
+
 	val[data.code] = useInputStore(({ input }) => {
 		if (!code) return null
 		if (
@@ -30,6 +30,7 @@ export default function Cell({ data, i, j }) {
 				'ozon',
 				'heater',
 				'smoking',
+				'demo',
 			].includes(type)
 		) {
 			// Без продукта

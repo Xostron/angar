@@ -4,6 +4,7 @@ const { debounce } = require('./debounce')
 const { webSensAlarm } = require('./fn')
 const valid = require('./valid')
 const stateWeather = require('./weather')
+const { senDemo } = require('@tool/demo/sensor')
 /**
  * Анализ датчиков
  * result[s._id] - отображение на экране настроек датчиков,
@@ -30,8 +31,8 @@ function vSensor(equip, val, retain, result) {
 		else owner = getBS(s, equip)
 
 		// Обработанное значение датчика ИЛИ Демо
-		const r = valid(s, owner, val, retain)
-		
+		let r = valid(s, owner, val, retain)
+		r = senDemo(s, owner, retain, r)
 
 		// Антидребезг датчика: из аккумулятора или обработанное значение
 		result[s._id] = debounce(
