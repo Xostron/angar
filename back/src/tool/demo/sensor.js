@@ -14,7 +14,7 @@ function senDemo(sens, owner, retain, r) {
 	// Этап
 	const stage = demo.stage[demo.cur]
 	// Установки датчика
-	stage[sens.type].v = stage[sens.type].v + stage[sens.type].k
+	stage[sens.type].v = +(stage[sens.type].v + stage[sens.type].k).toFixed(2)
 
 	return { raw: stage[sens.type].v, value: stage[sens.type].v, state: 'on' }
 }
