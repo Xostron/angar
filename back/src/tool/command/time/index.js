@@ -72,6 +72,23 @@ function runTime(date, type = 0) {
 }
 
 /**
+ * Пройденное время
+ * @param {String||DateTime} doc время
+ * @returns {number}
+ */
+function runTimeV2(date) {
+	try {
+		if (typeof date === 'string') date = new Date(date)
+		// Пройденное время, с
+		const s = (new Date() - date) / 1000
+		return s
+	} catch (error) {
+		console.error('runTime', error)
+		return ''
+	}
+}
+
+/**
  * Оставшееся времени
  * @param {String||DateTime} date дата и время (начальная точка)
  * @param {number} x заданное время, мс
@@ -184,6 +201,7 @@ module.exports = {
 	range,
 	compareTime,
 	runTime,
+	runTimeV2,
 	engineTime,
 	engineHour,
 	elapsedTime,

@@ -34,7 +34,7 @@ function startDemo(idB, s) {
 	// Инициализация аккумулятора демо
 	store.retain[idB].demo ??= JSON.parse(initDD)
 	const demo = store.retain[idB].demo
-	console.log(11, store._cycle_ms_)
+
 	// При выключении склада во время демо - сбрасываем и выкл демо
 	if (!store.retain[idB].start && store.retain[idB].demo.first) {
 		store.retain[idB].demo = JSON.parse(initDD)
@@ -60,12 +60,14 @@ function startDemo(idB, s) {
 	// Расчет времени начала первого этапа и продолжительность для всех этапов
 	demo.stage.forEach((stage, i) => {
 		stage.begin = i === 0 ? new Date() : null
+		stage.begin2 = i === 0 ? [new Date(), null] : [null, null]
 		stage.time = t[i]
+		stage.i ??= 0
 		for (const key in stage) {
-			if (['begin', 'time', 'name'].includes(key)) continue
+			if (['name', 'automode', 'begin', 'begin2', 'time', 'i'].includes(key)) continue
 			const demoS = stage[key]
+			// Начальное значение датчика
 			demoS.v = demoS.a
-			demoS.k = (demoS.b - demoS.a) / ((stage.time / 1000) * (store._cycle_ms_ / 1000) * 2)
 		}
 	})
 }
@@ -78,7 +80,7 @@ function startDemo(idB, s) {
  */
 function switchDemo(idB, on) {
 	const demo = store.retain[idB].demo
-	// Склад выключе
+	// Склад выключен
 	// Демо выключено - сброс аккумулятора
 
 	if (demo.cur === null) return
@@ -99,9 +101,9 @@ function switchDemo(idB, on) {
 	if (++demo.cur >= demo.stage.length) {
 		store.retain[idB].setting.demo.on.on = false
 		store.retain[idB].demo = JSON.parse(initDD)
-		return console.log(123, demo.cur, demo.stage.length)
 	}
-	console.log(22, demo.cur, demo.stage.length)
 	// Следующий этап (инициализация точки отсчета)
 	demo.stage[demo.cur].begin = new Date()
+	demo.stage[demo.cur].begin2 = [new Date(), null]
+	demo.stage[demo.cur].i = 0
 }
