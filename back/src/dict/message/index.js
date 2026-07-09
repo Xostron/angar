@@ -245,6 +245,11 @@ const data = {
 		msg: 'Нет связи с сервером опроса модулей',
 		flt: [true],
 	},
+	44: {
+		code: 'demo',
+		typeSignal: 'info',
+		msg: 'Демо режим. ',
+	},
 	// beep alarm
 	65: [
 		{

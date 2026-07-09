@@ -101,6 +101,8 @@ function switchDemo(idB, on) {
 	if (++demo.cur >= demo.stage.length) {
 		store.retain[idB].setting.demo.on.on = false
 		store.retain[idB].demo = JSON.parse(initDD)
+		store.retain[idB].start = false
+		return
 	}
 	// Следующий этап (инициализация точки отсчета)
 	demo.stage[demo.cur].begin = new Date()

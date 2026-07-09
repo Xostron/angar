@@ -18,6 +18,7 @@ const slaveAgg = require('./slave_agg')
 const co2NormalCombi = require('./co2_normal_combi')
 const connectLost = require('./connect_lost')
 const wetting = require('./wetting')
+const demo = require('./demo')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
@@ -36,7 +37,7 @@ const data = {
 			wetting,
 		},
 	},
-	// Обычный склад - Доп функции для склада
+	// Обычный склад и комби - Доп функции для склада
 	building: {
 		// Склад - ВКЛ
 		on: {
@@ -56,6 +57,7 @@ const data = {
 			reset,
 			vent,
 			co2NormalCombi,
+			demo,
 		},
 	},
 	// Склад холодильник

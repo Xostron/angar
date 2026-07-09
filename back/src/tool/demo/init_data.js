@@ -23,7 +23,7 @@ const data = {
 			hin: { a: 50, b: [90, 75], k: 0, v: null },
 			// p: { a: 0, b: 0, k: 0, v: null },
 			tout: { a: 15, b: [35, 15], k: 0, v: null },
-			hout: { a: 70, b: [97, 60], k: 0, v: null },
+			hout: { a: 30, b: [57, 40], k: 0, v: null },
 			// tin: { a: 5, b: 15, k: 0, v: null },
 		},
 		{

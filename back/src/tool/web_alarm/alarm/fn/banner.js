@@ -40,6 +40,9 @@ function bannerB(r, bld) {
 	// Нет связи с сервером опроса модулей
 	r.banner.plcio ??= {}
 	r.banner.plcio[bld._id] = store.alarm?.extralrm?.[bld._id]?.plcio
+	// Демо
+	r.banner.demo ??= {}
+	r.banner.demo[bld._id] = store.alarm?.extra?.[bld._id]?.demo
 }
 
 module.exports = { banner, bannerB }

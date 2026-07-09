@@ -38,5 +38,6 @@ const data = {
 	sb: '/img/alarm/battery.svg',
 	bldOff: '/img/alarm/alr.svg',
 	plcio: '/img/alarm/connect.svg',
+	demo: '/img/alarm/demo.svg',
 }
 export default data

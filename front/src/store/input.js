@@ -128,7 +128,7 @@ const useInputStore = create((set, get) => ({
 		const supply = Object.values(get()?.alarm?.banner?.supply?.[idB] ?? {}).filter((el) => el)
 		const bldOff = get()?.alarm?.banner?.bldOff?.[idB]
 		const plcio = get()?.alarm?.banner?.plcio?.[idB]
-
+		const demo = get()?.alarm?.banner?.demo?.[idB]
 		local.length ? arr.push(local[0]) : null
 		connect ? arr.push(connect) : null
 		notTune ? arr.push(notTune) : null
@@ -136,6 +136,7 @@ const useInputStore = create((set, get) => ({
 		supply.length ? arr.push(supply[0]) : null
 		bldOff ? arr.push(bldOff) : null
 		plcio ? arr.push(plcio) : null
+		demo ? arr.push(demo) : null
 		return arr
 	},
 	// Вернуть массив аварий-баннеров для секции
@@ -150,6 +151,8 @@ const useInputStore = create((set, get) => ({
 		const supply =
 			get()?.alarm?.banner?.supply?.[idB]?.[idS] ?? get()?.alarm?.banner?.supply?.[idB]?.[idB]
 		const bldOff = get()?.alarm?.banner?.bldOff?.[idB]
+		const plcio = get()?.alarm?.banner?.plcio?.[idB]
+		const demo = get()?.alarm?.banner?.demo?.[idB]
 
 		local ? arr.push(local) : null
 		connect ? arr.push(connect) : null
@@ -157,6 +160,8 @@ const useInputStore = create((set, get) => ({
 		battery ? arr.push(battery) : null
 		supply ? arr.push(supply) : null
 		bldOff ? arr.push(bldOff) : null
+		plcio ? arr.push(plcio) : null
+		demo ? arr.push(demo) : null
 		return arr
 	},
 }))
