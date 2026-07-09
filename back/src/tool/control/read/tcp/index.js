@@ -38,6 +38,8 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
+					// if (opt?.ip === '10.20.77.8') console.log(123, r, w)
+					// if (opt?.ip === '192.168.21.135') console.log(123, r, w)
 					convAO(opt, r)
 					r = convUint32DO(opt, r)
 					delModule(opt.buildingId, opt._id)
@@ -45,7 +47,7 @@ function readTCP(host, port, opt) {
 					resolve([r, w])
 				})
 				.catch((e) => {
-					console.error('Ошибка чтения', opt.name, opt.ip, e)
+					console.error(8800, 'Ошибка чтения', opt.name, opt.ip, e.message)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})
