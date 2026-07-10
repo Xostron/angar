@@ -62,7 +62,6 @@ function cooling(s, seB, building, acc, bdata) {
 			msg: msgB(building, 120),
 		},
 	]
-	// r.forEach((el) => console.log(123, el.set, el.reset))
 	return r
 }
 

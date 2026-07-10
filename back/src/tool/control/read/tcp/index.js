@@ -38,8 +38,8 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-					// if (opt?.ip === '10.20.77.8') console.log(123, r, w)
-					// if (opt?.ip === '192.168.21.135') console.log(123, r, w)
+					// if (opt?.ip === '10.20.77.8') console.log(11, r, w)
+					// if (opt?.ip === '192.168.21.135') console.log(22, r, w)
 					convAO(opt, r)
 					r = convUint32DO(opt, r)
 					delModule(opt.buildingId, opt._id)

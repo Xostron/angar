@@ -11,37 +11,42 @@ const building = require('./fn/building')
 
 /**
  * Преобразование прочитанных входов/выходов (коррекция, точность, клапан(концевики))
- * @param {*} val данные опроса модулей
+ * @param {*} v данные опроса модулей
  * @param {*} equip данные json по оборудованию
  * @returns {id_input: value,..., outputM:{id_module:[arr_value],...}}
  */
-function periphery(val, obj) {
+function periphery(v, obj) {
 	const { data: equip, retain } = obj
-	let result = {}
+	let r = {}
 	// Маска выходных модулей DO, AO
-	result.outputM = outputM(equip, val)
+	r.outputM = outputM(equip, v)
 	// Исполнительные механизмы: значение выхода
-	result.outputEq = outputEq(equip, val)
+	r.outputEq = outputEq(equip, v)
 	// Анализ датчиков
-	sensor(equip, val, retain, result)
+	sensor(equip, v, retain, r)
 	// Значения сигналов и состояние ИМ
-	signal(equip, val, retain, result)
+	signal(equip, v, retain, r)
 
 	// *************Состояния оборудования*************
 	// Состояния клапанов
-	valve(equip, val, retain, result)
+	valve(equip, v, retain, r)
 	// Состояние вентиляторов (предварительное)
-	fan(equip, val, retain, result)
+	fan(equip, v, retain, r)
 	// Агрегат
-	aggregate(equip, val, retain, result)
+	aggregate(equip, v, retain, r)
 	// Испаритель
-	cooler(equip, val, retain, result)
+	cooler(equip, v, retain, r)
 	// Устройства (СО2, увлажнитель)
-	device(equip, val, retain, result)
+	device(equip, v, retain, r)
 	// Состояние склада (подрежим работы)
-	building(equip, val, retain, result)
+	building(equip, v, retain, r)
 
-	return result
+	if (!r) {
+		obj.value = null
+		return
+	}
+
+	obj.value = { ...r }
 }
 
 module.exports = periphery

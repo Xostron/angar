@@ -6,6 +6,7 @@ const { data: store } = require('@store')
 const Aboc = require('@tool/abort_controller')
 const { calcSetting, calcCoef } = require('../extra/setting')
 const { fnDemo } = require('@tool/demo/init')
+const periphery = require('./value/periphery')
 
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
@@ -17,22 +18,26 @@ async function analysis(obj) {
 	// Копирование аккумулятора retain в obj.retain
 	obj.retain = store.retain
 
-	// Опрос модулей по сети (режим монолита/микросервеса)
+	// Сырые данные: чтение модулей (режим монолита/микросервеса)
 	let v = obj.data.pc?.isIo ? store.v : await readM(obj)
 
-	// Настройки складов (обработанные для расчетов)
+	// Преобразование настроек пользователя
 	Aboc.call(calcSetting)(obj)
 
-	// Инициализация демо и контроль
+	// Демо: инициализация и переключение по стадиям
 	fnDemo(obj.data.building)
 
-	// Анализ - данные для клиента и работы алгоритма
-	v = Aboc.call(value)(v, obj)
+	// Анализ сырых данных: готовые состояния периферии
+	Aboc.call(periphery)(v, obj)
 
-	// Расчет коэффициентов настроек
+	// Анализ - данные для клиента и работы алгоритма
+	v = Aboc.call(value)(obj)
+
+	// Настройки пользователя: расчет коэффициентов в зависимости от показаний датчиков
 	Aboc.call(calcCoef)(v, obj)
 
 	// Передача мяса по Socket.io на web-клиент
+	console.log(123, Object.keys(v))
 	await Aboc.asycall(cValue)(v)
 }
 

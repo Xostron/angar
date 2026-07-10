@@ -12,13 +12,6 @@ function fnDemo(blds) {
 		const s = store.calcSetting[bld._id]?.demo
 		startDemo(bld._id, s)
 		switchDemo(bld._id, s.on)
-		// console.log(123, s)
-		// console.log(
-		// 	234,
-		// 	store.retain[bld._id].demo.cur,
-		// 	store.retain[bld._id].demo.first,
-		// 	store.retain[bld._id].demo.stage[0],
-		// )
 	})
 }
 

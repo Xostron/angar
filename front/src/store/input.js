@@ -15,6 +15,11 @@ const useInputStore = create((set, get) => ({
 	initIn: (r) => {
 		return set({ input: r })
 	},
+// Замена для initIn
+	refreshIn:(r)=>{
+
+	},
+
 	// Аварийные сообщения
 	initAlr: (r) => {
 		return set({ alarm: r })
