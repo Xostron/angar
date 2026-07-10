@@ -3,6 +3,7 @@ const dewpoint = require('@tool/sensor/dewpoint')
 const { fnMsg, fnMsgs } = require('@tool/sensor/fn')
 const { state, fnState, toutVsWeather } = require('@tool/sensor/total')
 const sensPos = require('./sens_pos')
+const { fnMode } = require('@tool/web/bld/mode')
 
 // Значения датчиков для расчетов алгоритма и отображения на панели с погодой
 module.exports = function total(equip, result, retain) {
@@ -82,7 +83,19 @@ module.exports = function total(equip, result, retain) {
 		result.humAbs.out[bld._id] = calc(tout?.min, hout?.max, `${bld.name}:Абс.влажность улицы`)
 
 		// Результат (данные с датчиков для алгоритма)
-		result.total[bld._id] = { tin, tprd, hin, tprdL, tcnl, tweather, hweather, tout, hout, co2 }
+		result.total[bld._id] = {
+			tin,
+			tprd,
+			hin,
+			tprdL,
+			tcnl,
+			tweather,
+			hweather,
+			tout,
+			hout,
+			co2,
+			mode: fnMode(bld, idsAll, retain),
+		}
 
 		// Абсолютная влажность продукта
 		result.humAbs.in[bld._id] = calc(
