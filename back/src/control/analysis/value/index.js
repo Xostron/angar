@@ -1,5 +1,6 @@
 const { data: store } = require('@store/index')
 const { fnBCard, fnBSide } = require('@tool/web/bld')
+const { fnSCard } = require('@tool/web/section')
 
 /**
  * Анализ: Формирование значений входов/выходов, режим работы секции, вкл/выкл склада
@@ -8,7 +9,7 @@ const { fnBCard, fnBSide } = require('@tool/web/bld')
  * @returns
  */
 function value(obj) {
-	// console.log(234, fnBCard(obj), fnBSide(obj))
+	console.log(234, fnSCard(obj))
 	// console.log(obj.value.total, obj.value.total['69f9dd09c35ea05200898cd8'])
 	// Данные для web клиента
 	return {
@@ -21,6 +22,7 @@ function value(obj) {
 		// Карточки складов
 		bcard: fnBCard(obj),
 		bside: fnBSide(obj),
+		// scard: fnSCard(obj),
 	}
 }
 

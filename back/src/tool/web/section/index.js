@@ -1,5 +1,4 @@
 const { data: store } = require('@store/index')
-const { fnAutomode, fnFan, fnSens, fnAchieve } = require('./fn')
 
 /**
  * Карточка склада
@@ -7,27 +6,36 @@ const { fnAutomode, fnFan, fnSens, fnAchieve } = require('./fn')
  * @returns
  */
 function fnSCard(obj) {
-	if (!obj.data?.building) return null
+	if (!obj.data?.building || !obj.data?.section) return null
 
-	return obj.data.building.reduce((acc, bld) => {
+	return obj.data.section.reduce((acc, sec) => {
+		const idB = sec.buildingId
+		const bld = obj.data.building.find((el) => el._id === idB)
 		// Режим работы: агрегация режимов секций
-		acc[bld._id] = {
-			order: bld.order ?? '--',
-			name: bld.name ?? '--',
-			type: bld.type ?? '--',
-			code: bld.code ?? '--',
-			countAlr: store.value?.alarm?.count?.[bld._id] ?? 0,
-			mode: obj?.value?.total?.[bld._id]?.mode?.[1] ?? '--',
-			product: obj.retain?.[bld._id]?.product?.name ?? '--',
-			automode: fnAutomode(bld._id, obj) ?? '--',
-			fan: fnFan(bld._id, obj) ? 'Вкл' : 'Выкл',
-			min: fnSens(bld._id, obj, 'tprd')?.min ?? '--',
-			max: fnSens(bld._id, obj, 'tprd')?.max ?? '--',
-			hin: fnSens(bld._id, obj, 'hin')?.max ?? '--',
-			achieve: fnAchieve(bld._id),
+		acc[sec._id] = {
+			order: sec.order ?? '--',
+			name: sec.name ?? '--',
+			mode: fnSMode(idB, sec._id, bld.type, obj?.retain),
+			fan: fnFan(sec._id, obj) ? 'Вкл' : 'Выкл',
+			min: fnSens(sec._id, obj, 'tprd')?.min ?? '--',
+			max: fnSens(sec._id, obj, 'tprd')?.max ?? '--',
+			vin: {},
+			vout: {},
 		}
 		return acc
 	}, {})
 }
 
 module.exports = { fnSCard }
+
+function fnSMode(idB, idS, bldType, retain = {}) {
+	if (bldType === 'cold') return ['', '']
+	switch (retain?.[idB]?.mode?.[idS]) {
+		case true:
+			return [true, 'Авто']
+		case false:
+			return [false, 'Руч']
+		default:
+			return [retain?.[idB]?.mode?.[idS], 'Выкл']
+	}
+}

@@ -16,7 +16,7 @@ export default function Forecast({ address }) {
 		? new Date(weather.update).toLocaleString('ru-RU', {
 				dateStyle: 'short',
 				timeStyle: 'short',
-			})
+		  })
 		: '--'
 	const cold = type === 'cold' ? 'cold' : ''
 	const cls = ['cmp-weather-fore', mb, cold].join(' ')
