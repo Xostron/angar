@@ -1,4 +1,4 @@
-const coolerDef = {
+ const coolerDef = {
 	'on-on-off': 'Охлаждение',
 	'on-off-off': 'Набор холода',
 	'off-on-off': 'Вентилятор',

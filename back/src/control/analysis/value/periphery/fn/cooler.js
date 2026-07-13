@@ -107,7 +107,7 @@ function cooler(equip, val, retain, result) {
 module.exports = cooler
 
 /**
- * Состояние испарителя
+ * Состояние испарителя s-f-h-add
  * @param {object} o Состояние испарителя
  * @param {object} clr Рама испарителя
  * @param {object[]} building Рама складов

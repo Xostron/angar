@@ -6,7 +6,7 @@ const { mechB } = require('@tool/command/mech')
  * Собрать первичные данные по складу
  * @param {object} bld Рама склада
  * @param {object} obj Глобальные данные
- * @returns {object} bdata = { start (склад запущен), automode (авторежим: сушка, харенение),
+ * @returns {object} bdata = { start (склад запущен), automode (авторежим: сушка, хранение, дефростация),
  * mode (режимы работ секций), s (настройки), se (датчики склада, не по секции), m (механизмы склада),
  * accAuto (аккумулятор авторежима), resultFan (аккумулятор плавного пуска ВНО),
  * supply (для холодильника - флаг питания) }
@@ -17,7 +17,7 @@ function scan(bld, obj) {
 	const start = retain?.[bld._id]?.start ?? false
 	// Режимы работы секций
 	const mode = retain?.[bld._id]?.mode
-	// Режим работы склада (сушка, лечение и т.д.)
+	// Режим работы склада (сушка, хранение и т.д.)
 	const automode = retain?.[bld._id]?.automode
 	// Все настройки склада
 	const s = store.calcSetting[bld._id]

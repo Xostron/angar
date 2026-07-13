@@ -1,4 +1,5 @@
 const { data: store } = require('@store/index')
+const { fnBCard, fnBSide } = require('@tool/web/bld')
 
 /**
  * Анализ: Формирование значений входов/выходов, режим работы секции, вкл/выкл склада
@@ -7,16 +8,19 @@ const { data: store } = require('@store/index')
  * @returns
  */
 function value(obj) {
-	const bldCard = fnBldCard(obj)
-
-	console.log(234, bldCard)
+	// console.log(234, fnBCard(obj), fnBSide(obj))
+	// console.log(obj.value.total, obj.value.total['69f9dd09c35ea05200898cd8'])
 	// Данные для web клиента
 	return {
+		// Старый дизайн
 		...(obj.value ?? {}),
 		retain: obj.retain,
 		factory: obj.factory,
 		time: new Date(),
-		bldCard,
+		// Для нового дизайна
+		// Карточки складов
+		bcard: fnBCard(obj),
+		bside: fnBSide(obj),
 	}
 }
 
@@ -32,23 +36,3 @@ module.exports = value
 // }
 
 // store.value = { ...obj.value, retain:obj.retain, factory:obj.factory, alarm: r }
-function fnBldCard(obj) {
-	if (!obj.data?.building) return null
-
-	return obj.data.building.reduce((acc, bld) => {
-		// Режим работы: агрегация режимов секций
-		// const mode
-		// console.log(obj?.value?.total)
-		acc[bld._id] = {
-			order: bld.order,
-			name: bld.name,
-			type: bld.type,
-			code: bld.code,
-			countAlr: store.value?.alarm?.count?.[bld._id] ?? 0,
-			mode: obj?.value?.total?.[bld._id]?.mode?.[1],
-			product:obj.retain?.[bld._id]?.product?.name,
-automode:obj?.value?.total?.[bld._id]?.automode
-		}
-		return acc
-	}, {})
-}

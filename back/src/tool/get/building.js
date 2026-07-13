@@ -64,7 +64,7 @@ function getIdSB(section, id) {
  * @param {*} idB
  * @returns
  */
-function getIdsS(section, idB) {
+function getIdsS(section=[], idB) {
 	return section
 		.filter((el) => el.buildingId === idB)
 		.sort((a, b) => a.order - b.order)

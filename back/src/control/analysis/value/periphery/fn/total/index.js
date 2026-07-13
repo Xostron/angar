@@ -3,7 +3,7 @@ const dewpoint = require('@tool/sensor/dewpoint')
 const { fnMsg, fnMsgs } = require('@tool/sensor/fn')
 const { state, fnState, toutVsWeather } = require('@tool/sensor/total')
 const sensPos = require('./sens_pos')
-const { fnMode } = require('@tool/web/bld/mode')
+const { fnMode } = require('@tool/web/bld/fn')
 
 // Значения датчиков для расчетов алгоритма и отображения на панели с погодой
 module.exports = function total(equip, result, retain) {
