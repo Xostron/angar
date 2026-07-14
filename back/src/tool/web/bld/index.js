@@ -12,6 +12,7 @@ function fnBCard(obj) {
 	return obj.data.building.reduce((acc, bld) => {
 		// Режим работы: агрегация режимов секций
 		acc[bld._id] = {
+			// Страница склады: карточки складов
 			order: bld.order ?? '--',
 			name: bld.name ?? '--',
 			type: bld.type ?? '--',
@@ -25,24 +26,36 @@ function fnBCard(obj) {
 			max: fnSens(bld._id, obj, 'tprd')?.max ?? '--',
 			hin: fnSens(bld._id, obj, 'hin')?.max ?? '--',
 			achieve: fnAchieve(bld._id),
+			// Страница секции: правая панель "Данные склада"
+			sidesect: {
+				start: obj?.retain?.[bld._id]?.start,
+				tprd: obj?.value?.total?.[bld._id]?.tprd?.min ?? '--',
+				hin: obj?.value?.total?.[bld._id]?.hin?.max ?? '--',
+				habsin: obj?.value?.humAbs?.in?.[bld._id],
+				co2: obj?.value?.total?.[bld._id]?.co2?.max ?? '--',
+				// Статус оборудования
+				extra: [],
+			},
 		}
 		return acc
 	}, {})
 }
 
+/**
+ * Страница Склады. Левая панель "Уличные датчики"
+ * @param {*} obj
+ * @returns
+ */
 function fnBSide(obj) {
 	if (!obj?.data?.building) return null
 
-	// obj.data.building
-
-	// console.log(obj?.data?.weather)
 	return {
 		tout: +obj.value.total?.tout?.min?.toFixed(1) ?? '--',
 		point: +obj.value.total?.point?.toFixed(1) ?? '--',
 		hout: +obj.value.total?.hout?.max?.toFixed(1) ?? '--',
 		habs: obj.value.humAbs?.out?.com ?? '--',
-		tweather: +obj.value.total?.tweather?.value?.toFixed(1) ?? '--',
-		hweather: +obj.value.total?.hweather?.value?.toFixed(1) ?? '--',
+		tweather: obj.value.total?.tweather ?? '--',
+		hweather: obj.value.total?.hweather ?? '--',
 		updWeather: obj?.data?.weather?.update ?? '--',
 		codeWeather: obj?.data?.weather?.code ?? 0,
 		nameWeather: obj?.data?.weather?.weather ?? '--',

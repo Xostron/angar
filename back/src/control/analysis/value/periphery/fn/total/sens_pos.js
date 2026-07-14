@@ -12,7 +12,7 @@ const { state, fnState, toutVsWeather } = require('@tool/sensor/total')
  * @param {*} idsB
  */
 function sensPos(equip, result, idsB) {
-	const { sensor, building } = equip
+	const { sensor, building, weather } = equip
 
 	// Температура улицы (мин) среди всех складов данной pc
 	let flt = (el) =>
@@ -30,10 +30,13 @@ function sensPos(equip, result, idsB) {
 	fnMsgs(building, tout, 'tout', 'normal')
 	fnMsgs(building, hout, 'hout', 'normal')
 
-	const tweather =
-		idsB.map((idB) => result[idB].tweather).sort((a, b) => a.value - b.value)?.[0] ?? '--'
-	const hweather =
-		idsB.map((idB) => result[idB].hweather).sort((a, b) => b.value - a.value)?.[0] ?? '--'
+	// const tweather =
+	// 	idsB.map((idB) => result[idB].tweather).sort((a, b) => a.value - b.value)?.[0] ?? '--'
+	// const hweather =
+	// 	idsB.map((idB) => result[idB].hweather).sort((a, b) => b.value - a.value)?.[0] ?? '--'
+
+	const tweather = weather?.temp
+	const hweather = weather?.humidity
 
 	result.total = {
 		// Температура улицы (мин) среди всех складов данной pc
@@ -42,7 +45,7 @@ function sensPos(equip, result, idsB) {
 		hout,
 		tweather,
 		hweather,
-		point:dewpoint(tout?.min, hout?.max)
+		point: dewpoint(tout?.min, hout?.max),
 	}
 
 	// Абсолютная влажность

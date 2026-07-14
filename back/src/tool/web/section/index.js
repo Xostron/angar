@@ -1,7 +1,9 @@
 const { data: store } = require('@store/index')
+const { fnSens } = require('../bld/fn')
+const { fnSMode, fnSFan, fnVlv, clrMode } = require('./fn')
 
 /**
- * Карточка склада
+ * Карточка секции
  * @param {*} obj
  * @returns
  */
@@ -16,26 +18,15 @@ function fnSCard(obj) {
 			order: sec.order ?? '--',
 			name: sec.name ?? '--',
 			mode: fnSMode(idB, sec._id, bld.type, obj?.retain),
-			fan: fnFan(sec._id, obj) ? 'Вкл' : 'Выкл',
 			min: fnSens(sec._id, obj, 'tprd')?.min ?? '--',
 			max: fnSens(sec._id, obj, 'tprd')?.max ?? '--',
-			vin: {},
-			vout: {},
+			fan: fnSFan(sec._id, obj) ? 'Вкл' : 'Выкл',
+			valve: fnVlv(sec._id, obj),
+			combiMode: clrMode(idB, sec._id, obj)?.name,
 		}
 		return acc
 	}, {})
 }
 
+// store.value = { ...obj.value, retain:obj.retain, factory:obj.factory, alarm: r }
 module.exports = { fnSCard }
-
-function fnSMode(idB, idS, bldType, retain = {}) {
-	if (bldType === 'cold') return ['', '']
-	switch (retain?.[idB]?.mode?.[idS]) {
-		case true:
-			return [true, 'Авто']
-		case false:
-			return [false, 'Руч']
-		default:
-			return [retain?.[idB]?.mode?.[idS], 'Выкл']
-	}
-}

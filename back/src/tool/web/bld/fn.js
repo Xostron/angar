@@ -36,14 +36,14 @@ function fnMode(bld, ids, retain) {
 function fnAutomode(idB, obj) {
 	switch (obj?.value?.building?.[idB]?.bldType) {
 		case 'cold':
-			return clrMode(idB, obj)
+			return clrsMode(idB, obj)
 		case 'normal':
 		case 'combi_normal':
 			const am = obj?.retain?.[idB]?.automode
 			if (am !== 'cooling') return am
 			return obj?.value?.total?.[idB]?.submode
 		case 'combi_cold':
-			return clrMode(idB, obj)?.name
+			return clrsMode(idB, obj)?.name
 		default:
 			return obj?.retain?.[idB]?.automode
 	}
@@ -51,12 +51,12 @@ function fnAutomode(idB, obj) {
 
 /**
  * Карточка склада (web)
- * Агрегированное состояние по всем испарителям
+ * Агрегированное состояние по всем испарителям склада
  * @param {*} idB ИД склад
  * @param {*} obj Глобальные данные (рама, анализ, retain...)
  * @returns
  */
-function clrMode(idB, obj) {
+function clrsMode(idB, obj) {
 	// Секции склада
 	const idsS = getIdsS(obj?.data?.section, idB)
 	// Получить состояние испарителей по складу
@@ -89,27 +89,29 @@ function fnFan(idB, obj) {
 	const idsS = getIdsS(obj?.data?.section, idB)
 	// Все вентиляторы склада
 	const fanB = obj?.data?.fan?.filter((el) => idsS.includes(el.owner.id) && el.type !== 'accel')
-	return fanB.some((el) => obj?.value[el._id])
+	return fanB.some((el) => obj?.value[el._id]?.state === 'run')
 }
 
 /**
+ * Карточка склада
  * Значение датчика min, max
- * @param {*} idB ИД склада
+ * @param {*} ownerId ИД склада, ИД секции
  * @param {*} obj Глобальные данные
  * @param {*} code Код датчика
- * @returns 
+ * @returns
  */
-function fnSens(idB, obj, code) {
-	return obj?.value?.total?.[idB]?.[code]
+function fnSens(ownerId, obj, code) {
+	return obj?.value?.total?.[ownerId]?.[code]
 }
 
 /**
+ * Карточка склада
  * Сообщения достижения
  * @param {*} idB ИД склада
- * @returns 
+ * @returns
  */
 function fnAchieve(idB) {
 	return store.value?.alarm?.achieve?.[idB] ?? []
 }
 
-module.exports = { fnMode, fnAutomode, clrMode, fnFan, fnSens, fnAchieve }
+module.exports = { fnMode, fnAutomode, clrsMode, fnFan, fnSens, fnAchieve }

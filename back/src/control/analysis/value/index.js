@@ -1,6 +1,7 @@
 const { data: store } = require('@store/index')
 const { fnBCard, fnBSide } = require('@tool/web/bld')
 const { fnSCard } = require('@tool/web/section')
+const { fnSBarB } = require('@tool/web/section/fn')
 
 /**
  * Анализ: Формирование значений входов/выходов, режим работы секции, вкл/выкл склада
@@ -9,10 +10,9 @@ const { fnSCard } = require('@tool/web/section')
  * @returns
  */
 function value(obj) {
-	console.log(234, fnSCard(obj))
 	// console.log(obj.value.total, obj.value.total['69f9dd09c35ea05200898cd8'])
 	// Данные для web клиента
-	return {
+	const r = {
 		// Старый дизайн
 		...(obj.value ?? {}),
 		retain: obj.retain,
@@ -20,10 +20,16 @@ function value(obj) {
 		time: new Date(),
 		// Для нового дизайна
 		// Карточки складов
-		bcard: fnBCard(obj),
-		bside: fnBSide(obj),
-		// scard: fnSCard(obj),
+		bCard: fnBCard(obj),
+		// Страница склад: уличные датчики
+		bSide: fnBSide(obj),
+		// Карточка секций
+		sCard: fnSCard(obj),
+		// Страница секции: аварии склада
+		sBarB: fnSBarB(),
 	}
+	console.log(234, r.sCard)
+	return r
 }
 
 module.exports = value
