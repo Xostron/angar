@@ -2,10 +2,9 @@ const { fnThreadPool } = require('@worker')
 const { store } = require('@store/index')
 const write = require('@tool/plc/write')
 const { delay } = require('@tool/time')
-const getOutput = require('@tool/module/get_output')
 
 /**
- * Запрос значений модулей
+ * Обработка команд вкл/выкл выходов от ангара
  *
  * @param {*} request Объект запроса, который содержит все данные о запросе
  * @param {*} reply Объект ответа, с помощью которого можно отправить ответ клиенту

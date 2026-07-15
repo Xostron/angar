@@ -20,18 +20,16 @@ function getOutput(mdls) {
  * @param {object[]} mdls Рама модуль+оборудование
  * @returns 
  */
-async function writeOut(mdls) {
-	// Если связь в норме, то разрешаем запись
+async function shoutdownOut(mdls) {
+	// Если связь в норме store.extralrm.live=false, то пропускаем авар откл
 	if (!store.extralrm.live) return null
 
-	// Запрет записи
+	// Нет связи - сбрасываем все модули выхода
 	console.log('🔴 live - Нет связи с ангаром')
 	const out = getOutput(mdls)
-	// if (!out.length) return console.log('🔴 live - Нет рамы')
-	// Запись модулей выхода
 	await write(out)
 	console.log('🔴 live - Отключение выходов')
 	return true
 }
 
-module.exports = { getOutput, writeOut }
+module.exports = { getOutput, shoutdownOut }
