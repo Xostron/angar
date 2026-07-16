@@ -15,7 +15,7 @@ function fnBCard(obj) {
 			// Страница склады: карточки складов
 			order: bld.order ?? '--',
 			name: bld.name ?? '--',
-			type: bld.type ?? '--',
+			type: bld.type,
 			code: bld.code ?? '--',
 			countAlr: store.value?.alarm?.count?.[bld._id] ?? 0,
 			mode: obj?.value?.total?.[bld._id]?.mode?.[1] ?? '--',
