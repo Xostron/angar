@@ -10,7 +10,7 @@ function senDemo(sens, owner, retain, r) {
 	// Аккумулятор демо
 	const demo = store.retain[building._id].demo
 	// Нет склада || демо не активен || демо выключен
-	if (!building || demo.cur === null || !s.on || !need.includes(sens.type)) return r
+	if (!building || !demo || demo.cur === null || !s?.on || !need.includes(sens.type)) return r
 
 	// Демо в работе
 	// Этап

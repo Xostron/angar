@@ -28,7 +28,7 @@ function value(obj) {
 		// Страница секции: аварии склада
 		sBarB: fnSBarB(),
 	}
-	console.log(234, r.sCard)
+	// console.log(234, r.sCard)
 	return r
 }
 

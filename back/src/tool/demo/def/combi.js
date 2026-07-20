@@ -1,6 +1,6 @@
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store/index')
-const initDD = require('./init_data')
+const initDD = require('../init_data')
 
 /**
  * Слежение за временем этапа: переключение этапов и завершение демо
