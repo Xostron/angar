@@ -16,7 +16,7 @@ function fnDemo(obj) {
 		initDemo(bld._id, s)
 
 		// Демо ПНР
-		def[bld.type](bld._id, mechB(bld?._id, bld?.type, obj))
+		def[bld.type](bld, mechB(bld?._id, bld?.type, obj))
 	})
 }
 
