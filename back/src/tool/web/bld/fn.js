@@ -100,7 +100,12 @@ function fnFan(idB, obj) {
  * @param {*} code Код датчика
  * @returns
  */
-function fnSens(ownerId, obj, code) {
+function fnSens(ownerId, obj, code, type) {
+	if (code == 'hin')
+		return {
+			state: obj?.value?.total?.[ownerId]?.[code]?.state ?? null,
+			value: obj?.value?.total?.[ownerId]?.[code]?.[type] ?? '--',
+		}
 	return obj?.value?.total?.[ownerId]?.[code]
 }
 

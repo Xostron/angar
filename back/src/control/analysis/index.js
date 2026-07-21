@@ -5,7 +5,7 @@ const value = require('./value')
 const { data: store } = require('@store')
 const Aboc = require('@tool/abort_controller')
 const { calcSetting, calcCoef } = require('../extra/setting')
-const { fnDemo } = require('@tool/demo/init')
+const { fnDemo } = require('@tool/demo')
 const periphery = require('./value/periphery')
 
 /**
@@ -24,9 +24,6 @@ async function analysis(obj) {
 	// Преобразование настроек пользователя
 	Aboc.call(calcSetting)(obj)
 
-	// Демо: инициализация и переключение по стадиям
-	fnDemo(obj.data.building)
-
 	// Анализ сырых данных: готовые состояния периферии
 	Aboc.call(periphery)(v, obj)
 
@@ -35,6 +32,9 @@ async function analysis(obj) {
 
 	// Настройки пользователя: расчет коэффициентов в зависимости от показаний датчиков
 	Aboc.call(calcCoef)(v, obj)
+
+	// Демо: инициализация и переключение по стадиям
+	fnDemo(obj)
 
 	// Передача мяса по Socket.io на web-клиент
 	await Aboc.asycall(cValue)(v)

@@ -3,9 +3,8 @@ const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 
-
 /**
- * Окуривание для ХОЛОДИЛЬНИКА:
+ * Сообщения ПНР-демо режима
  * 1 Выключить склад
  * 2 Зайти в настройки "Окуривание"
  * 3 Настроить время и в поле "ВКЛЮЧИТЬ" выбрать вкл
@@ -32,7 +31,8 @@ function demo(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan, clear 
 	// Аккумулятор демо
 	const cur = obj.retain[bld?._id].demo.cur
 	const stage = obj.retain[bld?._id].demo.stage[cur]
-	if (stg?.on) {
+
+	if (stage) {
 		wrExtra(idB, null, 'demo', msgB(bld, 44, `${stage.name} ${remTime(stage.begin, t[cur])}`))
 	} else {
 		delExtra(idB, null, 'demo')

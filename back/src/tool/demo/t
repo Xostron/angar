@@ -1,0 +1,298 @@
+{
+  fanA: [
+    {
+      _id: '69f9dd09c35ea05200898cdb',
+      name: 'Разгон',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'accel'
+    }
+  ],
+  fanB: [
+    {
+      _id: '69f9dd09c35ea05200898cde',
+      name: 'ВНО 1',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan',
+      ao: [Object]
+    },
+    {
+      _id: '69f9dd09c35ea05200898cdf',
+      name: 'ВНО 4',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '69f9dd09c35ea05200898cdd',
+      name: 'ВНО 2',
+      order: 2,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '6a394547e8a0420364be62fc',
+      name: 'ВНО 6',
+      order: 2,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '6a3a734be8a0420364be630a',
+      name: 'ВНО 7',
+      order: 3,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    }
+  ],
+  connect: [
+    {
+      _id: '69f9dd09c35ea05200898ce4',
+      type: 'connect',
+      module: [Object],
+      owner: [Object],
+      reverse: false
+    }
+  ],
+  reset: [
+    {
+      _id: '69f9dd09c35ea05200898ce5',
+      type: 'reset',
+      module: [Object],
+      owner: [Object],
+      reverse: false
+    }
+  ],
+  vlvIn: [
+    {
+      sectionId: [Array],
+      _id: '69f9dd09c35ea05200898d1e',
+      type: 'in',
+      module: [Object]
+    },
+    {
+      sectionId: [Array],
+      _id: '69f9dd09c35ea05200898d20',
+      type: 'in',
+      module: [Object]
+    }
+  ],
+  cold: {
+    signal: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object]
+    ],
+    aggregate: [ [Object], [Object], [Object] ],
+    cooler: [ [Object], [Object], [Object] ],
+    heating: [ [Object] ],
+    device: { wetting: [Array], ozon: [Array], pui: [Array] },    slaveAgg: [ [Object], [Object], [Object] ],
+    fan: [ [Object], [Object], [Object] ]
+  },
+  fanAll: [
+    {
+      _id: '69f9dd09c35ea05200898cdb',
+      name: 'Разгон',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'accel'
+    },
+    {
+      _id: '69f9dd09c35ea05200898cde',
+      name: 'ВНО 1',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan',
+      ao: [Object]
+    },
+    {
+      _id: '69f9dd09c35ea05200898cdf',
+      name: 'ВНО 4',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '69f9dd09c35ea05200898cdd',
+      name: 'ВНО 2',
+      order: 2,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '6a394547e8a0420364be62fc',
+      name: 'ВНО 6',
+      order: 2,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '6a3a734be8a0420364be630a',
+      name: 'ВНО 7',
+      order: 3,
+      owner: [Object],
+      module: [Object],
+      type: 'fan'
+    },
+    {
+      _id: '69f9e850c35ea05200898d45',
+      name: 'ВНО 3',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan',
+      ao: [Object]
+    },
+    {
+      _id: '69f9fcacc35ea05200898d6d',
+      name: 'ВНО 6',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan',
+      ao: [Object]
+    },
+    {
+      _id: '69f9eeadc35ea05200898d4e',
+      name: 'ВНО 4',
+      order: 1,
+      owner: [Object],
+      module: [Object],
+      type: 'fan',
+      ao: [Object]
+    }
+  ],
+  connectLost: [],
+  wettingS: [
+    {
+      _id: '69f9dd09c35ea05200898d12',
+      order: 1,
+      deviceId: '67500ba0449fd312ef2085b4',
+      sectionId: '69f9dd09c35ea05200898cd9',
+      date: '2026-05-05T12:05:29.856Z',
+      update: '2026-05-05T12:05:29.856Z',
+      device: [Object],
+      beep: [Array],
+      module: [Object]
+    }
+  ],
+  vlvAll: [
+    {
+      sectionId: [Array],
+      _id: '69f9dd09c35ea05200898d1e',
+      type: 'in',
+      module: [Object]
+    },
+    {
+      sectionId: [Array],
+      _id: '69f9dd09c35ea05200898d1f',
+      type: 'out',
+      module: [Object]
+    },
+    {
+      sectionId: [Array],
+      _id: '69f9dd09c35ea05200898d20',
+      type: 'in',
+      module: [Object]
+    },
+    {
+      sectionId: [Array],
+      _id: '69fad6f7c35ea05200898d7d',
+      type: 'out',
+      module: [Object]
+    }
+  ],
+  heatingAll: [
+    {
+      _id: '69f9dd09c35ea05200898cff',
+      module: [Object],
+      owner: [Object],
+      type: 'heating'
+    }
+  ],
+  heatingWAll: [],
+  heatingClrAll: [
+    {
+      _id: '69f9e95fc35ea05200898d4a',
+      module: [Object],
+      owner: [Object],
+      type: 'cooler'
+    },
+    {
+      _id: '69f9fb35c35ea05200898d66',
+      module: [Object],
+      owner: [Object],
+      type: 'cooler'
+    },
+    {
+      _id: '69f9fc90c35ea05200898d6a',
+      module: [Object],
+      owner: [Object],
+      type: 'cooler'
+    }
+  ],
+  flapClrAll: [
+    {
+      _id: '69f9f880c35ea05200898d63',
+      module: [Object],
+      owner: [Object],
+      type: 'flap'
+    }
+  sect: {
+    '69f9dd09c35ea05200898cd9': {
+      vlvS: [Array],
+      fanS: [Array],
+      fanSS: [Array],
+      heatS: [Array],
+      connect: [],
+      reset: [Array],
+      coolerS: [Array],
+      solHeatS: [Array],
+      fanSAll: [Array],
+      fanClr: [Array],
+      wettingS: [Array],
+      allFanClr: [Array]
+    },
+    '69f9dd09c35ea05200898cda': {
+      vlvS: [Array],
+      fanS: [Array],
+      fanSS: [Array],
+      heatS: [],
+      connect: [],
+      reset: [Array],
+      coolerS: [Array],
+      solHeatS: [],
+      fanSAll: [Array],
+      fanClr: [Array],
+      wettingS: [],
+      allFanClr: [Array]
+    }
+  },
+  ozon: [
+    {
+      _id: '69f9dd09c35ea05200898d13',
+      order: 2,
+      deviceId: '6964c1666415060964c77cc4',
+      sectionId: '69f9dd09c35ea05200898cd9',
+      date: '2026-05-05T12:05:29.856Z',
+      update: '2026-05-05T14:17:29.009Z',
+      device: [Object],
+      beep: [Array],
+      module: [Object]
+    }
+  ],
+  services: []
+}

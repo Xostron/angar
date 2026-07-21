@@ -1,24 +1,5 @@
 const { data: store } = require('@store/index')
 const initDD = require('./init_data')
-const { compareTime } = require('@tool/command/time')
-const def = require('./def/index')
-
-/**
- * Инициализация демо
- * @param {*} blds
- */
-function fnDemo(blds) {
-	blds.forEach((bld) => {
-		// TODO убрать когда будет готова реализация демо для холодильника и комби
-		if (bld.type !== 'normal') return
-		// Настройки демо
-		const s = store.calcSetting[bld._id]?.demo
-		initDemo(bld._id, s)
-		def[bld.type](bld._id, s.on)
-	})
-}
-
-module.exports = { fnDemo }
 
 /**
  * Инициализация Демо при старте
@@ -31,39 +12,45 @@ function initDemo(idB, s) {
 	store.retain[idB].demo ??= JSON.parse(initDD)
 	const demo = store.retain[idB].demo
 
-	// При выключении склада во время демо - сбрасываем и выкл демо
-	if (!store.retain[idB].start && store.retain[idB].demo.first) {
-		store.retain[idB].demo = JSON.parse(initDD)
-		store.retain[idB].setting.demo.on.on = false
-		return
-	}
+	// Условия выкл демо (сброс аккумулятора):
+	// 1. При выключении склада во время демо - выкл демо
+	// 2. Демо выключена по кнопке в настройках
+	// 3. Демо ПНР окончен
+	const tt = [
+		!store.retain[idB].start && typeof demo?.cur == 'number',
+		!s?.on,
+		demo?.cur >= demo?.end,
+	]
+	if (tt.some(Boolean)) return offDemo(idB, demo)
 
-	// Если демо выключена - выходим
-	if (!s?.on) return (store.retain[idB].demo = JSON.parse(initDD))
-	// демо уже в работе - выходим
+	// Демо уже в работе - выходим из инициализации
 	if (demo?.cur !== null) return
 
-	// Если демо только включили
-	// Настройки времени каждого этапа
-	const t = [s.drying, s.cooling, s.cure, s.heat]
-	// При включении демо -> вкл склад
-	if (!demo.first) {
-		demo.first = true
-		store.retain[idB].start = true
-	}
-	// Устанавливаем номер начального этапа
+	// Первое включение Демо: инициализация
+	// 1. Вкл склад
+	store.retain[idB].start = true
+	// Число отработанных циклов
 	demo.cur ??= 0
-	// Расчет времени начала первого этапа и продолжительность для всех этапов
-	demo.stage.forEach((stage, i) => {
-		stage.begin = i === 0 ? new Date() : null
-		stage.begin2 = i === 0 ? [new Date(), null] : [null, null]
-		stage.time = t[i]
-		stage.i ??= 0
-		for (const key in stage) {
-			if (['name', 'automode', 'begin', 'begin2', 'time', 'i'].includes(key)) continue
-			const demoS = stage[key]
-			// Начальное значение датчика
-			demoS.v = demoS.a
-		}
-	})
+	// Всего циклов >= 1
+	demo.total = s.total ?? 1
+	// Номер текущего теста
+	demo.order = 0
+	
+	console.log('INIT DEMO', demo.cur)
 }
+
+function offDemo(idB, demo) {
+	// Очищаем аккумулятор один раз
+	if (demo?.cur === null) return
+	console.log('OFF DEMO')
+	// Сбрасываем аккумулятор демо
+	store.retain[idB].demo = JSON.parse(initDD)
+	// Выкл демо в настройках
+	store.retain[idB].setting.demo ??= {}
+	store.retain[idB].setting.demo.on ??= {}
+	store.retain[idB].setting.demo.on.on = false
+	// Выкл склад
+	store.retain[idB].start = false
+}
+
+module.exports = { initDemo }

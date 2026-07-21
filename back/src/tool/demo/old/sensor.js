@@ -2,6 +2,7 @@ const { data: store } = require('@store/index')
 const { compareTime, runTimeV2 } = require('@tool/command/time')
 const need = ['tprd', 'tcnl', 'hin', 'tout', 'hout']
 
+// Симуляция изменения датчиков
 function senDemo(sens, owner, retain, r) {
 	// Владельцы датчика (склад и секция)
 	const { building, section } = owner
@@ -9,8 +10,10 @@ function senDemo(sens, owner, retain, r) {
 	const s = store.calcSetting[building._id]?.demo
 	// Аккумулятор демо
 	const demo = store.retain[building._id].demo
-	// Нет склада || демо не активен || демо выключен
-	if (!building || !demo || demo.cur === null || !s?.on || !need.includes(sens.type)) return r
+	// TODO отключение симуляции датчиков
+	// Нет склада || демо не активен || демо выключен || true
+	if (!building || !demo || demo.cur === null || !s?.on || !need.includes(sens.type) || true)
+		return r
 
 	// Демо в работе
 	// Этап

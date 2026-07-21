@@ -8,36 +8,19 @@ const initDD = require('../init_data')
  * @param {*} demo Аккумулятор демо
  * @returns
  */
-function combi(idB, on) {
+function combi(idB, mech) {
 	const demo = store.retain[idB].demo
-	// Склад выключен
-	// Демо выключено - сброс аккумулятора
-
+	// Демо выключено - выход
 	if (demo.cur === null) return
 
-	// Демо включено
-	// Текущий этап
-	const stage = demo.stage[demo.cur]
-	// Время
-	const time = compareTime(stage.begin, stage.time)
-	// Авторежим
-	store.retain[idB].automode = stage.automode
+	// Работа по демо-режиму
+	// Увеличение цикла
+	
 
-	// Время этапа не прошло - работаем дальше
-	if (!time) return
-
-	// Время этапа прошло
-	// Переключение этапа + проверка "все этапы пройдены"
-	if (++demo.cur >= demo.stage.length) {
-		store.retain[idB].setting.demo.on.on = false
-		store.retain[idB].demo = JSON.parse(initDD)
-		store.retain[idB].start = false
-		return
-	}
-	// Следующий этап (инициализация точки отсчета)
-	demo.stage[demo.cur].begin = new Date()
-	demo.stage[demo.cur].begin2 = [new Date(), null]
-	demo.stage[demo.cur].i = 0
+	// Конец демо режимы - выкл всех исполнительных механизмов
+	if (demo?.cur >= demo?.total) return safetyOff()
 }
 
 module.exports = combi
+
+function safetyOff() {}
