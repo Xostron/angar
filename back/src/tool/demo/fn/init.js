@@ -1,6 +1,6 @@
 const { data: store } = require('@store/index')
 const { initData } = require('./init_data')
-const { offDemo } = require('./fn')
+const { stop } = require('./fn')
 
 /**
  * Инициализация Демо при старте
@@ -13,6 +13,9 @@ function initDemo(idB, s) {
 	store.retain[idB].demo ??= JSON.parse(initData)
 	const demo = store.retain[idB].demo
 
+	// Условия выкл демо (сброс аккумулятора):
+	if (stop(idB, s, demo)) return
+
 	// Демо уже в работе - выходим из инициализации
 	if (demo?.cur !== null) return console.log('DEMO ALREADY INIT', demo.cur)
 
@@ -22,9 +25,11 @@ function initDemo(idB, s) {
 	// Число отработанных циклов
 	demo.cur = 0
 	// Всего циклов >= 1
-	demo.total = s.total ?? 1
+	demo.total = s.total ?? 10
 	// Номер текущего теста
 	demo.order = 0
+	// Инициализируем журнал логов
+	demo.checklist = JSON.parse(initData).checklist
 	// Точка отсчета демо, цикла, теста
 	demo.timeD = new Date()
 	demo.timeC = demo.timeD

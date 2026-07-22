@@ -1,5 +1,6 @@
 const { data: store } = require('@store/index')
-const { initData } = require('./init_data')
+const { initData, checklist } = require('./init_data')
+const { compareTime } = require('@tool/command/time')
 
 /**
  * Очистка акуумуляторов и настроек демо, выкл склада
@@ -7,7 +8,7 @@ const { initData } = require('./init_data')
  * @param {*} demo
  * @returns
  */
-function offDemo(idB, demo) {
+function clear(idB, demo) {
 	// Очищаем аккумулятор один раз
 	if (demo?.cur === null) return console.log('DEMO ALREADY OFF')
 	console.log('DEMO OFF')
@@ -34,18 +35,18 @@ function offDemo(idB, demo) {
  * @param {*} demo
  * @returns {boolean} true - разрешить тесты
  */
-function check(idB, demo) {
+function check(idB, s, demo) {
 	// Демо выключено - выход
 	if (demo.cur === null) return false
 
-	// Контроль времени теста в текущем цикле
-	const t = demo.order < checklist.length && compareTime(timeT, checklist[demo.order].last)
-	// Время теста прошло - переключаем на следующий
-	if (t) {
-		demo.order++
-		// Время теста
-		demo.timeT = new Date()
-	}
+	// // Контроль времени теста в текущем цикле
+	// const t = demo.order < checklist.length && compareTime(demo.timeT, checklist[demo.order].last)
+	// // Время теста прошло - переключаем на следующий
+	// if (t) {
+	// 	demo.order++
+	// 	// Время теста
+	// 	demo.timeT = new Date()
+	// }
 
 	// Проверка цикла - переключение цикла
 	if (demo.order > checklist.length - 1) {
@@ -60,20 +61,34 @@ function check(idB, demo) {
 	}
 
 	// Условия выкл демо (сброс аккумулятора):
+	if (stop(idB, s, demo)) return false
+
+	return true
+}
+
+/**
+ * Стоп демо и очистка аккумуляторов
+ * @param {*} idB
+ * @param {*} s
+ * @param {*} demo
+ * @returns {boolean} true - стоп
+ */
+function stop(idB, s, demo) {
+	// Условия выкл демо (сброс аккумулятора):
 	// 1. При выключении склада во время демо - выкл демо
 	// 2. Демо выключена по кнопке в настройках
 	// 3. Демо ПНР окончен
 	const tt = [
 		!store.retain[idB].start && typeof demo?.cur == 'number',
-		demo?.cur >= demo?.total,
 		!s?.on,
+		demo.total!==null && demo.cur!==null && demo?.cur >= demo.total,
 	]
 	if (tt.some(Boolean)) {
-		offDemo(idB, demo)
-		return false
+		clear(idB, demo)
+		return true
 	}
-
-	return true
+	console.log('CONTINUE DEMO')
+	return false
 }
 
-module.exports = { offDemo, check }
+module.exports = { stop, clear, check }

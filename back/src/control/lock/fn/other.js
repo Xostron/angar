@@ -32,6 +32,7 @@ function fanAccel(obj, s) {
 		const sb = isExtralrm(idB, null, 'sb')
 		// Кнопка выключения склада
 		const bldOff = isExtralrm(idB, null, 'bldOff')
+		console.log(11, 'lock accel', local, !!ban, alrStop, isAlrState, sb, bldOff)
 		out(obj, output, el, local, !!ban, alrStop, isAlrState, sb, bldOff)
 	}
 }

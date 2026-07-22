@@ -14,16 +14,16 @@ function ctrlAO(o, bldId, value) {
 
 /**
  * Команда управления периферией (вкл/выкл)
- * @param {*} obj Вентилятор и т.д.
+ * @param {*} o Вентилятор и т.д.
  * @param {*} buildingId Ссылка на склад
- * @param {*} type Тип команды включить/выключить (on, off)
+ * @param {*} type Тип команды включить/выключить =on | off
  * @returns
  */
-function ctrlDO(obj, buildingId, type) {
+function ctrlDO(o, buildingId, type) {
 	if (!type) return null
-	const bldId = obj?._build ?? buildingId
-	const mdlId = obj?.module?.id
-	const ch = obj?.module?.channel - 1
+	const bldId = o?._build ?? buildingId
+	const mdlId = o?.module?.id
+	const ch = o?.module?.channel - 1
 	const r = {}
 	if (type === 'on') {
 		r[bldId] = { [mdlId]: { [ch]: 1 } }
