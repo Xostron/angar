@@ -1,7 +1,8 @@
 const { data: store } = require('@store/index')
-const def = require('./def/index')
-const { initDemo } = require('./init')
 const { mechB } = require('@tool/command/mech')
+const { initDemo } = require('./fn/init')
+const { check } = require('./fn/fn')
+const def = require('./def_stage')
 
 /**
  * Инициализация демо
@@ -12,11 +13,16 @@ function fnDemo(obj) {
 		// Настройки демо
 		const s = store.calcSetting[bld._id]?.demo
 
-		// Инициализация и выход из демо
-		initDemo(bld._id, s)
+		// Инициализация/очистка аккумулятора демо
+		initDemo(bld._id, s, demo)
 
-		// Демо ПНР
-		def[bld.type](bld, mechB(bld?._id, bld?.type, obj))
+		// Разрешение тестирования/переключение модулей тестов
+		const q = check(store.retain[idB].demo)
+		// Тестирование запрещено - выход
+		if (!q) return
+
+		// Модули тестов
+		def[q.code](bld, mechB(bld?._id, bld?.type, obj), store.retain[idB].demo)
 	})
 }
 

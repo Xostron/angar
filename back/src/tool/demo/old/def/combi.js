@@ -1,6 +1,6 @@
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store/index')
-const initDD = require('../init_data')
+const { checklist } = require('../../fn/init_data')
 
 /**
  * Слежение за временем этапа: переключение этапов и завершение демо
@@ -14,8 +14,12 @@ function combi(bld, mech) {
 	if (demo.cur === null) return
 
 	// Работа по демо-режиму
+	
+	// Выбор теста
+	const q = checklist[demo.order]
 	// Увеличение цикла
-	def[demo.checklist[demo.order]](bld, mech, demo)
+
+	def[q.code](bld, mech, demo)
 
 	// Конец демо режимы - выкл всех исполнительных механизмов
 	if (demo?.cur >= demo?.total) return safetyOff()

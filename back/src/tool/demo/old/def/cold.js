@@ -1,6 +1,6 @@
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store/index')
-const initDD = require('../init_data')
+const initDD = require('../../fn/init_data')
 
 /**
  * Слежение за временем этапа: переключение этапов и завершение демо
@@ -8,9 +8,11 @@ const initDD = require('../init_data')
  * @param {*} demo Аккумулятор демо
  * @returns
  */
-function normal(idB, on) {
+function cold(idB, on) {
 	const demo = store.retain[idB].demo
-	// Демо выключено
+	// Склад выключен
+	// Демо выключено - сброс аккумулятора
+
 	if (demo.cur === null) return
 
 	// Демо включено
@@ -38,4 +40,4 @@ function normal(idB, on) {
 	demo.stage[demo.cur].i = 0
 }
 
-module.exports = normal
+module.exports = cold
