@@ -2,23 +2,30 @@ const { isCombiCold } = require('@tool/combi/is')
 const { ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 const { getStateClr } = require('@tool/cooler')
+const { isDemo } = require('@tool/demo/fn/fn')
 const { stateEq } = require('@tool/fan')
 const { getSectAuto } = require('@tool/get/building')
 
 // Разгонные вентиляторы: Вкл
 function on(building, fanA) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(building._id)) return
 	fanA.forEach((f) => {
 		ctrlDO(f, building._id, 'on')
 	})
 }
 // Разгонные вентиляторы: Выкл
 function off(building, fanA) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(building._id)) return
 	fanA.forEach((f) => {
 		ctrlDO(f, building._id, 'off')
 	})
 }
 // Разгонные вентиляторы: По времени
 function time(building, fanA, acc, se, s) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(building._id)) return
 	acc.work ??= new Date()
 	let time = compareTime(acc.work, s.accel.work)
 	// Работа разгонных ВНО
@@ -39,6 +46,8 @@ function time(building, fanA, acc, se, s) {
 
 // Разгонные вентиляторы: По температуре
 function temp(building, fanA, acc, se, s) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(building._id)) return
 	const { tprd, tin } = se
 	const hyst = 0.3
 	// Отключено
@@ -55,6 +64,8 @@ function temp(building, fanA, acc, se, s) {
 // работает синхронно с ВНО секциями и ВНО испарителя.
 // В режиме комби-обычный - остановлен
 function cold(building, fanA, acc, se, s, m, obj) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(building._id)) return
 	// Хотя бы один вентилятор запущен
 	const run = m.fanB.some((f) => stateEq(f._id, obj.value))
 	// Комби-холод

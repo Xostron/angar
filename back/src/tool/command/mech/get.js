@@ -24,7 +24,7 @@ function getVnoClr(idB, idS, obj, coolerS) {
 	// Вно испарителей (только рабочие state!=alarm и state!=off)
 	let fanClr = fanClrRaw.filter((el) => {
 		// return value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id]
-		return value[el._id].state != 'alarm' && value[el._id].state != 'off'
+		return value?.[el._id]?.state != 'alarm' && value?.[el._id]?.state != 'off'
 	})
 	// Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
 	fanClr = Object.values(
@@ -57,7 +57,7 @@ function getVno(idB, idS, obj, binding, fan) {
 				!retain?.[idB]?.fan?.[idS]?.[el._id],
 		)
 		.map((el) => {
-			const ao = binding.find((b) => b.owner.id === el._id && b.type==='ao')
+			const ao = binding.find((b) => b.owner.id === el._id && b.type === 'ao')
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})

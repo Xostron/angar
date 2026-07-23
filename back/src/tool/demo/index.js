@@ -19,14 +19,24 @@ function fnDemo(obj) {
 
 		// Разрешение тестирования/переключение модулей тестов
 		const q = check(bld._id, s, store.retain[bld._id].demo)
+
 		// Тестирование запрещено - выход
 		if (!q) return
 
-		// Модули тестов
 		const demo = store.retain[bld._id].demo
 		const code = checklist[demo.order].code
-		def[code](bld, obj, mechB(bld?._id, bld?.type, obj), store.retain[bld._id].demo)
-		console.log(1234, demo.checklist.accel)
+
+		// Модули тестов проходим по всем, вработе только один чей code совпадает с обработчиком теста
+		checklist.forEach((el) => {
+			def[el.code](
+				bld,
+				obj,
+				mechB(bld?._id, bld?.type, obj, true),
+				store.retain[bld._id].demo,
+				code === el.code,
+			)
+		})
+		console.log(1234, demo)
 	})
 }
 

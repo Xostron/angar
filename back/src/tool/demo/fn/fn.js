@@ -39,14 +39,14 @@ function check(idB, s, demo) {
 	// Демо выключено - выход
 	if (demo.cur === null) return false
 
-	// // Контроль времени теста в текущем цикле
-	// const t = demo.order < checklist.length && compareTime(demo.timeT, checklist[demo.order].last)
-	// // Время теста прошло - переключаем на следующий
-	// if (t) {
-	// 	demo.order++
-	// 	// Время теста
-	// 	demo.timeT = new Date()
-	// }
+	// Контроль времени теста в текущем цикле
+	const t = demo.order < checklist.length && compareTime(demo.timeT, checklist[demo.order].last)
+	// Время теста прошло - переключаем на следующий
+	if (t) {
+		demo.order++
+		// Время теста
+		demo.timeT = new Date()
+	}
 
 	// Проверка цикла - переключение цикла
 	if (demo.order > checklist.length - 1) {
@@ -81,14 +81,18 @@ function stop(idB, s, demo) {
 	const tt = [
 		!store.retain[idB].start && typeof demo?.cur == 'number',
 		!s?.on,
-		demo.total!==null && demo.cur!==null && demo?.cur >= demo.total,
+		demo.total !== null && demo.cur !== null && demo?.cur >= demo.total,
 	]
 	if (tt.some(Boolean)) {
 		clear(idB, demo)
+		console.log('STOP DEMO')
 		return true
 	}
-	console.log('CONTINUE DEMO')
 	return false
 }
 
-module.exports = { stop, clear, check }
+function isDemo(idB) {
+	return typeof store.retain?.[idB]?.demo?.cur == 'number'
+}
+
+module.exports = { stop, clear, check, isDemo }

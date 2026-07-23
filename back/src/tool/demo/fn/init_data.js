@@ -27,10 +27,10 @@ const data = {
 
 // Настройки каждого этапа тестирования
 const checklist = [
-	{ code: 'accel', last: 60 * 1000 },
+	{ code: 'accel', last: 60 * 1000, name: 'Разгонный вентилятор' },
+	// { code: 'allFan', last: 60 * 1000 }, // одновременное вкл всех ВНО
 	// { code: 'valve', last: 60 * 1000 },
-	// { code: 'fan', last: 60 * 1000 },
-	// { code: 'allFan', last: 60 * 1000 },
+	// { code: 'fan', last: 60 * 1000 }, // поочередное вкл ВНО
 	// { code: 'heat', last: 60 * 1000 },
 	// { code: 'wetting', last: 60 * 1000 },
 	// { code: 'ozon', last: 60 * 1000 },

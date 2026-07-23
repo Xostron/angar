@@ -2,6 +2,7 @@ const { compareTime, runTime, remTime } = require('@tool/command/time')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
+const { checklist } = require('@tool/demo/fn/init_data')
 
 /**
  * Сообщения ПНР-демо режима
@@ -29,11 +30,11 @@ function demo(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan, clear 
 	const stg = s?.demo
 	const t = [stg.drying, stg.cooling, stg.cure, stg.heat]
 	// Аккумулятор демо
-	const cur = obj.retain[bld?._id].demo.cur
-	const stage = obj.retain[bld?._id].demo.stage[cur]
+	const cur = obj.retain[bld?._id].demo
+	const stage = typeof demo?.cur === 'number' ? checklist[cur].name : '--'
 
 	if (stage) {
-		wrExtra(idB, null, 'demo', msgB(bld, 44, `${stage.name} ${remTime(stage.begin, t[cur])}`))
+		wrExtra(idB, null, 'demo', msgB(bld, 44, `${stage} ${runTime(demo.timeD)}`))
 	} else {
 		delExtra(idB, null, 'demo')
 	}

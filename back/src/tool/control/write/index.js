@@ -25,7 +25,6 @@ async function write(arr) {
 
 			// Проверка модуля (антидребезг или ошибка модуля)
 			if (!timeout(idsB, idsM, m.ip, m)) continue
-
 			// Запись данных в модуль
 			v = await make(m, 'write')
 

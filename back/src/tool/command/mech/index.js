@@ -1,4 +1,4 @@
-const { getIdBS } = require('@tool/get/building')
+const { getIdBS, getSectAM } = require('@tool/get/building')
 const { transformClr, getClr } = require('./fn')
 const { getDevice, getVnoClr, getVno } = require('./get')
 
@@ -52,7 +52,8 @@ function mech(obj, idS, idB) {
 	// Напорные ВНО секции (только рабочие)
 	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
 
-	// Напорные ВНО секции/камеры + ВНО испарителей: обычный/комби склад в режиме обычного (только рабочие)
+	// Напорные ВНО секции/камеры + ВНО испарителей:
+	// обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...fanSS, ...fanClr]
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
@@ -83,12 +84,21 @@ function mech(obj, idS, idB) {
 }
 
 // Исполнительные механизмы склада
-function mechB(idB, type, obj) {
+// mod - true - собираем ИМ для демо
+// (это значит что выключенные секции и их устройства игнорируются)
+function mechB(idB, type, obj, mod = false) {
 	// (поиск по складу и секциям)
 	const { data } = obj
 
 	//ID склада и секций
-	let idBS = getIdBS(data?.section, idB)
+	let idBS
+	if (!mod) {
+		idBS = getIdBS(data?.section, idB)
+	} else {
+		idBS = getSectAM(idB, data?.section, obj)
+		idBS.push(idB)
+	}
+
 	// Увлажнители склада
 	const wettingS = data.device.filter(
 		(el) => el?.device?.code === 'wetting' && idBS.includes(el.sectionId),
@@ -99,6 +109,7 @@ function mechB(idB, type, obj) {
 	)
 	// Разгонные вентиляторы
 	const fanA = data?.fan?.filter((el) => idBS.includes(el.owner.id) && el.type === 'accel')
+
 	// Выход "Модуль в работе" для реле безопасности
 	const connect =
 		data?.signal?.filter((el) => idBS.includes(el.owner.id) && el.type == 'connect') ?? []
