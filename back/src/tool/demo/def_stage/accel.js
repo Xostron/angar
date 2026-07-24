@@ -1,4 +1,4 @@
-const {  arrCtrlDO } = require('@tool/command/module_output')
+const { arrCtrlDO } = require('@tool/command/module_output')
 const { checklist } = require('../fn/init_data')
 const { compareTime } = require('@tool/command/time')
 // 10сек
@@ -37,7 +37,7 @@ function check(bld, obj, fanA, demo) {
 	fanA.forEach((el) => {
 		const v = obj?.value?.[el._id]
 		if (v?.state === 'stop' && !demo.checklist.accel[el._id])
-			demo.checklist.accel[el._id] = `Не активен разгонный вентилятор ${el.name}`
+			demo.checklist.accel[el._id].stop = `ошибка конфигурации`
 	})
 }
 

@@ -5,7 +5,7 @@ function fan(equip, val, retain, result) {
 	const { fan, binding } = equip
 	fan.forEach((el) => {
 		result[el._id] ??= {}
-		// Состояние ВНО: run,stop
+		// Состояние ВНО: run,stop,alarm
 		result[el._id].state = stateF(el, equip, result, retain)
 		// Поиск аналогового выхода ВНО
 		const ao = binding.find((b) => b.owner.id === el._id && b.type==='ao')

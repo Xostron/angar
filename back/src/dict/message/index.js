@@ -248,7 +248,7 @@ const data = {
 	44: {
 		code: 'demo',
 		typeSignal: 'info',
-		msg: 'Демо режим. ',
+		msg: 'Демо режим.',
 	},
 	// beep alarm
 	65: [

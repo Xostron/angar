@@ -1,9 +1,7 @@
 const { data: store } = require('@store/index')
-const { mechB } = require('@tool/command/mech')
 const { checklist } = require('./fn/init_data')
 const { initDemo } = require('./fn/init')
-const { check } = require('./fn/fn')
-const def = require('./def_stage')
+const { check, runTests } = require('./fn/fn')
 
 /**
  * Инициализация демо
@@ -15,28 +13,25 @@ function fnDemo(obj) {
 		const s = store.calcSetting[bld._id]?.demo
 
 		// Инициализация/очистка аккумулятора демо
-		initDemo(bld._id, s)
+		initDemo(bld, s, obj)
 
 		// Разрешение тестирования/переключение модулей тестов
-		const q = check(bld._id, s, store.retain[bld._id].demo)
+		const q = check(bld, s, store.retain[bld._id].demo, obj)
 
-		// Тестирование запрещено - выход
+		// ДЕМО ВЫКЛЮЧЕН
 		if (!q) return
 
+		// ДЕМО ВКЛЮЧЕН
+		// Аккумулятор демо режима (сохраняется в retain для
+		// просмотра журнала и для работы после перезагрузки POS в полночь)
 		const demo = store.retain[bld._id].demo
+		// Код текущего теста
 		const code = checklist[demo.order].code
 
-		// Модули тестов проходим по всем, вработе только один чей code совпадает с обработчиком теста
-		checklist.forEach((el) => {
-			def[el.code](
-				bld,
-				obj,
-				mechB(bld?._id, bld?.type, obj, true),
-				store.retain[bld._id].demo,
-				code === el.code,
-			)
-		})
-		console.log(1234, demo)
+		// Обход тестов
+		runTests(bld, demo, obj, code)
+
+		// console.log(1234, demo)
 	})
 }
 

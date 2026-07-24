@@ -1,6 +1,7 @@
 const { data: store } = require('@store/index')
 const { initData } = require('./init_data')
 const { stop } = require('./fn')
+const { getIdB, getSectAuto } = require('@tool/get/building')
 
 /**
  * Инициализация Демо при старте
@@ -8,24 +9,30 @@ const { stop } = require('./fn')
  * @param {*} s Настройки демо
  * @returns
  */
-function initDemo(idB, s) {
+function initDemo(bld, s, obj) {
 	// Инициализация аккумулятора демо
-	store.retain[idB].demo ??= JSON.parse(initData)
-	const demo = store.retain[idB].demo
+	store.retain[bld._id].demo ??= JSON.parse(initData)
+	const demo = store.retain[bld._id].demo
 
 	// Условия выкл демо (сброс аккумулятора):
-	if (stop(idB, s, demo)) return
+	if (stop(bld, s, demo, obj)) return
 
 	// Демо уже в работе - выходим из инициализации
 	if (demo?.cur !== null) return console.log('DEMO ALREADY INIT', demo.cur)
 
 	// Первое включение Демо: инициализация
 	// 1. Вкл склад
-	store.retain[idB].start = true
+	store.retain[bld._id].start = true
+	// 2. Переключение секций из авто в ручной для демо режима
+	// Массив секций в авто
+	const idS = getSectAuto(bld._id, obj)
+	idS.forEach((el) => {
+		store.retain[bld._id].mode[el] = false
+	})
 	// Число отработанных циклов
 	demo.cur = 0
 	// Всего циклов >= 1
-	demo.total = s.total ?? 10
+	demo.total = s.total ?? 5
 	// Номер текущего теста
 	demo.order = 0
 	// Инициализируем журнал логов
@@ -34,7 +41,8 @@ function initDemo(idB, s) {
 	demo.timeD = new Date()
 	demo.timeC = demo.timeD
 	demo.timeT = demo.timeD
-
+	// false - однократная остановка еще не выполнялась
+	demo.firstOff = false
 	console.log('INIT DEMO', demo.cur)
 }
 

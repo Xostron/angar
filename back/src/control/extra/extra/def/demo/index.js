@@ -28,13 +28,12 @@ function demo(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan, clear 
 	const idB = bld._id
 	// Настройки демо
 	const stg = s?.demo
-	const t = [stg.drying, stg.cooling, stg.cure, stg.heat]
 	// Аккумулятор демо
-	const cur = obj.retain[bld?._id].demo
-	const stage = typeof demo?.cur === 'number' ? checklist[cur].name : '--'
-
-	if (stage) {
-		wrExtra(idB, null, 'demo', msgB(bld, 44, `${stage} ${runTime(demo.timeD)}`))
+	const demo = store.retain[bld?._id].demo
+	const test = checklist?.[demo.order]
+	if (demo.cur !== null) {
+		const txt = `Тест ${demo.order + 1} из ${checklist.length}. Цикл ${demo.cur + 1} из ${demo.total}.\n${test?.name} ${remTime(demo.timeT, test.last)}.`
+		wrExtra(idB, null, 'demo', msgB(bld, 44, txt))
 	} else {
 		delExtra(idB, null, 'demo')
 	}

@@ -1,8 +1,7 @@
 .banner {
 	display: flex;
 	gap: var(--fsz10);
-	transform: translate(-50%, 350px);
-	/* width: 40%; */
+	transform: translate(-50%, calc(50vh - 90px));
 }
 
 .banner-item {
@@ -16,15 +15,17 @@
 	padding: var(--fsz10);
 	gap: var(--fsz20);
 }
-
-.banner-1{
-    width: 20%;
+.banner-item > span {
+	white-space: pre-wrap;
+}
+.banner-1 {
+	width: 25%;
 }
 
-.banner-2{
-    width: 40%;
+.banner-2 {
+	width: 40%;
 }
 
-.banner-3{
-    width: 60%;
+.banner-3 {
+	width: 60%;
 }

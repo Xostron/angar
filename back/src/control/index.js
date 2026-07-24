@@ -18,6 +18,8 @@ const writeStore = require('./save/extra')
 const writeIO = require('../client/plc_io/write')
 const resetIO = require('../client/plc_io/reset')
 const { reset } = require('@tool/reset')
+const v8 = require('v8')
+const { performance, PerformanceObserver } = require('perf_hooks')
 
 // Контроль работы склада
 async function control() {
@@ -50,7 +52,7 @@ async function control() {
 		// В режиме микросервиса
 		obj.data.pc?.isIo ? await delay(300) : null
 		// await save(obj)
-		// await delay(4000)
+		await delay(4000)
 		Aboc.refresh()
 		return obj.data.pc?.isIo
 	} catch (error) {
@@ -61,11 +63,12 @@ async function control() {
 
 // Главный цикл управления
 async function loop() {
+	const total = os.cpus().length
+
 	while (!store.shutdown) {
 		// Точка отсчета цикла
 		const bgn = hrtime()
 		// Кол-во ядер ПЛК
-		const total = os.cpus().length
 		console.log(
 			'\x1b[36m%s\x1b[0m',
 			`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`,
@@ -90,6 +93,8 @@ async function loop() {
 		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${cycle.toFixed(2) + ' сек'}`)
 		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
 		if (cycle < 0.05) await delay(5000)
+		// console.log('Использовано памяти: ', process.memoryUsage())
+		// console.log('Статистика: ', v8.getHeapStatistics())
 	}
 	// Graceful Shutdown
 	store.end = true

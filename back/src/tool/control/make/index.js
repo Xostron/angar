@@ -48,7 +48,7 @@ function fnMake(o, type = 'read') {
 		// 3. Не указан интерфейс модуля
 		if (!def[type]?.[o.interface]) {
 			clearSignal(signal, onAbort)
-			resolve({ error: 'Не указан интерфейс модуля', info: opt })
+			resolve({ error: 'Не указан интерфейс модуля' })
 		}
 		// 4. Чтение/запись модуля
 		def[type]?.[o.interface](o.ip, o.port, o)

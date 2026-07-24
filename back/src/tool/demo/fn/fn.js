@@ -1,6 +1,100 @@
-const { data: store } = require('@store/index')
 const { initData, checklist } = require('./init_data')
 const { compareTime } = require('@tool/command/time')
+const { mechB } = require('@tool/command/mech')
+const { data: store } = require('@store/index')
+const def = require('../def_stage')
+
+/**
+ * Проверка хода тестов и завершение демо:
+ * Переключение теста
+ * Переключение цикла
+ * Конец демо: Очистка аккумуляторов демо
+ * @param {*} demo
+ * @returns {boolean} true - разрешить тесты
+ */
+function check(bld, s, demo, obj) {
+	// Демо выключено - выход
+	if (demo.cur === null) return false
+
+	// Контроль времени теста в текущем цикле
+	const t = demo.order < checklist.length && compareTime(demo.timeT, checklist[demo.order].last)
+	// Время теста прошло - переключаем на следующий
+	if (t) {
+		demo.order++
+		// Время теста
+		demo.timeT = new Date()
+	}
+
+	// Проверка цикла - переключение цикла
+	if (demo.order > checklist.length - 1) {
+		// Переключение теста
+		demo.order = 0
+		// Переключение цикла
+		demo.cur++
+		// Время цикла
+		demo.timeC = new Date()
+		// Время теста
+		demo.timeT = demo.timeC
+	}
+
+	// Условия выкл демо (сброс аккумулятора):
+	if (stop(bld, s, demo, obj)) return false
+
+	return true
+}
+
+/**
+ * Стоп демо и очистка аккумуляторов
+ * @param {*} bld Склад
+ * @param {*} s Пользовательские настройки демо
+ * @param {*} demo Аккумулятор демо
+ * @returns {boolean} true - стоп
+ */
+function stop(bld, s, demo, obj) {
+	// Условия выкл демо (сброс аккумулятора):
+	// 1. При выключении склада во время демо - выкл демо
+	// 2. Демо выключена по кнопке в настройках
+	// 3. Демо ПНР окончен
+	const tt = [
+		!store.retain[bld._id].start && typeof demo?.cur == 'number',
+		!s?.on,
+		demo.total !== null && demo.cur !== null && demo?.cur >= demo.total,
+	]
+	if (tt.some(Boolean)) {
+		clear(bld._id, demo)
+		// Если демо выключен - однократно выключаем все исполнительные механизмы
+		if (demo.cur === null && !demo.firstOff) {
+			runTests(bld, demo, obj)
+			demo.firstOff = true
+		}
+		console.log('STOP DEMO')
+		return true
+	}
+	return false
+}
+
+/**
+ * Обход тестов
+ * Тесты выполняются по очереди из checklist,
+ * Неактивные тесты - выключают свои исполнительные мех-мы
+ * Активные тесты - включают свои исполнительные мех-мы
+ * Активный тест - code, выбирается на основе demo.order - порядковый номер теста и
+ * массива тестов checklist
+ * @param {*} bld Склад
+ * @param {*} obj Глобальный объект
+ * @param {*} code Код теста
+ */
+function runTests(bld, demo, obj, code) {
+	checklist.forEach((el) => {
+		def[el.code](
+			bld,
+			obj,
+			mechB(bld?._id, bld?.type, obj, true),
+			demo,
+			code === el.code, // Разрешение на работу теста
+		)
+	})
+}
 
 /**
  * Очистка акуумуляторов и настроек демо, выкл склада
@@ -27,72 +121,8 @@ function clear(idB, demo) {
 	store.retain[idB].start = false
 }
 
-/**
- * Проверка хода тестов и завершение демо:
- * Переключение теста
- * Переключение цикла
- * Конец демо: Очистка аккумуляторов демо
- * @param {*} demo
- * @returns {boolean} true - разрешить тесты
- */
-function check(idB, s, demo) {
-	// Демо выключено - выход
-	if (demo.cur === null) return false
-
-	// Контроль времени теста в текущем цикле
-	const t = demo.order < checklist.length && compareTime(demo.timeT, checklist[demo.order].last)
-	// Время теста прошло - переключаем на следующий
-	if (t) {
-		demo.order++
-		// Время теста
-		demo.timeT = new Date()
-	}
-
-	// Проверка цикла - переключение цикла
-	if (demo.order > checklist.length - 1) {
-		// Переключение теста
-		demo.order = 0
-		// Переключение цикла
-		demo.cur++
-		// Время цикла
-		demo.timeC = new Date()
-		// Время теста
-		demo.timeT = demo.timeC
-	}
-
-	// Условия выкл демо (сброс аккумулятора):
-	if (stop(idB, s, demo)) return false
-
-	return true
-}
-
-/**
- * Стоп демо и очистка аккумуляторов
- * @param {*} idB
- * @param {*} s
- * @param {*} demo
- * @returns {boolean} true - стоп
- */
-function stop(idB, s, demo) {
-	// Условия выкл демо (сброс аккумулятора):
-	// 1. При выключении склада во время демо - выкл демо
-	// 2. Демо выключена по кнопке в настройках
-	// 3. Демо ПНР окончен
-	const tt = [
-		!store.retain[idB].start && typeof demo?.cur == 'number',
-		!s?.on,
-		demo.total !== null && demo.cur !== null && demo?.cur >= demo.total,
-	]
-	if (tt.some(Boolean)) {
-		clear(idB, demo)
-		console.log('STOP DEMO')
-		return true
-	}
-	return false
-}
-
 function isDemo(idB) {
 	return typeof store.retain?.[idB]?.demo?.cur == 'number'
 }
 
-module.exports = { stop, clear, check, isDemo }
+module.exports = { stop, clear, check, isDemo, runTests }

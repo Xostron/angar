@@ -11,7 +11,7 @@ const { compareTime } = require('@tool/command/time')
  * @returns {boolean} true - разрешить чтение модуля, false - блокировка на чтение
  */
 function timeout(idsB, idsM, ip, opt) {
-	if (!idsM.length) return true
+	if (!idsM?.length) return true
 	// Модуля нет в списке/еще не прошло время - разрешен
 	if (!debMdl(idsB, idsM, opt)) return true
 

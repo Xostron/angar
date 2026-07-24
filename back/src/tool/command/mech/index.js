@@ -141,8 +141,9 @@ function mechB(idB, type, obj, mod = false) {
 		data?.heating?.filter((el) => clrsId.includes(el.owner.id) && el.type === 'flap') ?? []
 
 	// Все вентиляторы склада: напорные, разгонные, вно испарителей
+	const idBSClr = [...idBS, ...clrsId]
 	const fanAll = data?.fan
-		?.filter((el) => idBS.includes(el.owner.id))
+		?.filter((el) => idBSClr.includes(el.owner.id))
 		.map((el) => {
 			// Поиск аналогового выхода ВНО
 			const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
@@ -151,13 +152,15 @@ function mechB(idB, type, obj, mod = false) {
 		})
 	// Все вентиляторы склада: напорные, вно испарителей
 	const fanB = data?.fan
-		?.filter((el) => idBS.includes(el.owner.id) && el.type !== 'accel')
+		?.filter((el) => idBSClr.includes(el.owner.id) && el.type !== 'accel')
 		.map((el) => {
 			// Поиск аналогового выхода ВНО
 			const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
+	// Все вентиляторы склада: напорные, вно испарителей - кроме выведенных из работы
+	const fanBexc = fanB.filter((el) => !obj?.value?.[el._id]?.off)
 	const services = data?.io?.filter((el) => el.bldId.includes(idB))
 
 	// Если склад типа холодильник
@@ -174,6 +177,7 @@ function mechB(idB, type, obj, mod = false) {
 	return {
 		fanA,
 		fanB,
+		fanBexc,
 		connect,
 		reset,
 		vlvIn,
