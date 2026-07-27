@@ -31,8 +31,9 @@ function demo(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan, clear 
 	// Аккумулятор демо
 	const demo = store.retain[bld?._id].demo
 	const test = checklist?.[demo.order]
+	const last = test.code != 'fan' ? test.last : (m.fanBexc.length ?? 1) * test.last
 	if (demo.cur !== null) {
-		const txt = `Тест ${demo.order + 1} из ${checklist.length}. Цикл ${demo.cur + 1} из ${demo.total}.\n${test?.name} ${remTime(demo.timeT, test.last)}.`
+		const txt = `Тест ${demo.order + 1} из ${checklist.length}. Цикл ${demo.cur + 1} из ${demo.total}.\n${test?.name} ${remTime(demo.timeT, last)}.`
 		wrExtra(idB, null, 'demo', msgB(bld, 44, txt))
 	} else {
 		delExtra(idB, null, 'demo')

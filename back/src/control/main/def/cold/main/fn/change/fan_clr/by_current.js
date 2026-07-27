@@ -9,7 +9,7 @@ const { compareTime } = require('@tool/command/time')
  * @param {*} s
  * @param {*} se
  * @param {*} acc
- * @returns {numbers} Задание ВНО испарителя
+ * @returns {number} Задание ВНО испарителя
  */
 function byCurrent(sp, clr, fan, s, se, acc) {
 	// console.log(11, acc)
@@ -19,7 +19,7 @@ function byCurrent(sp, clr, fan, s, se, acc) {
 	acc[clr._id].current.sp ??= s?.fan?.startSp
 	acc[clr._id].current.date ??= null
 	// У ВНО испарителя нет датчика тока - стандартное задание ПЧ
-	if (!check(fan, se)) return sp
+	if (!isCurrent(fan, se)) return sp
 
 	// Датчик тока есть
 	// Команда на повышение on/понижение off задания
@@ -38,7 +38,7 @@ module.exports = byCurrent
  * @param {*} se
  * @returns true - разрешено регулирование АО
  */
-function check(fan, se) {
+function isCurrent(fan, se) {
 	// Нет датчика
 	if (isNaN(se?.[fan._id]?.value)) return false
 	// Не выбраны характеристики двигателя

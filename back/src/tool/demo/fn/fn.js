@@ -1,6 +1,5 @@
 const { initData, checklist } = require('./init_data')
 const { compareTime } = require('@tool/command/time')
-const { mechB } = require('@tool/command/mech')
 const { data: store } = require('@store/index')
 const def = require('../def_stage')
 
@@ -12,12 +11,17 @@ const def = require('../def_stage')
  * @param {*} demo
  * @returns {boolean} true - разрешить тесты
  */
-function check(bld, s, demo, obj) {
+function check(bld, s, m, demo, obj) {
 	// Демо выключено - выход
 	if (demo.cur === null) return false
 
 	// Контроль времени теста в текущем цикле
-	const t = demo.order < checklist.length && compareTime(demo.timeT, checklist[demo.order].last)
+	let t = false
+	if (demo.order < checklist.length) {
+		const test = checklist[demo.order]
+		const last = test.code != 'fan' ? test.last : (m.fanBexc.length ?? 1) * test.last
+		t = compareTime(demo.timeT, last)
+	}
 	// Время теста прошло - переключаем на следующий
 	if (t) {
 		demo.order++
@@ -67,6 +71,7 @@ function stop(bld, s, demo, obj) {
 			runTests(bld, demo, obj)
 			demo.firstOff = true
 		}
+
 		console.log('STOP DEMO')
 		return true
 	}
@@ -84,14 +89,15 @@ function stop(bld, s, demo, obj) {
  * @param {*} obj Глобальный объект
  * @param {*} code Код теста
  */
-function runTests(bld, demo, obj, code) {
+function runTests(bld, m, demo, obj, code) {
 	checklist.forEach((el) => {
 		def[el.code](
 			bld,
 			obj,
-			mechB(bld?._id, bld?.type, obj, true),
+			m,
 			demo,
 			code === el.code, // Разрешение на работу теста
+			code,
 		)
 	})
 }
@@ -111,6 +117,7 @@ function clear(idB, demo) {
 	store.retain[idB].demo.cur = null
 	store.retain[idB].demo.total = null
 	store.retain[idB].demo.order = 0
+	store.retain[idB].demo.acc = {}
 
 	// Выкл демо в настройках
 	store.retain[idB].setting.demo ??= {}

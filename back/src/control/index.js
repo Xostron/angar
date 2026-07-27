@@ -18,8 +18,7 @@ const writeStore = require('./save/extra')
 const writeIO = require('../client/plc_io/write')
 const resetIO = require('../client/plc_io/reset')
 const { reset } = require('@tool/reset')
-const v8 = require('v8')
-const { performance, PerformanceObserver } = require('perf_hooks')
+
 
 // Контроль работы склада
 async function control() {

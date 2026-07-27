@@ -4,11 +4,11 @@ const _MIN_SP = 20
 const _HYST_VLV = 3
 
 // Записть в аналоговый выход
-function ctrlAO(o, bldId, value) {
+function ctrlAO(o, idB, value) {
 	if (typeof value != 'number' || Number.isNaN(value)) return
 	const mdlId = o?.ao?.id
 	const ch = o?.ao?.channel - 1
-	const r = { [bldId]: { [mdlId]: { [ch]: value || _MIN_SP } } }
+	const r = { [idB]: { [mdlId]: { [ch]: value || _MIN_SP } } }
 	setCmd(r)
 }
 
@@ -19,9 +19,9 @@ function ctrlAO(o, bldId, value) {
  * @param {*} type Тип команды включить/выключить =on | off
  * @returns
  */
-function ctrlDO(o, buildingId, type) {
+function ctrlDO(o, idB, type) {
 	if (!type) return null
-	const bldId = o?._build ?? buildingId
+	const bldId = o?._build ?? idB
 	const mdlId = o?.module?.id
 	const ch = o?.module?.channel - 1
 	const r = {}
@@ -40,9 +40,9 @@ function ctrlDO(o, buildingId, type) {
  * @param {*} type Тип команды (open,close,stop)
  * @returns
  */
-function ctrlV(vlv, buildingId, type) {
+function ctrlV(vlv, idB, type) {
 	if (!type) return null
-	const bldId = vlv?._build ?? buildingId
+	const bldId = vlv?._build ?? idB
 	const mdlOn = vlv?.module?.on?.id
 	const mdlOff = vlv?.module?.off?.id
 	const chOn = vlv?.module?.on?.channel - 1
@@ -139,4 +139,18 @@ function ctrlVsp(vlv, idB, sp) {
 	setCmd(s)
 }
 
-module.exports = { ctrlAO, ctrlDO, ctrlV, arrCtrlDO, ctrlVsp }
+/**
+ * Команда управления ВНО (вкл/выкл)
+ * + если есть ПЧ
+ * @param {*} o Вентилятор и т.д.
+ * @param {*} buildingId Ссылка на склад
+ * @param {*} type Тип команды включить/выключить =on | off
+ * @param {number} sp Задание ПЧ (0-100)
+ * @returns
+ */
+function ctrlADO(o, idB, type, sp = 20) {
+	ctrlDO(o, idB, type)
+	if (o?.ao) ctrlAO(o, idB, type === 'off' ? _MIN_SP : sp)
+}
+
+module.exports = { ctrlAO, ctrlDO, ctrlV, arrCtrlDO, ctrlVsp, ctrlADO }

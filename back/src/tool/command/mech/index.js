@@ -159,8 +159,29 @@ function mechB(idB, type, obj, mod = false) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
-	// Все вентиляторы склада: напорные, вно испарителей - кроме выведенных из работы
-	const fanBexc = fanB.filter((el) => !obj?.value?.[el._id]?.off)
+	// Демо - ВНО склада: только напорные - введенные в работу
+	const fanBN = data?.fan
+		?.filter(
+			(el) => idBS.includes(el.owner.id) && el.type !== 'accel' && !obj?.value?.[el._id]?.off,
+		)
+		.map((el) => {
+			// Поиск аналогового выхода ВНО
+			const ao = data.binding.find((b) => b.owner.id == el._id && b.type == 'ao')
+			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
+			return el
+		})
+
+	// Демо - Все вентиляторы склада: напорные, вно испарителей - введенные в работу (без дубляжей)
+	const fanBexc = Object.values(
+		fanB
+			.filter((el) => !obj?.value?.[el._id]?.off)
+			.reduce((acc, el, i) => {
+				if (acc[el.module.id + el.module.channel]) return acc
+				acc[el.module.id + el.module.channel] = el
+				return acc
+			}, {}),
+	)
+// console.log(123,fanBexc)
 	const services = data?.io?.filter((el) => el.bldId.includes(idB))
 
 	// Если склад типа холодильник
@@ -178,6 +199,7 @@ function mechB(idB, type, obj, mod = false) {
 		fanA,
 		fanB,
 		fanBexc,
+		fanBN,
 		connect,
 		reset,
 		vlvIn,

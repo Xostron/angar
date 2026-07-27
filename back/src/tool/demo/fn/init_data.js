@@ -23,22 +23,26 @@ const data = {
 		heat: {},
 		wetting: {},
 		ozon: {},
-		cooler: {},
+		coolerCool: {},
+		coolerFlap: {},
+		coolerHeat: {},
 	},
+	acc: {},
 }
 
 // Настройки каждого этапа тестирования
 const checklist = [
-	// { code: 'accel', last: 60 * 1000, name: 'Разгонные вентиляторы' },
+	{ code: 'accel', last: 60 * 1000, name: 'Разгонные вентиляторы' },
 	{ code: 'allFan', last: 600 * 1000, name: 'Включение всех вентиляторов' }, // одновременное вкл всех ВНО
-	// { code: 'fan', last: 60 * 1000, name: 'Включение вентиляторов по очереди' }, // поочередное вкл ВНО
+	{ code: 'fan', last: 30 * 1000, name: 'Включение вентиляторов по очереди' }, // поочередное вкл ВНО
 	// { code: 'valve', last: 60 * 1000 },
 	// { code: 'heat', last: 60 * 1000 },
 	// { code: 'wetting', last: 60 * 1000 },
 	// { code: 'ozon', last: 60 * 1000 },
-	// { code: 'cooler_cool', last: 60 * 1000 },
+	// { code: 'coolerCool', last: 60 * 1000 },
 	// { code: 'coolerFlap', last: 60 * 1000 },
-	// { code: 'cooler_heat', last: 60 * 1000 },
+	// { code: 'coolerHeat', last: 60 * 1000 },
+	// {code:'cinnabons', last:60*1000, name:'Синнабоны'}
 ]
 
 module.exports = { initData: JSON.stringify(data), checklist }

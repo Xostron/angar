@@ -37,7 +37,7 @@ function check(bld, obj, fanA, demo) {
 	fanA.forEach((el) => {
 		const v = obj?.value?.[el._id]
 		if (v?.state === 'stop' && !demo.checklist.accel[el._id])
-			demo.checklist.accel[el._id].stop = `ошибка конфигурации`
+			demo.checklist.accel[el._id].stop = `ошибка модуля или конфигурации`
 	})
 }
 
