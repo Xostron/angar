@@ -51,7 +51,7 @@ async function control() {
 		// В режиме микросервиса
 		obj.data.pc?.isIo ? await delay(300) : null
 		// await save(obj)
-		await delay(4000)
+		// await delay(4000)
 		Aboc.refresh()
 		return obj.data.pc?.isIo
 	} catch (error) {

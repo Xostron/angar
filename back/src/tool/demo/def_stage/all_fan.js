@@ -32,6 +32,7 @@ function allFan(bld, obj, mech, demo, permission, code) {
 	// Если нет ВНО пропускаем данный тест
 	if (!mech.fanBexc) {
 		demo.order++
+		demo.timeT = new Date()
 		arrCtrlDO(bld._id, mech.fanBexc, 'off')
 		return
 	}
@@ -62,13 +63,13 @@ function check(bld, obj, fans, demo) {
 		if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.allFan[el._id].debdo)
 			demo.checklist.allFan[el._id].debdo = 'частое включение'
 		// Модуль или Конфигурация
-		if (v.state == 'stop' && !demo.checklist.fan[el._id].stop)
+		if (v.state == 'stop' && !demo.checklist.allFan[el._id].stop)
 			demo.checklist.allFan[el._id].stop = 'ошибка модуля или конфигурации'
 		// Превышен ток двигателя
 		if (
 			v.state == 'run' &&
 			v.vai > (+el?.actuator?.current ?? 30) &&
-			!demo.checklist.fan[el._id].vai
+			!demo.checklist.allFan[el._id].vai
 		)
 			demo.checklist.allFan[el._id].vai = 'превышен ток двигателя'
 	})

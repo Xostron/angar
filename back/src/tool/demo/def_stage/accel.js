@@ -16,6 +16,7 @@ function accel(bld, obj, mech, demo, permission) {
 	// Если нет разгонников пропускаем данный тест
 	if (!mech.fanA) {
 		demo.order++
+		demo.timeT = new Date()
 		arrCtrlDO(bld._id, mech.fanA, 'off')
 		return
 	}

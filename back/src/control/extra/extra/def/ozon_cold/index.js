@@ -4,6 +4,7 @@ const { arrCtrlDO } = require('@tool/command/module_output')
 const { data: store } = require('@store')
 const { msgB } = require('@tool/message')
 const { getOzon } = require('../ozon_normal_combi/fn/prepare')
+const { isDemo } = require('@tool/demo/fn/fn')
 const h = 3600000
 
 /**
@@ -27,6 +28,8 @@ const h = 3600000
  * @returns
  */
 function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(bld._id)) return
 	const idB = bld._id
 	if (clear) return fnClear(idB)
 

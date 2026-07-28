@@ -1,13 +1,15 @@
 const accel = require('./accel')
 const allFan = require('./all_fan')
 const fan = require('./fan')
-// const cinnabons = require('./cinnabons')
+const heat = require('./heat')
+const valve = require('./valve')
 
 const data = {
 	accel,
 	allFan,
 	fan,
-	// cinnabons
+	heat,
+	valve
 }
 
 module.exports = data

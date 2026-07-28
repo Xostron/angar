@@ -36,6 +36,7 @@ const { msg } = require('@tool/message');
 const beep = require('./check/beep');
 const check = require('./check');
 const def = require('./def');
+const { isDemo } = require('@tool/demo/fn/fn')
 
 const modelist = {
 	off: 130,
@@ -47,6 +48,8 @@ const modelist = {
 
 // Увлажнение секции
 function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(bld._id)) return
 	const { retain, value, data } = obj;
 	const { wettingS } = m;
 	// Напорный вентилятор вкл/выкл?

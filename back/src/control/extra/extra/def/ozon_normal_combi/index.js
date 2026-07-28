@@ -6,6 +6,7 @@ const { fnClear } = require('@tool/smoking_ozon/fn')
 const { fnPrepare } = require('./fn/prepare')
 const { checkReady, checkOn, clearOacc } = require('./fn/check')
 const soft = require('@tool/smoking_ozon/soft')
+const { isDemo } = require('@tool/demo/fn/fn')
 const h = 3600000
 /**
  * Окуривание для Обычного и Комби склада:
@@ -34,6 +35,8 @@ const h = 3600000
  * @returns
  */
 function ozon(bld, section, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(bld._id)) return
 	const idB = bld._id
 	if (clear) return fnClear(idB, 'ozon')
 

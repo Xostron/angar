@@ -22,6 +22,7 @@ function fan(bld, obj, m, demo, permission, code) {
 	// Если нет разгонников пропускаем данный тест
 	if (!m.fanBexc) {
 		demo.order++
+		demo.timeT = new Date()
 		arrCtrlDO(bld._id, m.fanBexc, 'off')
 		return
 	}
@@ -34,7 +35,7 @@ function singleOn(bld, obj, fans, demo) {
 	demo.acc ??= {}
 	demo.acc.order ??= 0
 	// Все ВНО проверены
-	if (demo.acc.order === -1) return
+	// if (demo.acc.order === -1) return
 	demo.acc.time ??= new Date()
 	const chk = checklist[demo.order]
 
@@ -45,26 +46,19 @@ function singleOn(bld, obj, fans, demo) {
 			return
 		}
 		// Текущий ВНО (равный номеру очереди)
-		// Время прошло
 		const t = compareTime(demo.acc.time, chk.last)
+		// Время прошло
 		if (t) {
-			console.log(44, el.name, demo.acc.order, i)
 			ctrlADO(el, bld._id, 'off')
 			// Переключение на следующий ВНО с проверкой конца очереди
 			demo.acc.order += 1
 			demo.acc.time = new Date()
+			// Финиш теста ВНО, очистка аккума
 			if (typeof demo.acc.order == 'number' && demo.acc.order >= fans.length) {
-				console.log(
-					55,
-					el.name,
-					typeof demo.acc.order == 'number' && demo.acc.order >= fans.length,
-					typeof demo.acc.order == 'number',
-					demo.acc.order,
-					fans.length,
-					'delete.demo.acc',
-				)
 				delete demo.acc?.order
 				delete demo.acc?.time
+				demo.order++
+				demo.timeT = new Date()
 			}
 			return
 		}
@@ -73,10 +67,10 @@ function singleOn(bld, obj, fans, demo) {
 		check(el, bld, obj, demo)
 	})
 
-	console.log(22, fans.length, demo.acc)
+	console.log('test fan', demo.acc)
 }
 
-// Проверка вкл/выкл разгонник
+// Проверка вкл/выкл ВНО
 function check(el, bld, obj, demo) {
 	// Начинаем проверку с задержкой, чтобы изменения записи выходов вступили в силу
 	const t = compareTime(demo.acc.time, _delay)

@@ -118,6 +118,7 @@ function clear(idB, demo) {
 	store.retain[idB].demo.total = null
 	store.retain[idB].demo.order = 0
 	store.retain[idB].demo.acc = {}
+	store.retain[idB].demo.accVlv={}
 
 	// Выкл демо в настройках
 	store.retain[idB].setting.demo ??= {}

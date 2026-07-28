@@ -18,7 +18,6 @@ function writeTCP(host, port, opt) {
 			resolve({ error: e, info: opt })
 		})
 		socket.on('connect', (_) => {
-			// if (opt.ip === '192.168.21.126') console.log(55, opt.ip, opt._id, opt.value)
 			const { i, v } = regist(opt)
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {

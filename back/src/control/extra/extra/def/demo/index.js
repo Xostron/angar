@@ -30,7 +30,8 @@ function demo(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan, clear 
 	const stg = s?.demo
 	// Аккумулятор демо
 	const demo = store.retain[bld?._id].demo
-	const test = checklist?.[demo.order]
+	const test =
+		demo.order >= checklist.length ? checklist[checklist.length - 1] : checklist?.[demo.order]
 	const last = test.code != 'fan' ? test.last : (m.fanBexc.length ?? 1) * test.last
 	if (demo.cur !== null) {
 		const txt = `Тест ${demo.order + 1} из ${checklist.length}. Цикл ${demo.cur + 1} из ${demo.total}.\n${test?.name} ${remTime(demo.timeT, last)}.`

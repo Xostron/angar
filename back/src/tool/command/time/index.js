@@ -195,6 +195,17 @@ function onTime(code, acc) {
 	// console.log('\t' + code, runTime(acc.state[code]))
 }
 
+function deltaTime(t1, t2) {
+	try {
+		t1 = typeof t1 == 'string' ? new Date(t1) : t1
+		t2 = typeof t2 == 'string' ? new Date(t2) : t2
+		return t2 - t1
+	} catch (error) {
+		console.error('deltaTime', error)
+		return null
+	}
+}
+
 module.exports = {
 	ms,
 	delay,
@@ -207,4 +218,5 @@ module.exports = {
 	elapsedTime,
 	onTime,
 	remTime,
+	deltaTime,
 }
