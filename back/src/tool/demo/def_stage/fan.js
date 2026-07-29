@@ -51,9 +51,9 @@ function singleOn(bld, obj, fans, demo) {
 		if (t) {
 			ctrlADO(el, bld._id, 'off')
 			// Переключение на следующий ВНО с проверкой конца очереди
-			demo.acc.order += 1
+			demo.acc.order++
 			demo.acc.time = new Date()
-			// Финиш теста ВНО, очистка аккума
+			// Финиш теста ВНО, очистка аккума, переход к следующему тесту
 			if (typeof demo.acc.order == 'number' && demo.acc.order >= fans.length) {
 				delete demo.acc?.order
 				delete demo.acc?.time
@@ -67,7 +67,7 @@ function singleOn(bld, obj, fans, demo) {
 		check(el, bld, obj, demo)
 	})
 
-	console.log('test fan', demo.acc)
+	// console.log('test fan', demo.acc)
 }
 
 // Проверка вкл/выкл ВНО

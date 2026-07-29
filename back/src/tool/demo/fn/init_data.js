@@ -30,19 +30,24 @@ const data = {
 	acc: {},
 }
 
-// Настройки каждого этапа тестирования
+//
+/**
+ * Настройки каждого этапа тестирования
+ * по code отрабатывается тест из ./def_stage
+ * last - длительность теста, кроме теста fan, здесь last время работы одного ВНО,
+ * общая длительность теста fan = (кол-во ВНО * last)
+ */
 const checklist = [
-	{ code: 'accel', last: 3* 60 * 1000, name: 'Разгонные вентиляторы' },
-	{ code: 'allFan', last: 5 * 60 * 1000, name: 'Включение всех вентиляторов' }, // одновременное вкл всех ВНО
-	{ code: 'fan', last: 60 * 1000, name: 'Включение вентиляторов по очереди' }, // поочередное вкл ВНО
-	{ code: 'heat', last: 3* 60 * 1000 , name:'Подогрев клапанов'},
-	{ code: 'valve', last: 600 * 1000, name: 'Откр/закр клапанов' },
-	// { code: 'wetting', last: 60 * 1000 },
-	// { code: 'ozon', last: 60 * 1000 },
+	// { code: 'accel', last: 1 * 60 * 1000, name: 'Разгонные вентиляторы' },
+	// { code: 'allFan', last: 1 * 60 * 1000, name: 'Включение всех вентиляторов' },
+	// { code: 'fan', last: 60 * 1000, name: 'Включение вентиляторов по очереди' },
+	// { code: 'heat', last: 3 * 60 * 1000, name: 'Подогрев клапанов' },
+	// { code: 'valve', last: 5 * 60 * 1000, name: 'Откр/закр клапанов' },
+	// { code: 'wetting', last: 60 * 1000, name: 'Включение увлажнителей' },
+	{ code: 'ozon', last: 5 * 60 * 1000, name: 'Включение озонаторов' },
 	// { code: 'coolerCool', last: 60 * 1000 },
 	// { code: 'coolerFlap', last: 60 * 1000 },
 	// { code: 'coolerHeat', last: 60 * 1000 },
-	// {code:'cinnabons', last:60*1000, name:'Синнабоны'}
 ]
 
 module.exports = { initData: JSON.stringify(data), checklist }

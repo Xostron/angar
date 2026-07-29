@@ -6,7 +6,7 @@ const _delay = 10_000
 // Допустимое расхождение между временем открытия и закрытия не более 10сек
 const _timeLimit = 30_000
 /**
- * Тест одновременное вкл всех ВНО
+ * Тест одновременное откр/закр клапанов
  * @param {*} bld Склад
  * @param {*} obj Глобальные данные
  * @param {*} mech Собранные исполнительные механизмы
@@ -37,7 +37,7 @@ function valve(bld, obj, mech, demo, permission, code) {
 		check(bld, obj, el, demo)
 	})
 	finish(mech.vlvAll, demo)
-	console.log(22,demo)
+	// console.log(22,demo)
 }
 
 // Проверка вкл/выкл клапан
