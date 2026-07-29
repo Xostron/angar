@@ -79,7 +79,7 @@ function check(el, bld, obj, demo) {
 	// Время прошло - мониторим состояние разгонника
 
 	const v = obj?.value?.[el._id]
-	demo.checklist.fan[el._id] = {}
+	demo.checklist.fan[el._id] ??= {}
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
 	if (v.qf && !demo.checklist.fan[el._id].qf) demo.checklist.fan[el._id].qf = 'автомат выбит'
 	// Перегрев двигателя heat: true - перегрев, false - ок, null - неисправен модуль

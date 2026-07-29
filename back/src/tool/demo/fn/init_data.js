@@ -39,15 +39,15 @@ const data = {
  */
 const checklist = [
 	// { code: 'accel', last: 1 * 60 * 1000, name: 'Разгонные вентиляторы' },
-	// { code: 'allFan', last: 1 * 60 * 1000, name: 'Включение всех вентиляторов' },
+	{ code: 'allFan', last: 3 * 60 * 1000, name: 'Включение всех вентиляторов' },
 	// { code: 'fan', last: 60 * 1000, name: 'Включение вентиляторов по очереди' },
 	// { code: 'heat', last: 3 * 60 * 1000, name: 'Подогрев клапанов' },
 	// { code: 'valve', last: 5 * 60 * 1000, name: 'Откр/закр клапанов' },
 	// { code: 'wetting', last: 60 * 1000, name: 'Включение увлажнителей' },
-	{ code: 'ozon', last: 5 * 60 * 1000, name: 'Включение озонаторов' },
-	// { code: 'coolerCool', last: 60 * 1000 },
-	// { code: 'coolerFlap', last: 60 * 1000 },
-	// { code: 'coolerHeat', last: 60 * 1000 },
+	// { code: 'ozon', last: 1 * 60 * 1000, name: 'Включение озонаторов' },
+	// { code: 'coolerCool', last: 5 * 1000, name: 'Включение испарителей' },
+	// { code: 'coolerFlap', last: 30 * 1000, name:"Включение заслонок испарителей" },
+	// { code: 'coolerHeat', last: 30 * 1000, name:"Включение оттайки испарителей" },
 ]
 
 module.exports = { initData: JSON.stringify(data), checklist }

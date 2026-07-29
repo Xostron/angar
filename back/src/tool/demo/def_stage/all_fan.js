@@ -3,6 +3,7 @@ const { compareTime } = require('@tool/command/time')
 const { isExtralrm } = require('@tool/message/extralrm')
 // 10сек
 const _delay = 10_000
+const _min_volt = 365
 
 /**
  * Тест одновременное вкл всех ВНО
@@ -52,9 +53,9 @@ function check(bld, obj, fans, demo) {
 
 	fans.forEach((el) => {
 		const v = obj?.value?.[el._id]
-		demo.checklist.allFan[el._id] = {}
+		demo.checklist.allFan[el._id] ??= {}
 		// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
-		if (v.qf && !demo.checklist.allFan[el._id].qf)
+		if (v?.qf && !demo.checklist.allFan[el._id].qf)
 			demo.checklist.allFan[el._id].qf = 'автомат выбит'
 		// Перегрев двигателя heat: true - перегрев, false - ок, null - неисправен модуль
 		if (v.heat && !demo.checklist.allFan[el._id].heat)
@@ -73,6 +74,30 @@ function check(bld, obj, fans, demo) {
 		)
 			demo.checklist.allFan[el._id].vai = 'превышен ток двигателя'
 	})
+
+	fnVolt(bld, obj, demo)
+	// if ( !demo.checklist.allFan?.voltage)
 }
 
 module.exports = allFan
+
+function fnVolt(bld, obj, demo) {
+	// Низкое напряжение сети
+	const deviceVolt = obj.data.device.filter((el) => el.device.code == 'pui')
+	let ownerName = 'склада'
+
+	deviceVolt.forEach((el) => {
+		demo.checklist.allFan[el._id] ??= {}
+		const volt = obj.value?.[el._id]
+		const sect = obj.data.section.find((sec) => sec._id === el.sectionId)
+		console.log(deviceVolt.length)
+		if (deviceVolt.length > 1) ownerName = sect?.name ?? ''
+		for (const key in volt) {
+			if (key == 'state') continue
+			if (volt[key] < _min_volt && !demo.checklist.allFan[el._id][key])
+				demo.checklist.allFan[el._id][key] =
+					`низкое напряжение на входе ${ownerName}, фаза ${key} = ${volt[key]}В`
+		}
+		// console.log(el)
+	})
+}

@@ -44,7 +44,7 @@ function check(bld, obj, heat, demo) {
 
 	heat.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
-		demo.checklist.heat[el._id] = {}
+		demo.checklist.heat[el._id] ??= {}
 		// Модуль или Конфигурация
 		if (v===false && !demo.checklist.heat[el._id].stop)
 			demo.checklist.heat[el._id].stop = 'ошибка модуля или конфигурации'

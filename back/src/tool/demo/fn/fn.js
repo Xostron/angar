@@ -42,7 +42,7 @@ function check(bld, s, m, demo, obj) {
 	}
 
 	// Условия выкл демо (сброс аккумулятора):
-	if (stop(bld, s, demo, obj)) return false
+	if (stop(bld, s, m, demo, obj)) return false
 
 	return true
 }
@@ -54,7 +54,7 @@ function check(bld, s, m, demo, obj) {
  * @param {*} demo Аккумулятор демо
  * @returns {boolean} true - стоп
  */
-function stop(bld, s, demo, obj) {
+function stop(bld, s, m, demo, obj) {
 	// Условия выкл демо (сброс аккумулятора):
 	// 1. При выключении склада во время демо - выкл демо
 	// 2. Демо выключена по кнопке в настройках
@@ -68,7 +68,7 @@ function stop(bld, s, demo, obj) {
 		clear(bld._id, demo)
 		// Если демо выключен - однократно выключаем все исполнительные механизмы
 		if (demo.cur === null && !demo.firstOff) {
-			runTests(bld, demo, obj)
+			runTests(bld, m, demo, obj )
 			demo.firstOff = true
 		}
 
@@ -119,6 +119,7 @@ function clear(idB, demo) {
 	store.retain[idB].demo.order = 0
 	store.retain[idB].demo.acc = {}
 	store.retain[idB].demo.accVlv={}
+	store.retain[idB].demo.accClr={}
 
 	// Выкл демо в настройках
 	store.retain[idB].setting.demo ??= {}

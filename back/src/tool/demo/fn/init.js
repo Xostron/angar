@@ -9,13 +9,13 @@ const { getIdB, getSectAuto } = require('@tool/get/building')
  * @param {*} s Настройки демо
  * @returns
  */
-function initDemo(bld, s, obj) {
+function initDemo(bld, s,m, obj) {
 	// Инициализация аккумулятора демо
 	store.retain[bld._id].demo ??= JSON.parse(initData)
 	const demo = store.retain[bld._id].demo
 
 	// Условия выкл демо (сброс аккумулятора):
-	if (stop(bld, s, demo, obj)) return
+	if (stop(bld, s,m, demo, obj)) return
 
 	// Демо уже в работе - выходим из инициализации
 	if (demo?.cur !== null) return console.log('DEMO ALREADY INIT', demo.cur)

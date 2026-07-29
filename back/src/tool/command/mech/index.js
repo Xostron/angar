@@ -181,7 +181,7 @@ function mechB(idB, type, obj, mod = false) {
 				return acc
 			}, {}),
 	)
-// console.log(123,fanBexc)
+
 	const services = data?.io?.filter((el) => el.bldId.includes(idB))
 
 	// Если склад типа холодильник
@@ -195,6 +195,19 @@ function mechB(idB, type, obj, mod = false) {
 			sect[el._id] = mech(obj, el._id, idB)
 		})
 
+	// Демо - Рабочие испарители рабочих секций
+	const coolerB = idBS
+		.reduce((acc, id) => {
+			if (!sect?.[id]) return acc
+			acc.push(...sect[id].coolerS)
+			return acc
+		}, [])
+		.filter((clr) => {
+			// console.log(clr.name, obj.value?.[clr._id])
+			return obj.value?.[clr._id].status === undefined
+		})
+	const flapB = coolerB.flatMap((el) => el.flap).filter(Boolean)
+	const heatClrB = coolerB.flatMap((el) => el.heating).filter(Boolean)
 	return {
 		fanA,
 		fanB,
@@ -215,6 +228,9 @@ function mechB(idB, type, obj, mod = false) {
 		sect,
 		ozon,
 		services,
+		coolerB,
+		flapB,
+		heatClrB,
 	}
 }
 

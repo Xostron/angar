@@ -3,6 +3,7 @@ const { ctrlAO, ctrlDO } = require('@tool/command/module_output')
 const { isCombiCold } = require('@tool/combi/is')
 const ctrlFanClr = require('./fan_clr/fan_clr')
 const ctrlFlap = require('./flap')
+const { isDemo } = require('@tool/demo/fn/fn')
 const _MIN_SP = 20
 
 // Склад холодильник (пока без ступеней и без заслонки оттайки на 18.11.2025)
@@ -49,7 +50,7 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, fl, code, clr, obj) {
 	// Управление механизмами
 	// Ступенчатое управление соленоидами
 	// softsol(idB, solenoid, sl, f, h, clr, accAuto)
-
+	if (isDemo(bld._id)) return
 	// Включение всех соленоидов испарителя (null - игнор команды, 0 - выкл, 1 - вкл)
 	sl !== null ? solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off')) : null
 

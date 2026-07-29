@@ -20,6 +20,8 @@ function ctrlAO(o, idB, value) {
  * @returns
  */
 function ctrlDO(o, idB, type) {
+	// console.log(44, o.name, o._id, type)
+	// console.trace()
 	if (!type) return null
 	const bldId = o?._build ?? idB
 	const mdlId = o?.module?.id

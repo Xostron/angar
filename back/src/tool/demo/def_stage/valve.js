@@ -28,8 +28,6 @@ function valve(bld, obj, mech, demo, permission, code) {
 		return
 	}
 
-	demo.accVlv ??= {}
-
 	// Открыть клапаны
 	mech.vlvAll.forEach((el) => {
 		fnPipeline(bld, obj, el, demo)
@@ -51,7 +49,7 @@ function check(bld, obj, el, demo) {
 
 	// Время прошло - мониторим состояние разгонника
 	const v = obj?.value?.[el._id]
-	demo.checklist.valve[el._id] = {}
+	demo.checklist.valve[el._id] ??= {}
 
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
 	if (v.crash && !demo.checklist.valve[el._id].crash)
@@ -76,6 +74,7 @@ function check(bld, obj, el, demo) {
 
 // Последовательность тестирования клапаном
 function fnPipeline(bld, obj, el, demo) {
+	demo.accVlv ??= {}
 	demo.accVlv[el._id] ??= {}
 	const acc = demo.accVlv[el._id]
 	const v = obj?.value?.[el._id]

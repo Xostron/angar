@@ -45,7 +45,7 @@ function check(bld, obj, oz, demo) {
 
 	oz.forEach((el) => {
 		const v = obj?.value?.[el._id]
-		demo.checklist.ozon[el._id] = {}
+		demo.checklist.ozon[el._id] ??= {}
 		// beep Выключен автомат
 		if (isExtralrm(bld._id, null, 'ozon3') && !demo.checklist.ozon[el._id].beep)
 			demo.checklist.ozon[el._id].beep = 'выключен автомат'
