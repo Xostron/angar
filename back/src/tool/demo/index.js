@@ -1,8 +1,9 @@
 const { data: store } = require('@store/index')
 const { checklist } = require('./fn/init_data')
 const { initDemo } = require('./fn/init')
-const { check, runTests } = require('./fn/fn')
+const { check } = require('./fn/fn')
 const { mechB } = require('@tool/command/mech')
+const runTests = require('./def_stage')
 
 /**
  * Инициализация демо

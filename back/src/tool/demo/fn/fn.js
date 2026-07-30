@@ -1,7 +1,7 @@
-const { initData, checklist } = require('./init_data')
+const { checklist } = require('./init_data')
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store/index')
-const def = require('../def_stage')
+const runTests = require('../def_stage')
 
 /**
  * Проверка хода тестов и завершение демо:
@@ -68,7 +68,7 @@ function stop(bld, s, m, demo, obj) {
 		clear(bld._id, demo)
 		// Если демо выключен - однократно выключаем все исполнительные механизмы
 		if (demo.cur === null && !demo.firstOff) {
-			runTests(bld, m, demo, obj )
+			runTests(bld, m, demo, obj)
 			demo.firstOff = true
 		}
 
@@ -76,30 +76,6 @@ function stop(bld, s, m, demo, obj) {
 		return true
 	}
 	return false
-}
-
-/**
- * Обход тестов
- * Тесты выполняются по очереди из checklist,
- * Неактивные тесты - выключают свои исполнительные мех-мы
- * Активные тесты - включают свои исполнительные мех-мы
- * Активный тест - code, выбирается на основе demo.order - порядковый номер теста и
- * массива тестов checklist
- * @param {*} bld Склад
- * @param {*} obj Глобальный объект
- * @param {*} code Код теста
- */
-function runTests(bld, m, demo, obj, code) {
-	checklist.forEach((el) => {
-		def[el.code](
-			bld,
-			obj,
-			m,
-			demo,
-			code === el.code, // Разрешение на работу теста
-			code,
-		)
-	})
 }
 
 /**
@@ -117,9 +93,10 @@ function clear(idB, demo) {
 	store.retain[idB].demo.cur = null
 	store.retain[idB].demo.total = null
 	store.retain[idB].demo.order = 0
-	store.retain[idB].demo.acc = {}
-	store.retain[idB].demo.accVlv={}
-	store.retain[idB].demo.accClr={}
+	store.retain[idB].demo.accF = {}
+	store.retain[idB].demo.accVlv = {}
+	store.retain[idB].demo.accClr = {}
+	store.retain[idB].demo.accAllFan = {}
 
 	// Выкл демо в настройках
 	store.retain[idB].setting.demo ??= {}
@@ -134,4 +111,4 @@ function isDemo(idB) {
 	return typeof store.retain?.[idB]?.demo?.cur == 'number'
 }
 
-module.exports = { stop, clear, check, isDemo, runTests }
+module.exports = { stop, clear, check, isDemo }

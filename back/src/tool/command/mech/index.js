@@ -4,9 +4,10 @@ const { getDevice, getVnoClr, getVno } = require('./get')
 
 /**
  * Исполнительные механизмы секции
- * @param {*} obj Глобальный объект с рамой и значениями
- * @param {*} idBS ИД секции
- * @param {*} idB ИД склада
+ * @param {object} obj Глобальный объект с рамой и значениями
+ * @param {string} idBS ИД секции
+ * @param {string} idB ИД склада
+ * @param {boolean|undefined} mod true - данные для демо (не учитываются ВЫКЛ секции)
  * @returns
  */
 function mech(obj, idS, idB) {
@@ -208,6 +209,16 @@ function mechB(idB, type, obj, mod = false) {
 		})
 	const flapB = coolerB.flatMap((el) => el.flap).filter(Boolean)
 	const heatClrB = coolerB.flatMap((el) => el.heating).filter(Boolean)
+	// Демо - Датчики темп канала - рабочие с рабочих секций
+	const tcnlB = data.sensor.filter(
+		(el) =>
+			idBS.includes(el.owner.id) && obj.value?.[el._id]?.state == 'on' && el.type == 'tcnl',
+	)
+	// Датчики давления в канале
+	const pB = data.sensor.filter(
+		(el) => idBS.includes(el.owner.id) && obj.value?.[el._id]?.state == 'on' && el.type == 'p',
+	)
+	// if (mod) console.log(11, mod, tcnlB)
 	return {
 		fanA,
 		fanB,
@@ -231,6 +242,8 @@ function mechB(idB, type, obj, mod = false) {
 		coolerB,
 		flapB,
 		heatClrB,
+		tcnlB,
+		pB,
 	}
 }
 

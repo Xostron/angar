@@ -1,8 +1,8 @@
 const { arrCtrlDO, ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
-const { get } = require('@tool/get/sensor')
-const { isExtralrm } = require('@tool/message/extralrm')
 const { data: store } = require('@store/index')
+const { get } = require('@tool/get/sensor')
+const { stasis } = require('../fn')
 // 10сек
 const _delay = 60_000
 
@@ -72,7 +72,7 @@ function control(bld, obj, coolerB, demo) {
 		} else if (tmpV.value >= s.cold) arrCtrlDO(bld._id, el.fan, 'off')
 
 		// Фиксируем начальную температуру испарителя
-		stasis('tmp', tmpV, demo, acc)
+		stasis('tmp', tmpV, acc)
 		// stasis('pin', pinV, demo, acc)
 		// stasis('pout', poutV, demo, acc)
 		// Проверка и запись неисправностей в журнал
@@ -145,9 +145,4 @@ function arrCtrl(idB, coolerB) {
 		arrCtrlDO(idB, el.solenoid, 'off')
 		arrCtrlDO(idB, el.fan, 'off')
 	})
-}
-
-// Через 1 минуту фиксируем показание датчика в аккумуляторе
-function stasis(code, v, demo, acc) {
-	if (acc?.[code] === undefined || acc?.[code].value === null) acc[code] = v
 }
