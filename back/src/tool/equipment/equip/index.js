@@ -25,9 +25,9 @@
 ], 
 factory:{}
 }*/
-const { debugJson } = require('@tool/json')
-const building = require('./building')
-const factory = require('./factory')
+const { debugJson } = require('@tool/json');
+const building = require('./building');
+const factory = require('./factory');
 
 /**
  * Конфигурация рамы для web
@@ -39,9 +39,11 @@ function equip(data) {
 		building: data?.building?.map((el) => building(el, data)),
 		factory: factory(data?.factory),
 		weather: data?.weather,
-	}
+		// Доп склады
+		remote: data?.remote,
+	};
 	// debugJson('awe', result.building, __dirname)
-	return result
+	return result;
 }
 
-module.exports = equip
+module.exports = equip;

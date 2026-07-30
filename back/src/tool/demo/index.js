@@ -31,7 +31,6 @@ function fnDemo(obj) {
 		const demo = store.retain[bld._id].demo
 		// Код текущего теста
 		const code = checklist[demo.order].code
-
 		// Обход тестов
 		runTests(bld, m, demo, obj, code)
 

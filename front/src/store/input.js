@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 // Данные от сервера: датчики, режимы, настройки
 const useInputStore = create((set, get) => ({
@@ -13,114 +13,114 @@ const useInputStore = create((set, get) => ({
 	alarm: {},
 	// Инициализация входов
 	initIn: (r) => {
-		return set({ input: r })
+		return set({ input: r });
 	},
-// Замена для initIn
-	refreshIn:(r)=>{
-
+	// Получить bCard склада по id
+	getBCard(buildingId) {
+		if (!buildingId) return null;
+		return get()?.input?.bCard?.[buildingId] ?? null;
 	},
-
 	// Аварийные сообщения
 	initAlr: (r) => {
-		return set({ alarm: r })
+		return set({ alarm: r });
 	},
 	// Получить значение сигнала (концевик, обр связь вентилятора)
 	getSignal(id) {
-		const signal = get()?.input?.[id]
-		return signal
+		const signal = get()?.input?.[id];
+		return signal;
 	},
 
 	// Получить готовое значение с датчика (с коррекцией)
 	getValue(sensorId) {
-		const input = get().input
-		return input?.[sensorId]?.value ?? null
+		const input = get().input;
+		return input?.[sensorId]?.value ?? null;
 	},
 	getSens(sensorId) {
-		const input = get().input
-		return input?.[sensorId]
+		const input = get().input;
+		return input?.[sensorId];
 	},
 	getRaw(sensorId) {
-		const input = get().input
-		return input?.[sensorId]?.raw
+		const input = get().input;
+		return input?.[sensorId]?.raw;
 	},
 	// Получить мин, макс
 	getMinMax(arrSens, info = []) {
 		const n = [
 			{ ...info[0], value: null },
 			{ ...info[1], value: null },
-		]
-		if (!arrSens) return n
-		const result = []
+		];
+		if (!arrSens) return n;
+		const result = [];
 		for (const o of arrSens) {
-			const value = get().getValue(o?._id)
-			if (value == null) continue
-			result.push(value)
+			const value = get().getValue(o?._id);
+			if (value == null) continue;
+			result.push(value);
 		}
 		if (result.length === 1) {
 			return [
 				{ ...info[0], value: result?.[0] },
 				{ ...info[1], value: result?.[0] },
-			]
+			];
 		}
 		// сортировка по возрастанию
-		result.sort((a, b) => a - b)
+		result.sort((a, b) => a - b);
 		return [
 			{ ...info[0], value: result?.[0] },
 			{ ...info[1], value: result?.[result.length - 1] },
-		]
+		];
 	},
 	// Получить раму датчика и его значение min или max
 	getValueGr(arrSens, type, max = false) {
-		if (!arrSens) return { value: null, type }
-		const input = get().input
+		if (!arrSens) return { value: null, type };
+		const input = get().input;
 		const r = arrSens
 			?.map((el) => ({ ...el, ...input?.[el?._id] }))
 			?.filter((el) => el?.on === true)
-			?.sort((a, b) => a.value - b.value)
-		if (max) return r[r.length - 1]
-		return r[0]
+			?.sort((a, b) => a.value - b.value);
+		if (max) return r[r.length - 1];
+		return r[0];
 	},
 	getTotalBy(key, type, id) {
-		const o = get()?.input?.total?.[id]?.[key]
-		return { state: o?.state, value: o?.[type] }
+		const o = get()?.input?.total?.[id]?.[key];
+		return { state: o?.state, value: o?.[type] };
 	},
 	getTotal(key, type) {
-		const o = get()?.input?.total?.[key]
-		return { state: o?.state, value: o?.[type] }
+		const o = get()?.input?.total?.[key];
+		return { state: o?.state, value: o?.[type] };
 	},
 	getFan(fan) {
-		const r = get()?.input?.[fan?._id] ?? {}
-		return { ...fan, ...r }
+		const r = get()?.input?.[fan?._id] ?? {};
+		return { ...fan, ...r };
 	},
 	factory: () => get()?.input?.factory?.setting,
 	// Процент открытия клапана
 	posV(vlvId, buildId) {
-		const retain = get().input.retain
+		const retain = get().input.retain;
 		// время открытия клапана (калибровка)
-		const f = retain?.[buildId]?.valve?.[vlvId] ?? 1
+		const f = retain?.[buildId]?.valve?.[vlvId] ?? 1;
 		// Текущая позиция клапана, мс
-		const t = retain?.[buildId]?.valvePosition?.[vlvId] ?? 0
+		const t = retain?.[buildId]?.valvePosition?.[vlvId] ?? 0;
 		// Текущая позиция (%)
-		return ((t * 100) / f)?.toFixed(0)
+		return ((t * 100) / f)?.toFixed(0);
 	},
 	// Cостояние клапана
 	stateV(vlvId) {
-		if (!vlvId) return null
-		const input = get().input
-		const output = get().input.outputEq
-		const opn = input?.[vlvId]?.open
-		const cls = input?.[vlvId]?.close
-		const iopn = output?.[vlvId]?.open
-		const icls = output?.[vlvId]?.close
-		if ((opn && cls) || (iopn && icls)) return 'alr'
-		if (!opn && !cls && !iopn && !icls) return 'popn'
-		if (iopn) return 'iopn'
-		if (icls) return 'icls'
-		if (opn) return 'opn'
-		if (cls) return 'cls'
+		if (!vlvId) return null;
+		const input = get().input;
+		const output = get().input.outputEq;
+		const opn = input?.[vlvId]?.open;
+		const cls = input?.[vlvId]?.close;
+		const iopn = output?.[vlvId]?.open;
+		const icls = output?.[vlvId]?.close;
+		if ((opn && cls) || (iopn && icls)) return 'alr';
+		if (!opn && !cls && !iopn && !icls) return 'popn';
+		if (iopn) return 'iopn';
+		if (icls) return 'icls';
+		if (opn) return 'opn';
+		if (cls) return 'cls';
 	},
 	automode(buildingId) {
-		return get().input?.retain?.[buildingId]?.automode
+		return get().input?.retain?.[buildingId]?.automode;
 	},
 	// Вернуть массив аварий-баннеров для склада
 	bannerB(idB, code) {
@@ -146,29 +146,31 @@ const useInputStore = create((set, get) => ({
 	},
 	// Вернуть массив аварий-баннеров для секции
 	bannerS(idB, idS) {
-		if (!idB || !idS) return []
-		const arr = []
+		if (!idB || !idS) return [];
+		const arr = [];
 		const local =
-			get()?.alarm?.banner?.local?.[idB]?.[idS] ?? get()?.alarm?.banner?.local?.[idB]?.[idB]
-		const connect = get()?.alarm?.banner?.connect?.[idB]
-		const notTune = get()?.alarm?.banner?.notTune?.[idB]
-		const battery = get()?.alarm?.banner?.battery?.[idB]
+			get()?.alarm?.banner?.local?.[idB]?.[idS] ??
+			get()?.alarm?.banner?.local?.[idB]?.[idB];
+		const connect = get()?.alarm?.banner?.connect?.[idB];
+		const notTune = get()?.alarm?.banner?.notTune?.[idB];
+		const battery = get()?.alarm?.banner?.battery?.[idB];
 		const supply =
-			get()?.alarm?.banner?.supply?.[idB]?.[idS] ?? get()?.alarm?.banner?.supply?.[idB]?.[idB]
-		const bldOff = get()?.alarm?.banner?.bldOff?.[idB]
-		const plcio = get()?.alarm?.banner?.plcio?.[idB]
-		const demo = get()?.alarm?.banner?.demo?.[idB]
+			get()?.alarm?.banner?.supply?.[idB]?.[idS] ??
+			get()?.alarm?.banner?.supply?.[idB]?.[idB];
+		const bldOff = get()?.alarm?.banner?.bldOff?.[idB];
+		const plcio = get()?.alarm?.banner?.plcio?.[idB];
+		const demo = get()?.alarm?.banner?.demo?.[idB];
 
-		local ? arr.push(local) : null
-		connect ? arr.push(connect) : null
-		notTune ? arr.push(notTune) : null
-		battery ? arr.push(battery) : null
-		supply ? arr.push(supply) : null
-		bldOff ? arr.push(bldOff) : null
-		plcio ? arr.push(plcio) : null
-		demo ? arr.push(demo) : null
-		return arr
+		local ? arr.push(local) : null;
+		connect ? arr.push(connect) : null;
+		notTune ? arr.push(notTune) : null;
+		battery ? arr.push(battery) : null;
+		supply ? arr.push(supply) : null;
+		bldOff ? arr.push(bldOff) : null;
+		plcio ? arr.push(plcio) : null;
+		demo ? arr.push(demo) : null;
+		return arr;
 	},
-}))
+}));
 
-export default useInputStore
+export default useInputStore;

@@ -1,35 +1,43 @@
 import { Link } from 'react-router-dom'
+import { useShallow } from 'zustand/react/shallow'
+import { useStoreWithEqualityFn } from 'zustand/traditional'
 import Mode from './mode'
 import Tout from './tout'
-import Alarm from './alarm'
-import { useShallow } from 'zustand/react/shallow'
 import useViewStore from '@store/view'
 import useInputStore from '@store/input'
+import useRemoteStore from '@store/remote'
+// import useDialog from '@cmp/dialog/hook'
 import './style.css'
+import Remote from './remote';
 
-export default function Item({ item, idx, buildId }) {
-	const [start] = useInputStore(useShallow(({ input }) => [input?.retain?.[buildId]?.start]))
+export default function Item({ item }) {
+	const remoteBCard = useRemoteStore(useShallow((s) => {
+		if (!item.remote) return null
+		const b = s.buildings?.[item._id]
+		if (!b) return null
+		return { ...b, device: s.devices?.[b.deviceId] }
+	}))
+	const inputBCard = useStoreWithEqualityFn(useInputStore, (s) => item.remote ? null : s.input?.bCard?.[item._id] ?? null, (a, b) => JSON.stringify(a) === JSON.stringify(b))
+	const doc = item.remote ? remoteBCard : inputBCard
 	const mb = useViewStore((s) => s.mb())
-	const { _id } = item
 	let cl = ['item']
-	if (!item?.on) cl.push('out')
 	if (mb) cl.push(mb)
 	cl = cl.join(' ')
 
+	if (item.remote) return <Remote cl={cl} doc={doc} item={item} />
 	return (
 		<Link className={cl} to={`/building/${item._id}`}>
 			<div>
 				<div className='top'>
 					<p>
-						{item?.code} {item?.name}
+						{doc?.code} {doc?.name}
 					</p>
-					<span className={start ? 'on' : 'off'}>{start ? 'Вкл.' : 'Выкл.'}</span>
+						<span className={doc?.sidesect?.start ? 'on' : 'off'}>{doc?.sidesect?.start ? 'Вкл.' : 'Выкл.'}</span>
 				</div>
-				<Mode buildingId={_id} type={item?.type} />
-				<div className='bottom'>
-					<Tout buildingId={_id} />
-					<Alarm buildId={buildId} />
-				</div>
+				<Mode doc={doc} />
+					<div className='bottom'>
+						<Tout doc={doc} />
+					</div>
 			</div>
 		</Link>
 	)

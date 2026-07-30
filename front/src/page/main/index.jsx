@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import useEquipStore from '@store/equipment'
 import Header from '@cmp/header'
 import Weather from './weather'
@@ -10,8 +11,7 @@ import './style.css'
 
 const Main = () => {
 	const navigate = useNavigate()
-	const [list] = useEquipStore(({ list }) => [list])
-	// const [status, setStatus] = useState()
+	const [list, remote] = useEquipStore(useShallow(({ list, remote }) => [list, remote]))
 	const { name } = list?.[0]?.company ?? {}
 
 	// Автоматический переход на склад (список секций)(если складов == 1)
@@ -19,10 +19,12 @@ const Main = () => {
 		// Складов больше одного или нет ниодного то остаемся на главной
 		if ( !list || !list?.length) return
 		if ( list?.length > 1 || list?.length === 0) return
-		// Складов == 1
+		// Склад один но есть доступ к доп складам, то остаемся на главной даже если он один
+		if(remote && remote?.length)  return
+		// Складов == 1 нет доп доступа
 		const path = `/building/${list?.[0]?._id}`.replace('//', '/')
 		navigate(path)
-	}, [list?.length])
+	}, [list?.length,  remote?.length])
 
 	return (
 		<>

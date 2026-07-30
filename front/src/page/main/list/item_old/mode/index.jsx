@@ -1,16 +1,18 @@
 import defImg from '@tool/icon'
-// import useInputStore from '@store/input'
+import useInputStore from '@store/input'
 import './style.css'
 
-export default function Mode({ doc }) {
-	if (!doc) return null
-	const { product, automode, type } = doc
+export default function Mode({ buildingId, type }) {
+	const retain = useInputStore(({ input }) => input.retain)
+	const am = retain?.[buildingId]?.automode ?? null
+	const product = retain?.[buildingId]?.product ?? null
 	const img = `/img/type/${type}.svg`
+
 	return (
 		<div className='item-prod'>
 			<div className='main-list-item-mode-prd'>
 				<div className='icon-text'>
-					{product.name ? (
+					{product?.name ? (
 						<img
 							className='icon-prod'
 							src={defImg.product?.[product?.code]?.img}
@@ -20,14 +22,10 @@ export default function Mode({ doc }) {
 					{product?.name}
 				</div>
 				<div className='icon-text'>
-					{automode ? (
-						<img
-							className='icon-prod'
-							src={defImg.automode?.[automode.code]?.img}
-							alt=''
-						/>
+					{am ? (
+						<img className='icon-prod' src={defImg.automode?.[am]?.img} alt='' />
 					) : null}
-					{automode?.name ?? '--'}
+					{defImg.automode?.[am]?.title || am}
 				</div>
 			</div>
 			<div className='main-list-item-mode'>

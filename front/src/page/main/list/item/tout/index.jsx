@@ -1,12 +1,8 @@
-import useInputStore from '@store/input'
 import './style.css'
 
-export default function Tout({ buildingId }) {
-	const { input, alarm } = useInputStore()
-	//console.log('total: ', input?.total)
-	const total = input?.total?.[buildingId]
-	if (!total) return null
-	const count = alarm?.count?.[buildingId]
+export default function Tout({ doc }) {
+	if(!doc) return null
+	const {tprd, hin, countAlr} = doc 
 	const imgT = '/img/periphery/temp/on.svg'
 	const imgWet = '/img/periphery/moisture/on.svg'
 	const imgAlrm = '/img/alarm/alr.svg'
@@ -14,26 +10,26 @@ export default function Tout({ buildingId }) {
 	return (
 		<div className='temp-block'>
 			{/* Влажность */}
-			<div className={`temp ${total?.hin?.state ?? 'off'}`}>
+			<div className={`temp ${hin?.state ?? 'off'}`}>
 				<img src={imgWet} />
-				{total?.hin?.max!=null ? <span> {total?.hin?.max} %</span> : null}
+				{hin?.value!=null ? <span> {hin.value} %</span> : null}
 			</div>
 			{/* Температура продукта min */}
-			<div className={`temp ${total?.tprd?.state ?? ''}`}>
+			<div className={`temp ${tprd?.state ?? ''}`}>
 				<img src={imgT} />
-				{total?.tprd?.min!=null ? <span> min {total?.tprd?.min} °C</span> : null}
+				{tprd?.min !=null ? <span> min {tprd?.min} °C</span> : null}
 			</div>
 			{/* Температура подукта max  */}
-			<div className={`temp ${total?.tprd?.state ?? ''}`}>
+			<div className={`temp ${tprd?.state  ?? ''}`}>
 				<img src={imgT} />
-				{total?.tprd?.max!=null ? <span> max {total?.tprd?.max} °C</span> : null}
+				{tprd?.max !=null ? <span> max {tprd?.max } °C</span> : null}
 			</div>
 			{/* Аварии */}
-			{count ? (
+			{countAlr ? (
 				<div className={`msg alarm`}>
 					<img src={imgAlrm} />
 					<span>Сообщения</span>
-					<span className='count'>{count}</span>
+					<span className='count'>{countAlr}</span>
 				</div>
 			) : null}
 		</div>

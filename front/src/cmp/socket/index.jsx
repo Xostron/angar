@@ -1,4 +1,5 @@
 import useSocket from '@socket/useSocket'
+import useRemoteSockets from '@socket/useRemoteSockets'
 import cInput from '@socket/on/c_input'
 import cEquip from '@socket/on/c_equip'
 import cAlarm from '@socket/on/c_alarm'
@@ -13,6 +14,8 @@ export default function Socket({}) {
 	const { initIn, initAlr } = useInputStore()
 	// Инициализация и Базовые обработчики
 	useSocket()
+	// Подключения к удалённым устройствам по IP
+	useRemoteSockets()
 	// Пользовательские обработчики
 	// Склады и оборудование - для отрисовки складов
 	cEquip(initE)

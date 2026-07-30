@@ -1,0 +1,36 @@
+import { Link } from 'react-router-dom'
+import Mode from './mode'
+import Tout from './tout'
+import Alarm from './alarm'
+import { useShallow } from 'zustand/react/shallow'
+import useViewStore from '@store/view'
+import useInputStore from '@store/input'
+import './style.css'
+
+export default function ItemOld({ item, idx, buildId }) {
+	const [start] = useInputStore(useShallow(({ input }) => [input?.retain?.[buildId]?.start]))
+	const mb = useViewStore((s) => s.mb())
+	const { _id } = item
+	let cl = ['item']
+	if (!item?.on) cl.push('out')
+	if (mb) cl.push(mb)
+	cl = cl.join(' ')
+
+	return (
+		<Link className={cl} to={`/building/${item._id}`}>
+			<div>
+				<div className='top'>
+					<p>
+						{item?.code} {item?.name}
+					</p>
+					<span className={start ? 'on' : 'off'}>{start ? 'Вкл.' : 'Выкл.'}</span>
+				</div>
+				<Mode buildingId={_id} type={item?.type} />
+				<div className='bottom'>
+					<Tout buildingId={_id} />
+					<Alarm buildId={buildId} />
+				</div>
+			</div>
+		</Link>
+	)
+}

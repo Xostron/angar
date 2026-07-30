@@ -1,5 +1,5 @@
 const { data: store } = require('@store/index')
-const { initData } = require('./init_data')
+const { initData, checklist } = require('./init_data')
 const { stop } = require('./fn')
 const { getIdB, getSectAuto } = require('@tool/get/building')
 
@@ -9,13 +9,15 @@ const { getIdB, getSectAuto } = require('@tool/get/building')
  * @param {*} s Настройки демо
  * @returns
  */
-function initDemo(bld, s,m, obj) {
+function initDemo(bld, s, m, obj) {
+	// Нет тестов
+	if (!checklist.length) return
 	// Инициализация аккумулятора демо
 	store.retain[bld._id].demo ??= JSON.parse(initData)
 	const demo = store.retain[bld._id].demo
 
 	// Условия выкл демо (сброс аккумулятора):
-	if (stop(bld, s,m, demo, obj)) return
+	if (stop(bld, s, m, demo, obj)) return
 
 	// Демо уже в работе - выходим из инициализации
 	if (demo?.cur !== null) return console.log('DEMO ALREADY INIT', demo.cur)

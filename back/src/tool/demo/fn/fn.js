@@ -12,8 +12,8 @@ const runTests = require('../def_stage')
  * @returns {boolean} true - разрешить тесты
  */
 function check(bld, s, m, demo, obj) {
-	// Демо выключено - выход
-	if (demo.cur === null) return false
+	// Демо выключено || Нет тестов - выход
+	if (demo?.cur === null || !checklist.length) return false
 
 	// Контроль времени теста в текущем цикле
 	let t = false

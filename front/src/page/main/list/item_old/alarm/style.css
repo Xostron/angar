@@ -1,0 +1,28 @@
+.timer {
+	position: relative;
+}
+.timer .count {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	background-color: #192646;
+	color: white;
+	font-size: small;
+}
+
+/* Карточка склада - Иконки аварий */
+.line-alarm {
+	width: 45%;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	gap: 5px;
+	align-content: flex-start;
+}

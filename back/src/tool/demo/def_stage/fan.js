@@ -83,9 +83,9 @@ function check(el, bld, obj, demo) {
 	const v = obj?.value?.[el._id]
 	demo.checklist.fan[el._id] ??= {}
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
-	if (v.qf && !demo.checklist.fan[el._id].qf) demo.checklist.fan[el._id].qf = 'автомат выбит'
+	if (v?.qf && !demo.checklist.fan[el._id].qf) demo.checklist.fan[el._id].qf = 'автомат выбит'
 	// Перегрев двигателя heat: true - перегрев, false - ок, null - неисправен модуль
-	if (v.heat && !demo.checklist.fan[el._id].heat)
+	if (v?.heat && !demo.checklist.fan[el._id].heat)
 		demo.checklist.fan[el._id].heat = 'перегрев мотора'
 	// Дребезг контактора
 	if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.fan[el._id].debdo)

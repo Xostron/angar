@@ -1,7 +1,7 @@
 const { data: store } = require('@store/index')
 const { getStateClr } = require('@tool/cooler')
 const { getIdsS } = require('@tool/get/building')
-
+const allMode = require('@dict/all_mode')
 /**
  * Агрегация режима работы секций
  * @param {*} bld Склад
@@ -34,18 +34,25 @@ function fnMode(bld, ids, retain) {
  * @returns
  */
 function fnAutomode(idB, obj) {
+	const a = obj?.retain?.[idB]?.automode
+	const b = obj?.value?.building?.[idB]?.submode
+
 	switch (obj?.value?.building?.[idB]?.bldType) {
 		case 'cold':
-			return clrsMode(idB, obj)
+			return { code: 'cooling', name: clrsMode(idB, obj)?.name }
+
 		case 'normal':
 		case 'combi_normal':
-			const am = obj?.retain?.[idB]?.automode
-			if (am !== 'cooling') return am
-			return obj?.value?.total?.[idB]?.submode
+			const am = { code: a, name: allMode[a]?.[1] ?? '--' }
+			if (am.code !== 'cooling') return am
+			if (!b) return am
+			return { code: b[0], name: b[1] }
+
 		case 'combi_cold':
-			return clrsMode(idB, obj)?.name
+			return { code: 'cooling', name: clrsMode(idB, obj)?.name }
+
 		default:
-			return obj?.retain?.[idB]?.automode
+			return { code: obj?.retain?.[idB]?.automode, name: as }
 	}
 }
 
