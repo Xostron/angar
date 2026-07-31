@@ -3,8 +3,8 @@ import defImg from '@tool/icon'
 import './style.css'
 
 export default function Mode({ doc }) {
-	if (!doc) return null
-	const { product, automode, type } = doc
+	if(!doc) return null 
+	const {product, automode, type} = doc
 	const img = `/img/type/${type}.svg`
 	return (
 		<div className='item-prod'>
