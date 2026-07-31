@@ -25,18 +25,22 @@ const { checklist } = require('@tool/demo/fn/init_data')
  * @returns
  */
 function demo(bld, sect, obj, s, se, m, alarm, acc, data, ban, resultFan, clear = false) {
+	// Список тестов для данного склада
+	const checklistPNR = checklist.filter((el) => el.type.includes(bld.type))
+	if (!checklistPNR.length) return
+
 	const idB = bld._id
 	// Настройки демо
 	const stg = s?.demo
 	// Аккумулятор демо
 	const demo = store.retain[bld?._id]?.demo
 	const test =
-		demo?.order >= checklist.length ? checklist[checklist.length - 1] : checklist?.[demo?.order]
+		demo?.order >= checklistPNR.length ? checklistPNR.at(-1) : checklistPNR?.[demo?.order]
 	if (!test) return delExtra(idB, null, 'demo')
 
 	const last = test.code != 'fan' ? test.last : (m.fanBexc.length ?? 1) * test.last
 	if (demo.cur !== null) {
-		const txt = `Тест ${demo.order + 1} из ${checklist.length}. Цикл ${demo.cur + 1} из ${demo.total}.\n${test?.name} ${remTime(demo.timeT, last)}.`
+		const txt = `Тест ${demo.order + 1} из ${checklistPNR.length}. Цикл ${demo.cur + 1} из ${demo.total}.\n${test?.name} ${remTime(demo.timeT, last)}.`
 		wrExtra(idB, null, 'demo', msgB(bld, 44, txt))
 	} else {
 		delExtra(idB, null, 'demo')

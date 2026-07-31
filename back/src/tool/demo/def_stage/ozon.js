@@ -14,25 +14,25 @@ const _delay = 10_000
  * @param {*} code Код активного теста
  * @returns
  */
-function ozon(bld, obj, mech, demo, permission, code) {
+function ozon(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
-		arrCtrlDO(bld._id, mech.ozon, 'off')
+		arrCtrlDO(bld._id, m.ozon, 'off')
 		return
 	}
-	// console.log(11, mech.ozon)
+	// console.log(11, m.ozon)
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
-	if (!mech.ozon) {
-		demo.order++
-		demo.timeT = new Date()
-		arrCtrlDO(bld._id, mech.ozon, 'off')
+	if (!m.ozon) {
+		m.order++
+		m.timeT = new Date()
+		arrCtrlDO(bld._id, m.ozon, 'off')
 		return
 	}
 	// Включить все увлажнители
-	arrCtrlDO(bld._id, mech.ozon, 'on')
+	arrCtrlDO(bld._id, m.ozon, 'on')
 	// Проверка и запись неисправностей в журнал
-	check(bld, obj, mech.ozon, demo)
+	check(bld, obj, m.ozon, demo)
 }
 
 // Проверка вкл/выкл увлажнители

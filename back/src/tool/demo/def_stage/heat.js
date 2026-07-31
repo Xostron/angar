@@ -13,25 +13,25 @@ const _delay = 10_000
  * @param {*} code Код активного теста
  * @returns
  */
-function heat(bld, obj, mech, demo, permission, code) {
+function heat(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
-		arrCtrlDO(bld._id, mech.heatingAll, 'off')
+		arrCtrlDO(bld._id, m.heatingAll, 'off')
 		return
 	}
 
 	// АКТИВЕН - Текущий тест
 	// Если нет ВНО пропускаем данный тест
-	if (!mech.heatingAll) {
+	if (!m.heatingAll) {
 		demo.order++
 		demo.timeT = new Date()
-		arrCtrlDO(bld._id, mech.heatingAll, 'off')
+		arrCtrlDO(bld._id, m.heatingAll, 'off')
 		return
 	}
 	// Включить все ВНО
-	arrCtrlDO(bld._id, mech.heatingAll, 'on')
+	arrCtrlDO(bld._id, m.heatingAll, 'on')
 	// Проверка и запись неисправностей в журнал
-	check(bld, obj, mech.heatingAll, demo)
+	check(bld, obj, m.heatingAll, demo)
 }
 
 // Проверка вкл/выкл разгонник
@@ -46,7 +46,7 @@ function check(bld, obj, heat, demo) {
 		const v = obj?.value?.outputEq?.[el._id]
 		demo.checklist.heat[el._id] ??= {}
 		// Модуль или Конфигурация
-		if (v===false && !demo.checklist.heat[el._id].stop)
+		if (v === false && !demo.checklist.heat[el._id].stop)
 			demo.checklist.heat[el._id].stop = 'ошибка модуля или конфигурации'
 	})
 }

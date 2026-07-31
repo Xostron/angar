@@ -8,7 +8,7 @@ const _delay = 10_000
 const _hyst = 10
 
 // Тест вкл ВНО по очереди
-function fan(bld, obj, m, demo, permission, code) {
+function fan(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест
 	if (!permission) {
 		// Активен - Тест включения всех ВНО
@@ -30,15 +30,15 @@ function fan(bld, obj, m, demo, permission, code) {
 	}
 
 	// Тест
-	singleOn(bld, obj, m, demo)
+	singleOn(bld, obj, m, checklistPNR, demo)
 }
 
-function singleOn(bld, obj, m, demo) {
+function singleOn(bld, obj, m, checklistPNR, demo) {
 	demo.accF ??= {}
 	demo.accF.order ??= 0
 	// Все ВНО проверены
 	demo.accF.time ??= new Date()
-	const chk = checklist[demo.order]
+	const chk = checklistPNR[demo.order]
 
 	m.fanBexc.forEach((el, i) => {
 		// ВНО не равный номеру очереди - dsrk.xftv
@@ -66,7 +66,7 @@ function singleOn(bld, obj, m, demo) {
 		// Время не прошло - Включаем ВНО + проверка работы
 		ctrlADO(el, bld._id, 'on', 100)
 		check(el, bld, obj, demo)
-		fnP(el, bld, obj, demo, m)
+		fnP(el, bld, obj, checklistPNR, demo, m)
 	})
 
 	// console.log('test fan', demo.accF)
@@ -102,12 +102,12 @@ function check(el, bld, obj, demo) {
 		demo.checklist.fan[el._id].vai = 'превышен ток двигателя'
 }
 
-function fnP(el, bld, obj, demo, m) {
+function fnP(el, bld, obj, checklistPNR, demo, m) {
 	// Нет датчиков давления
 	if (!m.pB.length) return
 
 	// Фиксируем давление в канале на данном ВНО, после 50% пройденного теста данного ВНО
-	const t = compareTime(demo.accF.time, checklist?.[demo.order]?.last * 0.5)
+	const t = compareTime(demo.accF.time, checklistPNR?.[demo.order]?.last * 0.5)
 	// Время не прошло
 	if (!t) return
 	demo.accF.p ??= {}

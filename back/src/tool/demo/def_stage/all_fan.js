@@ -1,7 +1,6 @@
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
-const { checklist } = require('../fn/init_data')
 const { stasis } = require('../fn')
 // 10сек
 const _delay = 10_000
@@ -17,7 +16,7 @@ const _min_volt = 365
  * @param {*} code Код активного теста
  * @returns
  */
-function allFan(bld, obj, m, demo, permission, code) {
+function allFan(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
 		// ВНО используются в нескольких тестах,
@@ -55,7 +54,7 @@ function allFan(bld, obj, m, demo, permission, code) {
 	// Проверка и запись неисправностей в журнал
 	check(bld, obj, m.fanBexc, demo)
 	fnVolt(bld, obj, demo)
-	fnTcnl(bld, obj, demo, m.tcnlB)
+	fnTcnl(bld, obj, checklistPNR, demo, m.tcnlB)
 }
 
 // Проверка вкл/выкл разгонник
@@ -93,9 +92,9 @@ function check(bld, obj, fans, demo) {
 
 module.exports = allFan
 
-function fnTcnl(bld, obj, demo, tcnlB) {
+function fnTcnl(bld, obj, checklistPNR, demo, tcnlB) {
 	// Проверка температуры канала после включения ВНО на 70% пройденного теста
-	const t = compareTime(demo.timeT, checklist?.[demo.order]?.last * 0.7)
+	const t = compareTime(demo.timeT, checklistPNR?.[demo.order]?.last * 0.7)
 	// Время не прошло
 	if (!t) return
 	tcnlB.forEach((el) => {
@@ -119,9 +118,9 @@ function fnTcnl(bld, obj, demo, tcnlB) {
  * @param {*} obj Глобальные данные
  * @param {*} demo Аккумулятор демо (сохраняемый в retain)
  */
-function fnVolt(bld, obj, demo) {
+function fnVolt(bld, obj, checklistPNR, demo) {
 	// Проверка напряжения сети после включения ВНО на 20% пройденного теста
-	const t = compareTime(demo.timeT, checklist?.[demo.order]?.last * 0.2)
+	const t = compareTime(demo.timeT, checklistPNR?.[demo.order]?.last * 0.2)
 	// Время не прошло
 	if (!t) return
 	// Список электросчетчиков

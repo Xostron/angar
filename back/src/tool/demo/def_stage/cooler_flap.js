@@ -1,8 +1,6 @@
 const { arrCtrlDO, ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
-const { get } = require('@tool/get/sensor')
-const { isExtralrm } = require('@tool/message/extralrm')
-const { data: store } = require('@store/index')
+
 // 10сек
 const _delay = 10_000
 
@@ -16,7 +14,7 @@ const _delay = 10_000
  * @param {*} code Код активного теста
  * @returns
  */
-function coolerFlap(bld, obj, m, demo, permission, code) {
+function coolerFlap(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
 		arrCtrlDO(bld._id, m.flapB, 'off')

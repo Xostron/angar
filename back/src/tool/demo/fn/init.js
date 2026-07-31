@@ -1,5 +1,5 @@
 const { data: store } = require('@store/index')
-const { initData, checklist } = require('./init_data')
+const { initData } = require('./init_data')
 const { stop } = require('./fn')
 const { getIdB, getSectAuto } = require('@tool/get/building')
 
@@ -10,8 +10,6 @@ const { getIdB, getSectAuto } = require('@tool/get/building')
  * @returns
  */
 function initDemo(bld, s, m, obj) {
-	// Нет тестов
-	if (!checklist.length) return
 	// Инициализация аккумулятора демо
 	store.retain[bld._id].demo ??= JSON.parse(initData)
 	const demo = store.retain[bld._id].demo

@@ -1,4 +1,3 @@
-const { checklist } = require('./init_data')
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store/index')
 const runTests = require('../def_stage')
@@ -11,14 +10,14 @@ const runTests = require('../def_stage')
  * @param {*} demo
  * @returns {boolean} true - разрешить тесты
  */
-function check(bld, s, m, demo, obj) {
-	// Демо выключено || Нет тестов - выход
-	if (demo?.cur === null || !checklist.length) return false
+function check(bld, s, m, demo,checklistPNR, obj) {
+	// Демо выключено - выход
+	if (demo?.cur === null) return false
 
 	// Контроль времени теста в текущем цикле
 	let t = false
-	if (demo.order < checklist.length) {
-		const test = checklist[demo.order]
+	if (demo.order < checklistPNR.length) {
+		const test = checklistPNR[demo.order]
 		const last = test.code != 'fan' ? test.last : (m.fanBexc.length ?? 1) * test.last
 		t = compareTime(demo.timeT, last)
 	}
@@ -30,7 +29,7 @@ function check(bld, s, m, demo, obj) {
 	}
 
 	// Проверка цикла - переключение цикла
-	if (demo.order > checklist.length - 1) {
+	if (demo.order > checklistPNR.length - 1) {
 		// Переключение теста
 		demo.order = 0
 		// Переключение цикла

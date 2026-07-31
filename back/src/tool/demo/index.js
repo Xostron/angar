@@ -11,6 +11,10 @@ const runTests = require('./def_stage')
  */
 function fnDemo(obj) {
 	obj?.data?.building?.forEach((bld) => {
+		// Список тестов для данного склада
+		const checklistPNR = checklist.filter((el) => el.type.includes(bld.type))
+		if (!checklistPNR.length) return
+
 		// Настройки демо
 		const s = store.calcSetting[bld._id]?.demo
 		// Исполнительные механизмы
@@ -20,7 +24,7 @@ function fnDemo(obj) {
 		initDemo(bld, s, m, obj)
 
 		// Разрешение тестирования/переключение модулей тестов
-		const q = check(bld, s, m, store.retain[bld._id].demo, obj)
+		const q = check(bld, s, m, store.retain[bld._id].demo, checklistPNR, obj)
 
 		// ДЕМО ВЫКЛЮЧЕН
 		if (!q) return
@@ -30,9 +34,9 @@ function fnDemo(obj) {
 		// просмотра журнала и для работы после перезагрузки POS в полночь)
 		const demo = store.retain[bld._id].demo
 		// Код текущего теста
-		const code = checklist[demo.order].code
+		const code = checklistPNR[demo.order].code
 		// Обход тестов
-		runTests(bld, m, demo, obj, code)
+		runTests(bld, m, demo, checklistPNR, obj, code)
 
 		// console.log(1234, demo)
 	})

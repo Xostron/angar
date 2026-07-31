@@ -16,7 +16,7 @@ const _delay = 60_000
  * @param {*} code Код активного теста
  * @returns
  */
-function coolerCool(bld, obj, m, demo, permission, code) {
+function coolerCool(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
 		if (code == 'fan') return

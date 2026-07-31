@@ -1,30 +1,29 @@
 const { arrCtrlDO } = require('@tool/command/module_output')
-const { checklist } = require('../fn/init_data')
 const { compareTime } = require('@tool/command/time')
 // 10сек
 const _delay = 10_000
 
 // Тест разгонных вентиляторов
-function accel(bld, obj, mech, demo, permission) {
+function accel(bld, obj, m, checklistPNR, demo, permission) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
-		arrCtrlDO(bld._id, mech.fanA, 'off')
+		arrCtrlDO(bld._id, m.fanA, 'off')
 		return
 	}
 
 	// Сейчас в работе тест разгонников
 	// Если нет разгонников пропускаем данный тест
-	if (!mech.fanA) {
+	if (!m.fanA) {
 		demo.order++
 		demo.timeT = new Date()
-		arrCtrlDO(bld._id, mech.fanA, 'off')
+		arrCtrlDO(bld._id, m.fanA, 'off')
 		return
 	}
 
 	// Включить
 	arrCtrlDO(bld._id, mech.fanA, 'on')
 	// Проверка и запись неисправностей в журнал
-	check(bld, obj, mech.fanA, demo)
+	check(bld, obj, m.fanA, demo)
 }
 
 // Проверка вкл/выкл разгонник

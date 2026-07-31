@@ -1,4 +1,3 @@
-const { checklist } = require('../fn/init_data')
 const accel = require('./accel')
 const allFan = require('./all_fan')
 const coolerCool = require('./cooler_cool')
@@ -34,12 +33,15 @@ const data = {
  * @param {*} obj Глобальный объект
  * @param {*} code Код теста
  */
-function runTests(bld, m, demo, obj, code) {
-	checklist.forEach((el) => {
+function runTests(bld, m, demo, checklistPNR, obj, code) {
+	checklistPNR.forEach((el) => {
+		// Проход по тестам совместимые с типом склада
+		if (!el.type.includes(bld.type)) return
 		data[el.code](
 			bld,
 			obj,
 			m,
+			checklistPNR,
 			demo,
 			code === el.code, // Разрешение на работу теста
 			code,

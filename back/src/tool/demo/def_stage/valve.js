@@ -1,4 +1,4 @@
-const { arrCtrlDO, ctrlV } = require('@tool/command/module_output')
+const { ctrlV } = require('@tool/command/module_output')
 const { compareTime, deltaTime } = require('@tool/command/time')
 const { isExtralrm } = require('@tool/message/extralrm')
 // 10сек
@@ -15,7 +15,7 @@ const _timeLimit = 30_000
  * @param {*} code Код активного теста
  * @returns
  */
-function valve(bld, obj, mech, demo, permission, code) {
+function valve(bld, obj, m, checklistPNR, demo, permission, code) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
 		return
@@ -23,18 +23,18 @@ function valve(bld, obj, mech, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет ВНО пропускаем данный тест
-	if (!mech.vlvAll) {
+	if (!m.vlvAll) {
 		demo.order++
 		return
 	}
 
 	// Открыть клапаны
-	mech.vlvAll.forEach((el) => {
+	m.vlvAll.forEach((el) => {
 		fnPipeline(bld, obj, el, demo)
 		ctrlV(el, bld._id, demo.accVlv[el._id].type)
 		check(bld, obj, el, demo)
 	})
-	finish(mech.vlvAll, demo)
+	finish(m.vlvAll, demo)
 	// console.log(22,demo)
 }
 
