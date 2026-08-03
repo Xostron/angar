@@ -26,6 +26,7 @@ const data = {
 		coolerCool: {},
 		coolerFlap: {},
 		coolerHeat: {},
+		co2: {},
 	},
 	acc: {},
 }
@@ -42,13 +43,13 @@ const data = {
 const checklist = [
 	{
 		code: 'accel',
-		last: 1 * 60 * 1000,
+		last: 1 * 20 * 1000,
 		name: 'Разгонные вентиляторы',
 		type: ['normal', 'combi', 'cold'],
 	},
 	{
 		code: 'allFan',
-		last: 300 * 60 * 1000,
+		last: 1 * 60 * 1000,
 		name: 'Включение всех вентиляторов',
 		type: ['normal', 'combi'],
 	},
@@ -58,8 +59,8 @@ const checklist = [
 		name: 'Включение вентиляторов по очереди',
 		type: ['normal', 'combi'],
 	},
-	{ code: 'heat', last: 3 * 60 * 1000, name: 'Подогрев клапанов', type: ['normal', 'combi'] },
-	{ code: 'valve', last: 5 * 60 * 1000, name: 'Откр/закр клапанов', type: ['normal', 'combi'] },
+	{ code: 'heat', last: 1 * 60 * 1000, name: 'Подогрев клапанов', type: ['normal', 'combi'] },
+	{ code: 'valve', last: 1 * 60 * 1000, name: 'Откр/закр клапанов', type: ['normal', 'combi'] },
 	{
 		code: 'wetting',
 		last: 60 * 1000,
@@ -74,23 +75,23 @@ const checklist = [
 	},
 	{
 		code: 'coolerCool',
-		last: 5 * 1000,
+		last: 1 * 60 * 1000,
 		name: 'Включение испарителей',
 		type: ['normal', 'combi', 'cold'],
 	},
 	{
 		code: 'coolerFlap',
-		last: 30 * 1000,
+		last: 1 * 60 * 1000,
 		name: 'Включение заслонок испарителей',
 		type: ['normal', 'combi', 'cold'],
 	},
 	{
 		code: 'coolerHeat',
-		last: 30 * 1000,
+		last: 10 * 60 * 1000,
 		name: 'Включение оттайки испарителей',
 		type: ['normal', 'combi', 'cold'],
 	},
-	{ code: 'co2', last: 30 * 1000, name: 'Удаление СО2', type: ['cold'] },
+	{ code: 'co2', last: 20 * 1000, name: 'Удаление СО2', type: ['cold'] },
 ]
 
 module.exports = { initData: JSON.stringify(data), checklist }

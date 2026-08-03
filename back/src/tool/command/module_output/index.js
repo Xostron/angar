@@ -21,6 +21,7 @@ function ctrlAO(o, idB, value) {
  */
 function ctrlDO(o, idB, type) {
 	if (!type) return null
+	// if (o?.device?.code=='co2') console.log(166, type)
 	const bldId = o?._build ?? idB
 	const mdlId = o?.module?.id
 	const ch = o?.module?.channel - 1
@@ -75,6 +76,7 @@ function ctrlV(vlv, idB, type) {
 function arrCtrlDO(idB, arr, type, s) {
 	const _MAX_SP = s?.fan?.maxsp ?? 100
 	arr?.forEach((el) => {
+		
 		ctrlDO(el, idB, type)
 		if (el?.ao) ctrlAO(el, idB, type === 'off' ? _MIN_SP : _MAX_SP)
 	})

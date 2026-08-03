@@ -1,30 +1,34 @@
-const def = require('./fn')
 const { fnAlarm, delUnused } = require('@tool/command/extra')
+const { isDemo } = require('@tool/demo/fn/fn')
+const def = require('./fn')
 
 // Удаление СО2
-function coOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
+function coOn(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (['time', 'sens'].includes(s?.co2?.mode)) return
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(bld._id)) return
 	// Сообщение о выбранном режиме
-	fnMsg(building, acc, s)
-	def[s?.co2?.mode](building, m.cold.device.co2, obj?.value, acc, se, s)
-	fnAlarm(building, m.cold.device.co2, obj.value)
+	fnMsg(bld, acc, s)
+	def[s?.co2?.mode](bld, m.cold.device.co2, obj?.value, acc, se, s)
+	fnAlarm(bld, m.cold.device.co2, obj.value)
 }
 
 // Режим авто - По времени/По температуре: Работает когда склад включен
-function coAuto(building, section, obj, s, se, m, alarm, acc, data, ban) {
+function coAuto(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (!['time', 'sens'].includes(s?.co2?.mode)) return
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
-
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(bld._id)) return
 	// Сообщение о выбранном режиме
-	fnMsg(building, acc, s)
-	def[s.co2.mode](building, m.cold.device.co2, obj?.value, acc, se, s)
-	fnAlarm(building, m.cold.device.co2, obj.value)
+	fnMsg(bld, acc, s)
+	def[s.co2.mode](bld, m.cold.device.co2, obj?.value, acc, se, s)
+	fnAlarm(bld, m.cold.device.co2, obj.value)
 }
 
 module.exports = { coOn, coAuto }
 
-function fnMsg(building, acc, s) {
+function fnMsg(bld, acc, s) {
 	if (acc.lastMode !== s?.co2?.mode) {
 		delete acc.work
 		delete acc.wait
@@ -46,6 +50,6 @@ function fnMsg(building, acc, s) {
 				break
 		}
 		const arr = [null, 'off', 'on', 'sens', 'time']
-		delUnused(arr, s?.co2?.mode, building, code, 'co2')
+		delUnused(arr, s?.co2?.mode, bld, code, 'co2')
 	}
 }

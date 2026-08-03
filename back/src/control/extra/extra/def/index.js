@@ -81,6 +81,7 @@ const data = {
 			slaveAgg,
 			connectLost,
 			wetting,
+			demo
 		},
 	},
 	// Комбинированный склад

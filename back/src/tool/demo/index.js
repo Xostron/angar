@@ -11,7 +11,7 @@ const runTests = require('./def_stage')
  */
 function fnDemo(obj) {
 	obj?.data?.building?.forEach((bld) => {
-		// Список тестов для данного склада
+		// Список тестов для данного типа склада
 		const checklistPNR = checklist.filter((el) => el.type.includes(bld.type))
 		if (!checklistPNR.length) return
 

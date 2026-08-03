@@ -1,5 +1,6 @@
 const accel = require('./accel')
 const allFan = require('./all_fan')
+const co2 = require('./co2')
 const coolerCool = require('./cooler_cool')
 const coolerFlap = require('./cooler_flap')
 const coolerHeat = require('./cooler_heat')
@@ -20,6 +21,7 @@ const data = {
 	coolerCool,
 	coolerFlap,
 	coolerHeat,
+	co2,
 }
 
 /**
@@ -34,9 +36,9 @@ const data = {
  * @param {*} code Код теста
  */
 function runTests(bld, m, demo, checklistPNR, obj, code) {
+	// Проход по тестам совместимые с типом склада
+	if (!checklistPNR.length) return
 	checklistPNR.forEach((el) => {
-		// Проход по тестам совместимые с типом склада
-		if (!el.type.includes(bld.type)) return
 		data[el.code](
 			bld,
 			obj,

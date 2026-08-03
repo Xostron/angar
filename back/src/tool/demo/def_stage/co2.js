@@ -4,42 +4,44 @@ const { compareTime } = require('@tool/command/time')
 const _delay = 10_000
 
 // Тест разгонных вентиляторов
-function accel(bld, obj, m, checklistPNR, demo, permission) {
+function co2(bld, obj, m, checklistPNR, demo, permission) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
-		arrCtrlDO(bld._id, m.fanA, 'off')
+		// console.log(123, 'off', m?.cold?.device?.co2)
+		arrCtrlDO(bld._id, m?.cold?.device?.co2, 'off')
 		return
 	}
 
 	// Сейчас в работе тест разгонников
 	// Если нет разгонников пропускаем данный тест
-	if (!m.fanA) {
+	if (!m?.cold?.device?.co2) {
 		demo.order++
 		demo.timeT = new Date()
-		arrCtrlDO(bld._id, m.fanA, 'off')
+		arrCtrlDO(bld._id, m?.cold?.device?.co2, 'off')
 		return
 	}
-
+	// console.log(124, 'on', m?.cold?.device?.co2)
 	// Включить
-	arrCtrlDO(bld._id, m.fanA, 'on')
+	arrCtrlDO(bld._id, m?.cold?.device?.co2, 'on')
 	// Проверка и запись неисправностей в журнал
-	check(bld, obj, m.fanA, demo)
+	check(bld, obj, m?.cold?.device?.co2, demo)
 }
 
 // Проверка вкл/выкл разгонник
-function check(bld, obj, fanA, demo) {
+function check(bld, obj, arrCo2, demo) {
 	// Начинаем проверку с задержкой, чтобы изменения записи выходов вступили в силу
 	const t = compareTime(demo.timeT, _delay)
 	// Время не прошло
 	if (!t) return
 	// Время прошло - мониторим состояние разгонника
-
-	fanA.forEach((el) => {
+	demo.checklist.co2 ??= {}
+	arrCo2.forEach((el) => {
 		const v = obj?.value?.[el._id]
-		demo.checklist.accel[el._id] ??= {}
-		if (v?.state === 'stop' && !demo.checklist.accel[el._id])
-			demo.checklist.accel[el._id].stop = `ошибка модуля или конфигурации`
+		// console.log(11, v, arrCo2)
+		demo.checklist.co2[el._id] ??= {}
+		if (v?.state === 'stop' && !demo.checklist.co2[el._id])
+			demo.checklist.co2[el._id].stop = `ошибка модуля или конфигурации`
 	})
 }
 
-module.exports = accel
+module.exports = co2

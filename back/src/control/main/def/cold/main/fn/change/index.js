@@ -11,6 +11,7 @@ function oneChange(bdata, idB, sl, f, h, add, fl, code, clr, obj) {
 	const { start, s, se, m, accAuto } = bdata
 	const { solenoid, fan, heating } = clr
 	const _MAX_SP = s?.fan?.maxsp ?? 100
+	if (isDemo(idB)) return
 	// Управление механизмами
 	solenoid.forEach((el) => ctrlDO(el, idB, sl ? 'on' : 'off'))
 	// Ступенчатое управление соленоидами

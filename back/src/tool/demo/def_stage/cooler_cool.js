@@ -56,7 +56,7 @@ function control(bld, obj, coolerB, demo) {
 		const pout = get('pout', el._id, 'cooler', obj?.data?.sensor)?.[0]
 		const poutV = v.sensor?.[pout?._id]
 		// Настройки испарителя
-		const s = store.calcSetting?.[bld._id]?.coolerCombi
+		const s = store.calcSetting?.[bld._id]?.coolerCombi ?? store.calcSetting?.[bld._id]?.cooler
 
 		// Соленоид
 		// выкл|вкл

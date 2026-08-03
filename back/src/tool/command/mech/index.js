@@ -218,7 +218,6 @@ function mechB(idB, type, obj, mod = false) {
 	const pB = data.sensor.filter(
 		(el) => idBS.includes(el.owner.id) && obj.value?.[el._id]?.state == 'on' && el.type == 'p',
 	)
-	// if (mod) console.log(11, mod, tcnlB)
 	return {
 		fanA,
 		fanB,

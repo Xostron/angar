@@ -27,6 +27,7 @@ function initDemo(bld, s, m, obj) {
 	// Массив секций в авто
 	const idS = getSectAuto(bld._id, obj)
 	idS.forEach((el) => {
+		if (bld.type == 'cold') return
 		store.retain[bld._id].mode[el] = false
 	})
 	// Число отработанных циклов

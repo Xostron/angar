@@ -33,7 +33,7 @@ export default function Sensor({ data, cls, type = 'normal', withImg = false }) 
 					cmp = wetting === 'run' ? <Fan className={mb} img={img} state={''} /> : false
 				}
 			}
-			if (el.type === 'calcMois') {
+			if (el.type === 'calcMois' || el.type=='co2') {
 				if (sect) {
 					const img = '/img/ozon.svg'
 					cmp = ozon === 'run' ? <Fan className={mb} img={img} state={''} /> : false

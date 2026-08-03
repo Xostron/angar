@@ -22,9 +22,9 @@ function combi(bld, mech) {
 	def[q.code](bld, mech, demo)
 
 	// Конец демо режимы - выкл всех исполнительных механизмов
-	if (demo?.cur >= demo?.total) return safetyOff()
+	// if (demo?.cur >= demo?.total) return safetyOff()
 }
 
 module.exports = combi
 
-function safetyOff() {}
+// function safetyOff() {}

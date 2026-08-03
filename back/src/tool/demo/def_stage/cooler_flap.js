@@ -23,7 +23,7 @@ function coolerFlap(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
-	if (!m.flapB) {
+	if (!m.flapB?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		return
