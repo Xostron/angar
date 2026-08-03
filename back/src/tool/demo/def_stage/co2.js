@@ -38,9 +38,10 @@ function check(bld, obj, arrCo2, demo) {
 	arrCo2.forEach((el) => {
 		const v = obj?.value?.[el._id]
 		// console.log(11, v, arrCo2)
-		demo.checklist.co2[el._id] ??= {}
-		if (v?.state === 'stop' && !demo.checklist.co2[el._id])
-			demo.checklist.co2[el._id].stop = `ошибка модуля или конфигурации`
+		demo.checklist.co2.list[el._id] ??= {}
+
+		if (v?.state === 'stop' && !demo.checklist.co2.list[el._id].stop)
+			demo.checklist.co2.list[el._id].stop = `ошибка модуля или конфигурации`
 	})
 }
 

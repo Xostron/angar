@@ -43,10 +43,10 @@ function check(bld, obj, heatClrB, demo) {
 
 	heatClrB.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
-		demo.checklist.coolerHeat[el._id] ??= {}
+		demo.checklist.coolerHeat.list[el._id] ??= {}
 		// Модуль или Конфигурация
-		if (v === false && !demo.checklist.coolerHeat[el._id].stop)
-			demo.checklist.coolerHeat[el._id].stop = 'ошибка модуля или конфигурации'
+		if (v === false && !demo.checklist.coolerHeat.list[el._id].stop)
+			demo.checklist.coolerHeat.list[el._id].stop = 'ошибка модуля или конфигурации'
 	})
 }
 

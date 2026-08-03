@@ -44,11 +44,11 @@ function check(bld, obj, wettingS, demo) {
 
 	wettingS.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
-		demo.checklist.wetting[el._id] ??= {}
+		demo.checklist.wetting.list[el._id] ??= {}
 		console.log(123, v)
 		// Модуль или Конфигурация
-		if (v === false && !demo.checklist.wetting[el._id].stop)
-			demo.checklist.wetting[el._id].stop = 'ошибка модуля или конфигурации'
+		if (v === false && !demo.checklist.wetting.list[el._id].stop)
+			demo.checklist.wetting.list[el._id].stop = 'ошибка модуля или конфигурации'
 	})
 }
 

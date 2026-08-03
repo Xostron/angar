@@ -49,25 +49,25 @@ function check(bld, obj, el, demo) {
 
 	// Время прошло - мониторим состояние разгонника
 	const v = obj?.value?.[el._id]
-	demo.checklist.valve[el._id] ??= {}
+	demo.checklist.valve.list[el._id] ??= {}
 
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
-	if (v.crash && !demo.checklist.valve[el._id].crash)
-		demo.checklist.valve[el._id].crash = 'автомат выбит'
+	if (v.crash && !demo.checklist.valve.list[el._id].crash)
+		demo.checklist.valve.list[el._id].crash = 'автомат выбит'
 
 	// нет питания концевиков
 	if (
 		(isExtralrm(bld._id, el.sectionId, 'vlvLim') || isExtralrm(bld._id, null, 'vlvLim')) &&
-		!demo.checklist.valve[el._id].vlvLim
+		!demo.checklist.valve.list[el._id].vlvLim
 	)
-		demo.checklist.valve[el._id].vlvLim = 'нет питания концевиков'
+		demo.checklist.valve.list[el._id].vlvLim = 'нет питания концевиков'
 
 	if (acc.end) {
 		const timeOpen = deltaTime(acc.open, acc.close)
 		const timeClose = deltaTime(acc.close, acc.end)
 		const delta = Math.abs(timeOpen - timeClose)
-		if (delta >= _timeLimit && !demo.checklist.valve[el._id].delta)
-			demo.checklist.valve[el._id].delta =
+		if (delta >= _timeLimit && !demo.checklist.valve.list[el._id].delta)
+			demo.checklist.valve.list[el._id].delta =
 				`разное время открытия или закрытия, расхождение ${delta / 1000}с`
 	}
 }

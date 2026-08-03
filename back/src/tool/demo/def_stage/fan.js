@@ -81,25 +81,25 @@ function check(el, bld, obj, demo) {
 	// Время прошло - мониторим состояние разгонника
 
 	const v = obj?.value?.[el._id]
-	demo.checklist.fan[el._id] ??= {}
+	demo.checklist.fan.list[el._id] ??= {}
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
-	if (v?.qf && !demo.checklist.fan[el._id].qf) demo.checklist.fan[el._id].qf = 'автомат выбит'
+	if (v?.qf && !demo.checklist.fan.list[el._id].qf) demo.checklist.fan.list[el._id].qf = 'автомат выбит'
 	// Перегрев двигателя heat: true - перегрев, false - ок, null - неисправен модуль
-	if (v?.heat && !demo.checklist.fan[el._id].heat)
-		demo.checklist.fan[el._id].heat = 'перегрев мотора'
+	if (v?.heat && !demo.checklist.fan.list[el._id].heat)
+		demo.checklist.fan.list[el._id].heat = 'перегрев мотора'
 	// Дребезг контактора
-	if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.fan[el._id].debdo)
-		demo.checklist.fan[el._id].debdo = 'частое включение'
+	if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.fan.list[el._id].debdo)
+		demo.checklist.fan.list[el._id].debdo = 'частое включение'
 	// Модуль или Конфигурация
-	if (v.state == 'stop' && !demo.checklist.fan[el._id].stop)
-		demo.checklist.fan[el._id].stop = 'ошибка модуля или конфигурации'
+	if (v.state == 'stop' && !demo.checklist.fan.list[el._id].stop)
+		demo.checklist.fan.list[el._id].stop = 'ошибка модуля или конфигурации'
 	// Превышен ток двигателя
 	if (
 		v.state == 'run' &&
 		v.vai > (+el?.actuator?.current ?? 30) &&
-		!demo.checklist.fan[el._id].vai
+		!demo.checklist.fan.list[el._id].vai
 	)
-		demo.checklist.fan[el._id].vai = 'превышен ток двигателя'
+		demo.checklist.fan.list[el._id].vai = 'превышен ток двигателя'
 }
 
 function fnP(el, bld, obj, checklistPNR, demo, m) {
@@ -123,9 +123,9 @@ function fnP(el, bld, obj, checklistPNR, demo, m) {
 
 	// Сохраняем сообщения о давлении ВНО
 	for (const idF in demo.accF.p) {
-		demo.checklist.fan[idF] ??= {}
-		if (!demo.checklist.fan[idF]?.p) {
-			demo.checklist.fan[idF].p = `Давление ${demo.accF.p[idF].value} bar`
+		demo.checklist.fan.list[idF] ??= {}
+		if (!demo.checklist.fan.list[idF]?.p) {
+			demo.checklist.fan.list[idF].p = `Давление ${demo.accF.p[idF].value} bar`
 		}
 	}
 
@@ -133,7 +133,7 @@ function fnP(el, bld, obj, checklistPNR, demo, m) {
 	if (demo.accF.order < m.fanBexc.length - 1) return
 
 	// Очередь закончилась, все показания по давления для каждого ВНО сняты
-	demo.checklist.fan[el._id] ??= {}
+	demo.checklist.fan.list[el._id] ??= {}
 
 	// Считаем среднее арифметическое
 	const mean = fnMean(demo)

@@ -44,10 +44,10 @@ function check(bld, obj, flap, demo) {
 
 	flap.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
-		demo.checklist.coolerFlap[el._id] ??= {}
+		demo.checklist.coolerFlap.list[el._id] ??= {}
 		// Модуль или Конфигурация
-		if (v === false && !demo.checklist.flap[el._id].stop)
-			demo.checklist.flap[el._id].stop = 'ошибка модуля или конфигурации'
+		if (v === false && !demo.checklist.flap.list[el._id].stop)
+			demo.checklist.flap.list[el._id].stop = 'ошибка модуля или конфигурации'
 	})
 }
 

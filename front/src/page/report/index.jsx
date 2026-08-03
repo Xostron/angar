@@ -3,6 +3,7 @@ import useEquipStore from '@store/equipment'
 import Charts from './charts'
 import SensorChart from './sensor-chart'
 import './style.css'
+import Demo from './demo'
 
 const PERIODS = [1, 2, 3, 4, 5, 6, 7]
 
@@ -10,6 +11,7 @@ const MODES = [
 	{ key: 'general', label: 'Общий' },
 	{ key: 'temperature', label: 'Температура продукта', type: 'tprd' },
 	{ key: 'humidity', label: 'Влажность продукта', type: 'hin' },
+	{ key: 'demo', label: 'Демо', type: 'demo' },
 ]
 
 /**
@@ -75,11 +77,13 @@ export default function Report() {
 						</div>
 					</div>
 
-					{mode === 'general' ? (
-						<Charts bldId={selectedId} days={days} tick={tick} />
-					) : (
-						<SensorChart bldId={selectedId} type={activeMode.type} days={days} tick={tick} />
-					)}
+					<Content
+						mode={mode}
+						selectedId={selectedId}
+						days={days}
+						tick={tick}
+						activeMode={activeMode}
+					/>
 				</>
 			) : (
 				<div style={{ padding: '40px', textAlign: 'center', color: '#888' }}>
@@ -88,4 +92,19 @@ export default function Report() {
 			)}
 		</div>
 	)
+}
+
+function Content({ mode, selectedId, days, tick, activeMode }) {
+	switch (mode) {
+		case 'general':
+			return <Charts bldId={selectedId} days={days} tick={tick} />
+
+		case 'temperature':
+		case 'humidity':
+			return <SensorChart bldId={selectedId} type={activeMode.type} days={days} tick={tick} />
+		case 'demo':
+			return <Demo bldId={selectedId}/>
+		default:
+			return <Charts bldId={selectedId} days={days} tick={tick} />
+	}
 }

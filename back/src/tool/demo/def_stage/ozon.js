@@ -45,14 +45,14 @@ function check(bld, obj, oz, demo) {
 
 	oz.forEach((el) => {
 		const v = obj?.value?.[el._id]
-		demo.checklist.ozon[el._id] ??= {}
+		demo.checklist.ozon.list[el._id] ??= {}
 		// beep Выключен автомат
-		if (isExtralrm(bld._id, null, 'ozon3') && !demo.checklist.ozon[el._id].beep)
-			demo.checklist.ozon[el._id].beep = 'выключен автомат'
+		if (isExtralrm(bld._id, null, 'ozon3') && !demo.checklist.ozon.list[el._id].beep)
+			demo.checklist.ozon.list[el._id].beep = 'выключен автомат'
 
 		// Модуль или Конфигурация
-		if (v?.state == 'stop' && !demo.checklist.ozon[el._id].stop)
-			demo.checklist.ozon[el._id].stop = 'ошибка модуля или конфигурации'
+		if (v?.state == 'stop' && !demo.checklist.ozon.list[el._id].stop)
+			demo.checklist.ozon.list[el._id].stop = 'ошибка модуля или конфигурации'
 	})
 }
 

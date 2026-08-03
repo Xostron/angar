@@ -67,26 +67,26 @@ function check(bld, obj, fans, demo) {
 
 	fans.forEach((el) => {
 		const v = obj?.value?.[el._id]
-		demo.checklist.allFan[el._id] ??= {}
+		demo.checklist.allFan.list[el._id] ??= {}
 		// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
-		if (v?.qf && !demo.checklist.allFan[el._id].qf)
-			demo.checklist.allFan[el._id].qf = 'автомат выбит'
+		if (v?.qf && !demo.checklist.allFan.list[el._id].qf)
+			demo.checklist.allFan.list[el._id].qf = 'автомат выбит'
 		// Перегрев двигателя heat: true - перегрев, false - ок, null - неисправен модуль
-		if (v?.heat && !demo.checklist.allFan[el._id].heat)
-			demo.checklist.allFan[el._id].heat = 'перегрев мотора'
+		if (v?.heat && !demo.checklist.allFan.list[el._id].heat)
+			demo.checklist.allFan.list[el._id].heat = 'перегрев мотора'
 		// Дребезг контактора
-		if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.allFan[el._id].debdo)
-			demo.checklist.allFan[el._id].debdo = 'частое включение'
+		if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.allFan.list[el._id].debdo)
+			demo.checklist.allFan.list[el._id].debdo = 'частое включение'
 		// Модуль или Конфигурация
-		if (v.state == 'stop' && !demo.checklist.allFan[el._id].stop)
-			demo.checklist.allFan[el._id].stop = 'ошибка модуля или конфигурации'
+		if (v.state == 'stop' && !demo.checklist.allFan.list[el._id].stop)
+			demo.checklist.allFan.list[el._id].stop = 'ошибка модуля или конфигурации'
 		// Превышен ток двигателя
 		if (
 			v.state == 'run' &&
 			v.vai > (+el?.actuator?.current ?? 30) &&
-			!demo.checklist.allFan[el._id].vai
+			!demo.checklist.allFan.list[el._id].vai
 		)
-			demo.checklist.allFan[el._id].vai = 'превышен ток двигателя'
+			demo.checklist.allFan.list[el._id].vai = 'превышен ток двигателя'
 	})
 }
 
@@ -101,13 +101,13 @@ function fnTcnl(bld, obj, checklistPNR, demo, tcnlB) {
 		const v = obj.value?.[el._id]
 		const av = demo.accAllFan?.[el._id]
 		const sect = obj.data.section.find((sec) => sec._id === el.owner.id)
-		demo.checklist.allFan[el._id] ??= {}
+		demo.checklist.allFan.list[el._id] ??= {}
 		if (
 			v.value >= av.value - 0.1 &&
 			v.value <= av.value + 0.1 &&
-			!demo.checklist.allFan[el._id]?.tcnl
+			!demo.checklist.allFan.list[el._id]?.tcnl
 		)
-			demo.checklist.allFan[el._id].tcnl =
+			demo.checklist.allFan.list[el._id].tcnl =
 				`${sect?.name ?? ''} ${el.name} не меняется состояние датчика при работе вентиляторов `
 	})
 }
@@ -131,7 +131,7 @@ function fnVolt(bld, obj, checklistPNR, demo) {
 	// По устройствам электроизмерений
 	deviceVolt.forEach((el) => {
 		// Аккумулятор демо
-		demo.checklist.allFan[el._id] ??= {}
+		demo.checklist.allFan.list[el._id] ??= {}
 		// Показания устройства
 		const volt = obj.value?.[el._id]
 		// В какой секции добавлено устройство
@@ -143,8 +143,8 @@ function fnVolt(bld, obj, checklistPNR, demo) {
 		for (const key in volt) {
 			if (key == 'state') continue
 			// Если напряжение меньше => логируем неисправность
-			if (volt[key] < _min_volt && !demo.checklist.allFan[el._id][key])
-				demo.checklist.allFan[el._id][key] =
+			if (volt[key] < _min_volt && !demo.checklist.allFan.list[el._id][key])
+				demo.checklist.allFan.list[el._id][key] =
 					`низкое напряжение на входе ${ownerName}, фаза ${key} = ${volt[key]}В`
 		}
 		// console.log(el)

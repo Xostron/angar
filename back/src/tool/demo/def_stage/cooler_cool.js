@@ -91,51 +91,51 @@ function check(bld, obj, el, demo, acc, o) {
 	// Время прошло - мониторим состояние разгонника
 
 	const v = obj?.value?.[el._id]
-	demo.checklist.coolerCool[el._id] ??= {}
+	demo.checklist.coolerCool.list[el._id] ??= {}
 	// датчик температуры всасывания
 	// неисправен
-	if (tmpV.state != 'on' && !demo.checklist.coolerCool[el._id].tmp1)
-		demo.checklist.coolerCool[el._id].tmp1 =
+	if (tmpV.state != 'on' && !demo.checklist.coolerCool.list[el._id].tmp1)
+		demo.checklist.coolerCool.list[el._id].tmp1 =
 			`датчик температуры всасывания ${tmpV.state == 'alarm' ? 'неисправен' : 'выведен из работы'}`
 
 	if (
 		acc.tmp.state == 'on' &&
 		tmpV.value >= acc.tmp.value - 0.1 &&
 		tmpV.value <= acc.tmp.value + 0.1 &&
-		!demo.checklist.coolerCool[el._id].tmp2
+		!demo.checklist.coolerCool.list[el._id].tmp2
 	)
-		demo.checklist.coolerCool[el._id].tmp2 =
+		demo.checklist.coolerCool.list[el._id].tmp2 =
 			'не меняется температура испарителя при работе компрессора'
 
 	// датчик давления всасывания
 	// неисправен
-	if (pinV.state != 'on' && !demo.checklist.coolerCool[el._id].pin1)
-		demo.checklist.coolerCool[el._id].pin1 =
+	if (pinV.state != 'on' && !demo.checklist.coolerCool.list[el._id].pin1)
+		demo.checklist.coolerCool.list[el._id].pin1 =
 			`датчик давления всасывания ${pinV.state == 'alarm' ? 'неисправен' : 'выведен из работы'}`
 
-	if (pinV.state == 'on' && pinV.value < 2 && !demo.checklist.coolerCool[el._id].pin2)
-		demo.checklist.coolerCool[el._id].pin2 = 'не меняется давление всасывания'
+	if (pinV.state == 'on' && pinV.value < 2 && !demo.checklist.coolerCool.list[el._id].pin2)
+		demo.checklist.coolerCool.list[el._id].pin2 = 'не меняется давление всасывания'
 
 	// датчик давления нагнетания
 	// неисправен
-	if (poutV.state != 'on' && !demo.checklist.coolerCool[el._id].pout1)
-		demo.checklist.coolerCool[el._id].pout1 =
+	if (poutV.state != 'on' && !demo.checklist.coolerCool.list[el._id].pout1)
+		demo.checklist.coolerCool.list[el._id].pout1 =
 			`датчик давления нагнетания ${poutV.state == 'alarm' ? 'неисправен' : 'выведен из работы'}`
 
-	if (poutV.state == 'on' && poutV.value < 10 && !demo.checklist.coolerCool[el._id].pout2)
-		demo.checklist.coolerCool[el._id].pout2 = 'не меняется давление нагнетания'
+	if (poutV.state == 'on' && poutV.value < 10 && !demo.checklist.coolerCool.list[el._id].pout2)
+		demo.checklist.coolerCool.list[el._id].pout2 = 'не меняется давление нагнетания'
 
-	if (poutV.state == 'on' && poutV.value > 21 && !demo.checklist.coolerCool[el._id].pout3)
-		demo.checklist.coolerCool[el._id].pout3 = 'давление нагнетания больше 21 bar'
+	if (poutV.state == 'on' && poutV.value > 21 && !demo.checklist.coolerCool.list[el._id].pout3)
+		demo.checklist.coolerCool.list[el._id].pout3 = 'давление нагнетания больше 21 bar'
 
 	// Модуль или Конфигурация
 	if (
 		tmpV.state == 'on' &&
 		v?.state != 'on-off-off' &&
 		v?.state != 'on-on-off' &&
-		!demo.checklist.coolerCool[el._id].stop
+		!demo.checklist.coolerCool.list[el._id].stop
 	)
-		demo.checklist.coolerCool[el._id].stop = 'ошибка модуля или конфигурации'
+		demo.checklist.coolerCool.list[el._id].stop = 'ошибка модуля или конфигурации'
 }
 
 module.exports = coolerCool
