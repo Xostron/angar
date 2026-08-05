@@ -1,5 +1,6 @@
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
+const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 10_000
 
@@ -22,7 +23,7 @@ function coolerHeat(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
-	if (!m.heatClrB) {
+	if (!m.heatClrB?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		return
@@ -44,6 +45,9 @@ function check(bld, obj, heatClrB, demo) {
 	heatClrB.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
 		demo.checklist.coolerHeat.list[el._id] ??= {}
+		demo.checklist.coolerHeat.list[el._id].name = getOwnerName(el, obj.data, {
+			flt: ['sect', 'cooler'],
+		})
 		// Модуль или Конфигурация
 		if (v === false && !demo.checklist.coolerHeat.list[el._id].stop)
 			demo.checklist.coolerHeat.list[el._id].stop = 'ошибка модуля или конфигурации'

@@ -9,13 +9,13 @@ const { getIdB, getSectAuto } = require('@tool/get/building')
  * @param {*} s Настройки демо
  * @returns
  */
-function initDemo(bld, s, m, obj) {
+function initDemo(bld, s, m, checklistPNR, obj) {
 	// Инициализация аккумулятора демо
 	store.retain[bld._id].demo ??= JSON.parse(initData)
 	const demo = store.retain[bld._id].demo
 
 	// Условия выкл демо (сброс аккумулятора):
-	if (stop(bld, s, m, demo, obj)) return
+	if (stop(bld, s, m, demo, checklistPNR, obj)) return
 
 	// Демо уже в работе - выходим из инициализации
 	if (demo?.cur !== null) return console.log('DEMO ALREADY INIT', demo.cur)
@@ -37,13 +37,18 @@ function initDemo(bld, s, m, obj) {
 	// Номер текущего теста
 	demo.order = 0
 	// Инициализируем журнал логов
-	demo.checklist = JSON.parse(initData).checklist
+	demo.checklist = {}
+	checklistPNR.forEach(({ code, name, last }) => {
+		demo.checklist[code] = { name, last, list: {} }
+	})
 	// Точка отсчета демо, цикла, теста
 	demo.timeD = new Date()
 	demo.timeC = demo.timeD
 	demo.timeT = demo.timeD
-	// false - однократная остановка еще не выполнялась
+	// false - однократная остановка исполнителей еще не выполнялась
 	demo.firstOff = false
+	// Флаг о преобразовании данных для front по окончанию демо-режима = false
+	demo.transform = true
 	console.log('INIT DEMO', demo.cur)
 }
 

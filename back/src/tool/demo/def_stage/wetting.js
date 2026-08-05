@@ -1,5 +1,6 @@
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
+const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 10_000
 
@@ -7,7 +8,8 @@ const _delay = 10_000
  * Тест одновременное вкл всех увлажнителей
  * @param {*} bld Склад
  * @param {*} obj Глобальные данные
- * @param {*} mech Собранные исполнительные механизмы
+ * @param {*} m Собранные исполнительные механизмы
+ * @param {*} checklistPNR настройки теста
  * @param {*} demo Аккумулятор
  * @param {*} permission Разрешение выполнения теста
  * @param {*} code Код активного теста
@@ -22,7 +24,7 @@ function wetting(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
-	if (!m.wettingS) {
+	if (!m.wettingS?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		arrCtrlDO(bld._id, m.wettingS, 'off')
@@ -45,7 +47,9 @@ function check(bld, obj, wettingS, demo) {
 	wettingS.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
 		demo.checklist.wetting.list[el._id] ??= {}
-		console.log(123, v)
+		demo.checklist.wetting.list[el._id].name = getOwnerName(el, obj.data, {
+			flt: ['sect'],
+		})
 		// Модуль или Конфигурация
 		if (v === false && !demo.checklist.wetting.list[el._id].stop)
 			demo.checklist.wetting.list[el._id].stop = 'ошибка модуля или конфигурации'

@@ -64,7 +64,7 @@ function getIdSB(section, id) {
  * @param {*} idB
  * @returns
  */
-function getIdsS(section=[], idB) {
+function getIdsS(section = [], idB) {
 	return section
 		.filter((el) => el.buildingId === idB)
 		.sort((a, b) => a.order - b.order)
@@ -75,7 +75,7 @@ function getIdsS(section=[], idB) {
  * Получить секции в режиме авто | руч
  * @param {*} idB Ид склада
  * @param {*} obj Глобальные данные
- * @param {boolean} mod Модификатор 
+ * @param {boolean} mod Модификатор
  * @returns {object[]} mod = false - массив ИД секций, mod = true - массив рамы секций
  */
 function getSectAM(idB, section, obj, mod = false) {
@@ -126,16 +126,75 @@ function getIdBS(section = [], idB) {
 	return ids
 }
 
-function getBbySig(sig, equip) {
+function getBbySig(sig, data) {
 	switch (sig?.owner?.type) {
 		case 'building':
 			return sig.owner.id
 		case 'section':
-			const sect = equip?.section?.find((el) => el._id === sig.owner.id)
+			const sect = data?.section?.find((el) => el._id === sig.owner.id)
 			return sect?.buildingId
 		default:
 			return null
 	}
+}
+
+/**
+ * Получить владельца периферии
+ * @param {*} o Исходный элемент: Сигнал, ВНО, испаритель и т.д. из периферии
+ * @param {*} data Объект рымы (obj.data = {building, section, cooler, fan ...})
+ * @returns {object} Владелец ПУ: склад, секция, ?(опционально)испаритель
+ */
+function getOwner(o, data) {
+	let ownerId = o?.owner?.id ?? o.sectionId
+	ownerId = ownerId instanceof Array ? ownerId[0] : ownerId
+	const ownerType = o?.owner?.type ?? 'section'
+	let sect, cooler
+	switch (ownerType) {
+		case 'building':
+			return { bld: data.building.find((el) => el._id === ownerId) }
+		case 'section':
+			sect = data?.section?.find((el) => el._id === ownerId)
+			return {
+				bld: data.building.find((el) => el._id === sect?.buildingId),
+				sect,
+			}
+		case 'cooler':
+			cooler = data?.cooler?.find((el) => el._id === ownerId)
+			sect = data?.section?.find((el) => el._id === cooler.sectionId)
+			return {
+				bld: data.building.find((el) => el._id === sect.buildingId),
+				sect,
+				cooler,
+			}
+		default:
+			return null
+	}
+}
+
+/**
+ * Получить полное имя всех владельцев строкой
+ * @param {*} o Субъект: Сигнал, ВНО, испаритель и т.д. из периферии
+ * @param {*} data
+ * @param {obj} option 	sep Символ сепаратор между именами
+						mod true - внести имя субъекта(по-умолчанию),
+ * 							false - не учитывать имя субъекта
+						flt Фильтр ключей (по умолчанию показывать все доступные имена)
+ * @returns {string} 
+ */
+function getOwnerName(o, data, option = { mod: true, sep: ' - ', flt: ['bld', 'sect', 'cooler'] }) {
+	option = { mod: true, sep: ' - ', flt: ['bld', 'sect', 'cooler'], ...option }
+	const r = getOwner(o, data)
+	if (!r) return ''
+
+	const name = []
+	for (const key in r) {
+		if (!option.flt.includes(key)) continue
+		if (!r[key]?.name) continue
+		name.push(r[key].name)
+	}
+	if ((o?.name || o?.device?.name) && option.mod) name.push(o.name ?? o?.device?.name)
+
+	return name.join(option.sep)
 }
 
 module.exports = {
@@ -152,4 +211,6 @@ module.exports = {
 	getBbySig,
 	getSectAM,
 	getSectAuto,
+	getOwner,
+	getOwnerName,
 }

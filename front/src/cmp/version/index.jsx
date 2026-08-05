@@ -55,7 +55,7 @@ const stl = {
 	display: 'flex',
 	alignItems: 'center',
 	gap: '.3em',
-	position: 'absolute',
+	position: 'fixed',
 	bottom: '15px',
 	right: '15px',
 	color: 'darkgray',

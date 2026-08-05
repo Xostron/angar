@@ -1,8 +1,9 @@
-const { arrCtrlDO, ctrlDO } = require('@tool/command/module_output')
+const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 const { data: store } = require('@store/index')
 const { get } = require('@tool/get/sensor')
 const { stasis } = require('../fn')
+const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 60_000
 
@@ -28,18 +29,19 @@ function coolerCool(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
-	if (!m.coolerB) {
+	if (!m.coolerB?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		return
 	}
 
 	// Включить все испарители
-	control(bld, obj, m.coolerB, demo)
+	control(bld, obj, m.coolerB, checklistPNR, demo)
 }
 
-function control(bld, obj, coolerB, demo) {
+function control(bld, obj, coolerB, checklistPNR, demo) {
 	demo.accClr ??= {}
+
 	coolerB.forEach((el) => {
 		demo.accClr[el._id] ??= {}
 		// // Аккумулятор
@@ -76,22 +78,25 @@ function control(bld, obj, coolerB, demo) {
 		// stasis('pin', pinV, demo, acc)
 		// stasis('pout', poutV, demo, acc)
 		// Проверка и запись неисправностей в журнал
-		check(bld, obj, el, demo, acc, { tmpV, pinV, poutV })
+		check(bld, obj, el, checklistPNR, demo, acc, { tmpV, pinV, poutV })
 		// console.log(11, el, v)
 	})
 }
 
 // Проверка вкл/выкл испарителей
-function check(bld, obj, el, demo, acc, o) {
+function check(bld, obj, el, checklistPNR, demo, acc, o) {
 	const { tmpV, pinV, poutV } = o
-	// Начинаем проверку с задержкой 60сек, чтобы изменения записи выходов вступили в силу
-	const t = compareTime(demo.timeT, _delay)
+	// Начинаем проверку после 50% пройденного теста данного ВНО
+	const t = compareTime(demo.timeT, checklistPNR.last * 0.5)
 	// Время не прошло
 	if (!t) return
-	// Время прошло - мониторим состояние разгонника
 
+	// Время прошло - мониторим состояние разгонника
 	const v = obj?.value?.[el._id]
 	demo.checklist.coolerCool.list[el._id] ??= {}
+	demo.checklist.coolerCool.list[el._id].name = getOwnerName(el, obj.data, {
+		flt: ['sect', 'cooler'],
+	})
 	// датчик температуры всасывания
 	// неисправен
 	if (tmpV.state != 'on' && !demo.checklist.coolerCool.list[el._id].tmp1)

@@ -21,7 +21,7 @@ function fnDemo(obj) {
 		const m = mechB(bld?._id, bld?.type, obj, true)
 
 		// Инициализация/очистка аккумулятора демо
-		initDemo(bld, s, m, obj)
+		initDemo(bld, s, m, checklistPNR, obj)
 
 		// Разрешение тестирования/переключение модулей тестов
 		const q = check(bld, s, m, store.retain[bld._id].demo, checklistPNR, obj)

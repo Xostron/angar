@@ -2,6 +2,7 @@ const { arrCtrlDO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { stasis } = require('../fn')
+const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 10_000
 const _min_volt = 365
@@ -32,7 +33,7 @@ function allFan(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет ВНО пропускаем данный тест
-	if (!m.fanBexc) {
+	if (!m.fanBexc?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		arrCtrlDO(bld._id, m.fanBexc, 'off')
@@ -53,7 +54,7 @@ function allFan(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// Проверка и запись неисправностей в журнал
 	check(bld, obj, m.fanBexc, demo)
-	fnVolt(bld, obj, demo)
+	fnVolt(bld, obj, checklistPNR, demo)
 	fnTcnl(bld, obj, checklistPNR, demo, m.tcnlB)
 }
 
@@ -68,6 +69,9 @@ function check(bld, obj, fans, demo) {
 	fans.forEach((el) => {
 		const v = obj?.value?.[el._id]
 		demo.checklist.allFan.list[el._id] ??= {}
+		demo.checklist.allFan.list[el._id].name = getOwnerName(el, obj.data, {
+			flt: ['sect', 'cooler'],
+		})
 		// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
 		if (v?.qf && !demo.checklist.allFan.list[el._id].qf)
 			demo.checklist.allFan.list[el._id].qf = 'автомат выбит'
@@ -94,7 +98,7 @@ module.exports = allFan
 
 function fnTcnl(bld, obj, checklistPNR, demo, tcnlB) {
 	// Проверка температуры канала после включения ВНО на 70% пройденного теста
-	const t = compareTime(demo.timeT, checklistPNR?.[demo.order]?.last * 0.7)
+	const t = compareTime(demo.timeT, checklistPNR.last * 0.7)
 	// Время не прошло
 	if (!t) return
 	tcnlB.forEach((el) => {

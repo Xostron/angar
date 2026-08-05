@@ -23,39 +23,27 @@ function mech(obj, idS, idB) {
 	const heatS = heating.filter((el) => el?.owner?.id === idS)
 	// Испарители секции(соленоид + ВНО + оттайка)
 	const coolerS = getClr(data, idS)
-	// ВНО испарителей (только рабочие и исключая дубляжи: 1 ВНО на 2 и более испарителя)
-	// Вно испарителей (все вно, включая дубляжи)
-	// const fanClrRaw = coolerS.flatMap((el) => el.fan)
-	// // Вно испарителей (только рабочие state!=alarm и state!=off)
-	// let fanClr = fanClrRaw.filter(
-	// 	(el) => value[el._id].state != 'alarm' && !retain?.[idB]?.fan?.[idS]?.[el._id],
-	// )
-	// // Вно испарителей (только рабочие state!=alarm и state!=off и без дубляжей)
-	// fanClr = Object.values(
-	// 	fanClr.reduce((acc, el, i) => {
-	// 		if (acc[el.module.id + el.module.channel]) return acc
-	// 		acc[el.module.id + el.module.channel] = el
-	// 		return acc
-	// 	}, {}),
-	// )
-	// // Вно испарителей с любым state, но исключая дубляжи
-	// const allFanClr = Object.values(
-	// 	fanClrRaw.reduce((acc, el, i) => {
-	// 		if (acc[el.module.id + el.module.channel]) return acc
-	// 		acc[el.module.id + el.module.channel] = el
-	// 		return acc
-	// 	}, {}),
-	// )
-	// ВНО испарителей: все и только рабочие
-	const { allFanClr, fanClr } = getVnoClr(idB, idS, { retain, value }, coolerS)
+
 	// Испаритель: соленоид подогрева
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
+
+	// ВНО испарителей: все и только рабочие
+	const { allFanClr, fanClr } = getVnoClr(idB, idS, { retain, value }, coolerS)
 	// Напорные ВНО секции (только рабочие)
 	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
-
 	// Напорные ВНО секции/камеры + ВНО испарителей:
 	// обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...fanSS, ...fanClr]
+
+	// Вентиляторы секции:напорные (любой стейт)
+	const ff = fan
+		.filter((el) => el.owner.id === idS && el.type === 'fan')
+		.map((el) => {
+			const ao = binding.find((b) => b.owner.id === el._id && b.type === 'ao')
+			if (!ao) return el
+			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
+		})
+	ff.push(...allFanClr)
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
 	// const fanAux = fan.filter((el) => el.owner.id === idS && el.type === 'aux')
@@ -81,6 +69,7 @@ function mech(obj, idS, idB) {
 		fanClr,
 		wettingS,
 		allFanClr,
+		ff,
 	}
 }
 
@@ -173,16 +162,16 @@ function mechB(idB, type, obj, mod = false) {
 		})
 
 	// Демо - Все вентиляторы склада: напорные, вно испарителей - введенные в работу (без дубляжей)
-	const fanBexc = Object.values(
-		fanB
-			.filter((el) => !obj?.value?.[el._id]?.off)
-			.reduce((acc, el, i) => {
-				if (acc[el.module.id + el.module.channel]) return acc
-				acc[el.module.id + el.module.channel] = el
-				return acc
-			}, {}),
-	)
-
+	// const fanBexc = Object.values(
+	// 	fanB
+	// 		.filter((el) => !obj?.value?.[el._id]?.off)
+	// 		.reduce((acc, el, i) => {
+	// 			if (acc[el.module.id + el.module.channel]) return acc
+	// 			acc[el.module.id + el.module.channel] = el
+	// 			return acc
+	// 		}, {}),
+	// )
+	let fanBexc = []
 	const services = data?.io?.filter((el) => el.bldId.includes(idB))
 
 	// Если склад типа холодильник
@@ -194,8 +183,10 @@ function mechB(idB, type, obj, mod = false) {
 		.filter((el) => el.buildingId === idB)
 		.forEach((el) => {
 			sect[el._id] = mech(obj, el._id, idB)
+			fanBexc.push(...sect[el._id].ff)
 		})
 
+	// console.log(111, fanBexc)
 	// Демо - Рабочие испарители рабочих секций
 	const coolerB = idBS
 		.reduce((acc, id) => {

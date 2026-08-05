@@ -1,8 +1,8 @@
-const { arrCtrlDO, ctrlDO, ctrlADO } = require('@tool/command/module_output')
+const { arrCtrlDO, ctrlADO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
 const { isExtralrm } = require('@tool/message/extralrm')
-const { checklist } = require('../fn/init_data')
 const { stasis, fnMean, getIdSbyClr } = require('../fn')
+const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 10_000
 const _hyst = 10
@@ -22,7 +22,7 @@ function fan(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// Сейчас в работе тест разгонников
 	// Если нет разгонников пропускаем данный тест
-	if (!m.fanBexc) {
+	if (!m.fanBexc?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		arrCtrlDO(bld._id, m.fanBexc, 'off')
@@ -38,7 +38,6 @@ function singleOn(bld, obj, m, checklistPNR, demo) {
 	demo.accF.order ??= 0
 	// Все ВНО проверены
 	demo.accF.time ??= new Date()
-	const chk = checklistPNR[demo.order]
 
 	m.fanBexc.forEach((el, i) => {
 		// ВНО не равный номеру очереди - dsrk.xftv
@@ -47,7 +46,7 @@ function singleOn(bld, obj, m, checklistPNR, demo) {
 			return
 		}
 		// Текущий ВНО (равный номеру очереди)
-		const t = compareTime(demo.accF.time, chk.last)
+		const t = compareTime(demo.accF.time, checklistPNR.last)
 		// Время прошло
 		if (t) {
 			ctrlADO(el, bld._id, 'off')
@@ -63,9 +62,13 @@ function singleOn(bld, obj, m, checklistPNR, demo) {
 			}
 			return
 		}
+		demo.checklist.fan.list[el._id] ??= {}
+		demo.checklist.fan.list[el._id].name = getOwnerName(el, obj.data, {
+			flt: ['sect', 'cooler'],
+		})
 		// Время не прошло - Включаем ВНО + проверка работы
 		ctrlADO(el, bld._id, 'on', 100)
-		check(el, bld, obj, demo)
+		check(el, bld, obj, checklistPNR, demo)
 		fnP(el, bld, obj, checklistPNR, demo, m)
 	})
 
@@ -73,17 +76,18 @@ function singleOn(bld, obj, m, checklistPNR, demo) {
 }
 
 // Проверка вкл/выкл ВНО
-function check(el, bld, obj, demo) {
+function check(el, bld, obj, checklistPNR, demo) {
 	// Начинаем проверку после 50% пройденного теста данного ВНО
-	const t = compareTime(demo.accF.time, checklist?.[demo.order]?.last * 0.5)
+	const t = compareTime(demo.accF.time, checklistPNR.last * 0.5)
 	// Время не прошло
 	if (!t) return
 	// Время прошло - мониторим состояние разгонника
 
 	const v = obj?.value?.[el._id]
-	demo.checklist.fan.list[el._id] ??= {}
+
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
-	if (v?.qf && !demo.checklist.fan.list[el._id].qf) demo.checklist.fan.list[el._id].qf = 'автомат выбит'
+	if (v?.qf && !demo.checklist.fan.list[el._id].qf)
+		demo.checklist.fan.list[el._id].qf = 'автомат выбит'
 	// Перегрев двигателя heat: true - перегрев, false - ок, null - неисправен модуль
 	if (v?.heat && !demo.checklist.fan.list[el._id].heat)
 		demo.checklist.fan.list[el._id].heat = 'перегрев мотора'
@@ -107,7 +111,7 @@ function fnP(el, bld, obj, checklistPNR, demo, m) {
 	if (!m.pB.length) return
 
 	// Фиксируем давление в канале на данном ВНО, после 50% пройденного теста данного ВНО
-	const t = compareTime(demo.accF.time, checklistPNR?.[demo.order]?.last * 0.5)
+	const t = compareTime(demo.accF.time, checklistPNR.last * 0.5)
 	// Время не прошло
 	if (!t) return
 	demo.accF.p ??= {}
@@ -121,34 +125,31 @@ function fnP(el, bld, obj, checklistPNR, demo, m) {
 		stasis(el._id, obj.value?.[p._id], demo.accF.p)
 	})
 
-	// Сохраняем сообщения о давлении ВНО
-	for (const idF in demo.accF.p) {
-		demo.checklist.fan.list[idF] ??= {}
-		if (!demo.checklist.fan.list[idF]?.p) {
-			demo.checklist.fan.list[idF].p = `Давление ${demo.accF.p[idF].value} bar`
-		}
-	}
-
 	// Очередь еще в работе
 	if (demo.accF.order < m.fanBexc.length - 1) return
 
-	// Очередь закончилась, все показания по давления для каждого ВНО сняты
-	demo.checklist.fan.list[el._id] ??= {}
-
+	// Очередь закончилась, делаем расчет по среднему давлению
 	// Считаем среднее арифметическое
 	const mean = fnMean(demo)
 
-	demo.checklist.fan.p = ''
-	if (mean === null && !demo.checklist.fan.p) {
-		demo.checklist.fan.p = 'Показания по давлению отсутсвуют'
+	demo.checklist.fan.list.pressure ??= {}
+	demo.checklist.fan.list.pressure.name = 'Давление в канале'
+	if (mean === null && !demo.checklist.fan.list.pressure.p) {
+		demo.checklist.fan.list.pressure.p = 'Показания по давлению отсутсвуют'
 		return
 	}
 	// Если хоть у одного ВНО есть отклонение от среднего давления, то пишем ошибку
 	const err = Object.values(demo.accF.p ?? {}).some(
 		(el) => el.value !== null && (el.value < mean - _hyst || el.value > mean + _hyst),
 	)
-	if (err && !demo.checklist.fan.p)
-		demo.checklist.fan.p = `Давление ВНО не соответсвует среднему давлению в канале ${mean} bar`
+	if (err && !demo.checklist.fan.list.pressure.p) {
+		demo.checklist.fan.list.pressure.name += ` не соответсвуют среднему значению ${mean} bar`
+		// Сохраняем давление каждого ВНО
+		for (const idF in demo.accF.p) {
+			const name = demo.checklist.fan.list[idF].name
+			demo.checklist.fan.list.pressure[idF] = `${name}: ${demo.accF.p[idF].value} bar`
+		}
+	}
 }
 
 module.exports = fan

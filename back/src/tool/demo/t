@@ -296,3 +296,98 @@
   ],
   services: []
 }
+
+[
+  {
+    _id: '69f9dd09c35ea05200898cdf',
+    name: 'ВНО 4',
+    order: 1,
+    owner: { type: 'section', id: '69f9dd09c35ea05200898cda' },
+    module: { channel: 5, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan'
+  },
+  {
+    _id: '69f9dd09c35ea05200898cde',
+    name: 'ВНО 1',
+    order: 1,
+    owner: { type: 'section', id: '69f9dd09c35ea05200898cd9' },
+    module: { channel: 1, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan',
+    ao: { id: '69f9dd09c35ea05200898d1c', channel: 1 }
+  },
+  {
+    _id: '69f9e850c35ea05200898d45',
+    name: 'ВНО 3',
+    order: 1,
+    owner: { type: 'cooler', id: '69f9e823c35ea05200898d42' },
+    module: { channel: 3, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan',
+    actuator: { current: '15', voltage: '380', power: '7.5' },
+    ao: { id: '69f9dd09c35ea05200898d1c', channel: 2 }
+  },
+  {
+    _id: '69f9fcacc35ea05200898d6d',
+    name: 'ВНО 6',
+    order: 1,
+    owner: { type: 'cooler', id: '69f9ef95c35ea05200898d58' },
+    module: { channel: 6, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan',
+    ao: { id: '69f9dd09c35ea05200898d1c', channel: 5 }
+  },
+  {
+    _id: '69f9dd09c35ea05200898cdd',
+    name: 'ВНО 2',
+    order: 2,
+    owner: { type: 'section', id: '69f9dd09c35ea05200898cd9' },
+    module: { channel: 2, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan'
+  }
+] 
+
+
+[
+  {
+    _id: '69f9dd09c35ea05200898cde',
+    name: 'ВНО 1',
+    order: 1,
+    owner: { type: 'section', id: '69f9dd09c35ea05200898cd9' },
+    module: { channel: 1, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan',
+    ao: { id: '69f9dd09c35ea05200898d1c', channel: 1 }
+  },
+  {
+    _id: '69f9dd09c35ea05200898cdd',
+    name: 'ВНО 2',
+    order: 2,
+    owner: { type: 'section', id: '69f9dd09c35ea05200898cd9' },
+    module: { channel: 2, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan'
+  },
+  {
+    _id: '69f9e850c35ea05200898d45',
+    name: 'ВНО 3',
+    order: 1,
+    owner: { type: 'cooler', id: '69f9e823c35ea05200898d42' },
+    module: { channel: 3, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan',
+    actuator: { current: '15', voltage: '380', power: '7.5' },
+    ao: { id: '69f9dd09c35ea05200898d1c', channel: 2 }
+  },
+  {
+    _id: '69f9dd09c35ea05200898cdf',
+    name: 'ВНО 4',
+    order: 1,
+    owner: { type: 'section', id: '69f9dd09c35ea05200898cda' },
+    module: { channel: 5, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan'
+  },
+  {
+    _id: '69f9fcacc35ea05200898d6d',
+    name: 'ВНО 6',
+    order: 1,
+    owner: { type: 'cooler', id: '69f9ef95c35ea05200898d58' },
+    module: { channel: 6, id: '69f9dd09c35ea05200898d17' },
+    type: 'fan',
+    ao: { id: '69f9dd09c35ea05200898d1c', channel: 5 }
+  }
+]

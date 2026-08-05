@@ -1,5 +1,6 @@
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
+const { getOwnerName } = require('@tool/get/building')
 const { isExtralrm } = require('@tool/message/extralrm')
 // 10сек
 const _delay = 10_000
@@ -23,7 +24,7 @@ function ozon(bld, obj, m, checklistPNR, demo, permission, code) {
 	// console.log(11, m.ozon)
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
-	if (!m.ozon) {
+	if (!m.ozon?.length) {
 		m.order++
 		m.timeT = new Date()
 		arrCtrlDO(bld._id, m.ozon, 'off')
@@ -46,6 +47,9 @@ function check(bld, obj, oz, demo) {
 	oz.forEach((el) => {
 		const v = obj?.value?.[el._id]
 		demo.checklist.ozon.list[el._id] ??= {}
+		demo.checklist.ozon.list[el._id].name = getOwnerName(el, obj.data, {
+			flt: ['sect'],
+		})
 		// beep Выключен автомат
 		if (isExtralrm(bld._id, null, 'ozon3') && !demo.checklist.ozon.list[el._id].beep)
 			demo.checklist.ozon.list[el._id].beep = 'выключен автомат'

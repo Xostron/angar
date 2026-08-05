@@ -1,5 +1,6 @@
 const { arrCtrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
+const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 10_000
 
@@ -13,7 +14,7 @@ function accel(bld, obj, m, checklistPNR, demo, permission) {
 
 	// Сейчас в работе тест разгонников
 	// Если нет разгонников пропускаем данный тест
-	if (!m.fanA) {
+	if (!m.fanA?.length) {
 		demo.order++
 		demo.timeT = new Date()
 		arrCtrlDO(bld._id, m.fanA, 'off')
@@ -37,6 +38,7 @@ function check(bld, obj, fanA, demo) {
 	fanA.forEach((el) => {
 		const v = obj?.value?.[el._id]
 		demo.checklist.accel.list[el._id] ??= {}
+		demo.checklist.accel.list[el._id].name = getOwnerName(el, obj.data, { flt: ['sect'] })
 		if (v?.state === 'stop' && !demo.checklist.accel.list[el._id].stop)
 			demo.checklist.accel.list[el._id].stop = `ошибка модуля или конфигурации`
 	})

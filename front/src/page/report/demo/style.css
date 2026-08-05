@@ -1,11 +1,9 @@
-/* Базовые готические настройки */
-
-/* Общий контейнер — тяжелая железная плита */
+/* Общий контейнер */
 .wh-container {
 	width: 100%;
 }
 
-/* Список */
+/* Список тестов */
 .wh-list {
 	list-style: none;
 	padding: 0;
@@ -15,115 +13,163 @@
 	gap: 8px;
 }
 
-/* Элемент списка — бронепластина */
-.wh-item {
+/* Контейнер Элемента списка тестов, элемента списка исполнит. механизмы теста */
+.wh-item,
+.wh-sub-item {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Элемент списка */
+.wh-item-base {
 	display: flex;
 	align-items: center;
 	padding: 18px 20px;
-	/* box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8); */
+	list-style: none;
+	cursor: pointer;
+	&.open {
+		flex-direction: column;
+		padding: 0px 0px;
+		cursor: auto;
+	}
 }
 
+/* Плавное выдвижение списка */
+.wh-sub-list-wrapper {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.3s ease-in-out;
+}
+.wh-item.open .wh-sub-list-wrapper {
+	grid-template-rows: 1fr;
+}
+.wh-sub-list-wrapper > ul {
+	overflow: hidden;
+}
+
+/* Шеврон */
+.wh-toggle-icon {
+	width: 14px;
+	height: 14px;
+	background-color: #aa1111;
+	margin-right: 18px;
+	clip-path: polygon(
+		35% 0%,
+		65% 0%,
+		65% 35%,
+		100% 35%,
+		100% 65%,
+		65% 65%,
+		65% 100%,
+		35% 100%,
+		35% 65%,
+		0% 65%,
+		0% 35%,
+		35% 35%
+	);
+	transition: clip-path 0.3s ease-in-out;
+	&.open {
+		transform: rotate(180deg);
+		clip-path: polygon(
+			35% 35%,
+			65% 35%,
+			65% 35%,
+			100% 35%,
+			100% 65%,
+			65% 65%,
+			65% 65%,
+			35% 65%,
+			35% 65%,
+			0% 65%,
+			0% 35%,
+			35% 35%
+		);
+	}
+}
+
+/* Элемент списка - исполнительного механизма */
+.wh-sub-item {
+	width: 100%;
+	padding: 8px 20px 8px 52px;
+	/* list-style: circle; */
+	&.failed:nth-child(odd) {
+		background-color: #73000036;
+	}
+}
+.wh-sub-item > span {
+	letter-spacing: 2px;
+	margin-bottom: 6px;
+	color: #5c6266;
+	text-transform: uppercase;
+}
+
+/* Элемент списка - аварии исполнительного механизма */
+.wh-sub-item-err {
+	padding: 6px 8px 0px 18px;
+	margin-inline-start: 8px;
+	/* padding-top: 8px; */
+	/* padding-left: 18px; */
+	list-style-type: '-';
+	color: #5c6266;
+}
+
+/* СТИЛЬ ЭЛЕМЕНТА */
 .wh-content {
+	display: flex;
 	flex-grow: 1;
+	flex-direction: column;
 }
 
 .wh-title {
-	/* font-size: 18px; */
 	font-weight: 700;
-	letter-spacing: 1px;
-	text-transform: uppercase; /* Всегда капс для брутальности */
+	letter-spacing: 2px;
 	margin-bottom: 6px;
+	text-transform: uppercase;
 }
 
 .wh-desc {
 	font-size: 13px;
 	color: #5c6266;
-	font-style: normal; /* Никакой мягкой курсивности */
 	letter-spacing: 0.5px;
 }
 
 /* Армейский штамп-бейдж */
 .wh-badge {
-	/* font-size: 11px; */
 	letter-spacing: 2px;
 	font-weight: 900;
 	padding: 5px 12px;
 	border: 2px solid;
 	text-transform: uppercase;
-	/* box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5); */
 }
 
-/* --- БРУТАЛЬНЫЕ СОСТОЯНИЯ --- */
-
-/* ВЫПОЛНЕНО: Тактический зеленый (не яркий, а военный) */
-.wh-item.passed {
+/* ******************************СОСТОЯНИЯ****************************** */
+/* Успешный тест */
+.wh-item-base.passed {
 	border-left: solid 10px #5ca136;
-	/* background: linear-gradient(90deg, var(--primary) 0%, transparent 100%), #0d0f12; */
 }
-.wh-item.passed .wh-title {
+.wh-item-base.passed .wh-title {
 	color: #5ca136;
 }
-.wh-item.passed .wh-status-icon {
+.wh-item-base.passed .wh-status-icon {
 	width: 14px;
 	height: 14px;
 	background: #5ca136;
 	margin-right: 18px;
-	clip-path: polygon(
-		20% 0%,
-		0% 20%,
-		30% 50%,
-		0% 80%,
-		20% 100%,
-		50% 70%,
-		80% 100%,
-		100% 80%,
-		70% 50%,
-		100% 20%,
-		80% 0%,
-		50% 30%
-	); /* Крест */
+	clip-path: polygon(14% 44%, 0% 58%, 38% 95%, 100% 16%, 83% 3%, 35% 65%);
 }
-.wh-item.passed .wh-badge {
+.wh-item-base.passed .wh-badge {
 	color: #5ca136;
 	border-color: #2b531a;
 }
 
-/* В ПРОЦЕССЕ: Тяжелое пламя орудий (Золото / Оранжевый) */
-.wh-item.current {
-	border-left: solid 10px;
-	/* background: linear-gradient(90deg, var(--primary) 0%, transparent 100%), #0d0f12; */
-	animation: metalPulse 1.2s infinite alternate ease-in-out;
-}
-.wh-item.current .wh-title {
-	color: #f5b922;
-	/* animation: metalPulse 1.5s infinite alternate ease-in-out; */
-}
-.wh-item.current .wh-status-icon {
-	width: 10px;
-	height: 10px;
-	background: #f5b922;
-	margin-right: 22px;
-	transform: rotate(45deg); /* Квадрат-ромб вместо круга */
-	box-shadow: 0 0 10px #f5b922;
-	animation: badgePulse 1.2s infinite alternate ease-in-out;
-}
-.wh-item.current .wh-badge {
-	color: #f5b922;
-	border-color: #d19711;
-}
-
-/* ПОВАЛЕНО: Наглухо перечеркнутый кровавый статус */
-.wh-item.failed {
+/* Проваленный тест */
+.wh-item-base.failed {
 	border-left: solid 10px #730000;
-	/* background: linear-gradient(90deg, var(--primary) 0%, transparent 100%), #0d0f12; */
-	opacity: 0.8; /* Приглушаем проваленную миссию */
 }
-.wh-item.failed .wh-title {
+.wh-item-base.failed .wh-title {
 	color: #aa1111;
-	/* text-decoration: line-through; */
-	text-decoration-color: #730000;
 }
-.wh-item.failed .wh-status-icon {
+.wh-item-base.failed .wh-status-icon {
 	width: 14px;
 	height: 14px;
 	background: #aa1111;
@@ -141,27 +187,44 @@
 		100% 10%,
 		90% 0%,
 		50% 40%
-	); /* Четкий агрессивный череп-крест (X) */
+	);
 }
-.wh-item.failed .wh-badge {
+.wh-item-base.failed .wh-badge {
 	color: #aa1111;
 	border-color: #730000;
 }
 
-/* Тяжелое мерцание поврежденного терминала */
+/* Тест в процессе */
+.wh-item-base.current {
+	border-left: solid 10px;
+	animation: metalPulse 1.2s infinite alternate ease-in-out;
+}
+.wh-item-base.current .wh-title {
+	color: #f5b922;
+}
+.wh-item-base.current .wh-status-icon {
+	width: 10px;
+	height: 10px;
+	background: #f5b922;
+	margin-right: 22px;
+	transform: rotate(45deg); /* Квадрат-ромб вместо круга */
+	box-shadow: 0 0 10px #f5b922;
+	animation: badgePulse 1.2s infinite alternate ease-in-out;
+}
+.wh-item-base.current .wh-badge {
+	color: #f5b922;
+	border-color: #d19711;
+}
+
+/* Мерцание */
 @keyframes metalPulse {
 	0% {
 		border-left-color: #7c5a0b;
 		color: #7c5a0b;
-		/* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8); */
-		/* background-color: #0d0f12; */
 	}
 	100% {
 		border-left-color: #f5b922;
 		color: #f5b922;
-
-		/* box-shadow: inset 0 0 15px rgba(245, 185, 34, 0.05); */
-		/* background-color: white; */
 	}
 }
 

@@ -1,5 +1,6 @@
 const { ctrlV } = require('@tool/command/module_output')
 const { compareTime, deltaTime } = require('@tool/command/time')
+const { getOwnerName } = require('@tool/get/building')
 const { isExtralrm } = require('@tool/message/extralrm')
 // 10сек
 const _delay = 10_000
@@ -23,7 +24,7 @@ function valve(bld, obj, m, checklistPNR, demo, permission, code) {
 
 	// АКТИВЕН - Текущий тест
 	// Если нет ВНО пропускаем данный тест
-	if (!m.vlvAll) {
+	if (!m.vlvAll?.length) {
 		demo.order++
 		return
 	}
@@ -50,7 +51,9 @@ function check(bld, obj, el, demo) {
 	// Время прошло - мониторим состояние разгонника
 	const v = obj?.value?.[el._id]
 	demo.checklist.valve.list[el._id] ??= {}
-
+	demo.checklist.valve.list[el._id].name = getOwnerName(el, obj.data, {
+		flt: ['sect'],
+	})
 	// Выбит автомат qf: true - автомат выбит, false - ок, null - неисправен модуль
 	if (v.crash && !demo.checklist.valve.list[el._id].crash)
 		demo.checklist.valve.list[el._id].crash = 'автомат выбит'

@@ -1,5 +1,6 @@
 const { arrCtrlDO, ctrlDO } = require('@tool/command/module_output')
 const { compareTime } = require('@tool/command/time')
+const { getOwnerName } = require('@tool/get/building')
 
 // 10сек
 const _delay = 10_000
@@ -45,6 +46,9 @@ function check(bld, obj, flap, demo) {
 	flap.forEach((el) => {
 		const v = obj?.value?.outputEq?.[el._id]
 		demo.checklist.coolerFlap.list[el._id] ??= {}
+		demo.checklist.coolerFlap.list[el._id].name = getOwnerName(el, obj.data, {
+			flt: ['sect', 'cooler'],
+		})
 		// Модуль или Конфигурация
 		if (v === false && !demo.checklist.flap.list[el._id].stop)
 			demo.checklist.flap.list[el._id].stop = 'ошибка модуля или конфигурации'

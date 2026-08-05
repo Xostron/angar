@@ -43,7 +43,7 @@ function runTests(bld, m, demo, checklistPNR, obj, code) {
 			bld,
 			obj,
 			m,
-			checklistPNR,
+			checklistPNR[demo.order],
 			demo,
 			code === el.code, // Разрешение на работу теста
 			code,
