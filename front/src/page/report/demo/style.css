@@ -1,3 +1,21 @@
+:root {
+	--passed: #5ca136;
+	--passed-scnd: #2b531a;
+	--passed-lbl:#5ca136;
+	/* Primary */
+	/* --passed: #192646; */
+	/* --passed-scnd: #111a30; */
+	/* Secondary */
+	/* --passed: #65a7ee; */
+	/* --passed-scnd: #1c5897; */
+	--failed: #aa1111;
+	--failed-nth: #73000036;
+	--failed-scnd: #730000;
+	--current: #f5b922;
+	--current-scnd: #d19711;
+	--scnd: #5c6266;
+}
+
 /* Общий контейнер */
 .wh-container {
 	width: 100%;
@@ -51,7 +69,7 @@
 .wh-toggle-icon {
 	width: 14px;
 	height: 14px;
-	background-color: #aa1111;
+	background-color: var(--failed);
 	margin-right: 18px;
 	clip-path: polygon(
 		35% 0%,
@@ -69,7 +87,6 @@
 	);
 	transition: clip-path 0.3s ease-in-out;
 	&.open {
-		transform: rotate(180deg);
 		clip-path: polygon(
 			35% 35%,
 			65% 35%,
@@ -91,9 +108,8 @@
 .wh-sub-item {
 	width: 100%;
 	padding: 8px 20px 8px 52px;
-	/* list-style: circle; */
 	&.failed:nth-child(odd) {
-		background-color: #73000036;
+		background-color: var(--failed-nth);
 	}
 }
 .wh-sub-item > span {
@@ -107,10 +123,8 @@
 .wh-sub-item-err {
 	padding: 6px 8px 0px 18px;
 	margin-inline-start: 8px;
-	/* padding-top: 8px; */
-	/* padding-left: 18px; */
 	list-style-type: '-';
-	color: #5c6266;
+	color: var(--scnd);
 }
 
 /* СТИЛЬ ЭЛЕМЕНТА */
@@ -129,7 +143,7 @@
 
 .wh-desc {
 	font-size: 13px;
-	color: #5c6266;
+	color: var(--scnd);
 	letter-spacing: 0.5px;
 }
 
@@ -145,34 +159,34 @@
 /* ******************************СОСТОЯНИЯ****************************** */
 /* Успешный тест */
 .wh-item-base.passed {
-	border-left: solid 10px #5ca136;
+	border-left: solid 10px var(--passed-lbl);
 }
 .wh-item-base.passed .wh-title {
-	color: #5ca136;
+	color: var(--passed);
 }
 .wh-item-base.passed .wh-status-icon {
 	width: 14px;
 	height: 14px;
-	background: #5ca136;
+	background: var(--passed);
 	margin-right: 18px;
 	clip-path: polygon(14% 44%, 0% 58%, 38% 95%, 100% 16%, 83% 3%, 35% 65%);
 }
 .wh-item-base.passed .wh-badge {
-	color: #5ca136;
-	border-color: #2b531a;
+	color: var(--passed);
+	border-color: var(--passed-scnd);
 }
 
 /* Проваленный тест */
 .wh-item-base.failed {
-	border-left: solid 10px #730000;
+	border-left: solid 10px var(--failed);
 }
 .wh-item-base.failed .wh-title {
-	color: #aa1111;
+	color: var(--failed);
 }
 .wh-item-base.failed .wh-status-icon {
 	width: 14px;
 	height: 14px;
-	background: #aa1111;
+	background: var(--failed);
 	margin-right: 18px;
 	clip-path: polygon(
 		10% 0%,
@@ -190,8 +204,8 @@
 	);
 }
 .wh-item-base.failed .wh-badge {
-	color: #aa1111;
-	border-color: #730000;
+	color: var(--failed);
+	border-color: var(--failed-scnd);
 }
 
 /* Тест в процессе */
@@ -200,20 +214,20 @@
 	animation: metalPulse 1.2s infinite alternate ease-in-out;
 }
 .wh-item-base.current .wh-title {
-	color: #f5b922;
+	color: var(--current);
 }
 .wh-item-base.current .wh-status-icon {
 	width: 10px;
 	height: 10px;
-	background: #f5b922;
+	background: var(--current);
 	margin-right: 22px;
 	transform: rotate(45deg); /* Квадрат-ромб вместо круга */
-	box-shadow: 0 0 10px #f5b922;
+	box-shadow: 0 0 10px var(--current);
 	animation: badgePulse 1.2s infinite alternate ease-in-out;
 }
 .wh-item-base.current .wh-badge {
-	color: #f5b922;
-	border-color: #d19711;
+	color: var(--current);
+	border-color: var(--current-scnd);
 }
 
 /* Мерцание */
@@ -223,8 +237,8 @@
 		color: #7c5a0b;
 	}
 	100% {
-		border-left-color: #f5b922;
-		color: #f5b922;
+		border-left-color: var(--current);
+		color: var(--current);
 	}
 }
 
@@ -233,6 +247,6 @@
 		background-color: #7c5a0b;
 	}
 	100% {
-		background-color: #f5b922;
+		background-color: var(--current);
 	}
 }
