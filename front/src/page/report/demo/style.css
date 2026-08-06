@@ -106,7 +106,8 @@
 /* Элемент списка - исполнительного механизма */
 .wh-sub-item {
 	width: 100%;
-	padding: 8px 20px 8px 52px;
+	padding: 8px 20px 8px 72px;
+	margin-right: 38px;
 	&.failed:nth-child(odd) {
 		background: color-mix(in srgb, var(--failed-scnd) 15%, transparent);
 	}
