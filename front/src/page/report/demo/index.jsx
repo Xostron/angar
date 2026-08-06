@@ -4,10 +4,9 @@ import { useState } from 'react'
 
 function Demo({ bldId }) {
 	const demo = useInputStore((s) => s.input?.retain?.[bldId]?.demo)
-
 	return (
 		<>
-			{demo?.cur === null ? (
+			{demo?.cur === null && !!Object.keys(demo.checklist ?? {}).length ? (
 				<div className='wh-container'>
 					<ul className='wh-list'>
 						{Object.entries(demo.checklist).map(([code, data], i) => (
@@ -16,7 +15,7 @@ function Demo({ bldId }) {
 					</ul>
 				</div>
 			) : (
-				<div className='wh-container'>ТЕСТ ЕЩЕ НЕ ОКОНЧЕН</div>
+				<div className='wh-container'>НЕТ ДАННЫХ</div>
 			)}
 		</>
 	)
