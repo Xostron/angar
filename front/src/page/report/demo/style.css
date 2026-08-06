@@ -1,16 +1,15 @@
 :root {
-	--passed: #5ca136;
-	--passed-scnd: #2b531a;
-	--passed-lbl:#5ca136;
+	/* Endorphin */
+	/* --passed: #5ca136; */
+	/* --passed-scnd: #2b531a; */
 	/* Primary */
-	/* --passed: #192646; */
-	/* --passed-scnd: #111a30; */
+	--passed: #192646;
+	--passed-scnd: #111a30;
 	/* Secondary */
 	/* --passed: #65a7ee; */
 	/* --passed-scnd: #1c5897; */
-	--failed: #aa1111;
-	--failed-nth: #73000036;
-	--failed-scnd: #730000;
+	--failed: #dc3545;
+	--failed-scnd: #721c24;
 	--current: #f5b922;
 	--current-scnd: #d19711;
 	--scnd: #5c6266;
@@ -109,7 +108,7 @@
 	width: 100%;
 	padding: 8px 20px 8px 52px;
 	&.failed:nth-child(odd) {
-		background-color: var(--failed-nth);
+		background: color-mix(in srgb, var(--failed-scnd) 15%, transparent);
 	}
 }
 .wh-sub-item > span {
@@ -159,7 +158,7 @@
 /* ******************************СОСТОЯНИЯ****************************** */
 /* Успешный тест */
 .wh-item-base.passed {
-	border-left: solid 10px var(--passed-lbl);
+	border-left: solid 10px var(--passed);
 }
 .wh-item-base.passed .wh-title {
 	color: var(--passed);
