@@ -14,12 +14,11 @@ export default function Remote({cl, doc, item}){
 	let cls = cl
 	if (off) cls += ' out'
 	if (noData) cls += ' nodata'
-
-	const { refDialog, open, close } = useDialog()
+	const { refDialog, open, close, isOpen } = useDialog()
 
 	return (
 			<>
-				<div className={cls} onClick={!off && !noData ? open: ()=>{}}>
+				<div className={cls} onClick={!off ? open: ()=>{}}>
 					<div>
 						<div className='top'>
 							<p>{doc?.code} {doc?.name ?? item?.name}</p>
@@ -45,7 +44,7 @@ export default function Remote({cl, doc, item}){
 					<button className='remote-dia-close' onClick={close}></button>
 					{/* TODO: Убрать порт для нормальной работы */}
 					{/* <iframe src={`http://${doc?.ip}:4010/building/${item._id}`} title={item.name} /> */}
-					<iframe src={`http://${doc?.ip}/building/${item._id}`} title={item.name} />
+					{isOpen && <iframe src={`http://${item.ip}/building/${item.bldId}`} title={item.name} />}
 				</dialog>
 			</>
 		)

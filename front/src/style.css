@@ -22,6 +22,15 @@ html body {
 body > #root {
 	height: 100%;
 }
+
+.in-iframe,
+.in-iframe * {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+.in-iframe *::-webkit-scrollbar {
+	display: none;
+}
 .sect {
 	grid-area: 3 / 2 / 4 / 3;
 	display: flex;

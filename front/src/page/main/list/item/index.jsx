@@ -13,7 +13,7 @@ import Remote from './remote';
 export default function Item({ item }) {
 	const remoteBCard = useRemoteStore(useShallow((s) => {
 		if (!item.remote) return null
-		const b = s.buildings?.[item._id]
+		const b = s.buildings?.[item.bldId]
 		if (!b) return null
 		return { ...b, device: s.devices?.[b.deviceId] }
 	}))

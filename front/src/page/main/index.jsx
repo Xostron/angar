@@ -31,7 +31,7 @@ const Main = () => {
 			<Header>{name && <span className='header-cmp'>{name ?? ''} </span>}</Header>
 			<main className='main'>
 				<Weather />
-				{list?.length > 0 ? (
+				{list?.length > 0 || remote?.length > 0 ? (
 					<List list={list} />
 				) : (
 					<div style={{ textAlign: 'center', fontSize: '40px', padding: '100px', cursor: 'pointer' }} onClick={async () => {

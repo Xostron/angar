@@ -45,7 +45,7 @@ export default function useRemoteSockets() {
 		for (const [ip, device] of nextMap) {
 			if (!sockets.has(ip)) {
 				const allowedBuildings = (device.buildings ?? []).map(
-					(b) => b._id,
+					(b) => b.bldId,
 				);
 				const s = createSocket(ip, device._id, allowedBuildings);
 				sockets.set(ip, s);
@@ -96,7 +96,12 @@ function createSocket(ip, deviceId, allowedBuildings) {
 	});
 
 	s.on('c_input', (data) => {
-		// console.log(`Remote c_input от ${ip}:`, data?.bCard ? `keys: ${Object.keys(data.bCard)}` : 'нет bCard', 'allowed:', allowedBuildings)
+		// console.log(
+		// 	`Remote c_input от ${ip}:`,
+		// 	data?.bCard ? `keys: ${Object.keys(data.bCard)}` : 'нет bCard',
+		// 	'allowed:',
+		// 	allowedBuildings,
+		// );
 		if (data?.bCard) {
 			useRemoteStore
 				.getState()

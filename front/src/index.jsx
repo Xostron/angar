@@ -16,6 +16,10 @@ import AutoLogout from './cmp/auto_logout'
 
 globalErrorHandler.init()
 
+if (window.self !== window.top) {
+	document.documentElement.classList.add('in-iframe')
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
 	<ErrorBoundary>

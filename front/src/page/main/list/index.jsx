@@ -18,6 +18,7 @@ export default function List({ list }) {
 					deviceId: el._id,
 					ord: el.order,
 					remote: true,
+					ip: el.ip
 				})),
 			)
 		})

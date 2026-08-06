@@ -9,7 +9,12 @@ const useRemoteStore = create((set, get) => ({
 	// Сохранить bCard от устройства (только склады из remote[i].buildings)
 	setBCard(ip, deviceId, bCard, allowedBuildings) {
 		if (!bCard || !allowedBuildings?.length) {
-			console.log('setBCard пропущен: нет bCard или allowedBuildings', { ip, deviceId, hasBCard: !!bCard, allowedBuildings })
+			console.log('setBCard пропущен: нет bCard или allowedBuildings', {
+				ip,
+				deviceId,
+				hasBCard: !!bCard,
+				allowedBuildings,
+			});
 			return;
 		}
 		set((state) => {
@@ -24,17 +29,24 @@ const useRemoteStore = create((set, get) => ({
 						!old ||
 						old.ip !== ip ||
 						old.deviceId !== deviceId ||
-						JSON.stringify(old) !== JSON.stringify({ ...fresh, ip, deviceId })
+						JSON.stringify(old) !==
+							JSON.stringify({ ...fresh, ip, deviceId })
 					) {
 						next[bId] = { ...fresh, ip, deviceId };
 						changed = true;
 					}
 				} else {
-					console.log(`setBCard: bCard[${bId}] === undefined, ключи bCard:`, Object.keys(bCard))
+					console.log(
+						`setBCard: bCard[${bId}] === undefined, ключи bCard:`,
+						Object.keys(bCard),
+					);
 				}
 			}
-			if (!changed) { console.log('setBCard: нет изменений', { ip, deviceId }); return state; }
-			console.log('setBCard: данные обновлены', { ip, deviceId, buildings: Object.keys(next) })
+			if (!changed) {
+				// console.log('setBCard: нет изменений', { ip, deviceId });
+				return state;
+			}
+			// console.log('setBCard: данные обновлены', { ip, deviceId, buildings: Object.keys(next) })
 			return { buildings: next };
 		});
 	},
