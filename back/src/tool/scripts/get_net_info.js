@@ -1,4 +1,5 @@
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
+const { getSu } = require('./fn');
 
 // получение сетевой информации
 function get_net_info() {
@@ -28,9 +29,24 @@ function get_net_info() {
 			// Получаем список ttyS из dmesg
 			let ttyS = [];
 			try {
-				const dmesgOutput = execSync('dmesg | grep -i ttyS', {
-					encoding: 'utf8',
-				});
+				let dmesgOutput;
+				try {
+					// На Linux Mint/Ubuntu dmesg для обычного пользователя может быть ограничен
+					dmesgOutput = execSync('dmesg | grep -i ttyS', {
+						encoding: 'utf8',
+					});
+				} catch (e) {
+					// Повторяем через sudo -S (без shell)
+					const password = getSu();
+					dmesgOutput = execFileSync(
+						'sudo',
+						['-S', 'dmesg'],
+						{
+							encoding: 'utf8',
+							input: password ? password + '\n' : '',
+						}
+					).split('\n').filter((l) => /ttyS/i.test(l)).join('\n');
+				}
 				// Пример строки:
 				// [    4.928209] dw-apb-uart.8: ttyS4 at MMIO 0x9122a000 (irq = 4, base_baud = 115200) is a 16550A
 				const lines = dmesgOutput.split('\n').filter(Boolean);

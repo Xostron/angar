@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useWarn from '@store/warn'
+import useServiceStore from '@store/service'
 import Input from '@cmp/fields/input'
 import Radio from '@cmp/fields/radio'
 import Btn from '@cmp/fields/btn'
@@ -12,15 +13,28 @@ import { post } from '@tool/api/service'
 export default function Wifi({data}) {
 	const [inputMode, setInputMode] = useState('list') // 'list' или 'manual'
 	const [availableNetworks, setAvailableNetworks] = useState()
+	const [radio, setRadio] = useState()
 	const [selectedNetwork, setSelectedNetwork] = useState()
 	const [ssid, setSsid] = useState('')
 	const [password, setPassword] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
 	const clear = useWarn((s) => s.clear)
+	// Живые данные из store: обновляются после resload (fetchNetInfo)
+	const info = useServiceStore((s) => s.info)
+	const list = info ?? data?.info
 
-	const status = data?.info?.find(el => el.interface.startsWith('wlan'))?.state === 'UP' ? true : false
+	const wifiIface = list?.find(el => /^wl/.test(el.interface))
+	const wifiUp = wifiIface?.state?.toLowerCase() === 'up'
+	// Фолбэк: если в скане есть текущая сеть — WiFi включен и подключен
+	const hasCurrentNetwork = availableNetworks?.some((el) => el.current)
+	// Приоритет: состояние радио из скана; иначе по интерфейсу/текущей сети
+	const status = radio !== undefined && radio !== null
+		? radio === 'enabled'
+		: (wifiUp || hasCurrentNetwork || false)
 
 	useEffect(() => {
+		// Обновляем net_info при открытии, чтобы status был актуальным
+		data?.resload?.()
 		scanWifiNetworks()
 	}, [])
 
@@ -29,7 +43,8 @@ export default function Wifi({data}) {
 	const scanWifiNetworks = () => {
 		setIsLoading(true)
 		get('wifi', data.req_ip).then((o) => {
-			setAvailableNetworks(o?.result || [])
+			setAvailableNetworks(o?.result?.list || o?.result || [])
+			setRadio(o?.result?.radio)
 		}).catch((e) => {
 			notification.error('Ошибка сканирования WiFi сетей: ' + e.message)
 		})
@@ -42,8 +57,23 @@ export default function Wifi({data}) {
 		post('disconnect_wifi', {}, data.req_ip)
 		.then((o) => {
 			notification.success('Успешно отключено от WiFi сети')
+			data?.resload?.()
 		}).catch((e) => {
 			notification.error('Ошибка отключения от WiFi сети: ' + e.message)
+		})
+		.finally(() => {
+			scanWifiNetworks()
+		})
+	}
+
+	const switchWifi = () => {
+		const targetState = status ? 'off' : 'on'
+		post('switching', { type: 'wifi', state: targetState }, data.req_ip)
+		.then((o) => {
+			notification.success(`WiFi ${targetState === 'on' ? 'включен' : 'выключен'}`)
+			data?.resload?.()
+		}).catch((e) => {
+			notification.error('Ошибка переключения WiFi: ' + e.message)
 		})
 		.finally(() => {
 			scanWifiNetworks()
@@ -57,6 +87,7 @@ export default function Wifi({data}) {
 		post('wifi', doc, data.req_ip).then((o) => {
 			if (o.success !== false) {
 				notification.success('Успешно подключено к WiFi сети: ' + doc.ssid)
+				data?.resload?.()
 				scanWifiNetworks()
 			} else {
 				notification.error('Ошибка подключения: ' + (o.message || 'Неизвестная ошибка'))
@@ -221,7 +252,7 @@ export default function Wifi({data}) {
 			)}
 
 			<div className='network-modal-buttons'>
-				{/* <Btn title={`${status ? 'Выключить' : 'Включить'}`} onClick={switchWifi} /> */}
+				<Btn title={status ? 'Выключить WiFi' : 'Включить WiFi'} onClick={switchWifi} />
 				{status && <Btn title='Отмена' onClick={closeModal} />}
 				{status && (
 					<Btn

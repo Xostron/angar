@@ -11,6 +11,8 @@ export default function Remote({cl, doc, item}){
 	}))
 	const off = device?.status !== true
 	const noData = !off && !doc
+	const access = localStorage.getItem('access')
+	const name = localStorage.getItem('name')
 	let cls = cl
 	if (off) cls += ' out'
 	if (noData) cls += ' nodata'
@@ -44,7 +46,14 @@ export default function Remote({cl, doc, item}){
 					<button className='remote-dia-close' onClick={close}></button>
 					{/* TODO: Убрать порт для нормальной работы */}
 					{/* <iframe src={`http://${doc?.ip}:4010/building/${item._id}`} title={item.name} /> */}
-					{isOpen && <iframe src={`http://${item.ip}/building/${item.bldId}`} title={item.name} />}
+					{isOpen && (
+						<iframe
+							src={`http://${item.ip}/building/${item.bldId}${
+								access ? `?access=${encodeURIComponent(access)}&name=${encodeURIComponent(name ?? '')}` : ''
+							}`}
+							title={item.name}
+						/>
+					)}
 				</dialog>
 			</>
 		)

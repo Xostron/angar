@@ -167,6 +167,16 @@ function disconnect_wifi() {
 	};
 }
 
+function switching() {
+	return (req, res) => {
+		const { type = 'wifi', state = 'on' } = req.body || {};
+		network
+			.switching(type, state)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
 function eth_info() {
 	return (req, res) => {
 		eth.info()
@@ -281,6 +291,7 @@ module.exports = {
 	sync_time,
 	set_time,
 	disconnect_wifi,
+	switching,
 	keyboard,
 	statInfo,
 	statClear,

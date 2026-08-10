@@ -87,10 +87,12 @@ function check(bld, obj, fans, demo) {
 		// Превышен ток двигателя
 		if (
 			v.state == 'run' &&
-			v.vai > (+el?.actuator?.current ?? 30) &&
+			el?.actuator?.current &&
+			v.vai > +el?.actuator?.current &&
 			!demo.checklist.allFan.list[el._id].vai
 		)
-			demo.checklist.allFan.list[el._id].vai = 'превышен ток двигателя'
+			demo.checklist.allFan.list[el._id].vai =
+				`превышен ток двигателя ${v.vai}А > ${+el?.actuator?.current}А (по паспорту)`
 	})
 }
 

@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const get_net_info = require('./get_net_info');
 
 // парсинг текстового вывода nmcli в JSON
@@ -33,19 +33,33 @@ function wifi_list() {
 					message: 'Не на Linux системе',
 				});
 			}
-			// console.log('step 1: list wifi start');
-			const result = execSync('nmcli device wifi list');
-			// console.log('step 2: list wifi result', result);
-			// Convert Buffer to string
-			const wifiListString = result.toString('utf8');
-			// console.log('step 3: list wifi result:', wifiListString);
+			// Состояние WiFi радио (enabled/disabled) — авторитетный источник
+			let radio = null;
+			try {
+				radio = execFileSync('nmcli', ['radio', 'wifi'], {
+					encoding: 'utf8',
+				}).trim();
+			} catch (e) {
+				radio = null;
+			}
+			// Список сетей: может быть пустым, если радио выключено
+			let list = [];
+			try {
+				// console.log('step 1: list wifi start');
+				const result = execSync('nmcli device wifi list');
+				// console.log('step 2: list wifi result', result);
+				// Convert Buffer to string
+				const wifiListString = result.toString('utf8');
+				// console.log('step 3: list wifi result:', wifiListString);
 
-			// Parse the text output to JSON
-			const list = parseWifiList(wifiListString);
-			// console.log('step 4: list wifi result:', list);
-			resolve(list);
+				// Parse the text output to JSON
+				list = parseWifiList(wifiListString);
+				// console.log('step 4: list wifi result:', list);
+			} catch (e) {
+				// console.log('step 0: list wifi error', e);
+			}
+			resolve({ list, radio });
 		} catch (e) {
-			// console.log('step 0: list wifi error', e);
 			reject(e);
 		}
 	});
@@ -61,14 +75,11 @@ function wifi_connect(bssid, ssid, password) {
 					message: 'Не на Linux системе',
 				});
 			}
-			// Экранируем кавычки в SSID для безопасности
-			const escapedSsid = ssid.replace(/"/g, '\\"');
-			// console.log('step 1: connect wifi', ssid, password);
-			const result = execSync(
-				`nmcli device wifi connect ${
-					bssid || escapedSsid
-				} password ${password}`
-				// { encoding: 'utf8' }
+			// Без shell: аргументы передаём массивом, пароль не интерпретируется
+			const result = execFileSync(
+				'nmcli',
+				['device', 'wifi', 'connect', bssid || ssid, 'password', password],
+				{ encoding: 'utf8' }
 			);
 			// console.log('step 2: connect wifi', ssid, password, result);
 
@@ -147,22 +158,35 @@ function disconnect_wifi() {
 	});
 }
 
-// переключение wifi точек доступа на включение или выключение
+// переключение wifi радио включение или выключение
 function switching(type = 'wifi', state = 'on') {
 	return new Promise((resolve, reject) => {
 		try {
+			if (process.platform !== 'linux') {
+				return reject({
+					success: false,
+					message: 'Не на Linux системе',
+				});
+			}
+			// nmcli device wifi on|off — невалидно; используем nmcli radio wifi on|off
+			const validTypes = ['wifi', 'wwan'];
+			const validStates = ['on', 'off'];
+			if (!validTypes.includes(type) || !validStates.includes(state)) {
+				return reject({
+					success: false,
+					message: 'Некорректные параметры switching',
+				});
+			}
 			// console.log(
 			// 	'step 1: Turn on or off in NetworkManager start',
 			// 	type,
 			// 	state
 			// );
-			const result = execSync(`nmcli device ${type} ${state}`);
-			// console.log(
-			// 	'step 2: Turn on or off in NetworkManager result',
-			// 	type,
-			// 	state,
-			// 	result
-			// );
+			const result = execFileSync(
+				'nmcli',
+				['radio', type, state],
+				{ encoding: 'utf8' }
+			);
 			// Get updated network info after switching
 			get_net_info()
 				.then((netInfo) => {

@@ -26,20 +26,6 @@ function update() {
 			reject(error);
 		}
 	});
-
-	// `echo "${getSecureAccessKey()}" |  sudo -S bash -c '${fullCommand}'`,
-	// 	`${fullCommand}`,
-	// 	(error, stdout, stderr) => {
-	// 		if (error) {
-	// 			console.error(`Ошибка при обновлении кода: ${error.message}`);
-	// 			return;
-	// 		}
-	// 		if (stderr) {
-	// 			console.error(`stderr: ${stderr}`);
-	// 		}
-	// 		console.log(`stdout: ${stdout}`);
-	// 	}
-	// );
 }
 
 module.exports = update;

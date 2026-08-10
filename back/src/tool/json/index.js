@@ -147,8 +147,8 @@ async function findOne(filename, q) {
  * @param {boolean} toRetain Флаг для логов сохранение в файлы или в data/retain
  */
 function writeSync(data, ph = dataDir, ref, toRetain) {
-	// Сохраняемся каждые 4 цикла
-	if (store.cycleId%4!==0) return
+	// Сохраняемся каждые 4 цикла в режиме микросервиса
+	if (store.cycleId%4!==0 && store.isIo) return
 	try {
 		// Создание папки
 		if (!fs.existsSync(ph)) fs.mkdirSync(ph)

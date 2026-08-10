@@ -139,39 +139,25 @@ function removeDirectoryContents(dirPath) {
 /**
  * Очистить содержимое папки logs
  */
-function clear() {
-	return new Promise((resolve, reject) => {
-		try {
-			// Проверяем существование папки
-			if (!fs.existsSync(logsPath)) {
-				return {
-					success: false,
-					error: 'Папка logs не найдена',
-					path: logsPath,
-				};
-			}
+async function clear() {
+	// Проверяем существование папки
+	if (!fs.existsSync(logsPath)) {
+		throw new Error('Папка logs не найдена');
+	}
 
-			// Получаем информацию до удаления
-			const infoBefore = info();
+	// Получаем информацию до удаления
+	const infoBefore = await info();
 
-			// Удаляем содержимое
-			removeDirectoryContents(logsPath);
+	// Удаляем содержимое
+	removeDirectoryContents(logsPath);
 
-			return resolve({
-				success: true,
-				path: logsPath,
-				deletedFiles: infoBefore.filesCount,
-				freedSpace: infoBefore.formattedSize,
-				message: `Удалено файлов: ${infoBefore.filesCount}, освобождено: ${infoBefore.formattedSize}`,
-			});
-		} catch (error) {
-			return reject({
-				success: false,
-				error: 'Ошибка при очистке папки logs',
-				message: error.message,
-			});
-		}
-	});
+	return {
+		success: true,
+		path: logsPath,
+		deletedFiles: infoBefore.count,
+		freedSpace: infoBefore.formatted,
+		message: `Удалено файлов: ${infoBefore.count}, освобождено: ${infoBefore.formatted}`,
+	};
 }
 
 module.exports = { info, clear };

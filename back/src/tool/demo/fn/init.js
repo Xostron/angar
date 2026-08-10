@@ -18,7 +18,7 @@ function initDemo(bld, s, m, checklistPNR, obj) {
 	if (stop(bld, s, m, demo, checklistPNR, obj)) return
 
 	// Демо уже в работе - выходим из инициализации
-	if (demo?.cur !== null) return console.log('DEMO ALREADY INIT', demo.cur)
+	if (demo?.cur !== null) return //console.log('DEMO ALREADY INIT', demo.cur)
 
 	// Первое включение Демо: инициализация
 	// 1. Вкл склад

@@ -6,9 +6,6 @@ function auto_login(flag = true) {
 		const cmd = `astra-autologin-control ${
 			flag ? 'enable' : 'disable'
 		} angar`;
-		// const cmd = `echo "${getSecureAccessKey()}" | sudo -S astra-autologin-control ${
-		// 	flag ? 'enable' : 'disable'
-		// } angar`;
 		exec(cmd, (error, stdout, stderr) => {
 			if (error) {
 				console.error(

@@ -17,6 +17,7 @@ const {
 	sync_time,
 	set_time,
 	disconnect_wifi,
+	switching,
 	keyboard,
 	statClear,
 	statInfo,
@@ -52,7 +53,7 @@ function service(router) {
 	// Отключение от wifi точки доступа
 	serviceRouter.post('/disconnect_wifi', disconnect_wifi());
 	// Переключение интерфейса включение или выключение
-	// serviceRouter.post('/switching', switching());
+	serviceRouter.post('/switching', switching());
 	// Информация о сетевых интерфейсах
 	serviceRouter.get('/eth', eth_info());
 	// Управление сетевыми интерфейсами

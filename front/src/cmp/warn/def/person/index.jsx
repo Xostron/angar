@@ -45,16 +45,6 @@ export default function Entry({ data, entryCode, refDialog }) {
 			showInput={true}
 		/>
 	)}
-	{/* {activeKeyboard === 'password' && (
-		<Keyboard 
-			type='numeric' 
-			value={form.password} 
-			onChange={(val)=>setForm({type: 'password', val})} 
-			container={refDialog?.current}
-			onClose={hideKeyboard}
-		/>
-	)} */}
-
 		</div>
 	)
 }

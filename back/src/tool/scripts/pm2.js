@@ -1,29 +1,46 @@
-const { exec } = require('child_process');
-// const { getSecureAccessKey } = require('../security');
+const { execFile } = require('child_process');
+
+// Разрешённые команды pm2
+const ALLOWED_CODES = [
+	'save',
+	'restart',
+	'flush',
+	'start',
+	'stop',
+	'reload',
+	'delete',
+	'status',
+	'list',
+];
 
 // Выполнение команд для pm2
 function pm2(code, type = 'all') {
 	return new Promise((resolve, reject) => {
+		if (!ALLOWED_CODES.includes(code)) {
+			return reject({
+				success: false,
+				error: `Недопустимая команда pm2: ${code}`,
+			});
+		}
 		try {
 			setTimeout(() => {
-				// Используем полный путь к node и pm2, поскольку они установлены в nvm для root
-				// const command = `echo "${getSecureAccessKey()}" | sudo -S /root/.nvm/versions/node/v22.17.0/bin/node /root/.nvm/versions/node/v22.17.0/bin/pm2 ${code} all`;
-				// const command = `sudo -S /root/.nvm/versions/node/v22.17.0/bin/node /root/.nvm/versions/node/v22.17.0/bin/pm2 ${code} all`;
-				// pm2 /home/tenta/apps/ecosystem/ecosystem.config.js
-				let command = `pm2 ${code} /home/tenta/apps/ecosystem/ecosystem.config.js  && pm2 save`;
-				if (code === 'save') command = 'pm2 save';
-				
-				exec(command, (error, stdout, stderr) => {
+				// Без shell: бинарник и аргументы передаём массивом
+				const args =
+					code === 'save'
+						? ['save']
+						: [code, '/home/tenta/apps/ecosystem/ecosystem.config.js'];
+
+				execFile('pm2', args, (error, stdout, stderr) => {
 					if (error) {
-						// console.error(
-						// 	`Ошибка 1 при выполнении pm2 ${code}: ${error.message}`
-						// );
+						console.error(
+							`Ошибка при выполнении pm2 ${code}: ${error.message}`
+						);
 						return;
 					}
 					if (stderr) {
-						// console.error(`stderr: ${stderr}`);
-						return;
+						console.error(`stderr: ${stderr}`);
 					}
+					console.log(`pm2 ${code}`, stdout);
 				});
 			}, 5000);
 			resolve({
@@ -31,9 +48,6 @@ function pm2(code, type = 'all') {
 				message: `code: ${code} всех процессов pm2 через 5 секунд...`,
 			});
 		} catch (error) {
-			// console.error(
-			// 	`Ошибка при выполнении pm2 ${code}: ${error.message}`
-			// );
 			reject({ success: false, error: error.message });
 		}
 	});

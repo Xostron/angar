@@ -90,6 +90,7 @@ export default function Network() {
 								cls: 'network-modal wifi-modal',
 								req_ip,
 								info,
+								resload: () => fetchNetInfo(),
 							},
 							'wifi'
 						)

@@ -100,10 +100,12 @@ function check(el, bld, obj, checklistPNR, demo) {
 	// Превышен ток двигателя
 	if (
 		v.state == 'run' &&
-		v.vai > (+el?.actuator?.current ?? 30) &&
+		el?.actuator?.current &&
+		v.vai > +el?.actuator?.current &&
 		!demo.checklist.fan.list[el._id].vai
 	)
-		demo.checklist.fan.list[el._id].vai = 'превышен ток двигателя'
+		demo.checklist.fan.list[el._id].vai =
+			`превышен ток двигателя ${v.vai}А > ${+el?.actuator?.current}А (по паспорту)`
 }
 
 function fnP(el, bld, obj, checklistPNR, demo, m) {

@@ -1,27 +1,28 @@
-const { exec } = require('child_process');
-const { getSecureAccessKey } = require('../security');
+const { suExecFile } = require('./fn');
 
 // перезагрузка системы
 function reboot() {
-	setTimeout(() => {
-		exec(
-			// `echo "${getSecureAccessKey()}" | sudo -S reboot`,
-			`reboot`,
-			(error, stdout, stderr) => {
-				if (error) {
+	return new Promise((resolve, reject) => {
+		if (process.platform !== 'linux') {
+			return reject({
+				success: false,
+				message: 'Не на Linux системе',
+			});
+		}
+		const message = 'Перезапуск системы через 5 секунд...';
+		setTimeout(() => {
+			suExecFile('systemctl', ['reboot'])
+				.then(() => {
+					console.log('Перезагрузка системы запущена');
+				})
+				.catch((error) => {
 					console.error(
 						`Ошибка при выполнении перезагрузки: ${error.message}`
 					);
-					return;
-				}
-				if (stderr) {
-					console.error(`stderr: ${stderr}`);
-				}
-				// console.log(`stdout: ${stdout}`);
-			}
-		);
-	}, 5000);
-	return 'Перезапуск системы через 5 секунд...';
+				});
+		}, 5000);
+		resolve({ success: true, message });
+	});
 }
 
 module.exports = reboot;
