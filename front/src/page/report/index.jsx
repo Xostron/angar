@@ -1,9 +1,16 @@
 import { useState, useCallback, useMemo } from 'react'
 import useEquipStore from '@store/equipment'
-import Charts from './charts'
 import SensorChart from './sensor-chart'
-import './style.css'
+import Charts from './charts'
 import Demo from './demo'
+import './style.css'
+
+const def = {
+	general: Charts,
+	temperature: SensorChart,
+	humidity: SensorChart,
+	demo: Demo,
+}
 
 const PERIODS = [1, 2, 3, 4, 5, 6, 7]
 
@@ -28,62 +35,23 @@ export default function Report() {
 	const [days, setDays] = useState(1)
 	const [tick, setTick] = useState(0)
 	const [mode, setMode] = useState('general')
-
 	const refresh = useCallback(() => setTick((t) => t + 1), [])
 	const activeMode = MODES.find((m) => m.key === mode)
 
+	// Основное содержимое
+	const Content = def[mode]
+
 	return (
 		<div className='report-page'>
-			<div className='report-buildings'>
-				{sorted.map((b) => (
-					<button
-						key={b._id}
-						className={`report-bld-btn${selectedId === b._id ? ' active' : ''}`}
-						onClick={() => setSelectedId(b._id)}
-					>
-						{b.code} {b.name}
-					</button>
-				))}
-			</div>
-
+			<CmpBuilding blds={sorted} selectedId={selectedId} setSelectedId={setSelectedId} />
 			{selectedId ? (
 				<>
-					<div className='report-toolbar'>
-						<div className='report-modes'>
-							{MODES.map((m) => (
-								<button
-									key={m.key}
-									className={`report-mode-btn${mode === m.key ? ' active' : ''}`}
-									onClick={() => setMode(m.key)}
-								>
-									{m.label}
-								</button>
-							))}
-						</div>
-						<div className='report-toolbar-right'>
-							<span className='report-toolbar-label'>Период:</span>
-							{PERIODS.map((d) => (
-								<button
-									key={d}
-									className={`report-period-btn${days === d ? ' active' : ''}`}
-									onClick={() => setDays(d)}
-								>
-									{d}д
-								</button>
-							))}
-							<button className='report-refresh-btn' onClick={refresh}>
-								Обновить
-							</button>
-						</div>
-					</div>
-
-					<Content
-						mode={mode}
-						selectedId={selectedId}
-						days={days}
-						tick={tick}
-						activeMode={activeMode}
-					/>
+					<header className='report-toolbar'>
+						<CmpMode mode={mode} setMode={setMode} />
+						<Days days={days} setDays={setDays} refresh={refresh} mode={mode} />
+					</header>
+					{/* Основное содержимое */}
+					<Content bldId={selectedId} type={activeMode.type} days={days} tick={tick} />
 				</>
 			) : (
 				<div style={{ padding: '40px', textAlign: 'center', color: '#888' }}>
@@ -94,17 +62,57 @@ export default function Report() {
 	)
 }
 
-function Content({ mode, selectedId, days, tick, activeMode }) {
-	switch (mode) {
-		case 'general':
-			return <Charts bldId={selectedId} days={days} tick={tick} />
+// Список складов - выбор складов
+function CmpBuilding({ blds, selectedId, setSelectedId }) {
+	return (
+		<header className='report-buildings'>
+			{blds.map((b) => (
+				<button
+					key={b._id}
+					className={`report-bld-btn${selectedId === b._id ? ' active' : ''}`}
+					onClick={() => setSelectedId(b._id)}
+				>
+					{b.code} {b.name}
+				</button>
+			))}
+		</header>
+	)
+}
+// Выбор отображения
+function CmpMode({ mode, setMode }) {
+	return (
+		<div className='report-modes'>
+			{MODES.map((m) => (
+				<button
+					key={m.key}
+					className={`report-mode-btn${mode === m.key ? ' active' : ''}`}
+					onClick={() => setMode(m.key)}
+				>
+					{m.label}
+				</button>
+			))}
+		</div>
+	)
+}
 
-		case 'temperature':
-		case 'humidity':
-			return <SensorChart bldId={selectedId} type={activeMode.type} days={days} tick={tick} />
-		case 'demo':
-			return <Demo bldId={selectedId}/>
-		default:
-			return <Charts bldId={selectedId} days={days} tick={tick} />
-	}
+// Фильтр: по дням
+function Days({ days, setDays, refresh, mode }) {
+	if (mode === 'demo') return <></>
+	return (
+		<div className='report-toolbar-right'>
+			<span className='report-toolbar-label'>Период:</span>
+			{PERIODS.map((d) => (
+				<button
+					key={d}
+					className={`report-period-btn${days === d ? ' active' : ''}`}
+					onClick={() => setDays(d)}
+				>
+					{d}д
+				</button>
+			))}
+			<button className='report-refresh-btn' onClick={refresh}>
+				Обновить
+			</button>
+		</div>
+	)
 }
