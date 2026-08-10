@@ -19,7 +19,6 @@ const writeIO = require('../client/plc_io/write')
 const resetIO = require('../client/plc_io/reset')
 const { reset } = require('@tool/reset')
 
-
 // Контроль работы склада
 async function control() {
 	try {
@@ -68,10 +67,11 @@ async function loop() {
 		// Точка отсчета цикла
 		const bgn = hrtime()
 		// Кол-во ядер ПЛК
-		console.log(
-			'\x1b[36m%s\x1b[0m',
-			`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`,
-		)
+		if (store.cycleId % 8 === 0)
+			console.log(
+				'\x1b[36m%s\x1b[0m',
+				`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`,
+			)
 
 		// Инициализация глобального аккумулятора
 		await writeStore()
@@ -88,8 +88,10 @@ async function loop() {
 		// Сброс флага store.reset
 		store.isIo ? null : reset(null, false, false)
 
-		console.log(`Режим  ${store.isIo ? 'микросервиса' : 'монолита'} `)
-		console.log('\x1b[33m%s\x1b[0m', `Время цикла ${cycle.toFixed(2) + ' сек'}`)
+		if (store.cycleId % 8 === 0) {
+			console.log(`Режим  ${store.isIo ? 'микросервиса' : 'монолита'} `)
+			console.log('\x1b[33m%s\x1b[0m', `Время цикла ${cycle.toFixed(2) + ' сек'}`)
+		}
 		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
 		if (cycle < 0.05) await delay(5000)
 		// console.log('Использовано памяти: ', process.memoryUsage())

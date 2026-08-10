@@ -1,4 +1,4 @@
-const { retainDir, factoryDir, dataDir } = require('@store')
+const { data:store, retainDir, factoryDir, dataDir } = require('@store')
 const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')
@@ -147,6 +147,8 @@ async function findOne(filename, q) {
  * @param {boolean} toRetain Флаг для логов сохранение в файлы или в data/retain
  */
 function writeSync(data, ph = dataDir, ref, toRetain) {
+	// Сохраняемся каждые 4 цикла
+	if (store.cycleId%4!==0) return
 	try {
 		// Создание папки
 		if (!fs.existsSync(ph)) fs.mkdirSync(ph)

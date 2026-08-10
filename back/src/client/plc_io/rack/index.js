@@ -4,12 +4,13 @@ const { getServices } = require('@tool/api_plc_io/fn')
 const rack = require('./fn')
 const { data: store } = require('@store')
 const _INTERVAL = 5 * 60 * 1000
+const _INTERVAL2 = 3 * 1000
 
 // Периодически отправляем раму (модули) микросервисам plcio
 async function loopRack() {
 	while (true) {
 		if (!store.isIo) {
-			await delay(_INTERVAL)
+			await delay(_INTERVAL2)
 			continue
 		}
 		// Рама микросервисов опроса модулей

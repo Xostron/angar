@@ -71,7 +71,7 @@ function stop(bld, s, m, demo, checklistPNR, obj) {
 			demo.firstOff = true
 		}
 		transformDemo(demo)
-		console.log('STOP DEMO')
+		// console.log('STOP DEMO')
 		return true
 	}
 	return false
@@ -85,8 +85,8 @@ function stop(bld, s, m, demo, checklistPNR, obj) {
  */
 function clear(idB, demo) {
 	// Очищаем аккумулятор один раз
-	if (demo?.cur === null) return console.log('DEMO ALREADY OFF')
-	console.log('DEMO OFF')
+	if (demo?.cur === null) return //console.log('DEMO ALREADY OFF')
+	// console.log('DEMO OFF')
 
 	// Сбрасываем аккумулятор демо, кроме checklist
 	store.retain[idB].demo.cur = null
