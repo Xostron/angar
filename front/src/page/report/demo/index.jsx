@@ -17,7 +17,9 @@ function Demo({ bldId }) {
 					</ul>
 				</div>
 			) : (
-				<div className='wh-container'>НЕТ ДАННЫХ</div>
+				<div className='wh-container'>
+					{typeof demo?.cur == 'number' ? 'Идет тестирование склада...' : 'Нет данных'}
+				</div>
 			)}
 		</>
 	)

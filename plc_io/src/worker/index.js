@@ -3,6 +3,7 @@ const { parentPort, workerData, Worker, isMainThread } = require('worker_threads
 const { check } = require('./fn')
 const { store } = require('@store/index')
 const read = require('@tool/plc/read')
+const { performance } = require('perf_hooks')
 
 // Пул многоразовых потоков
 let pool = null
@@ -14,10 +15,11 @@ let pool = null
  */
 async function fnThreadPool(max) {
 	// Для главного потока
+
 	if (isMainThread) {
 		// инициализация пула потоков
 		initPool(max)
-		return manager(max)
+		return await manager(max)
 	}
 }
 
@@ -27,7 +29,7 @@ async function fnThreadPool(max) {
  * @returns
  */
 function initPool(max) {
-	if (!isMainThread || pool || !max || store.preMax===max) return 
+	if (!isMainThread || pool || !max || store.preMax === max) return
 	store.preMax = max
 	pool = []
 	// Создание многоразовых воркеров
@@ -35,6 +37,7 @@ function initPool(max) {
 }
 
 function createWorker(idx) {
+	console.log('🧲', 111, isMainThread ? 'Главный поток' : 'Поток воркера', 'Создание воркера')
 	// Инициализация воркера. workerData - статичные данные от главного потока
 	const worker = new Worker(__filename, {
 		workerData: { idx },
@@ -72,13 +75,14 @@ function manager(max) {
 			const part = store.parts[i]
 
 			// Время вывполнения потока
-			const start = new Date()
-
+			const start = performance.now()
 			// Отправляем воркеру данные из основного потока (part - модули, reset - сброс аварий)
 			worker.postMessage({ part, reset: store.reset })
 
-			// Слушаем ответ от потока (одноразовый)
-			worker.once('message', (r) => {
+			const onMessage = (r) => {
+				// Очищаем память от обработчиков
+				worker.off('message', onMessage)
+				worker.off('error', onError)
 				// У каждого потока свое окружение, поэтому аккумуляторы неисправносте и т.д.
 				// сливаем вместе в  аккумуляторе главного потока
 				results = { ...results, ...r.v }
@@ -86,7 +90,7 @@ function manager(max) {
 				store.cacheDO = { ...store.cacheDO, ...(r?.cacheDO ?? {}) }
 				store.debMdl = { ...store.debMdl, ...(r.debMdl ?? {}) }
 				// Время обработки потока
-				const end = (new Date() - start) / 1000
+				const end = ((performance.now() - start) / 1000).toFixed(4)
 				console.log(
 					`✔️ ${i + 1} Поток завершен ${end}с. Кол-во модулей = ${part?.length}`,
 					max,
@@ -96,10 +100,12 @@ function manager(max) {
 					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)
 					resolve(results)
 				}
-			})
+			}
 
-			// Ошибка потока
-			worker.once('error', (reason) => {
+			const onError = (reason) => {
+				// Очищаем память от обработчиков
+				worker.off('message', onMessage)
+				worker.off('error', onError)
 				// Записываем в результат по модулям потока - причину ошибки
 				part.forEach((mdl, i) => {
 					mdl._id.forEach((id) => (results[id] = `Worker ${i}. Error ${reason}`))
@@ -109,7 +115,12 @@ function manager(max) {
 					console.log(`✅ Все потоки выполнены. Всего модулей = ${length}`)
 					resolve(results)
 				}
-			})
+			}
+
+			// Слушаем ответ от потока (одноразовый)
+			worker.once('message', onMessage)
+			// Ошибка потока
+			worker.once('error', onError)
 		}
 	})
 }
