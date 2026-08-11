@@ -35,8 +35,8 @@ async function writeStore() {
 
 module.exports = writeStore
 
-// Список ращрешенных аккумуляторов
-const extraCodes = ['vent', 'co2', 'coAuto', 'coOn']
+// Список аккумуляторов, которые восстановятся после перезагрущки
+const extraCodes = ['vent', 'co2', 'coAuto', 'coOn', 'rdDrying']
 /**
  * Инициализация аккумулятора store.acc по списку разрешенных аккумуляторов
  * @param {*} acc

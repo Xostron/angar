@@ -90,7 +90,8 @@ function getSectAM(idB, section, obj, mod = false) {
  * @param {*} idB Ид склада
  * @param {*} obj Глобальные данные
  * @param {boolean} mod Тип результата
- * @returns {object[]} Массив секций ИД (mod=false) или рама (mod=true)
+ * @returns {object[]} 	mod=false: массив секций ИД
+ * 						mod=true: рама
  */
 function getSectAuto(idB, obj, mod = false) {
 	const { data, retain } = obj

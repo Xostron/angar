@@ -61,16 +61,14 @@ async function control() {
 
 // Главный цикл управления
 async function loop() {
+	// Кол-во ядер ПЛК
 	const total = os.cpus().length
 
 	while (!store.shutdown) {
 		// Точка отсчета цикла
 		const bgn = hrtime()
-		// Кол-во ядер ПЛК
-		// В режиме микросервиса отображаем через каждые 8 циклов
-		if (store.isIo && store.cycleId % 8 === 0) titleLog(total)
-		// В режиме монолита отображаем всегда
-		else if (!store.isIo) titleLog(total)
+
+		titleLog(total)
 
 		// Инициализация глобального аккумулятора
 		await writeStore()
@@ -86,10 +84,8 @@ async function loop() {
 
 		// Сброс флага store.reset
 		store.isIo ? null : reset(null, false, false)
-		// В режиме микросервиса отображаем через каждые 8 циклов
-		if (store.isIo && store.cycleId % 8 === 0) infoLog(cycle)
-		// В режиме монолита отображаем всегда
-		else if (!store.isIo) infoLog(cycle)
+
+		infoLog(cycle)
 
 		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
 		if (cycle < 0.05) await delay(5000)
@@ -117,16 +113,28 @@ function testBattery() {
 	// if (store.battery) return (store.battery = false)
 }
 
-function titleLog(total) {
-	console.log(
-		'\x1b[36m%s\x1b[0m',
-		`\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`,
-	)
+function titleLog(total, x = 30) {
+	// В режиме микросервиса отображаем через каждые 8 циклов
+	const t = `\n-------------------Начало Process ID: ${process.pid}. ID CYCLE ${store.cycleId}. Кол-во ядер ${total}-------------------`
+	if (store.isIo && store.cycleId % x === 0) console.log('\x1b[35m%s\x1b[0m', t)
+	// В режиме монолита отображаем всегда
+	else if (!store.isIo) console.log('\x1b[35m%s\x1b[0m', t)
 }
 
-function infoLog(cycle) {
-	console.log(`Режим  ${store.isIo ? 'микросервиса' : 'монолита'} `)
-	console.log('\x1b[33m%s\x1b[0m', `Время цикла ${cycle.toFixed(2) + ' сек'}`)
+function infoLog(cycle, x = 30) {
+	const t1 = `Режим  ${store.isIo ? 'микросервиса' : 'монолита'} `
+	const t2 = `Время цикла ${cycle.toFixed(2) + ' сек'}`
+
+	// В режиме микросервиса отображаем через каждые 8 циклов
+	if (store.isIo && store.cycleId % x === 0) {
+		console.log('\x1b[35m%s\x1b[0m', t1)
+		console.log('\x1b[35m%s\x1b[0m', t2)
+	}
+	// В режиме монолита отображаем всегда
+	else if (!store.isIo) {
+		console.log('\x1b[35m%s\x1b[0m', t1)
+		console.log('\x1b[35m%s\x1b[0m', t2)
+	}
 }
 
 module.exports = loop

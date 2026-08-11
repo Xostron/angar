@@ -79,7 +79,7 @@ function middlewB(bld, obj, s, seB, am, acc) {
 	acc.tgt = tprd
 	acc.tcnl = s.drying.channelMax
 
-	// По достижению кол-ва дней в сушке -> переход в хранение
+	// TODO drying По достижению кол-ва дней в сушке -> переход в хранение
 	if (s.drying.day > 0 && store.retain?.[bld._id]?.drying?.count >= s.drying.day) {
 		store.retain[bld._id].automode = 'cooling'
 	}

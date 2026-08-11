@@ -1,4 +1,4 @@
-const { getIdBS, getSectAM } = require('@tool/get/building')
+const { getIdBS, getSectAM, getSectAuto, getOwner } = require('@tool/get/building')
 const { transformClr, getClr } = require('./fn')
 const { getDevice, getVnoClr, getVno } = require('./get')
 
@@ -74,7 +74,7 @@ function mech(obj, idS, idB) {
 }
 
 // Исполнительные механизмы склада
-// mod - true - собираем ИМ для демо
+// mod - true - собираем ИМ для демо (отфильтровываает выкл секции )
 // (это значит что выключенные секции и их устройства игнорируются)
 function mechB(idB, type, obj, mod = false) {
 	// (поиск по складу и секциям)
@@ -149,6 +149,16 @@ function mechB(idB, type, obj, mod = false) {
 			if (!!ao) el.ao = { id: ao?.moduleId, channel: ao?.channel }
 			return el
 		})
+	// Список рабочих ВНО, ВНО испарителей (с учетом выкл секции и вывода из работы)
+	const idsSA = getSectAuto(idB, obj)
+	const fanBB = fanB.filter((el) => {
+		// Секция вентилятора
+		const idS = getOwner(el, obj.data)?.sect?._id
+		// Выведен из работы
+		if (obj.retain?.[idB]?.fan?.[idS]?.[el._id]) return false
+		// Выключена ли секция
+		return idsSA.includes(idS)
+	})
 	// Демо - ВНО склада: только напорные - введенные в работу
 	const fanBN = data?.fan
 		?.filter(
@@ -161,16 +171,8 @@ function mechB(idB, type, obj, mod = false) {
 			return el
 		})
 
-	// Демо - Все вентиляторы склада: напорные, вно испарителей - введенные в работу (без дубляжей)
-	// const fanBexc = Object.values(
-	// 	fanB
-	// 		.filter((el) => !obj?.value?.[el._id]?.off)
-	// 		.reduce((acc, el, i) => {
-	// 			if (acc[el.module.id + el.module.channel]) return acc
-	// 			acc[el.module.id + el.module.channel] = el
-	// 			return acc
-	// 		}, {}),
-	// )
+	// Демо режим - Все вентиляторы склада: напорные, вно испарителей - введенные в работу (без дубляжей)
+	// Обычный режим - все напорные, вно испарителей (без дубляжей)
 	let fanBexc = []
 	const services = data?.io?.filter((el) => el.bldId.includes(idB))
 
@@ -212,6 +214,7 @@ function mechB(idB, type, obj, mod = false) {
 	return {
 		fanA,
 		fanB,
+		fanBB,
 		fanBexc,
 		fanBN,
 		connect,
