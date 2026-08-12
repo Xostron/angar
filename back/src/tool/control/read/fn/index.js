@@ -10,6 +10,8 @@ function rhr(client, opt, name, options = {}) {
 			.then((r) => {
 				let v = r.response._body[name]
 				v = data(v, opt, options)
+				// if (opt.start == 40960 || opt.start == 40961)
+				// 	console.log(22, options?.ip, opt.start, n)
 				resolve(v)
 			})
 			.catch(reject)

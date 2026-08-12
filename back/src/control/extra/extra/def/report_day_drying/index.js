@@ -1,18 +1,22 @@
-const { check1, fnStart, fnEnd, fnDay } = require('./fn')
+const { fnInit, fnEnd, check24h, } = require('./fn')
+const { fnEnable } = require('./fn/allow')
 
 // Суточные моточасы режима сушка
 function rdDrying(bld, section, obj, s, se, m, alarm, acc, data, ban) {
-	// acc.start ??= new Date()
-	// acc.day ??= new Date().getDate() + 1
-	// acc.total ??= {}
-	// acc.total[acc.day]??=0
-	fnDay(acc)
-	if (!check1(bld._id, obj)) {
+	// Проверка изменения суток
+	check24h(acc)
+
+	// Подсчет моточасов не активен
+	if (!fnEnable(bld._id, obj)) {
+		// Завершение подсчета
 		fnEnd(acc)
-		return console.log('Запрет check1')
+		return
 	}
-	fnStart(bld, m, obj, acc)
-	console.log(11, acc)
+
+	// Подсчет моточасов активен
+	// Инициализация и проверка работы сушки
+	fnInit(bld, m, obj, acc)
+	// console.log(11, acc)
 }
 
 module.exports = rdDrying

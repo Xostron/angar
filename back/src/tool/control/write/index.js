@@ -27,6 +27,7 @@ async function write(arr) {
 			if (!timeout(idsB, idsM, m.ip, m)) continue
 
 			// Запись данных в модуль
+			// if (m.name == 'FC oni-150 DO') console.log(333, m)
 			v = await make(m, 'write')
 
 			await pause(100)
@@ -47,5 +48,3 @@ function pause(n) {
 }
 
 module.exports = write
-
-

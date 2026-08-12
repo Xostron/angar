@@ -38,16 +38,18 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-					// if (opt?.ip === '10.20.77.8') console.log(11, r, w)
-					// if (opt?.ip === '192.168.21.135') console.log(22, r, w)
-					convAO(opt, r)
-					r = convUint32DO(opt, r)
+					r = convAO(opt, r)
+					r = conv32DO(opt, r)
+					r = convOni150(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
+					if (opt?.ip === '192.168.21.135') {
+						console.log(44, 'read = ', r)
+					}
 					resolve([r, w])
 				})
 				.catch((e) => {
-					console.error(8800, 'Ошибка чтения', opt.name, opt.ip, e.message)
+					console.error(8800, 'Ошибка чтения', opt.name, opt.ip, e.message, e)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})
@@ -58,21 +60,37 @@ function readTCP(host, port, opt) {
 		socket.connect(optTCP)
 	})
 }
-// Нормализация данных с аналогового модуля:
+
+// Нормализация данных аналоговых модулей:
 // читаемые данные с модуля: [200, 1000, ...] нормализируются -> [20, 100, ...]
 function convAO(opt, arr) {
-	if (!opt.name.includes('AO')) return
-	arr.forEach((el, i) => (arr[i] = el / opt.wr.on))
+	if (!opt.name.includes('AO')) return arr
+	return arr.map((el) => el / opt.wr.on)
 }
 
 // Нормализация данных с модуля DO 24выхода (например, МУ210-412_DO)
 // реверс слов 16бит
-function convUint32DO(opt, arr) {
+function conv32DO(opt, arr) {
 	if (opt?.wr?.channel !== 24) return arr
 	const word1 = arr.slice(0, 16)
 	const word2 = arr.slice(16, 32)
 	const r = [...word2, ...word1]
 	return r
+}
+
+// Нормализация данных для частотника oni-150
+function convOni150(opt, arr) {
+	if (opt.name != 'FC oni-150 DO') return arr
+	console.log('Истина', arr)
+	switch (arr[0]) {
+		// Стоп
+		case 0.3:
+			return [0]
+		// Запущен: .1 - прямое вращение, .2 - обратное вращение
+		case 0.1:
+		case 0.2:
+			return [1]
+	}
 }
 
 module.exports = readTCP

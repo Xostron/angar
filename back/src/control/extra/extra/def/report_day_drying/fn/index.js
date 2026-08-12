@@ -1,91 +1,88 @@
-const { isDemo } = require('@tool/demo/fn/fn')
-const { getSectAuto } = require('@tool/get/building')
-// Месяцы сушки с августа по ноябрь (8-11)
-const _MONTH = [8, 9, 10, 11]
+const { isRunning } = require('./allow')
 
 /**
- * Точка отсчета
+ * Сушка работает - Точка отсчета
  * @param {*} bld
  * @param {*} m
  * @param {*} obj
  * @returns
  */
-function fnStart(bld, m, obj, acc) {
-	if (!check2(bld._id, m.fanBB, obj)) {
+function fnInit(bld, m, obj, acc) {
+	// Сушка не работает
+	if (!isRunning(bld._id, m.fanBB, obj)) {
 		fnEnd(acc)
-		return console.log('Запрет check2')
+		return //console.log('Запрет check2')
 	}
-	// Фиксируем точку отсчета
+
+	// Сушка работает - Инициализируем точку отсчета
+	// Точка отсчета
 	acc.start ??= new Date()
+	// Текущий день сушки
 	acc.day ??= new Date().getDate()
+	// Аккумулятор моточасов(вчерашний и сегодняшний дни)
 	acc.total ??= {}
 	acc.total[acc.day] ??= 0
-	// delete acc.total
-	// delete acc.hour
 }
 
 /**
- * Фиксируем конец подсчета и вычисляем результат моточасов сушки
+ * Сушка не работает - Фиксируем конец подсчета и вычисляем результат моточасов сушки
  * @param {*} acc
  */
 function fnEnd(acc) {
-	acc.start ??= new Date()
-	acc.day ??= new Date().getDate()
+	// Если нет точки отсчета или текущего дня, то нечего считать - пропускаем
+	if (!acc.start || !acc.day) return
+
+	// Суммируем моточасы за текущий день
 	acc.total ??= {}
 	acc.total[acc.day] ??= 0
-	if (acc.total[acc.day] === null) acc.total[acc.day] = 0
+	if (Number.isNaN(acc.total[acc.day])) acc.total[acc.day] = 0
 	// Складываем суточные моточасы сушки, мс
-	acc.total[acc.day] += new Date() - (acc.start ?? 0)
+	acc.total[acc.day] += new Date() - acc.start
+
 	// Очищаем стартовую точку для следующего подсчета
 	delete acc.start
+
+	// Очистка acc.total
+	fnRotate(acc)
 }
 
 /**
- * Смена дня
+ * Проверка изменения дня
  * @param {*} acc
  * @returns
  */
-function fnDay(acc) {
-	if (acc.day === new Date().getDate()) return console.log('День еще не закончился')
+function check24h(acc) {
+	if (!acc.day) return
+	if (acc.day === new Date().getDate()) return // console.log('День еще не закончился')
 	// Сменился день - складываем моточасы
 	fnEnd(acc)
-	delete acc.day
+	acc.day = new Date().getDate()
 }
 
 /**
- * Запрет суточного подсчета
- * Но без запрета на формирование ПУШ-сообщения
- * @param {*} idB
- * @param {*} obj
- * @returns true - Проверка пройдена (разрешить)
+ * Очистка аккумулятора моточасов сушки, от неактуальных дней
+ *
+ * @param {*} acc
+ * @returns
  */
-function check2(idB, fanBB, obj) {
-	const reason = [
-		[isDemo(idB), 'ПНР-режим активен'],
-		[!obj.retain?.[idB]?.start, 'Склад выключен'],
-		[!getSectAuto(idB, obj).length, 'Нет секций в авто'],
-		[fanBB.every((el) => obj.value[el._id].state != 'run'), 'Все ВНО выключены'],
-	]
-	const err = reason.filter((el) => el[0])
-	return !err.length
+function fnRotate(acc) {
+	if (!acc.day || Object.keys(acc.total ?? {}).length < 3) return
+
+	// Массив акутальных дней в аккумуляторе (вчера и сегодня)
+	const days = [String(getYesterday(acc.day)), String(acc.day)]
+
+	// Удаляем из аккумулятора неактуальные дни
+	for (const day in acc.total) {
+		if (days.includes(day)) continue
+		delete acc?.total?.[day]
+	}
 }
 
-/**
- * Глобальный запрет суточного подсчета
- * Выключает формирование ПУШ-сообщения
- * @param {*} idB
- * @param {*} obj
- * @returns true - Проверка пройдена (разрешить)
- */
-function check1(idB, obj) {
-	// Текущий месяц
-	const mon = new Date().getMonth() + 1
-	const reason = [
-		[obj.retain?.[idB]?.automode != 'drying', 'Несоответсвие авторежима'],
-		[!_MONTH.includes(mon), 'Вне сезона сушки (с августа по ноябрь)'],
-	]
-	const err = reason.filter((el) => el[0])
-	return !err.length
+// Получить вчерашний день
+function getYesterday(curDay) {
+	return curDay - 1 > 0
+		? curDay - 1
+		: new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate()
 }
 
-module.exports = { check1, check2, fnStart, fnEnd, fnDay }
+module.exports = { fnInit, fnEnd, check24h, getYesterday }
