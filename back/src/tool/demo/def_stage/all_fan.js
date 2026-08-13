@@ -39,7 +39,7 @@ function allFan(bld, obj, m, checklistPNR, demo, permission, code) {
 		arrCtrlDO(bld._id, m.fanBexc, 'off')
 		return
 	}
-// console.log(11, m.fanBexc)
+
 	// Включить все ВНО
 	arrCtrlDO(bld._id, m.fanBexc, 'on')
 

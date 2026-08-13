@@ -9,7 +9,7 @@ const { isRunning } = require('./allow')
  */
 function fnInit(bld, m, obj, acc) {
 	// Сушка не работает
-	if (!isRunning(bld._id, m.fanBexc, obj)) {
+	if (!isRunning(bld._id, m.fanBB, obj)) {
 		fnEnd(acc)
 		return //console.log('Запрет check2')
 	}

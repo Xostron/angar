@@ -9,7 +9,7 @@ function Demo({ bldId }) {
 		<>
 			{isReady ? (
 				<div className='wh-container'>
-					<span>Отчет от {demo.begin}</span>
+					<span>Отчет ПНР на {demo.begin}</span>
 					<ul className='wh-list'>
 						{/* Список тестов */}
 						{Object.entries(demo.checklist).map(([code, data], i) => (
