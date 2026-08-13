@@ -162,6 +162,7 @@ const data = {
 	cycle: {
 		ccVno: {},
 	},
+	// true Микросервис включен в админке
 	isIo: false,
 	// Папки
 	baseDir: path.join(__dirname, '..'),

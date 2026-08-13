@@ -28,22 +28,39 @@ function mech(obj, idS, idB) {
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
 
 	// ВНО испарителей: все и только рабочие
-	const { allFanClr, fanClr } = getVnoClr(idB, idS, { retain, value }, coolerS)
+	const { allFanClr, fanClr } = getVnoClr(idB, idS, obj, coolerS)
 	// Напорные ВНО секции (только рабочие)
 	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
 	// Напорные ВНО секции/камеры + ВНО испарителей:
 	// обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...fanSS, ...fanClr]
 
-	// Вентиляторы секции:напорные (любой стейт)
+	// DEMO Вентиляторы секции:напорные + испарители, только введенные в работу
 	const ff = fan
-		.filter((el) => el.owner.id === idS && el.type === 'fan')
+		.filter(
+			(el) =>
+				el.owner.id === idS &&
+				el.type === 'fan' &&
+				!obj.retain?.[idB]?.fan?.[idS]?.[el._id] &&
+				obj.retain?.[idB]?.mode?.[idS] === false,
+		)
 		.map((el) => {
 			const ao = binding.find((b) => b.owner.id === el._id && b.type === 'ao')
 			if (!ao) return el
 			return { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 		})
-	ff.push(...allFanClr)
+		// console.log(22,allFanClr)
+	ff.push(
+		...allFanClr.filter((el) => {
+			// Секция вентилятора
+			const id = getOwner(el, obj.data)?.sect?._id
+			// Выведен из работы
+			if (obj.retain?.[idB]?.fan?.[id]?.[el._id]) return false
+			// Секция не в ручном - убираем вно
+			if (obj.retain?.[idB]?.mode?.[id] !== false) return false
+			return true
+		}),
+	)
 
 	// Дополнительные вентиляторы (пока нигде не применяются)
 	// const fanAux = fan.filter((el) => el.owner.id === idS && el.type === 'aux')
@@ -156,8 +173,8 @@ function mechB(idB, type, obj, mod = false) {
 		const idS = getOwner(el, obj.data)?.sect?._id
 		// Выведен из работы
 		if (obj.retain?.[idB]?.fan?.[idS]?.[el._id]) return false
-		// Выключена ли секция
-		return idsSA.includes(idS)
+		// Выключена ли секция (демо : обычный)
+		return mod ? idBS.includes(idS) : idsSA.includes(idS)
 	})
 	// Демо - ВНО склада: только напорные - введенные в работу
 	const fanBN = data?.fan
@@ -188,7 +205,7 @@ function mechB(idB, type, obj, mod = false) {
 			fanBexc.push(...sect[el._id].ff)
 		})
 
-	// console.log(111, fanBexc)
+	//  console.log(111, fanBexc)
 	// Демо - Рабочие испарители рабочих секций
 	const coolerB = idBS
 		.reduce((acc, id) => {

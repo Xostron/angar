@@ -19,8 +19,8 @@ function writeTCP(host, port, opt) {
 		})
 		socket.on('connect', (_) => {
 			const { i, v } = regist(opt)
-			if (opt?.wr?.start == 40960 || opt?.wr?.start == 40961)
-				console.log(66, 'write = ', i, v)
+			//if (opt?.wr?.start == 40960 || opt?.wr?.start == 40961)
+			//	console.log(66, 'write = ', i, v)
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)

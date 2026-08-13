@@ -1,3 +1,5 @@
+const { getOwner } = require('@tool/get/building')
+
 /**
  * Устройства секции
  * @param {*} idS ИД секции
@@ -37,7 +39,15 @@ function getVnoClr(idB, idS, obj, coolerS) {
 	// Вно испарителей с любым state, но исключая дубляжи
 	const allFanClr = Object.values(
 		fanClrRaw.reduce((acc, el, i) => {
-			if (acc[el.module.id + el.module.channel]) return acc
+			if (acc[el.module.id + el.module.channel]) {
+				// Секция вентилятора
+				const id = getOwner(el, obj.data)?.sect?._id
+				const prev = acc[el.module.id + el.module.channel]
+				const off = obj.retain?.[idB]?.fan?.[id]?.[prev._id]
+				// Если первый ВНО из дублированных введен в работу оставляем его
+				if (!off) return acc
+				// иначе заменяем на дубляж
+			}
 			acc[el.module.id + el.module.channel] = el
 			return acc
 		}, {}),

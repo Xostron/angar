@@ -1,5 +1,5 @@
 const readJson = require('@tool/json').read
-const read = require('@tool/control/read')
+const readTCP = require('@tool/control/read')
 const { collectMdls } = require('../../output/fn')
 
 // Опрос модулей
@@ -12,7 +12,7 @@ function readM(obj) {
 				// Уникальные модули
 				const arr = collectMdls(module, equipment)
 				// Опрос модулей по сети
-				return read(arr, obj)
+				return readTCP(arr, obj)
 			})
 			.then((r) => {
 				resolve(r)

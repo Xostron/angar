@@ -9,7 +9,7 @@ const { compareTime } = require('@tool/command/time')
 function plcio(bld, section, obj, s, se, m, automode, acc, data) {
 	acc._alarm ??= {}
 	// Если микросервисов нет, то сбрасываем данную аварию и выходим
-	if (!m.services.length) {
+	if (!m.services.length || !store.isIo) {
 		delExtralrm(bld._id, null, 'plcio')
 		acc._alarm = {}
 		return false

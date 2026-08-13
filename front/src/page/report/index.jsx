@@ -4,6 +4,7 @@ import SensorChart from './sensor-chart'
 import Charts from './charts'
 import Demo from './demo'
 import './style.css'
+import useInputStore from '@src/store/input'
 
 const def = {
 	general: Charts,
@@ -32,6 +33,7 @@ export default function Report() {
 		[list],
 	)
 	const [selectedId, setSelectedId] = useState(sorted[0]?._id ?? null)
+	// const demoBegin = useInputStore((s) => s.input?.retain?.[selectedId]?.demo?.begin ?? '')
 	const [days, setDays] = useState(1)
 	const [tick, setTick] = useState(0)
 	const [mode, setMode] = useState('general')
@@ -48,6 +50,7 @@ export default function Report() {
 				<>
 					<header className='report-toolbar'>
 						<CmpMode mode={mode} setMode={setMode} />
+						{/* {mode == 'demo' ? <span>{demoBegin}</span> : ''} */}
 						<Days days={days} setDays={setDays} refresh={refresh} mode={mode} />
 					</header>
 					{/* Основное содержимое */}

@@ -9,6 +9,7 @@ function Demo({ bldId }) {
 		<>
 			{isReady ? (
 				<div className='wh-container'>
+					<span>Отчет от {demo.begin}</span>
 					<ul className='wh-list'>
 						{/* Список тестов */}
 						{Object.entries(demo.checklist).map(([code, data], i) => (
@@ -18,7 +19,9 @@ function Demo({ bldId }) {
 				</div>
 			) : (
 				<div className='wh-container'>
-					{typeof demo?.cur == 'number' ? 'Идет тестирование склада...' : 'Нет данных'}
+					{typeof demo?.cur == 'number'
+						? 'Выполняется тестирование склада...'
+						: 'Нет данных'}
 				</div>
 			)}
 		</>

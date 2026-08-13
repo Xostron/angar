@@ -49,6 +49,8 @@ function initDemo(bld, s, m, checklistPNR, obj) {
 	demo.firstOff = false
 	// Флаг о преобразовании данных для front по окончанию демо-режима = false
 	demo.transform = true
+	// Дата ПНР теста для отображения на front
+	demo.begin = new Date().toLocaleString()
 	console.log('INIT DEMO', demo.cur)
 }
 

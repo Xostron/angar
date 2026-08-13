@@ -18,6 +18,7 @@ const apiConfig = (data, params = {}) => ({
  */
 async function writeIO(out) {
 	if (!out) return console.log('🟡output [plc_io]: Нет данных для записи')
+
 	// Наличие изменений -> данные на запись
 	const dataWrite = isChange(out)
 	// console.log(11, out)
