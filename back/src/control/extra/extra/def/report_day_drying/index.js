@@ -1,4 +1,4 @@
-const { fnInit, fnEnd, check24h, } = require('./fn')
+const { fnInit, fnEnd, check24h, fnRotate } = require('./fn')
 const { fnEnable } = require('./fn/allow')
 
 // Суточные моточасы режима сушка
@@ -16,7 +16,8 @@ function rdDrying(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	// Подсчет моточасов активен
 	// Инициализация и проверка работы сушки
 	fnInit(bld, m, obj, acc)
-	// console.log(11, acc)
+	fnRotate(acc)
+	console.log(11, acc)
 }
 
 module.exports = rdDrying

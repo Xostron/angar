@@ -37,7 +37,8 @@ function fnEnd(acc) {
 	acc.total[acc.day] ??= 0
 	if (Number.isNaN(acc.total[acc.day])) acc.total[acc.day] = 0
 	// Складываем суточные моточасы сушки, мс
-	acc.total[acc.day] += new Date() - acc.start
+	const t = typeof acc.start == 'string' ? new Date(acc.start) : acc.start
+	acc.total[acc.day] += new Date() - t
 
 	// Очищаем стартовую точку для следующего подсчета
 	delete acc.start
@@ -85,4 +86,4 @@ function getYesterday(curDay) {
 		: new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate()
 }
 
-module.exports = { fnInit, fnEnd, check24h, getYesterday }
+module.exports = { fnInit, fnEnd, check24h, getYesterday, fnRotate }
