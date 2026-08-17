@@ -38,14 +38,14 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
+					if (opt?.ip === '192.168.21.135') {
+						console.log(44, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
+					}
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
-					//if (opt?.ip === '192.168.21.135') {
-					//	console.log(44, 'read = ',opt?.wr?.start, r)
-					//}
 					resolve([r, w])
 				})
 				.catch((e) => {

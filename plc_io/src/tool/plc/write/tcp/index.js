@@ -19,7 +19,6 @@ function writeTCP(host, port, opt) {
 		})
 		socket.on('connect', (_) => {
 			const { i, v } = regist(opt)
-			console.log(123, i, v)
 			cl.writeMultipleRegisters(i, v)
 				.then((_) => {
 					delModule(opt.buildingId, opt._id)

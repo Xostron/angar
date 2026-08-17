@@ -5,7 +5,7 @@ function regist(opt) {
 	// Стартовый адрес
 	const i = opt.wr?.start
 
-	// Частотник oni-150 - дискретныое управление
+	// Частотник oni-150 - дискретное управление
 	if (opt?.name == 'FC oni-150 DO') {
 		// console.log('Истина2', opt.value)
 		return { i, v: opt.value[0] === 0 ? [5] : [1] }
