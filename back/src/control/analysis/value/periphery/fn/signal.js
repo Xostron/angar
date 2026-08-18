@@ -8,14 +8,14 @@ const { sigValve, sigFan, sigDfl } = require('@tool/command/signal')
  * @param {*} result результат
  */
 function signal(equip, val, retain, result) {
-	const { signal, module, fan, valve } = equip
+	const { signal, module, fan, valve, equipment } = equip
 	for (const o of signal) {
 		switch (o.owner.type) {
 			case 'valve':
 				sigValve(o, val, result, module, retain, valve)
 				break
 			case 'fan':
-				sigFan(o, val, result, module, retain, fan)
+				sigFan(o, val, result, module, equipment, retain, fan)
 				break
 			default:
 				sigDfl(o, val, equip, result)

@@ -24,4 +24,16 @@ function hasOutput(output, idM) {
 	return !!mdl?.value
 }
 
-module.exports = { getMdl, getId, hasOutput }
+/**
+ *
+ * @param {*} mdls Рама модулей склада
+ * @param {*} equipment Рама оборудования
+ * @param {*} idM ИД модуля
+ */
+function getFullMdl(mdls, equipment, idM) {
+	const { mdl } = getMdl(mdls, idM)
+
+	return { ...mdl, ...(equipment?.[mdl.equipmentId] ?? {}) }
+}
+
+module.exports = { getMdl, getId, hasOutput, getFullMdl }

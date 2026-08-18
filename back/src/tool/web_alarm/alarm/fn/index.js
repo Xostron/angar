@@ -18,7 +18,7 @@ function critical(r) {
 		// Критические аварии кроме module (Модуль не в сети)
 		const t = r.signal[bld].filter((el) => el.count && el.code !== 'module')
 		// Замена нескольких сообщений не в сети на одно сообщение (Пропала связь)
-		const m = r.signal[bld].filter((el) => el.code === 'module')
+		const m = r.signal[bld].filter((el) => el.code === 'module').sort((a,b)=>b.date-a.date)
 		if (m.length > 1) {
 			const o = {
 				...m[0],
@@ -29,7 +29,7 @@ function critical(r) {
 		} else {
 			m.length ? t.push(m[0]) : null
 		}
-		r.monit.critical[bld] = t
+		r.monit.critical[bld] = t.sort((a,b)=>b.date-a.date)
 	}
 }
 

@@ -8,7 +8,10 @@ function fanCrash(bld, sect, obj, s, se, m, automode, acc, data) {
 	const sumAlarm = []
 	for (const f of m.fanSAll) {
 		acc[f._id] ??= {}
+		// Значение сигнала "Автомат выбит"
 		const sig = getSignalFan(f?._id, obj)
+		const v = obj.value[f._id]
+
 		const moduleId = obj?.data?.signal
 			?.filter((el) => el.type === 'fan' && el?.owner?.id === f._id)
 			?.map((el) => el?.module?.id)
@@ -19,7 +22,13 @@ function fanCrash(bld, sect, obj, s, se, m, automode, acc, data) {
 		}
 		// Установка
 		if (sig && !acc[f._id].alarm) {
-			wrExtralrm(bld._id, sect._id, 'fanCrash' + f._id, msgF(bld, sect, f.name, 35), moduleId)
+			wrExtralrm(
+				bld._id,
+				sect._id,
+				'fanCrash' + f._id,
+				msgF(bld, sect, f.name, 35, v?.codeFC),
+				moduleId,
+			)
 			acc[f._id]._alarm = true
 		}
 		sumAlarm.push(acc?.[f._id]?._alarm)

@@ -8,11 +8,13 @@ function fan(equip, val, retain, result) {
 		// Состояние ВНО: run,stop,alarm
 		result[el._id].state = stateF(el, equip, result, retain)
 		// Поиск аналогового выхода ВНО
-		const ao = binding.find((b) => b.owner.id === el._id && b.type==='ao')
+		const ao = binding.find((b) => b.owner.id === el._id && b.type === 'ao')
 		if (!!ao) result[el._id].value = result?.outputM?.[ao.moduleId]?.[ao.channel - 1]
 		// Поиск аналогового входа
-		const ai = binding.find((b) => b.owner.id === el._id && b.type==='ai')
+		const ai = binding.find((b) => b.owner.id === el._id && b.type === 'ai')
+
 		if (!!ai) result[el._id].vai = result?.[ai._id]?.value
+		if (el._id === '69f9dd09c35ea05200898cdd') console.log(123, result[el._id])
 	})
 }
 

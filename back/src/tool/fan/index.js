@@ -10,12 +10,18 @@ function stateF(fan, equip, result, retain) {
 	// Выведен из работы для секционных ВНО и ВНО испарителей
 	result[fan._id].off = fanOff(idB, fan, equip.cooler, retain)
 
+	// Авария модулей ВНО
 	const alr = isAlrmByFan(idB, fan, equip, retain)
+	// Авария неправильные настройки гистерезиса
 	const alrDeb = isExtralrm(idB, 'debdo', fan._id)
-
+	// Авария перегрев двигателя (ВНО испарителей)
+	const heat = result?.[fan._id]?.heat
+	// Авария "Автомат выбит" или "Авария ПЧ FC oni-150 DIerr"
+	const qf = result?.[fan._id]?.qf
+	const codeFC = result?.[fan._id]?.codeFC
 	// Авария ВНО: По автоматическому выключателю,
 	// перегрев (у ВНО испарителей), неисправные модули к которым подключен ВНО
-	if (result?.[fan._id]?.qf || result?.[fan._id]?.heat || alr || alrDeb) return 'alarm'
+	if (qf || heat || alr || alrDeb || codeFC === null) return 'alarm'
 	// Выведен из работы
 	if (result[fan._id].off) return 'off'
 	// В работе
@@ -116,8 +122,8 @@ function stateSum(idB, obj, idS) {
 	// Получить ВНО секций в авто
 	const arr = idsS
 		.flatMap((idS) => [
-			...getVno(idB, idS, { retain, value }, data.binding, data.fan),
-			...getVnoClr(idB, idS, { retain, value }, getClr(data, idS)).fanClr,
+			...getVno(idB, idS, obj, data.binding, data.fan),
+			...getVnoClr(idB, idS, obj, getClr(data, idS)).fanClr,
 		])
 		.filter((el) => value[el._id].state == 'run')
 

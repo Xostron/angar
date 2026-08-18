@@ -1,8 +1,9 @@
 const signaltype = require('@dict/signal')
-const { puIO } = require('@tool/in_out')
+const { puIO, oniDIerr } = require('@tool/in_out')
 const { getIdBS } = require('@tool/get/building')
 const { debDI } = require('@tool/sensor/debounce')
 const { data: store } = require('@store')
+const { getMdl, getFullMdl } = require('@tool/get/module')
 
 /**
  * Получить раму сигнала
@@ -67,12 +68,20 @@ function sigValve(sig, val, result, module, retain) {
 }
 
 // Напорный вентилятор: доп контакт автомат. выключателя и состояние вентилятора
-function sigFan(sig, val, result, module, retain, fan) {
+function sigFan(sig, val, result, module, equipment, retain, fan) {
 	switch (sig.type) {
 		// Автомат выбит
 		case 'fan': {
 			result[sig.owner.id] ??= {}
-			result[sig.owner.id].qf = puIO(val, sig.module.id, sig.module.channel)
+			const mdl = getFullMdl(module, equipment, sig.module.id)
+
+			if (mdl.name != 'FC oni-150 DIerr')
+				result[sig.owner.id].qf = puIO(val, sig.module.id, sig.module.channel)
+			else {
+				const { v, codeFC } = oniDIerr(val, sig.module.id, sig.module.channel)
+				result[sig.owner.id].qf = v
+				result[sig.owner.id].codeFC = codeFC
+			}
 			break
 		}
 		// Перегрев статора
@@ -151,5 +160,5 @@ module.exports = {
 	sigDfl,
 	getSumSig,
 	getSumSigBld,
-	getSigBld
+	getSigBld,
 }

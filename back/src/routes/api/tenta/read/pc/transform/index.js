@@ -67,7 +67,10 @@ function fnTransform(bld, data, rack, result) {
 
 	// Количество аварий
 	result[bld._id + 'crash'] = data?.alarm?.count?.[bld._id] ?? null;
-	// Об авариях
+	const arr = data?.alarm?.monit?.critical?.[bld._id] ?? null
+	result[bld._id + 'crashes'] = {list: arr, date: arr?.[0]?.date ?? null}
+	// console.log(result[bld._id + 'crashes'])
+	// Аварийные сообщения боковой панели
 	result[bld._id + 'alarm'] = Object.keys(data?.alarm?.barB?.[bld._id] ?? {})
 		.map((k) => {
 			const alr = data?.alarm?.barB?.[bld._id]?.[k]?.[0];

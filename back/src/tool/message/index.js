@@ -34,12 +34,13 @@ function msgV(building, section, typeV, code) {
 	return o
 }
 // Вентиляторы
-function msgF(building, section, name, code) {
+function msgF(building, section, name, code, codeFC) {
 	const o = { ...mes[code] }
 	o.title = `${section.name ?? ''}. ${name ?? ''}:`
 	o.buildingId = building._id
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')
+	if (codeFC) o.msg += ` (Код ошибки ПЧ: ${codeFC})`
 	return o
 }
 // Датчики

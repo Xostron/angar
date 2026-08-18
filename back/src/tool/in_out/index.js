@@ -14,9 +14,9 @@ function puIO(val, moduleId, channel, dio = false) {
 	return val?.[moduleId]?.[channel - 1] ? true : false
 }
 
-// DO: Биполярные ИМ: Клапан
+// DO: Клапан
 function biDO(data, val) {
-	let r = {}
+	const r = {}
 	for (const o of data) {
 		r[o._id] ??= {}
 		r[o._id].open = puIO(val, o?.module?.on?.id, o?.module?.on?.channel, true)
@@ -25,9 +25,9 @@ function biDO(data, val) {
 	return r
 }
 
-// DO: Униполярные ИМ: (вентилятор, обогреватель клапанов, соленоид)
+// DO: вентилятор, обогреватель клапанов, соленоид
 function uniDO(data, val) {
-	let r = {}
+	const r = {}
 	for (const o of data) r[o._id] = puIO(val, o?.module?.id, o?.module?.channel, true)
 	return r
 }
@@ -45,4 +45,14 @@ function getAO(binding = [], f) {
 	return ao
 }
 
-module.exports = { biDO, uniDO, puIO, getAO }
+function oniDIerr(val, moduleId, channel) {
+	// Модуль с ошибкой
+	if (val?.[moduleId]?.error || !val?.[moduleId]) return { v: null, codeFC: null }
+
+	return {
+		v: val?.[moduleId]?.[channel - 1] ? true : false,
+		codeFC: val?.[moduleId]?.[channel - 1],
+	}
+}
+
+module.exports = { biDO, uniDO, puIO, getAO, oniDIerr }

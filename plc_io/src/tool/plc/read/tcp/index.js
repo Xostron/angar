@@ -41,6 +41,7 @@ function readTCP(host, port, opt) {
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
+					r = convOni150DI(opt, r)
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve([r, w])
@@ -74,7 +75,7 @@ function conv32DO(opt, arr) {
 	return r
 }
 
-// Нормализация данных для частотника oni-150
+// Нормализация данных для частотника oni-150 - чтение DO
 function convOni150(opt, arr) {
 	if (opt.name != 'FC oni-150 DO') return arr
 	// console.log('Истина', arr)
@@ -87,6 +88,13 @@ function convOni150(opt, arr) {
 		case 0.2:
 			return [1]
 	}
+}
+
+// Нормализация данных для частотника oni-150 - чтение DШ код ошибок
+function convOni150DI(opt, arr) {
+	if (opt.name != 'FC oni-150 DIerr') return arr
+	console.log('Истина FC oni-150 DIerr', arr)
+	return arr.map((el) => +(el * 10).toFixed(0))
 }
 
 module.exports = readTCP
