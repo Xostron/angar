@@ -1,7 +1,6 @@
 const { isDemo } = require('@tool/demo/fn/fn')
 const { getSectAuto } = require('@tool/get/building')
-// Месяцы сушки с августа по ноябрь (8-11)
-const _MONTH = [8, 9, 10, 11]
+const { data: store } = require('@store/index')
 
 /**
  * Глобальный запрет суточного подсчета
@@ -15,7 +14,7 @@ function fnEnable(idB, obj) {
 	const mon = new Date().getMonth() + 1
 	const reason = [
 		[obj.retain?.[idB]?.automode != 'drying', 'Несоответсвие авторежима'],
-		[!_MONTH.includes(mon), 'Вне сезона сушки (с августа по ноябрь)'],
+		[!store._MONTH.includes(mon), 'Вне сезона сушки (с августа по ноябрь)'],
 	]
 	const err = reason.filter((el) => el[0])
 	return !err.length

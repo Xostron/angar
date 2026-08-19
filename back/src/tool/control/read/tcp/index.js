@@ -38,13 +38,16 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-					if (opt?.ip === '192.168.21.135') {
+					if (opt?.name.includes("oni-150")) {
 						console.log(44, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
 					}
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
 					r = convOni150DI(opt, r)
+					if (opt?.name.includes("oni-150")) {
+						console.log(55, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
+					}
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve([r, w])
@@ -82,7 +85,6 @@ function conv32DO(opt, arr) {
 // Нормализация данных для частотника oni-150 - чтение DO
 function convOni150(opt, arr) {
 	if (opt.name != 'FC oni-150 DO') return arr
-	// console.log('Истина', arr)
 	switch (arr[0]) {
 		// Стоп
 		case 0.3:
@@ -97,7 +99,6 @@ function convOni150(opt, arr) {
 // Нормализация данных для частотника oni-150 - чтение DШ код ошибок
 function convOni150DI(opt, arr) {
 	if (opt.name != 'FC oni-150 DIerr') return arr
-	console.log('Истина FC oni-150 DIerr', arr)
 	return arr.map((el) => +(el * 10).toFixed(0))
 }
 

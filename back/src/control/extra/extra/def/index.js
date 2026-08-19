@@ -20,6 +20,7 @@ const connectLost = require('./connect_lost')
 const wetting = require('./wetting')
 const demo = require('./demo')
 const rdDrying = require('./report_day_drying')
+const dayDrying = require('./drying_to_cooling')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
@@ -59,7 +60,8 @@ const data = {
 			vent,
 			co2NormalCombi,
 			demo,
-			rdDrying
+			rdDrying,
+			dayDrying,
 		},
 	},
 	// Склад холодильник
@@ -84,7 +86,6 @@ const data = {
 			connectLost,
 			wetting,
 			demo,
-			rdDrying
 		},
 	},
 	// Комбинированный склад

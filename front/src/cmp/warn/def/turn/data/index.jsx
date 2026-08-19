@@ -6,10 +6,10 @@ import useInputStore from '@store/input'
 
 export default function Data({ prd, bType, style }) {
 	let { build } = useParams()
-	// Время сушки в днях
-	const count = useInputStore(
-		({ input }) => input?.retain?.[build]?.drying?.count ?? input?.retain?.[build]?.drying?.acc,
-	)
+	// Счетчик сушки в днях
+	let total = useInputStore(({ input }) => input?.retain?.[build]?.drying?.total ?? 0)
+	// console.log(123, total, +(total / 18 / 3600 / 1000).toFixed(2), total / 18 / 3600 / 1000)
+	total = +(total / 18 / 3600 / 1000).toFixed(1)
 	// Прошло дней
 	const day = useInputStore(
 		({ input }) =>
@@ -50,7 +50,7 @@ export default function Data({ prd, bType, style }) {
 				style={{ gridColumn: '1 /span 4' }}
 				cls='cell-entry'
 			/>
-			<Text data={{ value: Math.trunc(count) }} />
+			<Text data={{ value: total }} />
 			<Text data={{ value: 'Дни' }} />
 		</div>
 	)

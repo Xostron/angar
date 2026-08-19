@@ -190,6 +190,6 @@ module.exports = {
 	fnResult,
 	fnCooling,
 	fnDateBuild,
-	fnDryingCount,
+	// fnDryingCount,
 	fnResultValve,
 }

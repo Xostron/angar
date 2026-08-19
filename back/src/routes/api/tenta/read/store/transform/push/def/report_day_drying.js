@@ -8,24 +8,36 @@ function rdDrying(idB, section, obj) {
 	const curHH = new Date().getHours()
 	const yesterday = getYesterday(new Date().getDate()) + ''
 	const daily = store.calcSetting?.[idB]?.drying?.daily
-	
+
 	// Разрешение на отправку ПУШ:
 	// Отчет за вчерашний день отсутствует
 	if (!acc?.total?.[yesterday]) return null
 	// Текущий час не равен 8 утра
 	if (curHH !== 8) return null
-	// Нет суточного задания сушки
+	// Нет суточного задания сушки (настройки)
 	if (!daily) return null
+	// Не в режиме сушки
+	if (obj.retain?.[idB]?.automode!='drying') return null
 
+	// Инициализация задания сушки
+	acc.daily ??= daily
 	// Разрешено
 	// Сущка за вчера, ч
 	const t = +(acc.total?.[yesterday] / 1000 / 3600).toFixed(2)
-	// Перенос на сегодня
-	const add = daily - t
+	// Кол-во часов перенесенных на сегодня
+	const add = daily - t < 0 ? 0 : daily - t
+
+	// Если Кол-во часов перенесенных на сегодня < 0.1ч(6 мин), то не отправляем пуш
+	if (add<0.1) return null
+
+	// План сушки на сегодня
+	acc.daily = +(acc.daily + add).toFixed(2)
+	// Предел задания сушки <=24 ч
+	acc.daily = acc.daily>24 ? 24 : acc.daily
 
 	let msg = `Сушка за вчера: ${t}ч из ${daily}ч.`
 	if (add) msg += ` Перенос на сегодня - ${add}ч.`
-	msg += ` План на текущие сутки: ${(daily + add).toFixed(2)}ч`
+	msg += ` План на текущие сутки: ${acc.daily}ч`
 
 	delete acc?.total?.[yesterday]
 

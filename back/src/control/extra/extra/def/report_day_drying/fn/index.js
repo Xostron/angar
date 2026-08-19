@@ -32,13 +32,13 @@ function fnEnd(acc) {
 	// Если нет точки отсчета или текущего дня, то нечего считать - пропускаем
 	if (!acc.start || !acc.day) return
 
-	// Суммируем моточасы за текущий день
+	// Суммируем моточасы за сутки
 	acc.total ??= {}
 	acc.total[acc.day] ??= 0
 	if (Number.isNaN(acc.total[acc.day])) acc.total[acc.day] = 0
 	// Складываем суточные моточасы сушки, мс
-	const t = typeof acc.start == 'string' ? new Date(acc.start) : acc.start
-	acc.total[acc.day] += new Date() - t
+	const start = typeof acc.start == 'string' ? new Date(acc.start) : acc.start
+	acc.total[acc.day] += new Date() - start
 
 	// Очищаем стартовую точку для следующего подсчета
 	delete acc.start
@@ -55,8 +55,9 @@ function fnEnd(acc) {
 function check24h(acc) {
 	if (!acc.day) return
 	if (acc.day === new Date().getDate()) return // console.log('День еще не закончился')
-	// Сменился день - складываем моточасы
+	// Сменился день - фиксируем моточасы за сутки
 	fnEnd(acc)
+	// Новый день
 	acc.day = new Date().getDate()
 }
 

@@ -14,7 +14,6 @@ function fan(equip, val, retain, result) {
 		const ai = binding.find((b) => b.owner.id === el._id && b.type === 'ai')
 
 		if (!!ai) result[el._id].vai = result?.[ai._id]?.value
-		if (el._id === '69f9dd09c35ea05200898cdd') console.log(123, result[el._id])
 	})
 }
 
