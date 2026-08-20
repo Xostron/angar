@@ -21,6 +21,7 @@ const wetting = require('./wetting')
 const demo = require('./demo')
 const rdDrying = require('./report_day_drying')
 const dayDrying = require('./drying_to_cooling')
+const manFC = require('./man_fc')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
@@ -62,6 +63,7 @@ const data = {
 			demo,
 			rdDrying,
 			dayDrying,
+			manFC
 		},
 	},
 	// Склад холодильник

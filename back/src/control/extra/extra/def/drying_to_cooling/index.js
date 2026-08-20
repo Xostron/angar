@@ -18,10 +18,15 @@ function dayDrying(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	if (isZero(idB)) {
 		a.start = null
 		a.total = 0
+		// Флаг перехода сущки на хранение по достижению
+		a.isDone = false
 		// сброс флага кнопки "обнулить"
 		zero(null, false)
 		return
 	}
+
+	// Смена режима
+	changeMode(a, s, bld._id)
 
 	// Разрешение на подсчет дней сушки
 	if (!check(bld, obj, s, m)) {
@@ -98,16 +103,32 @@ function sum(a) {
 
 // Начало и конец сезона
 // Начало сезона - сброс счетчика
-// Конец сезона сброс флага
+// Конец сезона сброс флага "Старт сезона" isSeason - нужен для однократной очистки счетчика
 function aug_nov(a) {
 	const mon = new Date().getMonth() + 1
+	// Сброс флага в ноябре
 	if (mon > store._MONTH.at(-1)) {
-		a.isClear = false
+		a.isSeason = false
 	}
 
-	if (mon === 8 && !a.isClear) {
-		a.isClear = true
+	// Сброс счетчика в начале сезона и установка флага "Старт сезона"
+	if (mon === 8 && !a.isSeason) {
+		a.isSeason = true
 		a.start = null
 		a.total = 0
+		// Флаг перехода сущки на хранение по достижению
+		a.isDone = false
+	}
+}
+
+// Смена авторежима работы склада
+function changeMode(a, s, idB) {
+	// Перевод задания сушки в днях в миллисекунды (1 день = 18ч)
+	const ss = (s?.drying?.day ?? 0) * 18 * 3600 * 1000
+	// По достижению кол-ва дней в сушке -> переход в хранение
+	if (ss > 0 && a?.total >= s.drying.day && !a?.isDone) {
+		store.retain[idB].automode = 'cooling'
+		// Флаг смены режима Сушки на Хранение (однократно)
+		a.isDone = true
 	}
 }

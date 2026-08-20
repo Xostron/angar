@@ -3,8 +3,9 @@ const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { data: store } = require('@store')
 const { isCombiCold } = require('@tool/combi/is')
-const { out, ao, outV, fn } = require('./index')
+const { out, ao, outV, fn, force } = require('./index')
 const { hasOutput } = require('@tool/get/module')
+const { getSignal } = require('@tool/command/signal')
 
 // Блокировки напорных вентиляторов (обычный склад)
 // Если склад выключен, а секция в ручном режиме - не блокировать ВНО
@@ -31,9 +32,10 @@ function fan(obj, s) {
 		const idsS = getIdsS(obj.data.section, idB)
 		// Режим секции текущего ВНО
 		const mode = retain?.[idB]?.mode?.[f.owner.id]
-		// Игнор блокировки: включено окуривание или озонатор
-		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on
-
+		// ПУСК ВНО в ручном режиме
+		const man = obj?.value?.[f._id]?.man
+		// Игнор блокировки: включено окуривание, озонатор,
+		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on || man
 		// Блокировки:
 
 		// Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
@@ -87,6 +89,11 @@ function fan(obj, s) {
 		once[idB] = lowB
 		idsS.forEach((idS) => (once[idS] = low))
 
+		if (local && man) {
+			force(obj, output, f, 'on')
+			ao(obj, output, f, local, false)
+			continue
+		}
 		// console.log(
 		// 	111,
 		// 	f.name,
@@ -101,6 +108,10 @@ function fan(obj, s) {
 		// 	aLow,
 		// 	lowB,
 		// 	low,
+		// 	'man=',
+		// 	man,
+		// 	'ignore',
+		// 	ignore,
 		// )
 		out(
 			obj,
@@ -122,8 +133,8 @@ function fan(obj, s) {
 			obj,
 			output,
 			f,
-			sb,
 			local,
+			sb,
 			isAlrOff,
 			offS,
 			alrStop,

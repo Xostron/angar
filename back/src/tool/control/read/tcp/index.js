@@ -38,16 +38,16 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-					if (opt?.name.includes("oni-150")) {
-						console.log(44, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
-					}
+					// if (opt?.name.includes("701")) {
+					// 	console.log(44, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
+					// }
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
 					r = convOni150DI(opt, r)
-					if (opt?.name.includes("oni-150")) {
-						console.log(55, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
-					}
+					// if (opt?.name.includes("701")) {
+					// 	console.log(55, 'read = ', opt.name, opt?.wr?.start ?? opt?.re?.start, r)
+					// }
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve([r, w])

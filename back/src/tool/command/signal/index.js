@@ -90,6 +90,12 @@ function sigFan(sig, val, result, module, equipment, retain, fan) {
 			result[sig.owner.id].heat = puIO(val, sig.module.id, sig.module.channel)
 			break
 		}
+		// Пуск ВНО в ручном режиме
+		case 'man': {
+			result[sig.owner.id] ??= {}
+			result[sig.owner.id].man = puIO(val, sig.module.id, sig.module.channel)
+			break
+		}
 		default:
 			break
 	}
