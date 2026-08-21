@@ -30,11 +30,10 @@ function vSensor(equip, val, retain, result) {
 		// Владелец датчика (секция или склад)
 		else owner = getBS(s, equip)
 
-		// Обработанное значение датчика ИЛИ Демо
+		// Обработанное значение датчика
 		const r = valid(s, owner, val, retain)
-		// r = senDemo(s, owner, retain, r)
 
-		// Антидребезг датчика: из аккумулятора или обработанное значение
+		// Антидребезг датчика: нормальное и аварийное состояние
 		result[s._id] = debounce(
 			owner?.building?._id,
 			s._id,

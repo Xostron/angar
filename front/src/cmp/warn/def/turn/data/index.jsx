@@ -8,7 +8,7 @@ export default function Data({ prd, bType, style }) {
 	let { build } = useParams()
 	// Счетчик сушки в днях
 	let total = useInputStore(({ input }) => input?.retain?.[build]?.drying?.total ?? 0)
-	// console.log(123, total, +(total / 18 / 3600 / 1000).toFixed(2), total / 18 / 3600 / 1000)
+
 	total = +(total / 18 / 3600 / 1000).toFixed(1)
 	// Прошло дней
 	const day = useInputStore(
