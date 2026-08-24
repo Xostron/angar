@@ -3,6 +3,7 @@ const supply = require('./def/supply')
 const all = require('./def/all')
 const fnModule = require('./def/module')
 const rdDrying = require('./def/report_day_drying')
+const reportWeek = require('./def/report_week')
 
 /**
  * Пуш-сообщения
@@ -10,25 +11,27 @@ const rdDrying = require('./def/report_day_drying')
  * @param {*} obj Глобальные данные
  * @returns {object[]} Массив пуш-сообщений
  */
-function push(idB, section, obj) {
+async function push(idB, section, obj) {
 	// Cекции и склад выключены - запрет отправки пушей
 	if (turnOff(idB, section, obj)) return
 
-	// Обнаружена авария питания (остальные аварии игнорируются)
+	// Пуш Авария питания (остальные игнорируются)
 	let r = supply(idB, obj)
-	// console.log(5500, 'r', r)
 	if (r) return [r]
 
-	// Формирование актуального списка пушей (все критические аварии)
+	// Пуши критические аварии (флаг count)
 	r = all(idB, obj)
 
-	// Отфильтровать аварии возникшие из-за неисправности модулей
+	// Фильтр критических аварии, связанные с неисправным модулем
 	r = fnModule(idB, obj, r)
-	// console.log(1144, r)
 
-	// Добавить отчет суточной сушки в 8:00
-	const t = rdDrying(idB, section, obj)
-	if (t) r.push(t)
+	// Добавить отчет суточной сушки (каждый день в 8:00)
+	const dd = rdDrying(idB, section, obj)
+	if (dd) r.push(dd)
+
+	// Добавить недельный отчет (каждый понедельник в 8:00)
+	const week = await reportWeek(idB, section, obj)
+	if (week) r.push(week)
 
 	return r
 }

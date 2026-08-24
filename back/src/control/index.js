@@ -79,16 +79,21 @@ async function loop() {
 		store.cycleId = store.cycleId >= 32767 ? 0 : ++store.cycleId
 		// Сброс флага первого цикла
 		store._first = false
-		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
-		const cycle = store._cycle_ms_ / 1000
+
+		// Время цикла, с
+		store._cycle_ms_ = ((Number(hrtime() - bgn) / 1e6) | 0) / 1000
+
+		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
+		if (store._cycle_ms_ < 0.07) {
+			await delay(5000)
+			console.log('Включена защита при быстрых циклах < 0.07c => 5с')
+		}
 
 		// Сброс флага store.reset
 		store.isIo ? null : reset(null, false, false)
 
-		infoLog(cycle)
+		infoLog(store._cycle_ms_)
 
-		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
-		if (cycle < 0.05) await delay(5000)
 		// console.log('Использовано памяти: ', process.memoryUsage())
 		// console.log('Статистика: ', v8.getHeapStatistics())
 	}

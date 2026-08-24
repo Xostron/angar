@@ -5,8 +5,11 @@ const { v4: uuidv4 } = require('uuid')
 function rdDrying(idB, section, obj) {
 	// Аккумулятор суточной сушки
 	const acc = readAcc(idB, 'building', 'rdDrying')
+	// Текщий час
 	const curHH = new Date().getHours()
+	// Вчерашний день
 	const yesterday = getYesterday(new Date().getDate()) + ''
+	// Настройки сушки: задание сущки в часах
 	const daily = store.calcSetting?.[idB]?.drying?.daily
 
 	// Разрешение на отправку ПУШ:
