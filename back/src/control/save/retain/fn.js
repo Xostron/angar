@@ -135,61 +135,10 @@ function fnDateBuild(building) {
 	}
 }
 
-/**
- * Счетчик дней в авторежиме сушки
- * @param {object[]} building Массив складов
- */
-function fnDryingCount(building) {
-	for (const { _id: idB } of building) {
-		store.retain[idB].drying ??= {}
-		// store.retain[idB].drying.acc ??= 0
-
-		// 1. Фиксируем точку отсчета работы сушки
-		const t =
-			store.retain?.[idB]?.start &&
-			store.retain[idB]?.automode == 'drying' &&
-			!store.retain[idB]?.drying?.date
-
-		if (t) store.retain[idB].drying.date = new Date()
-
-		// 2. Сушка выключена / склад выключен - сохраняем в аккумулятор
-		// Сбрасываем кол-во дней в сушке и выходим
-		if (
-			(!store.retain?.[idB]?.start || store.retain[idB]?.automode !== 'drying') &&
-			store.retain?.[idB]?.drying?.date
-		) {
-			store.retain[idB].drying.acc = store.retain[idB].drying.count
-			store.retain[idB].drying.date = null
-			store.retain[idB].drying.count = null
-			zero(null, false)
-			return
-		}
-
-		// Сушка включена -> подсчет времени
-		const dt = store.retain?.[idB]?.drying?.date
-
-		// Нажата кнопка обнулить
-		if (isZero(idB)) {
-			store.retain[idB].drying.date = null
-			store.retain[idB].drying.count = null
-			// обнулить счетчик сушки
-			zero(null, false)
-			return
-		}
-
-		// Подсчет дней
-		if (dt) {
-			const dd = typeof dt == 'string' ? new Date(dt) : dt
-			store.retain[idB].drying.count = (new Date() - dd) / (24 * 60 * 60 * 1000)
-		}
-	}
-}
-
 module.exports = {
 	positionVlv,
 	fnResult,
 	fnCooling,
 	fnDateBuild,
-	// fnDryingCount,
 	fnResultValve,
 }

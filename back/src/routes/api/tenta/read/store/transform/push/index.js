@@ -3,7 +3,7 @@ const supply = require('./def/supply')
 const all = require('./def/all')
 const fnModule = require('./def/module')
 const rdDrying = require('./def/report_day_drying')
-const reportWeek = require('./def/report_week')
+const reportWeek = require('./def/report_week/report_week')
 
 /**
  * Пуш-сообщения

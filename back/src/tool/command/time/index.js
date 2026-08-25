@@ -206,6 +206,18 @@ function deltaTime(t1, t2) {
 	}
 }
 
+/**
+ * Получить диапазон с прошлого понедельника 8:00 - по сейчас понедельник 8:00
+ * @returns {Date[]} Диапазон [начало, конец]
+ */
+function getWeek() {
+	const today8 = new Date()
+	today8.setHours(8, 0, 0, 0)
+	const lastMon8 = new Date(today8)
+	lastMon8.setDate(today8.getDate() - 7)
+	return [lastMon8, today8]
+}
+
 module.exports = {
 	ms,
 	delay,
@@ -219,4 +231,6 @@ module.exports = {
 	onTime,
 	remTime,
 	deltaTime,
+	getWeek,
+	fmtTime,
 }

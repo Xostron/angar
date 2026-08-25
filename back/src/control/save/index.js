@@ -1,7 +1,6 @@
 const { retainDir, accDir } = require('@store')
 const writeAcc = require('./alarm')
 const writeRetain = require('./retain')
-const writeStore = require('./extra')
 
 // Сохранение в файл retain (Настройки, режимы работы и т.д.)
 async function save(obj) {

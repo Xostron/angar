@@ -1,8 +1,6 @@
 let { data: store, accDir } = require('@store')
 const { writeSync } = require('@tool/json')
 const { readOne } = require('@tool/json')
-const defExtra = require('@control/extra/extra/def')
-const { readAcc } = require('@store/index')
 /**
  * Промежуточные расчеты подпрограмм extra хранятся в store.acc
  * Прочитать конкретный аккумулятор, можно при помощи readAcc
@@ -36,7 +34,7 @@ async function writeStore() {
 module.exports = writeStore
 
 // Список аккумуляторов, которые восстановятся после перезагрущки
-const extraCodes = ['vent', 'co2', 'coAuto', 'coOn', 'rdDrying']
+const extraCodes = ['vent', 'co2', 'coAuto', 'coOn', 'rdDrying', 'buildHour']
 /**
  * Инициализация аккумулятора store.acc по списку разрешенных аккумуляторов
  * @param {*} acc

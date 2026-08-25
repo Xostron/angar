@@ -1,15 +1,8 @@
-const { data: store } = require('@store')
-const {
-	positionVlv,
-	fnResult,
-	fnCooling,
-	fnDateBuild,
-	fnDryingCount,
-	fnResultValve,
-} = require('./fn')
-const fnWeb = require('./web')
-const fnMobile = require('./mobile')
+const { positionVlv, fnResult, fnCooling, fnDateBuild, fnResultValve } = require('./fn')
 const Aboc = require('@tool/abort_controller')
+const { data: store } = require('@store')
+const fnMobile = require('./mobile')
+const fnWeb = require('./web')
 
 /**
  * Агрегируем данные для сохранения в retain
@@ -35,8 +28,6 @@ function transform(obj) {
 	fnCooling(store.acc, obj.data.building)
 	// 6. Дата и время: вкл/выкл склада
 	fnDateBuild(obj.data.building)
-	// 7. Счетчик дней в авторежиме сушки
-	// fnDryingCount(obj.data.building)
 	// 8. web - команды управления
 	Aboc.call(fnWeb)()
 	// 9. mobile - команды
