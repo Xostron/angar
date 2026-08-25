@@ -1,8 +1,4 @@
-const { stateEq } = require('@tool/command/fan/fn')
-const { curStateV } = require('@tool/command/valve')
-const { msgB } = require('@tool/message')
-const { delExtra, wrExtra } = require('@tool/message/extra')
-const { compareTime } = require('@tool/command/time')
+const { delExtra } = require('@tool/message/extra')
 
 // Режим вентиляции: Вкл - постоянная вентиляция
 // Склад обычный, комби-обычный

@@ -35,7 +35,7 @@ async function reportWeek(idB, section, obj) {
 		// Логи управших запросов
 		rejectedLog(r, idB)
 
-		console.log(123, bHour, tprd, hin)
+		// console.log(123, bHour, tprd, hin)
 		// Недельный отчет отправлен
 		acc.done = true
 		return ``
