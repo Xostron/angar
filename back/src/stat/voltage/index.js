@@ -6,7 +6,8 @@ const { compareTime } = require('@tool/command/time')
 const _min1 = 60 * 1000
 const _min10 = 10 * 60 * 1000
 /**
- * Статистика электроизмерений Напряжения - Сбор данных периодически и по критическим изменениям
+ * Статистика электроизмерений Напряжения 
+ * Сбор данных периодически и по критическим изменениям
  */
 async function pLogVoltage(data, value, force) {
 	const pui = data.device.filter((el) => el.device.code === 'pui')
@@ -18,7 +19,7 @@ async function pLogVoltage(data, value, force) {
 module.exports = pLogVoltage
 
 /**
- * Логирование периферии (запись в лог по изменению состояния)
+ * Логирование напряжения
  * @param {object} data Рама pc
  * @param {object[]} arr данные рамы текущего механизма
  * @param {object} value данные с модулей

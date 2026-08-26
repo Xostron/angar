@@ -5,7 +5,7 @@ const { mongoT } = require('./db_transport')
 const peripheryLevels = ['fan', 'valve', 'heating', 'cooler', 'aggregate', 'device', 'voltage']
 const eventLevels = ['alarm', 'event', 'activity']
 const sensLevels = ['sensor']
-const wattLevels = ['watt']
+const wattLevels = ['watt', 'hour']
 
 // Собрать транспорты: файл + MongoDB (если доступна)
 function transports(levels) {
@@ -31,6 +31,6 @@ const loggerEvent = create(eventLevels, eventLevels.length * 2 + 2)
 // Диспетчер логов показаний датчиков
 const loggerSens = create(sensLevels, 20)
 // Диспетчер логов электросчетчика
-const loggerWatt = create(wattLevels, 20)
+const loggerWatt = create(wattLevels, wattLevels.length * 2 + 2)
 
-module.exports = { logger, loggerSens, loggerWatt, loggerEvent }
+module.exports = { logger, loggerEvent, loggerSens, loggerWatt }

@@ -11,7 +11,7 @@ const { getIdSB, getOwnerClr } = require('@tool/get/building')
  */
 function message(data, el, level, value) {
 	const { section, cooler } = data
-	let secId, bldId, clrId, v, state, name
+	let secId, bldId, clrId, v, state, name, type, id
 	//
 	switch (level) {
 		case 'fan':
@@ -56,6 +56,13 @@ function message(data, el, level, value) {
 			state = value?.[el._id]?.state
 			name = el.name
 			break
+		case 'hour':
+			bldId = el._id
+			v = value //Моточасы в мс
+			name = el.name
+			id = null
+			type = 'bhour'
+			break
 		default:
 			break
 	}
@@ -66,10 +73,10 @@ function message(data, el, level, value) {
 		bldId: bldId ?? o.bldId,
 		secId: secId ?? o.secId,
 		clrId, // Только у heating
-		id: el._id,
+		id: id === null ? undefined : el._id,
 		value: v !== undefined ? v : value[el._id]?.state,
 		state, // Только у датчиков и bindingAi
-		type: el?.type,
+		type: type === null ? undefined : (type ?? el?.type),
 		name: el.name, //только у binding ai
 	}
 }

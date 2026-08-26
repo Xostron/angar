@@ -8,7 +8,6 @@ const _delay = 10_000
 function co2(bld, obj, m, checklistPNR, demo, permission) {
 	// Сейчас в работе другой тест - выкл исполнит. мех-мы
 	if (!permission) {
-		// console.log(123, 'off', m?.cold?.device?.co2)
 		arrCtrlDO(bld._id, m?.cold?.device?.co2, 'off')
 		return
 	}
