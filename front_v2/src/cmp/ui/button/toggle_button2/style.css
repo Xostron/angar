@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background-color: var(--c-grey-lightest);
+  &.variant3 {
+    background-color: transparent;
+    gap: 0px;
+    width: 274px;
+    height: 55px;
+  }
+}
+
+.tbtn {
+  border: none;
+  border-radius: 4px;
+  opacity: 1;
+  font-weight: 500;
+  line-height: 20px;
+  background-color: var(--c-grey-lightest);
+  color: var(--c-grey);
+  transition: background-color 0.1s ease;
+  &.active {
+    background-color: var(--c-blue-darker);
+    color: white;
+  }
+}
+
+.tbtn:disabled {
+  opacity: 0.2;
+}

@@ -8,7 +8,8 @@ export default defineConfig({
     favicon: './public/favicon.svg',
     title: 'Ангар',
     meta: {
-      viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+      viewport:
+        'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
     },
   },
   plugins: [

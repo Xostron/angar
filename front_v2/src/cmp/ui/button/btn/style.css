@@ -1,0 +1,49 @@
+.btn {
+  border: none;
+  border-radius: 8px;
+  opacity: 1;
+  font-weight: 600;
+  line-height: 28px;
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease;
+}
+
+.btn:active:not(:disabled) {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  background-color: var(--c-blue-darker);
+  color: var(--c-white);
+  opacity: 0.2;
+}
+
+.btn.primary {
+  background-color: var(--c-blue-darker);
+  color: var(--c-white);
+}
+.btn.secondary {
+  border: 1px solid var(--c-grey-lightest);
+  background-color: transparent;
+  color: var(--c-grey);
+}
+
+.btn.mode-primary {
+  background-color: var(--c-blue-darker);
+  color: var(--c-white);
+}
+.btn.mode-secondary {
+  background-color: var(--c-grey-lightest);
+  color: var(--c-grey);
+}
+
+.btn.sect-primary {
+  background-color: var(--c-blue-darker);
+  color: var(--c-white);
+}
+.btn.sect-secondary {
+  background-color: var(--c-grey-lightest);
+  color: var(--c-grey);
+}

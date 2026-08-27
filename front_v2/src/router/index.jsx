@@ -7,6 +7,7 @@ import SignalPage from '../page/signal';
 import ReportPage from '../page/report';
 import SettingsPage from '../page/settings';
 import NotFoundPage from '../page/not-found';
+import PageTest from '../page/test';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
         path: 'building/:buildingId/settings/:type',
         element: <SettingsPage />,
       },
+      { path: 'test', element: <PageTest /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
