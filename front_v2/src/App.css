@@ -1,0 +1,75 @@
+:root {
+  --c-blue: #62B8F6;
+  --c-blue-dark: #2C79C1;
+  --c-blue-darker: #65A7EE;
+  --c-blue-light: #B9DBF5;
+  --c-navy: #001E44;
+  --c-grey: #7B8A9D;
+  --c-grey-light: #E6E9ED;
+  --c-grey-lighter: #F5F6F8;
+  --c-red: #E83757;
+  --c-red-light: #FFE2E5;
+  --c-orange: #FB6B18;
+  --c-orange-light: #FFF1E8;
+  --c-green: #3AC0A0;
+  --c-green-light: #E7F4E8;
+  --c-white: #ffffff;
+  --c-text: #333333;
+  --c-border: rgba(0, 0, 0, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  min-width: 340px;
+  /* блокировка жестов (для современных браузеров): */
+  overscroll-behavior: none;
+  touch-action: pan-x pan-y; /* запрещает pinch-zoom */
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  color: var(--c-white);
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100%;
+  max-height: 1080px;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /*  */
+}
+
+.app-content main {
+  flex: 1;
+}

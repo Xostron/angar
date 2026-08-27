@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: 100px;
+  min-height: 100px;
+}
+
+.header__logo {
+  width: 345px;
+  padding: 36px 0 0 32px;
+  align-self: flex-start;
+}
+
+.header__buildings {
+  width: 470px;
+  padding: 0 20px;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 36px;
+  color: var(--c-navy);
+}
+
+.header__time {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.header__time-val {
+  color: var(--c-navy);
+}
+
+.header__date {
+  color: var(--c-grey);
+}
+
+.header__auth {
+  width: 370px;
+  padding: 0 20px;
+  text-align: right;
+  font-size: 16px;
+  color: var(--c-blue-darker);
+  cursor: pointer;
+}

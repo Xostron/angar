@@ -1,0 +1,44 @@
+.outdoor {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.outdoor__title {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--c-grey);
+}
+
+.outdoor__row {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: #eef2f6;
+}
+
+.outdoor__label {
+  font-size: 18px;
+  color: var(--c-grey);
+}
+
+.outdoor__val {
+  font-size: 18px;
+  color: var(--c-navy);
+}
+
+.outdoor__compact {
+  display: flex;
+  gap: 12px;
+  font-size: 18px;
+  color: var(--c-navy);
+}
+
+.outdoor__date {
+  color: var(--c-grey);
+}

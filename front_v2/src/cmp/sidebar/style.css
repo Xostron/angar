@@ -1,0 +1,6 @@
+.sidebar {
+  width: 345px;
+  min-width: 345px;
+  height: 100%;
+  background: var(--c-white);
+}
