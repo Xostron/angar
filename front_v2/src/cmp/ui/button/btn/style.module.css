@@ -1,0 +1,59 @@
+.btn {
+  border: none;
+  border-radius: 8px;
+  opacity: 1;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease;
+
+  &.active {
+    background-color: var(--c-blue-darker);
+    color: var(--c-white);
+  }
+  &.not_active {
+    border: 1px solid var(--c-grey-lightest);
+    background-color: transparent;
+    color: var(--c-grey);
+  }
+  &.automode_active {
+    background-color: var(--c-blue-darker);
+    color: var(--c-white);
+  }
+  &.automode_not_active {
+    background-color: var(--c-grey-lightest);
+    color: var(--c-navy);
+  }
+
+  &.sect_active {
+    background-color: var(--c-blue-darker);
+    color: var(--c-white);
+  }
+  &.sect_not_active {
+    background-color: transparent;
+    color: var(--c-blue-darker);
+  }
+
+  &.toggle2_active {
+    background-color: var(--c-blue-darker);
+    color: var(--c-white);
+  }
+  &.toggle2_not_active {
+    background-color: var(--c-grey-lightest);
+    color: var(--c-grey);
+  }
+}
+
+/* Нажатие на кнопку */
+.btn:active:not(:disabled) {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+/* Кнопка выключена */
+.btn:disabled {
+  /* background-color: var(--c-blue-darker); */
+  /* color: var(--c-white); */
+  opacity: 0.2;
+}

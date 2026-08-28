@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background-color: var(--c-grey-lightest);
+  flex-direction: row;
+  /* &.disabled {
+    opacity: 0.2;
+  } */
+}

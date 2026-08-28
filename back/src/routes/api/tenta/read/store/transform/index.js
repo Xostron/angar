@@ -51,13 +51,15 @@ async function transform(bldId, secId) {
 		// Режим склада
 		result[bldId + 'mode'] =
 			store.value?.building?.[bldId]?.submode?.[0] ?? bldData?.automode ?? null
+		// Время выключения склада
+		result[bldId + 'datestop'] = store?.retain?.[bldId]?.datestop
 		// Сообщение достижений
 		result[bldId + 'note'] = data.alarm?.achieve?.[bldId] ?? null
 		result[bldId + 'crash'] = data.alarm?.count?.[bldId] ?? 0
 		result[bldId + 'alarm'] = alarm(bldId, null, data) ?? null
 		result[bldId + 'banner'] = banner(bldId, data) ?? null
 		// обработка пуш
-		result[bldId + 'push'] = await push(bldId, section, data) ?? null
+		result[bldId + 'push'] = (await push(bldId, section, data)) ?? null
 		// Разгонный вентилятор склада
 		result[bldId + 'accel'] = f
 		// Абсолютная влажность продукта

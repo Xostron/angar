@@ -1,56 +1,90 @@
 import { useState } from 'react';
 import Button from '../../cmp/ui/button/btn';
-import TogBtn2 from '../../cmp/ui/button/toggle_button2';
+import Toggle2 from '../../cmp/ui/button/toggle_button_2';
+import Toggle3 from '../../cmp/ui/button/toggle_button_3';
 
 function PageTest({}) {
+  // Toggle2
   const [on, setOn] = useState(false);
+  //  Toggle3
   const [onn, setOnn] = useState(false);
   return (
     <article style={style}>
-      <Button label="Включить" variant="primary" />;
-      <Button label="Выключить" variant="secondary" />;
-      <Button label="Выключить" disabled={true} />;
-      <Button label="Сушка" variant="mode-primary" type="mode" />;
-      <Button label="Сушка" variant="mode-secondary" type="mode" />;
-      <Button label="Секция" variant="sect-primary" type="sect" />;
-      <Button label="Секция" variant="sect-secondary" type="sect" />;
-      <TogBtn2
-        data={[
-          { value: false, label: 'ВЫКЛ' },
-          { value: true, label: 'ВКЛ' },
-        ]}
-        cur={on}
-        action={(v) => setOn(v)}
+      <Button label="Включить" variant="usual" active={true} disabled={false} />
+      <Button
+        label="Выключить"
+        variant="usual"
+        active={false}
+        disabled={false}
       />
-      <TogBtn2
-        data={[
-          { value: false, label: 'ВЫКЛ' },
-          { value: true, label: 'ВКЛ' },
-        ]}
-        cur={on}
-        action={(v) => setOn(v)}
+      <Button label="Включить" variant="usual" active={true} disabled={true} />
+      <Button
+        label="Выключить"
+        variant="usual"
+        active={false}
         disabled={true}
       />
-      <TogBtn2
-        data={[
-          { value: false, label: 'ВЫКЛ' },
-          { value: true, label: 'ВКЛ' },
-          { value: null, label: 'РУЧ' },
-        ]}
-        cur={onn}
-        action={(v) => setOnn(v)}
-        variant={3}
+      {/*  */}
+      <Button label="Сушка" variant="automode" active={true} disabled={false} />
+      <Button
+        label="Сушка"
+        variant="automode"
+        active={false}
+        disabled={false}
       />
-      <TogBtn2
-        data={[
-          { value: false, label: 'ВЫКЛ' },
-          { value: true, label: 'ВКЛ' },
-          { value: null, label: 'РУЧ' },
-        ]}
-        cur={onn}
-        action={(v) => setOnn(v)}
+      ;{/*  */}
+      <Button label="Секция" variant="sect" active={true} disabled={false} />;
+      <Button label="Секция" variant="sect" active={false} disabled={false} />;
+      <Button label="Секция" variant="sect" active={true} disabled={true} />;
+      <Button label="Секция" variant="sect" active={false} disabled={true} />;
+      {/* <Button label="Секция" variant="sect-primary" type="sect" />; */}
+      {/* <Button label="Секция" variant="sect-secondary" type="sect" />; */}
+      <Toggle2
+        value={on}
+        on1={() => {
+          setOn(false);
+        }}
+        on2={() => {
+          setOn(true);
+        }}
+        disabled={false}
+      />
+      <Toggle2
+        value={on}
+        on1={() => {
+          setOn(false);
+        }}
+        on2={() => {
+          setOn(true);
+        }}
         disabled={true}
-        variant={3}
+      />
+      {/*  */}
+      <Toggle3
+        value={onn}
+        on1={() => {
+          setOnn(false);
+        }}
+        on2={() => {
+          setOnn(true);
+        }}
+        on3={() => {
+          setOnn(null);
+        }}
+        disabled={false}
+      />
+      <Toggle3
+        value={onn}
+        on1={() => {
+          setOnn(false);
+        }}
+        on2={() => {
+          setOnn(true);
+        }}
+        on3={() => {
+          setOnn(null);
+        }}
+        disabled={true}
       />
     </article>
   );

@@ -33,7 +33,7 @@ async function push(idB, section, obj) {
 	const week = await reportWeek(idB, section, obj)
 	if (week) r.push(week)
 
-	console.log(123, r)
+	console.log(11, 'push', r)
 	return r
 }
 
