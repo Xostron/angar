@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '../../cmp/ui/button/btn';
 import Toggle2 from '../../cmp/ui/button/toggle_button_2';
 import Toggle3 from '../../cmp/ui/button/toggle_button_3';
+import Switch from '../../cmp/ui/button/switch';
 
 function PageTest({}) {
   // Toggle2
@@ -84,6 +85,16 @@ function PageTest({}) {
         on3={() => {
           setOnn(null);
         }}
+        disabled={true}
+      />
+      <Switch
+        value={on}
+        onChange={() => setOn((prev) => !prev)}
+        disabled={false}
+      />
+      <Switch
+        value={on}
+        onChange={() => setOn((prev) => !prev)}
         disabled={true}
       />
     </article>
