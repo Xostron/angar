@@ -39,7 +39,7 @@
 
 /* --- Состояние ВКЛ (когда чекбокс отмечен) --- */
 
-input {
+.input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -47,13 +47,13 @@ input {
 }
 
 /* Меняем цвет фона на активный (например, синий или зеленый) */
-input:checked + .slider {
+.input:checked + .slider {
   background-color: var(--c-blue-darker);
   outline: none;
 }
 
 /* Двигаем кругляшок вправо: ширина свитча (50) - ширина кружка (22) - отступы (3*2) = 22px */
-input:checked + .slider::before {
+.input:checked + .slider::before {
   transform: translateX(32px);
   background-color: white;
 }

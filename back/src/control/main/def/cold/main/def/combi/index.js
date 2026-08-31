@@ -32,14 +32,14 @@ function main(bld, obj, bdata, alr) {
 	}
 	// Управление ВНО
 	fanCombi(bld, bdata, obj, s, se, m, alr, accAuto.cold)
-	//
+	// Проверка запретов работы
 	if (clearBuild(bld, bdata.accAuto)) {
 		// Работа склада разрешена -> Вычисление Т target
 		target.combi(bld, obj, bdata, alr)
+		achieveTgt(bld, accAuto.cold, s)
 	}
 	// console.log(88, 'Аккумулятор комби холодильника')
 	// console.log(accAuto)
-	achieveTgt(bld, accAuto.cold, s)
 }
 
 module.exports = main

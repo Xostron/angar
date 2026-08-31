@@ -5,6 +5,7 @@ function Switch({ value, onChange, disabled = false }) {
   return (
     <label className={`${style.switch} ${disabled ? style.disabled : ''}`}>
       <input
+        className={style.input}
         type="checkbox"
         checked={!!value}
         onChange={onChange}

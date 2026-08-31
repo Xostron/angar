@@ -62,10 +62,11 @@ function clearCombi(bldId, clr, s, accAuto, fnChange, stateCooler, store, alrAut
 
 // Очистка аккумулятора холодильника
 function clearBuild(bld, accAuto) {
+	// Массив состояний испарителей склада: [..., true- запрещен, false-ok]
 	const denied = Object.values(store.denied[bld._id] ?? {})
-	// Если хотя бы 1 испаритель разрешен к работе -> выход без очистки
+	// Если хотя бы 1 испаритель разрешен к работе -> склад работает
 	if (!denied.every((el) => el)) return true
-	// Все испарители запрещены к работе -> очистка
+	// Все испарители запрещены к работе -> Останов склада
 	del[bld.type](accAuto)
 	delAchieve(bld._id, bld.type, mes[80].code)
 	return false
