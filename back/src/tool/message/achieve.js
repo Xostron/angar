@@ -12,6 +12,7 @@ function wrAchieve(idB, name, o) {
 	store.alarm.achieve ??= {}
 	store.alarm.achieve[idB] ??= {}
 	store.alarm.achieve[idB][name] ??= {}
+
 	!isAchieve(idB, name, o.code)
 		? (store.alarm.achieve[idB][name][o.code] = o)
 		: (store.alarm.achieve[idB][name][o.code].msg = o.msg)
