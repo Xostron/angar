@@ -10,18 +10,31 @@ function PageTest({}) {
   const [on, setOn] = useState(false);
   //  Toggle3
   const [onn, setOnn] = useState(false);
+  const [val1, setVal1] = useState('15');
   const optionsInNum = {
-    min: -5,
-    max: 999,
     disabled: false,
     readOnly: false,
     placeholder: 'Введите',
+    title: 'For the Emperor',
   };
-  const { val1, setVal1 } = useState(15);
   return (
     <div style={style.main}>
       <article style={style.input}>
-        <InputNum value={val1} onChange={setVal1} {...optionsInNum} />
+        <InputNum
+          value={val1}
+          setValue={setVal1}
+          min={-15}
+          max={100}
+          {...optionsInNum}
+        />
+        <InputNum
+          value={val1}
+          setValue={setVal1}
+          min={-15}
+          max={100}
+          {...optionsInNum}
+          disabled={true}
+        />
       </article>
       <article style={style.btn}>
         <Button

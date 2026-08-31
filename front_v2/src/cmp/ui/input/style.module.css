@@ -1,25 +1,50 @@
-.input {
-  /* width: 100px; */
-  /* height: 50px; */
+.inputContainer {
+  display: flex;
+  border-radius: 4px;
   border: 1px solid var(--c-grey);
-  color: var(--c-grey);
   font-size: 16px;
   font-weight: 500;
-  line-height: 20px;
+  color: var(--c-navy);
   padding: 16px;
-  &.default {
-  }
-  &.focus {
-  }
-  &.filled {
-  }
   &.error {
     background-color: var(--c-red-light);
-    border-color: var(--c-red);
+    border-color: var(--c-red)!important;
     color: var(--c-red);
   }
-  &:disabled {
-    opacity: 0.2;
+}
+
+.unit {
+  flex: 1;
+  color: var(--c-navy);
+  line-height: 20px;
+  margin-left: 6px; /* Небольшой отступ от цифр */
+  user-select: none; /* Чтобы пользователь случайно не выделял её мышкой */
+  pointer-events: none; /* Клик сквозь нее по-прежнему активирует инпут */
+  white-space: nowrap;
+  &.placeholder {
+    color: var(--c-grey);
   }
- 
+}
+
+.input {
+  field-sizing: content;
+  min-width: 1ch;
+  padding: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  line-height: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  &::placeholder {
+    color: var(--c-grey);
+  }
+}
+
+.inputContainer:focus-within {
+  border-color: var(--c-blue-darker);
+}
+
+.inputContainer:has(.input:disabled) {
+  opacity: 0.2;
 }
