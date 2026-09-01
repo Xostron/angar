@@ -29,7 +29,7 @@ async function write(arr) {
 			// Запись данных в модуль
 			v = await make(m, 'write')
 
-			await pause(100)
+			await pause(500)
 
 			const k = m.name + m.ip + (m.slave ?? '')
 			ok[k] = v

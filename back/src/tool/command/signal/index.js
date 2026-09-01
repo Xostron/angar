@@ -75,7 +75,7 @@ function sigFan(sig, val, result, module, equipment, retain, fan) {
 			result[sig.owner.id] ??= {}
 			const mdl = getFullMdl(module, equipment, sig.module.id)
 
-			if (mdl.name != 'FC oni-150 DIerr')
+			if (mdl.name != 'FC oni-150 DIerr' && mdl.name != 'FC VFD1 DIerr')
 				result[sig.owner.id].qf = puIO(val, sig.module.id, sig.module.channel)
 			else {
 				const { v, codeFC } = oniDIerr(val, sig.module.id, sig.module.channel)
