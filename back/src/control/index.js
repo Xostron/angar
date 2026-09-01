@@ -50,7 +50,7 @@ async function control() {
 		// В режиме микросервиса
 		obj.data.pc?.isIo ? await delay(300) : null
 		// await save(obj)
-		await delay(4000)
+		// await delay(4000)
 		Aboc.refresh()
 		return obj.data.pc?.isIo
 	} catch (error) {
@@ -80,11 +80,11 @@ async function loop() {
 		// Сброс флага первого цикла
 		store._first = false
 
-		// Время цикла, с
-		store._cycle_ms_ = ((Number(hrtime() - bgn) / 1e6) | 0) / 1000
+		// Время цикла, мс
+		store._cycle_ms_ = (Number(hrtime() - bgn) / 1e6) | 0
 
-		// Доп задержка при слишком быстрых циклах (время обычного цикла от 0.3 сек)
-		if (store._cycle_ms_ < 0.07) {
+		// Доп задержка при слишком быстрых циклах (время обычного цикла от 300 мс)
+		if (store._cycle_ms_ < 70) {
 			await delay(5000)
 			console.log('Включена защита при быстрых циклах < 0.07c => 5с')
 		}
@@ -128,7 +128,7 @@ function titleLog(total, x = 30) {
 
 function infoLog(cycle, x = 30) {
 	const t1 = `Режим  ${store.isIo ? 'микросервиса' : 'монолита'} `
-	const t2 = `Время цикла ${cycle.toFixed(2) + ' сек'}`
+	const t2 = `Время цикла ${(cycle / 1000).toFixed(2) + ' сек'}`
 
 	// В режиме микросервиса отображаем через каждые 8 циклов
 	if (store.isIo && store.cycleId % x === 0) {

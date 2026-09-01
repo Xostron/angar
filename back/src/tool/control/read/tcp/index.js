@@ -39,19 +39,20 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-					if (opt?.name.includes('VFD1')) {
-						console.log(44, 'read = ', opt.name, opt?.re?.start ?? opt?.wr?.start, r, w)
-					}
+					// if (opt?.name.includes('VFD1')) {
+					// 	console.log(44, 'read = ', opt.name, opt?.re?.start ?? opt?.wr?.start, r, w)
+					// }
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
+					// Для частотника
 					if (opt.name == 'FC VFD1 DO') w = r
 					r = convOni150DIerr(opt, r)
 					r = convFC_AC(opt, r)
 
-					if (opt?.name.includes('VFD1')) {
-						console.log(55, 'read = ', opt.name, opt?.re?.start ?? opt?.wr?.start, r, w)
-					}
+					// if (opt?.name.includes('VFD1')) {
+					// 	console.log(55, 'read = ', opt.name, opt?.re?.start ?? opt?.wr?.start, r, w)
+					// }
 
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
@@ -89,30 +90,32 @@ function conv32DO(opt, arr) {
 
 // Нормализация данных для частотника oni-150 и VDF1 - чтение DO
 function convOni150(opt, arr) {
-	if (opt.name != 'FC oni-150 DO' && opt.name != 'FC VFD1 DO') return arr
-	switch (arr[0]) {
-		// Стоп
-		case 0.3:
-			return [0]
-		// Запущен: .1 - прямое вращение, .2 - обратное вращение
-		case 0.1:
-		case 0.2:
-			return [1]
-		default:
-			return [0]
-	}
+	if (opt.name == 'FC oni-150 DO' || opt.name == 'FC VFD1 DO')
+		switch (arr[0]) {
+			// Стоп
+			case 0.3:
+				return [0]
+			// Запущен: .1 - прямое вращение, .2 - обратное вращение
+			case 0.1:
+			case 0.2:
+				return [1]
+			default:
+				return [0]
+		}
+	return arr
 }
 
 // Нормализация данных для частотника oni-150 и VDF1 - чтение DШ код ошибок
 function convOni150DIerr(opt, arr) {
-	if (opt.name != 'FC oni-150 DIerr' && opt.name != 'FC VFD1 DIerr') return arr
-	return arr.map((el) => +(el * 10).toFixed(0))
+	if (opt.name == 'FC oni-150 DIerr' || opt.name == 'FC VFD1 DIerr')
+		return arr.map((el) => +(el * 10).toFixed(0))
+	return arr
 }
 
 // Нормализация данных ток частотника:
 function convFC_AC(opt, arr) {
-	if (opt.name != 'FC VFD1 AC') return arr
-	return arr.map((el) => +(el / 10).toFixed(2))
+	if (opt.name == 'FC VFD1 AC') return arr.map((el) => +(el / 10).toFixed(2))
+	return arr
 }
 
 module.exports = readTCP

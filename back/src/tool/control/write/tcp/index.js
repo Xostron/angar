@@ -9,7 +9,7 @@ const toSingle = ['FC VFD1 DO', 'FC VFD1 AO']
 function writeTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
 		const socket = new net.Socket()
-		const cl = new modbus.client.TCP(socket, opt?.slave)
+		const client = new modbus.client.TCP(socket, opt?.slave)
 		const optTCP = {
 			host,
 			port,
@@ -25,60 +25,34 @@ function writeTCP(host, port, opt) {
 			// if (opt?.wr?.start == 8192) v = [5]
 			// AO
 			// if (opt?.wr?.start == 4096) v = [2500]
-
-			if (opt?.name == 'FC VFD1 DO' || opt?.name == 'FC VFD1 AO')
-				console.log(66, 'write = ', i, v)
+			// if (opt?.name == 'FC VFD1 DO' || opt?.name == 'FC VFD1 AO')
+			// console.log(66, 'write = ', i, v)
 
 			// Метод записи single | multiple
-			const action = toSingle.includes(opt?.name) ? single : multiple
+			let type = 'writeMultipleRegisters'
+			if (toSingle.includes(opt?.name)) {
+				type = 'writeSingleRegister'
+				v = v[0]
+			}
+
 			// Запись
-			action(cl, socket, opt, i, v).then(resolve).catch(resolve)
+			client[type](i, v)
+				.then((r) => {
+					delModule(opt.buildingId, opt._id)
+					delDebMdl(opt._id)
+					resolve(true)
+				})
+				.catch((e) => {
+					console.error(9900, 'Ошибка запись', opt.name, opt.ip, e.message)
+					wrDebMdl(opt._id)
+					resolve({ error: e, info: opt })
+				})
+				.finally((_) => {
+					socket.end()
+				})
 		})
 		socket.connect(optTCP)
 	})
 }
 
 module.exports = writeTCP
-
-// v - массив значений
-function multiple(cl, socket, opt, i, v) {
-	return new Promise((resolve, reject) => {
-		cl.writeMultipleRegisters(i, v)
-			.then((r) => {
-				delModule(opt.buildingId, opt._id)
-				delDebMdl(opt._id)
-				resolve(true)
-			})
-			.catch((e) => {
-				console.error(9900, 'Ошибка запись', opt.name, opt.ip, e.message)
-				wrDebMdl(opt._id)
-				resolve({ error: e, info: opt })
-			})
-			.finally((_) => {
-				socket.end()
-			})
-	})
-}
-
-// v - значение
-function single(cl, socket, opt, i, v) {
-	return new Promise((resolve, reject) => {
-		cl.writeSingleRegister(i, v[0])
-			.then((r) => {
-				// if (opt?.wr?.start == 8192) console.log(77, r)
-				// else console.log(99, r)
-				// if (opt?.wr?.start == 4096) console.log(88, r)
-				delModule(opt.buildingId, opt._id)
-				delDebMdl(opt._id)
-				resolve(true)
-			})
-			.catch((e) => {
-				console.error(9900, 'Ошибка запись', opt.name, opt.ip, e.message)
-				wrDebMdl(opt._id)
-				resolve({ error: e, info: opt })
-			})
-			.finally((_) => {
-				socket.end()
-			})
-	})
-}
