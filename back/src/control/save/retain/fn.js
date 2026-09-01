@@ -35,7 +35,6 @@ function positionVlv(obj) {
 			const cur = vlvPos?.[buildingId][vlv._id] + store._cycle_ms_
 			// ограничение диапазона хода
 			const value = cur > total ? total : cur
-			console.log(1234,value)
 			// Сохранить в стор
 			setPos({ _id: vlv._id, _build: buildingId, value })
 		}
