@@ -1,0 +1,25 @@
+.text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--c-grey-47);
+  color: var(--c-grey);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 14px;
+  width: 297px;
+  border-radius: 8px;
+  &.alarm {
+    background-color: #ffe2e580;
+    color: #e83757;
+  }
+  &.off {
+  }
+}
+.name {
+}
+.value {
+  font-weight: 500;
+  color: var(--c-navy);
+}

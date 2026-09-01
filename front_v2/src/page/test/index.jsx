@@ -4,6 +4,7 @@ import Toggle2 from '../../cmp/ui/button/toggle_button_2';
 import Toggle3 from '../../cmp/ui/button/toggle_button_3';
 import Switch from '../../cmp/ui/button/switch';
 import InputNum from '../../cmp/ui/input';
+import TextSens from '../../cmp/ui/text/sensor';
 
 function PageTest({}) {
   // Toggle2
@@ -35,6 +36,9 @@ function PageTest({}) {
           {...optionsInNum}
           disabled={true}
         />
+        <TextSens name="Температура" value={5} unit="grad" />
+        <TextSens name="Температура" value={5} unit="grad" state="alarm" />
+        <TextSens name="Температура" value={5} unit="grad" state="off" />
       </article>
       <article style={style.btn}>
         <Button
