@@ -24,7 +24,6 @@ function submode(bld, obj, s, seB, acc) {
 		acc.submode = sm.cooling
 	// check
 	if (acc?.submode?.[0] === sm.cooling2[0]) {
-		// console.log(11, 'check охлаждение+')
 		acc.setting = {
 			cooling: s.cooling,
 			mois: {

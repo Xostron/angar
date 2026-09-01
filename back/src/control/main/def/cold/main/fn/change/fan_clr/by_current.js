@@ -12,8 +12,7 @@ const { compareTime } = require('@tool/command/time')
  * @returns {number} Задание ВНО испарителя
  */
 function byCurrent(sp, clr, fan, s, se, acc) {
-	// console.log(11, acc)
-	// // Инициализация
+	// Инициализация
 	acc[clr._id] ??= {}
 	acc[clr._id].current ??= {}
 	acc[clr._id].current.sp ??= s?.fan?.startSp

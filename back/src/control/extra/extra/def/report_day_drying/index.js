@@ -17,7 +17,6 @@ function rdDrying(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 	// Инициализация и проверка работы сушки
 	fnInit(bld, m, obj, acc)
 	fnRotate(acc)
-	// console.log(11, acc)
 }
 
 module.exports = rdDrying

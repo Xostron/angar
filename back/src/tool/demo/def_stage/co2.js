@@ -37,7 +37,6 @@ function check(bld, obj, arrCo2, demo) {
 	demo.checklist.co2 ??= {}
 	arrCo2.forEach((el) => {
 		const v = obj?.value?.[el._id]
-		// console.log(11, v, arrCo2)
 		demo.checklist.co2.list[el._id] ??= {}
 		demo.checklist.co2.list[el._id].name = getOwnerName(el, obj.data, { flt: ['sect'] })
 		if (v?.state === 'stop' && !demo.checklist.co2.list[el._id].stop)

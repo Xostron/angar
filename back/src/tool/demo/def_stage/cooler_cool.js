@@ -79,7 +79,6 @@ function control(bld, obj, coolerB, checklistPNR, demo) {
 		// stasis('pout', poutV, demo, acc)
 		// Проверка и запись неисправностей в журнал
 		check(bld, obj, el, checklistPNR, demo, acc, { tmpV, pinV, poutV })
-		// console.log(11, el, v)
 	})
 }
 

@@ -96,7 +96,6 @@ function fnPipeline(bld, obj, el, demo) {
 		acc.type = 'stop'
 	}
 	// v = { open: false, close: true, crash: false, val: 0, state: 'cls' }
-	// console.log(11, v, acc)
 }
 
 function finish(vlvs, demo) {

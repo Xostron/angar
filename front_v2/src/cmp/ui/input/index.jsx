@@ -109,6 +109,7 @@ function InputNum({
 
 export default InputNum;
 
+// Размеры полей ввода
 const dict = {
   normal: {
     width: '412px',

@@ -21,8 +21,6 @@ async function writeIO(out) {
 
 	// Наличие изменений -> данные на запись
 	const dataWrite = isChange(out)
-	// console.log(11, out)
-	// console.log(22, dataWrite)
 	if (!dataWrite) return //console.log('🟡output [plc_io]: Нет изменений для записи')
 
 	// Запрос back->plc_io (reset)

@@ -21,7 +21,6 @@ function ozon(bld, obj, m, checklistPNR, demo, permission, code) {
 		arrCtrlDO(bld._id, m.ozon, 'off')
 		return
 	}
-	// console.log(11, m.ozon)
 	// АКТИВЕН - Текущий тест
 	// Если нет увлажнителей пропускаем данный тест
 	if (!m.ozon?.length) {
