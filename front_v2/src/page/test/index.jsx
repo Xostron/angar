@@ -8,6 +8,7 @@ import TextSens from '../../cmp/ui/text/sensor';
 import TextEquip from '@src/cmp/ui/text/equipment';
 import TextSensRow from '@src/cmp/ui/text/sensor_row';
 import WeatherRow from '@src/cmp/ui/text/weather_row';
+import IncidentBox from '@src/cmp/ui/incident/box';
 
 function PageTest({}) {
   // Toggle2
@@ -40,7 +41,46 @@ function PageTest({}) {
           disabled={true}
         />
 
-        <WeatherRow temp={21} hum={42} date="02.09.2026" onClick={() => {}} />
+        <IncidentBox
+          err={{
+            msg: 'Абсолютная влажность улицы ниже допустимой',
+            typeIncident: 'equipment',
+            date: new Date().toLocaleString(),
+            code: null,
+          }}
+        />
+        <IncidentBox
+          err={{
+            msg: 'Абсолютная влажность улицы ниже допустимой',
+            typeIncident: 'notification',
+            date: new Date().toLocaleString(),
+            code: null,
+          }}
+        />
+        <IncidentBox
+          err={{
+            msg: 'Абсолютная влажность улицы ниже допустимой',
+            typeIncident: 'warning',
+            date: new Date().toLocaleString(),
+            code: null,
+          }}
+        />
+        <IncidentBox
+          err={{
+            msg: 'Абсолютная влажность улицы ниже допустимой',
+            typeIncident: 'alarm',
+            date: new Date().toLocaleString(),
+            code: null,
+          }}
+        />
+
+        <WeatherRow
+          temp={21}
+          hum={42}
+          date="02.09.2026"
+          code="cloudy"
+          onClick={() => {}}
+        />
         <WeatherRow />
 
         <TextSens name="Температура" value={-5} unit="grad" />

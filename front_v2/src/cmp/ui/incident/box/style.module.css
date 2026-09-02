@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  border-radius: 8px;
+  padding: 16px 20px;
+  row-gap: 12px;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 257px;
+}
+.content > img {
+}
+.msg {
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--c-navy);
+}
+.date {
+  color: var(--c-grey);
+}
+
+/* typeIncident */
+.equipment {
+  background-color: var();
+}
+
+.notification {
+  background-color: var();
+}
+
+.warning {
+  background-color: var();
+}
+
+.alarm {
+  background-color: var();
+}

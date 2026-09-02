@@ -10,7 +10,7 @@ import dictUnit from '@tool/dict/unit';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function WeatherRow({ temp, hum, type = 'sun', date, size, title, onClick }) {
+function WeatherRow({ temp, hum, code = 'sun', date, size, title, onClick }) {
   // Курсор, Размеры
   let stl = { cursor: onClick ? 'pointer' : 'auto' };
   stl = { ...stl, ...(dictSize?.[size] ?? {}) };
@@ -30,7 +30,7 @@ function WeatherRow({ temp, hum, type = 'sun', date, size, title, onClick }) {
     >
       {typeof temp == 'number' && typeof hum == 'number' ? (
         <>
-          {dictIcon?.[type] && <img width="20px" src={dictIcon?.[type]} />}
+          {dictIcon?.[code] && <img width="20px" src={dictIcon?.[code]} />}
           <span className={style.temp}>{t}</span>|
           <span className={style.hum}>{h}</span>
           <img width="16px" src={dictIcon.updSmall} />
