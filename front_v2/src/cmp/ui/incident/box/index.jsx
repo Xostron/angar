@@ -3,8 +3,8 @@ import iconIncident from '@tool/dict/icon_incident';
 
 function IncidentBox({ err = {} }) {
   let cls = `${style.container}`;
-  if (err?.typeIncident) cls += `${style[err?.typeIncident]}`;
-
+  if (err?.typeIncident) cls += ` ${style?.[err?.typeIncident]}`;
+console.log(123,cls)
   return (
     <div className={cls}>
       <div className={style.content}>
