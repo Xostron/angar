@@ -40,7 +40,7 @@ function PageTest({}) {
           disabled={true}
         />
 
-        <WeatherRow temp={21} hum={42} date="02.09.2026" />
+        <WeatherRow temp={21} hum={42} date="02.09.2026" onClick={() => {}} />
         <WeatherRow />
 
         <TextSens name="Температура" value={-5} unit="grad" />

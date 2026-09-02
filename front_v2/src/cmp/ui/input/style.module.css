@@ -6,20 +6,15 @@
   font-weight: 500;
   color: var(--c-navy);
   padding: 16px;
-  &.error {
-    background-color: var(--c-red-light);
-    border-color: var(--c-red)!important;
-    color: var(--c-red);
-  }
 }
 
 .unit {
   flex: 1;
   color: var(--c-navy);
   line-height: 20px;
-  margin-left: 6px; /* Небольшой отступ от цифр */
-  user-select: none; /* Чтобы пользователь случайно не выделял её мышкой */
-  pointer-events: none; /* Клик сквозь нее по-прежнему активирует инпут */
+  margin-left: 6px;
+  user-select: none;
+  pointer-events: none;
   white-space: nowrap;
   &.placeholder {
     color: var(--c-grey);
@@ -47,4 +42,10 @@
 
 .inputContainer:has(.input:disabled) {
   opacity: 0.2;
+}
+
+.error {
+  background-color: var(--c-red-light);
+  border-color: var(--c-red) !important;
+  color: var(--c-red);
 }

@@ -24,7 +24,7 @@ function InputNum({
     >
       <input
         ref={ref}
-        className={style.input}
+        className={`${style.input}  ${err ? style.error : ''}`}
         type="text"
         inputMode="numeric"
         pattern="[0-9]*"
@@ -37,7 +37,7 @@ function InputNum({
         onBlur={onBlur}
       />
       <span
-        className={`${style.unit} ${value === '' ? style.placeholder : ''}`}
+        className={`${style.unit} ${value === '' ? style.placeholder : ''} ${err ? style.error : ''}`}
       >
         {unit}
       </span>
