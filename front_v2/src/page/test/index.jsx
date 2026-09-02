@@ -5,6 +5,9 @@ import Toggle3 from '../../cmp/ui/button/toggle_button_3';
 import Switch from '../../cmp/ui/button/switch';
 import InputNum from '../../cmp/ui/input';
 import TextSens from '../../cmp/ui/text/sensor';
+import TextEquip from '@src/cmp/ui/text/equipment';
+import TextSensRow from '@src/cmp/ui/text/sensor_row';
+import WeatherRow from '@src/cmp/ui/text/weather_row';
 
 function PageTest({}) {
   // Toggle2
@@ -36,9 +39,34 @@ function PageTest({}) {
           {...optionsInNum}
           disabled={true}
         />
-        <TextSens name="Температура" value={5} unit="grad" />
+
+        <WeatherRow temp={21} hum={42} date="02.09.2026" />
+        <WeatherRow />
+
+        <TextSens name="Температура" value={-5} unit="grad" />
         <TextSens name="Температура" value={5} unit="grad" state="alarm" />
         <TextSens name="Температура" value={5} unit="grad" state="off" />
+        <TextSens name="Абс. вл." value={10} unit="hum" />
+
+        <TextEquip name="Разгон. вент." value={true} />
+        <TextEquip name="Разгон. вент." value="off" />
+        <TextEquip name="Разгон. вент." value="on" state="alarm" />
+        <TextEquip name="Разгон. вент." value="time" state="off" />
+        <TextEquip name="Разгон. вент." value="on" />
+        <TextEquip name="Увлажнитель" value="off" />
+        <TextEquip name="Озонатор" value="ожидание" />
+        <TextEquip name="Окуривание" value="on" />
+        <TextEquip name="Обогрев" value="sensor" />
+        <TextEquip name="Контроль CO2" value="on" />
+
+        <TextSensRow name="Темп." value={4} unit="grad" info />
+        <TextSensRow name="Темп." value={-4} unit="grad" />
+        <TextSensRow name="Темп." value={4} unit="grad" state="alarm" />
+        <TextSensRow name="Темп." value={4} unit="grad" state="off" />
+        <TextSensRow name="Продукта" value="Лук" />
+        <TextSensRow name="Режим" value="Сушка" />
+        <TextSensRow name="Продукта" value="Лук" info />
+        <TextSensRow name="Режим" value="Сушка" info />
       </article>
       <article style={style.btn}>
         <Button

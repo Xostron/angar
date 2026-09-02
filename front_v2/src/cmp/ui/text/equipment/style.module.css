@@ -1,29 +1,31 @@
-
-
 .text {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--c-grey-47);
-  color: var(--c-grey);
+  background-color: var(--c-grey-50);
+  color: var(--c-navy);
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 24px;
-  padding: 14px;
-  width: 297px;
+  padding: 8px 12px;
+  width: 274px;
   border-radius: 8px;
   &.alarm {
     background-color: #ffe2e580;
     color: #e83757;
   }
   &.off {
+    color: var(--c-grey);
   }
 }
 .name {
 }
 .value {
-  font-weight: 500;
-  color: var(--c-navy);
+  font-weight: 600;
+  color: var(--c-blue-darker);
   display: inline-flex;
   align-items: center;
+  &.voff {
+    color: var(--c-grey);
+  }
 }

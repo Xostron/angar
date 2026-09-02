@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"removeComments": true,
+		"target": "esnext",
+		"baseUrl": ".",
+		"allowJs": true,
+		"noEmit": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"paths": {
+			"@src/*": ["./src/*"],
+			"@cmp/*": ["./src/cmp/*"],
+			"@page/*": ["./src/page/*"],
+			"@tool/*": ["./src/tool/*"],
+			"@store/*": ["./src/store/*"],
+			"@socket/*": ["./src/socket/*"],
+			"@font/*": ["./public/fonts/*"]
+		}
+	},
+	"include": ["src/**/*"]
+}

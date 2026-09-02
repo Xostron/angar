@@ -1,6 +1,6 @@
 import dictIcon from '@tool/dict/icon_indicator';
-import dictValue from '@tool/dict/value';
 import style from './style.module.css';
+import dictUnit from '@tool/dict/unit';
 /**
  * Текст: отображение датчика
  * @param {*} name Название
@@ -10,12 +10,13 @@ import style from './style.module.css';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function TextEquip({ name, value, state, size, title }) {
+function TextSensRow({ name, value, state, size, unit, title, info }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
 
   // Значение
-  let content = dictValue?.[value] ?? value ?? '';
+  const sign = unit == 'grad' && value > 0 ? '+' : '';
+  let content = sign + (value ?? '') + ' ' + (dictUnit?.[unit] ?? unit ?? '');
 
   // Стили: выведен из работы/неисправность
   let cls = '';
@@ -27,14 +28,13 @@ function TextEquip({ name, value, state, size, title }) {
     cls = style.alarm;
     content = <img width="24px" src={dictIcon.crash} />;
   }
-
-  //   Стиль значения
-  const clsValue = content === 'выкл' ? style.voff : '';
-
   return (
     <div className={`${style.text} ${cls} `} title={title} style={stl}>
-      <span className={style.name}>{name}</span>
-      <span className={`${style.value} ${clsValue}`}>{content}</span>
+      <div className={style.name}>
+        <span>{name}</span>
+        {info && <img src={dictIcon.info} />}
+      </div>
+      <span className={style.value}>{content}</span>
     </div>
   );
 }
@@ -42,4 +42,4 @@ function TextEquip({ name, value, state, size, title }) {
 // Размеры
 const dictSize = {};
 
-export default TextEquip;
+export default TextSensRow;
