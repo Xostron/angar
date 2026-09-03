@@ -1,6 +1,6 @@
-import Sidebar from '../../cmp/sidebar';
-import ScrollGrid from '../../cmp/scroll-grid';
-import Outdoor from '../../cmp/outdoor';
+import Sidebar from '../../shared/sidebar';
+import ScrollGrid from '../../shared/scroll-grid';
+import Outdoor from '../../shared/outdoor';
 import Building from './building';
 import './style.css';
 

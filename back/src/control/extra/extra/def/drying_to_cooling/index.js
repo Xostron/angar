@@ -124,7 +124,6 @@ function aug_nov(a) {
 function changeMode(a, s, idB) {
 	// Перевод задания сушки в днях в миллисекунды (1 день = 18ч)
 	const ss = (s?.drying?.day ?? 0) * 18 * 3600 * 1000
-	console.log(123, s?.drying?.day, ss, a.total)
 	// По достижению кол-ва дней в сушке -> переход в хранение
 	if (ss > 0 && a?.total >= ss && !a?.isDone) {
 		store.retain[idB].automode = 'cooling'

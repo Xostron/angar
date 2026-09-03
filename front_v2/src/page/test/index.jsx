@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import Button from '../../cmp/ui/button/btn';
-import Toggle2 from '../../cmp/ui/button/toggle_button_2';
-import Toggle3 from '../../cmp/ui/button/toggle_button_3';
-import Switch from '../../cmp/ui/button/switch';
-import InputNum from '../../cmp/ui/input';
-import TextSens from '../../cmp/ui/text/sensor';
-import TextEquip from '@src/cmp/ui/text/equipment';
-import TextSensRow from '@src/cmp/ui/text/sensor_row';
-import WeatherRow from '@src/cmp/ui/text/weather_row';
-import IncidentBox from '@src/cmp/ui/incident/box';
-import IncidentJump from '@src/cmp/ui/incident/jump';
-import IncidentInline from '@src/cmp/ui/incident/inline';
+import Button from '../../shared/ui/button/btn';
+import Toggle2 from '../../shared/ui/button/toggle_button_2';
+import Toggle3 from '../../shared/ui/button/toggle_button_3';
+import Switch from '../../shared/ui/button/switch';
+import InputNum from '../../shared/ui/input';
+import TextSens from '../../shared/ui/text/sensor';
+import TextEquip from '@src/shared/ui/text/equipment';
+import TextSensRow from '@src/shared/ui/text/sensor_row';
+import WeatherRow from '@src/shared/ui/text/weather_row';
+import IncidentBox from '@src/shared/ui/incident/box';
+import IncidentJump from '@src/shared/ui/incident/jump';
+import IncidentInline from '@src/shared/ui/incident/inline';
 
 function PageTest({}) {
   // Toggle2
