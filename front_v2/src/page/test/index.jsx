@@ -86,7 +86,7 @@ function PageTest({}) {
           onClick={() => {}}
         />
         <WeatherRow />
-
+        <TextSens name="Уличные датчики" />
         <TextSens name="Температура" value={-5} unit="grad" />
         <TextSens name="Температура" value={5} unit="grad" state="alarm" />
         <TextSens name="Температура" value={5} unit="grad" state="off" />

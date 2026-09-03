@@ -16,7 +16,9 @@ function TextSens({ name, value, state, size, unit = 'grad', title }) {
 
   // Значение
   const sign = unit == 'grad' && value > 0 ? '+' : '';
-  let content = sign + (value ?? '') + ' ' + (dictUnit?.[unit] ?? unit ?? '');
+  let content = '';
+  if (value !== undefined && value !== null)
+    content = sign + (value ?? '') + ' ' + (dictUnit?.[unit] ?? unit ?? '');
 
   // Стили: выведен из работы/неисправность
   let cls = '';
