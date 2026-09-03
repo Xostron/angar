@@ -1,25 +1,25 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: fit-content;
   border-radius: 8px;
   padding: 16px 20px;
   row-gap: 12px;
-  width: 297px;
+  border: 1px solid var(--c-navy);
 }
 .content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  /* width: 257px; */
 }
 .content > img {
+  height: 40px;
 }
 .msg {
   font-weight: 500;
   font-size: 18px;
   color: var(--c-navy);
+  line-height: 24px;
 }
 .date {
   text-align: end;
@@ -28,17 +28,21 @@
 
 /* typeIncident */
 .equipment {
-  background-color: var();
+  border-color: var(--c-blue-darker);
+  background-color: var(--c-blue-lighter);
 }
 
 .notification {
-  background-color: var();
+  border-color: var(--c-yellow);
+  background-color: var(--c-yellow-light);
 }
 
 .warning {
-  background-color: var();
+  border-color: var(--c-orange);
+  background-color: var(--c-orange-light);
 }
 
 .alarm {
-  background-color: var();
+  border-color: var(--c-red);
+  background-color: var(--c-red-light);
 }

@@ -28,7 +28,7 @@ function rdDrying(idB, section, obj) {
 	// Сущка за вчера, ч
 	const t = +(acc.total?.[yesterday] / 1000 / 3600).toFixed(2)
 	// Кол-во часов перенесенных на сегодня
-	const add = daily - t < 0 ? 0 : daily - t
+	const add = daily - t < 0 ? 0 : +(daily - t).toFixed(2)
 
 	// ******* Если Кол-во часов перенесенных на сегодня < 0.1ч(6 мин), то не отправляем пуш*******
 	if (add < 0.1) return null
