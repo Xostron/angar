@@ -7,8 +7,8 @@ import InputNum from '../../shared/ui/input';
 import TextSens from '../../shared/ui/text/sensor';
 import TextEquip from '@src/shared/ui/text/equipment';
 import TextSensRow from '@src/shared/ui/text/sensor_row';
-import WeatherRow from '@src/shared/ui/text/weather_row';
-import IncidentBox from '@src/shared/ui/incident/box';
+import WeatherRow from '@src/entities/weather_row';
+import IncidentBox from '@src/entities/incident_box';
 import IncidentJump from '@src/shared/ui/incident/jump';
 import IncidentInline from '@src/shared/ui/incident/inline';
 
