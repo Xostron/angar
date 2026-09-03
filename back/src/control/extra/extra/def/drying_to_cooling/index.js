@@ -1,8 +1,7 @@
-const { zero } = require('@root/routes/api/tenta/post/def')
 const { data: store } = require('@store/index')
 const { isDemo } = require('@tool/demo/fn/fn')
 const { getSectAuto } = require('@tool/get/building')
-const { isZero } = require('@tool/zero')
+const { isZero, zero } = require('@tool/zero')
 
 // Суточные моточасы режима сушка
 function dayDrying(bld, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -125,8 +124,9 @@ function aug_nov(a) {
 function changeMode(a, s, idB) {
 	// Перевод задания сушки в днях в миллисекунды (1 день = 18ч)
 	const ss = (s?.drying?.day ?? 0) * 18 * 3600 * 1000
+	console.log(123, s?.drying?.day, ss, a.total)
 	// По достижению кол-ва дней в сушке -> переход в хранение
-	if (ss > 0 && a?.total >= s.drying.day && !a?.isDone) {
+	if (ss > 0 && a?.total >= ss && !a?.isDone) {
 		store.retain[idB].automode = 'cooling'
 		// Флаг смены режима Сушки на Хранение (однократно)
 		a.isDone = true
