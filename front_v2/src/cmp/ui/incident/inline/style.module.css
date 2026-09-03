@@ -1,0 +1,12 @@
+.container {
+  border: 0.5px solid var(--c-blue-darker);
+  border-left: 3.15px solid var(--c-blue-darker);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: var(--c-blue-lighter);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 16px 20px;
+  color: var(--c-navy);
+}

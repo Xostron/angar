@@ -63,6 +63,7 @@ const iconIncident = {
   connect: '/icon/incident/alarm/connect.svg',
   local: '/icon/incident/alarm/local.svg',
   notTune: '/icon/incident/alarm/notTune.svg',
+  
 };
 
 export default iconIncident;

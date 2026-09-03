@@ -1,0 +1,20 @@
+.button {
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 16px 20px;
+  width: 297px;
+  color: var(--c-blue-darker);
+
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.button > img {
+  filter: invert(56%) sepia(31%) saturate(2250%) hue-rotate(186deg)
+    brightness(98%) contrast(96%);
+}

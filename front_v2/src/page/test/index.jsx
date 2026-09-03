@@ -9,6 +9,8 @@ import TextEquip from '@src/cmp/ui/text/equipment';
 import TextSensRow from '@src/cmp/ui/text/sensor_row';
 import WeatherRow from '@src/cmp/ui/text/weather_row';
 import IncidentBox from '@src/cmp/ui/incident/box';
+import IncidentJump from '@src/cmp/ui/incident/jump';
+import IncidentInline from '@src/cmp/ui/incident/inline';
 
 function PageTest({}) {
   // Toggle2
@@ -73,7 +75,9 @@ function PageTest({}) {
             code: null,
           }}
         />
-
+        <IncidentJump count={12} />
+        <IncidentInline msg="t продукта в задании 12°С" />
+        <IncidentInline msg="t продукта в задании 12°С" size="large" />
         <WeatherRow
           temp={21}
           hum={42}

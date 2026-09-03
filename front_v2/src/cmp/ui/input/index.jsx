@@ -10,7 +10,7 @@ function InputNum({
   min = -99999,
   max = 99999,
   title,
-  variant = 'normal',
+  size = 'normal',
   defaultValue = '',
   unit = 'Па',
 }) {
@@ -19,7 +19,7 @@ function InputNum({
   return (
     <div
       className={`${style.inputContainer} ${err ? style.error : ''}`}
-      style={dict?.[variant]}
+      style={dictSize?.[size] ?? {}}
       onClick={onFocus}
     >
       <input
@@ -110,7 +110,7 @@ function InputNum({
 export default InputNum;
 
 // Размеры полей ввода
-const dict = {
+const dictSize = {
   normal: {
     width: '412px',
     height: '52px',
