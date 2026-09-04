@@ -20,7 +20,7 @@ function WeatherRow({ weather, size, title, onClick }) {
 
   // Температура
   const sign = temp > 0 ? '+' : '';
-  let t = sign + (temp ?? '') + ' ' + dictUnit.grad;
+  let t = sign + (temp ?? '') + dictUnit.grad;
   //   Дата погоды
   const date = new Date(update).toLocaleDateString('ru-RU');
 
@@ -41,7 +41,7 @@ function WeatherRow({ weather, size, title, onClick }) {
     >
       {imgWeather}
       <span className={style.temp}>{t}</span>|
-      <span className={style.hum}>{hum + ' %'}</span>
+      <span className={style.hum}>{hum + '%'}</span>
       <img width="16px" height="16px" src={dictIcon.updSmall} />
       <span>{date}</span>
       <img width="24px" height="24px" src={dictIcon.next} />

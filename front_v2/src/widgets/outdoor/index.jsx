@@ -11,6 +11,7 @@ const Outdoor = () => {
       <span className={style.outdoor__title}>Уличные датчики</span>
       {bSide.sensor.map((el) => (
         <TextSens
+          key={el.code}
           name={el.name}
           value={el.value}
           state={el.state}
