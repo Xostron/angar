@@ -7,7 +7,7 @@ const { wrDebMdl, delDebMdl, delModule } = require('@tool/module/timeout')
 function writeTCP(host, port, opt) {
 	return new Promise((resolve, reject) => {
 		const socket = new net.Socket()
-		const cl = new modbus.client.TCP(socket, opt?.slave)
+		const client = new modbus.client.TCP(socket, opt?.slave)
 		const optTCP = {
 			host,
 			port,
@@ -19,14 +19,23 @@ function writeTCP(host, port, opt) {
 		})
 		socket.on('connect', (_) => {
 			const { i, v } = regist(opt)
-			cl.writeMultipleRegisters(i, v)
-				.then((_) => {
+
+			// Метод записи single | multiple
+			let type = 'writeMultipleRegisters'
+			if (toSingle.includes(opt?.name)) {
+				type = 'writeSingleRegister'
+				v = v[0]
+			}
+
+			// Запись
+			client[type](i, v)
+				.then((r) => {
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve(true)
 				})
 				.catch((e) => {
-					console.error(9900, 'Ошибка запись', opt.name, opt.ip)
+					console.error(9900, 'Ошибка запись', opt.name, opt.ip, e.message)
 					wrDebMdl(opt._id)
 					resolve({ error: e, info: opt })
 				})

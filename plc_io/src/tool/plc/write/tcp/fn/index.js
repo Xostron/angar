@@ -6,7 +6,7 @@ function regist(opt) {
 	const i = opt.wr?.start
 
 	// Частотник oni-150 - дискретное управление
-	if (opt?.name == 'FC oni-150 DO') {
+	if (opt?.name == 'FC oni-150 DO' || opt?.name == 'FC VFD1 DO') {
 		// console.log('Истина2', opt.value)
 		return { i, v: opt.value[0] === 0 ? [5] : [1] }
 	}
@@ -36,5 +36,6 @@ function mBitTomInt(v) {
 	}
 	return vv
 }
+
 
 module.exports = { regist }

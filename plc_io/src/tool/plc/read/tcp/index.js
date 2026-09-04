@@ -41,7 +41,11 @@ function readTCP(host, port, opt) {
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
-					r = convOni150DI(opt, r)
+					// Для частотника
+					if (opt.name == 'FC VFD1 DO') w = r
+					r = convOni150DIerr(opt, r)
+					r = convFC_AC(opt, r)
+
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)
 					resolve([r, w])
@@ -58,6 +62,7 @@ function readTCP(host, port, opt) {
 		socket.connect(optTCP)
 	})
 }
+
 // Нормализация данных аналоговых модулей:
 // читаемые данные с модуля: [200, 1000, ...] нормализируются -> [20, 100, ...]
 function convAO(opt, arr) {
@@ -75,26 +80,34 @@ function conv32DO(opt, arr) {
 	return r
 }
 
-// Нормализация данных для частотника oni-150 - чтение DO
+// Нормализация данных для частотника oni-150 и VDF1 - чтение DO
 function convOni150(opt, arr) {
-	if (opt.name != 'FC oni-150 DO') return arr
-	// console.log('Истина', arr)
-	switch (arr[0]) {
-		// Стоп
-		case 0.3:
-			return [0]
-		// Запущен: .1 - прямое вращение, .2 - обратное вращение
-		case 0.1:
-		case 0.2:
-			return [1]
-	}
+	if (opt.name == 'FC oni-150 DO' || opt.name == 'FC VFD1 DO')
+		switch (arr[0]) {
+			// Стоп
+			case 0.3:
+				return [0]
+			// Запущен: .1 - прямое вращение, .2 - обратное вращение
+			case 0.1:
+			case 0.2:
+				return [1]
+			default:
+				return [0]
+		}
+	return arr
 }
 
-// Нормализация данных для частотника oni-150 - чтение DШ код ошибок
-function convOni150DI(opt, arr) {
-	if (opt.name != 'FC oni-150 DIerr') return arr
-	console.log('Истина FC oni-150 DIerr', arr)
-	return arr.map((el) => +(el * 10).toFixed(0))
+// Нормализация данных для частотника oni-150 и VDF1 - чтение DШ код ошибок
+function convOni150DIerr(opt, arr) {
+	if (opt.name == 'FC oni-150 DIerr' || opt.name == 'FC VFD1 DIerr')
+		return arr.map((el) => +(el * 10).toFixed(0))
+	return arr
+}
+
+// Нормализация данных ток частотника:
+function convFC_AC(opt, arr) {
+	if (opt.name == 'FC VFD1 AC') return arr.map((el) => +(el / 10).toFixed(2))
+	return arr
 }
 
 module.exports = readTCP

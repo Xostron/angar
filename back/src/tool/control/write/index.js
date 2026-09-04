@@ -1,6 +1,7 @@
 const { timeout } = require('@tool/message/plc_module')
 const make = require('../make')
 const Aboc = require('@tool/abort_controller')
+const {data:store} = require('@store/index')
 /**
  * Записать данные в модули
  * @param {*} obj Глобальные данные о складе
@@ -29,7 +30,7 @@ async function write(arr) {
 			// Запись данных в модуль
 			v = await make(m, 'write')
 
-			await pause(50)
+			await pause(store.tPause)
 
 			const k = m.name + m.ip + (m.slave ?? '')
 			ok[k] = v
