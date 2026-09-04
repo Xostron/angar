@@ -33,7 +33,7 @@ function WeatherRow({ weather, size, title, onClick }) {
     return <span className={`${style.text}`}>Данные недоступны</span>;
 
   return (
-    <div
+    <section
       className={`${style.text}`}
       title={title}
       style={stl}
@@ -45,7 +45,7 @@ function WeatherRow({ weather, size, title, onClick }) {
       <img width="16px" height="16px" src={dictIcon.updSmall} />
       <span>{date}</span>
       <img width="24px" height="24px" src={dictIcon.next} />
-    </div>
+    </section>
   );
 }
 

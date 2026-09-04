@@ -7,7 +7,7 @@ const Outdoor = () => {
   const bSide = useInputStore((s) => s?.input?.bSide);
   if (!bSide) return;
   return (
-    <div className={style.outdoor}>
+    <aside className={style.outdoor}>
       <span className={style.outdoor__title}>Уличные датчики</span>
       {bSide.sensor.map((el) => (
         <TextSens
@@ -23,7 +23,7 @@ const Outdoor = () => {
         title={bSide.weather.name}
         onClick={() => {}}
       />
-    </div>
+    </aside>
   );
 };
 
