@@ -1,5 +1,5 @@
-import dictIcon from '@tool/dict/icon_indicator';
-import dictValue from '@tool/dict/value';
+import dictIcon from '@src/shared/dict/icon_indicator';
+import dictValue from '@src/shared/dict/value';
 import style from './style.module.css';
 /**
  * Текст: отображение датчика

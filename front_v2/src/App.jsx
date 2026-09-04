@@ -1,17 +1,17 @@
 import { Outlet } from 'react-router-dom';
-import Header from './shared/header';
-import Footer from './shared/footer';
+import Header from './widgets/header';
+import Footer from './widgets/footer';
 import './App.css';
 
 const App = () => {
   return (
-    <div className="app-layout">
+    <main className="app-layout">
       <Header />
       <div className="app-content">
         <Outlet />
       </div>
       <Footer />
-    </div>
+    </main>
   );
 };
 

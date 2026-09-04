@@ -10,7 +10,7 @@ import {
   sSettingAu,
   sAutomode,
   sWarming,
-} from '@socket/emit';
+} from '@src/shared/api/socket/emit';
 // import useAuthStore from './auth'
 
 // Данные на сервер

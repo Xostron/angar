@@ -39,9 +39,9 @@ function readTCP(host, port, opt) {
 			}
 			Promise.all(p)
 				.then(([r, w]) => {
-					// if (opt?.name.includes('VFD1')) {
-					// 	console.log(44, 'read = ', opt.name, opt?.re?.start ?? opt?.wr?.start, r, w)
-					// }
+					if (opt?.name.includes('oni')) {
+						console.log(44, 'read = ', opt.name, opt?.wr?.start, opt?.wr?.on, r, w)
+					}
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
@@ -50,9 +50,9 @@ function readTCP(host, port, opt) {
 					r = convOni150DIerr(opt, r)
 					r = convFC_AC(opt, r)
 
-					// if (opt?.name.includes('VFD1')) {
-					// 	console.log(55, 'read = ', opt.name, opt?.re?.start ?? opt?.wr?.start, r, w)
-					// }
+					if (opt?.name.includes('oni')) {
+						console.log(55, 'read = ', opt.name, opt?.wr?.start, opt?.wr?.on, r, w)
+					}
 
 					delModule(opt.buildingId, opt._id)
 					delDebMdl(opt._id)

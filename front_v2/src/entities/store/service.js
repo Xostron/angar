@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { get as getApi } from '@tool/api/service';
 import { notification } from '@cmp/notification';
-import { uri } from '@store/uri';
+import { uri } from '@src/entities/store/uri';
 
 const useServiceStore = create((set, get) => ({
   req_ip: '127.0.0.1',

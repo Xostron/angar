@@ -1,4 +1,4 @@
-import dictIcon from '@src/tool/dict/icon_indicator';
+import dictIcon from '@src/shared/dict/icon_indicator';
 import style from './style.module.css';
 
 function IncidentJump({ count, onClick, size = 'normal' }) {

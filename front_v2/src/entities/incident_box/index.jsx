@@ -1,5 +1,5 @@
 import style from './style.module.css';
-import iconIncident from '@tool/dict/icon_incident';
+import iconIncident from '@src/shared/dict/icon_incident';
 
 function IncidentBox({ err = {}, size = 'normal' }) {
   // Размеры

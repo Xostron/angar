@@ -1,13 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom';
-import App from '../App';
-import MainPage from '../page/main';
-import BuildingPage from '../page/building';
-import SensorPage from '../page/sensor';
-import SignalPage from '../page/signal';
-import ReportPage from '../page/report';
-import SettingsPage from '../page/settings';
-import NotFoundPage from '../page/not-found';
-import PageTest from '../page/test';
+import App from '../../App';
+import MainPage from '../../page/main';
+import BuildingPage from '../../page/building';
+import SensorPage from '../../page/sensor';
+import SignalPage from '../../page/signal';
+import ReportPage from '../../page/report';
+import SettingsPage from '../../page/settings';
+import NotFoundPage from '../../page/not-found';
+import PageTest from '../../page/test';
 
 const router = createBrowserRouter([
   {

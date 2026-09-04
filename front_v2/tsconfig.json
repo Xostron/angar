@@ -15,8 +15,8 @@
       "@widgets/*": ["src/widgets/*"],
       "@page/*": ["./src/page/*"],
       "@tool/*": ["./src/tool/*"],
-      "@store/*": ["./src/store/*"],
-      "@socket/*": ["./src/socket/*"],
+      "@store/*": ["src/entities/store/*"],
+      "@socket/*": ["src/shared/api/socket/*"],
       "@font/*": ["./public/fonts/*"]
     }
   },

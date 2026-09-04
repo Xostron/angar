@@ -1,6 +1,6 @@
-import dictIcon from '@tool/dict/icon_indicator';
+import dictIcon from '@src/shared/dict/icon_indicator';
 import style from './style.module.css';
-import dictUnit from '@tool/dict/unit';
+import dictUnit from '@src/shared/dict/unit';
 /**
  * Текст: отображение датчика
  * @param {*} name Название

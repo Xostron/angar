@@ -1,6 +1,6 @@
 import Sidebar from '../../shared/sidebar';
 import ScrollGrid from '../../shared/scroll-grid';
-import Outdoor from '../../shared/outdoor';
+import Outdoor from '../../widgets/outdoor';
 import Building from './building';
 import './style.css';
 

@@ -50,17 +50,54 @@ function fnBSide(obj) {
 	if (!obj?.data?.building) return null
 
 	return {
-		tout: +obj.value.total?.tout?.min?.toFixed(1) ?? '--',
-		point: +obj.value.total?.point?.toFixed(1) ?? '--',
-		hout: +obj.value.total?.hout?.max?.toFixed(1) ?? '--',
-		habs: obj.value.humAbs?.out?.com ?? '--',
-		tweather: obj.value.total?.tweather ?? '--',
-		hweather: obj.value.total?.hweather ?? '--',
-		updWeather: obj?.data?.weather?.update ?? '--',
-		codeWeather: obj?.data?.weather?.code ?? 0,
-		nameWeather: obj?.data?.weather?.weather ?? '--',
+		sensor: [
+			{
+				value: fnV(obj.value.total?.tout?.min),
+				state: obj.value.total?.tout?.state,
+				unit: 'grad',
+				code: 'tout',
+				name: 'Температура',
+			},
+			{
+				value: fnV(obj.value.total?.point),
+				state: fnState(obj.value.total?.point),
+				unit: 'grad',
+				code: 'point',
+				name: 'Точка росы',
+			},
+			{
+				value: fnV(obj.value.total?.hout?.max),
+				state: obj.value.total?.hout?.state,
+				unit: 'per',
+				code: 'hout',
+				name: 'Отн. вл.',
+			},
+			{
+				value: fnV(obj.value.humAbs?.out?.com),
+				state: fnState(obj.value.humAbs?.out?.com),
+				unit: 'hum',
+				code: 'habs',
+				name: 'Абс. вл.',
+			},
+		],
+		weather: {
+			temp: obj.value.total?.tweather ?? '--',
+			hum: obj.value.total?.hweather ?? '--',
+			update: obj?.data?.weather?.update ?? '--',
+			code: obj?.data?.weather?.code ?? 0,
+			name: obj?.data?.weather?.weather ?? '--',
+		},
 		forecast: obj?.data?.weather?.forecast ?? [],
 	}
 }
 
 module.exports = { fnBCard, fnBSide }
+
+// Проверка значения датчика
+function fnV(v) {
+	return typeof v == 'number' ? +v.toFixed(1) : '--'
+}
+// Состояние расчетных датчиков
+function fnState(v) {
+	return typeof v != 'number' ? 'alarm' : 'on'
+}

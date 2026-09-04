@@ -25,8 +25,8 @@ function writeTCP(host, port, opt) {
 			// if (opt?.wr?.start == 8192) v = [5]
 			// AO
 			// if (opt?.wr?.start == 4096) v = [2500]
-			// if (opt?.name == 'FC VFD1 DO' || opt?.name == 'FC VFD1 AO')
-			// console.log(66, 'write = ', i, v)
+			if (opt?.name == 'FC oni-150 DO' || opt?.name == 'FC oni-150 AO')
+			console.log(66, 'write = ', i, v)
 
 			// Метод записи single | multiple
 			let type = 'writeMultipleRegisters'

@@ -1,0 +1,14 @@
+.outdoor {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.outdoor__title {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--c-grey);
+  padding-left: 14px;
+}

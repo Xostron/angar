@@ -37,7 +37,6 @@ function sensPos(equip, result, idsB) {
 
 	const tweather = weather?.temp
 	const hweather = weather?.humidity
-
 	result.total = {
 		// Температура улицы (мин) среди всех складов данной pc
 		tout,

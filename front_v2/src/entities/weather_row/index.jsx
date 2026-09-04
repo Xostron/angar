@@ -1,6 +1,7 @@
-import dictIcon from '@tool/dict/icon_indicator';
+import dictIcon from '@src/shared/dict/icon_indicator';
 import style from './style.module.css';
-import dictUnit from '@tool/dict/unit';
+import dictUnit from '@src/shared/dict/unit';
+import iconWeather from '@shared/dict/icon_weather';
 /**
  * Текст: отображение датчика
  * @param {*} name Название
@@ -10,7 +11,7 @@ import dictUnit from '@tool/dict/unit';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function WeatherRow({ temp, hum, code = 'sun', date, size, title, onClick }) {
+function WeatherRow({ temp, hum, code, date, size, title, onClick }) {
   // Курсор, Размеры
   let stl = { cursor: onClick ? 'pointer' : 'auto' };
   stl = { ...stl, ...(dictSize?.[size] ?? {}) };
@@ -20,6 +21,11 @@ function WeatherRow({ temp, hum, code = 'sun', date, size, title, onClick }) {
   let t = sign + (temp ?? '') + ' ' + dictUnit.grad;
   //   Влажность
   let h = hum + ' %';
+  
+  //   Иконка состояние погоды
+  const imgWeather = iconWeather?.[code] ? (
+    <img width="20px" height="20px" src={iconWeather?.[code]} alt="" />
+  ) : null;
 
   return (
     <div
@@ -30,7 +36,7 @@ function WeatherRow({ temp, hum, code = 'sun', date, size, title, onClick }) {
     >
       {typeof temp == 'number' && typeof hum == 'number' ? (
         <>
-          {dictIcon?.[code] && <img width="20px" src={dictIcon?.[code]} />}
+          {imgWeather}
           <span className={style.temp}>{t}</span>|
           <span className={style.hum}>{h}</span>
           <img width="16px" src={dictIcon.updSmall} />
