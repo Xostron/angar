@@ -1,7 +1,7 @@
 import dictIcon from '@src/shared/dict/icon_indicator';
-import style from './style.module.css';
-import dictUnit from '@src/shared/dict/unit';
 import iconWeather from '@shared/dict/icon_weather';
+import dictUnit from '@src/shared/dict/unit';
+import style from './style.module.css';
 /**
  * Текст: отображение датчика
  * @param {*} name Название
@@ -11,7 +11,9 @@ import iconWeather from '@shared/dict/icon_weather';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function WeatherRow({ temp, hum, code, date, size, title, onClick }) {
+function WeatherRow({ weather, size, title, onClick }) {
+  const { temp, hum, update, code } = weather;
+
   // Курсор, Размеры
   let stl = { cursor: onClick ? 'pointer' : 'auto' };
   stl = { ...stl, ...(dictSize?.[size] ?? {}) };
@@ -19,13 +21,16 @@ function WeatherRow({ temp, hum, code, date, size, title, onClick }) {
   // Температура
   const sign = temp > 0 ? '+' : '';
   let t = sign + (temp ?? '') + ' ' + dictUnit.grad;
-  //   Влажность
-  let h = hum + ' %';
-  
+  //   Дата погоды
+  const date = new Date(update).toLocaleDateString('ru-RU');
+
   //   Иконка состояние погоды
   const imgWeather = iconWeather?.[code] ? (
     <img width="20px" height="20px" src={iconWeather?.[code]} alt="" />
   ) : null;
+
+  if (typeof temp != 'number' || typeof hum != 'number')
+    return <span className={`${style.text}`}>Данные недоступны</span>;
 
   return (
     <div
@@ -34,18 +39,12 @@ function WeatherRow({ temp, hum, code, date, size, title, onClick }) {
       style={stl}
       onClick={onClick ? onClick : null}
     >
-      {typeof temp == 'number' && typeof hum == 'number' ? (
-        <>
-          {imgWeather}
-          <span className={style.temp}>{t}</span>|
-          <span className={style.hum}>{h}</span>
-          <img width="16px" src={dictIcon.updSmall} />
-          <span>{date}</span>
-          <img width="24px" src={dictIcon.next} />
-        </>
-      ) : (
-        'Данные недоступны'
-      )}
+      {imgWeather}
+      <span className={style.temp}>{t}</span>|
+      <span className={style.hum}>{hum + ' %'}</span>
+      <img width="16px" height="16px" src={dictIcon.updSmall} />
+      <span>{date}</span>
+      <img width="24px" height="24px" src={dictIcon.next} />
     </div>
   );
 }

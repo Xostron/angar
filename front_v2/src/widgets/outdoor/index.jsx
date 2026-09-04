@@ -19,10 +19,7 @@ const Outdoor = () => {
       ))}
 
       <WeatherRow
-        temp={bSide.weather.temp}
-        hum={bSide.weather.hum}
-        date={new Date(bSide.weather.update).toLocaleDateString('ru-RU')}
-        code={bSide.weather.code}
+        weather={bSide.weather}
         title={bSide.weather.name}
         onClick={() => {}}
       />
