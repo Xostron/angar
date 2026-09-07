@@ -4,7 +4,6 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { isCombiCold } = require('@tool/combi/is')
 const { isExtra } = require('@tool/message/extra')
-const { data: store } = require('@store')
 
 function set(bld, sect, obj, vlvS, acc, s) {
 	// Уже в аварии - выходим из итерации

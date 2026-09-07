@@ -1,6 +1,8 @@
 import dictIcon from '@src/shared/dict/icon_indicator';
-import style from './style.module.css';
+import dictSensor from '@shared/dict/icon_sensor';
 import dictUnit from '@src/shared/dict/unit';
+import style from './style.module.css';
+
 /**
  * Текст: отображение датчика
  * @param {*} name Название
@@ -10,21 +12,13 @@ import dictUnit from '@src/shared/dict/unit';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function TextSensRow({
-  name,
-  value,
-  state,
-  size = 'responsive',
-  unit,
-  title,
-  info,
-}) {
+function SensIc({ value, state, code, size = '', unit, title, info }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
 
   // Значение
   const sign = unit == 'grad' && value > 0 ? '+' : '';
-  let content = sign + (value ?? '') + ' ' + (dictUnit?.[unit] ?? unit ?? '');
+  let content = sign + (value ?? '');
 
   // Стили: выведен из работы/неисправность
   let cls = '';
@@ -38,11 +32,10 @@ function TextSensRow({
   }
   return (
     <div className={`${style.text} ${cls} `} title={title} style={stl}>
-      <div className={style.name}>
-        <span>{name}</span>
-        {info && <img src={dictIcon.info} />}
-      </div>
+      {dictSensor?.[code] && <img src={dictSensor?.[code]} alt="" />}
+      {info && <img src={dictIcon.info} />}
       <span className={style.value}>{content}</span>
+      <span className={style.unit}>{dictUnit?.[unit] ?? unit ?? ''}</span>
     </div>
   );
 }
@@ -53,4 +46,4 @@ const dictSize = {
   responsive: { width: '100%' },
 };
 
-export default TextSensRow;
+export default SensIc;

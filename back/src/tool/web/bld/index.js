@@ -22,9 +22,13 @@ function fnBCard(obj) {
 			product: obj.retain?.[bld._id]?.product,
 			automode: fnAutomode(bld._id, obj) ?? '--',
 			fan: fnFan(bld._id, obj) ? 'Вкл' : 'Выкл',
-			tprd: fnSens(bld._id, obj, 'tprd'),
-			hin: fnSens(bld._id, obj, 'hin', 'max'),
+			sensor: [
+				fnSens(bld._id, obj, 'tprd', 'min', 'grad', 'tmin'),
+				fnSens(bld._id, obj, 'tprd', 'max', 'grad', 'tmax'),
+				fnSens(bld._id, obj, 'hin', 'max', 'per', 'hin'),
+			],
 			achieve: fnAchieve(bld._id),
+			start: obj.retain?.[bld._id]?.start,
 			// Страница секции: правая панель "Данные склада"
 			sidesect: {
 				start: obj?.retain?.[bld._id]?.start ?? false,

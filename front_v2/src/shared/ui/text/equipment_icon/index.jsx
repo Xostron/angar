@@ -1,6 +1,6 @@
 import dictIcon from '@src/shared/dict/icon_indicator';
+import dictValue from '@src/shared/dict/value';
 import style from './style.module.css';
-import dictUnit from '@src/shared/dict/unit';
 /**
  * Текст: отображение датчика
  * @param {*} name Название
@@ -10,21 +10,12 @@ import dictUnit from '@src/shared/dict/unit';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function TextSensRow({
-  name,
-  value,
-  state,
-  size = 'responsive',
-  unit,
-  title,
-  info,
-}) {
+function TextIcEquip({ name, value, state, size = 'responsive', title }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
 
   // Значение
-  const sign = unit == 'grad' && value > 0 ? '+' : '';
-  let content = sign + (value ?? '') + ' ' + (dictUnit?.[unit] ?? unit ?? '');
+  let content = dictValue?.[value] ?? value ?? '';
 
   // Стили: выведен из работы/неисправность
   let cls = '';
@@ -36,13 +27,21 @@ function TextSensRow({
     cls = style.alarm;
     content = <img width="24px" src={dictIcon.crash} />;
   }
+
+  //   Стиль значения
+  const clsValue = content === 'выкл' ? style.voff : '';
+
   return (
     <div className={`${style.text} ${cls} `} title={title} style={stl}>
       <div className={style.name}>
-        <span>{name}</span>
-        {info && <img src={dictIcon.info} />}
+        <img
+          width="24px"
+          height="24px"
+          src={`/icon/equipment/fan32_${value == 'Вкл' ? 'on' : 'off'}.svg`}
+        />
+        <span >{name}</span>
       </div>
-      <span className={style.value}>{content}</span>
+      <span className={`${style.value} ${clsValue}`}>{content}</span>
     </div>
   );
 }
@@ -53,4 +52,4 @@ const dictSize = {
   responsive: { width: '100%' },
 };
 
-export default TextSensRow;
+export default TextIcEquip;

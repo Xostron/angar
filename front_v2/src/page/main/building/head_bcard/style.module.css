@@ -9,6 +9,7 @@
 .building {
   display: flex;
   width: 244px;
+  gap: 12px;
 }
 
 .content {

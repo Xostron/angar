@@ -1,38 +1,24 @@
+import TextIcEquip from '@src/shared/ui/text/equipment_icon';
+import IncidentInline from '@src/shared/ui/incident/inline';
 import TextSensRow from '@src/shared/ui/text/sensor_row';
 import HeadBcard from './head_bcard';
+import SensGroup from './sens_group';
 import style from './style.module.css';
 
 const Bcard = ({ data }) => {
   return (
-    <article className={style.container}>
+    <article className={style.container} onClick={() => {}}>
       <HeadBcard data={data} />
-      <TextSensRow name="Продукт" value={data?.product?.name} size="large" />
-      <TextSensRow name="Режим" value={data?.automode?.name} size="large" />
-      {/* {data.name} */}
-      {/* <div className={style.building_card_hdr}>
-        <div></div>
-        <div>
-          <span>{data.name}</span>
-          <span>{data.code}</span>
-        </div>
-        <div>
-          <span>{data.mode}</span>
-        </div>
-      </div>
-      <div></div>
-      <div>
-        <div></div>
-        <span>Вентиляция</span>
-        <span>ВКЛ</span>
-      </div>
-      <div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div>
-        <span>t задания канала 12°С, t задания продукта 11°С</span>
-      </div> */}
+
+      <TextSensRow name="Продукт" value={data?.product?.name} />
+
+      <TextSensRow name="Режим" value={data?.automode?.name} />
+
+      <TextIcEquip name="Вентиляция" value={data?.fan} />
+
+      <SensGroup sensor={data.sensor} />
+
+      <IncidentInline msg={data?.achieve?.[0]?.msg} />
     </article>
   );
 };

@@ -1,0 +1,32 @@
+.text {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background-color: var(--c-grey-lightest);
+  border-radius: 4px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--c-navy);
+  &.alarm {
+    color: #e83757;
+  }
+  &.off {
+  }
+  & > img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.value {
+  display: inline-flex;
+  align-items: center;
+}
+
+.unit {
+  font-size: 18px;
+  line-height: 26px;
+}

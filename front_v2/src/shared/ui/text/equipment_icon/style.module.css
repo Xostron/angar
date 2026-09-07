@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--c-grey-50);
-  color: var(--c-navy);
+  color: var(--c-grey);
   font-size: 18px;
   font-weight: 500;
   line-height: 24px;
@@ -18,6 +18,9 @@
   }
 }
 .name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 .value {
   font-weight: 600;

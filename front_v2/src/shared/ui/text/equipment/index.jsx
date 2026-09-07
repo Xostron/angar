@@ -10,7 +10,7 @@ import style from './style.module.css';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function TextEquip({ name, value, state, size, title }) {
+function TextEquip({ name, value, state, size = 'normal', title }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
 
@@ -40,6 +40,9 @@ function TextEquip({ name, value, state, size, title }) {
 }
 
 // Размеры
-const dictSize = {};
+const dictSize = {
+  normal: { width: '274px' },
+  responsive: { width: '100%' },
+};
 
 export default TextEquip;
