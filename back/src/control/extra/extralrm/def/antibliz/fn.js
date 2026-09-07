@@ -4,6 +4,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { isCombiCold } = require('@tool/combi/is')
 const { isExtra } = require('@tool/message/extra')
+const { data: store } = require('@store')
 
 function set(bld, sect, obj, vlvS, acc, s) {
 	// Уже в аварии - выходим из итерации
@@ -83,15 +84,13 @@ function fnCheck(bld, sect, obj, m, s, acc) {
 	const am = obj.retain?.[bld._id]?.automode
 	// 7. Удаление СО2 активно
 	const co2work =
-		isExtra(bld._id, null, 'co2', 'wait') ||
+		// isExtra(bld._id, null, 'co2', 'wait') ||
 		isExtra(bld._id, null, 'co2', 'work') ||
-		isExtra(bld._id, null, 'co2', 'check2') ||
+		// isExtra(bld._id, null, 'co2', 'check2') ||
 		isExtra(bld._id, null, 'co2', 'on')
+
 	// 10. Работает ВВ
-	const ventWork =
-		isExtra(bld._id, null, 'vent', 'wait') ||
-		isExtra(bld._id, null, 'vent', 'work') ||
-		isExtra(bld._id, null, 'vent', 'on')
+	const ventWork = isExtra(bld._id, null, 'vent', 'work') || isExtra(bld._id, null, 'vent', 'on')
 	// 11. Работает доп вентиляция
 	const durWork = isExtra(bld._id, null, 'durVent', 'work')
 	if (
