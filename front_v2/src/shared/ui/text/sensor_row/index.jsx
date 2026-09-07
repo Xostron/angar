@@ -10,7 +10,15 @@ import dictUnit from '@src/shared/dict/unit';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function TextSensRow({ name, value, state, size, unit, title, info }) {
+function TextSensRow({
+  name,
+  value,
+  state,
+  size = 'normal',
+  unit,
+  title,
+  info,
+}) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
 
@@ -40,6 +48,9 @@ function TextSensRow({ name, value, state, size, unit, title, info }) {
 }
 
 // Размеры
-const dictSize = {};
+const dictSize = {
+  normal: { width: '274px' },
+  large: { width: '324.8px' },
+};
 
 export default TextSensRow;

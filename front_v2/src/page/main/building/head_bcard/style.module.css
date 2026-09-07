@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  width: 100%;
+  color: var(--c-navy);
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.building {
+  display: flex;
+  width: 244px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  width: calc(100% - 65px);
+}
+.name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.code {
+  color: var(--c-grey);
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  & > span {
+    font-weight: 600;
+    line-height: 20px;
+    font-size: 16px;
+    color: var(--c-blue-darker);
+  }
+}

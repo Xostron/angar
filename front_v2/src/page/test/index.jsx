@@ -78,14 +78,11 @@ function PageTest({}) {
         <IncidentJump count={12} />
         <IncidentInline msg="t продукта в задании 12°С" />
         <IncidentInline msg="t продукта в задании 12°С" size="large" />
-        <WeatherRow
-          temp={21}
-          hum={42}
-          date="02.09.2026"
-          code="cloudy"
+        {/* <WeatherRow
+          weather
           onClick={() => {}}
-        />
-        <WeatherRow />
+        /> */}
+        {/* <WeatherRow /> */}
         <TextSens name="Уличные датчики" />
         <TextSens name="Температура" value={-5} unit="grad" />
         <TextSens name="Температура" value={5} unit="grad" state="alarm" />
@@ -107,9 +104,9 @@ function PageTest({}) {
         <TextSensRow name="Темп." value={-4} unit="grad" />
         <TextSensRow name="Темп." value={4} unit="grad" state="alarm" />
         <TextSensRow name="Темп." value={4} unit="grad" state="off" />
-        <TextSensRow name="Продукта" value="Лук" />
+        <TextSensRow name="Продукт" value="Лук" />
         <TextSensRow name="Режим" value="Сушка" />
-        <TextSensRow name="Продукта" value="Лук" info />
+        <TextSensRow name="Продукт" value="Лук" info />
         <TextSensRow name="Режим" value="Сушка" info />
       </article>
       <article style={style.btn}>

@@ -1,11 +1,15 @@
+import TextSensRow from '@src/shared/ui/text/sensor_row';
+import HeadBcard from './head_bcard';
 import style from './style.module.css';
 
 const Bcard = ({ data }) => {
   return (
     <article className={style.container}>
-
+      <HeadBcard data={data} />
+      <TextSensRow name="Продукт" value={data?.product?.name} size="large" />
+      <TextSensRow name="Режим" value={data?.automode?.name} size="large" />
       {/* {data.name} */}
-      <div className={style.building_card_hdr}>
+      {/* <div className={style.building_card_hdr}>
         <div></div>
         <div>
           <span>{data.name}</span>
@@ -28,7 +32,7 @@ const Bcard = ({ data }) => {
       </div>
       <div>
         <span>t задания канала 12°С, t задания продукта 11°С</span>
-      </div>
+      </div> */}
     </article>
   );
 };
