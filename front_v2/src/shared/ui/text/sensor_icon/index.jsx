@@ -17,8 +17,9 @@ function SensIc({ value, state, code, size = '', unit, title, info }) {
   const stl = dictSize?.[size] ?? {};
 
   // Значение
+  value = typeof value == 'number' ? Math.trunc(value) : '';
   const sign = unit == 'grad' && value > 0 ? '+' : '';
-  let content = sign + (value ?? '');
+  let content = sign + value;
 
   // Стили: выведен из работы/неисправность
   let cls = '';

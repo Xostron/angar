@@ -9,6 +9,7 @@
   background: var(--c-white);
   font-size: 18px;
   color: var(--c-navy);
+  text-decoration: none;
 }
 
 .building_card_hdr {

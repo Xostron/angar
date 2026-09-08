@@ -12,6 +12,7 @@ function fnBCard(obj) {
 	return obj.data.building.reduce((acc, bld) => {
 		// Режим работы: агрегация режимов секций
 		acc[bld._id] = {
+			idB: bld._id,
 			// Страница склады: карточки складов
 			order: bld.order ?? 0,
 			name: bld.name ?? '--',

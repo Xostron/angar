@@ -1,9 +1,9 @@
-import Sidebar from '../../shared/sidebar';
+import useInputStore from '@src/entities/store/input';
 import ScrollGrid from '../../shared/scroll-grid';
 import Outdoor from '../../widgets/outdoor';
-import Bcard from './building';
+import Sidebar from '../../shared/sidebar';
+import Bcard from '@src/widgets/bcard';
 import './style.css';
-import useInputStore from '@src/entities/store/input';
 
 const MainPage = () => {
   const bCard = useInputStore((s) => s?.input?.bCard);
