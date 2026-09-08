@@ -31,7 +31,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	const who = aCmd.force || s.coolerCombi?.on !== true ? 'normal' : where
 	// Инициализация аккумулятора плавного пуска
 	const acc = init(bld, idS, obj, bdata, s, who, 'fc', fans.length)
-	// console.log(12345, fanFC)
+
 	// 1. Разрешение на работу
 	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
 
