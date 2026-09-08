@@ -5,9 +5,9 @@ import HeadBcard from './head_bcard';
 import SensGroup from './sens_group';
 import style from './style.module.css';
 
-const Bcard = ({ data }) => {
+const Bcard = ({ data, onClick }) => {
   return (
-    <article className={style.container} onClick={() => {}}>
+    <article className={style.container} onClick={onClick}>
       <HeadBcard data={data} />
 
       <TextSensRow name="Продукт" value={data?.product?.name} />
