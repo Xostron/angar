@@ -29,8 +29,8 @@ function transformClr(doc, data) {
 		fan: data.fan
 			.filter((el) => el.owner.id === doc._id)
 			.map((el) => {
-				const ao = data?.binding.find((b) => b.owner.id === el._id && b.type==='ao')
-				const ai = data?.binding.find((b) => b.owner.id === el._id && b.type==='ai')
+				const ao = data?.binding.find((b) => b.owner.id === el._id && b.type === 'ao')
+				const ai = data?.binding.find((b) => b.owner.id === el._id && b.type === 'ai')
 				return !ao ? el : { ...el, ao: { id: ao?.moduleId, channel: ao?.channel } }
 			}),
 		// Оттайка
@@ -81,4 +81,29 @@ function isReadyClr(idB, clr, fan, mod) {
 	return !store.retain?.[idB]?.fan?.[clr.sectionId]?.[fan._id]
 }
 
-module.exports = { transformClr, getClr, coupleClr }
+/**
+ * Разделение на обычные ВНО и группы ВНО
+ * Среди секционных ВНО встречаются группы ВНО которые имеют один
+ * управляющий сигнал, при этом сигналы аналогового задания разные.
+ * Данная группа должна управляться как один ВНО (они должны получать одинаковое задание),
+ * отображаться по отдельности, и выводится из работы (блокируется аналоговое задание)
+ * @param {*} fan
+ */
+function fnGroupFan(fan) {
+	const map = new Map()
+	fan.forEach((el) => {
+		const key = el.module.id + el.module.channel
+		// Если в списке нет ВНО добавляем в список
+		if (!map.has(key)) return map.set(key, el)
+		// Если ВНО уже есть в списке делаем объединение в группу
+		const exist = map.get(key)
+		const ao = []
+		if (exist.ao instanceof Array) ao.push(...exist.ao)
+		else ao.push(exist.ao)
+		ao.push(el.ao)
+		exist.ao = ao
+	})
+	return [...map.values()]
+}
+
+module.exports = { transformClr, getClr, coupleClr, fnGroupFan }

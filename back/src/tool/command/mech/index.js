@@ -1,5 +1,5 @@
 const { getIdBS, getSectAM, getSectAuto, getOwner } = require('@tool/get/building')
-const { transformClr, getClr } = require('./fn')
+const { transformClr, getClr, fnGroupFan } = require('./fn')
 const { getDevice, getVnoClr, getVno } = require('./get')
 
 /**
@@ -31,9 +31,11 @@ function mech(obj, idS, idB) {
 	const { allFanClr, fanClr } = getVnoClr(idB, idS, obj, coolerS)
 	// Напорные ВНО секции (только рабочие)
 	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
+	// Разделение на обычные ВНО и группы ВНО
+	const groupFanSS = fnGroupFan(fanSS)
 	// Напорные ВНО секции/камеры + ВНО испарителей:
 	// обычный/комби склад в режиме обычного (только рабочие)
-	const fanS = [...fanSS, ...fanClr]
+	const fanS = [...groupFanSS, ...fanClr]
 
 	// DEMO Вентиляторы секции:напорные + испарители, только введенные в работу
 	const ff = fan
@@ -77,6 +79,7 @@ function mech(obj, idS, idB) {
 		vlvS,
 		fanS,
 		fanSS,
+		groupFanSS,
 		heatS,
 		connect,
 		reset,

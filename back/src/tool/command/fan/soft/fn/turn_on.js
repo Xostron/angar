@@ -36,7 +36,6 @@ function turnOn(fanFC, fans, solHeat, idB, acc, s, max, off, isCC) {
 		// Включить ВНО
 		ctrlDO(f, idB, 'on')
 		f?.ao?.id ? ctrlAO(f, idB, _MAX_SP) : null
-		// console.log('\tDO ВНО', f.name, 'ВКЛ')
 	})
 
 	solHeat.forEach((el) => {

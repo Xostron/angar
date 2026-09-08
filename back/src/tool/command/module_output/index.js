@@ -3,11 +3,21 @@ const { data: store } = require('@store')
 const _MIN_SP = 20
 const _HYST_VLV = 3
 
-// Записть в аналоговый выход
+// Запись в аналоговый выход
 function ctrlAO(o, idB, value) {
 	if (typeof value != 'number' || Number.isNaN(value)) return
-	const mdlId = o?.ao?.id
-	const ch = o?.ao?.channel - 1
+	// Обычный ВНО или Группа ВНО
+	if (o?.ao instanceof Array) groupAO(o, idB, value)
+	else singleAO(o?.ao, idB, value)
+}
+
+function groupAO(o, idB, value) {
+	o.ao.forEach((ao) => singleAO(ao, idB, value))
+}
+
+function singleAO(ao, idB, value) {
+	const mdlId = ao?.id
+	const ch = ao?.channel - 1
 	const r = { [idB]: { [mdlId]: { [ch]: value || _MIN_SP } } }
 	setCmd(r)
 }

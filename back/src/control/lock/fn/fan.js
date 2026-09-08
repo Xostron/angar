@@ -3,9 +3,8 @@ const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
 const { data: store } = require('@store')
 const { isCombiCold } = require('@tool/combi/is')
-const { out, ao, outV, fn, force } = require('./index')
+const { out, ao, force } = require('./index')
 const { hasOutput } = require('@tool/get/module')
-const { getSignal } = require('@tool/command/signal')
 
 // Блокировки напорных вентиляторов (обычный склад)
 // Если склад выключен, а секция в ручном режиме - не блокировать ВНО
@@ -36,8 +35,10 @@ function fan(obj, s) {
 		const man = obj?.value?.[f._id]?.man
 		// Игнор блокировки: включено окуривание, озонатор,
 		const ignore = s[idB]?.smoking?.on || s[idB]?.ozon?.on || man
-		// Блокировки:
 
+		// Разрешить блокировку ВНО по выводу из работы
+		const permissionOff = ignoreGroupe(f, data.fan, value)
+		// Блокировки:
 		// Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
 		const sb =
 			// isExtralrm(bld._id, null, 'supply') ||
@@ -45,9 +46,10 @@ function fan(obj, s) {
 			// isExtralrm(bld._id, null, 'battery') ||
 			isExtralrm(bld._id, null, 'sb')
 
-		// Состояние вентилятора: авария / выведен из работы
-		const isAlrOff =
-			value?.[f._id]?.state === 'alarm' || value?.[f._id]?.state === 'off' ? true : false
+		// Состояние вентилятора: авария
+		const isAlrOff = value?.[f._id]?.state === 'alarm' ? true : false
+		// Выведен из работы
+		const fanOff = value?.[f._id]?.state === 'off' && permissionOff ? true : false
 
 		// Переключатель на щите (aCmd.end - флаг о плавном останове вентиляторов)
 		const local =
@@ -113,6 +115,7 @@ function fan(obj, s) {
 		// 	'ignore',
 		// 	ignore,
 		// )
+
 		out(
 			obj,
 			output,
@@ -128,6 +131,7 @@ function fan(obj, s) {
 			aLow,
 			lowB,
 			low,
+			fanOff,
 		)
 		ao(
 			obj,
@@ -144,6 +148,7 @@ function fan(obj, s) {
 			aLow,
 			lowB,
 			low,
+			fanOff,
 		)
 	}
 	// Флаги однократных блокировок
@@ -155,6 +160,38 @@ function fan(obj, s) {
 		store.heap.lock[id] ??= {}
 		store.heap.lock[id].low = true
 	})
+}
+
+/**
+ * Является ли ВНО групповым
+ * @param {*} fan
+ * @param {*} fans
+ * @returns
+ */
+function fnGroup(fan, fans) {
+	const key = fan.module.id + fan.module.channel
+	// Счетчик одинаковых ВНО (групповых): > 1 (true) - ВНО из группы, ВНО = 1 (false) - обычный ВНО
+	let count = 0
+	// Группа
+	const list = []
+	fans.forEach((el) => {
+		if (key !== el.module.id + el.module.channel) return
+		count++
+		list.push(el)
+	})
+	// has=true - ВНО из группы
+	return { has: count > 1, list }
+}
+
+function ignoreGroupe(fan, fans, value) {
+	const r = fnGroup(fan, fans)
+	// Если ВНО не из группы, то разрешаем блокировку ВНО
+	if (!r.has) return true
+
+	// Если все ВНО из группы выведены из работы, то разрешаем блокировку ВНО
+	if (r.list.every((el) => value?.[el._id]?.state === 'off')) return true
+
+	return false
 }
 
 module.exports = fan

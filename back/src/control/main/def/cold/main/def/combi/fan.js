@@ -24,6 +24,7 @@ function fanCombi(bld, bdata, obj, s, seB, m, alr, acc) {
 	// Последовательное вкл/выкл соленоида подогрева и ВНО секций
 	const { sol, fan } = mFan(bld, m, bdata)
 	resultFan.fan = [...sol, ...fan]
+	// console.log(1234, resultFan.fan)
 	fanAu.combi(bld, obj, s, seB, m, resultFan, bdata)
 }
 
@@ -62,7 +63,7 @@ function mFan(bld, m, bdata) {
 	// Комби склад в режиме холодильника: соленоиды и ВНО секции
 	for (const idS in m.sect) {
 		r.sol.push(...(m?.sect?.[idS]?.solHeatS ?? []))
-		r.fan.push(...(m?.sect?.[idS]?.fanSS ?? []))
+		r.fan.push(...(m?.sect?.[idS]?.groupFanSS ?? []))
 	}
 	return r
 }
