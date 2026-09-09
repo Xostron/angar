@@ -6,13 +6,13 @@ const { stateEq } = require('@tool/fan')
 const { getSectAuto } = require('@tool/get/building')
 
 // Разгонные вентиляторы: Вкл
-function on(building, fanA) {
+function on(building, fanA, acc) {
 	fanA.forEach((f) => {
 		ctrlDO(f, building._id, 'on')
 	})
 }
 // Разгонные вентиляторы: Выкл
-function off(building, fanA) {
+function off(building, fanA, acc, se, s) {
 	fanA.forEach((f) => {
 		ctrlDO(f, building._id, 'off')
 	})
@@ -42,13 +42,17 @@ function temp(building, fanA, acc, se, s) {
 	const { tprd, tin } = se
 	const hyst = 0.3
 	// Отключено
-	if (tprd == null || tin == null) return off(building, fanA)
+	if (tprd == null || tin == null) {
+		return off(building, fanA)
+	}
 
 	// Вкл
 	if (tprd - tin > s.accel.difference) on(building, fanA)
 
 	// Выкл
-	if (tprd - tin + hyst < s.accel.difference) off(building, fanA)
+	if (tprd - tin + hyst < s.accel.difference) {
+		off(building, fanA)
+	}
 }
 
 // Разгонные вентиляторы: Холод: в режиме комби-холод

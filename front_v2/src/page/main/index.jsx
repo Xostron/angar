@@ -5,8 +5,10 @@ import Sidebar from '../../shared/sidebar';
 import Bcard from '@src/widgets/bcard';
 import './style.css';
 
+// Начальная страница: карточки складов
 const MainPage = () => {
   const bCard = useInputStore((s) => s?.input?.bCard);
+  console.log(bCard);
   return (
     <main className="main-page">
       <Sidebar>
@@ -14,7 +16,7 @@ const MainPage = () => {
       </Sidebar>
       <ScrollGrid>
         {bCard &&
-          Object.values(bCard).map((el) => <Bcard key={el?.id} data={el} />)}
+          Object.values(bCard).map((el) => <Bcard key={el?.idB} data={el} />)}
       </ScrollGrid>
     </main>
   );

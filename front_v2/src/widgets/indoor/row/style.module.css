@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 8px;
+  padding: 20px 0px;
+  border-top: 1px solid var(--c-grey-light);
+  border-bottom: 1px solid var(--c-grey-light);
+}
+
+.containerStatus {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 8px;
+  padding-bottom: 24px;
+}

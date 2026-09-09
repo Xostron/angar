@@ -1,0 +1,23 @@
+.indoor {
+  display: flex;
+  flex-direction: column;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 12px;
+  background-color: var(--c-white);
+  /* gap: 12px; */
+  height: 100%;
+  justify-content: center;
+}
+
+.indoor__title {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--c-navy);
+  padding-top: 20px;
+  padding-bottom: 16px;
+  &.grey {
+    color: var(--c-grey);
+  }
+}

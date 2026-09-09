@@ -3,4 +3,9 @@
   min-width: 345px;
   height: 100%;
   background: var(--c-white);
+  &.right {
+    background: var(--c-grey-lighter);
+    padding: 24px;
+	width: 370px;
+  }
 }

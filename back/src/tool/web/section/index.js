@@ -13,8 +13,11 @@ function fnSCard(obj) {
 	return obj.data.section.reduce((acc, sec) => {
 		const idB = sec.buildingId
 		const bld = obj.data.building.find((el) => el._id === idB)
+		acc[bld._id] ??= {}
 		// Режим работы: агрегация режимов секций
-		acc[sec._id] = {
+		acc[bld._id][sec._id] = {
+			idS: sec._id,
+			idB: bld._id,
 			order: sec.order ?? '--',
 			name: sec.name ?? '--',
 			mode: fnSMode(idB, sec._id, bld.type, obj?.retain),

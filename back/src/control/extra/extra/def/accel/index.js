@@ -6,7 +6,6 @@ const { delUnused } = require('@tool/command/extra')
 function accelOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	// Если включен демо-режим блокировать данную функцию
 	if (isDemo(building._id)) return
-
 	if (['time', 'temp', 'cold'].includes(s?.accel?.mode)) return
 	if (!s?.accel?.mode || !def?.[s?.accel?.mode]) return
 	// Разрешение работы
@@ -22,7 +21,6 @@ function accelOn(building, section, obj, s, se, m, alarm, acc, data, ban) {
 function accelAuto(building, section, obj, s, se, m, alarm, acc, data, ban) {
 	// Если включен демо-режим блокировать данную функцию
 	if (isDemo(building._id)) return
-
 	if (!['time', 'temp', 'cold'].includes(s?.accel?.mode)) return
 	if (!s?.accel?.mode || !def?.[s?.accel?.mode]) return
 

@@ -6,6 +6,11 @@ import HeadBcard from './head_bcard';
 import SensGroup from './sens_group';
 import style from './style.module.css';
 
+/**
+ * Карточка склада
+ * @param {*} data Данные из Zustand о складе input.bCard
+ * @returns
+ */
 const Bcard = ({ data }) => {
   return (
     <Link className={style.container} to={`/building/${data.idB}`}>

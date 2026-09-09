@@ -34,6 +34,7 @@ function transform(data, rack) {
 
 module.exports = transform;
 
+// Карточка склада
 function fnTransform(bld, data, rack, result) {
 	const {building, section, fan, cooler} = rack
 	// TODO:rrp  Надо проверить почему undefined записан как строка
@@ -85,7 +86,7 @@ function fnTransform(bld, data, rack, result) {
 	);
 	result[bld._id + 'alarm'].push(...timer);
 
-	// result[bld._id + 'banner'] = banner(bld._id, data) ?? null
+	result[bld._id + 'banner'] = banner(bld._id, data) ?? null
 
 	// Общее состояние ВНО (кроме холодильника)
 	if (bld.type !== 'cold') {

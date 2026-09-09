@@ -1,5 +1,6 @@
-const { data: store } = require('@store/index')
+const { data: store, readAcc } = require('@store/index')
 const { fnAutomode, fnFan, fnSens, fnAchieve } = require('./fn')
+const { getIdsS } = require('@tool/get/building')
 
 /**
  * Карточки складов
@@ -8,7 +9,6 @@ const { fnAutomode, fnFan, fnSens, fnAchieve } = require('./fn')
  */
 function fnBCard(obj) {
 	if (!obj?.data?.building) return null
-
 	return obj.data.building.reduce((acc, bld) => {
 		// Режим работы: агрегация режимов секций
 		acc[bld._id] = {
@@ -38,7 +38,7 @@ function fnBCard(obj) {
 				habsin: obj?.value?.humAbs?.in?.[bld._id],
 				co2: obj?.value?.total?.[bld._id]?.co2?.max ?? '--',
 				// Статус оборудования
-				extra: [],
+				equipment: fnEquipment(bld._id, obj),
 			},
 		}
 		// console.log(acc[bld._id])
@@ -106,3 +106,50 @@ function fnV(v) {
 function fnState(v) {
 	return typeof v != 'number' ? 'alarm' : 'on'
 }
+
+// Статус оборудования
+function fnEquipment(idB, obj) {
+	// Массив секций
+	const idsS = getIdsS(obj.data.section, idB)
+	const r = []
+	// Склад
+	// const list = ['accel', 'co2', 'smoking', 'ozon' /*,'demo', 'heater' */]
+	// // Секции
+	// const sectList = ['wetting']
+	// const r = []
+	// list.forEach((el) => {
+	// 	const keys = Object.keys(store.alarm?.extra?.[idB]?.[el] ?? [])
+
+	// 	if (keys.includes('check')) r.push(...arr)
+	// })
+	// console.log(123, store.alarm?.extra?.[idB])
+	const extra = store.alarm?.extra?.[idB]
+	r.push(fnAccel(idB, idsS, obj))
+	r.push(fnSmoking(extra))
+	return r
+}
+
+function fnAccel(idB, idsS, obj) {
+	idsS.push(idB)
+	const fanA = obj.data.fan.filter((el) => idsS.includes(el.owner.id) && el.type == 'accel')
+	const r = fanA.some((el) => obj.value?.[el._id]?.state == 'run')
+	return r ? { name: 'Разгон. вент', value: 'Вкл' } : { name: 'Разгон. вент', value: 'Выкл' }
+}
+
+function fnSmoking(extra) {
+	const r = Object.keys(extra?.smoking ?? {})
+	return r.length ? { name: 'Окуривание', value: 'Вкл' } : { name: 'Окуривание', value: 'Выкл' }
+}
+
+function fnWetting(idB, idsS, obj) {}
+
+function fnOzon(idB, idsS, obj) {}
+
+const fnCO = {
+	cold:()=>{},
+	
+}
+// Для обычного/комби
+function fnCoNC(extra){}
+// Для холодильника
+function fnCoC(extra){}
