@@ -115,6 +115,7 @@ function fnGroupFanById(fan) {
 	const arr = fnGroupFanByDO(fan)
 	const map = new Map()
 	arr.forEach((el) => {
+		// Группы начинаются с groupId>=1
 		const key = !el?.groupId ? el._id : el.groupId + el.owner.id
 		// Если в списке нет ВНО добавляем в список
 		if (!map.has(key)) return map.set(key, el)

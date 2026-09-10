@@ -76,6 +76,7 @@ function heatVlv(idS, obj) {
  */
 function fnSBarB() {
 	const r = {}
+	console.log(11, store.value?.alarm?.monit)
 	for (const idB in store.value?.alarm?.barB) {
 		r[idB] = []
 		for (const code in store.value?.alarm?.barB[idB]) {

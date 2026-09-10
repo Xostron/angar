@@ -22,6 +22,7 @@ const useEquipStore = create((set, get) => ({
   getCurB: (idB) => get()?.list?.findIndex((el) => el._id === idB),
   getCurS: (idS) =>
     get()?.list?.[get()?.curB]?.section?.findIndex((el) => el._id === idS),
+  getBld: (idB) => get()?.list?.find((el) => el._id === idB),
   build: () => get()?.list?.[get()?.curB],
   prdList: (idB) => {
     const idx = get().getCurB(idB);

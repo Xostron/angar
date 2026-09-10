@@ -1,8 +1,8 @@
 import dictIcon from '@src/shared/dict/icon_indicator';
 import style from './style.module.css';
 
-function IncidentJump({ count, onClick, size = 'normal' }) {
-  if (!count) return <></>;
+function IncidentJump({ count, onClick, size = 'normal', min = 0 }) {
+  if (count < min) return <></>;
   return (
     <button
       className={style.button}

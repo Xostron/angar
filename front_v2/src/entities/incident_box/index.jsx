@@ -1,13 +1,13 @@
 import style from './style.module.css';
 import iconIncident from '@src/shared/dict/icon_incident';
 
-function IncidentBox({ err = {}, size = 'normal' }) {
+function IncidentBox({ err = {}, type = 'alarm', size = 'normal' }) {
   // Размеры
   const stl = { ...(dictSize?.[size] ?? {}) };
 
   // Цвет: typeIncident = equipment|notification|alarm
   let cls = `${style.container}`;
-  if (err?.typeIncident) cls += ` ${style?.[err?.typeIncident] ?? ''}`;
+  if (type) cls += ` ${style?.[type] ?? ''}`;
 
   return (
     <div className={cls} style={stl}>

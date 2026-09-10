@@ -1,4 +1,4 @@
-const { history, critical, count } = require('./fn')
+const { history, critical, count, warning } = require('./fn')
 const { signal, signalB } = require('./fn/signal')
 const { banner, bannerB } = require('./fn/banner')
 const { isCombiCold } = require('@tool/combi/is')
@@ -23,7 +23,7 @@ function alarm(obj) {
 		// Баннер - всплывающие окна
 		banner: {},
 		// Для мониторинга (критические, аварийные, информационные)
-		monit: { critical: {} },
+		monit: { critical: {}, warning:{} },
 		// statistic history (critical:[] критические аварии,
 		// event:[] информационные сообщения)
 		history: { critical: [], event: [], achieve: [] },
@@ -71,6 +71,7 @@ function alarm(obj) {
 	history(r, data.building)
 	// Мониторинг: критические аварии
 	critical(r)
+	warning(r)
 	return r
 }
 

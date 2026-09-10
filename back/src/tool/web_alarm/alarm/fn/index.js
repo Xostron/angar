@@ -18,7 +18,7 @@ function critical(r) {
 		// Критические аварии кроме module (Модуль не в сети)
 		const t = r.signal[bld].filter((el) => el.count && el.code !== 'module')
 		// Замена нескольких сообщений не в сети на одно сообщение (Пропала связь)
-		const m = r.signal[bld].filter((el) => el.code === 'module').sort((a,b)=>b.date-a.date)
+		const m = r.signal[bld].filter((el) => el.code === 'module').sort((a, b) => b.date - a.date)
 		if (m.length > 1) {
 			const o = {
 				...m[0],
@@ -29,7 +29,17 @@ function critical(r) {
 		} else {
 			m.length ? t.push(m[0]) : null
 		}
-		r.monit.critical[bld] = t.sort((a,b)=>b.date-a.date)
+		r.monit.critical[bld] = t.sort((a, b) => b.date - a.date)
+	}
+}
+
+// Аварии авторежимов
+function warning(r) {
+	const flt = ['tout1', 'tout2', 'tout3', 'hout1', 'hout2', 'hout3', 'ahout1', 'ahout2']
+	for (const bld in r.signal) {
+		// Критические аварии кроме module (Модуль не в сети)
+		const t = r.signal[bld].filter((el) => flt.includes(el.code))
+		r.monit.warning[bld] = t.sort((a, b) => b.date - a.date)
 	}
 }
 
@@ -45,4 +55,4 @@ function count(r) {
 	}
 }
 
-module.exports = { history, critical, count }
+module.exports = { history, critical, warning, count }
