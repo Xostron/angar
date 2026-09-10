@@ -13,6 +13,7 @@ function fan(obj, s) {
 	const once = {}
 	// Только по ВНО секциям
 	for (const f of data.fan) {
+		f.isGroup = isGroup(f, data.fan)
 		// Только для напорных ВНО type=fan
 		if (f.type !== 'fan') continue
 		// Если ВНО испарителя - не блокируем
@@ -38,6 +39,7 @@ function fan(obj, s) {
 
 		// Разрешить блокировку ВНО по выводу из работы
 		const permissionOff = ignoreGroupe(f, data.fan, value)
+
 		// Блокировки:
 		// Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
 		const sb =
@@ -49,8 +51,7 @@ function fan(obj, s) {
 		// Состояние вентилятора: авария
 		const isAlrOff = value?.[f._id]?.state === 'alarm' ? true : false
 		// Выведен из работы
-		const fanOff = value?.[f._id]?.state === 'off' && permissionOff ? true : false
-
+		const fanOff = value?.[f._id]?.state === 'off' ? true : false
 		// Переключатель на щите (aCmd.end - флаг о плавном останове вентиляторов)
 		const local =
 			isExtralrm(idB, null, 'local') || idsS.some((idS) => isExtralrm(idB, idS, 'local'))
@@ -122,7 +123,7 @@ function fan(obj, s) {
 			f,
 			sb,
 			local,
-			isAlrOff,
+			isAlrOff && permissionOff,
 			offS,
 			alrStop,
 			lockAuto,
@@ -131,7 +132,7 @@ function fan(obj, s) {
 			aLow,
 			lowB,
 			low,
-			fanOff,
+			fanOff && permissionOff,
 		)
 		ao(
 			obj,
@@ -163,6 +164,7 @@ function fan(obj, s) {
 }
 
 /**
+ * Для групп ВНО с общим сигналом управления
  * Является ли ВНО групповым
  * @param {*} fan
  * @param {*} fans
@@ -183,6 +185,7 @@ function fnGroup(fan, fans) {
 	return { has: count > 1, list }
 }
 
+// Для групп ВНО с общим сигналом управления
 function ignoreGroupe(fan, fans, value) {
 	const r = fnGroup(fan, fans)
 	// Если ВНО не из группы, то разрешаем блокировку ВНО
@@ -192,6 +195,19 @@ function ignoreGroupe(fan, fans, value) {
 	if (r.list.every((el) => value?.[el._id]?.state === 'off')) return true
 
 	return false
+}
+
+// Для групп ВНО с общим сигналом управления
+function isGroup(fan, fans) {
+	const key = fan.module.id + fan.module.channel
+	// Счетчик одинаковых ВНО (групповых): > 1 (true) - ВНО из группы, ВНО = 1 (false) - обычный ВНО
+	let count = 0
+	fans.forEach((el) => {
+		if (key !== el.module.id + el.module.channel) return
+		count++
+	})
+	// true - ВНО из группы
+	return count > 1
 }
 
 module.exports = fan

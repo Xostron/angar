@@ -82,14 +82,15 @@ function isReadyClr(idB, clr, fan, mod) {
 }
 
 /**
- * Разделение на обычные ВНО и группы ВНО
+ * Разделение на обычные ВНО и группы ВНО (по общему сигналу управления)
  * Среди секционных ВНО встречаются группы ВНО которые имеют один
  * управляющий сигнал, при этом сигналы аналогового задания разные.
  * Данная группа должна управляться как один ВНО (они должны получать одинаковое задание),
  * отображаться по отдельности, и выводится из работы (блокируется аналоговое задание)
  * @param {*} fan
+ * @param return Обычные и Групповые ВНО
  */
-function fnGroupFan(fan) {
+function fnGroupFanByDO(fan) {
 	const map = new Map()
 	fan.forEach((el) => {
 		const key = el.module.id + el.module.channel
@@ -106,4 +107,35 @@ function fnGroupFan(fan) {
 	return [...map.values()]
 }
 
-module.exports = { transformClr, getClr, coupleClr, fnGroupFan }
+/**
+ * Из списка ВНО, объединяем в группы ВНО по groupId
+ * @param {*} fan
+ */
+function fnGroupFanById(fan) {
+	const arr = fnGroupFanByDO(fan)
+	const map = new Map()
+	arr.forEach((el) => {
+		const key = !el?.groupId ? el._id : el.groupId + el.owner.id
+		// Если в списке нет ВНО добавляем в список
+		if (!map.has(key)) return map.set(key, el)
+		// Если ВНО уже есть в списке делаем объединение в группу
+		const exist = map.get(key)
+		// Аналоговый выход
+		const ao = []
+		// Дискретный выход
+		const module = []
+		if (exist.ao instanceof Array) ao.push(...exist.ao)
+		else ao.push(exist.ao)
+		if (exist.module instanceof Array) module.push(...exist.module)
+		else module.push(exist.module)
+
+		ao.push(el.ao)
+		module.push(el.module)
+
+		exist.ao = ao
+		exist.module = module
+	})
+	return [...map.values()]
+}
+
+module.exports = { transformClr, getClr, coupleClr, fnGroupFanById }

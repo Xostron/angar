@@ -9,7 +9,7 @@ const Indoor = ({ idB }) => {
   //   Правая боковая панель
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const rSide = bCard?.sidesect;
-  console.log(1, rSide, bCard);
+
   if (!rSide) return <></>;
 
   return (

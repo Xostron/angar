@@ -43,7 +43,7 @@ function force(obj, output, o, type) {
 
 	// Дискретный выход
 	const ch = o?.module?.channel - 1
-	mdl.value[ch] = type =='on' ? 1:0
+	mdl.value[ch] = type == 'on' ? 1 : 0
 }
 
 /**
@@ -67,8 +67,8 @@ function ao(obj, output, f, local, ...args) {
 	const { mdl } = getMdl(output, ao.moduleId)
 	if (!mdl) return
 
-	// Если есть блокировка -> аналоговый выход=20%
-	if (lock) mdl.value[ao.channel - 1] = _MIN_SP
+	// Если есть блокировка -> аналоговый выход=20% или 0% если ВНО из группы
+	if (lock) mdl.value[ao.channel - 1] = !f?.isGroup ? _MIN_SP : 0
 
 	// Местный переключатель => задание ВНО на 100%, DO выкл
 	if (local) {

@@ -32,14 +32,24 @@ function singleAO(ao, idB, value) {
 function ctrlDO(o, idB, type) {
 	if (!type) return null
 	const bldId = o?._build ?? idB
-	const mdlId = o?.module?.id
-	const ch = o?.module?.channel - 1
+
+	// Обычный ВНО или Группа ВНО
+	if (o?.module instanceof Array) groupDO(o, bldId, type)
+	else singleDO(o?.module, bldId, type)
+}
+
+function groupDO(o, idB, type) {
+	o.module.forEach((module) => singleDO(module, idB, type))
+}
+
+function singleDO(mdl, idB, type) {
+	const ch = mdl?.channel - 1
 	const r = {}
 	if (type === 'on') {
-		r[bldId] = { [mdlId]: { [ch]: 1 } }
+		r[idB] = { [mdl?.id]: { [ch]: 1 } }
 	}
 	if (type === 'off') {
-		r[bldId] = { [mdlId]: { [ch]: 0 } }
+		r[idB] = { [mdl?.id]: { [ch]: 0 } }
 	}
 	setCmd(r)
 }
