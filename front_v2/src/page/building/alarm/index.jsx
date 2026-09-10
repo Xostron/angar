@@ -1,9 +1,8 @@
 import useInputStore from '@src/entities/store/input';
-import style from './style.module.css';
-import IncidentBox from '@src/entities/incident_box';
-import useEquipStore from '@src/entities/store/equipment';
-import IncidentJump from '@src/shared/ui/incident/jump';
 import IncidentInline from '@src/shared/ui/incident/inline';
+import IncidentJump from '@src/shared/ui/incident/jump';
+import IncidentBox from '@src/entities/incident_box';
+import style from './style.module.css';
 
 //   Левая боковая панель - аварии склада
 function Alarm({ idB }) {
@@ -15,16 +14,19 @@ function Alarm({ idB }) {
   );
   const achieve = useInputStore((s) => s?.alarm?.achieve?.[idB]?.[0]);
   const count = useInputStore((s) => s?.alarm?.count?.[idB]);
-  console.log(11, achieve);
   return (
     <aside className={style.container}>
-      <IncidentBox
-        type="notification"
-        err={{ ...notification, code: am + '_' + notification?.code }}
-      />
-      <IncidentBox type="alarm" err={alarm} />
-      <IncidentJump count={count} min={1} />
-      <IncidentInline msg={achieve?.msg} />
+      <section className={style.monit}>
+        <IncidentBox
+          type="notification"
+          err={{ ...notification, code: am + '_' + notification?.code }}
+        />
+        <IncidentBox type="alarm" err={alarm} />
+        <IncidentJump count={count} min={1} />
+      </section>
+      <section className={style.achieve}>
+        <IncidentInline msg={achieve?.msg} />
+      </section>
     </aside>
   );
 }
