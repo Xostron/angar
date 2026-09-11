@@ -1,7 +1,7 @@
 import { Children, useRef, useState, useEffect } from 'react';
 import './style.css';
 
-const CARD_WIDTH = 371;
+const CARD_WIDTH = 377;
 const GAP = 12;
 
 const ScrollGrid = ({ children }) => {
@@ -41,7 +41,8 @@ const ScrollGrid = ({ children }) => {
   return (
     <div className="scroll-grid">
       <div className="scroll-grid__track" ref={trackRef}>
-        <div
+        {/* TODO */}
+		<div
           className="scroll-grid__grid"
           style={{
             gridTemplateColumns: `repeat(${cols}, ${CARD_WIDTH}px)`,
