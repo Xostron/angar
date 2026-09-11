@@ -33,7 +33,7 @@ function combiAchieve(fnChange, code, accCold, acc, se, s, bld, clr) {
 			msgB(
 				bld,
 				80,
-				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`,
+				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. вл. = ${s?.mois?.humidity ?? '--'}`,
 			),
 		)
 		// Точка отсчета для обдува датчиков по достижению задания
@@ -123,7 +123,7 @@ function combiAchieveHeat(fnChange, code, accCold, acc, se, s, bld, clr) {
 			msgB(
 				bld,
 				80,
-				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. влажности = ${s?.mois?.humidity ?? '--'}`,
+				`${accCold.tgtTprd?.toFixed(1) ?? '--'} °C. Зад. вл. = ${s?.mois?.humidity ?? '--'}`,
 			),
 		)
 		// Точка отсчета для обдува датчиков по достижению задания

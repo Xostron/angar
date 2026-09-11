@@ -16,7 +16,7 @@ function Alarm({ idB }) {
   const count = useInputStore((s) => s?.alarm?.count?.[idB]);
   return (
     <aside className={style.container}>
-      <section className={style.monit}>
+      <section className={style.incident}>
         <IncidentBox
           type="notification"
           err={{ ...notification, code: am + '_' + notification?.code }}

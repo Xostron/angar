@@ -7,6 +7,7 @@
   background-color: var(--c-white);
   /* gap: 12px; */
   height: 833px;
+  /* height: 100%; */
   justify-content: center;
 }
 

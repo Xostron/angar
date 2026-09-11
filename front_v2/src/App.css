@@ -9,7 +9,7 @@
   --c-grey-light: #e6e9ed;
   --c-grey-lighter: #f5f6f8;
   --c-grey-lightest: #ecf0f3;
-  --c-grey-lightest:#F7F9FB;
+  --c-grey-lightest: #f7f9fb;
   --c-grey-47: #eef2f678;
   --c-grey-50: #e5eef780;
   --c-red: #e83757;
@@ -118,7 +118,6 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /*  */
 }
 
 .app-content main {

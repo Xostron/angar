@@ -1,11 +1,12 @@
 .sidebar {
   width: 345px;
   min-width: 345px;
-  height: 100%;
-  background: var(--c-white);
+  /* height: 100%; */
+  height: fit-content;
+  background-color: var(--c-white);
   &.right {
-    background: var(--c-grey-lighter);
+    background-color: var(--c-grey-lighter);
     padding: 24px;
-	width: 370px;
+    width: 370px;
   }
 }

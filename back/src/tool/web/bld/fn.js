@@ -105,6 +105,9 @@ function fnFan(idB, obj) {
  * @param {*} ownerId ИД склада, ИД секции
  * @param {*} obj Глобальные данные
  * @param {*} code Код датчика
+ * @param {*} type возвращаемое значение value = max/min
+ * @param {} unit указываем код ед.измерения
+ * @param {} codeIcon Код иконки
  * @returns
  */
 function fnSens(ownerId, obj, code, type, unit, codeIcon) {

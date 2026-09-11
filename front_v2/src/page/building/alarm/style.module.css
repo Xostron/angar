@@ -1,20 +1,18 @@
 .container {
-  padding: 24px;
-  padding-top: 0px;
+  padding-inline: 24px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  height: 492px;
+  justify-content: space-between;
 }
 
-.monit {
+.incident {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  /* width: 345px; */
-  height: 374px;
+  padding: 32px 0px;
 }
 
 .achieve {
-  height: 104px;
-  margin:0px;
+  padding-top: 24px;
 }

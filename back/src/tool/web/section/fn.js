@@ -15,6 +15,7 @@ function fnSMode(idB, idS, bldType, retain = {}) {
 		case true:
 			return [true, 'Авто']
 		case false:
+		case undefined:
 			return [false, 'Руч']
 		default:
 			return [retain?.[idB]?.mode?.[idS], 'Выкл']
@@ -71,6 +72,7 @@ function heatVlv(idS, obj) {
 }
 
 /**
+ * TODO depreciated
  * Страница карточки секций: левая панель аварийные сообщения склада
  * @returns {object} Ключ ИД склада, значение - массив авар сообщений barB склада
  */
@@ -108,22 +110,81 @@ function fnSExtra(idB, obj) {
  * @param {*} obj Глобальные данные (рама, анализ, retain...)
  * @returns
  */
-function clrMode(idB, idS, obj) {
-	// Получить состояние испарителей по складу
+function clrMode(idS, obj) {
+	// Получить состояние испарителей по секции
 	const clrs = getStateClr(idS, obj)
 
 	// Агрегированное состояние по всем испарителям
 	const weight = {
-		'on-on-off': { v: 5, name: 'Охлаждение' },
-		'off-off-on': { v: 4, name: 'Оттайка' },
-		'off-on-off': { v: 3, name: 'Вентилятор' },
-		'on-off-off': { v: 2, name: 'Набор холода' },
-		'off-off-off-add': { v: 1, name: 'Слив' },
-		'off-off-off': { v: 0, name: 'Пауза' },
+		'on-on-off': {
+			w: 5,
+			name: 'Охлаждение',
+			sol: true,
+			fan: true,
+			heat: false,
+			code: 'on-on-off',
+		},
+		'off-off-on': {
+			w: 4,
+			name: 'Оттайка',
+			sol: false,
+			fan: false,
+			heat: true,
+			code: 'off-off-on',
+		},
+		'off-on-off': {
+			w: 3,
+			name: 'Вентилятор',
+			sol: false,
+			fan: true,
+			heat: false,
+			code: 'off-on-off',
+		},
+		'on-off-off': {
+			w: 2,
+			name: 'Набор холода',
+			sol: true,
+			fan: false,
+			heat: false,
+			code: 'on-off-off',
+		},
+		'off-off-off-add': {
+			w: 1,
+			name: 'Слив',
+			sol: false,
+			fan: false,
+			heat: false,
+			code: 'off-off-off-add',
+		},
+		'off-off-off': {
+			w: 0,
+			name: 'Пауза',
+			sol: false,
+			fan: false,
+			heat: false,
+			code: 'off-off-off',
+		},
 	}
-	// Расчет веса, сортировка по убыванию, первый э-т самый тяжелый -
+	// Расчет веса, сортировка по убыванию.
+	// Первый э-т тз массива самый тяжелый -
 	// это наше агрегированое состояние по испарителям
-	return clrs.map((el) => weight[el]).sort((a, b) => b.v - a.v)[0]
+	return clrs.map((el) => weight[el]).sort((a, b) => b.w - a.w)[0]
 }
 
-module.exports = { fnSMode, fnSFan, fnVlv, heatVlv, fnSBarB, fnSExtra, clrMode }
+/**
+ * Карточка секций комби склада: агрегация вентиляторов секции - ВНО+ВНО испарителя
+ * @param {*} idS
+ * @param {*} obj
+ * @returns
+ */
+function fnCombiSFan(idS, obj) {
+	// Состояние ВНО + ВНО испарителей секции
+	const fanS = obj?.data?.fan?.filter((el) => idS === el.owner.id && el.type !== 'accel')
+	return {
+		value: fanS.some((el) => obj?.value[el._id]?.state === 'run') ? 'Вкл' : 'Выкл',
+		// Режим Холодильного оборудования => иконка ВНО в карточке
+		code: clrMode(idS, obj).code,
+	}
+}
+
+module.exports = { fnSMode, fnSFan, fnVlv, heatVlv, fnSBarB, fnSExtra, clrMode, fnCombiSFan }

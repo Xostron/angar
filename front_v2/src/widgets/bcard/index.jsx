@@ -3,7 +3,7 @@ import TextIcEquip from '@src/shared/ui/text/equipment_icon';
 import IncidentInline from '@src/shared/ui/incident/inline';
 import TextSensRow from '@src/shared/ui/text/sensor_row';
 import HeadBcard from './head_bcard';
-import SensGroup from './sens_group';
+import SensGroup from '../../entities/sens_group';
 import style from './style.module.css';
 
 /**

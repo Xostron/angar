@@ -1,6 +1,7 @@
 const { data: store } = require('@store/index')
 const { fnSens } = require('../bld/fn')
 const { fnSMode, fnSFan, fnVlv, clrMode } = require('./fn')
+const defScard = require('./def')
 
 /**
  * Карточка секции
@@ -14,19 +15,8 @@ function fnSCard(obj) {
 		const idB = sec.buildingId
 		const bld = obj.data.building.find((el) => el._id === idB)
 		acc[bld._id] ??= {}
-		// Режим работы: агрегация режимов секций
-		acc[bld._id][sec._id] = {
-			idS: sec._id,
-			idB: bld._id,
-			order: sec.order ?? '--',
-			name: sec.name ?? '--',
-			mode: fnSMode(idB, sec._id, bld.type, obj?.retain),
-			min: fnSens(sec._id, obj, 'tprd')?.min ?? '--',
-			max: fnSens(sec._id, obj, 'tprd')?.max ?? '--',
-			fan: fnSFan(sec._id, obj) ? 'Вкл' : 'Выкл',
-			valve: fnVlv(sec._id, obj),
-			combiMode: clrMode(idB, sec._id, obj)?.name,
-		}
+		// Карточка секции
+		acc[bld._id][sec._id] = defScard?.[bld.type](bld, sec, obj)
 		return acc
 	}, {})
 }
