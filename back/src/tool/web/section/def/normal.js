@@ -1,4 +1,4 @@
-const { fnSens, fnAutomode } = require('@tool/web/bld/fn')
+const { fnSens } = require('@tool/web/bld/fn')
 const { fnSMode, fnSFan, fnVlv } = require('../fn')
 
 function normalScard(bld, sec, obj) {

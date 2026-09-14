@@ -4,6 +4,7 @@ import Toggle2 from '@src/shared/ui/button/toggle_button_2';
 import { Sensor, Status } from './row';
 import Equipment from './equipment';
 import style from './style.module.css';
+import useModalStore from '@src/entities/store/modal';
 
 const Indoor = ({ idB }) => {
   //   Правая боковая панель
@@ -11,7 +12,8 @@ const Indoor = ({ idB }) => {
   const rSide = bCard?.sidesect;
   //   Включить/выкл склад
   const setStart = useOutputStore((s) => s.setStart);
-
+  const openModal = useModalStore((s) => s.open);
+  const codeModal = useModalStore((s) => s.code);
   if (!rSide) return <></>;
 
   return (
@@ -20,12 +22,15 @@ const Indoor = ({ idB }) => {
       <Toggle2
         value={rSide.start}
         on1={() => {
-          setStart({ _id: idB, val: false });
+          //   setStart({ _id: idB, val: false });
+          openModal('WARN_WAREHOUSE', { message: 'Склад перегружен!' });
         }}
         on2={() => {
-          setStart({ _id: idB, val: true });
+          //   setStart({ _id: idB, val: true });
+          openModal('WARN_WAREHOUSE', { message: 'Склад перегружен!' });
         }}
         disabled={false}
+        trigger={codeModal}
       />
       <span className={style.indoor__title}>Данные склада</span>
       <Status data={bCard} />

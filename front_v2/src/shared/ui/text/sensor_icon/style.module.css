@@ -1,5 +1,6 @@
 .text {
   display: inline-flex;
+  flex-grow: 1;
   align-items: center;
   gap: 4px;
   padding: 8px;

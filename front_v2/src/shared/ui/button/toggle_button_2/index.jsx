@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import Button from '../btn';
 import style from './style.module.css';
+import useModalStore from '@src/entities/store/modal';
 
 // 2х позиционный переключатель
-function Toggle2({ value, on1, on2, disabled }) {
+function Toggle2({ value, on1, on2, disabled, trigger }) {
   // Ожидание изменения value
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
-
-  // После изменения value, сбрасываем стиль ожидания кнопки
+  // После изменения value, сбрасываем loader
   useEffect(() => {
     setLoading1(false);
     setLoading2(false);
-  }, [value]);
+  }, [trigger]);
 
   return (
     <Container disabled={disabled}>
@@ -20,7 +20,7 @@ function Toggle2({ value, on1, on2, disabled }) {
         label="ВЫКЛ"
         variant="toggle2"
         active={value === false}
-        disabled={disabled || value===false}
+        disabled={disabled || value === false}
         onClick={() => {
           on1();
           setLoading1(true);
@@ -32,7 +32,7 @@ function Toggle2({ value, on1, on2, disabled }) {
         label="ВКЛ"
         variant="toggle2"
         active={value === true}
-        disabled={disabled || value===true}
+        disabled={disabled || value === true}
         onClick={() => {
           on2();
           setLoading2(true);

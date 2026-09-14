@@ -18,7 +18,6 @@ const BuildingPage = () => {
   const sCard = useInputStore((s) => s?.input?.sCard?.[idB]);
   //   Тип склада
   const bType = useEquipStore((s) => s.getBld(idB)?.type);
-
   //   Карточка секции
   const Scard = defScard?.[bType] ?? ScardNormal;
 
