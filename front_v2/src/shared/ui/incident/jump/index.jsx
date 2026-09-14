@@ -9,7 +9,7 @@ function IncidentJump({ count, onClick, size = 'normal', min = 0 }) {
       onClick={onClick}
       style={dictSize?.[size] ?? {}}
     >
-      Все аварии (+{count})
+      Все аварии (+{count - 1})
       <img src={dictIcon.next} alt="" />
     </button>
   );

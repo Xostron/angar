@@ -6,8 +6,8 @@ function ValveGroup({ valve = [] }) {
   if (!valve.length) return <></>;
   return (
     <div className={style.container}>
-      {valve.map((el) => (
-        <Valve data={el} />
+      {valve.map((el, i) => (
+        <Valve key={i} data={el} />
       ))}
     </div>
   );

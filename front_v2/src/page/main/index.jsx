@@ -8,13 +8,13 @@ import './style.css';
 // Начальная страница: карточки складов
 const MainPage = () => {
   const bCard = useInputStore((s) => s?.input?.bCard);
-  console.log(bCard);
+//   console.log(bCard);
   return (
     <main className="main-page">
       <Sidebar>
         <Outdoor />
       </Sidebar>
-      <ScrollGrid>
+      <ScrollGrid size="bcard">
         {bCard &&
           Object.values(bCard).map((el) => <Bcard key={el?.idB} data={el} />)}
       </ScrollGrid>

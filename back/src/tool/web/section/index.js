@@ -1,6 +1,3 @@
-const { data: store } = require('@store/index')
-const { fnSens } = require('../bld/fn')
-const { fnSMode, fnSFan, fnVlv, clrMode } = require('./fn')
 const defScard = require('./def')
 
 /**

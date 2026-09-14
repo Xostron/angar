@@ -32,7 +32,7 @@ function Progress({ value }) {
       <path
         d="M32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16ZM4.64 16C4.64 22.274 9.72605 27.36 16 27.36C22.274 27.36 27.36 22.274 27.36 16C27.36 9.72605 22.274 4.64 16 4.64C9.72605 4.64 4.64 9.72605 4.64 16Z"
         fill="#65A7EE"
-        fill-opacity="0.26"
+        fillOpacity="0.26"
       />
       {/* Прогресс */}
       {/* <path
@@ -66,8 +66,8 @@ function Progress({ value }) {
           y2="15.4152"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#58ADEC" />
-          <stop offset="1" stop-color="#3482C9" />
+          <stop stopColor="#58ADEC" />
+          <stop offset="1" stopColor="#3482C9" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_8970_38306"
@@ -77,8 +77,8 @@ function Progress({ value }) {
           y2="16.0292"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#58ADEC" />
-          <stop offset="1" stop-color="#3482C9" />
+          <stop stopColor="#58ADEC" />
+          <stop offset="1" stopColor="#3482C9" />
         </linearGradient>
       </defs>
     </svg>

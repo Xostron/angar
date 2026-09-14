@@ -1,10 +1,15 @@
 import { Children, useRef, useState, useEffect } from 'react';
 import './style.css';
-
-const CARD_WIDTH = 377;
+const dictSize = {
+  bcard: { width: 372.75, height: 388 },
+  scard_normal: { width: 377.67, height: 376.5 },
+  scard_combi: { width: 377, height: 346 },
+  // В складе холодильник не отображаются камеры, добавлено для совместимости
+  scard_cold: { width: 377.67, height: 376.5 },
+};
 const GAP = 12;
 
-const ScrollGrid = ({ children }) => {
+const ScrollGrid = ({ children, size = 'bcard' }) => {
   const trackRef = useRef(null);
   const [cols, setCols] = useState(1);
   const [page, setPage] = useState(0);
@@ -12,6 +17,9 @@ const ScrollGrid = ({ children }) => {
   const perPage = cols * 2;
   const totalPages = Math.max(1, Math.ceil(items.length / perPage));
   const currentItems = items.slice(page * perPage, (page + 1) * perPage);
+
+  const CARD_WIDTH = dictSize?.[size]?.width;
+  const CARD_HEIGHT = dictSize?.[size]?.height;
 
   useEffect(() => {
     const el = trackRef.current;
@@ -42,11 +50,11 @@ const ScrollGrid = ({ children }) => {
     <div className="scroll-grid">
       <div className="scroll-grid__track" ref={trackRef}>
         {/* TODO */}
-		<div
+        <div
           className="scroll-grid__grid"
           style={{
             gridTemplateColumns: `repeat(${cols}, ${CARD_WIDTH}px)`,
-            gridTemplateRows: `repeat(2, 1fr)`,
+            gridTemplateRows: `repeat(2, ${CARD_HEIGHT}px)`,
           }}
         >
           {currentItems}

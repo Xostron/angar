@@ -11,13 +11,14 @@ function Button({
   disabled = false,
   active = true,
   variant = 'usual',
+  loading,
 }) {
   const stl = {
     cursor: disabled ? 'not-allowed' : 'pointer',
     ...(dict?.[variant] ?? {}),
   };
-  const cls = `${style.btn} ${dictActive?.[variant]?.[active] ?? ''}`;
-
+  let cls = `${style.btn} ${dictActive?.[variant]?.[active] ?? ''}`;
+  if (loading) cls += ' ' + style.loading;
   return (
     <button className={cls} onClick={onClick} disabled={disabled} style={stl}>
       {label}

@@ -5,8 +5,8 @@ function Equipment({ data = [] }) {
   if (!data.length) return <></>;
   return (
     <div className={style.container}>
-      {data.map((el) => (
-        <TextEquip name={el.name} value={el.value} />
+      {data.map((el, i) => (
+        <TextEquip key={i} name={el.name} value={el.value} />
       ))}
     </div>
   );

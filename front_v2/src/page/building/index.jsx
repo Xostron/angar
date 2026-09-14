@@ -3,10 +3,12 @@ import ScrollGrid from '@src/shared/scroll-grid';
 import { useParams } from 'react-router-dom';
 import Outdoor from '@src/widgets/outdoor';
 import Sidebar from '@src/shared/sidebar';
-import Scard from './scard';
 import Indoor from '@src/widgets/indoor';
 import Alarm from './alarm';
 import '../main/style.css';
+import useEquipStore from '@src/entities/store/equipment';
+import ScardNormal from '@src/widgets/scard/def/normal'
+import defScard from '@src/widgets/scard'
 
 // Склад: карточки секций
 const BuildingPage = () => {
@@ -14,6 +16,11 @@ const BuildingPage = () => {
 
   //   Карточки секций
   const sCard = useInputStore((s) => s?.input?.sCard?.[idB]);
+  //   Тип склада
+  const bType = useEquipStore((s) => s.getBld(idB)?.type);
+
+  //   Карточка секции
+  const Scard = defScard?.[bType] ?? ScardNormal;
 
   return (
     <main className="main-page">
@@ -21,7 +28,7 @@ const BuildingPage = () => {
         <Outdoor />
         <Alarm idB={idB} />
       </Sidebar>
-      <ScrollGrid>
+      <ScrollGrid size={`scard_${bType ?? 'normal'}`}>
         {sCard &&
           Object.values(sCard).map((el) => <Scard key={el?.idS} data={el} />)}
       </ScrollGrid>

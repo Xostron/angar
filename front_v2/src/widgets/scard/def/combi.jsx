@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
 import style from './style.module.css';
-import TextIcEquip from '@src/shared/ui/text/equipment_icon';
-import SensIc from '@src/shared/ui/text/sensor_icon';
-import SensGroup from '@src/entities/sens_group';
-import ValveGroup from '../../../entities/valve_group';
+import SensGroup from '@src/entities/sens_group'
+import ValveGroup from '@src/entities/valve_group'
 
-// Карточка секции
-function Scard({ data }) {
+// Для комби склада: Карточка секции
+function ScardCombi({ data }) {
   const { idS, idB, order, name, mode, clrMode, sensor, valve } = data;
-  //   console.log(12, data)
+  // console.log(12, data)
   return (
     <Link className={style.container} to={`section/${idS}`}>
       {/* Заголовок */}
@@ -21,7 +19,7 @@ function Scard({ data }) {
         <span>Режим ТО</span>
         <span className={style.cmode}>{clrMode}</span>
       </div>
-     
+
       {/* ВНО и датчики */}
       <SensGroup sensor={sensor} />
       {/* Клапаны */}
@@ -30,4 +28,5 @@ function Scard({ data }) {
   );
 }
 
-export default Scard;
+
+export default ScardCombi;

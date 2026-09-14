@@ -1,8 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 377px;
-  height: 346px;
+  /* width: 377px; */
+  /* height: 346px; */
   padding: 20px;
   row-gap: 29.67px;
   border-radius: 12px;

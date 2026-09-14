@@ -2,6 +2,7 @@ import style from './style.module.css';
 import iconIncident from '@src/shared/dict/icon_incident';
 
 function IncidentBox({ err = {}, type = 'alarm', size = 'normal' }) {
+  if (!err?.msg) return <></>;
   // Размеры
   const stl = { ...(dictSize?.[size] ?? {}) };
 
