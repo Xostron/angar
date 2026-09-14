@@ -7,7 +7,6 @@ export default function BaseDialog({ isOpen, onClose, children }) {
   useEffect(() => {
     const dialogNode = dialogRef.current;
     if (!dialogNode) return;
-    console.log(1234, isOpen);
     if (isOpen) {
       // Открывает окно поверх всего как модалку (появляется встроенный ::backdrop)
       if (!dialogNode.open) dialogNode.showModal();

@@ -23,11 +23,11 @@ const Indoor = ({ idB }) => {
         value={rSide.start}
         on1={() => {
           //   setStart({ _id: idB, val: false });
-          openModal('WARN_WAREHOUSE', { message: 'Склад перегружен!' });
+          openModal('Start', { message: 'Склад перегружен!' });
         }}
         on2={() => {
           //   setStart({ _id: idB, val: true });
-          openModal('WARN_WAREHOUSE', { message: 'Склад перегружен!' });
+          openModal('Start', { message: 'Склад перегружен!' });
         }}
         disabled={false}
         trigger={codeModal}

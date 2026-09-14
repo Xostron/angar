@@ -13,8 +13,8 @@ function Start({}) {
       <span></span>
       <span></span>
       <div>
-        <Button label="Отмена" />
-        <Button label="Отключить" />
+        <Button label="Отмена" active={false} />
+        <Button label="Отключить" active={true} />
       </div>
     </section>
   );
