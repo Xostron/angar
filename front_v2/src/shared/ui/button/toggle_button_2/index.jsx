@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Button from '../btn';
 import style from './style.module.css';
-import useModalStore from '@src/entities/store/modal';
 
 // 2х позиционный переключатель
 function Toggle2({ value, on1, on2, disabled, trigger }) {
@@ -12,7 +11,7 @@ function Toggle2({ value, on1, on2, disabled, trigger }) {
   useEffect(() => {
     setLoading1(false);
     setLoading2(false);
-  }, [trigger]);
+  }, [...trigger]);
 
   return (
     <Container disabled={disabled}>
@@ -32,7 +31,7 @@ function Toggle2({ value, on1, on2, disabled, trigger }) {
         label="ВКЛ"
         variant="toggle2"
         active={value === true}
-        disabled={disabled || value === true}
+        disabled={disabled}
         onClick={() => {
           on2();
           setLoading2(true);

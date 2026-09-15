@@ -3,6 +3,7 @@ const { setACmd } = require('@tool/command/set')
 const { isСoolerCombiVNO, isCoolerCombiOn } = require('@tool/combi/is')
 const { getStateClr } = require('@tool/cooler')
 const { data: store } = require('@store')
+
 /**
  * Команда авторежима на плавный пуск/стоп ВНО секции
  * @param {*} bld Id склада
@@ -10,21 +11,22 @@ const { data: store } = require('@store')
  * @param {*} s Настройки склада
  * @param {*} start команда авторежим: пуск/стоп ВНО секции
  */
-function fnACmd(bld, resultFan, obj, bdata) {
+function fnACmd(bld, resultFan, obj, bdata, isNormal) {
 	const start = resultFan.start.includes(true)
 	if (!bdata?.s) return
 	const idB = bld._id
 	const delay = bdata.s.fan.delay * 1000
 	resultFan.list.forEach((idS) => {
+		const mode = obj.retain?.[bld._id]?.mode?.[idS]
 		const st = getStateClr(idS, obj)
 		const a = [
 			[isExtralrm(idB, idS, 'local'), 'Нет переключателя на щите'],
-			[isExtralrm(idB, null, 'local'), 'местный режим блокировки'],
-			[!obj?.retain?.[idB]?.mode?.[idS], 'секция не в авто'],
-			[!isCoolerCombiOn(bld, bdata), 'комби-холод: испарители выключены'],
+			[isExtralrm(idB, null, 'local'), 'Нет переключателя на щите'],
+			[!obj?.retain?.[idB]?.mode?.[idS], 'Секция не в авто'],
+			[!isCoolerCombiOn(bld, bdata), 'Комби-холод: испарители выключены'],
 			[
 				!isСoolerCombiVNO(bld, idS, obj, bdata),
-				' Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций',
+				'Комби-холод: если ВНО испарителей выключены, то блокировать ВНО секций',
 			],
 			[
 				st.includes('off-off-on') || st.includes('off-off-off-add'),
@@ -32,6 +34,10 @@ function fnACmd(bld, resultFan, obj, bdata) {
 			],
 			[isExtralrm(bld._id, null, 'alarm'), 'Нажат аварийный стоп'],
 			[isExtralrm(idB, idS, 'vlvLim'), 'Нет питания концевиков данной секции'],
+			[isExtralrm(idB, null, 'bldOff'), 'Нажата кнопка выключения склада'],
+			[isExtralrm(bld._id, null, 'sb'), 'Авария питания'],
+			[isExtralrm(idB, idS, 'alrClosed') && mode === true && isNormal, 'Низкая темп. канала'],
+			[isExtralrm(idB, null, 'alrClosed') && mode === true, 'Низкая темп. канала'],
 		]
 		if (a.filter((el) => el[0]).length > 0) {
 			setACmd('fan', idS, { delay, type: 'off', force: null, max: null })

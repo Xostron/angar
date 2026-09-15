@@ -70,6 +70,7 @@ const def = {
 			fCoolerCrash,
 			bldOff,
 			plcio,
+			alrStop
 		},
 	},
 	// Доп. аварии холодильника

@@ -5,15 +5,13 @@ import { Sensor, Status } from './row';
 import Equipment from './equipment';
 import style from './style.module.css';
 import useModalStore from '@src/entities/store/modal';
-import { runTime } from '@src/shared/tool/time';
 
 const Indoor = ({ idB }) => {
   //   Правая боковая панель
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const rSide = bCard?.sidesect;
-
+  // Открыть модальное окно
   const openModal = useModalStore((s) => s.open);
-  const codeModal = useModalStore((s) => s.code);
 
   if (!rSide) return <></>;
   const modalProps = { idB };
@@ -30,7 +28,7 @@ const Indoor = ({ idB }) => {
           openModal('turnon', modalProps);
         }}
         disabled={false}
-        trigger={rSide.start}
+        trigger={[rSide.start]}
       />
       <span className={style.indoor__title}>Данные склада</span>
       <Status data={bCard} />

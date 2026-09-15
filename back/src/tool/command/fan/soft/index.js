@@ -64,7 +64,7 @@ function soft(bld, obj, s, seB, m, resultFan, bdata, where) {
 		// )
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, idS, obj)
-		// console.log(9993, type, fanFC, fans)
+		// console.log(9993, aCmd)
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }

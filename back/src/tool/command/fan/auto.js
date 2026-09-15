@@ -13,7 +13,7 @@ function normal(bld, obj, s, seB, m, resultFan, bdata) {
 	// console.log('\n------------SOFT_COMBI_NORMAL------------', bld.name)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	durVent(bld, obj, s, seB, m, resultFan, bdata)
-	fnACmd(bld, resultFan, obj, bdata)
+	fnACmd(bld, resultFan, obj, bdata, true)
 	// Формирование aCmd: Прогрев клапанов
 	const start = resultFan.start.includes(true)
 	if (!start) fnFanWarm(resultFan, s)
@@ -27,7 +27,7 @@ function combi(bld, obj, s, seB, m, resultFan, bdata) {
 	// console.log('\n------------SOFT_COMBI_COLD------------', bld.name)
 	// Формирование aCmd: команда авторежима на вкл/выкл ВНО
 	// durVent(bld, obj, s, seB, m, resultFan, bdata)
-	fnACmd(bld, resultFan, obj, bdata)
+	fnACmd(bld, resultFan, obj, bdata, false)
 	// Плавный пуск/стоп ВНО склада
 	soft(bld, obj, s, seB, m, resultFan, bdata, 'cold')
 	// console.log('------------SOFT_COMBI_COLD------------', bld.name, '\n')

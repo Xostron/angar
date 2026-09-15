@@ -69,10 +69,7 @@ function fan(obj, s) {
 
 		// Низкая температура канала в авто: aLowB (склад), aLow (секции)
 		const aLowB = isExtralrm(idB, null, 'alrClosed') && mode === true
-		const aLow = idsS.some(
-			(idS) =>
-				isExtralrm(idB, idS, 'alrClosed') && (mode === true || mode === undefined) && !isCC,
-		)
+		const aLow = idsS.some((idS) => isExtralrm(idB, idS, 'alrClosed') && mode === true && !isCC)
 
 		// Низкая температура канала в ручном режиме: Однократная блокировка ВНО
 		// для обычного и комби-обычного

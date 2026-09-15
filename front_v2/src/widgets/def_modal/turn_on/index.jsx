@@ -41,7 +41,7 @@ function TurnOn({ idB }) {
         <span>·</span>
         <span>Режим: {automode}</span>
         <span>·</span>
-        <span>Склад выключен:{datestop}</span>
+        <span>Склад включен:{datestop}</span>
       </div>
 
 
