@@ -5,16 +5,18 @@ import { Sensor, Status } from './row';
 import Equipment from './equipment';
 import style from './style.module.css';
 import useModalStore from '@src/entities/store/modal';
+import { runTime } from '@src/shared/tool/time';
 
 const Indoor = ({ idB }) => {
   //   Правая боковая панель
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const rSide = bCard?.sidesect;
-  //   Включить/выкл склад
-  const setStart = useOutputStore((s) => s.setStart);
+
   const openModal = useModalStore((s) => s.open);
   const codeModal = useModalStore((s) => s.code);
+
   if (!rSide) return <></>;
+  const modalProps = { idB };
 
   return (
     <aside className={style.indoor}>
@@ -22,15 +24,13 @@ const Indoor = ({ idB }) => {
       <Toggle2
         value={rSide.start}
         on1={() => {
-          //   setStart({ _id: idB, val: false });
-          openModal('Start', { message: 'Склад перегружен!' });
+          openModal('turnoff', modalProps);
         }}
         on2={() => {
-          //   setStart({ _id: idB, val: true });
-          openModal('Start', { message: 'Склад перегружен!' });
+          openModal('turnon', modalProps);
         }}
         disabled={false}
-        trigger={codeModal}
+        trigger={rSide.start}
       />
       <span className={style.indoor__title}>Данные склада</span>
       <Status data={bCard} />

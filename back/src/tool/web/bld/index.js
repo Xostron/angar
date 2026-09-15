@@ -30,6 +30,8 @@ function fnBCard(obj) {
 			],
 			achieve: fnAchieve(bld._id),
 			start: obj.retain?.[bld._id]?.start,
+			datestart: obj.retain?.[bld._id]?.datestart,
+			datestop: obj.retain?.[bld._id]?.datestop,
 			// Страница секции: правая панель "Данные склада"
 			sidesect: {
 				start: obj?.retain?.[bld._id]?.start ?? false,

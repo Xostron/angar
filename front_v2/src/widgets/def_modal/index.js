@@ -1,7 +1,9 @@
-import Start from './start';
+import turnoff from './turn_off';
+import turnon from './turn_on';
 
 const defModal = {
-  Start,
+  turnoff,
+  turnon,
   WARN_WAREHOUSE: ({ message }) => <div>⚠️ Внимание: {message}</div>,
   CONFIRM_ACTION: ({ onConfirm }) => (
     <div>

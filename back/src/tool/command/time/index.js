@@ -74,7 +74,7 @@ function runTime(date, type = 0) {
 /**
  * Пройденное время
  * @param {String||DateTime} doc время
- * @returns {number}
+ * @returns {number} Пройденное время в сек
  */
 function runTimeV2(date) {
 	try {

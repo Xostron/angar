@@ -1,48 +1,46 @@
 import React, { useEffect, useRef } from 'react';
-import './style.css';
+import style from './style.module.css';
 
 export default function BaseDialog({ isOpen, onClose, children }) {
-  const dialogRef = useRef(null);
+  const ref = useRef(null);
 
   useEffect(() => {
-    const dialogNode = dialogRef.current;
-    if (!dialogNode) return;
+    const cur = ref.current;
+    if (!cur) return;
     if (isOpen) {
       // Открывает окно поверх всего как модалку (появляется встроенный ::backdrop)
-      if (!dialogNode.open) dialogNode.showModal();
+      if (!cur.open) cur.showModal();
     } else {
-      if (dialogNode.open) dialogNode.close();
+      if (cur.open) cur.close();
     }
   }, [isOpen]);
 
-  // Обрабатываем закрытие, если пользователь нажал Esc (браузер сам вызывает событие cancel)
-  const handleCancel = (e) => {
+  // Закрытие по Esc (браузер сам вызывает событие cancel)
+  const esc = (e) => {
     e.preventDefault();
     onClose();
   };
 
   // Закрытие при клике на оверлей (backdrop)
   const close = (e) => {
-    if (e.target === dialogRef.current) {
-      onClose();
-    }
+    if (e.target === ref.current) onClose();
   };
 
   return (
     <dialog
-      ref={dialogRef}
-      onCancel={handleCancel}
+      ref={ref}
+      onCancel={esc}
       onClick={close}
-      className="base-dialog"
+      className={style.container}
     >
       <img
         width="24px"
         height="24px"
-        className="dialog-close-btn"
+        className={style.btn}
         onClick={onClose}
         src="/icon/indicator/cross.svg"
       />
-      <div className="dialog-content">{children}</div>
+      <div className={style.content}>{children}</div>
     </dialog>
   );
 }

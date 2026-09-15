@@ -8,11 +8,10 @@
   transition:
     opacity 0.1s ease,
     transform 0.1s ease;
-
+  flex-grow: 1;
   &.active {
     background-color: var(--c-blue-darker);
     color: var(--c-white);
-    pointer-events: none; /* Защита: нельзя кликнуть повторно если кнопка уже активна */
   }
   &.loading {
     background-color: var(--c-blue-darker) !important;
