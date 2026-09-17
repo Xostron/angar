@@ -47,7 +47,7 @@ const dict = {
   //   Кнопка секции
   sect: {
     padding: '14px 16px',
-    width: '120px',
+    width: '139.62px',
     height: '56px',
   },
   //   2х позиционный перключатель
@@ -60,11 +60,13 @@ const dict = {
   },
   //   3х позиционный перключатель
   toggle3: {
-    padding: '13.5px 0px',
-    width: '50%',
-    height: '47px',
+    padding: '14px 0px',
+    width: '191.5px',
+    // height: '47px',
     lineHeight: '20px',
     fontSize: '16px',
+    flexGrow: '0',
+    // backgroundColor: 'var(--c-white)',
   },
 };
 
@@ -73,5 +75,5 @@ const dictActive = {
   automode: { true: style.automode_active, false: style.automode_not_active },
   sect: { true: style.sect_active, false: style.sect_not_active },
   toggle2: { true: style.toggle2_active, false: style.toggle2_not_active },
-  toggle3: { true: style.toggle2_active, false: style.toggle2_not_active },
+  toggle3: { true: style.toggle2_active, false: style.toggle3_not_active },
 };

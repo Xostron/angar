@@ -13,18 +13,17 @@ function TurnOff({ idB }) {
   //   Включить/выкл склад
   const setStart = useOutputStore((s) => s.setStart);
   const closeModal = useModalStore((s) => s.close);
+  
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
-  const bName = bCard?.name;
-  const product = bCard?.product?.name;
-  const automode = bCard?.automode?.name;
   const datestart = bCard?.datestart ? runTime(bCard?.datestart, 1) : '';
+  
   return (
     <div className={style.container}>
-      <h2 className={style.header}>Выключить склад {bName}?</h2>
+      <h2 className={style.header}>Выключить склад {bCard?.name}?</h2>
       <div className={style.subheader}>
-        <span>Продукт: {product}</span>
+        <span>Продукт: {bCard?.product?.name}</span>
         <span>·</span>
-        <span>Режим: {automode}</span>
+        <span>Режим: {bCard?.automode?.name}</span>
         <span>·</span>
         <span>Время работы:{datestart}</span>
       </div>
@@ -54,7 +53,7 @@ function TurnOff({ idB }) {
           active={true}
           onClick={() => {
             setStart({ _id: idB, val: false });
-            closeModal();
+            closeModal(false);
           }}
         />
       </div>

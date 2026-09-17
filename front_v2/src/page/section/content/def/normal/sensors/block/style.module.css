@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  background-color: var(--c-white);
+  border-radius: 12px;
+  padding: 16px 20px;
+  width: 385.67px;
+  height: 64px;
+}
+
+.target {
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 8px;
+  color: var(--c-blue-darker);
+  background-color: var(--c-blue-lighter);
+}

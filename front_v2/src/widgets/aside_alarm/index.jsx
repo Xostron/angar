@@ -5,7 +5,7 @@ import IncidentBox from '@src/entities/incident_box';
 import style from './style.module.css';
 
 //   Левая боковая панель - аварии склада
-function Alarm({ idB }) {
+function AsideAlarm({ idB }) {
   //   Авторежим
   const am = useInputStore((s) => s?.input?.retain?.[idB]?.automode);
   //   Критические аварии
@@ -35,4 +35,4 @@ function Alarm({ idB }) {
   );
 }
 
-export default Alarm;
+export default AsideAlarm;

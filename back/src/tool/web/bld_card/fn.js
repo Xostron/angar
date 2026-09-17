@@ -111,13 +111,21 @@ function fnFan(idB, obj) {
  * @returns
  */
 function fnSens(ownerId, obj, code, type, unit, codeIcon) {
+	if (type != 'minmax')
+		return {
+			state: obj?.value?.total?.[ownerId]?.[code]?.state ?? null,
+			value: obj?.value?.total?.[ownerId]?.[code]?.[type] ?? '--',
+			code: codeIcon,
+			unit,
+		}
+	// return obj?.value?.total?.[ownerId]?.[code]
 	return {
 		state: obj?.value?.total?.[ownerId]?.[code]?.state ?? null,
-		value: obj?.value?.total?.[ownerId]?.[code]?.[type] ?? '--',
+		min: obj?.value?.total?.[ownerId]?.[code]?.min ?? '--',
+		max: obj?.value?.total?.[ownerId]?.[code]?.max ?? '--',
 		code: codeIcon,
 		unit,
 	}
-	// return obj?.value?.total?.[ownerId]?.[code]
 }
 
 /**

@@ -62,7 +62,7 @@ function isAlrmByFan(idB, fan, equip, retain) {
 	const { signal, module, binding, cooler } = equip
 	// Включен ли склад
 	// const start = retain?.[idB]?.start
-	// Режим секции: авто true, ручной false, выкл null
+	// Режим секции: авто true, ручной false, выкл null|undefined
 	// const mode = fnMode(idB, fan, cooler, retain)
 	// console.log(start, mode, start && mode !== false)
 	// Коллекция модулей ПЛК

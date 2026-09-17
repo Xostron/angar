@@ -3,7 +3,8 @@ const { fnAutomode, fnFan, fnSens, fnAchieve } = require('./fn')
 const fnEquipment = require('./fn_equipment')
 
 /**
- * Карточки складов
+ * Карточки складов 
+ * sidesect - правая боковая панель
  * @param {*} obj
  * @returns
  */

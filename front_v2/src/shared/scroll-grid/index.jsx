@@ -9,7 +9,7 @@ const dictSize = {
 };
 const GAP = 12;
 
-const ScrollGrid = ({ children, size = 'bcard' }) => {
+const ScrollGrid = ({ children, size = 'bcard', notPaging = false }) => {
   const trackRef = useRef(null);
   const [cols, setCols] = useState(1);
   const [page, setPage] = useState(0);
@@ -60,27 +60,29 @@ const ScrollGrid = ({ children, size = 'bcard' }) => {
           {currentItems}
         </div>
       </div>
-      <div className="scroll-grid__nav">
-        <span className="scroll-grid__page">
-          Страница {page + 1} из {totalPages}
-        </span>
-        <div className="scroll-grid__buttons">
-          <button
-            className="scroll-grid__btn"
-            disabled={page === 0}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            &lt; Назад
-          </button>
-          <button
-            className="scroll-grid__btn"
-            disabled={page >= totalPages - 1}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            Далее &gt;
-          </button>
+      {!notPaging && (
+        <div className="scroll-grid__nav">
+          <span className="scroll-grid__page">
+            Страница {page + 1} из {totalPages}
+          </span>
+          <div className="scroll-grid__buttons">
+            <button
+              className="scroll-grid__btn"
+              disabled={page === 0}
+              onClick={() => setPage((p) => p - 1)}
+            >
+              &lt; Назад
+            </button>
+            <button
+              className="scroll-grid__btn"
+              disabled={page >= totalPages - 1}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              Далее &gt;
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

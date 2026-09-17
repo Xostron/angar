@@ -1,4 +1,4 @@
-const { fnSens } = require('@tool/web/bld/fn')
+const { fnSens } = require('@tool/web/bld_card/fn')
 const { fnSMode, fnCombiSFan, clrMode } = require('../fn')
 
 function coldScard(bld, sec, obj) {

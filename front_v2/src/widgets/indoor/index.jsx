@@ -10,11 +10,12 @@ const Indoor = ({ idB }) => {
   //   Правая боковая панель
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const rSide = bCard?.sidesect;
+
   // Открыть модальное окно
   const openModal = useModalStore((s) => s.open);
-
+  const isPassiveVisit = useModalStore((s) => s.isPassiveVisit);
+  const resetPassive = useModalStore((s) => s.resetPassive);
   if (!rSide) return <></>;
-  const modalProps = { idB };
 
   return (
     <aside className={style.indoor}>
@@ -22,13 +23,14 @@ const Indoor = ({ idB }) => {
       <Toggle2
         value={rSide.start}
         on1={() => {
-          openModal('turnoff', modalProps);
+          openModal('turnoff', { idB });
         }}
         on2={() => {
-          openModal('turnon', modalProps);
+          openModal('turnon', { idB });
         }}
         disabled={false}
-        trigger={[rSide.start]}
+        trigger={[rSide.start, bCard?.automode?.code, isPassiveVisit]}
+        resetTrigger={resetPassive}
       />
       <span className={style.indoor__title}>Данные склада</span>
       <Status data={bCard} />

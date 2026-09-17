@@ -4,8 +4,8 @@
   padding: 4px;
   border-radius: 8px;
   background-color: var(--c-grey-lightest);
-  flex-direction: row;
-  /* &.disabled {
+  width: fit-content;
+  &.disabled {
     opacity: 0.2;
-  } */
+  }
 }

@@ -3,6 +3,7 @@ const { getStateClr } = require('@tool/cooler')
 
 /**
  * Карточки секций: режим работы секции
+ * авто true, ручной false, выкл null|undefined
  * @param {*} idB
  * @param {*} idS
  * @param {*} bldType
@@ -15,9 +16,9 @@ function fnSMode(idB, idS, bldType, retain = {}) {
 		case true:
 			return [true, 'Авто']
 		case false:
-		case undefined:
 			return [false, 'Руч']
 		default:
+			// null|undefined
 			return [retain?.[idB]?.mode?.[idS], 'Выкл']
 	}
 }
@@ -44,18 +45,20 @@ function fnVlv(idS, obj) {
 	// Подогрев клапанов: true включен
 	const heat = heatVlv(idS, obj)
 
-	let vlv = obj?.data?.valve.reduce((acc, el) => {
-		if (!el.sectionId.includes(idS)) return acc
-		const r = {
-			type: el.type,
-			name: el.type === 'in' ? 'Приточный' : 'Выпускной',
-			heat,
-			value: obj?.value?.[el._id]?.val ?? '--',
-			state: obj?.value?.[el._id]?.state ?? '--',
-		}
-		acc.push(r)
-		return acc
-	}, [])
+	let vlv = obj?.data?.valve
+		.reduce((acc, el) => {
+			if (!el.sectionId.includes(idS)) return acc
+			const r = {
+				type: el.type,
+				name: el.type === 'in' ? 'Приточный' : 'Выпускной',
+				heat,
+				value: obj?.value?.[el._id]?.val ?? '--',
+				state: obj?.value?.[el._id]?.state ?? '--',
+			}
+			acc.push(r)
+			return acc
+		}, [])
+		.sort((a, b) => a.type - b.type)
 
 	return vlv
 }

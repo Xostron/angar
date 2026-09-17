@@ -3,15 +3,15 @@ import Button from '../btn';
 import style from './style.module.css';
 
 // 2х позиционный переключатель
-function Toggle2({ value, on1, on2, disabled, trigger }) {
-  // Ожидание изменения value
-  const [loading1, setLoading1] = useState(false);
-  const [loading2, setLoading2] = useState(false);
-  // После изменения value, сбрасываем loader
+function Toggle2({ value, on1, on2, disabled, trigger, resetTrigger }) {
+  // loading - мигание кнопки
+  const [loading, setLoading] = useState(0);
+
+  // Сброс мигания кнопки по срабатыванию триггера (действие окончено)
   useEffect(() => {
-    setLoading1(false);
-    setLoading2(false);
-  }, [...trigger]);
+    setLoading(0);
+    if (resetTrigger) resetTrigger();
+  }, trigger);
 
   return (
     <Container disabled={disabled}>
@@ -22,10 +22,9 @@ function Toggle2({ value, on1, on2, disabled, trigger }) {
         disabled={disabled || value === false}
         onClick={() => {
           on1();
-          setLoading1(true);
-          setLoading2(false);
+          setLoading(1);
         }}
-        loading={loading1}
+        loading={loading === 1}
       />
       <Button
         label="ВКЛ"
@@ -34,10 +33,9 @@ function Toggle2({ value, on1, on2, disabled, trigger }) {
         disabled={disabled}
         onClick={() => {
           on2();
-          setLoading2(true);
-          setLoading1(false);
+          setLoading(2);
         }}
-        loading={loading2}
+        loading={loading === 2}
       />
     </Container>
   );

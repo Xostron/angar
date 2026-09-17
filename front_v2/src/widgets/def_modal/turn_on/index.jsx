@@ -73,7 +73,7 @@ function TurnOn({ idB }) {
           active={true}
           onClick={() => {
             setStart({ _id: idB, val: true });
-            closeModal();
+            closeModal(false);
           }}
         />
       </div>

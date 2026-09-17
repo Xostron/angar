@@ -9,8 +9,8 @@ function fnSCard(obj) {
 	if (!obj.data?.building || !obj.data?.section) return null
 
 	return obj.data.section.reduce((acc, sec) => {
-		const idB = sec.buildingId
-		const bld = obj.data.building.find((el) => el._id === idB)
+		const bld = obj.data.building.find((el) => el._id === sec.buildingId)
+		if (!bld) return acc
 		acc[bld._id] ??= {}
 		// Карточка секции
 		acc[bld._id][sec._id] = defScard?.[bld.type](bld, sec, obj)

@@ -141,7 +141,7 @@ function isAlrmByVlv(idB, vlv, equip) {
 	const { signal, module } = equip
 	// Включен ли склад
 	// const start = retain?.[idB]?.start
-	// Режим секции: авто true, ручной false, выкл null
+	// Режим секции: авто true, ручной false, выкл null|undefined
 	// const mode = retain?.[idB]?.mode?.[idS]
 	// console.log(start, mode, start && mode !== false)
 	// Коллекция модулей ПЛК

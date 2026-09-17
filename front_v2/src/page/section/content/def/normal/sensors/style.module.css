@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  padding: 52px 0px 16px 0px;
+  flex-direction: column;
+}
+
+.sensors {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+}
