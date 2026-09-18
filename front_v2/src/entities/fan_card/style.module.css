@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 4px;
+  padding: 13.5px 25px;
+  border-radius: 8px;
+  background-color: var(--c-white);
+  cursor: pointer;
+
+  font-weight: 500;
+  color: var(--c-navy);
+  line-height: 28px;
+  font-size: 22px;
+}
+
+.fan {
+  width: 36px;
+  height: 36px;
+  transition:
+    opacity 0.3s ease,
+    scale 0.3s ease;
+}
+
+.fan:active:not(:disabled) {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.setting {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  transform: translate(-50%, 50%);
+}

@@ -1,12 +1,12 @@
 .container {
   display: flex;
   padding-top: 16px;
-  flex-direction: column;
   gap: 8px;
+  flex-direction: column;
 }
 
 .content {
   display: flex;
-  justify-content: space-between;
   padding-top: 8px;
+  gap: 12px;
 }

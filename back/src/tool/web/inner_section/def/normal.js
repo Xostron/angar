@@ -12,7 +12,6 @@ const { data: store } = require('@store')
  */
 function innerNormal(bld, sec, obj) {
 	const target = sp(bld._id, bld.type, obj?.retain?.[bld._id]?.automode)
-	console.log(11, target)
 	return {
 		// Список секций
 		listSec: listSec(bld._id, obj.data?.section),

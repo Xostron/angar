@@ -1,16 +1,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  flex-grow:1;
-  background-color: rgb(228, 149, 149);
+
+  /* background-color: var(--c-grey-lighter); */
+  padding-top: 16px;
+  border-radius: 24px 0 0 24px;
+  /* height: 882px; */
   font-weight: 500;
   font-size: 20px;
   color: var(--c-grey);
-  background-color: var(--c-grey-lighter);
-  padding: 20px 0 20px 24px;
-  border-radius: 24px 0 0 24px;
-  height: 882px;
 }
-
-

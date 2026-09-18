@@ -3,13 +3,13 @@ import style from './style.module.css';
 import Block from './block';
 
 function Sensors({ idB, idS }) {
-  const data = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
+  const sensor = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]?.sensor);
 
   return (
     <div className={style.container}>
       <span>Датчики секции</span>
-      <div className={style.sensors}>
-        {data.sensor && data.sensor.map((el) => <Block data={el} />)}
+      <div className={style.content}>
+        {!!sensor?.length && sensor.map((el) => <Block data={el} />)}
       </div>
     </div>
   );

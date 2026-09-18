@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+  width: min-content;
+  height: min-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number {
+  position: absolute;
+  color: var(--c-navy);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 36px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  & > span {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 36px;
+  }
+}
