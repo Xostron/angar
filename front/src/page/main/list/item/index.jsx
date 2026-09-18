@@ -29,7 +29,7 @@ export default function Item({ item }) {
 	let cl = ['item']
 	if (mb) cl.push(mb)
 	cl = cl.join(' ')
-	console.log(11, item.remote, remoteBCard, inputBCard)
+
 	if (item.remote) return <Remote cl={cl} doc={doc} item={item} />
 	return (
 		<Link className={cl} to={`/building/${item._id}`}>
