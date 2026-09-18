@@ -3,6 +3,7 @@ import style from './style.module.css';
 
 function IncidentJump({ count, onClick, size = 'normal', min = 0 }) {
   if (count < min) return <></>;
+  if (isNaN(count)) return <></>;
   return (
     <button
       className={style.button}

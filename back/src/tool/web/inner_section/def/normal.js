@@ -1,7 +1,8 @@
 const { fnSMode, fnVlv } = require('@tool/web/section_card/fn')
 const { listSec, fnSensByType, fnFanBySec } = require('./fn')
 const { fnSens } = require('@tool/web/bld_card/fn')
-
+const sp = require('@root/routes/api/tenta/read/store/transform/sp')
+const { data: store } = require('@store')
 /**
  * Содержимое секции
  * @param {*} bld
@@ -10,6 +11,8 @@ const { fnSens } = require('@tool/web/bld_card/fn')
  * @returns
  */
 function innerNormal(bld, sec, obj) {
+	const target = sp(bld._id, bld.type, obj?.retain?.[bld._id]?.automode)
+	console.log(11, target)
 	return {
 		// Список секций
 		listSec: listSec(bld._id, obj.data?.section),
@@ -17,11 +20,11 @@ function innerNormal(bld, sec, obj) {
 		mode: fnSMode(bld._id, sec._id, bld.type, obj?.retain),
 		// Датчики
 		sensor: [
-			{ ...fnSens(bld._id, obj, 'hin', 'max', 'per', 'hin'), target: '--' },
-			{ ...fnSens(sec._id, obj, 'p', 'max', 'Па', 'p'), target: '--' },
-			{ ...fnSens(sec._id, obj, 'tcnl', 'min', 'grad', 'tcnl'), target: '--' },
+			{ ...fnSens(bld._id, obj, 'hin', 'max', 'per', 'hin'), target: target?.hin ?? '--' },
+			{ ...fnSens(sec._id, obj, 'p', 'max', 'Па', 'p'), target: target?.p },
+			{ ...fnSens(sec._id, obj, 'tcnl', 'min', 'grad', 'tcnl'), target: target?.tcnl },
 		],
-		tprd: { ...fnSens(bld._id, obj, 'tprd', 'minmax', 'grad', 'tprd'), target: '--' },
+		tprd: { ...fnSens(bld._id, obj, 'tprd', 'minmax', 'grad', 'tprd'), target: target?.tprd },
 		// Датчики температуры продукта (Гистограмма)
 		tprdChart: fnSensByType(sec._id, obj?.data?.sensor, obj, 'tprd'),
 		// Клапаны

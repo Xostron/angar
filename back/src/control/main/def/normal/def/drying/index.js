@@ -38,6 +38,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			),
 		)
 		acc.f1 = true
+		acc.tcnl = s.drying.channelMin
+		acc.tgt = tprd ?? '--'
 		delAchieve(bld._id, 'drying', 'drying2')
 		delAchieve(bld._id, 'drying', 'drying3')
 	} else {
@@ -52,6 +54,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(bld, 154, `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`),
 		)
 		acc.f2 = true
+		acc.tcnl = tout
+		acc.tgt = tprd ?? '--'
 		delAchieve(bld._id, 'drying', 'drying1')
 		delAchieve(bld._id, 'drying', 'drying3')
 	} else {
@@ -70,14 +74,14 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			),
 		)
 		acc.f3 = true
+		acc.tcnl = s.drying.channelMax
+		acc.tgt = tprd ?? '--'
 		delAchieve(bld._id, 'drying', 'drying1')
 		delAchieve(bld._id, 'drying', 'drying2')
 	} else {
 		acc.f3 = false
 		delAchieve(bld._id, 'drying', 'drying3')
 	}
-	acc.tgt = tprd
-	acc.tcnl = s.drying.channelMax
 
 	// // TODO drying По достижению кол-ва дней в сушке -> переход в хранение
 	// if (s.drying.day > 0 && store.retain?.[bld._id]?.drying?.total >= s.drying.day) {

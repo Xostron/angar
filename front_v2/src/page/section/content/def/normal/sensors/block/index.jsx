@@ -16,10 +16,12 @@ function Block({ data }) {
           {target} {dictUnit?.[unit]}
         </span>
       </div>
-      {dictSens?.[code]}
-      <span>
-        {value} {dictUnit?.[unit]??unit}
-      </span>
+      <div className={style.value}>
+        <span>{dictSens?.[code]}</span>
+        <span className={style.number}>
+          {value} {dictUnit?.[unit] ?? unit}
+        </span>
+      </div>
     </div>
   );
 }

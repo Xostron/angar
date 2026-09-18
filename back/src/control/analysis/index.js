@@ -7,6 +7,7 @@ const Aboc = require('@tool/abort_controller')
 const { calcSetting, calcCoef } = require('../extra/setting')
 const { fnDemo } = require('@tool/demo')
 const periphery = require('./value/periphery')
+const web = require('@tool/web')
 
 /**
  * Анализ данных с модулей ПЛК и отправка на Web-клиент
@@ -36,6 +37,9 @@ async function analysis(obj) {
 	// Демо: инициализация и переключение по стадиям
 	fnDemo(obj)
 
+	// Собираем данные для web-клиента
+	v = Aboc.call(web)(v, obj)
+	
 	// Передача мяса по Socket.io на web-клиент
 	await Aboc.asycall(cValue)(v)
 }

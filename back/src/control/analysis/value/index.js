@@ -1,8 +1,4 @@
 const { data: store } = require('@store/index')
-const { fnBCard, fnBSide } = require('@tool/web/bld_card')
-const innerSec = require('@tool/web/inner_section/innerSec')
-const { fnSCard } = require('@tool/web/section_card')
-const { fnSBarB } = require('@tool/web/section_card/fn')
 
 /**
  * Анализ: Формирование значений входов/выходов, режим работы секции, вкл/выкл склада
@@ -11,7 +7,6 @@ const { fnSBarB } = require('@tool/web/section_card/fn')
  * @returns
  */
 function value(obj) {
-	// console.log(obj.value.total, obj.value.total['69f9dd09c35ea05200898cd8'])
 	// Данные для web клиента
 	const r = {
 		// Старый дизайн
@@ -19,18 +14,7 @@ function value(obj) {
 		retain: obj.retain,
 		factory: obj.factory,
 		time: new Date(),
-		// Для нового дизайна
-		// Карточки складов + правая боковая панель
-		bCard: fnBCard(obj),
-		// Левая боковая панель уличные датчики
-		bSide: fnBSide(obj),
-		// Карточки секций
-		sCard: fnSCard(obj),
-		innerSec: innerSec(obj),
-		// Страница секции: аварии склада - depriciated
-		// sBarB: fnSBarB(),
 	}
-	// console.log(234, r.bCard)
 	return r
 }
 
