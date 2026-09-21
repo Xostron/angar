@@ -6,7 +6,7 @@ function TprdChart({ idB, idS }) {
   //   console.log(1, data);
   return (
     <section className={style.container}>
-
+      <span>Температура продукта</span>
     </section>
   );
 }

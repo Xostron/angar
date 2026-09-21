@@ -14,7 +14,7 @@ function Toggle3({ value, on1, on2, on3, disabled, trigger, resetTrigger }) {
   }, trigger);
 
   return (
-    <Container disabled={disabled}>
+    <Container className={style.container} disabled={disabled}>
       <Button
         label="ВЫКЛ"
         variant="toggle3"

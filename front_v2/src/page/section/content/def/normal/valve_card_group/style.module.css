@@ -4,7 +4,11 @@
   gap: 8px;
   flex-direction: column;
 }
-
+.container > span {
+  line-height: 28px;
+  font-weight: 600;
+  font-size: 20px;
+}
 .content {
   display: flex;
   padding-top: 8px;

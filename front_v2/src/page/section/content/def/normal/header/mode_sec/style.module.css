@@ -1,0 +1,10 @@
+.mode {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mode >span{
+	line-height: 140%;
+	font-weight: 500;
+	font-size: 20px;
+}

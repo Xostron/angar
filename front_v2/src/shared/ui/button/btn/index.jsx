@@ -62,7 +62,7 @@ const dict = {
   toggle3: {
     padding: '14px 0px',
     width: '191.5px',
-    // height: '47px',
+    height: '47px',
     lineHeight: '20px',
     fontSize: '16px',
     flexGrow: '0',

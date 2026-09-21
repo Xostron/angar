@@ -1,7 +1,7 @@
 const dict = {
 	passed: 'выполнено',
 	current: 'в процессе',
-	failed: 'провалено',
+	failed: 'не пройден',
 }
 
 /**

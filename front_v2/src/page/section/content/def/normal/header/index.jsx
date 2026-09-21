@@ -1,38 +1,21 @@
-import Toggle3 from '@src/shared/ui/button/toggle_button_3';
-import useInputStore from '@src/entities/store/input';
-import Button from '@src/shared/ui/button/btn';
+import NavSec from './nav_sec';
+import ModeSec from './mode_sec';
 import style from './style.module.css';
 
+/**
+ * Заголовок:
+ * 1. Навигация по секциям
+ * 2. Переключение режимов секции
+ * @param {*} param0
+ * @returns
+ */
 function Header({ idB, idS }) {
-  const data = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
-
   return (
     <div className={style.header}>
       {/* Навигация по секциям */}
-      <nav className={style.nav}>
-        {data?.listSec &&
-          data?.listSec.map((el) => (
-            <Button
-              key={el._id}
-              label={el.name}
-              variant="sect"
-              active={el._id == idS}
-              disabled={false}
-              onClick={() => {}}
-            />
-          ))}
-      </nav>
+      <NavSec idB={idB} idS={idS} />
       {/* Режимы работы */}
-      <div className={style.mode}>
-        <span>Режим работы секции</span>
-        <Toggle3
-          value={data?.mode?.[0]}
-          on1={() => {}}
-          on2={() => {}}
-          on3={() => {}}
-          disabled={false}
-        />
-      </div>
+      <ModeSec idB={idB} idS={idS} />
     </div>
   );
 }

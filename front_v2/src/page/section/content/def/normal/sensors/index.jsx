@@ -1,6 +1,6 @@
 import useInputStore from '@src/entities/store/input';
-import style from './style.module.css';
 import Block from './block';
+import style from './style.module.css';
 
 function Sensors({ idB, idS }) {
   const sensor = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]?.sensor);
