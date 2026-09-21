@@ -9,7 +9,8 @@ function Sensors({ idB, idS }) {
     <div className={style.container}>
       <span>Датчики секции</span>
       <div className={style.content}>
-        {!!sensor?.length && sensor.map((el) => <Block data={el} />)}
+        {!!sensor?.length &&
+          sensor.map((el) => <Block key={el.code} data={el} />)}
       </div>
     </div>
   );

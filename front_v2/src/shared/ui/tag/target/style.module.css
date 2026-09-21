@@ -1,0 +1,11 @@
+.target {
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  padding-right: 8px;
+  gap: 8px;
+  color: var(--c-blue-darker);
+  background-color: var(--c-blue-lighter);
+  border-radius: 40px;
+  white-space: nowrap;
+}

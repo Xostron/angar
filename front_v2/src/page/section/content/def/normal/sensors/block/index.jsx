@@ -1,21 +1,13 @@
 import dictUnit from '@src/shared/dict/unit';
 import style from './style.module.css';
+import TargetTag from '@src/shared/ui/tag/target';
 
 function Block({ data }) {
   const { state, value, code, unit, target } = data;
+
   return (
     <div className={style.container}>
-      <div className={style.target}>
-        <img
-          width="24px"
-          height="24px"
-          src="/icon/indicator/target.svg"
-          alt=""
-        />
-        <span>
-          {target} {dictUnit?.[unit]}
-        </span>
-      </div>
+      <TargetTag value={target} unit={unit} />
       <div className={style.value}>
         <span>{dictSens?.[code]}</span>
         <span className={style.number}>
