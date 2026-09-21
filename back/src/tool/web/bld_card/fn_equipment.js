@@ -17,9 +17,12 @@ function fnEquipment(bld, obj) {
 	r.push(fnOzon(extra))
 	// Окуривание
 	r.push(fnSmoking(extra))
+
 	// Обогрев(не существует)
 	// Контроль CO2
 	r.push(defCO[bld.type](idsS, obj, extra))
+	// Демо
+	r.push(fnDemo(extra))
 	r = r.filter(Boolean)
 	// console.log('@@@', r)
 	return r
@@ -97,4 +100,10 @@ function fnCoC(idsS, obj, extra) {
 	if (!co2.length) return null
 	const r = co2.some((el) => obj.value?.[el._id]?.state == 'run')
 	return r ? { name: 'Контроль СО2', value: 'Вкл' } : { name: 'Контроль СО2', value: 'Выкл' }
+}
+
+function fnDemo(extra) {
+	const r = extra?.demo
+	if (r) return { name: 'Демо', value: 'Вкл' }
+	return { name: 'Демо', value: 'Выкл' }
 }

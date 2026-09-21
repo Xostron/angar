@@ -2,23 +2,27 @@ import dictFan from '@src/shared/dict/fan_card';
 import style from './style.module.css';
 
 function FanCard({ data, action }) {
-  console.log(12, data);
   const icon = getIcon(data?.state);
+  const cls = `${style.container} ${data.state == 'alarm' ? style.alarm : ''}`;
+
   return (
     <div
-      className={style.container}
+      className={cls}
       onClick={() => {
         action();
       }}
     >
-      <img className={style.fan} src={dictFan?.[data.state]} alt="" />
+      <img
+        className={`${style.fan} ${data.state == 'run' ? style.run : ''}`}
+        src={dictFan?.[data.state]}
+        alt=""
+      />
       {typeof data.value == 'number' && <span>{data.value}%</span>}
       <img
-        {...icon}
-        // width="18px"
-        // height="18px"
+        width="18px"
+        height="18px"
         className={style.setting}
-        // src={icon}
+        src={icon}
         alt=""
       />
     </div>
@@ -28,11 +32,6 @@ function FanCard({ data, action }) {
 export default FanCard;
 
 function getIcon(state) {
-  if (state != 'alarm')
-    return {
-      src: '/icon/indicator/setting.svg',
-      width: '18px',
-      height: '18px',
-    };
-  return { src: '/icon/indicator/crash.svg', width: '18px', height: '18px' };
+  if (state != 'alarm') return '/icon/indicator/setting.svg';
+  return '/icon/indicator/crash.svg';
 }

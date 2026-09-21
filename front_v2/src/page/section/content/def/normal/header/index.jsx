@@ -18,6 +18,7 @@ function Header({ idB, idS }) {
               variant="sect"
               active={el._id == idS}
               disabled={false}
+              onClick={() => {}}
             />
           ))}
       </nav>

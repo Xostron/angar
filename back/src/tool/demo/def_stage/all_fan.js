@@ -1,4 +1,4 @@
-const { arrCtrlDO } = require('@tool/command/module_output')
+const { arrCtrlDO, ctrlADO } = require('@tool/command/module_output')
 const { isExtralrm } = require('@tool/message/extralrm')
 const { compareTime } = require('@tool/command/time')
 const { stasis } = require('../fn')
@@ -6,6 +6,8 @@ const { getOwnerName } = require('@tool/get/building')
 // 10сек
 const _delay = 10_000
 const _min_volt = 365
+const _MIN_SP = 20
+const _MAX_SP = 100
 
 /**
  * Тест одновременное вкл всех ВНО
@@ -40,12 +42,14 @@ function allFan(bld, obj, m, checklistPNR, demo, permission, code) {
 		return
 	}
 
-	// Включить все ВНО
-	arrCtrlDO(bld._id, m.fanBexc, 'on')
-
 	// Аккумулятор
 	demo.accAllFan ??= {}
 	const acc = demo.accAllFan
+
+	// Включить все ВНО
+	// arrCtrlDO(bld._id, m.fanBexc, 'on')
+	fnRun(bld._id, m.fanBexc, acc, obj, demo)
+
 	// Фиксируем начальную температуру испарителя перед включением двигателей
 	m.tcnlB.forEach((el) => {
 		acc[el._id] ??= {}
@@ -81,9 +85,7 @@ function check(bld, obj, fans, demo) {
 		// Дребезг контактора
 		if (isExtralrm(bld._id, el._id, 'debdo') && !demo.checklist.allFan.list[el._id].debdo)
 			demo.checklist.allFan.list[el._id].debdo = 'частое включение'
-		// Модуль или Конфигурация
-		if (v.state == 'stop' && !demo.checklist.allFan.list[el._id].stop)
-			demo.checklist.allFan.list[el._id].stop = 'ошибка модуля или конфигурации'
+
 		// Превышен ток двигателя
 		if (
 			v.state == 'run' &&
@@ -154,5 +156,29 @@ function fnVolt(bld, obj, checklistPNR, demo) {
 					`низкое напряжение на входе ${ownerName}, фаза ${key} = ${volt[key]}В`
 		}
 		// console.log(el)
+	})
+}
+
+// Включение всех ВНО по очереди
+function fnRun(idB, fanBexc, acc, obj, demo) {
+	acc.order ??= 0
+	acc.delay = 5000
+	acc.wait ??= new Date()
+	fanBexc.forEach((el, i) => {
+		// Для данного ВНО еще не наступила очередь включения
+		if (i > acc.order) return ctrlADO(el, idB, 'off', _MIN_SP)
+		ctrlADO(el, idB, 'on', _MAX_SP)
+		const t = compareTime(acc.wait, acc.delay)
+		// Время вкл прошло, можно запускать следующий ВНО
+		if (t) {
+			if (++acc.order > fanBexc.length) acc.order = fanBexc.length
+			acc.wait = new Date()
+			// Проверка включился ли ВНО, после 5 сек
+			// Модуль или Конфигурация
+			const v = obj?.value?.[el._id]
+			demo.checklist.allFan.list[el._id] ??= {}
+			if (v.state == 'stop' && !demo.checklist.allFan.list[el._id]?.stop)
+				demo.checklist.allFan.list[el._id].stop = 'ошибка модуля или конфигурации'
+		}
 	})
 }

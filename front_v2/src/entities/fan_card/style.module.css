@@ -12,6 +12,10 @@
   color: var(--c-navy);
   line-height: 28px;
   font-size: 22px;
+  &.alarm {
+    background-color: var(--c-red-light);
+    color: var(--c-red);
+  }
 }
 
 .fan {
@@ -20,6 +24,9 @@
   transition:
     opacity 0.3s ease,
     scale 0.3s ease;
+  &.run {
+    animation: 2s linear infinite run;
+  }
 }
 
 .fan:active:not(:disabled) {
@@ -32,4 +39,14 @@
   top: 0%;
   right: 0%;
   transform: translate(-20%, 20%);
+}
+
+@keyframes run {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
