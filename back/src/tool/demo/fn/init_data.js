@@ -47,7 +47,7 @@ const checklist = [
 	{
 		code: 'valve',
 		// last: 0.5 * 60 * 1000,
-		last: 5 * 60 * 1000,
+		last: 15 * 60 * 1000,
 		name: 'Откр/закр клапанов',
 		type: ['normal', 'combi'],
 	},
@@ -115,7 +115,7 @@ const checklist = [
 	},
 	{
 		code: 'coolerHeat',
-		last: 0.5 * 60 * 1000,
+		// last: 0.5 * 60 * 1000,
 		last: 3 * 60 * 1000,
 		name: 'Включение оттайки испарителей',
 		type: ['combi', 'cold'],

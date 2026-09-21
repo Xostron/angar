@@ -2,7 +2,7 @@ import style from './style.module.css';
 
 function Progress({ value, heat, width = 32, mode }) {
   // Ограничиваем значение от 0 до 100
-  value = Math.min(Math.max(value || 0, 0), 100) * 0.97;
+  const v = Math.min(Math.max(value || 0, 0), 100) * 0.98;
   // Параметры для точного совпадения с вашими размерами:
   // Центр 16, радиус 13.68 (ровно посередине толщины основного кольца)
   const radius = 13.68;
@@ -10,7 +10,7 @@ function Progress({ value, heat, width = 32, mode }) {
   const circumference = 2 * Math.PI * radius; // Длина окружности ~85.95px
 
   // Вычисляем смещение обводки в зависимости от процентов
-  const strokeDashoffset = circumference - (value / 100) * circumference;
+  const strokeDashoffset = circumference - (v / 100) * circumference;
 
   // Компенсация скругления (strokeLinecap="round"):
   // Полукруг выступает наружу. Переводим эту длину в градусы: (strokeWidth / 2) / circumference * 360
@@ -18,7 +18,7 @@ function Progress({ value, heat, width = 32, mode }) {
   // Вместо -90 градусов поворачиваем на -80.3 градуса, чтобы сдвинуть физический старт вперед,
   // и визуальный край скругления встал ровно на 12 часов.
   const startAngle =
-    value === 0 ? -90 : -90 + (strokeWidth / 2 / circumference) * 360;
+    v === 0 ? -90 : -90 + (strokeWidth / 2 / circumference) * 360;
 
   return (
     <div className={style.container}>

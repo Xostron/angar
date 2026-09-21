@@ -52,7 +52,7 @@ function fnVlv(idS, obj) {
 				type: el.type,
 				name: el.type === 'in' ? 'Приточный' : 'Выпускной',
 				heat,
-				value: obj?.value?.[el._id]?.val ?? '--',
+				value: +obj?.value?.[el._id]?.val?.toFixed() ?? '--',
 				state: obj?.value?.[el._id]?.state ?? '--',
 			}
 			acc.push(r)

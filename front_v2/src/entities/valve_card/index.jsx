@@ -4,7 +4,7 @@ import style from './style.module.css';
 function ValveCard({ data, action }) {
   return (
     <div className={style.container}>
-      <Progress width={74} value={data.value} heat={false} mode="number" />
+      <Progress width={74} value={data?.value} heat={false} mode="number" />
 
       <div className={style.content}>
         <div className={style.name_status}>
