@@ -3,8 +3,7 @@ import style from './style.module.css';
 
 function FanCard({ data, action }) {
   const icon = getIcon(data?.state);
-  const cls = `${style.container} ${data.state == 'alarm' ? style.alarm : ''}`;
-
+  const cls = `${style.container} ${data.state == 'alarm' ? style.alarm : ''} ${data.state == 'off' ? style.off : ''}`;
   return (
     <div
       className={cls}
@@ -17,14 +16,20 @@ function FanCard({ data, action }) {
         src={dictFan?.[data.state]}
         alt=""
       />
-      {typeof data.value == 'number' && <span>{data.value}%</span>}
-      <img
-        width="18px"
-        height="18px"
-        className={style.setting}
-        src={icon}
-        alt=""
-      />
+      {typeof data.value == 'number' && (
+        <span>{data.state == 'off' ? '--' : data.value}%</span>
+      )}
+      {data.state == 'off' ? (
+        <></>
+      ) : (
+        <img
+          width="18px"
+          height="18px"
+          className={style.setting}
+          src={icon}
+          alt=""
+        />
+      )}
     </div>
   );
 }

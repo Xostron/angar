@@ -16,6 +16,9 @@
     background-color: var(--c-red-light);
     color: var(--c-red);
   }
+  &.off {
+    opacity: 0.4;
+  }
 }
 
 .fan {
