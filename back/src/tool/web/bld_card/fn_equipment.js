@@ -19,11 +19,16 @@ function fnEquipment(bld, obj) {
 	r.push(fnSmoking(extra))
 
 	// Обогрев(не существует)
+
 	// Контроль CO2
 	r.push(defCO[bld.type](idsS, obj, extra))
 	// Демо
 	r.push(fnDemo(extra))
+	// Тепловая пушка
+	r.push(fnHeattcnl(bld._id, idsS, obj))
+
 	r = r.filter(Boolean)
+
 	// console.log('@@@', r)
 	return r
 }
@@ -106,4 +111,20 @@ function fnDemo(extra) {
 	const r = extra?.demo
 	if (r) return { name: 'Демо', value: 'Вкл' }
 	return { name: 'Демо', value: 'Выкл' }
+}
+
+// Тепловая пушка
+function fnHeattcnl(idB, idsS, obj) {
+	const r = {}
+	idsS.forEach((idS) => {
+		const heattcnl = obj.data.heating.filter(
+			(el) => el.owner.id == idS && el.type == 'heattcnl',
+		)
+		if (!heattcnl.length) return null
+
+		const isRun = heattcnl.some((el) => obj.value.outputEq[el._id])
+
+		r[idS] = { name: 'Тепловая пушка', value: isRun ? 'Вкл' : 'Выкл' }
+	})
+	return r
 }

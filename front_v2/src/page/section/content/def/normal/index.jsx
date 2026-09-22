@@ -7,8 +7,6 @@ import ValveCardGroup from './valve_card_group';
 import FanCardGroup from './fan_card_group';
 
 function Section({ idB, idS }) {
-  const data = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
-  console.log(1, data);
   return (
     <section className={style.container}>
       <Header idB={idB} idS={idS} />

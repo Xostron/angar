@@ -23,6 +23,7 @@ const rdDrying = require('./report_day_drying')
 const dayDrying = require('./drying_to_cooling')
 const manFC = require('./man_fc')
 const buildHour = require('./hour/build')
+const { heattcnl } = require('./heattcnl')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
@@ -39,6 +40,7 @@ const data = {
 			heating,
 			cableS,
 			wetting,
+			heattcnl
 		},
 	},
 	// Обычный склад и комби - Доп функции для склада

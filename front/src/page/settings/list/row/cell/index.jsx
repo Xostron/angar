@@ -31,6 +31,7 @@ export default function Cell({ data, i, j }) {
 				'heater',
 				'smoking',
 				'demo',
+				'heattcnl'
 			].includes(type)
 		) {
 			// Без продукта

@@ -6,9 +6,9 @@ const app = require('@root/app')
  */
 const server = http.createServer(app)
 const io = new Server(server, {
-        cors: process.env.ALLOWED_ORIGIN,
-        serveClient: false,
-    })
+	// cors: { origin: process.env.ALLOWED_ORIGIN },
+	cors: { origin: '*' },
+	serveClient: false,
+})
 
-
-module.exports = {server, io}
+module.exports = { server, io }

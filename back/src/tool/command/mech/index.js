@@ -16,11 +16,12 @@ function mech(obj, idS, idB) {
 
 	// Увлажнитель
 	const wettingS = getDevice(idS, device, 'wetting')
-
+	// Тепловые пушки: обогреватели канала
+	const heattcnl = heating.filter((el) => el?.owner?.id === idS && el.type == 'heattcnl')
 	// Клапаны (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
 	// Обогрев клапанов
-	const heatS = heating.filter((el) => el?.owner?.id === idS)
+	const heatS = heating.filter((el) => el?.owner?.id === idS && el.type == 'heating')
 	// Испарители секции(соленоид + ВНО + оттайка)
 	const coolerS = getClr(data, idS)
 
@@ -90,6 +91,7 @@ function mech(obj, idS, idB) {
 		wettingS,
 		allFanClr,
 		ff,
+		heattcnl,
 	}
 }
 
