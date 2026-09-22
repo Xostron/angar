@@ -5,11 +5,15 @@ import RowFan from '@src/cmp/sec_cmp/row/fan'
 import useEquipStore from '@store/equipment'
 import running from '@tool/status/build_section'
 import useViewStore from '@src/store/view'
+import useInputStore from '@src/store/input'
 
 //Подробная информация по секции - Обычный склад
 export default function Normal() {
 	const { build, sect } = useParams()
 	const { tprd, tcnl, fan, valve, heating, p } = useEquipStore(({ section }) => section())
+	// let heattcnl = useInputStore((s) => s.input?.bCard?.[build]?.sidesect?.equipment)
+	// heattcnl = heattcnl?.find((el) => el?.[sect]?.name == 'Тепловая пушка')?.[sect]
+	// console.log(11, heattcnl)
 	const binding = useEquipStore(({ build }) => build()?.binding)
 	const { isMan } = running(build, sect)
 	const r3 = p?.length < 3 ? [...(tcnl ?? []), ...(p ?? [])] : tcnl

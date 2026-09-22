@@ -5,8 +5,11 @@ export default function ItemTemp({ sensId, type, cls }) {
 	const [getSens] = useInputStore(({ getSens }) => [getSens])
 	const unit = defUn[type]
 	let cl = ['cmp-sec-row-item', cls]
-	const v= getSens(sensId)
-
+	const v = getSens(sensId) ?? {}
+	// if (value) {
+	// 	v.state = 'on'
+	// 	v.value = value
+	// }
 	// ошибка датчика
 	if (v?.state === 'alarm') cl.push('error')
 	if (v?.state === 'off') cl.push('off')

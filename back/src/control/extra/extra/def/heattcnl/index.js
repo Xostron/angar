@@ -12,8 +12,8 @@ function heattcnl(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	const am = obj.retain?.[bld._id]?.automode
 	const isCC = isCombiCold(bld, am, s)
 	// ВНО Выключены
-	const isOff = m.ff.every((el) => obj.value[el._id].state != 'run')
-	// // Запрет работы: комби-холод, ВНО выключены
+	const isOff = !m.fanSAll.some((el) => obj.value[el._id].state == 'run')
+	// Запрет работы: комби-холод, ВНО выключены
 	if (isCC || isOff) return def.off(bld, m.heattcnl)
 
 	def[s?.heattcnl?.mode ?? 'off'](bld, m.heattcnl, acc, se, s, m, obj)
