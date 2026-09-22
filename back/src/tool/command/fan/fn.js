@@ -20,6 +20,7 @@ function fnACmd(bld, resultFan, obj, bdata, isNormal) {
 		const mode = obj.retain?.[bld._id]?.mode?.[idS]
 		const st = getStateClr(idS, obj)
 		const a = [
+			[!obj?.retain?.[idB]?.start, 'Склад выключен'],
 			[isExtralrm(idB, idS, 'local'), 'Нет переключателя на щите'],
 			[isExtralrm(idB, null, 'local'), 'Нет переключателя на щите'],
 			[!obj?.retain?.[idB]?.mode?.[idS], 'Секция не в авто'],

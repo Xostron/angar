@@ -42,9 +42,6 @@ function readTCP(host, port, opt) {
 					if (opt?.name.includes('oni')) {
 						console.log(44, 'read = ', opt.name, opt?.wr?.start, opt?.wr?.on, r, w)
 					}
-					if (opt?.name.includes('oni')) {
-						console.log(44, 'read = ', opt.name, opt?.wr?.start, opt?.wr?.on, r, w)
-					}
 					r = convAO(opt, r)
 					r = conv32DO(opt, r)
 					r = convOni150(opt, r)
