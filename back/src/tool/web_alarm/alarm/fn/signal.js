@@ -55,6 +55,7 @@ function signalB(r, bld, am, data) {
 	const ozon3 = store.alarm.extra?.[bld._id]?.ozon3 ?? null
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 	const connectLost = store.alarm.extra?.[bld._id]?.connectLost ?? null
+	const heattcnl = Object.values(store.alarm.extra?.[bld._id]?.heattcnl ?? {})
 	// extralrm
 	const wetting = store.alarm.extralrm?.[bld._id]?.wetting ?? null
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
@@ -113,6 +114,7 @@ function signalB(r, bld, am, data) {
 	if (sb) r.signal[bld._id].push(sb)
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []))
+	if (heattcnl) r.signal[bld._id].push(...heattcnl)
 	if (bldOff) r.signal[bld._id].push(bldOff)
 	if (plcio) r.signal[bld._id].push(plcio)
 	r.signal[bld._id].sort((a, b) => {
