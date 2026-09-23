@@ -427,7 +427,32 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Подогрев клапанов включен',
 	},
-
+	// Подогрев канала
+	121: {
+		code: 'off',
+		typeSignal: 'info',
+		msg: 'Подогрев канала. Режим работы: Выключен',
+	},
+	122: {
+		code: 'on',
+		typeSignal: 'info',
+		msg: 'Подогрев канала. Режим работы: Включен',
+	},
+	123: {
+		code: 'auto',
+		typeSignal: 'info',
+		msg: 'Подогрев канала. Режим работы: Авто',
+	},
+	124: {
+		code: 'run',
+		typeSignal: 'info',
+		msg: 'Подогрев канала запущен',
+	},
+	125: {
+		code: 'stop',
+		typeSignal: 'info',
+		msg: 'Подогрев канала остановлен',
+	},
 	// Увлажнение
 	130: {
 		code: 'off',

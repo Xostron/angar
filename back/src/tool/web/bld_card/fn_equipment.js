@@ -113,9 +113,9 @@ function fnDemo(extra) {
 	return { name: 'Демо', value: 'Выкл' }
 }
 
-// Тепловая пушка
+// Подогрев канала
 function fnHeattcnl(idB, idsS, obj) {
-	const r = {}
+	const r = { total: { name: 'Подогрев канала', value: 'Выкл' } }
 	idsS.forEach((idS) => {
 		const heattcnl = obj.data.heating.filter(
 			(el) => el.owner.id == idS && el.type == 'heattcnl',
@@ -124,7 +124,8 @@ function fnHeattcnl(idB, idsS, obj) {
 
 		const isRun = heattcnl.some((el) => obj.value.outputEq[el._id])
 
-		r[idS] = { name: 'Тепловая пушка', value: isRun ? 'Вкл' : 'Выкл' }
+		r[idS] = { name: 'Подогрев канала', value: isRun ? 'Вкл' : 'Выкл' }
+		if (isRun) r.total = { name: 'Подогрев канала', value: 'Вкл' }
 	})
 	return r
 }
