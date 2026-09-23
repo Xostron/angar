@@ -1,16 +1,19 @@
 .container {
   display: flex;
   flex-direction: column;
-  /* width: 377px; */
-  /* height: 346px; */
   padding: 20px;
-  row-gap: 29.67px;
   border-radius: 12px;
   background: var(--c-white);
   font-weight: 600;
   font-size: 18px;
   color: var(--c-navy);
   text-decoration: none;
+  row-gap: 18.25px;
+}
+.sens_fan{
+	display: flex;
+	flex-direction: column;
+	row-gap: 8px;
 }
 
 .name_mode {

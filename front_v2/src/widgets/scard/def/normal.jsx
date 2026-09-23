@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import style from './style.module.css';
 import SensGroup from '@src/entities/sens_group'
 import TextIcEquip from '@src/shared/ui/text/equipment_icon'
 import ValveGroup from '@src/entities/valve_group'
+import style from './style.module.css';
 
 // Для обычного склада: Карточка секции
 function ScardNormal({ data }) {
@@ -16,9 +16,12 @@ function ScardNormal({ data }) {
         <span className={style.mode}>{mode}</span>
       </div>
       {/* Датчики */}
+	  <div className={style.sens_fan}>
+
       <SensGroup sensor={sensor} />
       {/* ВНО */}
       <TextIcEquip name="Вентиляция" value={data?.fan} />
+	  </div>
       {/* Клапаны */}
       <ValveGroup valve={valve} />
     </Link>

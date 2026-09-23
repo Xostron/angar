@@ -37,7 +37,7 @@ function fnSFan(idS, obj) {
 
 /**
  * Карточки секций: клапаны
- * @param {*} idS
+ * @param {*} idS ИД Секции для которой собираются клапаны
  * @param {*} obj
  * @returns
  */
@@ -45,22 +45,63 @@ function fnVlv(idS, obj) {
 	// Подогрев клапанов: true включен
 	const heat = heatVlv(idS, obj)
 
-	let vlv = obj?.data?.valve
+	const vlv = obj?.data?.valve
 		.reduce((acc, el) => {
+			// Если клапан не принадлежит текущей секции - пропускаем клапан
 			if (!el.sectionId.includes(idS)) return acc
+
+			// Клапан из этой секции
 			const r = {
+				_id: [el._id],
 				type: el.type,
 				name: el.type === 'in' ? 'Приточный' : 'Выпускной',
 				heat,
 				value: +obj?.value?.[el._id]?.val?.toFixed() ?? '--',
 				state: obj?.value?.[el._id]?.state ?? '--',
 			}
-			acc.push(r)
+
+			// Собираем клапаны
+			if (!el.groupId) {
+				// Для обычных клапанов
+				acc.set(el._id, r)
+			} else {
+				// Для групп клапанов
+				// Если первый клапан из группы - сохраняем
+				if (!acc.has(el.groupId)) {
+					acc.set(el.groupId, r)
+				} else {
+					// Добавление других гурпповых клапанов
+					const cur = acc.get(el.groupId)
+					// Защита, если кто то объединит в группу приточный и выпускной клапан
+					if (cur.type !== r.type) return acc
+					// Слияние клапанов в группу
+					cur._id.push(...r._id)
+					cur.value = Math.max(cur.value, isNaN(r.value) ? 0 : r.value)
+					cur.state = fnMergeVlvState(cur, r)
+				}
+			}
 			return acc
-		}, [])
+		}, new Map())
+		.values()
 		.sort((a, b) => a.type - b.type)
 
 	return vlv
+}
+
+/**
+ * Выбор приоритетного состояние для группы клапанов
+ * @param {*} cur Существующий клапан из группы
+ * @param {*} r Новый член группы
+ */
+function fnMergeVlvState(cur, r) {
+	const stateVlv = [
+		{ code: 'icls', weight: 0 },
+		{ code: 'icls', weight: 0 },
+		{ code: 'icls', weight: 0 },
+		{ code: 'icls', weight: 0 },
+		{ code: 'icls', weight: 0 },
+		{ code: 'icls', weight: 0 },
+	]
 }
 
 /**
