@@ -34,7 +34,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(
 				bld,
 				153,
-				`t задания канала = ${s.drying.channelMin} °С, t задания продукта = ${tprd} °С`,
+				`t задания канала = ${s.drying.channelMin} °С`,
+				// `t задания канала = ${s.drying.channelMin} °С, t задания продукта = ${tprd} °С`,
 			),
 		)
 		acc.f1 = true
@@ -51,7 +52,12 @@ function middlewB(bld, obj, s, seB, am, acc) {
 		wrAchieve(
 			bld._id,
 			'drying',
-			msgB(bld, 154, `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`),
+			msgB(
+				bld,
+				154,
+				`t задания канала = ${s.drying.channelMin} °С`,
+				// `t задания канала = ${tout} °С, t задания продукта = ${tprd} °С`,
+			),
 		)
 		acc.f2 = true
 		acc.tcnl = tout
@@ -70,7 +76,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			msgB(
 				bld,
 				155,
-				`t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${tprd} °С`,
+				`t задания канала = ${s.drying.channelMin} °С`,
+				// `t задания канала = ${s.drying.channelMax} °С, t задания продукта = ${tprd} °С`,
 			),
 		)
 		acc.f3 = true
