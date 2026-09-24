@@ -9,7 +9,7 @@ async function loopInit() {
 	await delay(randomNumber)
 	// await delay(process.env?.PERIOD ?? 420001)
 	init()
-	// 7 минут
+	//  7 минут
 	// }
 }
 
