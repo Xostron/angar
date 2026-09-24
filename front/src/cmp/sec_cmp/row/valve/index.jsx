@@ -7,15 +7,16 @@ import Item from './item'
 import './style.css'
 
 export default function RowValve({ active, data }) {
-	const { heating = [], valve = [] } = data
+	const { heating = [], valve = [], idB, idS } = data
 	const isAuth = useAuthStore((s) => s.isAuth)
 	const input = useInputStore((s) => s.input)
 	const warn = useWarn((s) => s.warn)
-
+	const vlv = useInputStore((s) => s?.input?.sCard?.[idB]?.[idS]?.valve)
 	if (!valve && !heating) return null
 
-	const vin = valve?.filter((v) => v.type === 'in')
-	const vout = valve?.filter((v) => v.type === 'out')
+	const vin = vlv?.filter((v) => v.type === 'in')
+	const vout = vlv?.filter((v) => v.type === 'out')
+
 	if (!vin) return null
 	// Состояние обогревателя
 	const stateH = input?.outputEq?.[heating?.[0]?._id] == 1 ? 'on' : 'off'
@@ -50,7 +51,7 @@ export default function RowValve({ active, data }) {
 			</div>
 		</>
 	)
-
+	// Открыть модальное окно - клапан
 	function onClick(obj) {
 		if (!isAuth) {
 			return warn('auth', 'warn', () => warn(null, 'person'))

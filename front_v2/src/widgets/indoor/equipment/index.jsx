@@ -23,7 +23,6 @@ import { useParams } from 'react-router-dom';
 function Equipment({ data = [] }) {
   const { sectionId: idS } = useParams();
   if (!data.length) return <></>;
-  console.log(2, idS, data);
 
   return (
     <div className={style.container}>

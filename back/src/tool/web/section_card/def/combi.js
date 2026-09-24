@@ -14,7 +14,7 @@ function combiScard(bld, sec, obj) {
 			fnSens(sec._id, obj, 'tprd', 'min', 'grad', 'tmin'),
 			fnSens(sec._id, obj, 'tprd', 'max', 'grad', 'tmax'),
 		],
-		valve: fnVlv(sec._id, obj),
+		valve: fnVlv(bld._id, sec._id, obj),
 	}
 }
 

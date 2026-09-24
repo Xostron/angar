@@ -13,7 +13,7 @@ function normalScard(bld, sec, obj) {
 			fnSens(sec._id, obj, 'tprd', 'max', 'grad', 'tmax'),
 		],
 		fan: fnSFan(sec._id, obj) ? 'Вкл' : 'Выкл',
-		valve: fnVlv(sec._id, obj),
+		valve: fnVlv(bld._id, sec._id, obj),
 	}
 }
 

@@ -9,22 +9,20 @@ import '../style.css'
 
 //Управление клапаном
 export default function Entry({ data = {}, entryCode, refDialog }) {
-	const { vlv, state, build, refSp, sp } = data
+	const { valve, state, build, refSp, sp } = data
+
 	const setO = useOutputStore((s) => s.setO)
 	const setT = useOutputStore((s) => s.setT)
 	const setTune = useOutputStore((s) => s.setTune)
 	const sendTune = useOutputStore((s) => s.sendTune)
 	const clear = useWarn((s) => s.clear)
-	// Текущее значение выходов
-	const chOn = vlv?.module?.on?.channel - 1
-	const chOff = vlv?.module?.off?.channel - 1
+
 	// Выбранное действие - радиокнопки
 	const [sel, setSel] = useState(state)
 	// Задание spO: процент открытия
 	const [spO, setSpO] = useState(sp)
-	const timeSP = refSp ? ((spO * refSp) / 100).toFixed() : null
 
-	const t = vlv?.type === 'in' ? 'Приточный клапан' : 'Выпускной клапан'
+	const t = valve?.type === 'in' ? 'Приточный клапан' : 'Выпускной клапан'
 	// При обновлении
 	useEffect(() => {
 		setSel(state)
@@ -41,16 +39,24 @@ export default function Entry({ data = {}, entryCode, refDialog }) {
 				setSpO={setSpO}
 				container={refDialog?.current}
 			/>
-			<Control cancel={cancel} ok={set} />
+			<Control
+				cancel={cancel}
+				ok={() => {
+					valve.valve.forEach((el) => set(el))
+				}}
+			/>
 		</div>
 	)
 
 	// Ok - Записать в стор команду управления
-	function set() {
+	function set(vlv) {
 		let cmd = null
 		let off = null
 		let tCmd = null
-
+		const timeSP = vlv?.calibration ? ((spO * vlv?.calibration) / 100).toFixed() : null
+		// Текущее значение выходов
+		const chOn = vlv?.module?.on?.channel - 1
+		const chOff = vlv?.module?.off?.channel - 1
 		if (sel === 'tune') setTune({ ...vlv, _stage: 'begin', _build: build })
 		else setTune({ ...vlv, _stage: null })
 		if (sel === 'stop') {

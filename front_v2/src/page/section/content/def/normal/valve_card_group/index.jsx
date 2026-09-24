@@ -8,7 +8,7 @@ function ValveCardGroup({ idB, idS }) {
     <section className={style.container}>
       <span>Клапана</span>
       <div className={style.content}>
-        {!!valve?.length && valve.map((el) => <ValveCard data={el} />)}
+        {!!valve?.length && valve.map((el) => <ValveCard key={el.valve[0]._id} data={el} />)}
       </div>
     </section>
   );

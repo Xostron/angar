@@ -41,7 +41,7 @@ function fnSFan(idS, obj) {
  * @param {*} obj
  * @returns
  */
-function fnVlv(idS, obj) {
+function fnVlv(idB, idS, obj) {
 	// Подогрев клапанов: true включен
 	const heat = heatVlv(idS, obj)
 
@@ -51,18 +51,20 @@ function fnVlv(idS, obj) {
 			if (!el.sectionId.includes(idS)) return acc
 
 			// Клапан из этой секции
+			const calibration = obj?.retain?.[idB]?.valve?.[el._id] ?? 0
 			const r = {
-				_id: [el._id],
+				valve: [{ ...el, calibration }],
 				type: el.type,
 				name: el.type === 'in' ? 'Приточный' : 'Выпускной',
 				heat,
 				value: +obj?.value?.[el._id]?.val?.toFixed() ?? '--',
 				state: obj?.value?.[el._id]?.state ?? '--',
+				calibration,
 			}
 
 			// Собираем клапаны
 			if (!el.groupId) {
-				// Для обычных клапанов
+				// Для обычных клапанов (не в группе)
 				acc.set(el._id, r)
 			} else {
 				// Для групп клапанов
@@ -74,35 +76,51 @@ function fnVlv(idS, obj) {
 					const cur = acc.get(el.groupId)
 					// Защита, если кто то объединит в группу приточный и выпускной клапан
 					if (cur.type !== r.type) return acc
+					// В качестве отображаемого клапана берем у кого самое большое калибровочное время
+
 					// Слияние клапанов в группу
-					cur._id.push(...r._id)
-					cur.value = Math.max(cur.value, isNaN(r.value) ? 0 : r.value)
-					cur.state = fnMergeVlvState(cur, r)
+					fnMergeVlv(cur, r, idB, obj)
 				}
 			}
 			return acc
 		}, new Map())
 		.values()
-		.sort((a, b) => a.type - b.type)
 
-	return vlv
+	return [...(vlv ?? [])].sort((a, b) => a.type - b.type)
 }
 
 /**
- * Выбор приоритетного состояние для группы клапанов
+ * Выбор приоритетного клапана и слияние в один клапан
  * @param {*} cur Существующий клапан из группы
  * @param {*} r Новый член группы
  */
-function fnMergeVlvState(cur, r) {
-	const stateVlv = [
-		{ code: 'icls', weight: 0 },
-		{ code: 'icls', weight: 0 },
-		{ code: 'icls', weight: 0 },
-		{ code: 'icls', weight: 0 },
-		{ code: 'icls', weight: 0 },
-		{ code: 'icls', weight: 0 },
-	]
+function fnMergeVlv(cur, r, idB, obj) {
+	cur.valve.push(...r.valve)
+	r.calibration = obj?.retain?.[idB]?.valve?.[r.valve[0]._id] ?? 0
+
+	// Прверка по состоянию: если главный клапан в аварии
+	if (cur.state == 'alarm' && r.state != 'alarm') {
+		cur.value = r.value
+		cur.state = r.state
+		cur.calibration = r.calibration
+		return
+	}
+	// Если состояние главного клапана - ок, проверка по калибровочному времени
+	if (r.state != 'alarm' && r.calibration > cur.calibration) {
+		cur.value = r.value
+		cur.state = r.state
+		cur.calibration = r.calibration
+	}
 }
+
+// const stateVlv = [
+// 	{ code: 'icls', weight: 0 },
+// 	{ code: 'icls', weight: 0 },
+// 	{ code: 'icls', weight: 0 },
+// 	{ code: 'icls', weight: 0 },
+// 	{ code: 'icls', weight: 0 },
+// 	{ code: 'icls', weight: 0 },
+// ]
 
 /**
  * Карточки секций: подогрев клапанов type=heating
@@ -112,7 +130,7 @@ function fnMergeVlvState(cur, r) {
  */
 function heatVlv(idS, obj) {
 	const heat = obj?.data?.heating?.filter((el) => el.owner.id === idS && el.type === 'heating')
-	return heat.some((el) => obj?.value?.outputEq?.[el._id])
+	return heat?.some((el) => obj?.value?.outputEq?.[el._id])
 }
 
 /**

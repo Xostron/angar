@@ -10,11 +10,14 @@ export default function Valve({ valve, onClick, active }) {
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
 	const { build } = useParams()
 	const [input] = useInputStore(({ input }) => [input])
-	// Калибровочное время клапанов (время поткрытия)
-	const refSp = input?.retain?.[build]?.valve?.[valve?._id] || 1
-	const sp = input?.[valve?._id]?.val
-	const state = input?.[valve?._id]?.state
+	// Текущее положение группы клапанов
+	const spp = valve?.valve?.map((el) => input?.[el._id]?.val)
+
+
+	const sp = valve?.value
+	const state = valve?.state
 	const type = valve.type === 'out' ? 'vout' : 'vin'
+
 	const imgV = defImg.valve?.[type]?.[state]
 	let cl = ['sio-btn']
 
@@ -22,24 +25,36 @@ export default function Valve({ valve, onClick, active }) {
 	if (state === 'alr') cl.push('alarm')
 	// if (!cl.includes('auth') && !cl.includes('alarm')) cl.push('man')
 	cl = cl.join(' ')
+
 	return (
 		<div className='sio-valve'>
-			{valve.type === 'out' ? <span style={{ textAlign: 'left' }}>{sp} %</span> : <></>}
+			{valve.type === 'out' ? (
+				<span style={{ textAlign: 'left' }} title={spp.join(' : ')}>
+					{sp} %
+				</span>
+			) : (
+				<></>
+			)}
 			<Btn
 				icon={imgV}
 				cls={cl}
 				onClick={() =>
 					onClick({
-						vlv: valve,
+						valve,
 						type: 'valve',
 						state,
 						build,
-						refSp,
 						sp,
 					})
 				}
 			/>
-			{valve.type === 'in' ? <span style={{ textAlign: 'right' }}>{sp} %</span> : <></>}
+			{valve.type === 'in' ? (
+				<span style={{ textAlign: 'right' }} title={spp.join(' : ')}>
+					{sp} %
+				</span>
+			) : (
+				<></>
+			)}
 		</div>
 	)
 }

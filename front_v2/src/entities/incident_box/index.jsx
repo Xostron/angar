@@ -14,7 +14,9 @@ function IncidentBox({ err = {}, type = 'alarm', size = 'normal' }) {
     <div className={cls} style={stl}>
       <div className={style.content}>
         <img src={iconIncident?.[err?.code]} />
-        <div className={style.msg}>{err?.msg ?? ''}</div>
+        <div className={style.msg}>
+          {err?.title ?? ''} {err?.msg ?? ''}
+        </div>
       </div>
       <span className={style.date}>{err?.date ?? ''}</span>
     </div>

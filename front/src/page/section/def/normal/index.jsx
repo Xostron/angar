@@ -35,7 +35,7 @@ export default function Normal() {
 			<RowTemp data={r3} />
 			{p?.length > 2 && <RowTemp data={p} />}
 			{/* Клапан, обогреватель */}
-			<RowValve active={isMan} data={{ valve, heating }} />
+			<RowValve active={isMan} data={{ valve, heating, idB: build, idS: sect }} />
 		</section>
 	)
 }

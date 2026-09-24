@@ -1,14 +1,13 @@
 import useInputStore from '@src/entities/store/input';
-import ScrollGrid from '../../shared/scroll-grid';
+import ScrollGrid from '../../shared/ui/scroll_grid';
 import Outdoor from '../../widgets/outdoor';
-import Sidebar from '../../shared/sidebar';
+import Sidebar from '../../shared/ui/sidebar';
 import Bcard from '@src/widgets/bcard';
 import './style.css';
 
 // Начальная страница: карточки складов
 const MainPage = () => {
   const bCard = useInputStore((s) => s?.input?.bCard);
-//   console.log(bCard);
   return (
     <main className="main-page">
       <Sidebar>

@@ -1,10 +1,17 @@
 const { fnSCard } = require('@tool/web/section_card')
 const { fnSBarB } = require('@tool/web/section_card/fn')
 const { fnBCard, fnBSide } = require('@tool/web/bld_card')
-const innerSec = require('@tool/web/inner_section/innerSec')
+const fnInnerSec = require('@tool/web/inner_section/innerSec')
 
 function web(v, obj) {
 	// Данные для web клиента
+	// Карточки секций
+	const sCard = fnSCard(obj)
+	// Содержимое секции
+	const innerSec = fnInnerSec(obj, sCard)
+	// console.log(11, sCard?.['6800b88d56c6a01c90ecbc5e']?.['6800bbc056c6a01c90ecbc84'])
+	// console.log(22, innerSec?.['6800b88d56c6a01c90ecbc5e']?.['6800bbc056c6a01c90ecbc84'])
+
 	const r = {
 		...v,
 		// Для нового дизайна
@@ -12,10 +19,8 @@ function web(v, obj) {
 		bCard: fnBCard(obj),
 		// Левая боковая панель уличные датчики
 		bSide: fnBSide(obj),
-		// Карточки секций
-		sCard: fnSCard(obj),
-		innerSec: innerSec(obj),
-		// Страница секции: аварии склада - depriciated
+		sCard,
+		innerSec,
 		// sBarB: fnSBarB(),
 	}
 	// console.log(234, r.bCard)

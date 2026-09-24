@@ -8,12 +8,13 @@ import style from './style.module.css';
 function AsideAlarm({ idB }) {
   //   Авторежим
   const am = useInputStore((s) => s?.input?.retain?.[idB]?.automode);
-  //   Критические аварии
-  const alarm = useInputStore((s) => s?.alarm?.monit?.critical?.[idB]?.[0]);
+
   //   Аварии авторежимов
   const notification = useInputStore(
     (s) => s?.alarm?.monit?.warning?.[idB]?.[0],
   );
+  //   Критические аварии
+  const alarm = useInputStore((s) => s?.alarm?.monit?.critical?.[idB]?.[0]);
   //   Сообщения достижений
   const achieve = useInputStore((s) => s?.alarm?.achieve?.[idB]?.[0]);
   //   Кол-во аварий

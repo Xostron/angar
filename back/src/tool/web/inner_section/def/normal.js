@@ -10,13 +10,13 @@ const { data: store } = require('@store')
  * @param {*} obj
  * @returns
  */
-function innerNormal(bld, sec, obj) {
+function innerNormal(bld, sec, obj, sCard) {
 	const target = sp(bld._id, bld.type, obj?.retain?.[bld._id]?.automode)
 	return {
 		// Список секций
 		listSec: listSec(bld._id, obj.data?.section),
 		// Режим секции: авто true, ручной false, выкл null|undefined
-		mode: fnSMode(bld._id, sec._id, bld.type, obj?.retain),
+		mode: sCard?.[bld._id]?.[sec._id]?.mode,
 		// Датчики
 		sensor: [
 			{ ...fnSens(bld._id, obj, 'hin', 'max', 'per', 'hin'), target: target?.hin ?? '--' },
@@ -27,7 +27,7 @@ function innerNormal(bld, sec, obj) {
 		// Датчики температуры продукта (Гистограмма)
 		tprdChart: fnSensByType(sec._id, obj?.data?.sensor, obj, 'tprd'),
 		// Клапаны
-		valve: fnVlv(sec._id, obj),
+		valve: sCard?.[bld._id]?.[sec._id]?.valve,
 		// ВНО
 		fan: fnFanBySec(sec._id, obj?.data?.fan, obj),
 	}

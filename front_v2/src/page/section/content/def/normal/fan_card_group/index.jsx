@@ -9,7 +9,7 @@ function FanCardGroup({ idB, idS }) {
       <span>Вентиляция</span>
       <div className={style.content}>
         {!!fan?.length &&
-          fan.map((el) => <FanCard data={el} action={() => {}} />)}
+          fan.map((el) => <FanCard key={el._id} data={el} action={() => {}} />)}
       </div>
     </section>
   );

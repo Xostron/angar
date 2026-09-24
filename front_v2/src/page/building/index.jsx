@@ -1,8 +1,8 @@
 import useInputStore from '@src/entities/store/input';
-import ScrollGrid from '@src/shared/scroll-grid';
+import ScrollGrid from '@src/shared/ui/scroll_grid';
 import { useParams } from 'react-router-dom';
 import Outdoor from '@src/widgets/outdoor';
-import Sidebar from '@src/shared/sidebar';
+import Sidebar from '@src/shared/ui/sidebar';
 import Indoor from '@src/widgets/indoor';
 import AsideAlarm from '../../widgets/aside_alarm';
 import useEquipStore from '@src/entities/store/equipment';
