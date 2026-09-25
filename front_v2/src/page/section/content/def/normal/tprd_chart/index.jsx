@@ -4,8 +4,6 @@ import SummaryTprd from './summary_tprd';
 import ChartTprd from '@src/widgets/chart_tprd/charts';
 
 function TprdChart({ idB, idS }) {
-  //   const data = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
-  //   console.log(1, data);
   return (
     <section className={style.container}>
       <span>Температура продукта</span>

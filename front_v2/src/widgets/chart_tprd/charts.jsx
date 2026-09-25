@@ -4,7 +4,6 @@ import style from './style.module.css';
 import useInputStore from '@src/entities/store/input';
 import { useParams } from 'react-router-dom';
 
-const STATE_LABELS = ['Выкл', 'Норма', 'Авария'];
 
 // Гистограмма темп. продукта в секции
 export default function ChartTprd({}) {
@@ -70,6 +69,9 @@ export default function ChartTprd({}) {
               }
             },
           },
+		  barWidth:'50%',
+		  barMaxWidth: 100,
+		  barMinWidth:70,
           silent: true, // отключение hover
           data: [],
           label: {
@@ -144,6 +146,7 @@ export default function ChartTprd({}) {
           fontWeight: 'normal',
         },
         axisTick: { show: true }, // Показываем засечки возле имен
+		boundaryGap: ['10%', '10%'],
       },
       yAxis: {
         type: 'value',

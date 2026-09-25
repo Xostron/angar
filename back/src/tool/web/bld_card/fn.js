@@ -61,13 +61,24 @@ function fnAutomode(idB, obj) {
  * Агрегированное состояние по всем испарителям склада
  * @param {*} idB ИД склад
  * @param {*} obj Глобальные данные (рама, анализ, retain...)
+ * @param {string} idS ИД секции:
+ * 			существует - агрегация состояния испарителей этой секции
+ * 			не существует - агрегация состояния испарителей всего склада
  * @returns
  */
-function clrsMode(idB, obj) {
-	// Секции склада
-	const idsS = getIdsS(obj?.data?.section, idB)
-	// Получить состояние испарителей по складу
-	const allClr = idsS.flatMap((idS) => getStateClr(idS, obj))
+function clrsMode(idB, obj, idS) {
+	let allClr
+
+	if (!idS) {
+		// Для всего склада
+		// Секции склада
+		const idsS = getIdsS(obj?.data?.section, idB)
+		// Получить состояние всех испарителей по складу
+		allClr = idsS.flatMap((idS) => getStateClr(idS, obj))
+	} else {
+		// Для текущей секции
+		allClr = getStateClr(idS, obj)
+	}
 
 	// Агрегированное состояние по всем испарителям
 	const weight = {

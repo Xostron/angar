@@ -22,6 +22,8 @@ const data = {
 	tune,
 	warming,
 	zero,
+	// TODO Получение рамы
+	// equipment
 }
 
 module.exports = data

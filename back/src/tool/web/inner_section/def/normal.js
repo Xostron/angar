@@ -1,10 +1,10 @@
-const { fnSMode, fnVlv } = require('@tool/web/section_card/fn')
 const { listSec, fnSensByType, fnFanBySec } = require('./fn')
 const { fnSens } = require('@tool/web/bld_card/fn')
 const sp = require('@root/routes/api/tenta/read/store/transform/sp')
 const { data: store } = require('@store')
+
 /**
- * Содержимое секции
+ * Содержимое секции (Обычный склад)
  * @param {*} bld
  * @param {*} sec
  * @param {*} obj
