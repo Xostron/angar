@@ -19,6 +19,7 @@ function fnSensByType(idS, sensor = [], obj, type) {
 				value: obj.value[el._id]?.value,
 				state: obj.value[el._id]?.state,
 				order: el?.order ?? 0,
+				name: el.name,
 			})
 			return acc
 		}, [])

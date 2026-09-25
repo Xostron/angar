@@ -11,6 +11,6 @@
 }
 .content {
   display: flex;
-  padding-top: 8px;
+  /* padding-top: 8px; */
   gap: 12px;
 }

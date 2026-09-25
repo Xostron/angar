@@ -1,6 +1,6 @@
 import useInputStore from '@src/entities/store/input';
-import style from './style.module.css';
 import FanCard from '@src/entities/fan_card';
+import style from './style.module.css';
 
 function FanCardGroup({ idB, idS }) {
   const fan = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]?.fan);
