@@ -9,6 +9,9 @@ const dictValue = {
   on: 'вкл',
   off: 'выкл',
   cold: 'холодильник',
+  run: 'вкл',
+  stop: 'выкл',
+  alarm: 'выкл',
 };
 
 export default dictValue;

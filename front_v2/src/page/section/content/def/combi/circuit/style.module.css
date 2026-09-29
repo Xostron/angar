@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 16px;
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--c-navy);
+  & > span {
+    padding-bottom: 12px;
+    color: var(--c-grey);
+  }
+}
+
+.cards {
+  display: flex;
+  background-color: var(--c-white);
+  border-radius: 12px;
+  &.rounded {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-inline: 16px;
+  padding-top: 16px;
+  /* row-gap: 8px; */
+  & > span {
+    line-height: 140%;
+    font-weight: 500;
+    font-size: 20px;
+    padding-bottom: 12px;
+  }
+}
+
+.card:nth-child(2) {
+  border-left: 1px solid var(--c-grey-light);
+}
+
+.pressure {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  padding-bottom: 12px;
+}
+
+.equipment {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.state {
+  padding-bottom: 12px;
+}
+
+.comfan {
+  background-color: var(--c-white);
+  padding-inline: 16px;
+  padding-bottom: 16px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}

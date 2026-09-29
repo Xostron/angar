@@ -14,9 +14,6 @@ const dictIcon = {
   info: '/icon/indicator/info.svg',
   info: '/icon/indicator/info.svg',
   info: '/icon/indicator/info.svg',
-  info: '/icon/indicator/info.svg',
-  info: '/icon/indicator/info.svg',
-  info: '/icon/indicator/info.svg',
 };
 
 export default dictIcon;

@@ -3,7 +3,6 @@
   flex-direction: column;
   overflow: hidden;
   flex-grow:1;
-  background-color: rgb(228, 149, 149);
   font-weight: 500;
   font-size: 20px;
   color: var(--c-grey);

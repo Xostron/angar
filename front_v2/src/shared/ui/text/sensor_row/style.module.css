@@ -17,6 +17,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  /* color: var(--c-blue-darker); */
 }
 .value {
   font-weight: 600;

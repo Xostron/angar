@@ -30,6 +30,5 @@ export default function Echart({ option, style, loading }) {
       if (option) chart.current.setOption(option, { notMerge: true });
     }
   }, [option, loading]);
-
   return <div ref={el} style={style || { width: '100%', height: '213px' }} />;
 }

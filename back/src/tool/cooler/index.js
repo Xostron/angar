@@ -30,6 +30,10 @@ function getStateClr(idS, obj) {
 	return coolerS.map((clr) => obj?.value?.[clr._id]?.state)
 }
 
+function getStateClr2(clr, obj) {
+	return obj?.value?.[clr._id]?.state
+}
+
 /**
  * Несколько испарителей с одним общим ВНО: вся пара выведена из работы
  * @param {*} pair
@@ -56,4 +60,4 @@ function fansOff(idB, clr, retain) {
 	return clr.fan.some((el) => retain?.[idB]?.fan?.[clr.sectionId]?.[el._id])
 }
 
-module.exports = { getStateVNOClr, getStateClr, isOffPair, fansOff }
+module.exports = { getStateVNOClr, getStateClr, isOffPair, fansOff, getStateClr2 }

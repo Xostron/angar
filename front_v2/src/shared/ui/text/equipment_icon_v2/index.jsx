@@ -1,6 +1,7 @@
 import dictIcon from '@src/shared/dict/icon_indicator';
-import dictUnit from '@src/shared/dict/unit';
+import dictValue from '@src/shared/dict/value';
 import style from './style.module.css';
+import dictEquipment from '@src/shared/dict/equipment';
 /**
  * Текст: отображение датчика
  * @param {*} name Название
@@ -10,40 +11,57 @@ import style from './style.module.css';
  * @param {*} title Описание поля при наведении курсором
  * @returns
  */
-function TextSensRow({
+function TextIcEquipV2({
+  code = '',
   name,
   value,
   state,
   size = 'responsive',
-  unit,
   title,
-  info,
-  styleName = {},
+  transparent,
 }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
 
   // Значение
-  const sign = unit == 'grad' && value > 0 ? '+' : '';
-  let content = sign + (value ?? '') + ' ' + (dictUnit?.[unit] ?? unit ?? '');
+  const stt = dictValue?.[state] ?? state ?? '';
 
   // Стили: выведен из работы/неисправность
-  let cls = '';
+  let cls = '',
+    clsValue = '';
   if (state == 'off') {
     cls = style.off;
-    content = <img width="24px" src={dictIcon.offline} />;
+    clsValue = style.voff;
   }
   if (state == 'alarm') {
     cls = style.alarm;
-    content = <img width="24px" src={dictIcon.crash} />;
   }
+
+  //   Стиль значения
+
   return (
-    <div className={`${style.text} ${cls} `} title={title} style={stl}>
+    <div
+      className={`${style.container} ${cls} ${transparent ? style.transparent : ''}`}
+      title={title}
+      style={stl}
+    >
       <div className={style.name}>
-        <span style={styleName}>{name}</span>
-        {info && <img src={dictIcon.info} />}
+        <img
+          width="24px"
+          height="24px"
+          src={`${dictEquipment[code + '_' + state]}`}
+        />
+        <span>{name}</span>
       </div>
-      <span className={style.value}>{content}</span>
+      <div className={`${style.value} ${clsValue}`}>
+        {stt} {value}%
+        <img
+          className={style.next}
+          width="24px"
+          height="24px"
+          src={`/icon/indicator/next2.svg`}
+        />
+      </div>
     </div>
   );
 }
@@ -54,4 +72,4 @@ const dictSize = {
   responsive: { width: '100%' },
 };
 
-export default TextSensRow;
+export default TextIcEquipV2;

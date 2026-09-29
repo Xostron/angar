@@ -3,7 +3,9 @@ const { fnSens, clrsMode } = require('@tool/web/bld_card/fn')
 const sp = require('@root/routes/api/tenta/read/store/transform/sp')
 const { data: store } = require('@store')
 const { getClr } = require('@tool/command/mech/fn')
-const { getStateClr } = require('@tool/cooler')
+const { getStateClr2 } = require('@tool/cooler')
+const coolerDef = require('@dict/def/cooler')
+const { getOwner } = require('@tool/get/building')
 
 /**
  * Содержимое секции (Обычный склад)
@@ -14,8 +16,8 @@ const { getStateClr } = require('@tool/cooler')
  */
 function innerCombi(bld, sec, obj, sCard) {
 	const target = sp(bld._id, bld.type, obj?.retain?.[bld._id]?.automode)
-	const t = fnCircuit(bld, sec, obj)
-	console.log(11, t)
+	// const t = fnCircuit(bld, sec, obj)
+	// console.log(11, t)
 	return {
 		// Список секций
 		listSec: listSec(bld._id, obj.data?.section),
@@ -35,13 +37,7 @@ function innerCombi(bld, sec, obj, sCard) {
 		// ВНО
 		fan: fnFanBySec(sec._id, obj?.data?.fan, obj),
 		// Контур: ипаритель+агрегат
-		circuit: {
-			// Список испарители+агрегаты
-			list: [],
-			// Общий вентилятор испарителей
-			fan: [],
-		},
-		// circuit: fnCircuit(bld, sec, obj),
+		circuit: fnCircuit(bld, sec, obj),
 		/*
 		(Такого функционала еще нет в природе)
 		Централь: Агрегат
@@ -55,21 +51,105 @@ module.exports = innerCombi
 function fnCircuit(bld, sec, obj) {
 	// Рама испарителей
 	const cooler = getClr(obj.data, sec._id)
-	const r = getStateClr(sec._id, obj)
 
+	if (cooler?.length > 2) return fn1(bld, sec, obj, cooler)
+	return fn2(bld, sec, obj, cooler)
+}
+
+// Карточки испарителей > 2 контуров
+function fn1(bld, sec, obj, cooler) {
 	const circuit = {
-		// Список испарители+агрегаты
-		list: [],
-		// Общий вентилятор испарителей
-		fan: [],
-		// Информация для виджета контуров > 2
 		title: cooler?.length > 2 ? 'Контуры в работе' : undefined,
-		// Количество испарителей
+		// Контуры - Количество испарителей
 		length: cooler?.length > 2 ? cooler.length : undefined,
 		// Суммирующее состояние испарителей данной секции (если испарителей > 2)
 		comState: cooler?.length > 2 ? clrsMode(bld._id, obj, sec._id).name : undefined,
+		fans: [],
 	}
-
-	console.log(88, bld.name, sec.name)
 	return circuit
+}
+
+// Карточка испарителей <=2 контура
+function fn2(bld, sec, obj, coolerS = []) {
+	const circuit = {}
+	// Список испарители+агрегаты
+	// Имя, давление всасв/нагн, агрегат вкл/выкл,
+	// вент конденсатора, состояние испарителя, вно испарителя
+	circuit.list = coolerS.map((el) => {
+		const condenser = Object.values(obj.value?.[el?.aggregateListId]?.condenser ?? {})?.[0]
+			?.state
+		const r = {
+			name: el.name,
+			// Состояние агрегата
+			aggregate: {
+				state: obj.value?.[el?.aggregateListId]?.state,
+				value: dictAgg?.[obj.value?.[el?.aggregateListId]?.state],
+			},
+			// Состояние конденсатора
+			condenser: { state: condenser, value: condenser == 'run' ? '100%' : '0%' },
+			// Состояние испарителя
+			state: coolerDef?.[getStateClr2(el, obj)],
+			// ВНО испарителя
+			fan: el?.fan?.map((f) => obj.value?.[f._id])?.[0],
+			// Темп испарителя
+			tmpCooler: obj.value.total?.[sec._id]?.cooler?.[el._id]?.tmpCooler,
+			// Давл всасывания
+			pin: obj.value.total?.[sec._id]?.cooler?.[el._id]?.pin,
+			// Давл.нагнетания
+			pout: obj.value.total?.[sec._id]?.cooler?.[el._id]?.pout,
+		}
+		return r
+	})
+	// Общий вентилятор у двух испарителей
+	circuit.comfan = fnComFanClr(bld._id, coolerS, obj)
+
+	return circuit
+}
+
+/**
+ * @param {*} coolerS Массив испарителей секции
+ * @param {*} obj
+ * @returns {Object[]}Поиск у испарителей секции общих ВНО
+ */
+function fnComFanClr(idB, coolerS = [], obj) {
+	const com = Object.values(
+		coolerS
+			.flatMap((el) => el.fan)
+			.reduce((acc, el, i) => {
+				if (acc[el.module.id + el.module.channel]) {
+					// Найден общий вно
+					acc[el.module.id + el.module.channel].common = true
+					// Владелец испарителя
+					const id = getOwner(el, obj.data)?.sect?._id
+					const prev = acc[el.module.id + el.module.channel]
+					const off = obj.retain?.[idB]?.fan?.[id]?.[prev._id]
+					// Если первый ВНО из дублированных введен в работу оставляем его
+					if (!off) return acc
+					else {
+						acc[el.module.id + el.module.channel].common = true
+						return acc
+					}
+				}
+				acc[el.module.id + el.module.channel] = el
+				return acc
+			}, {}) ?? {},
+	)
+		.filter((el) => el.common)
+		.map((el) => {
+			return {
+				_id: el._id,
+				...(obj?.value?.[el._id] ?? {}),
+			}
+		})
+
+	return com
+}
+
+const dictAgg = {
+	stop: 'выкл',
+	run: 'вкл',
+	alarm: 'выкл',
+	undefined: 'выкл',
+	null: 'выкл',
+	'': 'выкл',
 }

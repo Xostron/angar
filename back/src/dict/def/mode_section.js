@@ -1,7 +1,7 @@
 const data = {
 	false: 'Ручной',
 	true: 'Авто',
-	undefined: 'Авто',
+	undefined: 'Выключена',
 	null: 'Выключена',
 }
 
