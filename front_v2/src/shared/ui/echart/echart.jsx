@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useLayoutEffect } from 'react';
 import * as echarts from 'echarts';
 
 /**
@@ -21,14 +21,23 @@ export default function Echart({ option, style, loading }) {
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!chart.current) return;
     if (loading) {
       chart.current.showLoading();
     } else {
       chart.current.hideLoading();
-      if (option) chart.current.setOption(option, { notMerge: true });
+      if (option) {
+        // ШАГ 1: Мгновенно подгоняем размеры canvas
+        chart.current?.resize();
+        // ШАГ 2: Переносим отрисовку на следующий кадр анимации.
+        requestAnimationFrame(() => {
+          chart.current.setOption(option, { notMerge: true });
+        });
+      }
     }
+    return;
   }, [option, loading]);
-  return <div ref={el} style={style || { width: '100%', height: '213px' }} />;
+
+  return <div ref={el} style={{ width: '100%', height: '213px', ...style }} />;
 }

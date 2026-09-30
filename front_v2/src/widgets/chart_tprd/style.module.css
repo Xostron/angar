@@ -1,5 +1,6 @@
-.container {
+.container2 {
   display: flex;
   background-color: var(--c-white);
   border-radius: 12px;
+  overflow: hidden;
 }

@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import Echart from '@src/shared/ui/echart/echart';
-import style from './style.module.css';
-import useInputStore from '@src/entities/store/input';
 import { useParams } from 'react-router-dom';
+import Echart from '@src/shared/ui/echart/echart';
+import useInputStore from '@src/entities/store/input';
+import style from './style.module.css';
 
 // Гистограмма темп. продукта в секции
 export default function ChartTprd({ stl = {} }) {
@@ -24,16 +24,16 @@ export default function ChartTprd({ stl = {} }) {
   // Расчет конфига для графика
   const option = useMemo(
     () => fnOption(tprd, tprds),
-    [tprds?.[0]?._id, tprd?.min, tprd?.max, tprd?.target],
+    [tprds?.[0]?._id, tprd?.min, tprd?.max, tprd?.target, idS],
   );
 
   return (
-    <div className={style.container}>
+    <div className={style.container2}>
       {option && (
         <Echart
           option={option}
           loading={loading}
-          style={{ width: '100%', height: '259px', ...stl }}
+          style={{ height: '259px', ...stl }}
         />
       )}
     </div>
