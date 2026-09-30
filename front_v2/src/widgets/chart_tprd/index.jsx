@@ -26,7 +26,7 @@ export default function ChartTprd({ stl = {} }) {
     () => fnOption(tprd, tprds),
     [tprds?.[0]?._id, tprd?.min, tprd?.max, tprd?.target],
   );
-  console.log(1, option);
+
   return (
     <div className={style.container}>
       {option && (

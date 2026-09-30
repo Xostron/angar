@@ -7,7 +7,7 @@
   border-radius: 8px;
   background-color: var(--c-white);
   cursor: pointer;
-
+  width: fit-content;
   font-weight: 500;
   color: var(--c-navy);
   line-height: 28px;

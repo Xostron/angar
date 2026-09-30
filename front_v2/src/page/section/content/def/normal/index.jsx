@@ -13,7 +13,7 @@ function Section({ idB, idS }) {
       <Sensors idB={idB} idS={idS} />
       <TprdChart idB={idB} idS={idS} />
       <ValveCardGroup idB={idB} idS={idS} />
-      <FanCardGroup idB={idB} idS={idS} />
+      <FanCardGroup idB={idB} idS={idS} typeBld="normal" />
     </section>
   );
 }

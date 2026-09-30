@@ -1,17 +1,22 @@
 .container {
   display: flex;
+  flex-direction: column;
   padding-top: 16px;
   gap: 8px;
-  flex-direction: column;
+  & > span {
+    line-height: 28px;
+    font-weight: 600;
+    font-size: 20px;
+  }
 }
-.container > span {
-  line-height: 28px;
-  font-weight: 600;
-  font-size: 20px;
+
+.main_grid {
+  width: fit-content;
+  display: flex;
 }
 
 .content {
-  display: flex;
-  /* padding-top: 8px; */
-  gap: 12px;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 8px;
 }

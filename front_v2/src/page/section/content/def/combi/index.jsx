@@ -17,7 +17,7 @@ function Section({ idB, idS }) {
         <TprdChart idB={idB} idS={idS} />
       </div>
       <ValveCardGroup idB={idB} idS={idS} />
-      <FanCardGroup idB={idB} idS={idS} />
+      <FanCardGroup idB={idB} idS={idS} typeBld="combi" />
     </section>
   );
 }
