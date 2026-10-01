@@ -3,7 +3,7 @@ const { fnSens, clrsMode } = require('@tool/web/bld_card/fn')
 const sp = require('@root/routes/api/tenta/read/store/transform/sp')
 const { data: store } = require('@store')
 const { getClr } = require('@tool/command/mech/fn')
-const { getStateClr2 } = require('@tool/cooler')
+const { getStateClr2, getStateClr } = require('@tool/cooler')
 const coolerDef = require('@dict/def/cooler')
 const { getOwner } = require('@tool/get/building')
 
@@ -52,19 +52,25 @@ function fnCircuit(bld, sec, obj) {
 	// Рама испарителей
 	const cooler = getClr(obj.data, sec._id)
 
-	if (cooler?.length > 2) return fn1(bld, sec, obj, cooler)
+	if (cooler?.length >= 2) return fn1(bld, sec, obj, cooler)
 	return fn2(bld, sec, obj, cooler)
 }
 
 // Карточки испарителей > 2 контуров
-function fn1(bld, sec, obj, cooler) {
+function fn1(bld, sec, obj, coolerS = []) {
+	const fans = coolerS
+		.flatMap((el) => el?.fan)
+		.map((f) => {
+			return { _id: f._id, ...obj.value?.[f._id] }
+		})
+	const isRunCount = getStateClr(sec._id, obj).filter((st) => st !== 'off-off-off')?.length ?? 0
 	const circuit = {
-		title: cooler?.length > 2 ? 'Контуры в работе' : undefined,
+		title: 'Контуры в работе',
 		// Контуры - Количество испарителей
-		length: cooler?.length > 2 ? cooler.length : undefined,
+		len: `${isRunCount}/${coolerS.length}`,
 		// Суммирующее состояние испарителей данной секции (если испарителей > 2)
-		comState: cooler?.length > 2 ? clrsMode(bld._id, obj, sec._id).name : undefined,
-		fans: [],
+		comState: clrsMode(bld._id, obj, sec._id).name,
+		fans,
 	}
 	return circuit
 }
@@ -115,22 +121,22 @@ function fnComFanClr(idB, coolerS = [], obj) {
 	const com = Object.values(
 		coolerS
 			.flatMap((el) => el.fan)
-			.reduce((acc, el, i) => {
-				if (acc[el.module.id + el.module.channel]) {
+			.reduce((acc, f, i) => {
+				if (acc[f.module.id + f.module.channel]) {
 					// Найден общий вно
-					acc[el.module.id + el.module.channel].common = true
+					acc[f.module.id + f.module.channel].common = true
 					// Владелец испарителя
-					const id = getOwner(el, obj.data)?.sect?._id
-					const prev = acc[el.module.id + el.module.channel]
+					const id = getOwner(f, obj.data)?.sect?._id
+					const prev = acc[f.module.id + f.module.channel]
 					const off = obj.retain?.[idB]?.fan?.[id]?.[prev._id]
 					// Если первый ВНО из дублированных введен в работу оставляем его
 					if (!off) return acc
 					else {
-						acc[el.module.id + el.module.channel].common = true
+						acc[f.module.id + f.module.channel].common = true
 						return acc
 					}
 				}
-				acc[el.module.id + el.module.channel] = el
+				acc[f.module.id + f.module.channel] = f
 				return acc
 			}, {}) ?? {},
 	)

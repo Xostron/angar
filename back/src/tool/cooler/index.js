@@ -30,6 +30,12 @@ function getStateClr(idS, obj) {
 	return coolerS.map((clr) => obj?.value?.[clr._id]?.state)
 }
 
+/**
+ * Состояние конкретного испарителя
+ * @param {*} clr 
+ * @param {*} obj 
+ * @returns 
+ */
 function getStateClr2(clr, obj) {
 	return obj?.value?.[clr._id]?.state
 }

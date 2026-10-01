@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--c-navy);
+  & > span {
+    padding-bottom: 12px;
+    color: var(--c-grey);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--c-white);
+  padding: 16px;
+  width: 400px;
+  height: 280px;
+  border-radius: 12px;
+  gap: 16px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  & > span:nth-child(1) {
+  }
+  & > span:nth-child(2) {
+    line-height: 140%;
+    color: var(--c-blue-darker);
+  }
+}
+
+.state_fans {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fans {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap:10px;
+}

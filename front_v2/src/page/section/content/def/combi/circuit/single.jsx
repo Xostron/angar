@@ -1,9 +1,9 @@
-import style from './style.module.css';
+import style from './single.module.css';
 import EquipSt from '@src/shared/ui/icon/equipment';
 import TextSensRow from '@src/shared/ui/text/sensor_row';
 import TextIcEquipV2 from '@src/shared/ui/text/equipment_icon_v2';
 
-// Виджет контуров
+// Виджет контуров 1, 2шт
 function Single({ data = {} }) {
   const { list = [], comfan = [] } = data;
 
