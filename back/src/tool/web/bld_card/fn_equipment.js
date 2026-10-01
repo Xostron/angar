@@ -11,21 +11,20 @@ function fnEquipment(bld, obj) {
 
 	// Разгон. вент.
 	r.push(fnAccel(bld._id, idsS, obj, extra))
+	// Обогреватель
+	r.push(fnHeater(bld._id, idsS, obj))
 	// Увлажнитель
 	r.push(fnWetting(idsS, obj, extra))
-	// Озонатор
-	r.push(fnOzon(extra))
-	// Окуривание
-	r.push(fnSmoking(extra))
-
-	// Обогрев(не существует)
-
 	// Контроль CO2
 	r.push(defCO[bld.type](idsS, obj, extra))
+	// Подогрев канала
+	r.push(fnHeattcnl(bld._id, idsS, obj))
+	// Окуривание
+	r.push(fnSmoking(extra))
+	// Озонатор
+	r.push(fnOzon(extra))
 	// Демо
 	r.push(fnDemo(extra))
-	// Тепловая пушка
-	r.push(fnHeattcnl(bld._id, idsS, obj))
 
 	r = r.filter(Boolean)
 
@@ -127,5 +126,12 @@ function fnHeattcnl(idB, idsS, obj) {
 		r[idS] = { name: 'Подогрев канала', value: isRun ? 'Вкл' : 'Выкл' }
 		if (isRun) r.total = { name: 'Подогрев канала', value: 'Вкл' }
 	})
+	return r
+}
+
+// Обогреватель
+function fnHeater(idB, idsS, obj) {
+	const r = { name: 'Обогреватель', value: 'Выкл' }
+
 	return r
 }

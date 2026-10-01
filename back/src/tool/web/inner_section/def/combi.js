@@ -12,7 +12,6 @@ const { data: store } = require('@store')
  */
 function innerCombi(bld, sec, obj, sCard) {
 	const target = sp(bld._id, bld.type, obj?.retain?.[bld._id]?.automode)
-	// const t = fnCircuit(bld, sec, obj)
 	// console.log(11, t)
 	return {
 		// Список секций

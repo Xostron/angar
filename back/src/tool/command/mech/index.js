@@ -18,6 +18,7 @@ function mech(obj, idS, idB) {
 	const wettingS = getDevice(idS, device, 'wetting')
 	// Тепловые пушки: обогреватели канала
 	const heattcnl = heating.filter((el) => el?.owner?.id === idS && el.type == 'heattcnl')
+
 	// Клапаны (приточный и выпускной)
 	const vlvS = valve.filter((el) => el.sectionId.includes(idS))
 	// Обогрев клапанов
@@ -121,7 +122,8 @@ function mechB(idB, type, obj, mod = false) {
 	)
 	// Разгонные вентиляторы
 	const fanA = data?.fan?.filter((el) => idBS.includes(el.owner.id) && el.type === 'accel')
-
+	// Обогреватель
+	const heater = data?.device?.filter((el) => el?.device?.code == 'heater')
 	// Выход "Модуль в работе" для реле безопасности
 	const connect =
 		data?.signal?.filter((el) => idBS.includes(el.owner.id) && el.type == 'connect') ?? []
@@ -259,6 +261,7 @@ function mechB(idB, type, obj, mod = false) {
 		heatClrB,
 		tcnlB,
 		pB,
+		heater,
 	}
 }
 

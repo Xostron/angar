@@ -24,6 +24,7 @@ const dayDrying = require('./drying_to_cooling')
 const manFC = require('./man_fc')
 const buildHour = require('./hour/build')
 const { heattcnl } = require('./heattcnl')
+const { heater } = require('./heater')
 
 const data = {
 	// Обычный склад и комби склад - Доп функции для секции
@@ -68,6 +69,7 @@ const data = {
 			dayDrying,
 			manFC,
 			buildHour,
+			heater
 		},
 	},
 	// Склад холодильник

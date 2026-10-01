@@ -8,6 +8,7 @@ import './style.css';
 // Начальная страница: карточки складов
 const MainPage = () => {
   const bCard = useInputStore((s) => s?.input?.bCard);
+  
   return (
     <main className="main-page">
       <Sidebar>
