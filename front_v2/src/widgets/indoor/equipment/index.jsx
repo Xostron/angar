@@ -42,8 +42,10 @@ function Equipment({ data = [] }) {
         // 2 - Просто общий  (например окуривание, демо...)
         return el?.[idS] ? (
           <TextEquip key={i} name={el[idS].name} value={el[idS].value} />
-        ) : (
+        ) : el.name ? (
           <TextEquip key={i} name={el.name} value={el.value} />
+        ) : (
+          <TextEquip key={i} name={el.total.name} value={el.total.value} />
         );
       })}
     </div>

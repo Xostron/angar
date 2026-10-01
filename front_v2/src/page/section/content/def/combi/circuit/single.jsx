@@ -6,13 +6,14 @@ import TextIcEquipV2 from '@src/shared/ui/text/equipment_icon_v2';
 // Виджет контуров 1, 2шт
 function Single({ data = {} }) {
   const { list = [], comfan = [] } = data;
-
   return (
     <article className={style.container}>
       <span>{list.length > 1 ? 'Контуры' : 'Контур'}</span>
       <div className={`${style.cards} ${comfan?.length ? style.rounded : ''}`}>
         {!!list.length &&
-          list.map((el) => <Card el={el} comfanLength={comfan?.length} />)}
+          list.map((el) => (
+            <Card key={el._id} el={el} comfanLength={comfan?.length} />
+          ))}
       </div>
       {/* Общий ВНО этих контуров */}
       {!!comfan?.length && (

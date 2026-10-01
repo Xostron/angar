@@ -21,6 +21,7 @@ function AsideAlarm({ idB }) {
   const count = useInputStore((s) => s?.alarm?.count?.[idB]);
   return (
     <aside className={style.container}>
+      {/* Аварии */}
       <section className={style.incident}>
         <IncidentBox
           type="notification"
@@ -29,6 +30,7 @@ function AsideAlarm({ idB }) {
         <IncidentBox type="alarm" err={alarm} />
         <IncidentJump count={count} min={2} />
       </section>
+      {/* Достижения */}
       <section className={style.achieve}>
         <IncidentInline msg={achieve?.msg} />
       </section>

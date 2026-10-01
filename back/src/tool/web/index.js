@@ -19,7 +19,9 @@ function web(v, obj) {
 		bCard: fnBCard(obj),
 		// Левая боковая панель уличные датчики
 		bSide: fnBSide(obj),
+		// Карточки секций
 		sCard,
+		// Содержимое секций
 		innerSec,
 		// sBarB: fnSBarB(),
 	}

@@ -9,19 +9,19 @@ import useModalStore from '@src/entities/store/modal';
 const Indoor = ({ idB }) => {
   //   Правая боковая панель
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
-  const rSide = bCard?.sidesect;
+  const sidesect = bCard?.sidesect;
 
   // Открыть модальное окно
   const openModal = useModalStore((s) => s.open);
   const isPassiveVisit = useModalStore((s) => s.isPassiveVisit);
   const resetPassive = useModalStore((s) => s.resetPassive);
-  if (!rSide) return <></>;
+  if (!sidesect) return <></>;
 
   return (
     <aside className={style.indoor}>
       <span className={style.indoor__title}>Работа склада</span>
       <Toggle2
-        value={rSide.start}
+        value={sidesect.start}
         on1={() => {
           openModal('turnoff', { idB });
         }}
@@ -29,18 +29,18 @@ const Indoor = ({ idB }) => {
           openModal('turnon', { idB });
         }}
         disabled={false}
-        trigger={[rSide.start, bCard?.automode?.code, isPassiveVisit]}
+        trigger={[sidesect.start, bCard?.automode?.code, isPassiveVisit]}
         resetTrigger={resetPassive}
       />
       <span className={style.indoor__title}>Данные склада</span>
       <Status data={bCard} />
 
-      <Sensor data={rSide} />
+      <Sensor data={sidesect} />
 
       <span className={`${style.indoor__title} ${style.grey}`}>
         Оборудование
       </span>
-      <Equipment data={rSide?.equipment} />
+      <Equipment data={sidesect?.equipment} />
     </aside>
   );
 };

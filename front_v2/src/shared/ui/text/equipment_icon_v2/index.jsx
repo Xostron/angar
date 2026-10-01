@@ -38,7 +38,7 @@ function TextIcEquipV2({
   }
 
   //   Стиль значения
-
+  const val = typeof value == 'number' ? `${value}%` : '';
   return (
     <div
       className={`${style.container} ${cls} ${transparent ? style.transparent : ''}`}
@@ -54,7 +54,7 @@ function TextIcEquipV2({
         <span>{name}</span>
       </div>
       <div className={`${style.value} ${clsValue}`}>
-        {stt} {value}%
+        {stt} {val}
         <img
           className={style.next}
           width="24px"
