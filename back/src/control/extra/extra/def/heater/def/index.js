@@ -26,7 +26,7 @@ function auto(bld, heater, acc, se, s, m, obj) {
 		[se.tin == null, 'датчики потолка неисправны'],
 		[
 			se.tin > s.heater.on + s.heater.hysteresis,
-			`Т потолка ${se.tin}° > Задание+гистерезис ${s.heater.on + s.heater.hysteresis}°`,
+			`Т потолка ${se.tin}° > Задание ${s.heater.on}°`,
 		],
 		[!isOk, 'все обогреватели в аварии'],
 	]
