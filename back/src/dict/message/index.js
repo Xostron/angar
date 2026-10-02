@@ -472,7 +472,7 @@ const data = {
 	161: {
 		code: 'run',
 		typeSignal: 'info',
-		msg: 'Обогреватели запущен',
+		msg: 'Обогреватели запущены',
 	},
 	129: {
 		code: 'stop',
