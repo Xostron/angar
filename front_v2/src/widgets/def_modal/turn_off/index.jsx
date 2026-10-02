@@ -3,7 +3,7 @@ import useModalStore from '@src/entities/store/modal';
 import useOutputStore from '@src/entities/store/output';
 import Button from '@src/shared/ui/button/btn';
 import style from './style.module.css';
-import { runTime } from '@src/shared/tool/time'
+import { runTime } from '@src/shared/tool/time';
 /**
  * Выключить склад
  * @param { idB, bName, product, automode, datestart } props
@@ -13,10 +13,10 @@ function TurnOff({ idB }) {
   //   Включить/выкл склад
   const setStart = useOutputStore((s) => s.setStart);
   const closeModal = useModalStore((s) => s.close);
-  
+
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const datestart = bCard?.datestart ? runTime(bCard?.datestart, 1) : '';
-  
+
   return (
     <div className={style.container}>
       <h2 className={style.header}>Выключить склад {bCard?.name}?</h2>
@@ -47,6 +47,7 @@ function TurnOff({ idB }) {
           onClick={() => {
             closeModal();
           }}
+          variant="grow"
         />
         <Button
           label="Отключить"
@@ -55,6 +56,7 @@ function TurnOff({ idB }) {
             setStart({ _id: idB, val: false });
             closeModal(false);
           }}
+          variant="grow"
         />
       </div>
     </div>

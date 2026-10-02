@@ -44,9 +44,8 @@ function TurnOn({ idB }) {
         <span>Склад включен:{datestop}</span>
       </div>
 
-
       <span className={style.text}>Выберите режим для запуска склада</span>
-      
+
       <div className={style.buttons_automode}>
         {dictAutomode.map((el) => (
           <Button
@@ -57,6 +56,7 @@ function TurnOn({ idB }) {
               setAutomode({ _id: idB, val: el.code });
               setAm(el.name);
             }}
+            variant="grow"
           />
         ))}
       </div>
@@ -67,6 +67,7 @@ function TurnOn({ idB }) {
           onClick={() => {
             closeModal();
           }}
+          variant="grow"
         />
         <Button
           label="Включить"
@@ -75,6 +76,7 @@ function TurnOn({ idB }) {
             setStart({ _id: idB, val: true });
             closeModal(false);
           }}
+          variant="grow"
         />
       </div>
     </div>

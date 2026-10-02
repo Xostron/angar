@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  padding: 16px;
+  gap: 16px;
+  background-color: var(--c-white);
+}
+.container > img {
+  height: 40px;
+  width: 40px;
+}
+.msg {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--c-navy);
+  width: calc(100% - 200px);
+}
+.date {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 140%;
+  text-align: start;
+  color: var(--c-grey);
+  width: 200px;
+  white-space: nowrap;
+}

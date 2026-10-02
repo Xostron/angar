@@ -30,6 +30,13 @@ export default Button;
 
 // Тип кнопки
 const dict = {
+  grow: {
+    flexGrow: 1,
+	padding: '24px 40px',
+    width: '187px',
+    height: '76px',
+    fontWeight: 600,
+  },
   // Обычная кнопка
   usual: {
     padding: '24px 40px',
@@ -71,6 +78,7 @@ const dict = {
 };
 
 const dictActive = {
+  grow: { true: style.active, false: style.not_active },
   usual: { true: style.active, false: style.not_active },
   automode: { true: style.automode_active, false: style.automode_not_active },
   sect: { true: style.sect_active, false: style.sect_not_active },

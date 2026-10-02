@@ -8,6 +8,7 @@ const Outdoor = () => {
   const { buildingId: idB } = useParams();
   const bSide = useInputStore((s) => s?.input?.bSide);
   const typeBld = useInputStore((s) => s?.input?.bCard?.[idB]?.type);
+
   if (!bSide || typeBld == 'cold')
     return (
       <aside className={style.container} style={{ height: '390px' }}></aside>

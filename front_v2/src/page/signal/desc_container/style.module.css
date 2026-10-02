@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  background-color: var(--c-grey-lighter);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--c-white);
+  border-radius: 12px;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-top: 12px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+}
