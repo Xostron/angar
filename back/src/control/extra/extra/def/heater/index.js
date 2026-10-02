@@ -4,15 +4,15 @@ const { delUnused } = require('@tool/command/extra')
 
 // Тепловые пушки - подогрев канала
 function heater(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
-	// Если включен демо-режим блокировать данную функцию
-	if (isDemo(bld._id)) return
-	console.log(11, m.heater)
-	if (!def.check(bld, m, acc, se, s, obj)) return
-
-	// def[s?.heater?.mode ?? 'off'](bld,  m.heater, acc, se, s, m, obj)
-
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)
+	
+	// Если включен демо-режим блокировать данную функцию
+	if (isDemo(bld._id)) return
+	if (!def.check(bld, m, acc, se, s, obj)) return
+	
+	def[s?.heater?.mode ?? 'off'](bld,  m.heater, acc, se, s, m, obj)
+	
 }
 
 module.exports = { heater }
@@ -25,13 +25,13 @@ function fnMsg(bld, acc, s) {
 			case 'off':
 			case null:
 			case undefined:
-				code = 121
+				code = 126
 				break
 			case 'on':
-				code = 122
+				code = 127
 				break
 			case 'auto':
-				code = 123
+				code = 128
 				break
 			default:
 				code = 399

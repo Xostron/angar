@@ -4,7 +4,7 @@ import style from './style.module.css';
 function Sensor({ data }) {
   return (
     <div className={style.container}>
-      <TextSensRow name="Темп." value={data.tprd} unit="grad" />
+      <TextSensRow name="Темп." value={data.tin} unit="grad" />
       <TextSensRow name="Отн. вл." value={data.hin} unit="per" />
       <TextSensRow name="Абс. вл." value={data.habsin} unit="hum" />
       <TextSensRow name="Угл. газ" value={data.co2} unit="ppm" />

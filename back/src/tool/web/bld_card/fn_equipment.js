@@ -132,6 +132,11 @@ function fnHeattcnl(idB, idsS, obj) {
 // Обогреватель
 function fnHeater(idB, idsS, obj) {
 	const r = { name: 'Обогреватель', value: 'Выкл' }
-
+	const heater = obj.data.device.filter((el) => el.device.code == 'heater')
+	const isRun = heater.some((el) => {
+		const q = obj?.value?.[el._id]
+		return q.state == 'run'
+	})
+	r.value = isRun ? 'Вкл' : 'Выкл'
 	return r
 }

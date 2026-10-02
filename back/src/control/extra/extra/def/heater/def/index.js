@@ -1,51 +1,49 @@
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { ctrlDO } = require('@tool/command/module_output')
-const { msg } = require('@tool/message')
+const { msgB } = require('@tool/message')
 const { isCombiCold } = require('@tool/combi/is')
 
-// Подогрев канала: Вкл
+// Обогреватель: Вкл
 function on(bld, heater) {
 	heater.forEach((f) => {
 		ctrlDO(f, bld._id, 'on')
 	})
 }
-// Подогрев канала: Выкл
+// Обогреватель: Выкл
 function off(bld, heater) {
 	heater.forEach((f) => {
 		ctrlDO(f, bld._id, 'off')
 	})
 }
 
-// Подогрев канала: По температуре
-function auto(bld, heater, acc, se, s) {
-	// Датчики канала неисправны - выкл пушки
-	if (se.tin == null) {
+// Обогреватель: По температуре
+function auto(bld, heater, acc, se, s, m, obj) {
+	const isOk = m.heater.some((el) => {
+		const q = obj?.value?.[el._id]
+		return q.state != 'alarm'
+	})
+	const reason = [
+		[se.tin == null, 'датчики потолка неисправны'],
+		[
+			se.tin > s.heater.on + s.heater.hysteresis,
+			`Т потолка ${se.tin}° > Задание+гистерезис ${s.heater.on + s.heater.hysteresis}°`,
+		],
+		[!isOk, 'все обогреватели в аварии'],
+	]
+		.filter((el) => el[0])
+		.map((el) => el[1])
+
+	// Выкл
+	if (reason.length) {
 		delExtra(bld._id, null, 'heater', 'run')
-		wrExtra(
-			bld._id,
-			null,
-			'heater',
-			msg(bld, sect, 125, '. По причине: датчики канала неисправны'),
-			'stop',
-		)
+		wrExtra(bld._id, null, 'heater', msgB(bld, 129, `По причине: ${reason.join(', ')}`), 'stop')
 		return off(bld, heater)
 	}
-	// Выкл пушки
-	if (se.tin > s.heater.target) {
-		delExtra(bld._id, null, 'heater', 'run')
-		wrExtra(
-			bld._id,
-			null,
-			'heater',
-			msg(bld, sect, 125, `. По причине: Ткан ${se.tcnl}° > Задание ${s.heater.target}°`),
-			'stop',
-		)
-		return off(bld, heater)
-	}
-	// Вкл пушки
-	if (se.tin < s.heater.target - s.heater.hysteresis) {
+
+	// Вкл
+	if (se.tin < s.heater.on) {
 		delExtra(bld._id, null, 'heater', 'stop')
-		wrExtra(bld._id, null, 'heater', msg(bld, sect, 124), 'run')
+		wrExtra(bld._id, null, 'heater', msgB(bld, 161), 'run')
 		return on(bld, heater)
 	}
 }

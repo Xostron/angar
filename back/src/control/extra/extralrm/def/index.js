@@ -28,6 +28,7 @@ const bldOff = require('./bld_off')
 const supplyB = require('./supply_b')
 const sb = require('./supply_battery')
 const plcio = require('./plc_io')
+const fnHeater = require('./heater')
 
 const def = {
 	// Доп. аварии обычного склада
@@ -70,7 +71,8 @@ const def = {
 			fCoolerCrash,
 			bldOff,
 			plcio,
-			alrStop
+			alrStop,
+			fnHeater
 		},
 	},
 	// Доп. аварии холодильника

@@ -4,15 +4,14 @@ const { delUnused } = require('@tool/command/extra')
 
 // Тепловые пушки - подогрев канала
 function heattcnl(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
+	// Сообщение о выбранном режиме
+	fnMsg(bld, acc, s)
 	// Если включен демо-режим блокировать данную функцию
 	if (isDemo(bld._id)) return
 
 	if (!def.check(bld, sect, m, acc, se, s, obj)) return
 
 	def[s?.heattcnl?.mode ?? 'off'](bld, sect, m.heattcnl, acc, se, s, m, obj)
-
-	// Сообщение о выбранном режиме
-	fnMsg(bld, acc, s)
 }
 
 module.exports = { heattcnl }

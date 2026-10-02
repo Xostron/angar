@@ -3,7 +3,7 @@ const { fnAutomode, fnFan, fnSens, fnAchieve } = require('./fn')
 const fnEquipment = require('./fn_equipment')
 
 /**
- * Карточки складов 
+ * Карточки складов
  * sidesect - правая боковая панель
  * @param {*} obj
  * @returns
@@ -37,6 +37,7 @@ function fnBCard(obj) {
 			sidesect: {
 				start: obj?.retain?.[bld._id]?.start ?? false,
 				tprd: obj?.value?.total?.[bld._id]?.tprd?.min ?? '--',
+				tin: obj.value?.total?.[bld._id]?.tin?.min,
 				hin: obj?.value?.total?.[bld._id]?.hin?.max ?? '--',
 				habsin: obj?.value?.humAbs?.in?.[bld._id],
 				co2: obj?.value?.total?.[bld._id]?.co2?.max ?? '--',

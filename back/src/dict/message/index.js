@@ -453,6 +453,42 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Подогрев канала остановлен',
 	},
+	// Обогреватель
+	126: {
+		code: 'off',
+		typeSignal: 'info',
+		msg: 'Обогреватель. Режим работы: Выключен',
+	},
+	127: {
+		code: 'on',
+		typeSignal: 'info',
+		msg: 'Обогреватель. Режим работы: Включен',
+	},
+	128: {
+		code: 'auto',
+		typeSignal: 'info',
+		msg: 'Обогреватель. Режим работы: Авто',
+	},
+	161: {
+		code: 'run',
+		typeSignal: 'info',
+		msg: 'Обогреватели запущен',
+	},
+	129: {
+		code: 'stop',
+		typeSignal: 'info',
+		msg: 'Обогреватель остановлен.',
+	},
+	162: {
+		code: 'off',
+		typeSignal: 'info',
+		msg: '',
+	},
+	163: {
+		code: 'offt',
+		typeSignal: 'info',
+		msg: '',
+	},
 	// Увлажнение
 	130: {
 		code: 'off',

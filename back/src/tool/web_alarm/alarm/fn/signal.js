@@ -56,6 +56,7 @@ function signalB(r, bld, am, data) {
 	const connect = store.alarm.extra?.[bld._id]?.connect ?? null
 	const connectLost = store.alarm.extra?.[bld._id]?.connectLost ?? null
 	const heattcnl = Object.values(store.alarm.extra?.[bld._id]?.heattcnl ?? {})
+	const heater = Object.values(store.alarm.extra?.[bld._id]?.heater ?? {})
 	// extralrm
 	const wetting = store.alarm.extralrm?.[bld._id]?.wetting ?? null
 	const gen = store.alarm.extralrm?.[bld._id]?.gen ?? null
@@ -76,6 +77,7 @@ function signalB(r, bld, am, data) {
 	const battery = store.alarm?.extralrm?.[bld._id]?.battery ?? null
 	const sb = store.alarm?.extralrm?.[bld._id]?.sb ?? null
 	const plcio = store.alarm?.extralrm?.[bld._id]?.plcio ?? null
+	const heaterAlr = store.alarm?.extralrm?.[bld._id]?.heater
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
@@ -91,6 +93,7 @@ function signalB(r, bld, am, data) {
 	if (cable) r.signal[bld._id].push(cable)
 	if (vlvLim) r.signal[bld._id].push(vlvLim)
 	if (vlvCrash) r.signal[bld._id].push(...Object.values(vlvCrash))
+	if (heaterAlr) r.signal[bld._id].push(...Object.values(heaterAlr))
 	if (hCoolerCrash) r.signal[bld._id].push(...Object.values(hCoolerCrash))
 	if (fCoolerCrash) r.signal[bld._id].push(...Object.values(fCoolerCrash))
 	if (alrClosed) r.signal[bld._id].push(alrClosed)
@@ -115,6 +118,7 @@ function signalB(r, bld, am, data) {
 	if (alrStop) r.signal[bld._id].push(alrStop)
 	if (wetting) r.signal[bld._id].push(...Object.values(wetting ?? []))
 	if (heattcnl) r.signal[bld._id].push(...heattcnl)
+	if (heater) r.signal[bld._id].push(...heater)
 	if (bldOff) r.signal[bld._id].push(bldOff)
 	if (plcio) r.signal[bld._id].push(plcio)
 	r.signal[bld._id].sort((a, b) => {
