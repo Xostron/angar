@@ -102,12 +102,6 @@ function sZero(data, callback) {
 	})
 }
 
-// Запрос рамы на сервер
-// function sEquip(data, callback) {
-// 	socket.emit('s_equip', data, (res) => {
-// 		console.log(111, res)
-// 	})
-// }
 export {
 	/*sEquip,*/ sForecast,
 	sOutput,

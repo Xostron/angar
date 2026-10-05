@@ -7,7 +7,6 @@ const data = require('./data')
  * @returns
  */
 function calc(t, q, name) {
-	// console.log(111, name, t, q)
 	if (t === null || q === null || t === undefined || q === undefined) {
 		
 		return null

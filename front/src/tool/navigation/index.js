@@ -7,10 +7,8 @@ export default function useListenNav() {
 			console.log(222, e)
 		}
 		navigation.addEventListener('navigate', cb)
-		console.log(111, '+')
 		return () => {
 			navigation.removeEventListener('navigate', cb)
-			console.log(111, '-')
 		}
 	}, [])
 }

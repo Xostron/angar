@@ -17,7 +17,7 @@ function fnTime(obj, s, m, bld, alarm, prepare, acc, resultFan) {
 			bld._id,
 			null,
 			'vent',
-			msgB(bld, 141, `${remTime(acc.byTime.wait, s.vent.wait)}`),
+			msgB(bld, 89, `${remTime(acc.byTime.wait, s.vent.wait)}`),
 			'wait',
 		)
 		delExtra(bld._id, null, 'vent', 'work')

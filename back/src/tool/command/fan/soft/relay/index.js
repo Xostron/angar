@@ -41,7 +41,6 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	if (aCmd.warming) ((on = true), (off = false))
 	// Доп: Антидребезг ВНО (зафиксировать кол-во ВНО)
 	if (acc.stable) ((on = false), (off = false))
-	// console.log(111, 'on', on, 'off', off, who)
 	// Доп: Комби-холод. Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
 	if (acc.busySol) ((on = false), (off = false))

@@ -129,14 +129,6 @@ const data = {
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы выше допустимой (точка росы)',
 	},
-	// ======= Сообщения Achieve ======= flt: [true] - включить отправку в push
-	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
-	150: { order: 2, code: 'target', msg: '' },
-	151: { order: 3, code: 'datestop', msg: 'Склад выключен', flt: [true] },
-	152: { order: 4, code: 'sectOff', msg: 'Нет секций в авто', flt: [true] },
-	153: { order: 2, code: 'drying1', msg: '' },
-	154: { order: 2, code: 'drying2', msg: '' },
-	155: { order: 2, code: 'drying3', msg: '' },
 
 	// ======== extralrm - доп. аварии склада/секции ========
 	// Антивьюга antibliz
@@ -588,11 +580,11 @@ const data = {
 		typeSignal: 'info',
 		msg: 'Увлажнитель. Запуск невозможен. Склад и секция выключены',
 	},
-	142: {
-		code: 'impossible_fun',
-		typeSignal: 'info',
-		msg: 'Увлажнитель. Запуск невозможен. Напорные вентиляторы не работают',
-	},
+	// 142: {
+	// 	code: 'impossible_fun',
+	// 	typeSignal: 'info',
+	// 	msg: 'Увлажнитель. Запуск невозможен. Напорные вентиляторы не работают',
+	// },
 	160: {
 		code: 'impossible',
 		typeSignal: 'critical',
@@ -609,7 +601,7 @@ const data = {
 	// Вентиляция
 	87: { code: 'ventWait', typeSignal: 'info', msg: 'Обдув датчиков. Ожидание' },
 	88: { code: 'ventWork', typeSignal: 'info', msg: 'Обдув датчиков. Работа' },
-	141: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
+	89: { code: 'ventWait', typeSignal: 'info', msg: 'Внутренняя вентиляция. Ожидание' },
 	142: { code: 'ventWork', typeSignal: 'info', msg: 'Внутренняя вентиляция. Работа' },
 	143: {
 		code: 'ventCheck',
@@ -638,7 +630,6 @@ const data = {
 	84: { code: 'co2work', typeSignal: 'info', msg: 'Удаление СО2. Работа' },
 	85: { code: 'co2wait', typeSignal: 'info', msg: 'Удаление СО2. Ожидание' },
 	86: { code: 'co2check', typeSignal: 'info', msg: 'Удаление СО2. Выключена. По причине:' },
-	// 89: { code: 'co2check', typeSignal: 'info', msg: 'Удаление СО2. Выключена. По причине:' },
 	// ======== Оттайка слива воды ========
 	67: {
 		code: 'off',
@@ -671,9 +662,6 @@ const data = {
 		msg: 'Оттайка слива воды: Отключена',
 	},
 
-	// ======== Склад-холодильник ========
-	80: { order: 1, code: 'finish', msg: 'Продукт достиг температуры задания ' },
-	81: { order: 2, code: 'target', msg: '' },
 	// ======== Окуривание (холодильник) ========
 	82: {
 		code: 'smoking',
@@ -688,7 +676,17 @@ const data = {
 	},
 	// ======== 399 ========
 	399: { code: 399, typeSignal: 'info', msg: 'Описание аварии не найдено' },
-
+	// ======= Сообщения Achieve ======= flt: [true] - включить отправку в push
+	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
+	150: { order: 2, code: 'target', msg: '' },
+	151: { order: 3, code: 'datestop', msg: 'Склад выключен', flt: [true] },
+	152: { order: 4, code: 'sectOff', msg: 'Нет секций в авто', flt: [true] },
+	153: { order: 2, code: 'drying1', msg: '' },
+	154: { order: 2, code: 'drying2', msg: '' },
+	155: { order: 2, code: 'drying3', msg: '' },
+	// ======== Достижения: Склад-холодильник ========
+	80: { order: 1, code: 'finish', msg: 'Продукт достиг температуры задания ' },
+	81: { order: 2, code: 'target', msg: '' },
 	// ======== События системы (POS) =======
 	// 400: { msg: '' },
 	// 401: { msg: '' },

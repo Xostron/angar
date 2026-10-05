@@ -212,7 +212,6 @@ function mechB(idB, type, obj, mod = false) {
 			fanBexc.push(...sect[el._id].ff)
 		})
 
-	//  console.log(111, fanBexc)
 	// Демо - Рабочие испарители рабочих секций
 	const coolerB = idBS
 		.reduce((acc, id) => {

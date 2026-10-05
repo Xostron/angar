@@ -45,7 +45,6 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	if (aCmd.warming) ((on = true), (off = false))
 	// Доп: Антидребезг ВНО (зафиксировать кол-во ВНО)
 	if (acc.stable) ((on = false), (off = false))
-	// console.log(111, 'on', on, 'off', off, who)
 	// Доп: Комби-холод. Управление соленоидом подогрева
 	acc.busySol = fnSolHeat(bld._id, acc, solHeat, on, off, obj, s, who)
 	// Доп: Принудительное включение: расчет макс кол-ва ВНО
