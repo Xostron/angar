@@ -31,25 +31,25 @@ function defrost(s, seB, building, acc, bdata) {
 		{
 			set: false,
 			reset: true,
-			msg: msgB(building, 7),
+			msg: msgB(building, 170),
 		},
 		// 1 Абсолютная влажность улицы выше допустимой при охлаждении // В нагреве игнор
 		{
 			set: false,
 			reset: true,
-			msg: msgB(building, 8),
+			msg: msgB(building, 171),
 		},
 		// 2 Влажность улицы ниже допустимой при охлаждении
 		{
 			set: hout < acc?.setting?.mois?.hout?.min,
 			reset: hout - acc?.setting?.mois?.hysteresisRel > acc?.setting?.mois?.hout?.min,
-			msg: msgB(building, 9),
+			msg: msgB(building, 172),
 		},
 		// 3 Влажность улицы выше допустимой при охлаждении
 		{
 			set: hout > acc?.setting?.mois?.hout?.max,
 			reset: hout + acc?.setting?.mois?.hysteresisRel < acc?.setting?.mois?.hout?.max,
-			msg: msgB(building, 10),
+			msg: msgB(building, 173),
 		},
 		// 4 Температура улицы выше допустимой для охлаждения
 		{
@@ -57,7 +57,7 @@ function defrost(s, seB, building, acc, bdata) {
 			reset:
 				tout + acc?.setting?.cooling?.hysteresisOut <
 				tprd + acc?.setting?.cooling?.differenceMin,
-			msg: msgB(building, 11),
+			msg: msgB(building, 174),
 		},
 		// 5 Температура улицы ниже допустимой для охлаждения
 		{
@@ -65,19 +65,19 @@ function defrost(s, seB, building, acc, bdata) {
 			reset:
 				tout - acc?.setting?.cooling?.hysteresisOut >
 				tprd + acc?.setting?.cooling?.differenceMax,
-			msg: msgB(building, 16),
+			msg: msgB(building, 175),
 		},
 		// 6 В нагреве игнор
-		{
-			set: false,
-			reset: true,
-			msg: msgB(building, 12),
-		},
+		// {
+		// 	set: false,
+		// 	reset: true,
+		// 	msg: msgB(building, 12),
+		// },
 		// 7. Влажность улицы выше допустимой (точка росы)
 		{
 			set: seB.point + s.heat.point > seB.tprd,
 			reset: seB.point + s.heat.point + s.heat.hysteresisP < seB.tprd,
-			msg: msgB(building, 120),
+			msg: msgB(building, 176),
 		},
 	]
 	// r.forEach((el) => console.log(124, el.set, el.reset))

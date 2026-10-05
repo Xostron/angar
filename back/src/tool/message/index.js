@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid')
 // Секции
 function msg(building, section, code, msg = '') {
 	const o = { ...mes[code] }
+	o.order = code
 	o.title = section?.name ? `${section?.name}:` : ''
 	o.msg = msg ? o.msg + ' ' + msg : o.msg
 	o.buildingId = building._id
@@ -16,6 +17,7 @@ function msg(building, section, code, msg = '') {
 // Склада
 function msgB(building, code, msg = '', msgStart = '') {
 	const o = { ...mes[code] }
+	o.order = code
 	o.title = ''
 	o.buildingId = building._id
 	o.msg = msg ? msgStart + o.msg + ' ' + msg : msgStart + o.msg
@@ -26,6 +28,7 @@ function msgB(building, code, msg = '', msgStart = '') {
 // Клапана
 function msgV(building, section, typeV, code) {
 	const o = { ...mes[code] }
+	o.order = code
 	o.title = section?.name ? `${section?.name}. ` : ''
 	o.title += typeV ? `${typeV} клапан:` : ''
 	o.buildingId = building._id
@@ -36,6 +39,7 @@ function msgV(building, section, typeV, code) {
 // Вентиляторы
 function msgF(building, section, name, code, codeFC) {
 	const o = { ...mes[code] }
+	o.order = code
 	o.title = `${section.name ?? ''}. ${name ?? ''}:`
 	o.buildingId = building._id
 	o.uid = uuidv4()
@@ -46,6 +50,7 @@ function msgF(building, section, name, code, codeFC) {
 // Датчики
 function msgBS(building, section, sensor, code) {
 	const o = { ...mes[code] }
+	o.order = code
 	o.title = section == 'sensor' ? `${sensor?.name}:` : `${section?.name}. ${sensor?.name}:`
 	if (!sensor) o.title = section == 'sensor' ? '' : `${section?.name}.`
 	o.buildingId = building._id
@@ -56,6 +61,7 @@ function msgBS(building, section, sensor, code) {
 // Модули
 function msgM(buildingId, mdl, code) {
 	const o = { ...mes[code] }
+	o.order = code
 	if (mdl.interface == 'tcp')
 		o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}):`
 	else o.title = `Модуль ${mdl.name} (${mdl.ip ?? ''}-${mdl.port ?? ''}):`
@@ -70,6 +76,7 @@ function msgM(buildingId, mdl, code) {
 function msgBeep(building, beep, name = '', alarm = true) {
 	// const o = mes[code].find((el) => el.code === beep.code)
 	const o = { code: beep.code, typeSignal: alarm ? 'critical' : 'info', msg: beep.name }
+	o.order = code
 	o.title = name ? `${name}:` : ''
 	o.buildingId = building._id
 	o.uid = uuidv4()
@@ -79,6 +86,7 @@ function msgBeep(building, beep, name = '', alarm = true) {
 
 function msgBB(building, code, msgBeg = '', msgEnd = '') {
 	const o = { ...mes[code] }
+	o.order = code
 	o.title = ``
 	o.buildingId = building._id
 	o.msg = msgBeg ? msgBeg + ' ' + o.msg : o.msg
@@ -91,6 +99,7 @@ function msgBB(building, code, msgBeg = '', msgEnd = '') {
 function msgClr(building, coolers = [], idClr, code, msg = '') {
 	const o = { ...mes[code] }
 	const clr = coolers.find((el) => el._id === idClr)
+	o.order = code
 	o.title = clr?.name ? `${clr.name}.` : ''
 	o.buildingId = building._id
 	o.msg = msg ? o.msg + ' ' + msg : o.msg

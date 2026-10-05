@@ -12,7 +12,7 @@ function IncidentItem({ data = {}, type = 'alarm', size = 'normal' }) {
 
   return (
     <div className={cls}>
-      <img src={iconIncident?.[data?.code]} />
+      <img src={iconIncident?.[data?.code] ?? iconIncident?.[data?.order]} alt={data?.code}/>
       <span className={style.msg}>
         {data?.title ?? ''} {data?.msg ?? ''}
       </span>

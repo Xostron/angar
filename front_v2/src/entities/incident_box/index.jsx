@@ -6,7 +6,7 @@ function IncidentBox({ err = {}, type = 'alarm', size = 'normal' }) {
   // Размеры
   const stl = { ...(dictSize?.[size] ?? {}) };
 
-  // Цвет: typeIncident = equipment|notification|alarm
+  // Цвет: typeIncident = equipment|notification|alarm|warning
   let cls = `${style.container}`;
   if (type) cls += ` ${style?.[type] ?? ''}`;
 

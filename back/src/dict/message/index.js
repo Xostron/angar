@@ -86,6 +86,49 @@ const data = {
 		typeSignal: 'sensor',
 		msg: 'Влажность улицы выше допустимой (точка росы)',
 	},
+	// ======== Аварии авторежима (Дефростация) ========
+	170: {
+		code: 'ahout1',
+		type: 'ahout',
+		typeSignal: 'sensor',
+		msg: 'Абсолютная влажность улицы ниже допустимой',
+	},
+	171: {
+		code: 'ahout2',
+		type: 'ahout',
+		typeSignal: 'sensor',
+		msg: 'Абсолютная влажность улицы выше допустимой',
+	},
+	172: {
+		code: 'hout1',
+		type: 'hout',
+		typeSignal: 'sensor',
+		msg: 'Влажность улицы ниже допустимой',
+	},
+	173: {
+		code: 'hout2',
+		type: 'hout',
+		typeSignal: 'sensor',
+		msg: 'Влажность улицы выше допустимой',
+	},
+	174: {
+		code: 'tout1',
+		type: 'tout',
+		typeSignal: 'sensor',
+		msg: 'Температура улицы выше допустимой',
+	},
+	175: {
+		code: 'tout3',
+		type: 'tout',
+		typeSignal: 'sensor',
+		msg: 'Температура улицы ниже допустимой (по продукту)',
+	},
+	176: {
+		code: 'hout3',
+		type: 'hout',
+		typeSignal: 'sensor',
+		msg: 'Влажность улицы выше допустимой (точка росы)',
+	},
 	// ======= Сообщения Achieve ======= flt: [true] - включить отправку в push
 	15: { order: 1, code: 'finish', msg: 't продукта в задании' },
 	150: { order: 2, code: 'target', msg: '' },

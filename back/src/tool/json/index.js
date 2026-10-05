@@ -1,4 +1,4 @@
-const { data:store, retainDir, factoryDir, dataDir } = require('@store')
+const { data: store, retainDir, factoryDir, dataDir } = require('@store')
 const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')
@@ -147,8 +147,8 @@ async function findOne(filename, q) {
  * @param {boolean} toRetain Флаг для логов сохранение в файлы или в data/retain
  */
 function writeSync(data, ph = dataDir, ref, toRetain) {
-	// Сохраняемся каждые 4 цикла в режиме микросервиса
-	if (store.cycleId%4!==0 && store.isIo) return
+	// Сохраняемся каждые 4 цикла (isIO - в режиме микросервиса)
+	if (store.cycleId % 4 !== 0 /*&& store.isIo*/) return
 	try {
 		// Создание папки
 		if (!fs.existsSync(ph)) fs.mkdirSync(ph)
@@ -157,7 +157,7 @@ function writeSync(data, ph = dataDir, ref, toRetain) {
 		for (const name of a) {
 			const filepath = path.join(ph, name + '.json')
 			const d = JSON.stringify(data?.[name] ?? [], null, ' ')
-			if (ph===retainDir) console.log('\x1b[36m%s\x1b[0m', `${retainDir} файл сохранен!`)
+			if (ph === retainDir) console.log('\x1b[36m%s\x1b[0m', `${retainDir} файл сохранен!`)
 			fs.writeFileSync(filepath, d)
 		}
 	} catch (error) {
