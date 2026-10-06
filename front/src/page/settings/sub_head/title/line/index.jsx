@@ -17,7 +17,7 @@ function Line({ name, type, action }) {
 
 	const list = prdList.map((el) => ({
 		title: el.name,
-		code: defImg.product[el?.code]?.code,
+		code: el?.code,
 		img: defImg.product[el?.code]?.img,
 	}))
 

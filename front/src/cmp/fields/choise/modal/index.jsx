@@ -14,7 +14,6 @@ export default function Modal({ data, setData, list, show, setShow }) {
 		[show]
 	)
 	if (!show) return null
-
 	return (
 		<div className='modal'>
 			{list.map((el, i) => {
