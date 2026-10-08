@@ -33,7 +33,7 @@ export default function Combi() {
 			{/* Температура канала (смешения) */}
 			<RowTemp data={r3} />
 			{/* Клапан, обогреватель */}
-			<RowValve active={isMan} data={{ valve, heating }} />
+			<RowValve active={isMan} data={{ valve, heating, idB:build, idS:sect }} />
 		</section>
 	)
 }
