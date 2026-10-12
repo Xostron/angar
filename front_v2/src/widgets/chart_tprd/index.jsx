@@ -7,32 +7,26 @@ import style from './style.module.css';
 // Гистограмма темп. продукта в секции
 export default function ChartTprd({ stl = {} }) {
   const { buildingId: idB, sectionId: idS } = useParams();
-  const [loading, setLoading] = useState(false);
   // Датчики температуры для отображения
-  const tprds = useInputStore(
-    (s) => s?.input?.innerSec?.[idB]?.[idS]?.tprdChart,
-  );
-  // Анализ датчиков темп: мин, макс, задание
-  const tprd = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]?.tprd);
+  const innerSec = useInputStore((s) => s?.input?.innerSec);
+  // Теперь данные выбираются синхронно в теле компонента на основе актуальных idB и idS
+  const tprds = innerSec?.[idB]?.[idS]?.tprdChart;
+  const tprd = innerSec?.[idB]?.[idS]?.tprd;
 
-  //   Ожидание данных
-  useEffect(() => {
-    if (!tprds?.length) return setLoading(true);
-    setLoading(false);
-  }, [tprds]);
+  // Вычисляем loading прямо во время рендера без useState и useEffect!
+  const isLoading = !tprds || tprds.length === 0;
 
   // Расчет конфига для графика
   const option = useMemo(
     () => fnOption(tprd, tprds),
-    [tprds?.[0]?._id, tprd?.min, tprd?.max, tprd?.target, idS],
+    [tprds?.length, tprd?.min, tprd?.max, tprd?.target, idS],
   );
-
   return (
     <div className={style.container2}>
-      {option && (
+      {option && tprds && tprds?.length > 0 && (
         <Echart
           option={option}
-          loading={loading}
+          loading={isLoading}
           style={{ height: '259px', ...stl }}
         />
       )}

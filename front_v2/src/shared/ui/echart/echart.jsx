@@ -21,7 +21,7 @@ export default function Echart({ option, style, loading }) {
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!chart.current) return;
     if (loading) {
       chart.current.showLoading();

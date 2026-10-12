@@ -5,7 +5,7 @@ import Sidebar from '@src/shared/ui/sidebar';
 import Indoor from '@src/widgets/indoor';
 import AsideAlarm from '../../widgets/aside_alarm';
 import useEquipStore from '@src/entities/store/equipment';
-import defSection from './content'
+import defSection from './content';
 import '../main/style.css';
 
 // Склад: карточки секций
@@ -22,9 +22,9 @@ const SectionPage = () => {
         <Outdoor />
         <AsideAlarm idB={idB} />
       </Sidebar>
-      {/* <ScrollGrid notPaging={true}> */}
-        {Sec && <Sec idB={idB} idS={idS} />}
-      {/* </ScrollGrid> */}
+
+      {Sec && <Sec idB={idB} idS={idS} />}
+
       <Sidebar type="right">
         <Indoor idB={idB} />
       </Sidebar>
