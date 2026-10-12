@@ -56,7 +56,7 @@ function fnCheck(bld, obj, s, automode, m, acc) {
 		[!modeS, 'Нет секции в авто'],
 		[!s?.cooling?.wait, 'Нет настроек wait'],
 		[!s?.cooling?.watch, 'Нет настроек watch'],
-		[!obj.retain[bld._id].start, 'Склад выключен'],
+		[!obj?.retain?.[bld._id]?.start, 'Склад выключен'],
 		[accAuto?.submode?.[0] === sm.heat[0], 'Режим нагрева'],
 	]
 

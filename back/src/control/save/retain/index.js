@@ -7,6 +7,7 @@ function writeRetain(obj) {
 	transform(obj)
 	// Записываем файл retain
 	const filename = 'data'
+	if (!store?.retain) return console.log(9999999)
 	writeSync({ [filename]: store.retain }, retainDir, null)
 }
 
