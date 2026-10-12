@@ -64,6 +64,8 @@ export default function ChartTprd({ stl = {} }) {
         barWidth: '50%',
         barMaxWidth: 100,
         barMinWidth: 70,
+        // Столбцы отрисовываются на переднем плане
+        z: 3,
         silent: true, // отключение hover
         data: [],
         label: {
@@ -79,6 +81,8 @@ export default function ChartTprd({ stl = {} }) {
 
     // ГОРИЗОНТАЛЬНЫЕ ЛИНИИ МИН И МАКС
     series.markLine = {
+      // Горизонтальные линии отрисовываем на заднем плане
+      z: 1,
       symbol: ['none', 'none'], // Убираем стрелочки на концах линий
       silent: true, // График не будет "дёргаться" при наведении мыши на линии
       data: [],
