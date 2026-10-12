@@ -1,10 +1,10 @@
-const { factoryDir, dataDir } = require('@store');
-const { writeSync } = require('@tool/json');
-const { cEquip } = require('@socket/emit');
-const equipment = require('@tool/equipment');
-const transformF = require('./fn');
-const api = require('@tool/api');
-const initRetain = require('./retain');
+const { factoryDir, dataDir } = require('@store')
+const { writeSync } = require('@tool/json')
+const { cEquip } = require('@socket/emit')
+const equipment = require('@tool/equipment')
+const transformF = require('./fn')
+const api = require('@tool/api')
+const initRetain = require('./retain')
 const t = [
 	'building',
 	'equipment',
@@ -27,7 +27,7 @@ const t = [
 	'converter',
 	'io',
 	'remote',
-];
+]
 
 /**
  * Запрос конфигурации склада у админ-сервера
@@ -40,15 +40,20 @@ async function init() {
 		console.log(
 			'\x1b[32m%s\x1b[0m',
 			`IP ${process.env.IP} не является публичным, пропуск инициализации`,
-		);
-		return Promise.resolve();
+		)
+		return Promise.resolve()
 	}
 
 	const config = {
 		method: 'GET',
-		url: 'angar/init',
+		url: `angar/init`,
 		headers: { ip: process.env.IP },
-	};
+		// Отключаем кэширование:
+		// url: `angar/init?_date=${Date.now()}`,
+		// 'Cache-Control': 'no-cache, no-store, must-revalidate',
+		// Pragma: 'no-cache',
+		// Expires: '0',
+	}
 	return (
 		api(config)
 			.then((r) => {
@@ -56,30 +61,31 @@ async function init() {
 					console.log(
 						'\x1b[32m%s\x1b[0m',
 						`AdminServer ${process.env.API_URI} не отвечает для ${process.env.IP}`,
-					);
-					return;
+					)
+					return
 				}
 				console.log(
 					'\x1b[32m%s\x1b[0m',
 					`Данные с AdminServer ${process.env.API_URI} получены для ${process.env.IP}`,
-				);
-				writeConfig(r.data.result);
+				)
+				console.log(r.data.result?.equipment)
+				writeConfig(r.data.result)
 			})
 			// Формирование рамы для клиента
 			.then((_) => equipment())
 			// отправка рамы на клиент
 			.then((data) => cEquip(data))
 			.catch(console.error)
-	);
+	)
 }
 
 function writeConfig(result) {
 	// Сохранение конфигурации в json
-	writeSync(result, dataDir, t);
+	writeSync(result, dataDir, t, true)
 	// Заводские настройки в json
-	transformF(result.factory, factoryDir);
+	transformF(result.factory, factoryDir)
 	// Первичные данные retain
-	initRetain(result);
+	initRetain(result)
 }
 
-module.exports = { init, writeConfig };
+module.exports = { init, writeConfig }

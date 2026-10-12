@@ -146,9 +146,9 @@ async function findOne(filename, q) {
  * @param {array} ref Массив ключей коллекции data, значения которых будут сохранять в отдельные json файлы
  * @param {boolean} toRetain Флаг для логов сохранение в файлы или в data/retain
  */
-function writeSync(data, ph = dataDir, ref, toRetain) {
+function writeSync(data, ph = dataDir, ref, ignore=false) {
 	// Сохраняемся каждые 4 цикла (isIO - в режиме микросервиса)
-	if (store.cycleId % 4 !== 0 /*&& store.isIo*/) return
+	if (!ignore && store.cycleId % 4 !== 0 /*&& store.isIo*/) return
 	try {
 		// Создание папки
 		if (!fs.existsSync(ph)) fs.mkdirSync(ph)

@@ -15,25 +15,25 @@ import useViewStore from '@src/store/view'
  * @returns
  */
 export default function Combi() {
-	const { build, sect } = useParams()
-	const { tprd, tcnl, fan, valve, heating, p, cooler } = useEquipStore(({ section }) => section())
-	// Ручной режим активен
-	const { isMan } = running(build, sect)
-	const r3 = [...(tcnl ?? []), ...(p ?? [])]
-	const mb = useViewStore((s) => s.mb())
-	const cls = ['sect', mb, 'cold combi'].join(' ')
-	return (
-		<section className={cls}>
-			{/* Агрегаты и давление */}
-			<Aggregate data={cooler} />
-			{/* Температура продукта */}
-			<RowTemp data={[...tprd]} />
-			{/* Напорные вентиляторы */}
-			<RowFan active={isMan} fan={fan} cooler={cooler} />
-			{/* Температура канала (смешения) */}
-			<RowTemp data={r3} />
-			{/* Клапан, обогреватель */}
-			<RowValve active={isMan} data={{ valve, heating, idB:build, idS:sect }} />
-		</section>
-	)
+    const { build, sect } = useParams()
+    const { tprd, tcnl, fan, valve, heating, p, cooler } = useEquipStore(({ section }) => section())
+    // Ручной режим активен
+    const { isMan } = running(build, sect)
+    const r3 = [...(tcnl ?? []), ...(p ?? [])]
+    const mb = useViewStore((s) => s.mb())
+    const cls = ['sect', mb, 'cold combi'].join(' ')
+    return (
+        <section className={cls}>
+            {/* Агрегаты и давление */}
+            <Aggregate data={cooler} />
+            {/* Температура продукта */}
+            <RowTemp data={[...tprd]} />
+            {/* Напорные вентиляторы */}
+            <RowFan active={isMan} fan={fan} cooler={cooler} />
+            {/* Температура канала (смешения) */}
+            <RowTemp data={r3} />
+            {/* Клапан, обогреватель */}
+            <RowValve active={isMan} data={{ valve, heating, idB:build, idS:sect }} />
+        </section>
+    )
 }

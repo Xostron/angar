@@ -28,7 +28,7 @@ async function writeStore() {
 	// Сохранение каждый цикл, кроме первого
 	// Сохраняем только store.acc
 	const filename = 'store'
-	writeSync({ [filename]: store?.acc }, accDir, null)
+	writeSync({ [filename]: store?.acc }, accDir)
 }
 
 module.exports = writeStore

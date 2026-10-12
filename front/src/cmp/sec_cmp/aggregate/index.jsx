@@ -25,8 +25,8 @@ export default function Aggregate({ data = null }) {
 							<Pressure data={pin} state={build?.pin || section?.pin} />
 							<Agregat key={i} state={el} data={input?.[el.aggregate?._id]} />
 							<Pressure data={pout} state={build?.pout || section?.pout} />
-							{!!el.aggregate.condenser.length &&
-								el.aggregate.condenser.map((cn, i) => <Condens key={i} state={cn} data={input?.[el?.aggregateListId]} />)}
+							{!!el.aggregate?.condenser?.length &&
+								el.aggregate?.condenser?.map((cn, i) => <Condens key={i} state={cn} data={input?.[el?.aggregateListId]} />)}
 						</div>
 					)
 				})}

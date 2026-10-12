@@ -60,7 +60,8 @@ function exit(bld, obj, code, s, alarm, ban, prepare, acc, resultFan) {
  */
 function fnCheck(bld, obj, code, s, alarm, ban, prepare) {
 	// Режим выключен - разрешить для выключения
-	if (code == 'off' || code == 'on') return true
+	if (code == 'off') return true
+	// if (code == 'off' || code == 'on') return true
 	// Вычисление причин запрета ВВ
 	const reason = fnReason(bld, obj, code, s, alarm, ban, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
