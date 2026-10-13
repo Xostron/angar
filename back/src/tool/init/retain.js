@@ -13,6 +13,7 @@ async function initRetain(equip) {
 		store.retain[bld._id].automode ??= 'cooling'
 		// Продукт
 		store.retain[bld._id].product ??= onion
+		store.retain.keyboard ??= true
 	}
 }
 

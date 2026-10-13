@@ -29,11 +29,13 @@ const NAV_ITEMS = [
 
 const Footer = () => {
   const { buildingId } = useParams();
+  const curUrl = useLocation();
+  if (!buildingId) return;
 
-  //   вместо 1 подставляем buildingId в массив ссылок
+  //   вставляем buildingId в шаблон NAV_ITEMS
+  // (/building/1/signal => /building/${buildingId}/signal)
   const modifiedNavItems = NAV_ITEMS.map((el) => {
     if (el.label === 'Главная' || !buildingId) return el;
-
     const arr = el.to.split('/');
     const arrModified = arr.map((q) => (q === '1' ? buildingId : q));
 
@@ -51,9 +53,12 @@ const Footer = () => {
           <NavLink
             key={item.to}
             to={item.to}
-            className={({ isActive }) =>
-              isActive ? 'footer__link active' : 'footer__link'
-            }
+            className={({ isActive }) => {
+              //   return isActive ? 'footer__link active' : 'footer__link';
+              return item.to == curUrl.pathname
+                ? 'footer__link active'
+                : 'footer__link';
+            }}
           >
             <span
               className="footer__icon"
