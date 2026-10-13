@@ -36,17 +36,18 @@
 	gap: var(--fsz10);
 	font-size: var(--fsz28);
 	font-family: Q-SemiBold;
-	/* overflow-x: hidden; */
-	/* background-color: red; */
-	.line{
+	.line {
 		margin-top: 0;
 	}
-
 }
-.title > span {
-	/* white-space: nowrap; */
-	/* overflow: hidden; */
-	/* text-overflow: ellipsis; */
+.title-span {
+	font-size: var(--fsz24);
+	font-family: Q-SemiBold;
+	
+}
+.info {
+	font-size: var(--fsz24);
+	font-family: Q-Medium;
 }
 .usual {
 	display: flex;

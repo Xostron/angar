@@ -16,7 +16,7 @@ export default function Cell({ data, i, j }) {
 	const val = {}
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
-	
+
 	val[data.code] = useInputStore(({ input }) => {
 		if (!code) return null
 		if (
@@ -31,7 +31,7 @@ export default function Cell({ data, i, j }) {
 				'heater',
 				'smoking',
 				'demo',
-				'heattcnl'
+				'heattcnl',
 			].includes(type)
 		) {
 			// Без продукта
@@ -111,9 +111,16 @@ export default function Cell({ data, i, j }) {
 			)
 		case 'title':
 			return <Title data={data} st={st} cl={cl} />
+
 		case 'head':
 			return (
 				<div className='usual' style={st}>
+					{data.value}
+				</div>
+			)
+		case 'info':
+			return (
+				<div className='info' style={st}>
 					{data.value}
 				</div>
 			)
@@ -125,7 +132,7 @@ export default function Cell({ data, i, j }) {
 function Title({ data, st, cl }) {
 	return (
 		<div className='title' style={st}>
-			<span>{data.value}</span>
+			<span className='title-span'>{data.value}</span>
 			{data.nameHid && <BtnHid style={st} cls={cl} nameHid={data?.nameHid} />}
 		</div>
 	)

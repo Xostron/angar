@@ -15,7 +15,7 @@ const SignalPage = () => {
         {!!signal?.length &&
           signal.map((el) => <IncidentItem key={el.uid} data={el} />)}
       </SignalContainer>
-      <DescContainer stl={{ width: '750px' }}></DescContainer>
+      <DescContainer stl={{ width: '750px', height: '882px' }}></DescContainer>
     </main>
   );
 };

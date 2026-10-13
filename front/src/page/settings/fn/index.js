@@ -22,7 +22,8 @@ function sty(data, sum) {
 	const stl = {
 		gridArea: `2/2/2/${col + 3}`,
 		gridTemplateColumns: `auto repeat(${col}, var(--fsz180))`,
-		gridTemplateRows: `repeat(${ll},var(--fsz65))`,
+		// gridTemplateRows: `repeat(${ll},var(--fsz65))`,
+		gridTemplateRows: `repeat(${ll}, minmax(var(--fsz65), max-content))`
 	}
 
 	// Заголовок
@@ -117,6 +118,8 @@ function row(mark, code, idB, setSettingAu, showHid) {
 		icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : '',
 		value: mark._name,
 	}
+
+	if (mark._code.includes('info')) cell.field = 'info'
 
 	// Добавляем в ячейку - раму для кнопки скрыть/показать
 	if (mark._code.includes('text-collapse') && showHid) {
