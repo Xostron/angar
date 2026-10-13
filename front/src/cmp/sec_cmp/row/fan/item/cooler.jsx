@@ -19,7 +19,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const uptxt = start ? cooler.name : ''
 
 	// Задание ПЧ
-	const ltxt = isNaN(data.value) || data.value === null ? '-- %' : data.value + '%'
+	const ltxt = isNaN(data.value) || data.value === null ? '' : data.value + '%'
 
 	// Температура всасывания
 	const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
@@ -36,6 +36,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 
 	// Иконка состояния испарителя
 	const state = cooler?.state
+	console.log(11,state)
 	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
 
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
