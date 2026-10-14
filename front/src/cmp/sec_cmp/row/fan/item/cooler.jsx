@@ -49,7 +49,6 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	if (data.state === 'alarm') cl.push('alarm')
 
 	cl = cl.join(' ')
-	console.log(11, data.el._id, newClr)
 	return (
 		<BtnCooler
 			title={data.el?._id}
