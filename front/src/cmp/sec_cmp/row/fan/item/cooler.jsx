@@ -67,7 +67,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 
 function valFan(data, state) {
 	if (isNaN(data.value) || data.value === null) {
-		return state.split('-')?.[1] == 'off' ? '0%' : '100%'
+		return state?.split('-')?.[1] == 'off' ? '0%' : '100%'
 	}
 	return data.value + '%'
 }
