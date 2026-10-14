@@ -4,6 +4,7 @@ const {
 	net_info,
 	set_ip,
 	reload,
+	shutdown,
 	upt_soft,
 	pm2_cmd,
 	build,
@@ -32,8 +33,10 @@ function service(router) {
 	serviceRouter.get('/net_info', net_info());
 	// Установить IP
 	serviceRouter.post('/set_ip', set_ip());
-	// Перезагрузка ОС
+	// Перезагрузка PC
 	serviceRouter.get('/reboot', reload());
+	// Выключение PC
+	serviceRouter.get('/shutdown', shutdown());
 	// Обновить оборудование
 	serviceRouter.get('/equipment', equip());
 	// Обновить ПО

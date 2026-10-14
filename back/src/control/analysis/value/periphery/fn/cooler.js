@@ -103,6 +103,7 @@ function cooler(equip, val, retain, result) {
 
 		result[clr._id].level = `${level} (${arr.length})`
 	})
+	// console.log(11, result['69f9eea1c35ea05200898d4c'])
 }
 module.exports = cooler
 

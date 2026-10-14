@@ -133,6 +133,7 @@ module.exports = function total(equip, result, retain) {
 			}
 			return acc
 		}, {})
+		// console.log(22,clr)
 		result.total[sec._id] = { tprd, tcnl, p, co2, cooler: clr }
 	}
 }

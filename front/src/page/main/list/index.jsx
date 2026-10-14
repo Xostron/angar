@@ -28,7 +28,8 @@ export default function List({ list }) {
 		})
 		return items
 	}, [remoteRaw])
-	const fullList = useMemo(() => [...list, ...remote], [list, remote])
+	// Сортировка списка с учетом order у своих и удаленных складов
+	const fullList = useMemo(() => [...list, ...remote].sort((a, b)=> (a?.order - b?.order)), [list, remote])
 	const [arr, setArr] = useState(fullList?.slice(0, 10))
 	const mb = useViewStore((s) => s.mb())
 	const limit = Math.ceil(fullList?.length / 10) - 1

@@ -92,6 +92,7 @@ function fn2(bld, sec, obj, coolerS = []) {
 		const condenser = Object.values(obj.value?.[el?.aggregateListId]?.condenser ?? {})?.[0]
 			?.state
 		const r = {
+			_id:el._id,
 			name: el.name,
 			// Состояние агрегата
 			aggregate: {

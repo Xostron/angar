@@ -7,9 +7,9 @@ export default function Soft() {
 		<>
 			<div className='page-service-row'>Первоначальная настройка. Обновить - Пересобрать - Сохранить (! Не забудь настроить сначала ip) </div>
 			<div className='page-service-row'>
-				<Btn title='1. Обновить ПО' onClick={() => onUptSoft()} />
-				<Btn title='2. npm install && build' onClick={() => onNpm()} />
-				<Btn title='3. pm2 save (Сохранить)' onClick={() => onPm2('save')} />
+				<Btn title='Обновить ПО' onClick={() => onUptSoft()} />
+				{/* <Btn title='2. npm install && build' onClick={() => onNpm()} /> */}
+				{/* <Btn title='3. pm2 save (Сохранить)' onClick={() => onPm2('save')} /> */}
 			</div>
 			<div className='page-service-row'>Дополнительное управление PM2 (Внутренний сервер).</div>
 			<div className='page-service-row'>

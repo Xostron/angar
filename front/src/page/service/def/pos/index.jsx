@@ -12,7 +12,8 @@ export default function Pos() {
 			<div className='page-service-row'>
 				{/* <Btn title='AutoLogin On' onClick={() => onAL(true, warn, clear)} /> */}
 				{/* <Btn title='AutoLogin Off' onClick={() => onAL(false, warn, clear)} /> */}
-				<Btn title='Reboot Устройства' onClick={() => onReboot()} />
+				<Btn title='Презагрузка PC' onClick={() => onReboot()} />
+				<Btn title='Выключение PC' onClick={() => onShutdown()} />
 			</div>
 			<div className='page-service-row'>
 				<Btn title='Установить дату и время ' onClick={() => onSetDateTime(warn, clear)} />
@@ -51,7 +52,19 @@ export default function Pos() {
 function onReboot() {
 	get('reboot')
 		.then((result) => {
-			notification.success('Перезагрузка устройств запущена')
+			notification.success('Перезагрузка устройства запущена')
+		})
+		.catch((e) => {
+			notification.error(e.message || 'Ошибка перезагрузки устройств', {
+				errorId: e.id,
+			})
+		})
+}
+
+function onShutdown() {
+	get('shutdown')
+		.then((result) => {
+			notification.success('Выключение. устройства запущено')
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка перезагрузки устройств', {

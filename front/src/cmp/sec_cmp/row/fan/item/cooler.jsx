@@ -9,9 +9,10 @@ import defImg from '@tool/icon'
  * @returns
  */
 export default function ItemCooler({ data, onClick, isAuth, cls }) {
-	const { build } = useParams()
+	const { build, sect } = useParams()
 	// [Состояния и показания испарителя]
 	const cooler = useInputStore((s) => s?.input?.[data.el?._id])
+	const newClr = useInputStore((s) => s?.input?.total?.[sect]?.cooler?.[data?.el?._id])
 	// [склад вкл/выкл]
 	const start = useInputStore((s) => s?.input?.retain?.[build]?.start)
 
@@ -26,9 +27,11 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	const ltxt = valFan(data, state)
 
 	// Температура всасывания
-	const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
-	let t = cooler?.sensor?.[idT]?.value ?? '--'
-	const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
+	// const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
+	// let t = cooler?.sensor?.[idT]?.value ?? '--'
+	// const rtxt = t != '-' ? t + ' ' + defUn?.temp : t
+	const rtxt =
+		typeof newClr?.tmpCooler?.min == 'number' ? newClr?.tmpCooler?.min + defUn?.temp : '--'
 
 	// Соленоид подогрева
 	// const idSolHeat = data.el?.solHeat?.[0]?._id
@@ -46,6 +49,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	if (data.state === 'alarm') cl.push('alarm')
 
 	cl = cl.join(' ')
+	console.log(11, data.el._id, newClr)
 	return (
 		<BtnCooler
 			title={data.el?._id}

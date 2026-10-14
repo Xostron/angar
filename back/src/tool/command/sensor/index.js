@@ -86,7 +86,7 @@ function coolerS(idB, idS, obj) {
 		if (clr.sectionId != idS) return acc
 		acc[clr._id] = {
 			// Темп. всасывания
-			tmpCooler: value?.total?.[idS]?.cooler?.[clr._id]?.tmpCooler?.max,
+			tmpCooler: value?.total?.[idS]?.cooler?.[clr._id]?.tmpCooler?.min,
 			// Давление агрегата
 			pin: value?.total?.[idS]?.cooler?.[clr._id]?.pin?.max,
 			pout: value?.total?.[idS]?.cooler?.[clr._id]?.pout?.max,

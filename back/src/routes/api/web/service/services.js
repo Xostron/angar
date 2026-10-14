@@ -1,4 +1,5 @@
 const reboot = require('@tool/scripts/reboot');
+const _shutdown = require('@tool/scripts/shutdown');
 const update = require('@tool/scripts/update');
 const pm2 = require('@tool/scripts/pm2');
 const rebuild = require('@tool/scripts/rebuild');
@@ -57,6 +58,14 @@ function net_info() {
 function reload() {
 	return (req, res) => {
 		reboot()
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
+function shutdown() {
+	return (req, res) => {
+		_shutdown()
 			.then((r) => res.json(r))
 			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
@@ -207,7 +216,7 @@ function file() {
 			if (!result.pc) throw Error('Некорректный файл');
 			console.log(
 				99010,
-				'Конфигурация из файла обработана -> Устанавливаем...'
+				'Конфигурация из файла обработана -> Устанавливаем...',
 			);
 			writeConfig(result);
 			console.log(99011, 'Конфигурация из файла успешно установлена!');
@@ -276,6 +285,7 @@ function getSettings() {
 
 module.exports = {
 	reload,
+	shutdown,
 	upt_soft,
 	pm2_cmd,
 	build,
