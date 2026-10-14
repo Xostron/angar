@@ -16,6 +16,10 @@
   line-height: 28px;
   color: var(--c-navy);
   width: calc(100% - 200px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* height: 100px; */
 }
 .date {
   font-weight: 500;
