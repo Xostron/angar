@@ -18,8 +18,12 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	// Режим испарителя
 	const uptxt = start ? cooler.name : ''
 
+	// Иконка состояния испарителя
+	const state = cooler?.state
+	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
+
 	// Задание ПЧ
-	const ltxt = isNaN(data.value) || data.value === null ? '' : data.value + '%'
+	const ltxt = valFan(data, state)
 
 	// Температура всасывания
 	const idT = data.el.sensor?.find((el) => el.type === 'cooler')?._id
@@ -33,11 +37,6 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	// Заслонка
 	const flap = cooler?.flap?.state
 	// console.log(1, cooler, flap)
-
-	// Иконка состояния испарителя
-	const state = cooler?.state
-	console.log(11,state)
-	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
 
 	let cl = ['cmp-sec-row-item', 'btn-cooler', cls]
 	// Доступ разрешен
@@ -61,6 +60,13 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 			cls={cl}
 		/>
 	)
+}
+
+function valFan(data, state) {
+	if (isNaN(data.value) || data.value === null) {
+		return state.split('-')?.[1] == 'off' ? '0%' : '100%'
+	}
+	return data.value + '%'
 }
 
 // Кнопка Испаритель
