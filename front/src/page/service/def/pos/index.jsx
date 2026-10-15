@@ -19,6 +19,9 @@ export default function Pos() {
 				<Btn title='Установить дату и время ' onClick={() => onSetDateTime(warn, clear)} />
 				<Btn title='Синхронизировать дату и время (Интернет!)' onClick={() => syncTime()} />
 			</div>
+			<div className='page-service-row'>
+				<Btn title='Перезагрузка Браузера ' onClick={() => closeChrome()} />
+			</div>
 		</>
 	)
 }
@@ -68,6 +71,17 @@ function onShutdown() {
 		})
 		.catch((e) => {
 			notification.error(e.message || 'Ошибка перезагрузки устройств', {
+				errorId: e.id,
+			})
+		})
+}
+function closeChrome() {
+	get('close_chrom')
+		.then((result) => {
+			notification.success('Закрытие браузера.')
+		})
+		.catch((e) => {
+			notification.error(e.message || 'Ошибка Закрытия браузера', {
 				errorId: e.id,
 			})
 		})

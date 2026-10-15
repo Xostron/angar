@@ -32,6 +32,11 @@ const lists = [
 		icon: '/img/service/laptop.svg',
 		name: 'Управление POS',
 	},
+	{
+		path: '../service/ping',
+		icon: '/img/service/network-2.svg',
+		name: 'Проверка связи',
+	},
 	{ path: '../service/journal', icon: '/img/service/journal.svg', name: 'Архив действий' },
 	{
 		path: '..',

@@ -18,6 +18,7 @@ class MongoTransport extends Transport {
 	constructor(opts = {}) {
 		super(opts)
 		this.targetLevel = opts.targetLevel
+		this.noDedup = opts.noDedup
 	}
 
 	log(info, callback) {
@@ -26,10 +27,13 @@ class MongoTransport extends Transport {
 		if (info.level !== this.targetLevel) return callback()
 
 		const level = info.level
-		const json = JSON.stringify(info.message)
 
-		if (prev[level] === json) return callback()
-		prev[level] = json
+		// Дедупликация подряд идущих одинаковых сообщений (кроме уровней с noDedup)
+		if (!this.noDedup) {
+			const json = JSON.stringify(info.message)
+			if (prev[level] === json) return callback()
+			prev[level] = json
+		}
 
 		insert(db, level, { ts: new Date(), ...info.message })
 			.catch((err) => {
@@ -50,9 +54,9 @@ class MongoTransport extends Transport {
  * @param {string} level Уровень лога (имя коллекции в БД)
  * @returns {MongoTransport|null}
  */
-function mongoT(level) {
+function mongoT(level, opts = {}) {
 	if (!getDb()) return null
-	return new MongoTransport({ level, targetLevel: level })
+	return new MongoTransport({ level, targetLevel: level, ...opts })
 }
 
 module.exports = { MongoTransport, mongoT }

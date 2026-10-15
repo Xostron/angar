@@ -1,5 +1,7 @@
-const { execSync } = require('child_process');
-const { getSu } = require('./fn');
+const path = require('path');
+const os = require('os');
+
+const { getSu, execProm } = require('./fn');
 const getLatestNodePath = require('./get_node.js');
 
 function update() {
@@ -14,59 +16,26 @@ function update() {
 		candidates.push('/root/.nvm/versions/node');
 		// Выполняем команды от имени tenta с использованием пароля
 		const nodePath = getLatestNodePath();
-		const su = `echo "${getSu()}" |  sudo -S bash -c 'export PATH=${nodePath}:$PATH`;
+		const su = `echo "${getSu()}" | sudo -S bash -c 'export PATH=${nodePath}:$PATH`;
 
 		const cmdGit = [
 			'cd /home/tenta/apps',
 			'git config --global --add safe.directory /home/tenta/apps',
 			'git restore .',
-			// 'git clean -fdX',
 			'git pull',
-		];
-
-		const cmdBack = [su, 'cd /home/tenta/apps/back', 'npm install'];
-
-		const cmdFront = [
-			su,
-			'cd /home/tenta/apps/back',
-			'npm install',
-			'npm run build',
-			'pkill -f chromium',
-		];
-
+		].join(' && ');
+		const cmdBack = `${su} && cd /home/tenta/apps/back && npm install'`;
+		const cmdFront = `${su} && cd /home/tenta/apps/front && npm install && npm run build' && pkill chromium || true`;
 		const cmdPM2 = [
-			'pm2 start /home/tenta/apps/ecosystem/ecosystem.config.js',
-			'pm2 save',
-		];
+			'nohup bash -c "pm2 start /home/tenta/apps/ecosystem/ecosystem.config.js  && pm2 save" > /dev/null 2>&1 &',
+		].join(' && ');
+		resolve();
 		execProm(cmdGit, 'Обновление git')
 			.then((_) => execProm(cmdBack, 'Подготовка Back'))
 			.then((_) => execProm(cmdFront, 'Подготовка Front'))
 			.then((_) => execProm(cmdPM2, 'PM 2'))
-			.then((_) => resolve())
+			.then()
 			.catch(reject);
-		// apps/back/
-		// npm install
-		// cd ../../
-		// pm2 start apps/ecosystem/ecosystem.config.js
-		// pm2 save
-		// cd apps/front/
-		// npm install
-		// npm run build
-		// pkill -f chromium
-	});
-}
-
-function execProm(cmd, str) {
-	return new Promise((resolve, reject) => {
-		try {
-			console.log(new Date().toLocaleString('ru-RU'), 'Запуск', str);
-			execSync(cmd);
-			console.log(new Date().toLocaleString('ru-RU'), 'Завершено', str);
-			resolve();
-		} catch (error) {
-			console.error('Ошибка', str, error);
-			reject(str, error.toString());
-		}
 	});
 }
 

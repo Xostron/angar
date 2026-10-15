@@ -29,15 +29,15 @@ function set_new_ip(ip) {
 		// Заменяем строку PUBLIC_SOCKET_URI на новую с ip
 		envContent = envContent.replace(
 			/\nPUBLIC_SOCKET_URI=[^\r\n]*/,
-			`\nPUBLIC_SOCKET_URI=http://${ip}:4000`
+			`\nPUBLIC_SOCKET_URI=http://${ip}:4000`,
 		);
 		envContent = envContent.replace(
 			/\nPUBLIC_API=[^\r\n]*/,
-			`\nPUBLIC_API=http://${ip}:4000/api/`
+			`\nPUBLIC_API=http://${ip}:4000/api/`,
 		);
 		envContent = envContent.replace(
 			/\nPUBLIC_LOCAL_API=[^\r\n]*/,
-			`\nPUBLIC_LOCAL_API=http://${ip}:4000/api/`
+			`\nPUBLIC_LOCAL_API=http://${ip}:4000/api/`,
 		);
 		fs.writeFileSync(frontEnvPath, envContent, 'utf8');
 	} catch (e) {
@@ -48,10 +48,8 @@ function set_new_ip(ip) {
 	// console.log('IP обновлён на', ip);
 	// console.log('Сборка ...');
 	rebuild()
-		.then(() => {
-			// console.log('Перезапуск pm2...');
-			pm2('start', '/home/tenta/apps/ecosystem/ecosystem.config.js');
-		})
+		.then(() => pm2('start'))
+		.then()
 		.catch((e) => {
 			console.error('Ошибка при перезапуске pm2:', e.message);
 		});

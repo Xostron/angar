@@ -11,7 +11,8 @@ const wattLevels = ['watt', 'hour']
 function transports(levels) {
 	const arr = levels.map((l) => hourlyT(l))
 	for (const l of levels) {
-		const mt = mongoT(l)
+		// Для «Архива действий» дедупликация отключена: повторные действия важны
+		const mt = mongoT(l, l === 'activity' ? { noDedup: true } : {})
 		if (mt) arr.push(mt)
 	}
 	return arr

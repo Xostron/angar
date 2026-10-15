@@ -13,7 +13,7 @@ function PageButton({
 }) {
   const stl = {
     cursor: disabled ? 'not-allowed' : 'pointer',
-    opacity: disabled ? 0.4 : 1,
+    opacity: disabled ? 0.3 : 1,
     ...(dict?.[variant] ?? {}),
   };
   let cls = `${style.btn} ${style[variant]}`;

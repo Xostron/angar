@@ -5,12 +5,14 @@ const pm2 = require('@tool/scripts/pm2');
 const rebuild = require('@tool/scripts/rebuild');
 const get_net_info = require('@tool/scripts/get_net_info');
 const set_new_ip = require('@tool/scripts/set_new_ip');
+const _close_chrom = require('@tool/scripts/close_chrom');
 const auto_login = require('@tool/scripts/auto_login');
 const reload_net = require('@tool/scripts/reload_net');
 const network = require('@tool/scripts/network');
 const eth = require('@tool/scripts/eth');
 const time = require('@tool/scripts/time');
 const statistic = require('@tool/scripts/statistic');
+const _ping = require('@tool/scripts/ping');
 const fsp = require('fs').promises;
 const { writeConfig } = require('@tool/init');
 const { data } = require('@store');
@@ -84,16 +86,23 @@ function pm2_cmd() {
 		const { code } = req.params;
 		pm2(code)
 			.then((r) => res.json(r))
-			.catch((err) => res.status(400).json({ error: err.toString() }));
+			.catch((err) => {
+				console.log('pm2_cmd', err);
+				res.status(400).json({ error: err.toString() });
+			});
 	};
 }
 
 function set_ip() {
 	return (req, res) => {
 		const { ip } = req.body;
-		set_new_ip(ip)
-			.then((r) => res.json(r))
-			.catch((err) => res.status(400).json({ error: err.toString() }));
+		try {
+			const r = set_new_ip(ip);
+			res.json(r);
+		} catch (err) {
+			console.log('set_ip', err);
+			res.status(400).json({ error: err.toString() });
+		}
 	};
 }
 
@@ -202,6 +211,19 @@ function eth_manager() {
 	};
 }
 
+function ping() {
+	return (req, res) => {
+		const hosts = req.body?.hosts ?? req.body?.host;
+		const list = Array.isArray(hosts) ? hosts : [hosts];
+		if (!hosts || !list.filter(Boolean).length)
+			return res.status(400).json({ error: 'Не переданы адреса' });
+		_ping
+			.ping(list)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
 function file() {
 	return async (req, res) => {
 		// Получение файла
@@ -238,6 +260,14 @@ function sync_time() {
 function set_time() {
 	return (req, res) => {
 		time.set(req.body.dt)
+			.then((r) => res.json(r))
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
+function close_chrom() {
+	return (req, res) => {
+		_close_chrom()
 			.then((r) => res.json(r))
 			.catch((err) => res.status(400).json({ error: err.toString() }));
 	};
@@ -295,6 +325,7 @@ module.exports = {
 	reload_netmanager,
 	eth_info,
 	eth_manager,
+	ping,
 	file,
 	wifi_list,
 	wifi_connect,
@@ -307,4 +338,5 @@ module.exports = {
 	statClear,
 	getSettings,
 	saveSettings,
+	close_chrom,
 };
