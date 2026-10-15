@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+	"start": "rsbuild dev --open",
     "build": "rsbuild build",
-    "dev": "rsbuild --open",
+    "dev": "rsbuild dev --open",
     "format": "prettier --write .",
     "lint": "rslint",
     "preview": "rsbuild preview"

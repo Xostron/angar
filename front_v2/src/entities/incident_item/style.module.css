@@ -5,7 +5,15 @@
   padding: 16px;
   gap: 16px;
   background-color: var(--c-white);
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:active {
+    transform: scale(0.99);
+    background-color: var(--c-grey-lightest);
+  }
 }
+
 .container > img {
   height: 40px;
   width: 40px;

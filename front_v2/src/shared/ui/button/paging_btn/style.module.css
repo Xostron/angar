@@ -1,0 +1,36 @@
+.btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  opacity: 1;
+  font-weight: 500;
+  font-size: 20px;
+  /* line-height: 28px; */
+  background-color: transparent;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  &.back {
+    color: var(--c-grey);
+  }
+  &.next {
+    color: var(--c-blue-darker);
+  }
+}
+.img_back {
+  transform: rotate(180deg);
+  filter: brightness(0) invert(59%) sepia(16%) saturate(464%) hue-rotate(173deg)
+    brightness(91%) contrast(89%);
+}
+
+.img_next {
+  filter: brightness(0) invert(67%) sepia(87%) saturate(1257%)
+    hue-rotate(193deg) brightness(98%) contrast(93%);
+}
+/* Нажатие на кнопку */
+.btn:active:not(:disabled) {
+  opacity: 0.7;
+  transform: scale(0.98);
+}

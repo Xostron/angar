@@ -2,9 +2,34 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 24px;
+  /* padding-top: 24px; */
   padding-left: 24px;
   background-color: var(--c-grey-lighter);
   row-gap: 12px;
+  height: 882px;
+
+  color: var(--c-grey);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.children {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
   overflow: hidden;
+  row-gap: 12px;
+  height: calc(882px - 69px - 24px);
+}
+
+.paging {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 69px;
+}
+
+.buttons {
+  display: flex;
 }
