@@ -1,13 +1,21 @@
 const { data: store, readAcc } = require('@store')
-const { getIdByClr, getB } = require('@tool/get/building')
+const { getIdByClr, getB, getBS } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')
 const { isExtra } = require('@tool/message/extra')
 const coolerDef = require('@dict/def/cooler')
 // Испаритель
 function cooler(equip, val, retain, result) {
 	const { building, cooler, sensor, fan, heating, binding, section, signal, aggregate } = equip
+	// console.log(44, store.calcSetting)
 	// Собираем по испарителю состояния его основных узлов
 	cooler.forEach((clr) => {
+		const idB = getIdByClr(section, clr)
+		// Настройки холодильника
+		const countErrFan =
+			store?.calcSetting?.[idB]?.coolerCombi?.countErrFan ??
+			store?.calcSetting?.[idB]?.cooler?.countErrFan
+
+		console.log(55, countErrFan)
 		// Массив модулей ПЛК испарителя
 		const arrM = new Set()
 		// Состояния периферии испарителя
@@ -40,13 +48,35 @@ function cooler(equip, val, retain, result) {
 		// 3. Напорные вентиляторы (модули не добавляю, потому что в
 		// состоянии ВНО уже учтены неисправности модулей)
 		const arrF = fan.filter((el) => el.owner.id === clr._id)
-		arrF.forEach((el) => (result[clr._id].fan[el._id] = result[el._id]))
+		arrF.forEach((el) => {
+			result[clr._id].fan[el._id] = result[el._id]
+			result[clr._id].fan[el._id].name = el.name
+		})
 		// Агрегированный состояние по ВНО испарителя: alarm (если нет рабочих ВНО[выведены/авария]) или ''(есть рабочие ВНО)
-		result[clr._id].fan.state = arrF.every((el) =>
-			['off', 'alarm'].includes(result[el._id].state),
+		// result[clr._id].fan.state = arrF.every((el) =>
+		// 	['off', 'alarm'].includes(result[el._id].state),
+		// )
+		// 	? 'alarm'
+		// 	: ''
+		// Сколько у испарителей неисправных ВНО
+		const lenErrFan = Object.values(result[clr._id].fan ?? {}).filter(
+			(el) => el.state == 'alarm',
+		).length
+		// Сколько у испарителей выведенных из работы ВНО
+		const lenOffFan = Object.values(result[clr._id].fan ?? {}).filter(
+			(el) => el.state == 'off',
+		).length
+		// Если есть хоть один выведенный из работы ВНО => испарителеь выведен
+		result[clr._id].fan.state = ''
+		if (lenOffFan) result[clr._id].fan.state = 'off'
+		if (lenErrFan === Object.keys(result[clr._id].fan ?? {}).length-1 || lenErrFan > countErrFan)
+			result[clr._id].fan.state = 'alarm'
+		console.log(
+			33,
+			result[clr._id].fan,
+			lenErrFan === Object.keys(result[clr._id].fan ?? {}).length,
+			lenErrFan > countErrFan,
 		)
-			? 'alarm'
-			: ''
 
 		// 4. Оттайка испарителя
 		const arrH = heating.filter((el) => el.owner.id === clr._id && el.type == 'cooler')

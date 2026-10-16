@@ -36,6 +36,7 @@ function getVnoClr(idB, idS, obj, coolerS) {
 			return acc
 		}, {}),
 	)
+	// console.log(22, fanClrRaw, fanClr)
 	// Вно испарителей с любым state, но исключая дубляжи
 	const allFanClr = Object.values(
 		fanClrRaw.reduce((acc, el, i) => {
@@ -52,7 +53,7 @@ function getVnoClr(idB, idS, obj, coolerS) {
 			return acc
 		}, {}),
 	)
-	return { allFanClr, fanClr }
+	return { fanClrRaw, allFanClr, fanClr }
 }
 
 function getVno(idB, idS, obj, binding, fan) {

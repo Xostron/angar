@@ -68,7 +68,7 @@ async function init() {
 					'\x1b[32m%s\x1b[0m',
 					`Данные с AdminServer ${process.env.API_URI} получены для ${process.env.IP}`,
 				)
-				console.log(r.data.result?.equipment)
+				// console.log(r.data.result?.equipment)
 				writeConfig(r.data.result)
 			})
 			// Формирование рамы для клиента

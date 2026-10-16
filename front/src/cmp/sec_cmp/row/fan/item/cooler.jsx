@@ -18,7 +18,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 
 	// Режим испарителя
 	const uptxt = start ? cooler.name : ''
-
+	// console.log(111, cooler)
 	// Иконка состояния испарителя
 	const state = cooler?.state
 	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''
@@ -45,8 +45,8 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	// Доступ разрешен
 	if (isAuth) cl.push('auth-sir')
 	// Вывод из работы ВНО
-	if (data.state == 'off') cl.push('off')
-	if (data.state === 'alarm') cl.push('alarm')
+	if (cooler?.fan?.state == 'off') cl.push('off')
+	if (cooler?.fan?.state === 'alarm') cl.push('alarm')
 
 	cl = cl.join(' ')
 	return (

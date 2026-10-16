@@ -11,7 +11,7 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 	const warn = useWarn((s) => s.warn)
 	const isAuth = useAuthStore((s) => s.isAuth)
 	const getFan = useInputStore((s) => s.getFan)
-
+	const input = useInputStore((s) => s?.input)
 	let cl = ['cmp-sec-row', cls]
 	cl = cl.join(' ')
 	return (
@@ -34,12 +34,21 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 				{!!cooler?.length &&
 					cooler.map((el) => {
 						// данные о ВНО испарителя
+						const stateFans = input?.[el?._id]?.fan?.state
 						const f = el?.fan?.[0] ? getFan(el?.fan?.[0]) : {}
+						// console.log(22, stateFans, getFan(el?.fan?.[0]))
 
 						return (
 							<ItemCooler
 								key={el._id}
-								data={{ el, ...f, buildingId: build, sectionId: sect, active }}
+								data={{
+									el,
+									...f,
+									state: stateFans,
+									buildingId: build,
+									sectionId: sect,
+									active,
+								}}
 								onClick={onClick}
 								isAuth={isAuth}
 							/>
@@ -54,6 +63,7 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 			return warn('auth', 'warn', () => warn(null, 'person'))
 		}
 		if (data._id === null) return warn('noexist_cooler', 'warn')
+		console.log(33, data)
 		data?.ao ? warn(data, 'fanao') : warn(data, 'fan')
 	}
 }

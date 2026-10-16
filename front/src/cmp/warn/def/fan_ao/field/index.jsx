@@ -11,7 +11,7 @@ import Input from '@cmp/fields/input'
  * @returns
  */
 export default function Field({ sel, change, active, state, spO, setSpO, off, container }) {
-	const title = off ? 'Ввести в работу' : 'Вывести из работы'
+	const title = state=='off' ? 'Ввести в работу' : 'Вывести из работы'
 	const styleIn = active ? 'run' : 'off'
 	return (
 		<fieldset className='ef-field'>

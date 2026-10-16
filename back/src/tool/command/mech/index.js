@@ -30,7 +30,7 @@ function mech(obj, idS, idB) {
 	const solHeatS = coolerS.flatMap((el) => el.solHeat)
 
 	// ВНО испарителей: все и только рабочие
-	const { allFanClr, fanClr } = getVnoClr(idB, idS, obj, coolerS)
+	const { fanClrRaw, allFanClr, fanClr } = getVnoClr(idB, idS, obj, coolerS)
 	// Напорные ВНО секции (только рабочие)
 	const fanSS = getVno(idB, idS, { retain, value }, binding, fan)
 	// Разделение на обычные ВНО и группы ВНО gj
@@ -38,7 +38,7 @@ function mech(obj, idS, idB) {
 	// Напорные ВНО секции/камеры + ВНО испарителей:
 	// обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...groupFanSS, ...fanClr]
-
+// console.log(11, allFanClr, fanClr)
 	// DEMO Вентиляторы секции:напорные + испарители, только введенные в работу
 	const ff = fan
 		.filter(
@@ -91,6 +91,7 @@ function mech(obj, idS, idB) {
 		fanClr,
 		wettingS,
 		allFanClr,
+		fanClrRaw,
 		ff,
 		heattcnl,
 	}

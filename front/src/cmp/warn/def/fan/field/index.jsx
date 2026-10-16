@@ -11,7 +11,8 @@ import { useEffect } from 'react'
  * @returns
  */
 export default function Field({ sel, change, active, state, off }) {
-	const title = off ? 'Ввести в работу' : 'Вывести из работы'
+	const title = state=='off' ? 'Ввести в работу' : 'Вывести из работы'
+	console.log(44, state, title)
 	return (
 		<fieldset className='ef-field'>
 			<Radio
