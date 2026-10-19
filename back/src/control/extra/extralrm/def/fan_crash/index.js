@@ -4,7 +4,7 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 
 // Авария вентилятора (выключен автомат. выключатель)
 function fanCrash(bld, sect, obj, s, se, m, automode, acc, data) {
-	if (!m?.fanS?.length) return
+	if (!m?.fanSAll?.length) return
 	const sumAlarm = []
 	for (const f of m.fanSAll) {
 		acc[f._id] ??= {}

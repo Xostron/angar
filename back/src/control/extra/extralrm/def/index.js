@@ -100,7 +100,7 @@ const def = {
 		always: {
 			connect,
 			localB,
-			fanCrash,
+			// fanCrash,
 			alrStop,
 			supplyB,
 			co2,

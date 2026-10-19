@@ -76,7 +76,7 @@ function mech(obj, idS, idB) {
 		(el) => (el.owner.id == idS || el.owner.id == idB) && el.type == 'reset',
 	)
 	// Напорные ВНО секции для extralrm (отслеживание аварий)
-	const fanSAll = [...fan.filter((el) => el.owner.id === idS && el.type === 'fan'), ...fanClr]
+	const fanSAll = [...fan.filter((el) => el.owner.id === idS && el.type === 'fan'), ...fanClrRaw]
 	return {
 		vlvS,
 		fanS,
