@@ -18,7 +18,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 
 	// Режим испарителя
 	const uptxt = start ? cooler.name : ''
-	// console.log(111, cooler)
+
 	// Иконка состояния испарителя
 	const state = cooler?.state
 	const icon = `/img/cold/cooler/cooler-${state}.svg` ?? ''

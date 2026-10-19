@@ -69,4 +69,16 @@ function activity(code, o) {
 		.catch(console.error)
 }
 
-module.exports = { webLog, mobileLog }
+/**
+ * Логирование служебных действий (страницы сервиса): готовое сообщение
+ * @param {*} o { title, type, value, name }
+ * @returns
+ */
+function serviceLog(o) {
+	if (!o?.title) return
+	loggerEvent['activity']({
+		message: { name: 'Сервис', ...o },
+	})
+}
+
+module.exports = { webLog, mobileLog, serviceLog }

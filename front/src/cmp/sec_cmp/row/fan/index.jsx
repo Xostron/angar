@@ -36,7 +36,6 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 						// данные о ВНО испарителя
 						const stateFans = input?.[el?._id]?.fan?.state
 						const f = el?.fan?.[0] ? getFan(el?.fan?.[0]) : {}
-						// console.log(22, stateFans, getFan(el?.fan?.[0]))
 
 						return (
 							<ItemCooler
