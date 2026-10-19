@@ -2,15 +2,14 @@ import useInputStore from '@store/input'
 import defImg from '@src/tool/icon'
 import defUn from '@src/tool/unit'
 
-export default function Other({ data = {}, buildId, sect, cls }) {
+export default function Other({ data = {}, idB, idS, cls }) {
 	const { valve, fan, heating, cooler } = data
 
-	const [input] = useInputStore(({ input }) => [input])
+	const input = useInputStore((s) => s?.input)
 	if (!valve) return
 	const idxVin = valve.findIndex((v) => v.type === 'in')
 	const idxVout = valve.findIndex((v) => v.type === 'out')
 	// Состояние и позиции клапанов
-	// posV(valve?.[idxVin]?._id, buildId)
 	const spVin = input?.[valve?.[idxVin]?._id]?.val
 	const spVout = input?.[valve?.[idxVout]?._id]?.val
 	const stateVin = input?.[valve?.[idxVin]?._id]?.state
@@ -20,9 +19,17 @@ export default function Other({ data = {}, buildId, sect, cls }) {
 
 	// Вентиляторы секции (включен ли хоть один вентилятор)
 	const clrFan = cooler?.flatMap((el) => el?.fan ?? [])
-	const allFan = [...(fan ?? []), ...(clrFan ?? [])]
-	const sumAlr = allFan?.some((el) => input?.[el._id]?.state === 'alarm')
+	const coolers = cooler?.map((el) => ({ _id: el._id, type: 'cooler' }))
+	let allFan = [...(fan ?? []), ...(coolers ?? [])]
+	const sumAlr = allFan?.some((el) => {
+		if (el?.type == 'cooler') {
+			return input?.[el._id]?.fan?.state === 'alarm'
+		}
+		return input?.[el._id]?.state === 'alarm'
+	})
+	allFan = [...(fan ?? []), ...(clrFan ?? [])]
 	const sumRun = allFan?.some((el) => input?.[el._id]?.state === 'run')
+	// const sumAlr = allFan?.some((el) => input?.[el._id]?.state === 'alarm')
 	const stateF = sumAlr === true ? 'alarm' : sumRun === true ? 'run' : 'stop'
 	const imgF = defImg.fan?.[stateF]
 

@@ -5,15 +5,20 @@ import Other from './fn/other'
 import Tprd from './fn/tprd'
 import { useShallow } from 'zustand/react/shallow'
 
-export default function Item({ sec = {}, bId, iSect, cls }) {
-	const { _id, name, valve, heating, fan, cooler } = sec
+export default function Item({ sect = {}, idB, cls }) {
+	const { _id, name, valve, heating, fan, cooler } = sect
 	// Показания и настройки
 	const input = useInputStore((s) => s.input)
-	const retain = input?.retain?.[bId]
+	const retain = input?.retain?.[idB]
 	// ссылка на секцию
 	const path = 'section/' + _id
 	// Режим работы секции
-	const mode = retain?.mode?.[_id] === true ? 'Автомат.' : retain?.mode?.[_id] === false ? 'Ручной' : 'Выключена'
+	const mode =
+		retain?.mode?.[_id] === true
+			? 'Автомат.'
+			: retain?.mode?.[_id] === false
+				? 'Ручной'
+				: 'Выключена'
 	// Клапаны, вентилятор и обогреватель
 	const other = { valve, heating, fan, cooler }
 
@@ -26,7 +31,7 @@ export default function Item({ sec = {}, bId, iSect, cls }) {
 				{name} <span className={`section-mode ssx${cls}`}>{mode}</span>
 			</span>
 			<Tprd sId={_id} />
-			<Other buildId={bId} data={other} sect={iSect} cls={'vfx' + cls} />
+			<Other idB={idB} data={other} idS={sect?._id} cls={'vfx' + cls} />
 		</Link>
 	)
 }

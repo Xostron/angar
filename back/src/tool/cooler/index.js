@@ -32,26 +32,28 @@ function getStateClr(idS, obj) {
 
 /**
  * Состояние конкретного испарителя
- * @param {*} clr 
- * @param {*} obj 
- * @returns 
+ * @param {*} clr
+ * @param {*} obj
+ * @returns
  */
 function getStateClr2(clr, obj) {
 	return obj?.value?.[clr._id]?.state
 }
 
 /**
- * Несколько испарителей с одним общим ВНО: вся пара выведена из работы
+ * Испаритель: ВНО выведены из работы или в аварии
  * @param {*} pair
  * @param {*} mS
  * @param {*} value
- * @returns
+ * @returns true - вно испарителя не рабочие
  */
 function isOffPair(pair, mS, value) {
 	const r = pair.filter((idClr) => {
-		const fan = mS.coolerS.find((el) => el._id === idClr)?.fan?.[0]
-		return value[fan._id].state != 'alarm' && value[fan._id].state !== 'off'
+		const fans = mS.coolerS.find((el) => el._id === idClr)?.fan
+
+		return fans.some((fan) => value[fan._id].state != 'alarm' && value[fan._id].state != 'off')
 	})
+	// Пустой массив испарителей - значит его ВНО не рабочие
 	return !r.length
 }
 

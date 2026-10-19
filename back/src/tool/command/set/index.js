@@ -41,6 +41,10 @@ function setCmd(obj) {
 		for (const idM in obj[idB]) {
 			data.command[idB][idM] ??= {}
 			for (const channel in obj[idB][idM]) {
+				// if (idM === '69f9dd09c35ea05200898d17' && channel == 5) {
+				// 	console.log(33, obj[idB][idM])
+				// 	console.trace()
+				// }
 				const val = obj[idB][idM][channel]
 				data.command[idB][idM][channel] = val
 			}

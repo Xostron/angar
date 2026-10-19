@@ -42,6 +42,7 @@ function vSensor(equip, val, retain, result) {
 			retain,
 			s,
 		)
+		// if (s._id == '69f9dd09c35ea05200898d00') console.log(11, result[s._id])
 		// Аварийные сообщения датчика
 		webSensAlarm(result[s._id], owner?.building, owner?.section, s)
 		// Обновляем прошлое значение

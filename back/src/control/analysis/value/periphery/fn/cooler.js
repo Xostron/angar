@@ -15,7 +15,6 @@ function cooler(equip, val, retain, result) {
 			store?.calcSetting?.[idB]?.coolerCombi?.countErrFan ??
 			store?.calcSetting?.[idB]?.cooler?.countErrFan
 
-		console.log(55, countErrFan)
 		// Массив модулей ПЛК испарителя
 		const arrM = new Set()
 		// Состояния периферии испарителя
@@ -69,14 +68,16 @@ function cooler(equip, val, retain, result) {
 		// Если есть хоть один выведенный из работы ВНО => испарителеь выведен
 		result[clr._id].fan.state = ''
 		if (lenOffFan) result[clr._id].fan.state = 'off'
-		if (lenErrFan === Object.keys(result[clr._id].fan ?? {}).length-1 || lenErrFan > countErrFan)
-			result[clr._id].fan.state = 'alarm'
-		console.log(
-			33,
-			result[clr._id].fan,
-			lenErrFan === Object.keys(result[clr._id].fan ?? {}).length,
-			lenErrFan > countErrFan,
+		if (
+			lenErrFan === Object.keys(result[clr._id].fan ?? {}).length - 1 ||
+			lenErrFan > countErrFan
 		)
+			result[clr._id].fan.state = 'alarm'
+		// console.log(33,
+		// 	result[clr._id].fan,
+		// 	lenErrFan === Object.keys(result[clr._id].fan ?? {}).length,
+		// 	lenErrFan > countErrFan,
+		// )
 
 		// 4. Оттайка испарителя
 		const arrH = heating.filter((el) => el.owner.id === clr._id && el.type == 'cooler')

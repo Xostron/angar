@@ -63,7 +63,6 @@ export default function Row({ active, fan = [], cooler = [], cls = '' }) {
 			return warn('auth', 'warn', () => warn(null, 'person'))
 		}
 		if (data._id === null) return warn('noexist_cooler', 'warn')
-		console.log(33, data)
 		data?.ao ? warn(data, 'fanao') : warn(data, 'fan')
 	}
 }

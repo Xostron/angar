@@ -17,8 +17,9 @@ function convCmd(obj) {
 	const out = mask(value?.outputM, mdls)
 
 	// Команды управления
+	// console.log(11, store.command['69f9dd09c35ea05200898cd8']['69f9dd09c35ea05200898d17'])
 	transform(store.command, mdls, out)
-
+	// console.log(22, out['192.168.21.126.66cee314eeb92a11d628b024.'])
 	// Команды управления клапаном (по времени)
 	tracking(out, mdls, retain)
 

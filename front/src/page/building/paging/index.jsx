@@ -7,7 +7,7 @@ import useViewStore from '@src/store/view'
 const max = 6
 
 // Пейджинг секций
-export default function Paging({ bId, sects }) {
+export default function Paging({ idB, sects }) {
 	const [page, setPage] = useState(0)
 	const [arr, setArr] = useState(sects?.slice(0, max))
 	const mb = useViewStore((s) => s.mb())
@@ -33,7 +33,7 @@ export default function Paging({ bId, sects }) {
 					{/* Карточки секций */}
 					{arr?.length &&
 						arr.map((el, i) => (
-							<Item key={el._id} cls={arr?.length} sec={el} bId={bId} iSect={i} />
+							<Item key={el._id} cls={arr?.length} sect={el} idB={idB} />
 						))}
 				</article>
 				{limit >= 1 && (

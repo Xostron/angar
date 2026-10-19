@@ -14,10 +14,13 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 	// 1. значение датчика в аккумуляторе hold отсутсвует,
 	// 2. Состояние датчика не аварийное
 	// Очищаем время слежения за датчиком и обновляем аккумулятор hold:
-
 	if (!hold || v.state !== 'alarm') {
 		store.debounce[idSens] = {}
-		if ((v.raw === null || v.raw === undefined) && !hold) return v
+		if ((v.raw === null || v.raw === undefined) && !hold) {
+			// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'null && !hold')
+			return v
+		}
+		// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'null', v)
 		return v.raw === null || v.raw === undefined ? hold : v
 	}
 
@@ -40,9 +43,11 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 		v.raw = null
 		v.value = null
 		v.state = 'alarm'
+		// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'v')
 		return v
 	}
 	// Время не истекло - возврат старого значения
+	// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'hold', v)
 	return hold
 }
 

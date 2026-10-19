@@ -11,7 +11,9 @@ import '../style.css'
 export default function Entry({ data = {}, entryCode }) {
 	const { _id, name, module, buildingId, sectionId, active } = data
 	const clear = useWarn((s) => s.clear)
+	// Управление: вкл/выкл
 	const setO = useOutputStore((s) => s.setO)
+	// Вывести из работы
 	const setFan = useOutputStore((s) => s.setFan)
 	// Состояние ВНО: Выведен ли из работы ВНО, Состояние вентилятора
 	const { off = null, state = null } = useInputStore((s) => s.getFan({ _id }))
@@ -38,7 +40,7 @@ export default function Entry({ data = {}, entryCode }) {
 		const cmd = sel === 'run' ? 1 : 0
 		if (sel === 'off' && !off)
 			setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true })
-		else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })
+		else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })	
 		setO({ idB: buildingId, idM: module.id, value: cmd, channel: ch })
 		clear()
 	}
