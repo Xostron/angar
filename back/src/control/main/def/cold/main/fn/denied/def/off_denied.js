@@ -23,13 +23,13 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 			]
 			// Пара испарителей выведена из работы
 			const off = isOffPair(pair, mS, obj.value)
-			console.log(
-				'\toffDenied: один испаритель',
-				clr.name,
-				a.filter((e) => e[0] === true)?.length !== 0,
-				!off,
-				pair,
-			)
+			// console.log(
+			// 	'\toffDenied: один испаритель',
+			// 	clr.name,
+			// 	a.filter((e) => e[0] === true)?.length !== 0,
+			// 	!off,
+			// 	pair,
+			// )
 
 			a.filter((e) => e[0] === true)?.length !== 0 && !off
 				? fnChange(0, null, 0, 0, 0, null, clr)
