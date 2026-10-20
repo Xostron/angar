@@ -11,6 +11,8 @@ function fnPrepare(bld, obj, s, m) {
 	const idsS = idsSAll.filter((idS) => obj.retain[bld._id].mode?.[idS])
 	// Авторежим склада
 	const am = obj.retain?.[bld._id]?.automode
+	// В зависимости от авторежима выбираем значение точки росы
+	const sPoint = am == 'defrost' ? (s?.defrost?.point ?? 1) : (s?.heat?.point ?? 1)
 	// Авария авторежима
 	const alrAuto = isAlr(bld._id, am)
 	// Комби склад в режиме холодильника
@@ -70,6 +72,7 @@ function fnPrepare(bld, obj, s, m) {
 		tout,
 		isHout,
 		validSe,
+		sPoint,
 	}
 }
 

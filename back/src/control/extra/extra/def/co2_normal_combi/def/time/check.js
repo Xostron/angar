@@ -1,5 +1,7 @@
 const { delExtra, wrExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
+
+// Мягкий Запрет СО2, таймер ожидания запущен
 const dict = {
 	0: 'влажность улицы не подходит',
 	1: 'температура продукта не подходит по точке росы',
@@ -37,13 +39,22 @@ function checkNow(bld, prepare, s, acc) {
 		tout,
 		isHout,
 		validSe,
+		sPoint,
 	} = prepare
 
 	// Причины запрета
+
 	let reason =
 		s?.co2?.mode === 'sensor'
-			? [isHout, point >= tprd - 1, tout <= s.co2.min, false, !validSe, checkCO2(co2, s, acc)]
-			: [isHout, point >= tprd - 1, tout <= s.co2.min, !validSe]
+			? [
+					isHout,
+					point >= tprd - sPoint,
+					tout <= s.co2.min,
+					false,
+					!validSe,
+					checkCO2(co2, s, acc),
+				]
+			: [isHout, point >= tprd - sPoint, tout <= s.co2.min, !validSe]
 	//
 	const error = reason
 		.map((el, i) => (el ? dict[i] : null))

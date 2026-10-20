@@ -1,6 +1,8 @@
 const { isExtralrm, isAlrClosed } = require('@tool/message/extralrm')
 const { delExtra, wrExtra, isExtra } = require('@tool/message/extra')
 const { msgB } = require('@tool/message')
+
+// Жесткий запрет СО2, таймер ожидания выключен
 const dict = {
 	0: 'таймер запрета',
 	1: 'вентиляторы неисправны',
@@ -14,7 +16,7 @@ const dict = {
 	9: 'склад работает по авто режиму', //комби-обычный
 	10: 'склад работает по авто режиму', //обычный
 	11: 'обнаружена авария',
-	// 12: 'склад работает в режиме комби-холодильника',
+	12: 'склад работает в режиме комби-холодильника',
 }
 
 /**
@@ -121,8 +123,9 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		false && (isCN || isN) && !s?.co2?.work, //8
 		isCN && !alrAuto && !flagFinish, //9
 		isN && !alrAuto && !flagFinish, //10
-		alarm || supply, //1
-		// isCC, //12
+		alarm || supply, //11
+		// Комби-холод И нет достижения температуры задания
+		isCC && !ccFlagFinish, //12
 	]
 }
 
