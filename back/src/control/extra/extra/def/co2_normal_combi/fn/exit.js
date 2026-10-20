@@ -16,7 +16,6 @@ const dict = {
 	9: 'склад работает по авто режиму', //комби-обычный
 	10: 'склад работает по авто режиму', //обычный
 	11: 'обнаружена авария',
-	12: 'склад работает в режиме комби-холодильника',
 }
 
 /**
@@ -124,8 +123,6 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		isCN && !alrAuto && !flagFinish, //9
 		isN && !alrAuto && !flagFinish, //10
 		alarm || supply, //11
-		// Комби-холод И нет достижения температуры задания
-		isCC && !ccFlagFinish, //12
 	]
 }
 

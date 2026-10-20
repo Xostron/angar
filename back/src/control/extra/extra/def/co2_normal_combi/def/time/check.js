@@ -6,9 +6,10 @@ const dict = {
 	0: 'влажность улицы не подходит',
 	1: 'температура продукта не подходит по точке росы',
 	2: 'температура улицы не подходит',
-	3: 'нет показаний датчиков (точка росы, темп. продукта, влажность улицы, темп. улицы)',
+	3: 'нет показаний датчиков (точка росы, темп. продукта, влажность улицы, , темп. улицы, CO2)',
 	4: 'нет показаний датчиков (точка росы, темп. продукта, влажность улицы, , темп. улицы, CO2)',
 	5: 'CO2 в норме',
+	6: 'склад работает в режиме комби-холодильника',
 }
 
 /**
@@ -53,14 +54,25 @@ function checkNow(bld, prepare, s, acc) {
 					false,
 					!validSe,
 					checkCO2(co2, s, acc),
+					// Комби-холод И нет достижения температуры задания
+					isCC && !ccFlagFinish, //12
 				]
-			: [isHout, point >= tprd - sPoint, tout <= s.co2.min, !validSe]
+			: [
+					isHout,
+					point >= tprd - sPoint,
+					tout <= s.co2.min,
+					!validSe,
+					false,
+					false,
+					isCC && !ccFlagFinish,
+				]
 	//
 	const error = reason
 		.map((el, i) => (el ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
 	//
+	console.log(123, error)
 	if (reason.some((el) => el)) {
 		// Запрет
 		wrExtra(bld._id, null, 'co2', msgB(bld, 86, `${error}`), 'check2')

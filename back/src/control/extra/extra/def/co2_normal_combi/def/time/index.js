@@ -22,6 +22,7 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 			'wait'
 		)
 		delExtra(bld._id, null, 'co2', 'work')
+		delExtra(bld._id, null, 'co2', 'check2')
 		return
 	}
 	// 2. Время ожидания прошло -> Проверка условий по датчикам
