@@ -16,6 +16,7 @@ function outputEq(equip, val) {
 		...fnSolenoid(cooler, binding, val),
 		...fnDevice(device, binding, val),
 	}
+	// console.log(r)
 	return r
 }
 

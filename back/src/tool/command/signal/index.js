@@ -109,7 +109,6 @@ function sigDfl(sig, val, equip, result) {
 	// Считанное значение
 	value = puIO(val, sig.module.id, sig.module.channel, isDO)
 	value = value === null ? value : !sig.reverse ? value : !value
-
 	// антидребезг
 	debDI(sig, value, equip, result)
 }

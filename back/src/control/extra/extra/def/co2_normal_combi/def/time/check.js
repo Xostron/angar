@@ -72,7 +72,6 @@ function checkNow(bld, prepare, s, acc) {
 		.filter((el) => el !== null)
 		.join('; ')
 	//
-	console.log(123, error)
 	if (reason.some((el) => el)) {
 		// Запрет
 		wrExtra(bld._id, null, 'co2', msgB(bld, 86, `${error}`), 'check2')
