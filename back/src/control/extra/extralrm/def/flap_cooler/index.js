@@ -18,10 +18,13 @@ const { delExtralrm, wrExtralrm } = require('@tool/message/extralrm')
 function fCoolerCrash(building, section, obj, s, se, m, automode, acc, data) {
 	// по оттайкам испарителей
 	for (const el of m.flapClrAll) {
+		// Состояние заслонки и его сигналов
+		// const flap = obj.value?.[el.owner.id]?.flap?.[el._id]
+		// console.log(22, flap)
 		// Рама сигнала
-		const h = getSig(el._id, obj, 'defrost')
+		const h = getSig(el._id, obj, 'crash')
 		// Значение сигнала
-		const v = getSignal(el._id, obj, 'defrost')
+		const v = getSignal(el._id, obj, 'crash')
 		// null - сигнал не найден/не существует
 		if (v === null) continue
 

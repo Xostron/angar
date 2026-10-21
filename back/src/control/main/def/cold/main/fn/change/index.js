@@ -62,7 +62,7 @@ function oneChangeCombi(bdata, bld, sl, f, h, add, fl, code, clr, obj) {
 	h !== null ? heating.forEach((el) => ctrlDO(el, idB, h ? 'on' : 'off')) : null
 
 	// Заслонки
-	ctrlFlap(idB, clr, flap, accAuto.cold, obj.retain, fl, isCС)
+	ctrlFlap(idB, clr, flap, accAuto.cold, obj, fl, isCС)
 
 	// Доп состояние слива воды
 	accAuto.cold[clr._id].state.add = add ? new Date() : false

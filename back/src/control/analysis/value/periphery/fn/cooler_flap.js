@@ -12,22 +12,24 @@ const { flapVlvSig } = require('./output_eq/fn')
 function stateFlap(flap, signal, result) {
 	const r = {}
 	const DO = result?.outputEq?.[flap._id]
-	// Обычная заслонка
-	if (!Object.hasOwn(DO, 'open')) {
-		// true - открыт, false - закрыт
-		r.state = DO
-		return r
-	}
-	// Заслонка клапан
-	// Сигналы управления
-	r.open = DO.open
-	r.close = DO.close
 	const signals = flapVlvSig(flap, signal)?.signals
 	// Авария двигателя
 	r.crash = result[signals?.crash?._id]
 	// Концевики
 	r.opn = result[signals?.opn?._id]
 	r.cls = result[signals?.cls?._id]
+
+	// Обычная заслонка
+	if (!Object.hasOwn(DO, 'open')) {
+		// true - открыт, false - закрыт
+		r.state = DO
+		if (r.crash) r.state = 'alr'
+		return r
+	}
+	// Заслонка клапан
+	// Сигналы управления
+	r.open = DO.open
+	r.close = DO.close
 
 	r.state = fnState(r)
 

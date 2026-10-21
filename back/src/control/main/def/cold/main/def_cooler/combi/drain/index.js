@@ -3,14 +3,14 @@ const check = require('../../../check')
 const { ctrlFlap } = require('../../../fn/change')
 
 // Слив конденсата
-function drain(fnChange, accCold, acc, se, s, bld, clr) {
+function drain(fnChange, accCold, acc, se, s, bld, clr, obj) {
 	if (!acc.state.drain) acc.state.drain = new Date()
 	delete acc?.state?.drainAll
 	onTime('drain', acc)
 	const time = compareTime(acc.state.drain, s.coolerCombi.water)
 	const tmp = se.cooler.tmpCooler <= s?.coolerCombi?.defrostOn
 	// console.log(7771, 'drain', time, tmp)
-	ctrlFlap(bld._id, clr, clr.flap, accCold, {})
+	ctrlFlap(bld._id, clr, clr.flap, accCold, obj)
 	// Время не прошло
 	if (!time) return
 	// Время прошло -> выключаем слив воды

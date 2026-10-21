@@ -63,6 +63,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				s,
 				bld,
 				clr,
+				obj
 			)
 	}
 	// Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО

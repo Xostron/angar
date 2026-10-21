@@ -4,6 +4,7 @@ const { getIdB } = require('@tool/get/building')
 const { data: store } = require('@store')
 const { out, ao, outV, fn } = require('./index')
 const { hasOutput } = require('@tool/get/module')
+const { flapVlvSig } = require('@root/control/analysis/value/periphery/fn/output_eq/fn')
 
 // Блокировки разгонных вентиляторов (обычный склад и холодильник)
 function fanAccel(obj, s) {
@@ -37,7 +38,7 @@ function fanAccel(obj, s) {
 	}
 }
 
-// Блокировки всех обогревов и оттаек
+// Блокировки всех обогревов и оттаек, заслонок
 function heating(obj) {
 	const { value, data, retain, output } = obj
 	for (const el of data.heating) {
@@ -53,8 +54,36 @@ function heating(obj) {
 		const alrStop = isExtralrm(idB, null, 'alarm')
 		// Кнопка выключения склада
 		const bldOff = isExtralrm(idB, null, 'bldOff')
-		out(obj, output, el, local, alrStop, bldOff)
+		const lockFlap = forFlap(el, obj)
+		// console.log(22, el, lockFlap)
+		// Блокировка сиогнала и блокировка сигнала открытия заслонки-клапана
+		out(obj, output, el, local, alrStop, bldOff, lockFlap?.lock?.crash, lockFlap?.lock?.opn)
+		// Блокировка сигнала закрытия заслонки клапана
+		if (lockFlap?.close)
+			out(
+				obj,
+				output,
+				lockFlap?.close,
+				local,
+				alrStop,
+				bldOff,
+				lockFlap?.lock?.crash,
+				lockFlap?.lock?.cls,
+			)
 	}
+}
+
+function forFlap(el, obj) {
+	// Пропускаем если не заслонка
+	if (el.type != 'flap') return {}
+	// Поиск сигналов заслонки
+	const sigFlap = flapVlvSig(el, obj?.data?.signal)
+	// Обычная заслонка
+	if (!sigFlap?.hasClose) return {}
+	// Заслонка-клапан
+	const vFlap = obj?.value?.[el?.owner?.id]?.flap?.[el._id]
+	// console.log(11, sigFlap)
+	return { close: sigFlap?.signals?.close, lock: { crash: vFlap.crash, opn: vFlap.opn, cls: vFlap.cls } }
 }
 
 // Блокировка устройств (СО2, увлажнитель, озонатор)
