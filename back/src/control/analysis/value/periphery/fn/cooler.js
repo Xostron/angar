@@ -3,6 +3,7 @@ const { getIdByClr, getB, getBS } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')
 const { isExtra } = require('@tool/message/extra')
 const coolerDef = require('@dict/def/cooler')
+const stateFlap = require('./cooler_flap')
 // Испаритель
 function cooler(equip, val, retain, result) {
 	const { building, cooler, sensor, fan, heating, binding, section, signal, aggregate } = equip
@@ -18,7 +19,9 @@ function cooler(equip, val, retain, result) {
 		// Массив модулей ПЛК испарителя
 		const arrM = new Set()
 		// Состояния периферии испарителя
+
 		result[clr._id] ??= {}
+		result[clr._id]._id = clr._id
 		result[clr._id].aggregate ??= {}
 		result[clr._id].solenoid ??= {}
 		result[clr._id].fan ??= {}
@@ -71,13 +74,9 @@ function cooler(equip, val, retain, result) {
 		if (
 			lenErrFan === Object.keys(result[clr._id].fan ?? {}).length - 1 ||
 			lenErrFan > countErrFan
-		)
+		) {
 			result[clr._id].fan.state = 'alarm'
-		// console.log(33,
-		// 	result[clr._id].fan,
-		// 	lenErrFan === Object.keys(result[clr._id].fan ?? {}).length,
-		// 	lenErrFan > countErrFan,
-		// )
+		}
 
 		// 4. Оттайка испарителя
 		const arrH = heating.filter((el) => el.owner.id === clr._id && el.type == 'cooler')
@@ -101,10 +100,14 @@ function cooler(equip, val, retain, result) {
 		const arrFl = heating.filter((el) => el.owner.id === clr._id && el.type == 'flap')
 		arrFl.forEach((el) => {
 			arrM.add(el?.module?.id)
-			result[clr._id].flap[el._id] = result?.outputEq?.[el._id]
+			result[clr._id].flap[el._id] = stateFlap(el, signal, result)
 		})
 		// Агрегированное состояние true - работа, false - стоп
-		result[clr._id].flap.state = arrFl.some((el) => result[clr._id].flap[el._id])
+		result[clr._id].flap.state = arrFl.some(
+			(el) =>
+				result[clr._id].flap[el._id].state == 'opn' ||
+				result[clr._id].flap[el._id].state === true,
+		)
 
 		// 7. Датчики испарителя (температура всасывания, давления всасывания/нагентания, ток ВНО)
 		const arrSen = [...getAi(arrF, binding), ...sensor.filter((el) => el.owner.id === clr._id)]
@@ -126,14 +129,16 @@ function cooler(equip, val, retain, result) {
 
 		// Кол-во запущенных ступеней (соленоидов охлаждения)
 		const arr = Object.values(result[clr._id].solenoid)
-		if (arr.length < 2) return
-		const level = arr.reduce((acc, el, i) => {
-			if (el) acc++
-			return acc
-		}, 0)
+		if (arr.length >= 2) {
+			const level = arr.reduce((acc, el, i) => {
+				if (el) acc++
+				return acc
+			}, 0)
 
-		result[clr._id].level = `${level} (${arr.length})`
+			result[clr._id].level = `${level} (${arr.length})`
+		}
 	})
+	// console.log(11, result['69f9e823c35ea05200898d42'].flap)
 }
 module.exports = cooler
 

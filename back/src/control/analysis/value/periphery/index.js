@@ -1,4 +1,4 @@
-const outputEq = require('./fn/output_eq')
+const outputEq = require('./fn/output_eq/output_eq')
 const outputM = require('./fn/output_m')
 const sensor = require('./fn/sensor')
 const signal = require('./fn/signal')
@@ -22,12 +22,12 @@ function periphery(v, obj) {
 	r.outputM = outputM(equip, v)
 	// Исполнительные механизмы: значение выхода
 	r.outputEq = outputEq(equip, v)
-	// Анализ датчиков
-	sensor(equip, v, retain, r)
 	// Значения сигналов и состояние ИМ
 	signal(equip, v, retain, r)
-
+	
 	// *************Состояния оборудования*************
+	// Анализ датчиков
+	sensor(equip, v, retain, r)
 	// Состояния клапанов
 	valve(equip, v, retain, r)
 	// Состояние вентиляторов (предварительное)
