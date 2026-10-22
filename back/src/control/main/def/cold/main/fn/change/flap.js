@@ -15,30 +15,50 @@ function ctrlFlap(idB, clr, flap = [], accCold, obj, fl = false, isCC = true) {
 	// TODO old: Заслонка оттайки (открывается при оттайке и сливе воды)
 	// const flapOn = isCombiCold(bld,automode,s) && (accAuto.cold.defrostAll || accAuto.cold.defrostAllFinish || accAuto.cold.drainAll)
 
-	// TODO new:Открыть заслонку - tue
+	// TODO new:Закрыть заслонку - true
 	// - при оттайке
 	// - по флагу высокого давления (см. src\control\main\def\cold\main\fn\denied\def\pressure\action.js)
 	// - внешний доп сигнал
 	// - выведен из работы испаритель
-	const flapOn =
+	const flapClose =
 		(isCC && accCold?.defrostAll) ||
 		accCold?.[clr._id]?.offPressure ||
 		fl ||
 		fansOff(idB, clr, obj.retain)
+
+	console.log(
+		2211,
+		clr.name,
+		isCC && accCold?.defrostAll,
+		accCold?.[clr._id]?.offPressure,
+		fl,
+		fansOff(idB, clr, obj.retain),
+	)
 	flap.forEach((el) => {
-		if (flapOn) {
-			// Открыть заслонку
-			ctrlDO(el, idB, 'on')
-			return
-		}
-		// Поиск сигнала закрытия заслонки
+		// Тип заслонки: hasOpen=true заслонка-клапан
 		const flapSig = flapVlvSig(el, obj?.data?.signal)
-		// console.log(11, flapSig?.signals?.close)
-		// Закрыть заслонку
-		if (!flapSig.hasClose) ctrlDO(el, idB, 'off')
-		else {
-			// Сигнал закрытия существует - закрываем
-			ctrlDO(flapSig?.signals?.close, idB, 'on')
+
+		if (flapSig.hasOpen) {
+			// Заслонка клапан
+			if (flapClose) {
+				// Закрыть
+				ctrlDO(el, idB, 'on')
+				ctrlDO(flapSig?.signals?.open, idB, 'off')
+			} else {
+				// Открыть
+				ctrlDO(flapSig?.signals?.open, idB, 'on')
+				ctrlDO(el, idB, 'off')
+			}
+		} else {
+			// Заслонка обычная
+			if (flapClose) {
+				// Закрыть
+				ctrlDO(el, idB, 'on')
+			} else {
+				// Открыть
+
+				ctrlDO(el, idB, 'off')
+			}
 		}
 	})
 }

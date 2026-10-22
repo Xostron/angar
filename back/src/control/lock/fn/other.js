@@ -55,21 +55,33 @@ function heating(obj) {
 		// Кнопка выключения склада
 		const bldOff = isExtralrm(idB, null, 'bldOff')
 		const lockFlap = forFlap(el, obj)
-		// console.log(22, el, lockFlap)
+		// if (el.type == 'flap')
+		// 	console.log(55, el, local, alrStop, bldOff, lockFlap?.lock?.crash, lockFlap?.lock?.opn)
 		// Блокировка сиогнала и блокировка сигнала открытия заслонки-клапана
-		out(obj, output, el, local, alrStop, bldOff, lockFlap?.lock?.crash, lockFlap?.lock?.opn)
+		out(
+			obj,
+			output,
+			el,
+			local,
+			alrStop,
+			bldOff,
+			lockFlap?.lock?.crash,
+			lockFlap?.lock?.cls,
+		)
 		// Блокировка сигнала закрытия заслонки клапана
-		if (lockFlap?.close)
+		if (lockFlap?.open) {
+			// console.log(66, lockFlap?.open, local, alrStop, bldOff, lockFlap?.lock?.crash, lockFlap?.lock?.opn)
 			out(
 				obj,
 				output,
-				lockFlap?.close,
+				lockFlap?.open,
 				local,
 				alrStop,
 				bldOff,
 				lockFlap?.lock?.crash,
-				lockFlap?.lock?.cls,
+				lockFlap?.lock?.opn,
 			)
+		}
 	}
 }
 
@@ -79,11 +91,14 @@ function forFlap(el, obj) {
 	// Поиск сигналов заслонки
 	const sigFlap = flapVlvSig(el, obj?.data?.signal)
 	// Обычная заслонка
-	if (!sigFlap?.hasClose) return {}
+	if (!sigFlap?.hasOpen) return {}
 	// Заслонка-клапан
 	const vFlap = obj?.value?.[el?.owner?.id]?.flap?.[el._id]
 	// console.log(11, sigFlap)
-	return { close: sigFlap?.signals?.close, lock: { crash: vFlap.crash, opn: vFlap.opn, cls: vFlap.cls } }
+	return {
+		open: sigFlap?.signals?.open,
+		lock: { crash: vFlap.crash, opn: vFlap.opn, cls: vFlap.cls },
+	}
 }
 
 // Блокировка устройств (СО2, увлажнитель, озонатор)

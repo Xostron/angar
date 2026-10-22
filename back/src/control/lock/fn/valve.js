@@ -2,8 +2,7 @@ const { isExtralrm } = require('@tool/message/extralrm')
 const { isLongVlv } = require('@tool/command/valve')
 const { getIdsS } = require('@tool/get/building')
 const { getIdB } = require('@tool/get/building')
-const { data: store } = require('@store')
-const { out, ao, outV, fn } = require('./index')
+const {  outV } = require('./index')
 
 // Блокировки задвижки (клапана)
 function vlv(obj) {

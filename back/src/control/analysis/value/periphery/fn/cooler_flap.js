@@ -21,7 +21,7 @@ function stateFlap(flap, signal, result) {
 
 	// Обычная заслонка
 	if (!Object.hasOwn(DO, 'open')) {
-		// true - открыт, false - закрыт
+		// true - закрыт, false - открыт
 		r.state = DO
 		if (r.crash) r.state = 'alr'
 		return r
@@ -49,11 +49,11 @@ function fnState(r) {
 }
 
 function totalFlap(arrFlap, idClr, result) {
-	// false - закрыта заслонка, true - открыта
+	// true - закрыта заслонка, false - открыта
 	return arrFlap.some(
 		(el) =>
-			result[idClr].flap[el._id].state == 'opn' || result[idClr].flap[el._id].state === true,
+			result[idClr].flap[el._id].state == 'cls' || result[idClr].flap[el._id].state === true,
 	)
 }
 
-module.exports = stateFlap
+module.exports = { stateFlap, totalFlap }

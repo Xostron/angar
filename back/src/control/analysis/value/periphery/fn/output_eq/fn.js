@@ -30,16 +30,16 @@ function eqDevice(device, binding, val) {
 function eqFlap(flap, signal, val) {
 	const r = {}
 	flap.forEach((el) => {
-		const { hasClose, signals } = flapVlvSig(el, signal)
+		const { hasOpen, signals } = flapVlvSig(el, signal)
 
-		if (hasClose === true) {
+		if (hasOpen === true) {
 			// Заслонка клапан
 			r[el._id] ??= {}
-			r[el._id].open = puIO(val, el?.module?.id, el?.module?.channel, true)
-			r[el._id].close = puIO(
+			r[el._id].close = puIO(val, el?.module?.id, el?.module?.channel, true)
+			r[el._id].open = puIO(
 				val,
-				signals?.close?.module?.id,
-				signals?.close?.module?.channel,
+				signals?.open?.module?.id,
+				signals?.open?.module?.channel,
 				true,
 			)
 		} else {
@@ -47,6 +47,7 @@ function eqFlap(flap, signal, val) {
 			r[el._id] = puIO(val, el?.module?.id, el?.module?.channel, true)
 		}
 	})
+	console.log(44, r)
 	return r
 }
 
@@ -70,9 +71,9 @@ function flapVlvSig(el, signal) {
 		}, {})
 	// Для заслонки клапана (наличие сигнала управления закрыть)
 	// возвращаем все его сигналы
-	if (signals.close) return { hasClose: true, signals }
+	if (signals.open) return { hasOpen: true, signals }
 	// Для обычной заслонки (один сигнал управления  открыть)
-	return { hasClose: false, signals }
+	return { hasOpen: false, signals }
 }
 
 module.exports = { eqSolenoid, eqDevice, flapVlvSig, eqFlap }

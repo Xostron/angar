@@ -3,7 +3,7 @@ const { getIdByClr, getB, getBS } = require('@tool/get/building')
 const { isErrM } = require('@tool/message/plc_module')
 const { isExtra } = require('@tool/message/extra')
 const coolerDef = require('@dict/def/cooler')
-const stateFlap = require('./cooler_flap')
+const { stateFlap, totalFlap } = require('./cooler_flap')
 // Испаритель
 function cooler(equip, val, retain, result) {
 	const { building, cooler, sensor, fan, heating, binding, section, signal, aggregate } = equip
@@ -103,11 +103,7 @@ function cooler(equip, val, retain, result) {
 			result[clr._id].flap[el._id] = stateFlap(el, signal, result)
 		})
 		// Агрегированное состояние true - работа, false - стоп
-		result[clr._id].flap.state = arrFl.some(
-			(el) =>
-				result[clr._id].flap[el._id].state == 'opn' ||
-				result[clr._id].flap[el._id].state === true,
-		)
+		result[clr._id].flap.state = totalFlap(arrFl, clr._id, result)
 
 		// 7. Датчики испарителя (температура всасывания, давления всасывания/нагентания, ток ВНО)
 		const arrSen = [...getAi(arrF, binding), ...sensor.filter((el) => el.owner.id === clr._id)]
@@ -138,7 +134,11 @@ function cooler(equip, val, retain, result) {
 			result[clr._id].level = `${level} (${arr.length})`
 		}
 	})
-	console.log(11, result['69f9e823c35ea05200898d42'].flap)
+	console.log(
+		11,
+		result['69f9e823c35ea05200898d42'].flap,
+		result['69f9e823c35ea05200898d42'].state,
+	)
 }
 module.exports = cooler
 

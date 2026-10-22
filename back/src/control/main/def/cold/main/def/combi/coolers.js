@@ -54,7 +54,8 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				bld,
 			) &&
 			cooler.combi?.[stateCooler?.state]
-		)
+		) {
+			// console.log(88, stateCooler?.state)
 			cooler.combi?.[stateCooler?.state](
 				fnChange,
 				accAuto.cold,
@@ -63,8 +64,9 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 				s,
 				bld,
 				clr,
-				obj
+				obj,
 			)
+		}
 	}
 	// Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
 	// Есть ли аварии авторежим (да - разрешение работы холодильника, нет - запрет)
