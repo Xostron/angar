@@ -5,7 +5,12 @@ const { init } = require('@tool/init')
 async function loopInit() {
 	// while (true) {
 	const randomNumber = Math.floor(Math.random() * 30001)
-	console.log(123, randomNumber)
+	console.log(
+		'\x1b[31m%s\x1b[0m',
+		'Сервер был перезагружен, запрос рамы через',
+		randomNumber / 1000,
+		'сек',
+	)
 	await delay(randomNumber)
 	// await delay(process.env?.PERIOD ?? 420001)
 	init()

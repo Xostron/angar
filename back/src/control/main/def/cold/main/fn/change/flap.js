@@ -26,14 +26,14 @@ function ctrlFlap(idB, clr, flap = [], accCold, obj, fl = false, isCC = true) {
 		fl ||
 		fansOff(idB, clr, obj.retain)
 
-	console.log(
-		2211,
-		clr.name,
-		isCC && accCold?.defrostAll,
-		accCold?.[clr._id]?.offPressure,
-		fl,
-		fansOff(idB, clr, obj.retain),
-	)
+	// console.log(
+	// 	2211,
+	// 	clr.name,
+	// 	isCC && accCold?.defrostAll,
+	// 	accCold?.[clr._id]?.offPressure,
+	// 	fl,
+	// 	fansOff(idB, clr, obj.retain),
+	// )
 	flap.forEach((el) => {
 		// Тип заслонки: hasOpen=true заслонка-клапан
 		const flapSig = flapVlvSig(el, obj?.data?.signal)

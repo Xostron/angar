@@ -47,7 +47,7 @@ function eqFlap(flap, signal, val) {
 			r[el._id] = puIO(val, el?.module?.id, el?.module?.channel, true)
 		}
 	})
-	console.log(44, r)
+	// console.log(44, r)
 	return r
 }
 
