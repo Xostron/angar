@@ -13,8 +13,8 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	const offset = new Date().getTimezoneOffset();
-	console.log('timezone', timezone);
-	console.log('offset', offset);
+	// console.log('timezone', timezone);
+	// console.log('offset', offset);
 
 	// Добавляем кастомные заголовки
 	config.headers['X-Client-Timezone'] = timezone;
