@@ -11,19 +11,20 @@ const { getDef } = require('@tool/retain/setting')
  * @param {*} doc данные по датчику
  */
 function debounce(idB, idSens, v, hold, retain, doc) {
+	// console.log(11, hold?.raw, v, idSens)
 	// С датчиком все ОК:
 	// 1. значение датчика в аккумуляторе hold отсутсвует,
 	if (!hold) {
 		// Очищаем время слежения за датчиком
 		store.debounce[idSens] = {}
-		if (idSens == '69f9dd09c35ea05200898d00') console.log(11, hold?.raw, v?.raw)
+		// if (idSens == '69f9dd09c35ea05200898d03') console.log(11, hold?.raw, v)
 		return v
 	}
 	// 2. Состояние датчика не аварийное
-	if (v.state !== 'alarm' && v.raw !== 0) {
+	if (v.state !== 'alarm' && v.raw !== 0 && v.raw !== null) {
 		// Очищаем время слежения за датчиком
 		store.debounce[idSens] = {}
-		if (idSens == '69f9dd09c35ea05200898d00') console.log(111, hold?.raw, v?.raw)
+		// if (idSens == '69f9dd09c35ea05200898d03') console.log(111, hold?.raw, v?.raw)
 		return v
 	}
 	// 3.
@@ -58,16 +59,16 @@ function debounce(idB, idSens, v, hold, retain, doc) {
 	if (now >= debounce.end) {
 		delete debounce.end
 		// Да - объявляем датчик в аварию
-		if (v.raw !== 0) {
-			v.raw = null
-			v.value = null
-			v.state = 'alarm'
-		}
-		if (idSens == '69f9dd09c35ea05200898d00') console.log(44, hold?.raw, v?.raw)
+		// if (v.raw !== 0) {
+		// v.raw = null
+		// v.value = null
+		// v.state = 'alarm'
+		// }
+		// if (idSens == '69f9dd09c35ea05200898d03') console.log(44, hold?.raw, v?.raw)
 		return v
 	}
 	// Нет - выдаем старое значение датчика
-	if (idSens == '69f9dd09c35ea05200898d00') console.log(22, hold?.raw, v?.raw)
+	// if (idSens == '69f9dd09c35ea05200898d03') console.log(22, hold?.raw, v)
 	return hold
 }
 

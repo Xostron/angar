@@ -47,7 +47,7 @@ function vSensor(equip, val, retain, result) {
 		webSensAlarm(result[s._id], owner?.building, owner?.section, s)
 		// Обновляем прошлое значение
 		store.holdSensor[s._id] = result?.[s._id]
-		if (s._id == '69f9dd09c35ea05200898d00') console.log(33, store.holdSensor[s._id])
+		// if (s._id == '69f9dd09c35ea05200898d03') console.log(33, store.holdSensor[s._id])
 	}
 	// Добавление прогноза погоды на экран настроек датчиков
 	for (const bld of building) {
