@@ -60,8 +60,8 @@ function statOnChange(obj, history) {
 async function statOnTime() {
 	while (true) {
 		// Ждем 10 мин
-		// await delay(store.tStat);
-		await delay(6 * 1000)
+		await delay(store.tStat);
+		// await delay(6 * 1000)
 
 		// Читаем раму
 		const data = await readTO(['building', 'section', 'sensor', 'cooler', 'binding', 'fan'])

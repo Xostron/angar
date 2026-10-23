@@ -17,7 +17,6 @@ export default function Sensor({ data, cls, type = 'normal', withImg = false }) 
 	if (sect) wetting = input?.total?.[sect]?.device?.wetting
 	let ozon = ''
 	if (sect) ozon = input?.total?.[sect]?.device?.ozon
-
 	// Датчик / Датчик + разгонный
 	const row = useCallback(
 		(el, i) => {
@@ -33,12 +32,12 @@ export default function Sensor({ data, cls, type = 'normal', withImg = false }) 
 					cmp = wetting === 'run' ? <Fan className={mb} img={img} state={''} /> : false
 				}
 			}
-			if (el.type === 'calcMois' || el.type=='co2') {
+			if (el.type === 'calcMois' || el.type == 'co2') {
 				if (sect) {
 					const img = '/img/ozon.svg'
 					cmp = ozon === 'run' ? <Fan className={mb} img={img} state={''} /> : false
 				}
-			}
+			}		
 			return (
 				<div key={i}>
 					<Item data={el} />

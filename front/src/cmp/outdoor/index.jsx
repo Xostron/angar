@@ -9,7 +9,6 @@ import { checkS } from '@tool/sensor'
 
 //Параметры улицы(погода, датчики)
 export default function Outdoor() {
-
 	const mb = useViewStore((s) => s.mb())
 	const build = useEquipStore((s) => s.build())
 	const section = useEquipStore((s) => s.section())
@@ -26,12 +25,17 @@ export default function Outdoor() {
 		// Влажность продукта (макс)
 		{ type: 'hin', ...getTotalBy('hin', 'max', build?._id) },
 	]
+
 	// Холодильник. датчик со2
-	if (type === 'cold') sens.push({ type: 'co2', ...getTotalBy('co2', 'min', section?._id) })
-	// Абс влажность продукта
-	else sens.push({ type: 'calcMois', value: humAbs?.in?.[build?._id] })
+	if (type === 'cold')
+		section?.co2
+			? sens.push({ type: 'co2', ...getTotalBy('co2', 'min', section?._id) })
+			: sens.push({})
+			// Обычный склад/Комби: Абс влажность продукта
+	else if (type != 'cold') sens.push({ type: 'calcMois', value: humAbs?.in?.[build?._id] })
 	const cls = ['cmp-outdoor', mb].join(' ')
-	const clsSensor = ['cmp-outdoor-sensor', mb].join(' ')
+	// const clsSensor = ['cmp-outdoor-sensor', mb].join(' ')
+
 	return (
 		<section className={cls}>
 			<Weather />

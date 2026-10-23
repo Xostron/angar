@@ -10,7 +10,7 @@ const api = axios.create({
 });
 
 // Добавляем интерцептор, который сработает перед каждым запросом
-axios.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	const offset = new Date().getTimezoneOffset();
 	console.log('timezone', timezone);

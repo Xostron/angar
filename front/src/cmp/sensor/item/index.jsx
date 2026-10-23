@@ -17,7 +17,7 @@ export default function Item({ data = {} }) {
 		t = type
 	} else t = 'calcMois'
 
-	let cls = ['cmp-sensor-item',mb]
+	let cls = ['cmp-sensor-item', mb]
 	const unit = defUn?.[t]
 	const imgS = defImg?.[t]?.['on']
 	if (!imgS) cls.push('center')
@@ -25,7 +25,10 @@ export default function Item({ data = {} }) {
 	if (state === 'alarm') cls.push('error')
 	if (state === 'off') cls.push('off')
 	cls = cls.join(' ')
-
+	
+	// Рисуем пустое поле
+	if (!type) return <div className={cls} style={{ height: '50px', opacity: 0 }}></div>
+	
 	return (
 		<div className={cls}>
 			{imgS && <img src={imgS} alt='' />}
