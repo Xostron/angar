@@ -62,8 +62,9 @@ function msgBS(building, section, sensor, code) {
 function msgM(buildingId, mdl, code) {
 	const o = { ...mes[code] }
 	o.order = code
+	const slave = mdl?.slave === undefined ? '':` №${mdl?.slave}`
 	if (mdl.interface == 'tcp')
-		o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}):`
+		o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}${slave}):`
 	else o.title = `Модуль ${mdl.name} (${mdl.ip ?? ''}-${mdl.port ?? ''}):`
 	o.buildingId = buildingId
 	o.uid = uuidv4()

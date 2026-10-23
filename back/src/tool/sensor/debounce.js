@@ -11,43 +11,63 @@ const { getDef } = require('@tool/retain/setting')
  * @param {*} doc данные по датчику
  */
 function debounce(idB, idSens, v, hold, retain, doc) {
+	// С датчиком все ОК:
 	// 1. значение датчика в аккумуляторе hold отсутсвует,
-	// 2. Состояние датчика не аварийное
-	// Очищаем время слежения за датчиком и обновляем аккумулятор hold:
-	if (!hold || v.state !== 'alarm') {
+	if (!hold) {
+		// Очищаем время слежения за датчиком
 		store.debounce[idSens] = {}
-		if ((v.raw === null || v.raw === undefined) && !hold) {
-			// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'null && !hold')
-			return v
-		}
-		// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'null', v)
-		return v.raw === null || v.raw === undefined ? hold : v
+		if (idSens == '69f9dd09c35ea05200898d00') console.log(11, hold?.raw, v?.raw)
+		return v
+	}
+	// 2. Состояние датчика не аварийное
+	if (v.state !== 'alarm' && v.raw !== 0) {
+		// Очищаем время слежения за датчиком
+		store.debounce[idSens] = {}
+		if (idSens == '69f9dd09c35ea05200898d00') console.log(111, hold?.raw, v?.raw)
+		return v
+	}
+	// 3.
+	if (v.raw === 0 && hold.raw === null) {
+		// Очищаем время слежения за датчиком
+		store.debounce[idSens] = {}
+		return v
 	}
 
-	// Антидребезг (подсовываем значение из аккумулятора в течении времени антидребезга,
-	// по истечению времени - устанавливаем датчик в аварию)
-	const curr = +new Date().getTime()
+	// С датчиком что-то не так:
+	// 1. Если v.raw===0 =>
+	// => засекаем антидребезг, в течении этого времени выдаем прошлое значение hold
+	// => по окночанию антидребезга выдаем реальное значение датчика
+
+	// 2. Если датчик в аварии
+	// => засекаем антидребезг, в течении этого времени выдаем прошлое значение hold
+	// => по окночанию антидребезга выдаем аварию датчика
 	store.debounce[idSens] ??= {}
+	// Текущее время
+	const now = +new Date().getTime()
+	// Аккумулятор антидребезга
 	const debounce = store.debounce[idSens]
-	// Определяем промежуток времени
+
+	// Инициализируем конец антидребезга
 	if (!debounce.end) {
 		// Из системных настроек (по-умолчанию 15мин = 900000мс)
 		const tDebounce = getDef(idB, retain, 'sys', 'debounce') ?? store.tDebounce
-		debounce.start = +new Date().getTime()
 		debounce.end = +new Date().getTime() + tDebounce
 	}
-	// Время истекло (значение датчика так и осталось = 0)- выдаем аварию датчика
-	if (curr >= debounce.end) {
+
+	// Проверка  время антидребезга истекло?
+	if (now >= debounce.end) {
 		delete debounce.end
-		delete debounce.start
-		v.raw = null
-		v.value = null
-		v.state = 'alarm'
-		// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'v')
+		// Да - объявляем датчик в аварию
+		if (v.raw !== 0) {
+			v.raw = null
+			v.value = null
+			v.state = 'alarm'
+		}
+		if (idSens == '69f9dd09c35ea05200898d00') console.log(44, hold?.raw, v?.raw)
 		return v
 	}
-	// Время не истекло - возврат старого значения
-	// if (idSens == '69f9dd09c35ea05200898d00') console.log(22, 'hold', v)
+	// Нет - выдаем старое значение датчика
+	if (idSens == '69f9dd09c35ea05200898d00') console.log(22, hold?.raw, v?.raw)
 	return hold
 }
 
