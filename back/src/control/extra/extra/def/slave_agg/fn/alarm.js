@@ -18,19 +18,20 @@ function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 	beep.forEach((el) => {
 		if (['oil', 'run'].includes(el.code)) return
 		const be = state[el.code]?.value
-		// console.log(11, el.code, be)
 		// Сброс аварийных сообщений от предупреждающих beep
 		// Условие сброса аварии высокого давления, если пропал сигнал
-		const pressure = !be && el.code==='pressure'
-		if (!el.alarm && !be || pressure) {
+		const pressure = !be && el.code === 'pressure'
+		if ((!el.alarm && !be) || pressure) {
 			delExtralrm(agg.buildingId, owner, el.code)
 			acc[owner][el.code] = false
 		}
+		console.log(11, el?.code, el?.name)
 		// Установить аварию
 		if (be && !acc?.[owner]?.[el.code]) {
 			const name = el.alarm
 				? `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 				: `Предупреждение: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
+			console.log(111, el?.code, el?.name)
 			wrExtralrm(agg.buildingId, owner, el?.code, msgBeep({ _id: agg.buildingId }, el, name))
 		}
 		acc[owner][el.code] = isExtralrm(agg.buildingId, owner, el.code)

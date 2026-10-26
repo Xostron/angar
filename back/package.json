@@ -1,6 +1,6 @@
 {
 	"name": "angar",
-	"version": "6.5.13",
+	"version": "6.5.14",
 	"private": true,
 	"_moduleAliases": {
 		"@dict": "src/dict",
