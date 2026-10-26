@@ -100,6 +100,17 @@ function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {
 	const open = se.tcnl > s.drying.channelMin + s.drying.hysteresisIn
 	const close = se.tcnl < s.drying.channelMin - s.drying.hysteresisIn
 	const forceOpn = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout
+	console.log(11, 'open', open, se.tcnl, s.drying.channelMin + s.drying.hysteresisIn)
+	console.log(22, 'close', close, se.tcnl, s.drying.channelMin - s.drying.hysteresisIn)
+	console.log(
+		33,
+		'forceOpn',
+		forceOpn,
+		s.drying.channelMin,
+		se.tout,
+		s.drying.channelMax,
+		se.tout,
+	)
 	// console.log('\tКлапаны сушка', 'open', open, 'close', close, 'forceOpn', forceOpn)
 	return { open, close, forceOpn, forceCls: false, sp: null }
 }
@@ -108,6 +119,7 @@ function fan(s, se, alr, idS, acc) {
 	const forceByTout = s.drying.channelMin < se.tout && s.drying.channelMax > se.tout && !alr
 	const force = forceByTout
 	const start = !alr || force
+	console.log(55, start)
 	return { start }
 }
 module.exports = data
