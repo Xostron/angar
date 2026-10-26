@@ -25,13 +25,13 @@ function fnAlarm(agg, owner, cmpr, beep, state, acc) {
 			delExtralrm(agg.buildingId, owner, el.code)
 			acc[owner][el.code] = false
 		}
-		console.log(11, el?.code, el?.name)
+		// console.log(11, el?.code, el?.name)
 		// Установить аварию
 		if (be && !acc?.[owner]?.[el.code]) {
 			const name = el.alarm
 				? `Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
 				: `Предупреждение: Агрегат №${agg?.order}. Компрессор №${cmpr?.order}`
-			console.log(111, el?.code, el?.name)
+			// console.log(111, el?.code, el?.name)
 			wrExtralrm(agg.buildingId, owner, el?.code, msgBeep({ _id: agg.buildingId }, el, name))
 		}
 		acc[owner][el.code] = isExtralrm(agg.buildingId, owner, el.code)

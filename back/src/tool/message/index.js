@@ -1,6 +1,6 @@
 const mes = require('@dict/message')
 const { v4: uuidv4 } = require('uuid')
-
+// order - для нового дизайна (словарь иконок)
 // Сообщение для журнала событий
 
 // Секции
@@ -62,7 +62,7 @@ function msgBS(building, section, sensor, code) {
 function msgM(buildingId, mdl, code) {
 	const o = { ...mes[code] }
 	o.order = code
-	const slave = mdl?.slave === undefined ? '':` №${mdl?.slave}`
+	const slave = mdl?.slave === undefined ? '' : ` №${mdl?.slave}`
 	if (mdl.interface == 'tcp')
 		o.title = `Модуль ${mdl.name} (IP ${mdl.ip ?? ''}:${mdl.port ?? ''}${slave}):`
 	else o.title = `Модуль ${mdl.name} (${mdl.ip ?? ''}-${mdl.port ?? ''}):`
@@ -77,7 +77,7 @@ function msgM(buildingId, mdl, code) {
 function msgBeep(building, beep, name = '', alarm = true) {
 	// console.log(22, beep)
 	const o = { code: beep?.code, typeSignal: alarm ? 'critical' : 'info', msg: beep.name }
-	o.order = code
+	o.order = 0
 	o.title = name ? `${name}:` : ''
 	o.buildingId = building._id
 	o.uid = uuidv4()
