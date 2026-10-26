@@ -75,8 +75,9 @@ function msgM(buildingId, mdl, code) {
 
 // Аварийные сообщения beep
 function msgBeep(building, beep, name = '', alarm = true) {
+	// console.log(22, beep)
 	// const o = mes[code].find((el) => el.code === beep.code)
-	const o = { code: beep.code, typeSignal: alarm ? 'critical' : 'info', msg: beep.name }
+	const o = { code: beep?.code, typeSignal: alarm ? 'critical' : 'info', msg: beep.name }
 	o.order = code
 	o.title = name ? `${name}:` : ''
 	o.buildingId = building._id
