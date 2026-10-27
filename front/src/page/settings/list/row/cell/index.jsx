@@ -8,6 +8,7 @@ import useInputStore from '@store/input'
 import useOutputStore from '@store/output'
 import { useParams } from 'react-router-dom'
 import BtnHid from './btn_hid'
+import More from '@src/cmp/fields/more'
 
 //Ячейка таблицы настроек
 export default function Cell({ data, i, j }) {
@@ -17,41 +18,16 @@ export default function Cell({ data, i, j }) {
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
 
-	val[data.code] = useInputStore(({ input }) => {
-		if (!code) return null
-		if (
-			[
-				'antibliz',
-				'heating',
-				'overVlv',
-				'accel',
-				'idle',
-				'co2',
-				'ozon',
-				'heater',
-				'smoking',
-				'demo',
-				'heattcnl',
-			].includes(type)
-		) {
-			// Без продукта
-			if (code?.length === 1) return input?.retain?.[build]?.setting?.[type]?.[data.code]
-			if (code?.length === 2)
-				return input?.retain?.[build]?.setting?.[type]?.[code[0]]?.[code[1]]
-		} else {
-			// С продуктом
-			if (code?.length === 1)
-				return input?.retain?.[build]?.setting?.[type]?.[prd?.code]?.[data.code]
-			if (code?.length === 2)
-				return input?.retain?.[build]?.setting?.[type]?.[prd?.code]?.[code[0]]?.[code[1]]
-		}
-	})
+	// Значение настройки пользователя retain
+	val[data.code] = useInputStore((s) => s.getValueSetting(code, build, type, prd))
 	// Значение поля
 	const [value, setValue] = useState(val?.[data.code] ?? '')
+
 	useEffect(() => {
 		setValue(val?.[data.code] ?? data?.factory ?? '')
 	}, [type, prd])
 
+	// console.log(11, data, value)
 	// Подсветка - Изменение поля
 	let hasChanged
 	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
@@ -60,8 +36,8 @@ export default function Cell({ data, i, j }) {
 	if (hasChanged) cl.push('changed')
 	cl = cl.join(' ')
 	const st = { gridArea: `${1 + i}/${1 + j}/${2 + i}/${2 + j}` }
-	const field = data.field
-	switch (field) {
+	// console.log(11, value, data.code)
+	switch (data.field) {
 		case 'text':
 			return <Text cls='cell-w' data={data} style={st} />
 		case 'iconText':
@@ -124,6 +100,10 @@ export default function Cell({ data, i, j }) {
 					{data.value}
 				</div>
 			)
+
+		case 'more':
+			return <More data={{ ...data }} style={st} />
+
 		default:
 			return <Text cls='cell-w' data={data} style={st} />
 	}
@@ -137,3 +117,33 @@ function Title({ data, st, cl }) {
 		</div>
 	)
 }
+
+// val[data.code] = useInputStore(({ input }) => {
+// 	if (!code) return null
+// 	if (
+// 		[
+// 			'antibliz',
+// 			'heating',
+// 			'overVlv',
+// 			'accel',
+// 			'idle',
+// 			'co2',
+// 			'ozon',
+// 			'heater',
+// 			'smoking',
+// 			'demo',
+// 			'heattcnl',
+// 		].includes(type)
+// 	) {
+// 		// Без продукта
+// 		if (code?.length === 1) return input?.retain?.[build]?.setting?.[type]?.[code[0]]
+// 		if (code?.length === 2)
+// 			return input?.retain?.[build]?.setting?.[type]?.[code[0]]?.[code[1]]
+// 	} else {
+// 		// С продуктом
+// 		if (code?.length === 1)
+// 			return input?.retain?.[build]?.setting?.[type]?.[prd?.code]?.[code[0]]
+// 		if (code?.length === 2)
+// 			return input?.retain?.[build]?.setting?.[type]?.[prd?.code]?.[code[0]]?.[code[1]]
+// 	}
+// })

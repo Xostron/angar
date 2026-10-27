@@ -117,7 +117,7 @@ function fnHead(code, max) {
 	switch (code) {
 		// Настройка "Время работы" (таймеры запретов)
 		case 'idle':
-			return ['Начало', 'Конец']
+			return ['Начало', 'Конец','']
 
 		// По-умолчанию
 		default:

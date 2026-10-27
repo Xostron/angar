@@ -1,6 +1,8 @@
 // Ячейки строки
 export default function fnCell(code, result, mark, idB, setSettingAu) {
+// console.log(mark)
 	mark.list.forEach((ml) => {
+
 		const obj = { build: idB, type: code, name: mark._code + '.' + ml._code }
 		const setValue = (value) => setSettingAu({ value, ...obj })
 		switch (ml.type) {
@@ -58,6 +60,10 @@ export default function fnCell(code, result, mark, idB, setSettingAu) {
 				break
 			case 'txt':
 				result.push({ field: 'head', value: ml._name })
+				break
+			case 'more':
+				// console.log(22, mark, ml)
+				result.push({ field: 'more', value: ml._name, mark, obj, setSettingAu })
 				break
 			default:
 				break

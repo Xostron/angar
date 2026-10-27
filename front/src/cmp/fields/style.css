@@ -294,3 +294,9 @@ button,
 	/* margin-top: 7%; */
 	background-color: var(--background);
 }
+
+
+.more{
+	border: none;
+	color: white;
+}

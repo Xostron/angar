@@ -8,7 +8,6 @@ import Text from '@cmp/fields/text'
 //Выпадающий список
 export default function Popup({ data, style, title }) {
 	const { isAuth } = useAuthStore(({ isAuth }) => ({ isAuth }))
-	if (!data || !data.list?.length) return null
 	// data.value = 'Режим управления'
 	const [show, setShow] = useState(false)
 	const [val, setVal] = useState(data.value)
@@ -16,9 +15,10 @@ export default function Popup({ data, style, title }) {
 		setVal(data.value)
 	}, [data.value])
 
+	if (!data || !data.list?.length) return null
 	if (!isAuth) return <Text data={{ value: val }} title={title} />
 	return (
-		<span style={style} className='cell popup' onClick={(_) => setShow(!show)} title={title}>
+		<div style={style} className='cell popup' onClick={(_) => setShow(!show)} title={title}>
 			<button>
 				<img src={'/img/popup.svg'} id={'popup'} />
 			</button>
@@ -35,6 +35,6 @@ export default function Popup({ data, style, title }) {
 				}}
 				val={val}
 			/>
-		</span>
+		</div>
 	)
 }

@@ -10,10 +10,14 @@ function row(mark, code, idB, setSettingAu, showHid) {
 	let result = []
 	// 1 ячейка по-умолчанию
 	const cell = {
-		field: mark._type === 'txt' || mark._code.includes('text-collapse') ? 'title' : 'iconText',
+		field: 'iconText',
 		icon: mark._icon ? `/img/settings/${code}/${mark._icon}.svg` : '',
 		value: mark._name,
 	}
+
+	if (mark._type === 'txt') cell.field = 'title'
+
+	if (mark._code.includes('text-collapse')) cell.field = 'title'
 
 	if (mark._code.includes('info')) cell.field = 'info'
 
@@ -27,8 +31,16 @@ function row(mark, code, idB, setSettingAu, showHid) {
 	// if (!!show && show.includes(mark?._code)) mark.list.forEach((el) => (el._acv = true))
 
 	result.push(cell)
+	// console.log(11, mark)
 	// Форматируем остальные ячейки
 	fnCell(code, result, mark, idB, setSettingAu)
-
+// console.log(result)
 	return result
+}
+
+// Код ячейки, в зависимости от данного кода ячейке присваивается разный компонент
+const dictCode = {
+	1: 'info',
+	2: 'text-collapse',
+	3: 'more',
 }
