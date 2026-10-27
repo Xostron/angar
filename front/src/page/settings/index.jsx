@@ -95,7 +95,7 @@ export default function Settings({}) {
 	// ***************** Стили *****************
 	const sumStg = kindList.length + def.length
 	const { st, stl, sth, stn } = sty(data, sumStg)
-
+// console.log(data)
 	return (
 		<main className='sett' style={st}>
 			<SubHead title={data.title} head={data.head} st={sth} dataWarn={data.warn} />
