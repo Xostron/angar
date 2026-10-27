@@ -12,19 +12,20 @@ import More from '@src/cmp/fields/more'
 
 //Ячейка таблицы настроек
 export default function Cell({ data, i, j }) {
+	// console.log(data)
 	const { type, build } = useParams()
 	const { settingAu, prd, hid } = useOutputStore()
-	const val = {}
+	// const val = {}
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
 
 	// Значение настройки пользователя retain
-	val[data.code] = useInputStore((s) => s.getValueSetting(code, build, type, prd))
+	// val[data.code] = useInputStore((s) => s.getValueSetting(code, build, type, prd))
 	// Значение поля
-	const [value, setValue] = useState(val?.[data.code] ?? '')
-
+	const [value, setValue] = useState(data?.value)
+	// Заполнить поля заводскими, если нет пользовательских настроек
 	useEffect(() => {
-		setValue(val?.[data.code] ?? data?.factory ?? '')
+		setValue(data?.value ?? data?.factory ?? '')
 	}, [type, prd])
 
 	// console.log(11, data, value)

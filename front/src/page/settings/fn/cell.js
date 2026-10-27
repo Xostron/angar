@@ -1,21 +1,25 @@
 // Ячейки строки
-export default function fnCell(code, result, mark, idB, setSettingAu) {
-// console.log(mark)
+export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 	mark.list.forEach((ml) => {
-
+		// console.log(11, stgV)
 		const obj = { build: idB, type: code, name: mark._code + '.' + ml._code }
 		const setValue = (value) => setSettingAu({ value, ...obj })
+		// Пользовательская настройка
+		const _code = mark._code + '.' + ml._code
+		const value = stgV.getValueSetting(_code.split('.'), stgV.build, stgV.type, stgV.prd)
+		// console.log(111, value, _code.split('.'), stgV.build, stgV.type, stgV.prd)
 		switch (ml.type) {
 			case 'number':
 				// Редактируемое поле
 				result.push({
 					field: 'input',
-					code: mark._code + '.' + ml._code,
+					code: _code,
 					type: 'number',
 					step: 0.1,
 					min: ml.min,
 					max: ml.max,
 					_acv: ml._acv ?? false,
+					value,
 					setValue,
 					factory: ml.value ?? '',
 				})
@@ -29,7 +33,8 @@ export default function fnCell(code, result, mark, idB, setSettingAu) {
 				// Редактируемое поле
 				result.push({
 					field: 'switch',
-					code: mark._code + '.' + ml._code,
+					code: _code,
+					value,
 					setValue,
 					factory: ml.value ?? '',
 				})
@@ -40,8 +45,9 @@ export default function fnCell(code, result, mark, idB, setSettingAu) {
 			case 'time':
 				result.push({
 					field: 'input',
-					code: mark._code + '.' + ml._code,
+					code: _code,
 					type: 'time',
+					value,
 					setValue,
 					factory: ml.value ?? '',
 				})
@@ -50,7 +56,8 @@ export default function fnCell(code, result, mark, idB, setSettingAu) {
 			case 'choice':
 				result.push({
 					field: 'popup',
-					code: mark._code + '.' + ml._code,
+					code: _code,
+					value,
 					list: ml?.list?.map((el) => ({ title: el.name, code: el.value })),
 					default: 'Выкл',
 					setValue,

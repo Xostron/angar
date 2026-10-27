@@ -63,7 +63,7 @@ function sty(data, sum) {
  * @param {*} prd
  * @returns
  */
-function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
+function rack(obj, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	const {
 		fct,
 		bldType,
@@ -92,7 +92,7 @@ function rack(obj, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	data.title = { name: fct?.name, bName: 'Сохранить' }
 
 	// Строки с настройками
-	data.list = setting(fct?.list, code, buildingId, setSettingAu, prd === curPrd)
+	data.list = setting(fct?.list, code, buildingId, stgV, setSettingAu, prd === curPrd)
 
 	// Максимальное кол-во ячеек в строке (для правильной css отрисовки)
 	const max = Math.max(...data.list.map((el) => el?.length))

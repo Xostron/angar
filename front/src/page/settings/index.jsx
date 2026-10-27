@@ -15,6 +15,9 @@ import def from './def'
 //Настройки склада
 export default function Settings({}) {
 	const { type, build } = useParams()
+	// Выбранный продукт, чьи настройки хотят посмотреть
+	const prd = useOutputStore((s) => s.prd)
+	const stgV = useInputStore((s) => ({ getValueSetting: s.getValueSetting, build, type, prd }))
 	// EquipStore - Рама
 	// Склад
 	const curB = useEquipStore((s) => s.getCurB(build))
@@ -36,8 +39,6 @@ export default function Settings({}) {
 	const sendSettingAu = useOutputStore((s) => s.sendSettingAu)
 	const hasChanged = useOutputStore((s) => s.hasChangedSettingAu(build, type))
 
-	// Выбранный продукт, чьи настройки хотят посмотреть
-	const prd = useOutputStore((s) => s.prd)
 	// Продукт склада
 	const curPrd = useInputStore((s) => s.input?.retain?.[build]?.product?.code)
 
@@ -91,11 +92,11 @@ export default function Settings({}) {
 		curPrd,
 	}
 
-	let data = rack(o, setSettingAu, sendSettingAu, sendTune, onSwitch)
+	let data = rack(o, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch)
 	// ***************** Стили *****************
 	const sumStg = kindList.length + def.length
 	const { st, stl, sth, stn } = sty(data, sumStg)
-// console.log(data)
+	// console.log(data)
 	return (
 		<main className='sett' style={st}>
 			<SubHead title={data.title} head={data.head} st={sth} dataWarn={data.warn} />
