@@ -139,7 +139,6 @@ function fanCrachForCold(bld) {
 	if (bld.type != 'cold') return null
 	const r = []
 	for (const key in store.alarm?.extralrm?.[bld._id] ?? {}) {
-		console.log(55, key)
 		if (!key.includes('fanCrash')) continue
 		r.push(store.alarm?.extralrm?.[bld._id]?.[key])
 	}
