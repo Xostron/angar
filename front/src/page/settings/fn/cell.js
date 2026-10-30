@@ -76,9 +76,9 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 				break
 			case 'more':
 				// const o = {}
-				const o = fnMore(ml, obj, moreValue)
+				const o = fnMore(mark, ml, obj, moreValue)
 				// console.log(11, o)
-				result.push({ field: 'more', ...o, setSettingAu })
+				result.push({ field: 'more', setSettingAu, ...o })
 				break
 			default:
 				break
@@ -86,9 +86,18 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 	})
 }
 
-function fnMore(ml, obj, moreValue) {
+function fnMore(mark, ml, obj, moreValue) {
 	const len = moreValue?.begin?.length ?? ''
-	const r = { obj, value: `${ml._name} ` + len, moreValue }
+	const r = {
+		// Значение кнопки (имя)
+		value: `${ml._name} ` + len,
+		// Имя шапки
+		title: mark._name,
+		// Столбцы
+		column: ['Начало', 'Окончание', ''],
+		// Значения полей - массив
+		moreValue,
+	}
 	// console.log(22, r)
 	return r
 }

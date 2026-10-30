@@ -10,8 +10,6 @@ export default function More({ data, style, title }) {
 	const warn = useWarn((s) => s.warn)
 
 	const obj = {
-		// type: 'idle',
-		title: `123`,
 		text: `Сохранить настройки?`,
 		// fnYes: sendSettingAu,
 		fnYes: () => {

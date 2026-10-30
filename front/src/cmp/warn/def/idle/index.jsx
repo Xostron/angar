@@ -9,7 +9,7 @@ import '../style.css'
 
 //Управление вентилятором
 export default function Entry({ data = {}, entryCode }) {
-	const { _id, name, module, buildingId, sectionId, active } = data
+	const { title, name, module, buildingId, sectionId, active } = data
 	console.log(123, data)
 	const clear = useWarn((s) => s.clear)
 	// // Управление: вкл/выкл
@@ -30,7 +30,7 @@ export default function Entry({ data = {}, entryCode }) {
 
 	return (
 		<div className='entry'>
-			<Title name={name} />
+			<Title name={title} />
 			{/* <Field sel={sel} change={change} active={active} state={state} off={off} /> */}
 			{/* <Control cancel={cancel} ok={set} /> */}
 		</div>
