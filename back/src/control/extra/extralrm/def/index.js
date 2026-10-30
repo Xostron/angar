@@ -72,12 +72,15 @@ const def = {
 			bldOff,
 			plcio,
 			alrStop,
-			fnHeater
+			fnHeater,
 		},
 	},
 	// Доп. аварии холодильника
 	cold: {
-		on: { banTimer, genB },
+		on: {
+			banTimer,
+			genB,
+		},
 		off: {},
 		always: {
 			connect,
@@ -95,7 +98,10 @@ const def = {
 	},
 	// Комбинированный склад (холодильник)
 	combi: {
-		on: { banTimer, genB },
+		on: {
+			//banTimer,
+			genB,
+		},
 		off: {},
 		always: {
 			connect,

@@ -161,6 +161,7 @@ function state(o, clr, equip, arrM) {
 	const alrFan = o?.fan?.state === 'alarm' ? true : false
 	const connectLost = isExtra(idB, null, 'connectLost')
 	if (alrMdl || alrFan || connectLost) {
+		// console.log(55, 'Статус испарителя', alrMdl, alrFan, connectLost)
 		o.status = 'alarm'
 		return 'off-off-off'
 	}

@@ -78,9 +78,11 @@ function signalB(r, bld, am, data) {
 	const sb = store.alarm?.extralrm?.[bld._id]?.sb ?? null
 	const plcio = store.alarm?.extralrm?.[bld._id]?.plcio ?? null
 	const heaterAlr = store.alarm?.extralrm?.[bld._id]?.heater
+	const coldFanCrash = fanCrachForCold(bld)
 	// аварии датчиков склада
 	const extralrmS = store.alarm?.extralrm?.[bld._id]?.sensor
 
+	if (coldFanCrash) r.signal[bld._id].push(...coldFanCrash)
 	if (auto) r.signal[bld._id].push(...Object.values(auto))
 	if (timer?.length) r.signal[bld._id].push(...timer)
 	if (module?.length) r.signal[bld._id].push(...module)
@@ -131,3 +133,15 @@ function signalB(r, bld, am, data) {
 }
 
 module.exports = { signal, signalB }
+
+// Поиск авар сообщений в складе холодильник
+function fanCrachForCold(bld) {
+	if (bld.type != 'cold') return null
+	const r = []
+	for (const key in store.alarm?.extralrm?.[bld._id] ?? {}) {
+		console.log(55, key)
+		if (!key.includes('fanCrash')) continue
+		r.push(store.alarm?.extralrm?.[bld._id]?.[key])
+	}
+	return r.length ? r : null
+}

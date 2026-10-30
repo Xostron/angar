@@ -49,12 +49,11 @@ function set(bld, arr, obj, accDeb, acc, watch, count) {
 function fnOwner(el, obj) {
 	const idS = el?.owner.type === 'section' ? el?.owner?.id : null
 	const clrId = el?.owner.type === 'cooler' ? el?.owner?.id : null
-
 	if (idS) return obj?.data?.section?.find((sec) => sec._id === idS)?.name
 	if (clrId) {
 		const clr = obj?.data?.cooler?.find((cl) => cl._id === clrId)
 		const sect = obj?.data?.section?.find((sec) => sec._id === clr.sectionId)
-		return sect?.name ?? '' + ' ' + clr?.name ?? '' + ':'
+		return (sect?.name ?? '') + '. ' + (clr?.name ?? '') + ''
 	}
 }
 
@@ -99,4 +98,4 @@ function fnReset(bld, arr, acc, accDeb) {
 	})
 }
 
-module.exports = { set, reset, fnCheck }
+module.exports = { set, reset, fnCheck, fnOwner }

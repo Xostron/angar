@@ -47,7 +47,7 @@ export default function ItemCooler({ data, onClick, isAuth, cls }) {
 	// Вывод из работы ВНО
 	if (cooler?.fan?.state == 'off') cl.push('off')
 	if (cooler?.fan?.state === 'alarm') cl.push('alarm')
-
+	// console.log(123,cooler)
 	cl = cl.join(' ')
 	return (
 		<BtnCooler

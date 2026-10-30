@@ -21,7 +21,7 @@ function setting(bld, obj) {
 	}
 	// Готовые настройки на сервере (для проверки)
 	// debugJson({ newnew: r }, ph.resolve(__dirname))
-
+// console.log(333, r.idle)
 	return r
 }
 

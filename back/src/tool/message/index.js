@@ -40,7 +40,7 @@ function msgV(building, section, typeV, code) {
 function msgF(building, section, name, code, codeFC) {
 	const o = { ...mes[code] }
 	o.order = code
-	o.title = `${section.name ?? ''}. ${name ?? ''}:`
+	o.title = `${section?.name ?? ''}. ${name ?? ''}:`
 	o.buildingId = building._id
 	o.uid = uuidv4()
 	o.date = new Date().toLocaleString('ru')

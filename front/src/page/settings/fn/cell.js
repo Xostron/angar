@@ -2,12 +2,14 @@
 export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 	mark.list.forEach((ml) => {
 		// console.log(11, stgV)
-		const obj = { build: idB, type: code, name: mark._code + '.' + ml._code }
+		const _code = mark._code + '.' + ml._code
+		const obj = { build: idB, type: code, _code }
 		const setValue = (value) => setSettingAu({ value, ...obj })
 		// Пользовательская настройка
-		const _code = mark._code + '.' + ml._code
 		const value = stgV.getValueSetting(_code.split('.'), stgV.build, stgV.type, stgV.prd)
-		// console.log(111, value, _code.split('.'), stgV.build, stgV.type, stgV.prd)
+		if (_code=='drying.begin') console.log()
+		// if (ml._code === 'more') console.log(111, value, _code.split('.'))
+
 		switch (ml.type) {
 			case 'number':
 				// Редактируемое поле
@@ -69,11 +71,18 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 				result.push({ field: 'head', value: ml._name })
 				break
 			case 'more':
-				// console.log(22, mark, ml)
+				const o = fnMore(mark, ml, obj)
+				// console.log(11, o)
 				result.push({ field: 'more', value: ml._name, mark, obj, setSettingAu })
 				break
 			default:
 				break
 		}
 	})
+}
+
+function fnMore(mark, ml, obj) {
+	const r = {}
+	// console.log(22, mark)
+	return r
 }

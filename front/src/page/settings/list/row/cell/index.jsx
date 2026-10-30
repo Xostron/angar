@@ -4,7 +4,6 @@ import Popup from '@cmp/fields/popup'
 import Switch from '@cmp/fields/switch'
 import Text from '@cmp/fields/text'
 import { useState, useEffect } from 'react'
-import useInputStore from '@store/input'
 import useOutputStore from '@store/output'
 import { useParams } from 'react-router-dom'
 import BtnHid from './btn_hid'
@@ -12,23 +11,20 @@ import More from '@src/cmp/fields/more'
 
 //Ячейка таблицы настроек
 export default function Cell({ data, i, j }) {
-	// console.log(data)
 	const { type, build } = useParams()
 	const { settingAu, prd, hid } = useOutputStore()
-	// const val = {}
+
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
 
-	// Значение настройки пользователя retain
-	// val[data.code] = useInputStore((s) => s.getValueSetting(code, build, type, prd))
 	// Значение поля
 	const [value, setValue] = useState(data?.value)
+
 	// Заполнить поля заводскими, если нет пользовательских настроек
 	useEffect(() => {
 		setValue(data?.value ?? data?.factory ?? '')
 	}, [type, prd])
 
-	// console.log(11, data, value)
 	// Подсветка - Изменение поля
 	let hasChanged
 	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
@@ -37,7 +33,7 @@ export default function Cell({ data, i, j }) {
 	if (hasChanged) cl.push('changed')
 	cl = cl.join(' ')
 	const st = { gridArea: `${1 + i}/${1 + j}/${2 + i}/${2 + j}` }
-	// console.log(11, value, data.code)
+
 	switch (data.field) {
 		case 'text':
 			return <Text cls='cell-w' data={data} style={st} />

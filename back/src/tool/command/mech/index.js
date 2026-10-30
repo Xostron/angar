@@ -202,7 +202,7 @@ function mechB(idB, type, obj, mod = false) {
 	const services = data?.io?.filter((el) => el.bldId.includes(idB))
 
 	// Если склад типа холодильник
-	if (cold) fanAll.push(...cold.fan)
+	// if (cold) fanAll.push(...cold.fan)
 
 	// ИМ секции
 	const sect = {}

@@ -235,17 +235,17 @@ const useOutputStore = create((set, get) => ({
 				'heater',
 				'smoking',
 				'demo',
-				'heattcnl'
+				'heattcnl',
 			].includes(obj?.type)
 		)
 			settingAu.prdCode = get().prd?.code ?? obj?.prdCode
 		settingAu.value ??= {}
-		const name = obj.name.split('.')
-		if (name.length === 1) {
-			settingAu.value[obj.name] = obj.value
+		const _code = obj._code.split('.')
+		if (_code.length === 1) {
+			settingAu.value[obj._code] = obj.value
 		} else {
-			settingAu.value[name[0]] ??= {}
-			settingAu.value[name[0]][name[1]] = obj.value
+			settingAu.value[_code[0]] ??= {}
+			settingAu.value[_code[0]][_code[1]] = obj.value
 		}
 		set({ settingAu })
 	},
