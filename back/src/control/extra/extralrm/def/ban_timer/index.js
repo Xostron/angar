@@ -7,11 +7,15 @@ const am = ['drying', 'cure', 'cooling', 'heat']
 function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 	const name = `Склад ${building.code ?? ''}`
 	const exclude = am.filter((el) => el != automode)
+	let _idle
+	if (building.type == 'cold') _idle = s?.idleCold
+	else _idle = s?.idle
+	// console.log(123, building?.type, _idle)
 	// По таймерам запрета
-	for (const key in s?.idle) {
+	for (const key in _idle) {
 		acc[key] ??= {}
 		// Проверка диапазона
-		const check = checkRange(s?.idle?.[key]?.begin, s?.idle?.[key]?.end, exclude.includes(key))
+		const check = checkRange(_idle?.[key]?.begin, _idle?.[key]?.end, exclude.includes(key))
 		// console.log('\x1b[36m%s\x1b[0m', '===========Таймеры запретов=========')
 		// if (key == 'drying')
 		// console.log(444, key, check)
@@ -38,7 +42,8 @@ function checkRange(begin, end, exclude) {
 		.join('')
 	// Исключить запреты авторежимов, кроме текущего режима склада
 	if (exclude) return false
-	const isBan = begin.some((beg, i) => {
+	if (!(begin instanceof Array)) return false
+	const isBan = begin?.some((beg, i) => {
 		const _begin = beg ? +beg.split(':').join('') : 0
 		const _end = end[i] ? +end[i].split(':').join('') : 0
 		// Запрет выключить

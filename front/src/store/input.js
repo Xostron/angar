@@ -31,6 +31,7 @@ const useInputStore = create((set, get) => ({
 	},
 	getValueSetting(code, build, type, prd) {
 		const stgV = get()?.input?.retain?.[build]?.setting?.[type]
+		// console.log(33, get()?.input?.retain?.[build])
 		if (!code) return null
 		if (
 			[
@@ -39,6 +40,7 @@ const useInputStore = create((set, get) => ({
 				'overVlv',
 				'accel',
 				'idle',
+				'idleCold',
 				'co2',
 				'ozon',
 				'heater',
@@ -47,6 +49,7 @@ const useInputStore = create((set, get) => ({
 				'heattcnl',
 			].includes(type)
 		) {
+			// if (code[0]=='cooler') console.log(22, code, stgV?.[code[0]]?.[code[1]])
 			// Без продукта
 			if (code?.length === 1) return stgV?.[code[0]]
 			if (code?.length === 2) return stgV?.[code[0]]?.[code[1]]

@@ -1,6 +1,5 @@
 const { ms } = require('@tool/command/time')
 
-
 /**
  * Преобразование настроек в удобный формат для ангара
  * @param {object} r Результат
@@ -63,7 +62,8 @@ function mark(r, sett, cb, key, mod) {
 function cb(v, code, value, key, mod) {
 	if (isV(v, code, value, mod)) {
 		// для всех marklist c типом time, кроме настройки idle
-		if (value.toString().includes(':') && key !== 'idle') return (v[code] = ms(value))
+		if (value.toString().includes(':') && key !== 'idle' && key !== 'idleCold')
+			return (v[code] = ms(value))
 		v[code] = !isNaN(+value) && typeof value !== 'boolean' ? +value : value
 	}
 }

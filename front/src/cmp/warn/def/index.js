@@ -10,6 +10,7 @@ import wifi from './wifi';
 import forecast_analytic from './forecast_analytic';
 import mode_mobile from './mode_mobile';
 import datetime from './datetime';
+import idle from './idle';
 
 export default {
 	person,
@@ -27,4 +28,5 @@ export default {
 	notfound: ({ data, entryCode }) => (
 		<div className="entry">Модального окна {entryCode} не существует</div>
 	),
+	idle
 };

@@ -107,7 +107,6 @@ function rack(obj, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 		fnYes: sendSettingAu,
 		code,
 	}
-
 	return data
 }
 
@@ -117,7 +116,8 @@ function fnHead(code, max) {
 	switch (code) {
 		// Настройка "Время работы" (таймеры запретов)
 		case 'idle':
-			return ['Начало', 'Конец','']
+		case 'idleCold':
+			return ['Начало', 'Конец', '']
 
 		// По-умолчанию
 		default:

@@ -1,5 +1,6 @@
 // Ячейки строки
 export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
+	const moreValue = { begin: [], end: [] }
 	mark.list.forEach((ml) => {
 		// console.log(11, stgV)
 		const _code = mark._code + '.' + ml._code
@@ -7,7 +8,9 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 		const setValue = (value) => setSettingAu({ value, ...obj })
 		// Пользовательская настройка
 		const value = stgV.getValueSetting(_code.split('.'), stgV.build, stgV.type, stgV.prd)
-		if (_code=='drying.begin') console.log()
+
+		pickMore(code, ml, moreValue, value)
+		// if (_code == 'cooler.begin') console.log(11, ml._code, moreValue)
 		// if (ml._code === 'more') console.log(111, value, _code.split('.'))
 
 		switch (ml.type) {
@@ -21,6 +24,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 					min: ml.min,
 					max: ml.max,
 					_acv: ml._acv ?? false,
+					// value: value instanceof Array ? value[0] : value,
 					value,
 					setValue,
 					factory: ml.value ?? '',
@@ -49,7 +53,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 					field: 'input',
 					code: _code,
 					type: 'time',
-					value,
+					value: value instanceof Array ? value[0] : value,
 					setValue,
 					factory: ml.value ?? '',
 				})
@@ -71,9 +75,10 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 				result.push({ field: 'head', value: ml._name })
 				break
 			case 'more':
-				const o = fnMore(mark, ml, obj)
+				// const o = {}
+				const o = fnMore(ml, obj, moreValue)
 				// console.log(11, o)
-				result.push({ field: 'more', value: ml._name, mark, obj, setSettingAu })
+				result.push({ field: 'more', ...o, setSettingAu })
 				break
 			default:
 				break
@@ -81,8 +86,14 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 	})
 }
 
-function fnMore(mark, ml, obj) {
-	const r = {}
-	// console.log(22, mark)
+function fnMore(ml, obj, moreValue) {
+	const len = moreValue?.begin?.length ?? ''
+	const r = { obj, value: `${ml._name} ` + len, moreValue }
+	// console.log(22, r)
 	return r
+}
+
+function pickMore(code, ml, moreValue, value) {
+	if (!['idle', 'idleCold'].includes(code)) return
+	moreValue[ml._code] = value
 }

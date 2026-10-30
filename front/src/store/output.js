@@ -230,6 +230,7 @@ const useOutputStore = create((set, get) => ({
 				'overVlv',
 				'accel',
 				'idle',
+				'idleCold',
 				'co2',
 				'ozon',
 				'heater',

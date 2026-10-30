@@ -57,7 +57,7 @@ function transformF(factory, phF) {
 					}
 					// Для настроек "Время работы" зачение помещаем в массив
 					// в данных настройка поля "Начало и Конец"=массиву значений
-					if (key === 'idle' && !!m[ml]?.value) {
+					if ((key === 'idle' || key === 'idleCold') && !!m[ml]?.value) {
 						fct[key][mark][ml] = [m[ml]?.value ?? '00:00']
 						continue
 					}
@@ -66,6 +66,7 @@ function transformF(factory, phF) {
 			}
 		}
 	}
+	console.log(222, fct.idleCold)
 	// Значения заводских настроек (factory/factory.json)
 	writeSync({ factory: fct }, phF, null, true)
 }
