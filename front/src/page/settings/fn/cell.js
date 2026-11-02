@@ -1,13 +1,21 @@
 // Ячейки строки
-export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
+export default function fnCell(code, result, mark, idB, setSettingAu, sendSettingAu, stgV) {
 	const moreValue = { begin: [], end: [] }
 	mark.list.forEach((ml) => {
-		// console.log(11, stgV)
 		const _code = mark._code + '.' + ml._code
 		const obj = { build: idB, type: code, _code }
 		const setValue = (value) => setSettingAu({ value, ...obj })
-		// Пользовательская настройка
-		const value = stgV.getValueSetting(_code.split('.'), stgV.build, stgV.type, stgV.prd) ?? 
+		// Пользовательская настройка ?? заводская ?? пустая строка
+		const factory = code == 'idle' || code == 'idleCold' ? [ml?.value ?? ''] : (ml?.value ?? '')
+		// console.log(123, obj)
+		const value = stgV.getValueSetting(
+			_code.split('.'),
+			stgV.build,
+			stgV.type,
+			stgV.prd,
+			factory,
+		)
+		// console.log(11, code)
 
 		pickMore(code, ml, moreValue, value)
 		// if (_code == 'cooler.begin') console.log(11, ml._code, moreValue)
@@ -27,7 +35,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 					// value: value instanceof Array ? value[0] : value,
 					value,
 					setValue,
-					factory: ml.value ?? '',
+					factory,
 				})
 				// Заводская настройка (Если одна колонка markList)
 				if (mark.list.length === 1) result.push({ field: 'text', value: ml.value })
@@ -42,7 +50,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 					code: _code,
 					value,
 					setValue,
-					factory: ml.value ?? '',
+					factory,
 				})
 				// Заводская настройка (Если одна колонка markList)
 				if (mark.list.length === 1)
@@ -55,7 +63,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 					type: 'time',
 					value: value instanceof Array ? value[0] : value,
 					setValue,
-					factory: ml.value ?? '',
+					factory,
 				})
 				if (mark.list.length === 1) result.push({ field: 'text', value: ml.value })
 				break
@@ -67,7 +75,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 					list: ml?.list?.map((el) => ({ title: el.name, code: el.value })),
 					default: 'Выкл',
 					setValue,
-					factory: ml.value?.[1] ?? '',
+					factory,
 				})
 				if (mark.list.length === 1) result.push({ field: 'text', value: ml.value?.[0] })
 				break
@@ -76,9 +84,9 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 				break
 			case 'more':
 				// const o = {}
-				const o = fnMore(mark, ml, obj, moreValue)
+				const o = fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu)
 				// console.log(11, o)
-				result.push({ field: 'more', setSettingAu, ...o })
+				result.push({ field: 'more', ...o })
 				break
 			default:
 				break
@@ -86,7 +94,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 	})
 }
 
-function fnMore(mark, ml, obj, moreValue) {
+function fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu) {
 	const len = moreValue?.begin?.length ?? ''
 	const r = {
 		// Значение кнопки (имя)
@@ -97,7 +105,10 @@ function fnMore(mark, ml, obj, moreValue) {
 		column: ['Начало', 'Окончание', ''],
 		// Значения полей - массив
 		moreValue,
+		setSettingAu,
+		sendSettingAu,
 		obj,
+		markCode: mark._code,
 	}
 	// console.log(22, r)
 	return r

@@ -10,8 +10,8 @@ import Field from './field'
 
 //Управление вентилятором
 export default function Entry({ data = {}, entryCode }) {
-	const { title, obj, moreValue, setSettingAu, fnNo, fnYes } = data
-	console.log(123, data)
+	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
+	// console.log(123, data)
 	const clear = useWarn((s) => s.clear)
 	// // Управление: вкл/выкл
 	// const setO = useOutputStore((s) => s.setO)
@@ -32,20 +32,12 @@ export default function Entry({ data = {}, entryCode }) {
 	return (
 		<div className='entry'>
 			<Title name={title} />
-			<Field moreValue={moreValue} idB={obj.build} codeStg={obj.type} />
-			<Control cancel={fnNo} ok={fnYes} />
+			<Field data={data} />
+			<Control cancel={cancel} ok={fnYes} />
 		</div>
 	)
 
-	// Ок
-	function set() {
-		// const cmd = sel === 'run' ? 1 : 0
-		// if (sel === 'off' && !off)
-		// 	setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true })
-		// else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })
-		// setO({ idB: buildingId, idM: module.id, value: cmd, channel: ch })
-		clear()
-	}
+
 	// Отмена
 	function cancel() {
 		clear()

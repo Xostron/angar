@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 // Данные от сервера: датчики, режимы, настройки
 const useInputStore = create((set, get) => ({
@@ -13,23 +13,23 @@ const useInputStore = create((set, get) => ({
 	alarm: {},
 	// Инициализация входов
 	initIn: (r) => {
-		return set({ input: r });
+		return set({ input: r })
 	},
 	// Получить bCard склада по id
 	getBCard(buildingId) {
-		if (!buildingId) return null;
-		return get()?.input?.bCard?.[buildingId] ?? null;
+		if (!buildingId) return null
+		return get()?.input?.bCard?.[buildingId] ?? null
 	},
 	// Аварийные сообщения
 	initAlr: (r) => {
-		return set({ alarm: r });
+		return set({ alarm: r })
 	},
 	// Получить значение сигнала (концевик, обр связь вентилятора)
 	getSignal(id) {
 		const signal = get()?.input?.[id]
 		return signal
 	},
-	getValueSetting(code, build, type, prd) {
+	getValueSetting(code, build, type, prd, factory) {
 		const stgV = get()?.input?.retain?.[build]?.setting?.[type]
 		// console.log(33, get()?.input?.retain?.[build])
 		if (!code) return null
@@ -51,12 +51,12 @@ const useInputStore = create((set, get) => ({
 		) {
 			// if (code[0]=='cooler') console.log(22, code, stgV?.[code[0]]?.[code[1]])
 			// Без продукта
-			if (code?.length === 1) return stgV?.[code[0]]
-			if (code?.length === 2) return stgV?.[code[0]]?.[code[1]]
+			if (code?.length === 1) return stgV?.[code[0]] ?? factory
+			if (code?.length === 2) return stgV?.[code[0]]?.[code[1]] ?? factory
 		} else {
 			// С продуктом
-			if (code?.length === 1) return stgV?.[prd?.code]?.[code[0]]
-			if (code?.length === 2) return stgV?.[prd?.code]?.[code[0]]?.[code[1]]
+			if (code?.length === 1) return stgV?.[prd?.code]?.[code[0]] ?? factory
+			if (code?.length === 2) return stgV?.[prd?.code]?.[code[0]]?.[code[1]] ?? factory
 		}
 	},
 	// Получить готовое значение с датчика (с коррекцией)

@@ -11,13 +11,7 @@ export default function More({ data, style, title }) {
 
 	const obj = {
 		text: `Сохранить настройки?`,
-		// fnYes: sendSettingAu,
-		fnYes: () => {
-			console.log(123)
-		},
-		fnNo: () => {
-			console.log(123)
-		},
+		fnYes: data.sendSettingAu,
 		...data,
 	}
 	// const isAuth = useAuthStore((s) => s.isAuth)
