@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react'
 import useOutputStore from '@store/output'
 import useInputStore from '@store/input'
 import useWarn from '@store/warn'
-import Control from '../fn/control'
-import Field from './field'
-import Title from '../fn/title'
+
 import '../style.css'
+import Title from './title'
+import Control from './control'
+import Field from './field'
 
 //Управление вентилятором
 export default function Entry({ data = {}, entryCode }) {
-	const { title, name, module, buildingId, sectionId, active } = data
+	const { title, obj, moreValue, setSettingAu, fnNo, fnYes } = data
 	console.log(123, data)
 	const clear = useWarn((s) => s.clear)
 	// // Управление: вкл/выкл
@@ -31,8 +32,8 @@ export default function Entry({ data = {}, entryCode }) {
 	return (
 		<div className='entry'>
 			<Title name={title} />
-			{/* <Field sel={sel} change={change} active={active} state={state} off={off} /> */}
-			{/* <Control cancel={cancel} ok={set} /> */}
+			<Field moreValue={moreValue} idB={obj.build} codeStg={obj.type} />
+			<Control cancel={fnNo} ok={fnYes} />
 		</div>
 	)
 
@@ -41,7 +42,7 @@ export default function Entry({ data = {}, entryCode }) {
 		// const cmd = sel === 'run' ? 1 : 0
 		// if (sel === 'off' && !off)
 		// 	setFan({ buildingId, sectionId, fanId: _id, action: sel, value: true })
-		// else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })	
+		// else setFan({ buildingId, sectionId, fanId: _id, action: sel, value: false })
 		// setO({ idB: buildingId, idM: module.id, value: cmd, channel: ch })
 		clear()
 	}

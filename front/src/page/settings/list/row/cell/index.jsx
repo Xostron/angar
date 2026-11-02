@@ -40,6 +40,7 @@ export default function Cell({ data, i, j }) {
 		case 'iconText':
 			return <IconText cls='cell-w' data={data} style={st} title={data.code} />
 		case 'input':
+			// console.log(333, data)
 			return (
 				<Input
 					cls={cl}

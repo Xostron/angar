@@ -1,0 +1,28 @@
+.idle-field {
+	display: grid;
+	grid-template-columns: 1fr 1fr auto;
+	justify-items: center;
+	gap: 16px;
+	padding-bottom: 16px;
+}
+
+.idle-trash {
+	background-color: #ededed;
+	border-radius: 5px;
+	padding: 12px;
+	width: 65px;
+	display: flex;
+	justify-content: center;
+}
+
+.idle-input {
+	width: 204px;
+	height: 69px;
+	font-size: 24px;
+	font-weight: 500;
+}
+
+.idle-add{
+	width: 100%;
+	justify-content: center;
+}

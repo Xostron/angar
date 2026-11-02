@@ -15,8 +15,10 @@ export default function More({ data, style, title }) {
 		fnYes: () => {
 			console.log(123)
 		},
-		code: 'idleCold',
-		...data
+		fnNo: () => {
+			console.log(123)
+		},
+		...data,
 	}
 	// const isAuth = useAuthStore((s) => s.isAuth)
 	// console.log(33, data)

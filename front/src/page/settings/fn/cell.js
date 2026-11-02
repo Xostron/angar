@@ -97,6 +97,7 @@ function fnMore(mark, ml, obj, moreValue) {
 		column: ['Начало', 'Окончание', ''],
 		// Значения полей - массив
 		moreValue,
+		obj,
 	}
 	// console.log(22, r)
 	return r
