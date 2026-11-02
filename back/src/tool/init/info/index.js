@@ -11,6 +11,9 @@ async function info() {
 		front: frontInfo.version,
 		platform: process.platform,
 		date: new Date(),
+		// Зона POS: интерфейс показывает время в ней, даже если открыт удалённо
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		offset: new Date().getTimezoneOffset(),
 		db: {
 			status: '',
 			version: '',

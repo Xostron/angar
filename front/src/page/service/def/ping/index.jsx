@@ -4,6 +4,7 @@ import Input from '@cmp/fields/input'
 import { post } from '@tool/api/service'
 import { notification } from '@cmp/notification'
 import useEquipStore from '@store/equipment'
+import './style.css'
 
 // Проверка доступности устройств (модулей) по IP/домену
 export default function Ping() {
@@ -92,7 +93,7 @@ export default function Ping() {
 					placeholder='192.168.1.100 или example.com'
 					keyboard='default'
 				/>
-				<Btn title='Проверить' onClick={checkCustom} />
+				<Btn title='Проверить' cls='ping-btn' onClick={checkCustom} />
 			</div>
 
 			{custom && status[custom?.trim()] && (
@@ -108,38 +109,40 @@ export default function Ping() {
 				</div>
 			)}
 
-			{groups.map((g) => (
-				<div key={g.id} style={{ marginTop: '10px' }}>
-					<span style={titleStyle}>{g.name}</span>
-					<div style={tableWrapStyle}>
-						<table style={tableStyle}>
-							<thead>
-								<tr>
-									<th style={thStyle}>IP : порт</th>
-									<th style={thStyle}>Статус</th>
-									<th style={thStyle}>Проверить</th>
-								</tr>
-							</thead>
-							<tbody>
-								{g.rows.map((row) => (
-									<tr key={row.ip}>
-										<td style={tdStyle}>
-											{row.ip}
-											{row.port ? `:${row.port}` : ''}
-										</td>
-										<td style={tdStyle}>
-											<Status st={status[row.ip]} />
-										</td>
-										<td style={tdStyle}>
-											<Btn title='Проверить' onClick={() => runCheck(row.ip)} />
-										</td>
+			<div className='ping-list'>
+				{groups.map((g) => (
+					<div key={g.id} style={{ marginTop: '10px' }}>
+						<span style={titleStyle}>{g.name}</span>
+						<div style={tableWrapStyle}>
+							<table style={tableStyle}>
+								<thead>
+									<tr>
+										<th style={thStyle}>IP : порт</th>
+										<th style={thStyle}>Статус</th>
+										<th style={thStyle}>Проверить</th>
 									</tr>
-								))}
-							</tbody>
-						</table>
+								</thead>
+								<tbody>
+									{g.rows.map((row) => (
+										<tr key={row.ip}>
+											<td style={tdStyle}>
+												{row.ip}
+												{row.port ? `:${row.port}` : ''}
+											</td>
+											<td style={tdStyle}>
+												<Status st={status[row.ip]} />
+											</td>
+											<td style={tdStyle}>
+												<Btn title='Проверить' cls='ping-btn' onClick={() => runCheck(row.ip)} />
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
 					</div>
-				</div>
-			))}
+				))}
+			</div>
 		</>
 	)
 }
@@ -159,10 +162,9 @@ function Status({ st }) {
 
 const titleStyle = { fontSize: '20px', fontWeight: 'bold' }
 
+// Обёртка таблицы группы: горизонтальный скролл (вертикальный — у всего списка)
 const tableWrapStyle = {
 	overflowX: 'auto',
-	maxHeight: 'calc(100vh - 420px)',
-	overflowY: 'auto',
 }
 
 const tableStyle = {

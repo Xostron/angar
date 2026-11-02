@@ -2,12 +2,17 @@ import { useState, useEffect } from 'react'
 import Btn from '@cmp/fields/btn'
 import { get, post, del } from '@tool/api/service'
 import { notification } from '@cmp/notification'
+import { posDateTime, posZoneLabel } from '@tool/datetime'
 import useEquipStore from '@store/equipment'
+import {useTimeStore} from '@store/time'
 
 
 export default function Equip() {
 	const [file, setFile] = useState()
 	const apiInfo = useEquipStore((s) => s.apiInfo)
+	const timezone = useTimeStore((s) => s.timezone)
+	// Зона POS: имя зоны и смещение от UTC (приходит в раме c_equip)
+	const zone = posZoneLabel(apiInfo?.timezone ?? timezone, apiInfo?.offset)
 	const [statInfo, setStatInfo] = useState()
 	useEffect(() => {
 		get('stat')
@@ -148,7 +153,10 @@ export default function Equip() {
 					</tr>
 					<tr>
 						<td style={headerCellStyles}>Дата</td>
-						<td style={cellStyles}>{apiInfo?.date ? new Date(apiInfo?.date).toLocaleString('ru-RU') : '--'}</td>
+						<td style={cellStyles}>
+							{apiInfo?.date ? posDateTime(apiInfo?.date) : '--'}
+							{zone ? ` (${zone})` : ''}
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -182,8 +190,7 @@ function onEquip() {
 	get('equipment')
 		.then((o) => {
 			if(o.result) {
-				const date = new Date(o.result)
-				notification.success('Конфигурация оборудования обновлена: ' + date.toLocaleString('ru-RU'))
+				notification.success('Конфигурация оборудования обновлена: ' + posDateTime(o.result))
 			} else {
 				notification.success('Конфигурация оборудования обновлена: ' + JSON.stringify(o))
 			}

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { posNow } from '@store/time'
 
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000
 const DEFAULT_STEP = 10
@@ -21,11 +22,14 @@ const useHistoryStore = create((set, get) => ({
 	toggleCollapsed: () => set({ collapsed: !get().collapsed }),
 
 	setTs: (ts) => {
-		const now = new Date()
-		const min = new Date(now.getTime() - SEVEN_DAYS_MS)
-		if (ts < min) ts = min
-		if (ts > now) ts = now
-		set({ ts: new Date(ts) })
+		// √раницы диапазона считаем по времени POS, а не клиента
+		const now = posNow()
+		const min = now - SEVEN_DAYS_MS
+		let v = ts instanceof Date ? ts.getTime() : Number(ts)
+		if (!Number.isFinite(v)) return
+		if (v < min) v = min
+		if (v > now) v = now
+		set({ ts: new Date(v) })
 	},
 
 	setStep: (val) => {

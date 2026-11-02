@@ -1,16 +1,27 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import useHistoryStore from '@store/history'
 import useEquipStore from '@store/equipment'
 import useInputStore from '@store/input'
 import { getHistory } from '@tool/api/history'
+import {
+	posNow,
+	posDate,
+	posTime,
+	posDateTime,
+	posParts,
+	posHourStart,
+	posInput,
+	posFromInput,
+	pad2,
+} from '@tool/datetime'
 import './style.css'
 
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000
+const HOUR_MS = 60 * 60 * 1000
 
+// Отметка времени в зоне POS
 function fmtTs(val) {
-	if (!val) return 'нет данных'
-	const d = new Date(val)
-	return d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU')
+	return val ? posDateTime(val) : 'нет данных'
 }
 
 export default function HistoryBar() {
@@ -18,6 +29,16 @@ export default function HistoryBar() {
 	const { setTs, play, pause, forward, backward, setStep, setLoading, setDataTimes, toggleCollapsed, toggle } = useHistoryStore()
 	const intervalRef = useRef(null)
 	const lastFetchRef = useRef(null)
+	// Выбор даты и времени для быстрого перехода
+	const [picker, setPicker] = useState({ open: false, value: '' })
+
+	// При включении режима просмотра держим позицию внутри окна «последние 7 дней» (по времени POS)
+	useEffect(() => {
+		if (!active) return
+		const now = posNow()
+		const t = useHistoryStore.getState().ts.getTime()
+		if (t < now - SEVEN_DAYS_MS || t > now) setTs(new Date(now))
+	}, [active, setTs])
 
 	const fetchData = useCallback(
 		async (date) => {
@@ -62,8 +83,9 @@ export default function HistoryBar() {
 		intervalRef.current = setInterval(() => {
 			const { ts, step } = useHistoryStore.getState()
 			const next = new Date(ts.getTime() + step * 1000)
-			const now = new Date()
-			if (next >= now) {
+			// Ограничение — по времени POS
+			const now = posNow()
+			if (next.getTime() >= now) {
 				useHistoryStore.getState().pause()
 				return
 			}
@@ -74,9 +96,23 @@ export default function HistoryBar() {
 
 	if (!active) return null
 
-	const now = new Date()
-	const min = new Date(now.getTime() - SEVEN_DAYS_MS)
+	// Границы диапазона и подписи — по времени POS
+	const now = posNow()
+	const min = now - SEVEN_DAYS_MS
 	const ticks = buildTicks(min, now)
+
+	// Открыть выбор даты и времени для быстрого перехода
+	const openPicker = () => setPicker({ open: true, value: posInput(ts.getTime()) })
+	const closePicker = () => setPicker({ open: false, value: '' })
+	// Перейти к выбранной дате и времени (значение трактуется как время POS)
+	const jumpTo = (value) => {
+		const t = posFromInput(value)
+		if (t === null) return
+		setTs(new Date(t))
+		closePicker()
+	}
+	// Установить «сейчас» по времени POS
+	const setNowValue = () => setPicker({ open: true, value: posInput(posNow()) })
 
 	return (
 		<div className={`history-bar ${collapsed ? 'history-bar--collapsed' : ''}`}>
@@ -111,8 +147,12 @@ export default function HistoryBar() {
 								onChange={(e) => setStep(e.target.value)}
 							/>
 						</label>
-						<span className='history-bar__time'>
-							{ts.toLocaleDateString('ru-RU')} {ts.toLocaleTimeString('ru-RU')}
+						<span
+							className='history-bar__time history-bar__time--click'
+							onClick={openPicker}
+							title='Переход к дате и времени'
+						>
+							{posDate(ts)} {posTime(ts)}
 						</span>
 					</div>
 
@@ -126,8 +166,8 @@ export default function HistoryBar() {
 						<input
 							className='history-bar__slider'
 							type='range'
-							min={min.getTime()}
-							max={now.getTime()}
+							min={min}
+							max={now}
 							value={ts.getTime()}
 							onChange={(e) => setTs(new Date(Number(e.target.value)))}
 						/>
@@ -143,6 +183,36 @@ export default function HistoryBar() {
 							))}
 						</div>
 					</div>
+
+					{picker.open && (
+						<div className='history-bar__picker'>
+							<div className='history-bar__picker-title'>Переход к дате и времени (время POS)</div>
+							<input
+								className='history-bar__picker-input'
+								type='datetime-local'
+								step='60'
+								min={posInput(min)}
+								max={posInput(now)}
+								value={picker.value}
+								onChange={(e) => setPicker({ open: true, value: e.target.value })}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') jumpTo(picker.value)
+									if (e.key === 'Escape') closePicker()
+								}}
+							/>
+							<div className='history-bar__picker-btns'>
+								<button className='history-bar__btn history-bar__btn--wide' onClick={setNowValue}>
+									Сейчас
+								</button>
+								<button className='history-bar__btn history-bar__btn--wide' onClick={closePicker}>
+									Отмена
+								</button>
+								<button className='history-bar__btn history-bar__btn--wide' onClick={() => jumpTo(picker.value)}>
+									Перейти
+								</button>
+							</div>
+						</div>
+					)}
 				</>
 			)}
 		</div>
@@ -158,23 +228,30 @@ function DataTag({ name, ts }) {
 	)
 }
 
-function buildTicks(min, max) {
+/**
+ * Деления шкалы по времени POS
+ * @param {number} minMs Начало диапазона
+ * @param {number} maxMs Конец диапазона
+ */
+function buildTicks(minMs, maxMs) {
 	const ticks = []
-	const range = max.getTime() - min.getTime()
-	const start = new Date(min)
-	start.setMinutes(0, 0, 0)
-	start.setHours(start.getHours() + 1)
+	const range = maxMs - minMs
+	if (range <= 0) return ticks
+	const start = posHourStart(minMs)
+	if (start === null) return ticks
 
-	for (let d = new Date(start); d <= max; d.setHours(d.getHours() + 1)) {
-		const pct = ((d.getTime() - min.getTime()) / range) * 100
-		if (pct < 0 || pct > 100) continue
-		const isDay = d.getHours() === 0
+	for (let t = start + HOUR_MS; t <= maxMs; t += HOUR_MS) {
+		const p = posParts(t)
+		if (!p) continue
+		const pct = ((t - minMs) / range) * 100
+		const isDay = p.h === 0
 		const label = isDay
-			? d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })
-			: d.getHours() % 6 === 0
-				? `${String(d.getHours()).padStart(2, '0')}:00`
+			? `${pad2(p.d)}.${pad2(p.mo)}`
+			: p.h % 6 === 0
+				? `${pad2(p.h)}:00`
 				: null
 		ticks.push({ pct, major: isDay, label })
 	}
 	return ticks
 }
+

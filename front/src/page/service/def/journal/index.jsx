@@ -5,7 +5,9 @@ import Btn from '@cmp/fields/btn'
 import { notification } from '@cmp/notification'
 import { clearHistory } from '@tool/api/history'
 import { getActivity } from '@tool/api/activity'
+import { posNow, posDayStr, posFromInput, posDateTime } from '@tool/datetime'
 import useEquipStore from '@store/equipment'
+import {useTimeStore} from '@store/time'
 import '@cmp/fields/style.css'
 
 
@@ -14,8 +16,9 @@ import '@cmp/fields/style.css'
 
 const LIMIT = 15
 
+// Сегодняшняя дата по времени POS
 function todayStr() {
-	return new Date().toISOString().slice(0, 10)
+	return posDayStr(posNow())
 }
 
 function getInfo(equip, secList) {
@@ -56,6 +59,7 @@ export default function Journal() {
 
 	const historyActive = useHistoryStore((s) => s.active)
 	const toggleHistory = useHistoryStore((s) => s.toggle)
+	const offset = useTimeStore((s) => s.offset)
 	const { refDialog, open: openConfirm, close: closeConfirm } = useDialog()
 
 	const [items, setItems] = useState([])
@@ -88,8 +92,11 @@ export default function Journal() {
 		const t = to ?? dateToRef.current
 		const b = bld ?? filterBldRef.current
 		const s = sec ?? filterSecRef.current
-		const isoFrom = f ? new Date(f + 'T00:00:00').toISOString() : undefined
-		const isoTo = t ? new Date(t + 'T23:59:59.999').toISOString() : undefined
+		// Границы суток — по времени POS (клиент может быть не на POS)
+		const fromMs = f ? posFromInput(f + 'T00:00') : null
+		const toMs = t ? posFromInput(t + 'T23:59:59.999') : null
+		const isoFrom = fromMs === null ? undefined : new Date(fromMs).toISOString()
+		const isoTo = toMs === null ? undefined : new Date(toMs).toISOString()
 
 		setLoading(true)
 		getActivity(p, LIMIT, isoFrom, isoTo, b || undefined, s || undefined)
@@ -103,6 +110,17 @@ export default function Journal() {
 	}, [])
 
 	useEffect(() => { fetchData(1) }, [fetchData])
+
+	// Зона POS может стать известна после первой отрисовки — уточняем даты фильтра
+	useEffect(() => {
+		if (offset === null) return
+		const today = todayStr()
+		// Пользователь уже выбрал свой диапазон — не трогаем
+		if (dateFrom !== dateTo || dateFrom === today) return
+		setDateFrom(today)
+		setDateTo(today)
+		fetchData(1, today, today)
+	}, [offset])
 
 	const goPage = (p) => {
 		const next = Math.max(1, Math.min(totalPages, p))
@@ -274,12 +292,10 @@ export default function Journal() {
 	)
 }
 
+// Дата и время записи — в зоне POS
 function formatDate(ts) {
 	if (!ts) return '—'
-	return new Date(ts).toLocaleString('ru-RU', {
-		day: '2-digit', month: '2-digit', year: 'numeric',
-		hour: '2-digit', minute: '2-digit', second: '2-digit',
-	})
+	return posDateTime(ts)
 }
 
 function formatValue(val) {

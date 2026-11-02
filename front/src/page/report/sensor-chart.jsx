@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { notification } from '@cmp/notification'
 import { getSensorChart } from '@tool/api/report'
+import {useTimeStore} from '@store/time'
+import { posNow, posDayStart, posDateTime, posShiftMs } from '@tool/datetime'
 import EChart from './echart'
 
 const COLORS = [
@@ -30,7 +32,9 @@ export default function SensorChart({ bldId, type, days = 7, tick }) {
 			.finally(() => setLoading(false))
 	}, [bldId, type, days, tick])
 
-	const option = useMemo(() => buildSensorOption(data, days, type), [data, days, type])
+	// Зона POS (после синхронизации времени) — перестраиваем график
+	const offset = useTimeStore((s) => s.offset)
+	const option = useMemo(() => buildSensorOption(data, days, type), [data, days, type, offset])
 
 	if (!bldId) return null
 
@@ -56,20 +60,30 @@ function buildSensorOption(series, days, type) {
 		}
 	}
 
-	const now = new Date()
-	const start = new Date(now)
-	start.setHours(0, 0, 0, 0)
-	start.setDate(start.getDate() - (days - 1))
+	// Окно и подписи — по времени POS (клиент может быть не на POS)
+	const now = posNow()
+	const start = posDayStart(now, days - 1)
+	const shift = posShiftMs()
+	const pos = shift !== null
+	// Метки сдвигаем в «настенное» время POS, ось считаем по UTC (useUTC)
+	const conv = (v) => v + (shift ?? 0)
+	// Метка тултипа: значение на графике -> время POS
+	const tsFmt = (v) => posDateTime(v - (shift ?? 0))
+	// Точки: [ts, value] -> [сдвинутая ts, value]
+	const convPoints = (list) => list.map((v) => [conv(v[0]), ...v.slice(1)])
 
 	const unit = type === 'tprd' ? '°C' : '%'
 
 	return {
+		// Ось времени рисуем по UTC со сдвинутыми метками = время POS
+		useUTC: pos,
+
 		grid: { left: 60, right: 20, top: 40, bottom: 80 },
 
 		xAxis: {
 			type: 'time',
-			min: start.getTime(),
-			max: now.getTime(),
+			min: conv(start),
+			max: conv(now),
 		},
 
 		yAxis: {
@@ -82,7 +96,7 @@ function buildSensorOption(series, days, type) {
 			trigger: 'axis',
 			formatter(params) {
 				if (!params?.length) return ''
-				const dt = new Date(params[0].value[0]).toLocaleString('ru-RU')
+				const dt = tsFmt(params[0].value[0])
 				const lines = params.map(
 					(p) => `${p.marker} ${p.seriesName}: <b>${p.value[1] ?? '—'} ${unit}</b>`,
 				)
@@ -104,7 +118,7 @@ function buildSensorOption(series, days, type) {
 		series: series.map((s, i) => ({
 			name: s.name,
 			type: 'line',
-			data: s.data,
+			data: convPoints(s.data),
 			showSymbol: false,
 			encode: { x: 0, y: 1 },
 			itemStyle: { color: COLORS[i % COLORS.length] },

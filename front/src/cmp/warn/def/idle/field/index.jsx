@@ -25,33 +25,20 @@ export default function Field({ moreValue, idB, codeStg }) {
 						<Input
 							type='time'
 							cls='idle-input'
-							// min={data.min}
-							// max={data.max}
-							// step={data.step}
 							value={el}
-							// disabled={disabled}
 							// setValue={(val) => {
 							// 	setValue(val)
 							// 	data.setValue(val)
 							// }}
-							// style={st}
-							// title={data.code}
 						/>
 						<Input
 							type='time'
 							cls='idle-input'
-							// type={data.type}
-							// min={data.min}
-							// max={data.max}
-							// step={data.step}
 							value={moreValue.end[i]}
-							// disabled={disabled}
 							// setValue={(val) => {
 							// setValue(val)
 							// data.setValue(val)
 							// }}
-							// style={st}
-							// title={data.code}
 						/>
 						<Btn icon='/img/trash.svg' cls='idle-trash' />
 					</>

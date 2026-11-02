@@ -1,7 +1,8 @@
 .page-service-main {
 	display: grid;
 	grid-template-columns: var(--fsz300) auto var(--fsz300);
-	grid-template-rows: auto;
+	/* minmax(0, 1fr): строка ограничена высотой страницы, внутренние списки могут скроллиться */
+	grid-template-rows: minmax(0, 1fr);
 	gap: 2em;
 	height: calc(100% - 100px);
 	overflow: hidden;
@@ -12,6 +13,8 @@
 	flex-direction: column;
 	gap: 0.5em;
 	width: 100%;
+	/* Позволяет внутренним спискам сжиматься и скроллиться вместо переполнения страницы */
+	min-height: 0;
 }
 .page-service > button:last-child {
 	background-color: var(--primary);

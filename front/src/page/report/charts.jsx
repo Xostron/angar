@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { notification } from '@cmp/notification'
 import { getCharts } from '@tool/api/report'
+import { useTimeStore } from '@store/time'
+import { posNow, posDayStart, posDateTime, posShiftMs } from '@tool/datetime'
 import EChart from './echart'
 
 const STATE_LABELS = ['Выкл', 'Норма', 'Авария']
@@ -27,7 +29,9 @@ export default function Charts({ bldId, days = 7, tick }) {
 			.finally(() => setLoading(false))
 	}, [bldId, days, tick])
 
-	const option = useMemo(() => buildOption(data, days), [data, days])
+	// Зона POS (после синхронизации времени) — перестраиваем график
+	const offset = useTimeStore((s) => s.offset)
+	const option = useMemo(() => buildOption(data, days), [data, days, offset])
 
 	if (!bldId) return null
 
@@ -55,13 +59,24 @@ function buildOption(data, days = 7) {
 		}
 	}
 
-	const now = new Date()
-	const start = new Date(now)
-	start.setHours(0, 0, 0, 0)
-	start.setDate(start.getDate() - (days - 1))
-	const axisBase = { type: 'time', min: start.getTime(), max: now.getTime() }
+	// Окно и подписи — по времени POS (клиент может быть не на POS)
+	const now = posNow()
+	const start = posDayStart(now, days - 1)
+	const shift = posShiftMs()
+	const pos = shift !== null
+	// Метки сдвигаем в «настенное» время POS, ось считаем по UTC (useUTC)
+	const conv = (v) => v + (shift ?? 0)
+	// Метка тултипа: значение на графике -> время POS
+	const tsFmt = (v) => posDateTime(v - (shift ?? 0))
+	// Точки: [ts, value, state] -> [сдвинутая ts, value, state]
+	const convPoints = (list) => list.map((v) => [conv(v[0]), ...v.slice(1)])
+
+	const axisBase = { type: 'time', min: conv(start), max: conv(now) }
 
 	return {
+		// Ось времени рисуем по UTC со сдвинутыми метками = время POS
+		useUTC: pos,
+
 		title: [
 			{ text: TITLES[0], left: 'center', top: '0%', textStyle: { fontSize: 13 } },
 			{ text: TITLES[1], left: 'center', top: '28%', textStyle: { fontSize: 13 } },
@@ -103,7 +118,7 @@ function buildOption(data, days = 7) {
 			formatter(params) {
 				const p = params[0]
 				if (!p) return ''
-				const dt = new Date(p.value[0]).toLocaleString('ru-RU')
+				const dt = tsFmt(p.value[0])
 				const i = p.seriesIndex
 				if (i <= 1) {
 					const st = STATE_LABELS[p.value[2]] || '—'
@@ -133,23 +148,23 @@ function buildOption(data, days = 7) {
 		series: [
 			{
 				name: TITLES[0], type: 'line', xAxisIndex: 0, yAxisIndex: 0,
-				data: temp, showSymbol: false, encode: { x: 0, y: 1 },
+				data: convPoints(temp), showSymbol: false, encode: { x: 0, y: 1 },
 			},
 			{
 				name: TITLES[1], type: 'line', xAxisIndex: 1, yAxisIndex: 1,
-				data: hum, showSymbol: false, encode: { x: 0, y: 1 },
+				data: convPoints(hum), showSymbol: false, encode: { x: 0, y: 1 },
 			},
 			{
 				name: TITLES[2], type: 'line', step: 'end',
 				xAxisIndex: 2, yAxisIndex: 2,
-				data: valve, showSymbol: false,
+				data: convPoints(valve), showSymbol: false,
 				areaStyle: { opacity: 0.3 },
 				itemStyle: { color: '#91cc75' }, lineStyle: { width: 2 },
 			},
 			{
 				name: TITLES[3], type: 'line', step: 'end',
 				xAxisIndex: 3, yAxisIndex: 3,
-				data: fan, showSymbol: false,
+				data: convPoints(fan), showSymbol: false,
 				areaStyle: { opacity: 0.3 },
 				itemStyle: { color: '#fac858' }, lineStyle: { width: 2 },
 			},

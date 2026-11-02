@@ -1,5 +1,6 @@
 const { ms } = require('@tool/command/time')
 
+
 /**
  * Преобразование настроек в удобный формат для ангара
  * @param {object} r Результат

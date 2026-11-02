@@ -9,6 +9,7 @@ import { checkS } from '@tool/sensor'
 
 //Параметры улицы(погода, датчики)
 export default function Outdoor() {
+
 	const mb = useViewStore((s) => s.mb())
 	const build = useEquipStore((s) => s.build())
 	const section = useEquipStore((s) => s.section())
@@ -25,7 +26,6 @@ export default function Outdoor() {
 		// Влажность продукта (макс)
 		{ type: 'hin', ...getTotalBy('hin', 'max', build?._id) },
 	]
-
 	// Холодильник. датчик со2
 	if (type === 'cold')
 		section?.co2

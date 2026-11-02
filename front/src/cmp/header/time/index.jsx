@@ -1,24 +1,42 @@
-import Moment from 'react-moment'
-import './style.css'
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTimeStore } from '@store/time'
+import { posNow, posDate, posTime, posZoneLabel } from '@tool/datetime'
+import './style.css'
 const CLICK = 3
 const DELTA_MS = 1000
-//Текущее время
+// Текущее время POS (интерфейс может быть открыт не на POS — показываем время POS)
 export default function Time({}) {
 	const [data, setData] = useReducer(reducer, { count: 0 })
+	const [now, setNow] = useState(posNow)
 	const navigate = useNavigate()
+	// Время и зона POS приходят в раме c_equip (apiInfo) по сокету
+	const timezone = useTimeStore((s) => s.timezone)
+	const offset = useTimeStore((s) => s.offset)
+	const zone = posZoneLabel(timezone, offset)
+
+	useEffect(() => {
+		const timer = setInterval(() => setNow(posNow()), 1000)
+		return () => clearInterval(timer)
+	}, [])
+
 	useEffect(() => {
 		if (!data.ok) return
 		navigate('./service/1')
 	}, [data])
+
 	return (
-		<div className='time' onClick={setData}>
-			<Moment format='HH:mm' interval={1000} />
-			<Moment format='DD.MM.YYYY' interval={1000} />
+		<div
+			className='time'
+			onClick={setData}
+			title={zone ? 'Время POS: ' + zone : 'Время POS'}
+		>
+			<span>{posTime(now)}</span>
+			<span>{posDate(now)}</span>
 		</div>
 	)
 }
+
 
 /**
  *

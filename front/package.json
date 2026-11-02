@@ -1,7 +1,7 @@
 {
 	"name": "frontend",
 	"private": true,
-	"version": "6.5.15",
+	"version": "6.5.16",
 	"scripts": {
 		"start": "rsbuild dev --open",
 		"dev": "rsbuild dev --open",

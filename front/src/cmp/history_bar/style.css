@@ -127,6 +127,67 @@
 	white-space: nowrap;
 }
 
+.history-bar__time--click {
+	cursor: pointer;
+	border-bottom: 1px dashed rgba(101, 167, 238, 0.7);
+	padding-bottom: 1px;
+}
+
+.history-bar__time--click:hover {
+	color: #fff;
+	border-bottom-color: #fff;
+}
+
+.history-bar__btn--wide {
+	width: auto;
+	padding: 0 14px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.history-bar__picker {
+	position: absolute;
+	right: 16px;
+	bottom: calc(100% + 10px);
+	z-index: 10000;
+	width: 320px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 14px 16px;
+	background: rgba(25, 38, 70, 0.98);
+	border: 1px solid #65a7ee;
+	border-radius: 10px;
+	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+.history-bar__picker-title {
+	font-size: 14px;
+	font-weight: bold;
+	color: #65a7ee;
+}
+
+.history-bar__picker-input {
+	padding: 8px 10px;
+	font-size: 16px;
+	border: 1px solid #65a7ee;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.1);
+	color: #fff;
+	color-scheme: dark;
+}
+
+.history-bar__picker-input:focus {
+	outline: none;
+	border-color: #fff;
+}
+
+.history-bar__picker-btns {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+}
+
 .history-bar__data-times {
 	display: flex;
 	gap: 12px;

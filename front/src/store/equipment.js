@@ -37,7 +37,8 @@ const useEquipStore = create((set, get) => ({
 		set({ factory: r?.factory });
 		set({ list: Array.isArray(r?.building) ? r.building : [] });
 		set({ weather: r?.weather ?? {} });
-		set({ apiInfo: r?.apiInfo });
+		// Информация о сервере приходит только в раме c_equip (во фреймах истории её нет)
+		if (r?.apiInfo) set({ apiInfo: r.apiInfo });
 		// TODO Раскоментировать
 		set({ remote: r?.remote ?? [] });
 	},

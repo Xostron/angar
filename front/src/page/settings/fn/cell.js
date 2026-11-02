@@ -7,7 +7,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, stgV) {
 		const obj = { build: idB, type: code, _code }
 		const setValue = (value) => setSettingAu({ value, ...obj })
 		// Пользовательская настройка
-		const value = stgV.getValueSetting(_code.split('.'), stgV.build, stgV.type, stgV.prd)
+		const value = stgV.getValueSetting(_code.split('.'), stgV.build, stgV.type, stgV.prd) ?? 
 
 		pickMore(code, ml, moreValue, value)
 		// if (_code == 'cooler.begin') console.log(11, ml._code, moreValue)
