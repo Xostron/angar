@@ -15,8 +15,12 @@ export default function Field({ data }) {
 	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
 	const setVal = (value, _code, idx, arrV) => setSettingAu({ value, ...obj, _code, idx, arrV })
 	const [refresh, setRefresh] = useState(false)
+
+	// useEffect(() => {
+	// 	data.refresh = refresh
+	// }, [refresh])
 	// Значение поля
-	console.log(11, moreValue)
+	// console.log(11, moreValue)
 	return (
 		<div>
 			<div className='idle-field'>
@@ -85,7 +89,7 @@ function ItemInput({ v, setVal, code, idx, arrV }) {
 			value={value}
 			setValue={(val) => {
 				setValue(val)
-				console.log(22, val, code, idx, arrV)
+				// console.log(22, val, code, idx, arrV)
 				setVal(val, code, idx, arrV)
 			}}
 		/>

@@ -27,6 +27,7 @@ const data = {
 	heater: '/img/alarm/heater.svg',
 	co2: '/img/alarm/dioxide.svg',
 	wetting: '/img/alarm/wetting.svg',
+	cooler:'/img/alarm/cooling.svg',
 
 	connect: '/img/alarm/connect.svg',
 	local: '/img/alarm/local.svg',

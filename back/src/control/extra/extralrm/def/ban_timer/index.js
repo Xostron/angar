@@ -20,14 +20,15 @@ function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 		// if (key == 'drying')
 		// console.log(444, key, check)
 		// Включение запрета
-		if (check && (!acc?.[key]?.flag || !store.alarm.timer?.[building._id]?.[key])) {
-			acc[key].flag = true
+		// if (check && (!acc?.[key]?.flag || !store.alarm.timer?.[building._id]?.[key])) {
+		if (check) {
+			// acc[key].flag = true
 			// console.log(555, key)
 			wrTimer(building, key, name)
 		}
 		// Удаление запрета
 		if (!check) {
-			delete acc?.[key]?.flag
+			// delete acc?.[key]?.flag
 			delTimer(building._id, key)
 		}
 	}

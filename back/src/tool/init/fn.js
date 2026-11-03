@@ -66,7 +66,7 @@ function transformF(factory, phF) {
 			}
 		}
 	}
-	console.log(222, fct.idleCold)
+	// console.log(222, fct.idleCold)
 	// Значения заводских настроек (factory/factory.json)
 	writeSync({ factory: fct }, phF, null, true)
 }

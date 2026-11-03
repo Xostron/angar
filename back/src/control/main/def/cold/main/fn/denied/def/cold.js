@@ -18,9 +18,11 @@ function deniedCold(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const idsS = getIdsS(obj.data.section, bld._id)
 	const supplySt = checkSupply(bld, sect, clr, idsS, obj.retain)
 	const aggr = isReadyAgg(obj.value, bld._id, clr._id)
+	// Таймер запрета: испаритель запрещен
+	const banCooler = store.alarm.timer?.[bld._id]?.cooler
 
 	store.denied[bld._id][clr._id] =
-		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm'
+		!start || alr || !aggr || !supplySt || stateCooler?.status === 'alarm' || banCooler
 	// console.log(
 	// 	410,
 	// 	clr.name,

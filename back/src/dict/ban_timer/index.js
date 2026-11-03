@@ -11,6 +11,7 @@ module.exports = data = {
 	heater: 'Обогреватель запрещен',
 	co2: 'Удаление СО2 запрещено',
 	wetting: 'Увлажнитель запрещен',
+	cooler: 'Испаритель запрещен',
 
 	get(bld, name, key) {
 		return {

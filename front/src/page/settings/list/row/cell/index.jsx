@@ -13,18 +13,18 @@ import More from '@src/cmp/fields/more'
 export default function Cell({ data, i, j }) {
 	const { type, build } = useParams()
 	const { settingAu, prd, hid } = useOutputStore()
-
+	// console.log(123, data)
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
 
 	// Значение поля
 	const [value, setValue] = useState(data?.value)
 
+	// if (data.code == 'cooler.begin') console.log(11, data)
 	// Заполнить поля заводскими, если нет пользовательских настроек
 	useEffect(() => {
 		setValue(data?.value ?? data?.factory ?? '')
-		if (data.code == 'cooler.begin') console.log(11, data.value)
-	}, [type, prd, data?.value])
+	}, [type, prd])
 	// Подсветка - Изменение поля
 	let hasChanged
 	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
@@ -51,6 +51,7 @@ export default function Cell({ data, i, j }) {
 					value={value}
 					// disabled={disabled}
 					setValue={(val) => {
+						console.log(22)
 						setValue(val)
 						data.setValue(val, data?.idx, data?.arrV)
 					}}
