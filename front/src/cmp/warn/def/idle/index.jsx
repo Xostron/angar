@@ -11,23 +11,8 @@ import Field from './field'
 //Управление вентилятором
 export default function Entry({ data = {}, entryCode }) {
 	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
-	// console.log(123, data)
-	const clear = useWarn((s) => s.clear)
-	// // Управление: вкл/выкл
-	// const setO = useOutputStore((s) => s.setO)
-	// // Вывести из работы
-	// const setFan = useOutputStore((s) => s.setFan)
-	// // Состояние ВНО: Выведен ли из работы ВНО, Состояние вентилятора
-	// const { off = null, state = null } = useInputStore((s) => s.getFan({ _id }))
 
-	// // Номер выхода (канала) вентилятора
-	// const ch = module?.channel - 1
-	// // Выбранное действие
-	// const [sel, setSel] = useState(state)
-	// // При обновлении
-	// useEffect(() => {
-	// 	setSel(state)
-	// }, [_id])
+	const clear = useWarn((s) => s.clear)
 
 	return (
 		<div className='entry'>
@@ -36,7 +21,6 @@ export default function Entry({ data = {}, entryCode }) {
 			<Control cancel={cancel} ok={fnYes} />
 		</div>
 	)
-
 
 	// Отмена
 	function cancel() {

@@ -23,8 +23,8 @@ export default function Cell({ data, i, j }) {
 	// Заполнить поля заводскими, если нет пользовательских настроек
 	useEffect(() => {
 		setValue(data?.value ?? data?.factory ?? '')
-	}, [type, prd])
-
+		if (data.code == 'cooler.begin') console.log(11, data.value)
+	}, [type, prd, data?.value])
 	// Подсветка - Изменение поля
 	let hasChanged
 	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
@@ -52,7 +52,7 @@ export default function Cell({ data, i, j }) {
 					// disabled={disabled}
 					setValue={(val) => {
 						setValue(val)
-						data.setValue(val)
+						data.setValue(val, data?.idx, data?.arrV)
 					}}
 					style={st}
 					title={data.code}
@@ -92,6 +92,7 @@ export default function Cell({ data, i, j }) {
 					{data.value}
 				</div>
 			)
+
 		case 'info':
 			return (
 				<div className='info' style={st}>
@@ -115,33 +116,3 @@ function Title({ data, st, cl }) {
 		</div>
 	)
 }
-
-// val[data.code] = useInputStore(({ input }) => {
-// 	if (!code) return null
-// 	if (
-// 		[
-// 			'antibliz',
-// 			'heating',
-// 			'overVlv',
-// 			'accel',
-// 			'idle',
-// 			'co2',
-// 			'ozon',
-// 			'heater',
-// 			'smoking',
-// 			'demo',
-// 			'heattcnl',
-// 		].includes(type)
-// 	) {
-// 		// Без продукта
-// 		if (code?.length === 1) return input?.retain?.[build]?.setting?.[type]?.[code[0]]
-// 		if (code?.length === 2)
-// 			return input?.retain?.[build]?.setting?.[type]?.[code[0]]?.[code[1]]
-// 	} else {
-// 		// С продуктом
-// 		if (code?.length === 1)
-// 			return input?.retain?.[build]?.setting?.[type]?.[prd?.code]?.[code[0]]
-// 		if (code?.length === 2)
-// 			return input?.retain?.[build]?.setting?.[type]?.[prd?.code]?.[code[0]]?.[code[1]]
-// 	}
-// })

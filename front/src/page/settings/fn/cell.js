@@ -4,7 +4,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 	mark.list.forEach((ml) => {
 		const _code = mark._code + '.' + ml._code
 		const obj = { build: idB, type: code, _code }
-		const setValue = (value) => setSettingAu({ value, ...obj })
+		const setValue = (value, idx, arrV) => setSettingAu({ value, ...obj, idx, arrV })
 		// Пользовательская настройка ?? заводская ?? пустая строка
 		const factory = code == 'idle' || code == 'idleCold' ? [ml?.value ?? ''] : (ml?.value ?? '')
 		// console.log(123, obj)
@@ -16,7 +16,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 			factory,
 		)
 		// console.log(11, code)
-
+		// console.log(11, _code)
 		pickMore(code, ml, moreValue, value)
 		// if (_code == 'cooler.begin') console.log(11, ml._code, moreValue)
 		// if (ml._code === 'more') console.log(111, value, _code.split('.'))
@@ -36,6 +36,8 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 					value,
 					setValue,
 					factory,
+					// idx:,
+					// arrV:
 				})
 				// Заводская настройка (Если одна колонка markList)
 				if (mark.list.length === 1) result.push({ field: 'text', value: ml.value })
@@ -64,6 +66,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 					value: value instanceof Array ? value[0] : value,
 					setValue,
 					factory,
+					...pickBE(code, value),
 				})
 				if (mark.list.length === 1) result.push({ field: 'text', value: ml.value })
 				break
@@ -94,6 +97,13 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 	})
 }
 
+// Только для "Таймер запрет", данные необходимые для сохранения на первой странице
+function pickBE(code, value) {
+	if (code != 'idle' && code != 'idleCold') return {}
+	return { idx: 0, arrV: value }
+}
+
+// Только для "Таймер запрет", данные необходимые для сохранения на модалке
 function fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu) {
 	const len = moreValue?.begin?.length ?? ''
 	const r = {
@@ -105,15 +115,20 @@ function fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu) {
 		column: ['Начало', 'Окончание', ''],
 		// Значения полей - массив
 		moreValue,
+		// Изменить значения настройки
 		setSettingAu,
+		// Записать изменения на сервере
 		sendSettingAu,
+		// Стандартный объект для изменения настройки
 		obj,
+		// Код строки настройки
 		markCode: mark._code,
 	}
 	// console.log(22, r)
 	return r
 }
 
+// Только для "Таймер запрет", собираем значения поля begin, end
 function pickMore(code, ml, moreValue, value) {
 	if (!['idle', 'idleCold'].includes(code)) return
 	moreValue[ml._code] = value
