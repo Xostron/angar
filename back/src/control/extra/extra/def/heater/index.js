@@ -2,7 +2,7 @@ const { isDemo } = require('@tool/demo/fn/fn')
 const def = require('./def')
 const { delUnused } = require('@tool/command/extra')
 
-// Тепловые пушки - подогрев канала
+// Обогреватель
 function heater(bld, sect, obj, s, se, m, alarm, acc, data, ban) {
 	// Сообщение о выбранном режиме
 	fnMsg(bld, acc, s)

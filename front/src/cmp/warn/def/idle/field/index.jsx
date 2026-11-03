@@ -14,8 +14,9 @@ import Input from '@src/cmp/fields/input'
 export default function Field({ data }) {
 	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
 	const setVal = (value, _code, idx, arrV) => setSettingAu({ value, ...obj, _code, idx, arrV })
+	const [refresh, setRefresh] = useState(false)
 	// Значение поля
-
+	console.log(11, moreValue)
 	return (
 		<div>
 			<div className='idle-field'>
@@ -26,6 +27,7 @@ export default function Field({ data }) {
 				{moreValue.begin.map((el, i) => (
 					<>
 						<ItemInput
+							key={'a' + i + el}
 							code={markCode + '.begin'}
 							v={el}
 							setVal={setVal}
@@ -33,19 +35,44 @@ export default function Field({ data }) {
 							arrV={moreValue.begin}
 						/>
 						<ItemInput
+							key={'b' + i + moreValue.end[i]}
 							code={markCode + '.end'}
 							v={moreValue.end[i]}
 							setVal={setVal}
 							idx={i}
 							arrV={moreValue.end}
 						/>
-						<Btn icon='/img/trash.svg' cls='idle-trash' />
+						<Btn
+							key={'c' + i + el + moreValue.end[i]}
+							icon='/img/trash.svg'
+							cls='idle-trash'
+							onClick={() => del(i)}
+						/>
 					</>
 				))}
 			</div>
-			<Btn title='Добавить период' cls='idle-add' />
+			<Btn title='Добавить период' cls='idle-add' onClick={add} />
 		</div>
 	)
+
+	function add() {
+		setVal('00:00', markCode + '.begin', moreValue.begin.length, moreValue.begin)
+		setVal('00:00', markCode + '.end', moreValue.end.length, moreValue.end)
+		setRefresh((p) => !p)
+	}
+
+	function del(idx) {
+		moreValue.begin.splice(idx, 1)
+		moreValue.end.splice(idx, 1)
+		setRefresh((p) => !p)
+		setVal(
+			moreValue.begin.at(-1),
+			markCode + '.begin',
+			moreValue.begin.length - 1,
+			moreValue.begin,
+		)
+		setVal(moreValue.end.at(-1), markCode + '.end', moreValue.end.length - 1, moreValue.end)
+	}
 }
 
 function ItemInput({ v, setVal, code, idx, arrV }) {
@@ -58,6 +85,7 @@ function ItemInput({ v, setVal, code, idx, arrV }) {
 			value={value}
 			setValue={(val) => {
 				setValue(val)
+				console.log(22, val, code, idx, arrV)
 				setVal(val, code, idx, arrV)
 			}}
 		/>

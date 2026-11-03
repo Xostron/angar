@@ -262,6 +262,54 @@ const useOutputStore = create((set, get) => ({
 		}
 		set({ settingAu })
 	},
+	delSettingAu(obj) {
+		console.log('setSettingAu', obj)
+		if (!obj) {
+			set({ settingAu: {} })
+			return
+		}
+		const settingAu = get().settingAu
+		settingAu.buildingId = obj?.build ?? null
+		settingAu.code = obj?.type ?? null
+		if (
+			![
+				'antibliz',
+				'heating',
+				'overVlv',
+				'accel',
+				'idle',
+				'idleCold',
+				'co2',
+				'ozon',
+				'heater',
+				'smoking',
+				'demo',
+				'heattcnl',
+			].includes(obj?.type)
+		)
+			settingAu.prdCode = get().prd?.code ?? obj?.prdCode
+		settingAu.value ??= {}
+		const _code = obj._code.split('.')
+		if (obj?.idx === undefined && obj?.arrV === undefined) {
+			if (_code.length === 1) {
+				settingAu.value[obj._code] = obj.value
+			} else {
+				settingAu.value[_code[0]] ??= {}
+				settingAu.value[_code[0]][_code[1]] = obj.value
+			}
+			console.log(221, settingAu)
+		} else {
+			obj.arrV[obj.idx] = obj.value
+			if (_code.length === 1) {
+				settingAu.value[obj._code] = obj.arrV
+			} else {
+				settingAu.value[_code[0]] ??= {}
+				settingAu.value[_code[0]][_code[1]] = obj.arrV
+			}
+			console.log(222, settingAu.value, obj.arrV)
+		}
+		set({ settingAu })
+	},
 	sendSettingAu() {
 		console.log('sendSettingAu')
 		// Отправить на сервер
