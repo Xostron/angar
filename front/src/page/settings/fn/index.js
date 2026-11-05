@@ -101,7 +101,7 @@ function rack(obj, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 		sendSettingAu,
 		prd === curPrd,
 	)
-
+	// console.log(data.list)
 	// Максимальное кол-во ячеек в строке (для правильной css отрисовки)
 	const max = Math.max(...data.list.map((el) => el?.length))
 	// Название колонок: "Значения","Заводские","Ед. измерения"

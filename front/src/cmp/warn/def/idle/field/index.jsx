@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import './style.css'
 import Btn from '@src/cmp/fields/btn'
 import Input from '@src/cmp/fields/input'
@@ -16,11 +16,6 @@ export default function Field({ data }) {
 	const setVal = (value, _code, idx, arrV) => setSettingAu({ value, ...obj, _code, idx, arrV })
 	const [refresh, setRefresh] = useState(false)
 
-	// useEffect(() => {
-	// 	data.refresh = refresh
-	// }, [refresh])
-	// Значение поля
-	// console.log(11, moreValue)
 	return (
 		<div>
 			<div className='idle-field'>
@@ -29,9 +24,8 @@ export default function Field({ data }) {
 				<span></span>
 
 				{moreValue.begin.map((el, i) => (
-					<>
+					<Fragment key={i}>
 						<ItemInput
-							key={'a' + i + el}
 							code={markCode + '.begin'}
 							v={el}
 							setVal={setVal}
@@ -39,7 +33,7 @@ export default function Field({ data }) {
 							arrV={moreValue.begin}
 						/>
 						<ItemInput
-							key={'b' + i + moreValue.end[i]}
+							// key={'b' + i + moreValue.end[i]}
 							code={markCode + '.end'}
 							v={moreValue.end[i]}
 							setVal={setVal}
@@ -47,12 +41,12 @@ export default function Field({ data }) {
 							arrV={moreValue.end}
 						/>
 						<Btn
-							key={'c' + i + el + moreValue.end[i]}
+							// key={'c' + i + el + moreValue.end[i]}
 							icon='/img/trash.svg'
 							cls='idle-trash'
 							onClick={() => del(i)}
 						/>
-					</>
+					</Fragment>
 				))}
 			</div>
 			<Btn title='Добавить период' cls='idle-add' onClick={add} />

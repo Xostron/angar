@@ -92,7 +92,7 @@ export default function Settings({}) {
 		curPrd,
 	}
 
-	let data = rack(o, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch)
+	const data = rack(o, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch)
 	// ***************** Стили *****************
 	const sumStg = kindList.length + def.length
 	const { st, stl, sth, stn } = sty(data, sumStg)
@@ -100,7 +100,7 @@ export default function Settings({}) {
 	return (
 		<main className='sett' style={st}>
 			<SubHead title={data.title} head={data.head} st={sth} dataWarn={data.warn} />
-			<List data={data} st={stl} />
+			<List list={data?.list} st={stl} />
 			<Nav st={stn} cur={type} dialog={onDialog} hasChanged={hasChanged} />
 		</main>
 	)

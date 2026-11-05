@@ -14,7 +14,6 @@ export default function More({ data, style, title }) {
 		fnYes: data.sendSettingAu,
 		...data,
 	}
-
 	return (
 		<button style={style} className='cell more' onClick={onDialog} title={title}>
 			<p className='val'>{data.value} </p>

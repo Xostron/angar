@@ -9,7 +9,7 @@ export default function setting(list, code, idB, stgV, setSettingAu, sendSetting
 
 // Формирование строки (1 ячейка оглавление, остальные ячейки в mark.list (функция column))
 function row(mark, code, idB, stgV, setSettingAu, sendSettingAu, showHid) {
-	let result = []
+	const result = []
 	// 1 ячейка по-умолчанию
 	const cell = {
 		field: 'iconText',

@@ -2,12 +2,16 @@ import Row from './row'
 // import useWarn from '@store/warn'
 // import useAuthStore from '@store/auth'
 
+
 //Тело таблицы
-export default function List({data, st}) {
-	if (!data || !data.list.length) return null
+export default function List({ list, st }) {
+	if (!list.length) return null
+
 	return (
 		<section style={st} className='set-list' /*onClick={onClick}*/>
-			{data.list.map(((el, i) => <Row data={el} key={i} i={i}/>))}
+			{list.map((el, i) => (
+				<Row data={el} key={i} i={i} />
+			))}
 		</section>
 	)
 }

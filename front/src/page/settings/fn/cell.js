@@ -15,10 +15,11 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 			stgV.prd,
 			factory,
 		)
+		// ====================================
+		// if (_code == 'cooler.begin') console.log(22, value)
 		// console.log(11, code)
 		// console.log(11, _code)
 		pickMore(code, ml, moreValue, value)
-		// if (_code == 'cooler.begin') console.log(11, ml._code, moreValue)
 		// if (ml._code === 'more') console.log(111, value, _code.split('.'))
 
 		switch (ml.type) {
@@ -95,6 +96,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 				break
 		}
 	})
+	return result
 }
 
 // Только для "Таймер запрет", данные необходимые для сохранения на первой странице

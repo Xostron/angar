@@ -216,6 +216,7 @@ const useOutputStore = create((set, get) => ({
 	// Настройки
 	setSettingAu(obj) {
 		console.log('setSettingAu', obj)
+
 		if (!obj) {
 			set({ settingAu: {} })
 			return
@@ -251,12 +252,13 @@ const useOutputStore = create((set, get) => ({
 			}
 			// console.log(221, settingAu)
 		} else {
-			obj.arrV[obj.idx] = obj.value
+			const arrV = [...obj.arrV]
+			arrV[obj.idx] = obj.value
 			if (_code.length === 1) {
-				settingAu.value[obj._code] = obj.arrV
+				settingAu.value[obj._code] = arrV
 			} else {
 				settingAu.value[_code[0]] ??= {}
-				settingAu.value[_code[0]][_code[1]] = obj.arrV
+				settingAu.value[_code[0]][_code[1]] = arrV
 			}
 			// console.log(222, settingAu.value, obj.arrV)
 		}

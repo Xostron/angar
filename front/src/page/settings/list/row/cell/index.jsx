@@ -13,22 +13,31 @@ import More from '@src/cmp/fields/more'
 export default function Cell({ data, i, j }) {
 	const { type, build } = useParams()
 	const { settingAu, prd, hid } = useOutputStore()
-	// console.log(123, data)
 	// Код ячейки = mark._code + '.' + ml._code
 	const code = data?.code?.split('.')
+
+	// if (data.code == 'cooler.begin') console.log(11, data === current)
 
 	// Значение поля
 	const [value, setValue] = useState(data?.value)
 
-	// if (data.code == 'cooler.begin') console.log(11, data)
 	// Заполнить поля заводскими, если нет пользовательских настроек
-	useEffect(() => {
-		setValue(data?.value ?? data?.factory ?? '')
-	}, [type, prd])
 	// Подсветка - Изменение поля
 	let hasChanged
 	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
 	else hasChanged = !!settingAu?.value?.[data.code]
+
+	if (data.code == 'cooler.begin') {
+		// console.log(111, forIdle(type, code, data?.arrV, data, value))
+		console.log(11, data.value, data.arrV, value, settingAu?.value?.[code[0]]?.[code[1]])
+	}
+
+	const onlyIdle = forIdle(type, code, data?.arrV, settingAu, data, value)
+	useEffect(() => {
+		setValue(data?.value ?? data?.factory ?? '')
+	}, [type, prd, data?.value])
+	// ***********************************************************
+
 	let cl = ['cell-w']
 	if (hasChanged) cl.push('changed')
 	cl = cl.join(' ')
@@ -51,7 +60,6 @@ export default function Cell({ data, i, j }) {
 					value={value}
 					// disabled={disabled}
 					setValue={(val) => {
-						console.log(22)
 						setValue(val)
 						data.setValue(val, data?.idx, data?.arrV)
 					}}
@@ -102,7 +110,7 @@ export default function Cell({ data, i, j }) {
 			)
 
 		case 'more':
-			return <More data={{ ...data }} style={st} />
+			return <More data={data} style={st} />
 
 		default:
 			return <Text cls='cell-w' data={data} style={st} />
@@ -116,4 +124,10 @@ function Title({ data, st, cl }) {
 			{data.nameHid && <BtnHid style={st} cls={cl} nameHid={data?.nameHid} />}
 		</div>
 	)
+}
+
+function forIdle(type, code, arrV, settingAu, data, value) {
+	if (!['idle', 'idleCold'].includes(type)) return false
+
+	return data?.value != value && settingAu?.value?.[code[0]]?.[code[1]] === undefined
 }

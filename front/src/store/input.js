@@ -31,7 +31,6 @@ const useInputStore = create((set, get) => ({
 	},
 	getValueSetting(code, build, type, prd, factory) {
 		const stgV = get()?.input?.retain?.[build]?.setting?.[type]
-		// console.log(33, get()?.input?.retain?.[build])
 		if (!code) return null
 		if (
 			[
