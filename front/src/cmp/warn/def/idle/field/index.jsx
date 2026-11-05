@@ -15,7 +15,6 @@ export default function Field({ data }) {
 	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
 	const setVal = (value, _code, idx, arrV) => setSettingAu({ value, ...obj, _code, idx, arrV })
 	const [refresh, setRefresh] = useState(false)
-	console.log(11, moreValue)
 	return (
 		<div>
 			<div className='idle-field'>

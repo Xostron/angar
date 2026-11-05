@@ -135,10 +135,35 @@ function fnDateBuild(building) {
 	}
 }
 
+function fnStgIdle(retain) {
+	for (const idB in retain) {
+		fnIdle(idB, 'idle', retain?.[idB]?.setting?.idle)
+		fnIdle(idB, 'idleCold', retain?.[idB]?.setting?.idleCold)
+	}
+}
+
+function fnIdle(idB, code, stg) {
+	// key ключи mark = drying, cooling, cooler
+	for (const key in stg) {
+		store.retain[idB] ??= {}
+		store.retain[idB].setting ??= {}
+		store.retain[idB].setting[code] ??= {}
+		store.retain[idB].setting[code][key] ??= {}
+		store.retain[idB].setting[code][key].begin ??= ['00:00']
+		store.retain[idB].setting[code][key].end ??= ['00:00']
+
+		if (typeof stg?.[key]?.begin == 'string')
+			store.retain[idB].setting[code][key].begin = [stg?.[key]?.begin]
+		if (typeof stg?.[key]?.end == 'string')
+			store.retain[idB].setting[code][key].end = [stg?.[key]?.end]
+	}
+}
+
 module.exports = {
 	positionVlv,
 	fnResult,
 	fnCooling,
 	fnDateBuild,
 	fnResultValve,
+	fnStgIdle,
 }

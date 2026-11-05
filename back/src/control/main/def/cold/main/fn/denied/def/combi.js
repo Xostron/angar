@@ -30,7 +30,8 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 	const alrClosed = isAlrClosed(bld, obj)
 	// Кнопка выключения склада
 	const bldOff = isExtralrm(bld._id, null, 'bldOff')
-
+	// Таймер запрета: испаритель запрещен
+	const banCooler = store.alarm.timer?.[bld._id]?.cooler
 	// Авария питания: сигнал склада/секций (supply), батарея (battery), Авария питания.ручной сброс (sb)
 	const sb =
 		// isExtralrm(bld._id, null, 'supply') ||
@@ -68,6 +69,7 @@ function deniedCombi(bld, sect, clr, bdata, alr, stateCooler, fnChange, obj) {
 			'Таймер запрета лечения',
 		],
 		[sb, 'Авария питания'],
+		[banCooler, 'Испаритель запрещен'],
 	]
 	store.denied[bld._id][clr._id] = a.filter((e) => e[0] === true)?.length !== 0
 	// console.log(

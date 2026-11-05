@@ -1,4 +1,4 @@
-const { positionVlv, fnResult, fnCooling, fnDateBuild, fnResultValve } = require('./fn')
+const { positionVlv, fnResult, fnCooling, fnDateBuild, fnResultValve, fnStgIdle } = require('./fn')
 const Aboc = require('@tool/abort_controller')
 const { data: store } = require('@store')
 const fnMobile = require('./mobile')
@@ -12,6 +12,8 @@ const fnWeb = require('./web')
 function transform(obj) {
 	// Создаем область для каждого склада
 	for (const { _id } of obj.data.building) store.retain[_id] ??= {}
+	// Для совместимости: преобразование настроек idle, edleCold
+	fnStgIdle(obj?.retain)
 	// 0. Расчет положения клапанов
 	positionVlv(obj)
 	// 1. Калибровка клапанов
