@@ -17,10 +17,8 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 		)
 		// ====================================
 		// if (_code == 'cooler.begin') console.log(22, value)
-		// console.log(11, code)
-		// console.log(11, _code)
+
 		pickMore(code, ml, moreValue, value)
-		// if (ml._code === 'more') console.log(111, value, _code.split('.'))
 
 		switch (ml.type) {
 			case 'number':
@@ -87,9 +85,7 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 				result.push({ field: 'head', value: ml._name })
 				break
 			case 'more':
-				// const o = {}
 				const o = fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu)
-				// console.log(11, o)
 				result.push({ field: 'more', ...o })
 				break
 			default:

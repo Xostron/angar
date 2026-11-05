@@ -27,12 +27,11 @@ export default function Cell({ data, i, j }) {
 	if (code?.length === 2) hasChanged = !!settingAu?.value?.[code[0]]?.[code[1]]
 	else hasChanged = !!settingAu?.value?.[data.code]
 
-	if (data.code == 'cooler.begin') {
-		// console.log(111, forIdle(type, code, data?.arrV, data, value))
-		console.log(11, data.value, data.arrV, value, settingAu?.value?.[code[0]]?.[code[1]])
-	}
+	// if (data.code == 'cooler.begin') {
+	// console.log(111, forIdle(type, code, data?.arrV, data, value))
+	// console.log(11, data.value, data.arrV, value, settingAu?.value?.[code[0]]?.[code[1]])
+	// }
 
-	const onlyIdle = forIdle(type, code, data?.arrV, settingAu, data, value)
 	useEffect(() => {
 		setValue(data?.value ?? data?.factory ?? '')
 	}, [type, prd, data?.value])
@@ -124,10 +123,4 @@ function Title({ data, st, cl }) {
 			{data.nameHid && <BtnHid style={st} cls={cl} nameHid={data?.nameHid} />}
 		</div>
 	)
-}
-
-function forIdle(type, code, arrV, settingAu, data, value) {
-	if (!['idle', 'idleCold'].includes(type)) return false
-
-	return data?.value != value && settingAu?.value?.[code[0]]?.[code[1]] === undefined
 }

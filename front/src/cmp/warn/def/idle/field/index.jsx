@@ -15,7 +15,7 @@ export default function Field({ data }) {
 	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
 	const setVal = (value, _code, idx, arrV) => setSettingAu({ value, ...obj, _code, idx, arrV })
 	const [refresh, setRefresh] = useState(false)
-
+	console.log(11, moreValue)
 	return (
 		<div>
 			<div className='idle-field'>
@@ -24,7 +24,7 @@ export default function Field({ data }) {
 				<span></span>
 
 				{moreValue.begin.map((el, i) => (
-					<Fragment key={i}>
+					<Fragment key={i + el}>
 						<ItemInput
 							code={markCode + '.begin'}
 							v={el}
@@ -54,12 +54,15 @@ export default function Field({ data }) {
 	)
 
 	function add() {
-		setVal('00:00', markCode + '.begin', moreValue.begin.length, moreValue.begin)
-		setVal('00:00', markCode + '.end', moreValue.end.length, moreValue.end)
+		moreValue.begin.push('00:00')
+		moreValue.end.push('00:00')
+		setVal('00:00', markCode + '.begin', moreValue.begin.length - 1, moreValue.begin)
+		setVal('00:00', markCode + '.end', moreValue.end.length - 1, moreValue.end)
 		setRefresh((p) => !p)
 	}
 
 	function del(idx) {
+		if (moreValue?.begin?.length === 1) return
 		moreValue.begin.splice(idx, 1)
 		moreValue.end.splice(idx, 1)
 		setRefresh((p) => !p)

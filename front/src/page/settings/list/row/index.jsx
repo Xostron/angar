@@ -20,7 +20,7 @@ export default function Row({ data, i }) {
 		<>
 			{data.map((el, j) => (
 				// key={el?.code + '.' + el?.value}
-				<Cell key={el?.code} i={i} j={j} data={el} />
+				<Cell key={el?.code ?? j} i={i} j={j} data={el} />
 			))}
 		</>
 	)
