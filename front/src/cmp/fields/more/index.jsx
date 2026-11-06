@@ -16,8 +16,14 @@ export default function More({ data, style, title }) {
 	}
 	return (
 		<button style={style} className='cell more' onClick={onDialog} title={title}>
-			<p className='val'>{data.value} </p>
-			<img width='18px' src='/img/arrow-right.svg' />
+			{data.value > 1 ? (
+				<>
+					<p className='val'>{[data.name?.toLowerCase() ?? '', data.value].join(' ')} </p>
+					<img width='18px' src='/img/arrow-right.svg' />
+				</>
+			) : (
+				<img width='28px' height='28px' src='/img/plus.svg' />
+			)}
 		</button>
 	)
 

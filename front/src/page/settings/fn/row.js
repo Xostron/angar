@@ -1,14 +1,25 @@
 import fnCell from './cell'
 
 // Собираем таблицу с настройками
-export default function setting(list, code, idB, stgV, setSettingAu, sendSettingAu, showHid) {
+export default function setting(
+	list,
+	code,
+	idB,
+	stgV,
+	delRowSettingAu,
+	setSettingAu,
+	sendSettingAu,
+	showHid,
+) {
 	return !list
 		? []
-		: list.map((el) => row(el, code, idB, stgV, setSettingAu, sendSettingAu, showHid))
+		: list.map((el) =>
+				row(el, code, idB, stgV, delRowSettingAu, setSettingAu, sendSettingAu, showHid),
+			)
 }
 
 // Формирование строки (1 ячейка оглавление, остальные ячейки в mark.list (функция column))
-function row(mark, code, idB, stgV, setSettingAu, sendSettingAu, showHid) {
+function row(mark, code, idB, stgV, delRowSettingAu, setSettingAu, sendSettingAu, showHid) {
 	const result = []
 	// 1 ячейка по-умолчанию
 	const cell = {
@@ -35,7 +46,7 @@ function row(mark, code, idB, stgV, setSettingAu, sendSettingAu, showHid) {
 	result.push(cell)
 	// console.log(11, mark)
 	// Форматируем остальные ячейки
-	fnCell(code, result, mark, idB, setSettingAu, sendSettingAu, stgV)
+	fnCell(code, result, mark, idB, delRowSettingAu, setSettingAu, sendSettingAu, stgV)
 	// console.log(result)
 	return result
 }

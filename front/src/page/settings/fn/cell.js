@@ -1,5 +1,14 @@
 // Ячейки строки
-export default function fnCell(code, result, mark, idB, setSettingAu, sendSettingAu, stgV) {
+export default function fnCell(
+	code,
+	result,
+	mark,
+	idB,
+	delRowSettingAu,
+	setSettingAu,
+	sendSettingAu,
+	stgV,
+) {
 	const moreValue = { begin: [], end: [] }
 	mark.list.forEach((ml) => {
 		const _code = mark._code + '.' + ml._code
@@ -85,7 +94,15 @@ export default function fnCell(code, result, mark, idB, setSettingAu, sendSettin
 				result.push({ field: 'head', value: ml._name })
 				break
 			case 'more':
-				const o = fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu)
+				const o = fnMore(
+					mark,
+					ml,
+					obj,
+					moreValue,
+					delRowSettingAu,
+					setSettingAu,
+					sendSettingAu,
+				)
 				result.push({ field: 'more', ...o })
 				break
 			default:
@@ -102,17 +119,20 @@ function pickBE(code, value) {
 }
 
 // Только для "Таймер запрет", данные необходимые для сохранения на модалке
-function fnMore(mark, ml, obj, moreValue, setSettingAu, sendSettingAu) {
+function fnMore(mark, ml, obj, moreValue, delRowSettingAu, setSettingAu, sendSettingAu) {
 	const len = moreValue?.begin?.length ?? ''
 	const r = {
 		// Значение кнопки (имя)
-		value: `${ml._name} ` + len,
+		name: `${ml._name}`,
+		value: len,
 		// Имя шапки
 		title: mark._name,
 		// Столбцы
 		column: ['Начало', 'Окончание', ''],
 		// Значения полей - массив
 		moreValue,
+		// Удалить строку
+		delRowSettingAu,
 		// Изменить значения настройки
 		setSettingAu,
 		// Записать изменения на сервере

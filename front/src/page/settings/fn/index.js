@@ -63,7 +63,7 @@ function sty(data, sum) {
  * @param {*} prd
  * @returns
  */
-function rack(obj, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch) {
+function rack(obj, stgV, delRowSettingAu, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 	const {
 		fct,
 		bldType,
@@ -97,6 +97,7 @@ function rack(obj, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch) {
 		code,
 		buildingId,
 		stgV,
+		delRowSettingAu,
 		setSettingAu,
 		sendSettingAu,
 		prd === curPrd,

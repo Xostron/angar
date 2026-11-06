@@ -12,8 +12,19 @@ import Input from '@src/cmp/fields/input'
  * @returns
  */
 export default function Field({ data }) {
-	const { title, obj, moreValue, setSettingAu, sendSettingAu, fnNo, fnYes, markCode } = data
+	const {
+		title,
+		obj,
+		moreValue,
+		delRowSettingAu,
+		setSettingAu,
+		sendSettingAu,
+		fnNo,
+		fnYes,
+		markCode,
+	} = data
 	const setVal = (value, _code, idx, arrV) => setSettingAu({ value, ...obj, _code, idx, arrV })
+
 	const [refresh, setRefresh] = useState(false)
 	return (
 		<div>
@@ -59,19 +70,18 @@ export default function Field({ data }) {
 		setVal('00:00', markCode + '.end', moreValue.end.length - 1, moreValue.end)
 		setRefresh((p) => !p)
 	}
-
+	// Удаление строк
 	function del(idx) {
-		if (moreValue?.begin?.length === 1) return
 		moreValue.begin.splice(idx, 1)
 		moreValue.end.splice(idx, 1)
+		// Если осталась последняя строка - обнуляем ее
+		if (!moreValue?.begin?.length) {
+			moreValue.begin.push('00:00')
+			moreValue.end.push('00:00')
+		}
+
 		setRefresh((p) => !p)
-		setVal(
-			moreValue.begin.at(-1),
-			markCode + '.begin',
-			moreValue.begin.length - 1,
-			moreValue.begin,
-		)
-		setVal(moreValue.end.at(-1), markCode + '.end', moreValue.end.length - 1, moreValue.end)
+		delRowSettingAu({ ...obj, _code: markCode + '.begin' }, moreValue)
 	}
 }
 

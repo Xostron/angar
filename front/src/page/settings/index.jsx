@@ -36,6 +36,7 @@ export default function Settings({}) {
 
 	// Изменение, запись настроек, было ли изменение(для подсветки измененных значений)
 	const setSettingAu = useOutputStore((s) => s.setSettingAu)
+	const delRowSettingAu = useOutputStore((s) => s.delRowSettingAu)
 	const sendSettingAu = useOutputStore((s) => s.sendSettingAu)
 	const hasChanged = useOutputStore((s) => s.hasChangedSettingAu(build, type))
 
@@ -92,7 +93,7 @@ export default function Settings({}) {
 		curPrd,
 	}
 
-	const data = rack(o, stgV, setSettingAu, sendSettingAu, sendTune, onSwitch)
+	const data = rack(o, stgV, delRowSettingAu, setSettingAu, sendSettingAu, sendTune, onSwitch)
 	// ***************** Стили *****************
 	const sumStg = kindList.length + def.length
 	const { st, stl, sth, stn } = sty(data, sumStg)

@@ -215,7 +215,7 @@ const useOutputStore = create((set, get) => ({
 	},
 	// Настройки
 	setSettingAu(obj) {
-		console.log('setSettingAu', obj)
+		// console.log('setSettingAu', obj)
 
 		if (!obj) {
 			set({ settingAu: {} })
@@ -243,7 +243,8 @@ const useOutputStore = create((set, get) => ({
 			settingAu.prdCode = get().prd?.code ?? obj?.prdCode
 		settingAu.value ??= {}
 		const _code = obj._code.split('.')
-		if (obj?.idx === undefined && obj?.arrV === undefined) {
+		// console.log(11, obj)
+		if (obj?.idx === undefined) {
 			if (_code.length === 1) {
 				settingAu.value[obj._code] = obj.value
 			} else {
@@ -252,18 +253,60 @@ const useOutputStore = create((set, get) => ({
 			}
 			// console.log(221, settingAu)
 		} else {
-			const arrV = [...obj.arrV]
-			arrV[obj.idx] = obj.value
+			// const arrV = [...obj.arrV]
+			// arrV[obj.idx] = obj.value
+			// Для поля с одним столбцом
 			if (_code.length === 1) {
-				settingAu.value[obj._code] = arrV
+				settingAu.value[obj._code] ??= [...obj.arrV]
+				settingAu.value[obj._code][obj.idx] = obj.value
+				// settingAu.value[obj._code] = arrV
 			} else {
+				// Для поля с 2 столбцами
 				settingAu.value[_code[0]] ??= {}
-				settingAu.value[_code[0]][_code[1]] = arrV
+				settingAu.value[_code[0]][_code[1]] ??= [...obj.arrV]
+				settingAu.value[_code[0]][_code[1]][obj.idx] = obj.value
 			}
-			// console.log(222, settingAu.value, obj.arrV)
+
+			// console.log(222, settingAu.value)
 		}
 		set({ settingAu })
 	},
+
+	delRowSettingAu(obj, moreValue) {
+		if (!obj) {
+			set({ settingAu: {} })
+			return
+		}
+		const settingAu = get().settingAu
+		settingAu.buildingId = obj?.build ?? null
+		settingAu.code = obj?.type ?? null
+		if (
+			![
+				'antibliz',
+				'heating',
+				'overVlv',
+				'accel',
+				'idle',
+				'idleCold',
+				'co2',
+				'ozon',
+				'heater',
+				'smoking',
+				'demo',
+				'heattcnl',
+			].includes(obj?.type)
+		)
+			settingAu.prdCode = get().prd?.code ?? obj?.prdCode
+		settingAu.value ??= {}
+		const _code = obj._code.split('.')
+
+		// settingAu.value[_code[0]] ??= {}
+		settingAu.value[_code[0]].begin = moreValue.begin
+		settingAu.value[_code[0]].end = moreValue.end
+
+		set({ settingAu })
+	},
+
 	sendSettingAu() {
 		console.log('sendSettingAu')
 		// Отправить на сервер
