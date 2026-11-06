@@ -22,7 +22,7 @@ const useHistoryStore = create((set, get) => ({
 	toggleCollapsed: () => set({ collapsed: !get().collapsed }),
 
 	setTs: (ts) => {
-		// Границы диапазона считаем по времени POS, а не клиента
+		// Р“СЂР°РЅРёС†С‹ РґРёР°РїР°Р·РѕРЅР° СЃС‡РёС‚Р°РµРј РїРѕ РІСЂРµРјРµРЅРё POS, Р° РЅРµ РєР»РёРµРЅС‚Р°
 		const now = posNow()
 		const min = now - SEVEN_DAYS_MS
 		let v = ts instanceof Date ? ts.getTime() : Number(ts)

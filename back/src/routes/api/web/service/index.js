@@ -19,6 +19,8 @@ const {
 	file,
 	sync_time,
 	set_time,
+	timezoneInfo,
+	timezoneSet,
 	disconnect_wifi,
 	switching,
 	keyboard,
@@ -97,6 +99,18 @@ function service(router) {
 		'/set_time',
 		log('pos', 'Установка даты и времени', (req) => req.body?.dt),
 		set_time(),
+	);
+	// Список часовых поясов и текущая зона POS
+	serviceRouter.get('/timezone', timezoneInfo());
+	// Установить часовой пояс POS
+	serviceRouter.post(
+		'/timezone',
+		log(
+			'pos',
+			(req) => `Часовой пояс: ${req.body?.zone ?? ''}`,
+			(req) => req.body?.zone,
+		),
+		timezoneSet(),
 	);
 
 	// Установить файл с конфигурацией оборудования

@@ -265,6 +265,35 @@ function set_time() {
 	};
 }
 
+// Список часовых поясов и текущая зона POS
+function timezoneInfo() {
+	return (req, res) => {
+		time
+			.zones()
+			.then((zones) => {
+				const current = time.systemZone();
+				res.json({
+					current,
+					offset: time.zoneOffsetMin(current),
+					zones,
+				});
+			})
+			.catch((err) => res.status(400).json({ error: err.toString() }));
+	};
+}
+
+// Установка часового пояса POS
+function timezoneSet() {
+	return (req, res) => {
+		time
+			.setZone(req.body?.zone)
+			.then((r) => res.json({ result: 'ok', ...r }))
+			.catch((err) =>
+				res.status(400).json({ error: err.message || err.toString() }),
+			);
+	};
+}
+
 function close_chrom() {
 	return (req, res) => {
 		_close_chrom()
@@ -331,6 +360,8 @@ module.exports = {
 	wifi_connect,
 	sync_time,
 	set_time,
+	timezoneInfo,
+	timezoneSet,
 	disconnect_wifi,
 	switching,
 	keyboard,

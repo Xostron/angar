@@ -31,6 +31,22 @@
 	width: 100%;
 }
 
+/* Выбор часового пояса */
+.page-service-select {
+	width: 100%;
+	height: var(--fsz45);
+	padding: 0 var(--fsz10);
+	border: 1px solid var(--primary);
+	border-radius: 5px;
+	background-color: var(--background);
+	color: var(--primary);
+	font-family: 'Q-Medium';
+	font-size: var(--fsz20);
+}
+.page-service-select:disabled {
+	opacity: 0.6;
+}
+
 /* Навигация */
 .page-service-nav {
 	grid-area: 1/3/1/3;

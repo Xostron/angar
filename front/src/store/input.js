@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 // Данные от сервера: датчики, режимы, настройки
 const useInputStore = create((set, get) => ({
@@ -13,16 +13,16 @@ const useInputStore = create((set, get) => ({
 	alarm: {},
 	// Инициализация входов
 	initIn: (r) => {
-		return set({ input: r })
+		return set({ input: r });
 	},
 	// Получить bCard склада по id
 	getBCard(buildingId) {
-		if (!buildingId) return null
-		return get()?.input?.bCard?.[buildingId] ?? null
+		if (!buildingId) return null;
+		return get()?.input?.bCard?.[buildingId] ?? null;
 	},
 	// Аварийные сообщения
 	initAlr: (r) => {
-		return set({ alarm: r })
+		return set({ alarm: r });
 	},
 	// Получить значение сигнала (концевик, обр связь вентилятора)
 	getSignal(id) {
