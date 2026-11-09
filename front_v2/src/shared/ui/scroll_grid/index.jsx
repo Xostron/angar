@@ -6,6 +6,7 @@ const dictSize = {
   scard_combi: { width: 377, height: 346 },
   // В складе холодильник не отображаются камеры, добавлено для совместимости
   scard_cold: { width: 377.67, height: 376.5 },
+  sensor:{width: 292, height: 314}
 };
 const GAP = 12;
 
