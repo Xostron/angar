@@ -60,7 +60,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			),
 		)
 		acc.f2 = true
-		acc.tcnl = tout
+		// acc.tcnl = tout
+		acc.tcnl = s.drying.channelMin
 		acc.tgt = tprd ?? '--'
 		delAchieve(bld._id, 'drying', 'drying1')
 		delAchieve(bld._id, 'drying', 'drying3')
@@ -81,7 +82,8 @@ function middlewB(bld, obj, s, seB, am, acc) {
 			),
 		)
 		acc.f3 = true
-		acc.tcnl = s.drying.channelMax
+		// acc.tcnl = s.drying.channelMax
+		acc.tcnl = s.drying.channelMin
 		acc.tgt = tprd ?? '--'
 		delAchieve(bld._id, 'drying', 'drying1')
 		delAchieve(bld._id, 'drying', 'drying2')
