@@ -32,7 +32,7 @@ function soft(bld, obj, s, seB, m, resultFan, bdata, where) {
 			.sort((a, b) => a?.order - b?.order)
 		// Соленоиды подогрева испарителей
 		const solHeat = resultFan.fan.filter(
-			(el) => coolerIds.includes(el.owner.id) && el.type == 'channel'
+			(el) => coolerIds.includes(el.owner.id) && el.type == 'channel',
 		)
 		// ВНО без ПЧ
 		let fans = resultFan.fan
@@ -64,7 +64,7 @@ function soft(bld, obj, s, seB, m, resultFan, bdata, where) {
 		// )
 		// Показания с датчиков секции
 		const seS = sensor(bld._id, idS, obj)
-		// console.log(9993, aCmd)
+		// console.log(11, idS, type,  aCmd)
 		data[type](bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, where)
 	})
 }

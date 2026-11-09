@@ -33,7 +33,8 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	const acc = init(bld, idS, obj, bdata, s, who, 'fc', fans.length)
 
 	// 1. Разрешение на работу
-	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
+	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where))
+		return //console.log(22, idS, 'запрет')
 
 	// 2. Регулирование по давлению/темпе канала
 	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)

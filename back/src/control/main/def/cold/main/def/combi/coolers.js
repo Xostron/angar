@@ -74,7 +74,7 @@ function coolers(bld, sect, bdata, seS, mS, alr, fnChange, obj) {
 	// Режим секции true-Авто
 	const sectM = retain?.[bld._id]?.mode?.[sect._id]
 	const couple = coupleClr(bld._id, mS)
-	denied.off(bld._id, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj)
+	denied.off(bld._id, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj, bdata)
 	// denied.pressure(bld._id, sect._id, mS, s, seS, fnChange, accAuto, alrAuto, sectM, obj)
 	denied.offByTcnl(bld._id, mS, s, se, fnChange, accAuto, alrAuto, sectM, obj)
 

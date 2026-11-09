@@ -31,7 +31,7 @@ function relay(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdat
 	// Инициализация аккумулятора плавного пуска
 	const acc = init(bld, idS, obj, bdata, s, who, 'relay', fans.length)
 	// 1. Разрешение на работу
-	if (turnOff(null, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return
+	if (turnOff(null, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where)) return //console.log(33, idS, 'запрет')
 
 	// 2. Регулирование по давлению/темпе канала
 	let { on, off } = defOnOff[who](bld._id, idS, bdata.accAuto, obj, seS, s)

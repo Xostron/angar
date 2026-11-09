@@ -2,7 +2,7 @@ const { data: store } = require('@store')
 const { isOffPair } = require('@tool/cooler')
 
 // Отключение запрещенных к работе испарителей с проверкой на дублирование ВНО
-function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
+function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj, bdata) {
 	// Итог по всем испарителям (для полной очистки аккумулятора секции)
 	const allDeniedSect = []
 	// Проходим по парам испарителей и одиночкам
@@ -20,6 +20,7 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 				[s?.smoking?.on, 'Включено окуривание'],
 				[s?.ozon?.on, 'Включен озонатор'],
 				[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
+				[!!bdata?.automode && bdata?.automode != 'cooling', 'Склад не в режиме Хранения'],
 			]
 			// Пара испарителей выведена из работы
 			const off = isOffPair(pair, mS, obj.value)
@@ -58,6 +59,10 @@ function offDenied(idB, mS, couple, s, fnChange, accAuto, alrAuto, sectM, obj) {
 					[s?.smoking?.on, 'Включено окуривание'],
 					[s?.ozon?.on, 'Включен озонатор'],
 					[!s?.coolerCombi?.on, 'Выключен испарител. (настройки)'],
+					[
+						!!bdata?.automode && bdata?.automode != 'cooling',
+						'Склад не в режиме Хранения',
+					],
 				]
 				// console.log(
 				// 	'\toffDenied: Полное отключение пары, из-за этих причин ВНО не заблокирован',

@@ -18,6 +18,7 @@ const iconIncident = {
   65: '/icon/incident/warning/signal.svg',
   104: '/icon/incident/warning/signal.svg',
   105: '/icon/incident/warning/signal.svg',
+  bantimer: '/icon/incident/warning/signal.svg',
 
   //   equipment Работа оборудования
   //   Таймеры запретов
@@ -111,6 +112,7 @@ const iconIncident = {
   local: '/icon/incident/alarm/local.svg',
   notTune: '/icon/incident/alarm/notTune.svg',
   fanCrash: '/icon/incident/alarm/alrClosed.svg',
+  sensor:'',
   32: '/icon/incident/alarm/alrClosed.svg',
   33: '/icon/incident/alarm/alrClosed.svg',
   34: '/icon/incident/alarm/alrClosed.svg',
@@ -126,7 +128,7 @@ const iconIncident = {
   96: '',
   97: '',
   98: '',
-  110: '',
+  110: '/icon/incident/alarm/connect.svg',
   111: '',
   101: '',
 

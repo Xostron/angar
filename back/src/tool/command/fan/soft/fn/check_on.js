@@ -16,6 +16,7 @@ function checkOn(on, acc, s, length, aCmd, max) {
 	// Принудительное включение ВНО && Настройка кол-во ВНО < 2 - 1(FanFC) = не включаем релейные ВНО
 	if (aCmd.force && max < 1) {
 		acc.order = -1
+		// console.log('\t Принудительное включение ВНО && Настройка кол-во ВНО < 2 - 1')
 		return
 	}
 	// Проверка времени (время на стабилизацию давления в канале, после вкл ВНО)
@@ -34,18 +35,22 @@ function checkOn(on, acc, s, length, aCmd, max) {
 	
 	++acc.order
 	if (aCmd.force && acc.order > max - 1) {
-		acc.order=max-1
+		acc.order = max - 1
 		return
 	}
 	// Включаем следующий ВНО
 	if (acc.order >= length - 1) {
 		acc.order = length - 1
-		// console.log('\tCheckON: (on=true) кол-во работающих ВНО => достигло МАКС')
+		// console.log(
+		// 	'\tCheckON: (on=true) кол-во работающих ВНО => достигло МАКС',
+		// 	acc.order,
+		// 	length - 1,
+		// )
 		return
 	}
 	// Новая точка отсчета
 	acc.date = new Date()
-	// console.log('\tCheckON: (on=true) кол-во работающих ВНО => увеличиваем +1 ВНО')
+	console.log('\tCheckON: (on=true) кол-во работающих ВНО => увеличиваем +1 ВНО')
 }
 
 module.exports = checkOn

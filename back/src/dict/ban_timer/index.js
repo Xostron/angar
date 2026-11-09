@@ -22,6 +22,7 @@ module.exports = data = {
 			msg: this?.[key] ?? `Таймер: ${name}, ${key}`,
 			uid: uuidv4(),
 			title: '',
+			code:'bantimer'
 		}
 	},
 }

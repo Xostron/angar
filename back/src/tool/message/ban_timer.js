@@ -9,7 +9,7 @@ function wrTimer(bld, key, name) {
 	const o = mesTimer.get(bld, name, key)
 	!isTimer(bld._id, key)
 		? (data.alarm.timer[bld._id][key] = o)
-		: (data.alarm.timer[bld._id][key] = { ...data.alarm.timer[bld._id][key], msg: o.msg })
+		: (data.alarm.timer[bld._id][key] = { ...data.alarm.timer[bld._id][key], msg: o.msg, code:o.code })
 }
 // Удалить из Таймеров запретов
 function delTimer(buildingId, key) {

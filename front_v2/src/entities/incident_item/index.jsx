@@ -10,7 +10,7 @@ function IncidentItem({ data = {} }) {
     <div className={cls}>
       <img
         src={iconIncident?.[data?.code] ?? iconIncident?.[data?.order]}
-        alt={data?.code}
+        alt={data?.code+'-'+data?.order}
       />
       <span className={style.msg}>
         {data?.title ?? ''} {data?.msg ?? ''}
