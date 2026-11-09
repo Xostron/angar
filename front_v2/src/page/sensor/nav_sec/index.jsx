@@ -22,7 +22,7 @@ function NavSec({ idB, idS }) {
           <Button
             key={el._id}
             label={el.name}
-            variant="sect"
+            variant="sensor"
             active={el._id == idS}
             disabled={false}
             onClick={() => onNavi(el._id)}

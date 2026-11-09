@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 const SensorPage = () => {
   const { buildingId: idB, type: idS } = useParams();
   return (
-    <main>
+    <main style={{ backgroundColor: 'var(--c-grey-lighter)' }}>
       <NavSec idB={idB} idS={idS} />
       <ScrollGrid size={`sensor`}>
         {[1, 2, 3].map((el) => (

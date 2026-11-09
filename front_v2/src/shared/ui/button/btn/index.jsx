@@ -32,7 +32,7 @@ export default Button;
 const dict = {
   grow: {
     flexGrow: 1,
-	padding: '24px 40px',
+    padding: '24px 40px',
     width: '187px',
     height: '76px',
     fontWeight: 600,
@@ -75,6 +75,11 @@ const dict = {
     flexGrow: '0',
     // backgroundColor: 'var(--c-white)',
   },
+  sensor: {
+    padding: '14px 16px',
+    width: '100%',
+    height: '56px',
+  },
 };
 
 const dictActive = {
@@ -84,4 +89,5 @@ const dictActive = {
   sect: { true: style.sect_active, false: style.sect_not_active },
   toggle2: { true: style.toggle2_active, false: style.toggle2_not_active },
   toggle3: { true: style.toggle2_active, false: style.toggle3_not_active },
+  sensor: { true: style.sect_active, false: style.sect_not_active },
 };
