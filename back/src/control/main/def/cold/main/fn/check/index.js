@@ -6,7 +6,7 @@ const def = require('../../def_cooler')
 const { data: store } = require('@store')
 
 // Проверка на включение оттайки
-function checkDefrost(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
+function checkDefrostCold(fnChange, accAuto, acc, se, s, stateCooler, clr, bld) {
 	// console.log(
 	// 	'\t',
 	// 	5551,
@@ -121,4 +121,4 @@ function checkDefrostCombi(fnChange, accCold, acc, se, s, stateCooler, clr, bld)
 	return false
 }
 
-module.exports = { cold: checkDefrost, combi: checkDefrostCombi }
+module.exports = { cold: checkDefrostCold, combi: checkDefrostCombi }

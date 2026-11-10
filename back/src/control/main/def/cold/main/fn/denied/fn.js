@@ -26,8 +26,10 @@ function clear(bldId, clr, accAuto, fnChange, stateCooler, store) {
 	// 	'Очистка аккумулятора холодильника, т.к. испаритель запрещен к работе',
 	// )
 	delete accAuto?.[clr._id]
-	delete accAuto?.afterD
-	delete accAuto?.timeAD
+	// delete accAuto?.afterD
+	// delete accAuto?.timeAD
+	accAuto.afterD = null
+	accAuto.timeAD = null
 	delete accAuto?.defrostAllFinish
 	delete accAuto?.drainAll
 	delete accAuto?.defrostAll
