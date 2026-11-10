@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import useInputStore from '@src/entities/store/input';
+import useEquipStore from '@src/entities/store/equipment';
 import Button from '@src/shared/ui/button/btn';
 import style from './style.module.css';
-import useEquipStore from '@src/entities/store/equipment';
 
 /**
- * Навигация по секциям
- * @param {*} param0
- * @returns
+ * Навигация страницы датчики /building/${idB}/sensor/${id}
+ * @param {object} props
+ * @param {string} props.idB ИД склада
+ * @param {string} props.idS ИД страницы: all, pui, ИД секций
+ * @returns {JSX.Element} Компонент навигации.
  */
 function NavSec({ idB, idS }) {
   const navigate = useNavigate();

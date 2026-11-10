@@ -1,18 +1,16 @@
 import ScrollGrid from '@src/shared/ui/scroll_grid';
 import NavSec from './nav_sec';
 import { useParams } from 'react-router-dom';
+import Groups from './items';
 
 const SensorPage = () => {
   const { buildingId: idB, type: idS } = useParams();
+
   return (
     <main style={{ backgroundColor: 'var(--c-grey-lighter)' }}>
       <NavSec idB={idB} idS={idS} />
-      <ScrollGrid size={`sensor`}>
-        {[1, 2, 3].map((el) => (
-          <div style={{ width: 292, height: 314, border: 'solid 1px black' }}>
-            el
-          </div>
-        ))}
+      <ScrollGrid size={`sensor`} notPaging>
+        <Groups idB={idB} idS={idS} />
       </ScrollGrid>
     </main>
   );

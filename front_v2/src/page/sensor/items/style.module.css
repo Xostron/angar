@@ -1,0 +1,22 @@
+.subgroup {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--c-grey);
+}
+
+.sensors {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sensor {
+  display: flex;
+  border: 1px solid black;
+}
+
+.sensor:nth-child(odd) {
+  border-bottom: 1px solid var(--c-grey);
+}
