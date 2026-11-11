@@ -1,22 +1,35 @@
 .subgroup {
   display: flex;
   flex-direction: column;
-  font-weight: 500;
-  font-size: 20px;
-  color: var(--c-grey);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--c-navy);
+  row-gap: 12px;
 }
 
-.sensors {
+.subitems {
   display: flex;
   flex-direction: column;
   width: 100%;
+  background-color: var(--c-white);
+  border-radius: 12px;
+  padding: 18px;
+  padding-top: 16px;
 }
 
 .sensor {
   display: flex;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
-.sensor:nth-child(odd) {
-  border-bottom: 1px solid var(--c-grey);
+/* НЕчетный */
+.sensor:nth-child(odd):not(:only-child) {
+  border-bottom: 2px solid var(--c-grey-lightest);
+  padding-bottom: 12px;
+}
+
+/* Четный */
+.sensor:nth-child(even) {
+  padding-top: 12px;
 }

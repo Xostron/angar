@@ -4,10 +4,10 @@ const { compareTime } = require('@tool/command/time')
 
 /**
  * Разрешение на чтение модуля
- * @param {*} idB Id склада
- * @param {*} idsM Id модуля
- * @param {*} ip IP модуля
- * @param {*} opt Конфигурация модуля
+ * @param {string} idB Id склада
+ * @param {string[]} idsM Id модуля
+ * @param {string} ip IP модуля
+ * @param {object} opt Конфигурация модуля
  * @returns {boolean} true - разрешить чтение модуля, false - блокировка на чтение
  */
 function timeout(idsB, idsM, ip, opt) {
