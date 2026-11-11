@@ -8,6 +8,16 @@
   row-gap: 12px;
 }
 
+.title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--c-grey);
+}
+
 .subitems {
   display: flex;
   flex-direction: column;

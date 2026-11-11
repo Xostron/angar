@@ -115,4 +115,9 @@ const dictSize = {
     width: '412px',
     height: '52px',
   },
+  sensor: {
+    width: '121px',
+    height: '36px',
+    padding: '4px',
+  },
 };

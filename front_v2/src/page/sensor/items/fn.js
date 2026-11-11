@@ -35,7 +35,7 @@ export function sensList(build, idS) {
       if (build?.tweather)
         data.push({
           code: 'tweather',
-          title: 'Погода: температура улицы',
+          title: 'Погода: темп. улицы',
           list: [build?.tweather] ?? null,
         });
 
