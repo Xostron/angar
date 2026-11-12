@@ -119,5 +119,6 @@ const dictSize = {
     width: '121px',
     height: '36px',
     padding: '4px',
+    justifyItems: 'center',
   },
 };

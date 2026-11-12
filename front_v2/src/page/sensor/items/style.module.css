@@ -28,18 +28,4 @@
   padding-top: 16px;
 }
 
-.sensor {
-  display: flex;
-  /* border: 1px solid black; */
-}
 
-/* НЕчетный */
-.sensor:nth-child(odd):not(:only-child) {
-  border-bottom: 2px solid var(--c-grey-lightest);
-  padding-bottom: 12px;
-}
-
-/* Четный */
-.sensor:nth-child(even) {
-  padding-top: 12px;
-}

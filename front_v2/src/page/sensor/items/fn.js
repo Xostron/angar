@@ -23,8 +23,9 @@ const puiSens = ['Ua', 'Ub', 'Uc', 'Ia', 'Ib', 'Ic', 'Pa', 'Pb', 'Pc'];
  */
 export function sensList(build, idS) {
   const data = [];
-
   const sections = build?.section;
+  
+  if (!idS || !build || !sections?.length) return data;
   const section = sections.find((el) => el._id == idS);
 
   switch (idS) {

@@ -10,6 +10,8 @@
 
 .unit {
   flex: 1;
+  display: flex;
+  align-items: center;
   color: var(--c-navy);
   line-height: 20px;
   margin-left: 6px;
@@ -18,11 +20,15 @@
   white-space: nowrap;
   &.placeholder {
     color: var(--c-grey);
+	/* text-align: center; */
+  }
+  &.sensor {
   }
 }
 
 .input {
   field-sizing: content;
+  /* text-align: center; */
   min-width: 1ch;
   padding: 0;
   outline: none;
@@ -33,6 +39,7 @@
   font-weight: 500;
   &::placeholder {
     color: var(--c-grey);
+    /* text-align: center; */
   }
 }
 

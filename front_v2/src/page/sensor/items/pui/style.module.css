@@ -1,0 +1,20 @@
+.pui {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* border-bottom: 2px solid var(--c-grey-lightest); */
+  padding-bottom: 12px;
+  padding-top: 12px;
+}
+
+/* НЕчетный */
+.pui:nth-child(odd):not(:only-child) {
+}
+
+/* Четный */
+
+.pui:last-child,
+.pui:first-child {
+  padding-bottom: 0;
+  padding-top: 0;
+}

@@ -1,0 +1,27 @@
+.sensor {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  /* border: 1px solid black; */
+}
+
+/* НЕчетный */
+.sensor:nth-child(odd):not(:only-child) {
+  border-bottom: 2px solid var(--c-grey-lightest);
+  padding-bottom: 12px;
+}
+
+/* Четный */
+.sensor:nth-child(even) {
+  padding-top: 12px;
+}
+
+.corr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--c-grey);
+}
