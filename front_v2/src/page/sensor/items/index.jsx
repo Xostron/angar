@@ -5,6 +5,7 @@ import { sensList } from './fn';
 import dictSensor from '@src/shared/dict/icon_sensor';
 import { Sensor } from './sensor';
 import { SensorPui } from './pui';
+import Button from '@src/shared/ui/button/btn';
 /**
  * Рисует карточки разделенные по типажу: Темп улицы, Влажность улицы, Темп канала и т.д.
  * @param {object} props
@@ -40,7 +41,7 @@ function Subgroup({ data, idB }) {
         <span>{title}</span>
       </div>
 
-      <div className={style.subitems}>
+      <div className={style.subitems} style={{ height: '340px' }}>
         {list
           .sort((a, b) => a?.order - b?.order)
           .slice(0, 2)
@@ -51,6 +52,13 @@ function Subgroup({ data, idB }) {
               <Sensor key={i} el={el} code={code} idB={idB} />
             ),
           )}
+        {list.length > 2 && (
+          <Button
+            variant="sensor_more"
+            label={`+${list.length - 2}`}
+            icon="/icon/indicator/next.svg"
+          />
+        )}
       </div>
     </article>
   );

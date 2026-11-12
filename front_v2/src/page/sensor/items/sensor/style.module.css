@@ -13,7 +13,7 @@
 
 /* Четный */
 .sensor:nth-child(even) {
-  padding-top: 12px;
+  /* padding-top: 12px; */
 }
 
 .corr {

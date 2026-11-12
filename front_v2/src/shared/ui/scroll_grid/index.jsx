@@ -6,11 +6,15 @@ const dictSize = {
   scard_combi: { width: 377, height: 346 },
   // В складе холодильник не отображаются камеры, добавлено для совместимости
   scard_cold: { width: 377.67, height: 376.5 },
-  sensor:{width: 292, height: 314}
+  sensor: { width: 292, height: 380 },
 };
 const GAP = 12;
 
-const ScrollGrid = ({ children, size = 'bcard', notPaging = false }) => {
+const ScrollGrid = ({
+  children,
+  size = 'bcard',
+  notPaging = false,
+}) => {
   const trackRef = useRef(null);
   const [cols, setCols] = useState(1);
   const [page, setPage] = useState(0);
@@ -48,11 +52,11 @@ const ScrollGrid = ({ children, size = 'bcard', notPaging = false }) => {
   }, [page, totalPages]);
 
   return (
-    <div className="scroll-grid">
+    <div className={`scroll-grid ${size}`}>
       <div className="scroll-grid__track" ref={trackRef}>
         {/* TODO */}
         <div
-          className="scroll-grid__grid"
+          className={`scroll-grid__grid ${size}`}
           style={{
             gridTemplateColumns: `repeat(${cols}, ${CARD_WIDTH}px)`,
             gridTemplateRows: `repeat(2, ${CARD_HEIGHT}px)`,

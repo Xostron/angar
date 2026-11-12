@@ -12,6 +12,7 @@ function Button({
   active = true,
   variant = 'usual',
   loading,
+  icon,
 }) {
   const stl = {
     cursor: disabled ? 'not-allowed' : 'pointer',
@@ -22,6 +23,7 @@ function Button({
   return (
     <button className={cls} onClick={onClick} disabled={disabled} style={stl}>
       {label}
+      {icon && <img src={icon} />}
     </button>
   );
 }
@@ -80,6 +82,11 @@ const dict = {
     width: '100%',
     height: '56px',
   },
+  sensor_more: {
+    padding: '14px 16px',
+    width: '100%',
+    height: '56px',
+  },
 };
 
 const dictActive = {
@@ -90,4 +97,5 @@ const dictActive = {
   toggle2: { true: style.toggle2_active, false: style.toggle2_not_active },
   toggle3: { true: style.toggle2_active, false: style.toggle3_not_active },
   sensor: { true: style.sect_active, false: style.sect_not_active },
+  sensor_more: { true: style.sensor_more_active, false: style.sensor_more_active },
 };

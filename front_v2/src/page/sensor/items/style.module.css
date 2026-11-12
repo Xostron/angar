@@ -6,6 +6,8 @@
   line-height: 24px;
   color: var(--c-navy);
   row-gap: 12px;
+  background-color: aqua;
+  height: 380px;
 }
 
 .title {
@@ -26,6 +28,8 @@
   border-radius: 12px;
   padding: 18px;
   padding-top: 16px;
+  row-gap: 12px;
+
 }
 
 

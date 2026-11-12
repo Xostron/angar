@@ -7,14 +7,19 @@
   padding-bottom: 0;
   border-radius: 24px 0 0 24px;
   background-color: var(--c-grey-lighter);
-  height: 882px;
+  &.sensor {
+    scale: 0.9;
+    position: fixed;
+    top: 162px;
+    border-radius: 24px;
+	background-color: aquamarine;
+  }
 }
 
 .scroll-grid__track {
   flex: 1;
   overflow: hidden;
   display: flex;
-  /* align-items: center; */
 }
 /* TODO */
 .scroll-grid__grid {
@@ -22,7 +27,19 @@
   grid-auto-flow: column;
   grid-auto-flow: row;
   gap: 12px;
-  align-content: center;
+  /* align-content: center; */
+  &.sensor {
+	  /* align-items: center; */
+	/* align-content:flex-start; */
+	/* align-content: center; */
+	/* align-items: flex-start; */
+	background-color: bisque;
+	/* padding: 24px; */
+	/* padding-bottom: 24px; */
+	margin-bottom: 24px;
+	/* scale: 0.99; */
+	/* height: 1000px; */
+  }
 }
 
 .scroll-grid__nav {

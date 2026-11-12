@@ -1,4 +1,7 @@
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 8px;
   opacity: 1;
@@ -53,6 +56,10 @@
   &.toggle3_not_active {
     background-color: var(--c-white);
     color: var(--c-grey);
+  }
+  &.sensor_more_active {
+    background-color: var(--c-blue-lighter);
+    color: var(--c-blue-darker);
   }
 }
 
