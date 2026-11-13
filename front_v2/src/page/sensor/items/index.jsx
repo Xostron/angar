@@ -6,6 +6,7 @@ import dictSensor from '@src/shared/dict/icon_sensor';
 import { Sensor } from './sensor';
 import { SensorPui } from './pui';
 import Button from '@src/shared/ui/button/btn';
+
 /**
  * Рисует карточки разделенные по типажу: Темп улицы, Влажность улицы, Темп канала и т.д.
  * @param {object} props
@@ -16,7 +17,7 @@ import Button from '@src/shared/ui/button/btn';
 export default function Groups({ idB, idS }) {
   const build = useEquipStore((s) => s.getBld(idB));
   const data = sensList(build, idS);
-  //   console.log(11, data);
+
   return (
     <>
       {data.map((el, i) => (
@@ -34,6 +35,7 @@ export default function Groups({ idB, idS }) {
  */
 function Subgroup({ data, idB }) {
   const { code, title, list } = data;
+
   return (
     <article className={style.subgroup}>
       <div className={style.title}>

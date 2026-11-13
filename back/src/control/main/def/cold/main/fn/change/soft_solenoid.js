@@ -54,6 +54,7 @@ function softsol(idB, solenoid, sl, f, h, clr, accAuto) {
 }
 
 /**
+ * DEPRECIATED
  * Инициализация очереди отключения соленоидов,
  * @param {*} accAuto
  * @param {*} sect

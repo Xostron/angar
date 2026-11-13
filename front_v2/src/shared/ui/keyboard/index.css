@@ -1,0 +1,167 @@
+.keyboard-wrapper {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	background-color: #ececec;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+/* Клавиатура внутри dialog */
+.keyboard-wrapper.in-dialog {
+	position: sticky;
+	/* position: absolute; */
+	z-index: auto;
+}
+
+.keyboard-close-btn-input-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+}
+
+/* Кнопка закрытия клавиатуры */
+.keyboard-close-btn {
+	width: 32px;
+	height: 32px;
+	border: none;
+	background: #6b7280;
+	color: #fff;
+	border-radius: 5px;
+	font-size: 20px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	transition: all 0.2s ease;
+}
+
+.keyboard-close-btn:hover {
+	background: #7c8591;
+	transform: scale(1.05);
+}
+
+.keyboard-close-btn:active {
+	background: #4b5563;
+	transform: scale(0.95);
+}
+
+.keyboard-wrapper.numeric {
+	left: 50%;
+	right: auto;
+	/* width: 80%; */
+	min-width: 300px;
+	max-width: 400px;
+	border-radius: 10px 10px 0 0;
+	transform: translateX(-50%);
+}
+
+.keyboard-wrapper.numeric.in-dialog {
+	transform: none;
+	left: auto;
+	margin: auto;
+}
+
+.keyboard-input-display {
+	width: 100%;
+	background-color: #fff;
+	border: 2px solid #d1d5db;
+	border-radius: 5px;
+	padding: 12px 15px;
+	font-size: 18px;
+	font-family: 'Qanelas-Medium', sans-serif;
+	color: #333;
+	text-align: left;
+	min-height: 45px;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.keyboard-input-display:focus {
+	outline: none;
+	border-color: #3b82f6;
+}
+
+/* Стили для react-simple-keyboard */
+.simple-keyboard {
+	background-color: transparent;
+	/* min-width: 1000px; */
+}
+.keyboard-wrapper.default .simple-keyboard {
+	min-width: 1000px;
+}
+
+.simple-keyboard .hg-button {
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #fff;
+	border: 1px solid #d1d5db;
+	border-radius: 5px;
+	font-size: 16px;
+	font-family: 'Qanelas-Medium', sans-serif;
+	cursor: pointer;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	transition: all 0.1s ease;
+}
+
+.simple-keyboard .hg-button:active {
+	background: #e5e7eb;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+	transform: scale(0.97);
+}
+
+.simple-keyboard .hg-button:hover {
+	background: #f3f4f6;
+}
+
+/* Специальные кнопки */
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{bksp}'],
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{enter}'],
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{shift}'],
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{space}'] {
+	background: #9ca3af;
+	color: #fff;
+}
+
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{bksp}']:active,
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{enter}']:active,
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{shift}']:active,
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{space}']:active {
+	background: #6b7280;
+}
+
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{bksp}']:hover,
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{enter}']:hover,
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{shift}']:hover,
+.simple-keyboard .hg-button.hg-standardBtn[data-skbtn='{space}']:hover {
+	background: #7c8591;
+}
+
+/* Активная клавиша Shift */
+.simple-keyboard .hg-button.hg-activeButton {
+	background: #3b82f6 !important;
+	color: #fff;
+}
+
+/* Цифровая клавиатура - центрированная */
+.keyboard-wrapper.numeric .simple-keyboard .hg-button {
+	height: 60px;
+	font-size: 20px;
+}
+
+/* Убираем лишние отступы */
+.simple-keyboard .hg-row {
+	margin-bottom: 5px;
+}
+
+.simple-keyboard .hg-row:last-child {
+	margin-bottom: 0;
+}

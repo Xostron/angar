@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import style from './style.module.css';
 import useOutputStore from '@src/entities/store/output';
 import useInputStore from '@src/entities/store/input';
+import useAuthStore from '@src/entities/store/auth';
 import dictUnit from '@src/shared/dict/unit';
 import InputNum from '@src/shared/ui/input';
 import { Title1, Title2 } from './title';
@@ -29,6 +30,7 @@ const dict = [
 function Sensor({ el, code, idB }) {
   // сохранить настройки на сервере ангара
   const setSens = useOutputStore((s) => s.setSens);
+  const isAuth = useAuthStore((s) => s.isAuth);
 
   // настройка датчика
   const getSens = useInputStore((s) => s.getSens);
@@ -70,9 +72,23 @@ function Sensor({ el, code, idB }) {
   // const { cl, cls, clCorr } = fnStyle(sens?.[build]?.[idSensor]?.corr, raw, on)
 
   const Title = !dict.includes(code) ? (
-    <Title2 value={value} on={on} actOn={actOn} unit={unit} el={el} />
+    <Title2
+      value={value}
+      on={on}
+      actOn={actOn}
+      unit={unit}
+      el={el}
+      isAuth={isAuth}
+    />
   ) : (
-    <Title1 value={value} on={on} actOn={actOn} unit={unit} el={el} />
+    <Title1
+      value={value}
+      on={on}
+      actOn={actOn}
+      unit={unit}
+      el={el}
+      isAuth={isAuth}
+    />
   );
 
   return (
@@ -90,6 +106,7 @@ function Sensor({ el, code, idB }) {
           placeholder={0}
           unit={unit}
           size="sensor"
+          disabled={!isAuth}
         />
       </div>
     </div>

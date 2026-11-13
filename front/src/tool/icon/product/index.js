@@ -8,5 +8,15 @@ const data = {
 	cabbage: { code: 'cabbage', title: 'Капуста', img: '/img/product/cabbage.svg' },
 	Тыква: { code: 'pumpkin', title: 'Тыква', img: '/img/product/pumpkin.svg' },
 	pumpkin: { code: 'pumpkin', title: 'Тыква', img: '/img/product/pumpkin.svg' },
+	Картофель_продовольственный: {
+		code: 'potato2',
+		title: 'Картофель_продовольственный',
+		img: '/img/product/potato.svg',
+	},
+	potato2: {
+		code: 'potato2',
+		title: 'Картофель_продовольственный',
+		img: '/img/product/potato.svg',
+	},
 }
 export default data

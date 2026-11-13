@@ -22,8 +22,9 @@ const useModalStore = create((set, get) => ({
 
   // flag - true закрытие модалки без действий внутри нее (по-умолчанию)
   // false - закрытие модалки после действия пользователя
-  close: (isPassiveVisit = true) =>
-    set({ code: null, props: {}, isPassiveVisit }),
+  close: (isPassiveVisit = true) => {
+    set({ code: null, props: {}, isPassiveVisit });
+  },
 
   resetPassive: () => set({ isPassiveVisit: false }),
 }));

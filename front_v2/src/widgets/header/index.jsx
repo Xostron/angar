@@ -1,9 +1,22 @@
 import { useState, useEffect } from 'react';
 import './style.css';
+import useAuthStore from '@src/entities/store/auth';
+import useModalStore from '@src/entities/store/modal';
+import { useParams } from 'react-router-dom';
 
 const MONTHS = [
-  'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-  'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+  'января',
+  'февраля',
+  'марта',
+  'апреля',
+  'мая',
+  'июня',
+  'июля',
+  'августа',
+  'сентября',
+  'октября',
+  'ноября',
+  'декабря',
 ];
 
 const formatDate = () => {
@@ -35,9 +48,30 @@ const Header = () => {
         <span className="header__date">{date}</span>
         <span className="header__time-val">{time}</span>
       </div>
-      <div className="header__auth">Войти</div>
+      <Login />
     </header>
   );
 };
 
 export default Header;
+
+function Login({}) {
+  const { buildingId: idB } = useParams();
+  const isAuth = useAuthStore((s) => s.isAuth);
+  const name = useAuthStore((s) => s.name);
+
+  const openModal = useModalStore((s) => s.open);
+
+  return (
+    <div className="header__auth" onClick={onClick}>
+      {isAuth ? name : 'Войти'}
+    </div>
+  );
+  function onClick() {
+    if (!isAuth) {
+      openModal('login', { idB });
+      return;
+    }
+    openModal('logout', { idB });
+  }
+}

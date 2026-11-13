@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import style from './style.module.css';
 
 function InputNum({
+  id,
+  type = 'text',
   value,
   setValue,
   placeholder,
@@ -13,6 +15,7 @@ function InputNum({
   size = 'normal',
   defaultValue = '',
   unit = 'Па',
+  icon,
 }) {
   const ref = useRef(null);
   const [err, setErr] = useState(false);
@@ -22,10 +25,12 @@ function InputNum({
       style={dictSize?.[size] ?? {}}
       onClick={onFocus}
     >
+      {icon && <img src={icon} />}
       <input
         ref={ref}
+        id={id}
         className={`${style.input}  ${err ? style.error : ''}`}
-        type="text"
+        type={type}
         inputMode="numeric"
         pattern="[0-9]*"
         value={value}
