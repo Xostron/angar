@@ -34,6 +34,7 @@ export default function Entry({ data, entryCode, refDialog }) {
           show={setActiveKeyboard}
           container={refDialog?.current}
         />
+		
       {/* <Control form={form} /> */}
 
       <div className={style.buttons}>

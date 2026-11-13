@@ -24,7 +24,6 @@ export default function BaseDialog({ isOpen, onClose, children }) {
   // Закрытие при клике на оверлей (backdrop)
   const close = (e) => {
     if (e.target === ref.current) onClose();
-	console.log(11, e.target, ref.current)
   };
 
   return (

@@ -28,7 +28,7 @@ export default function SelectInput({
     }
   }, [value, val]);
 
-  let cl = [style.container, cls];
+  let cl = [style.inputContainer, cls];
   cl = cl.join(' ');
 
   return (
@@ -42,14 +42,14 @@ export default function SelectInput({
         value={val}
         onChange={onChange}
         onFocus={onFocus}
-        onClick={onClick}
+        // onClick={onClick}
         title={title}
         keyboard={false}
       />
       <img
         onClick={toggleModal}
-        className="cmp-choice-input-arrow"
-        src="/img/popup.svg"
+        className={style.arrow}
+        src="/icon/indicator/chevronDown.svg"
         alt=""
       />
       <Modal

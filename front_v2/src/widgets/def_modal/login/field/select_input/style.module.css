@@ -1,4 +1,4 @@
-.container {
+.inputContainer {
   display: flex;
   border-radius: 4px;
   border: 1px solid var(--c-grey);
@@ -25,9 +25,23 @@
   }
 }
 
-.cmp-choice-input-arrow {
-  filter: brightness(0) saturate(100%) invert(76%) sepia(45%) saturate(4012%)
-    hue-rotate(184deg) brightness(93%) contrast(100%);
+.inputContainer:focus-within {
+  border-color: var(--c-blue-darker);
+}
+
+.inputContainer:has(.input:disabled) {
+  opacity: 0.2;
+}
+
+.error {
+  background-color: var(--c-red-light);
+  border-color: var(--c-red) !important;
+  color: var(--c-red);
+}
+
+.arrow {
+  /* filter: brightness(0) saturate(100%) invert(76%) sepia(45%) saturate(4012%)
+    hue-rotate(184deg) brightness(93%) contrast(100%); */
   padding: 5px !important;
   margin-right: 10px !important;
   height: var(--fsz30) !important;
