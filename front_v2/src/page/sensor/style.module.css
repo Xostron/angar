@@ -4,6 +4,7 @@
   flex-direction: column;
   /* background-color: gold; */
   background-color: var(--c-grey-lighter);
+  z-index: 1;
 }
 
 .btns {
