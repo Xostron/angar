@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { label: 'Склад', to: '/building/1', icon: '/icon/warehouse.svg' },
   {
     label: 'Датчики',
-    to: '/building/1/sensor/temperature',
+    to: '/building/1/sensor/all',
     icon: '/icon/sensors.svg',
   },
   {

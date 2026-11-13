@@ -1,5 +1,19 @@
 .main {
+  position: relative;
   display: flex;
   flex-direction: column;
-  background-color: gold;
+  /* background-color: gold; */
+  background-color: var(--c-grey-lighter);
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  min-height: 100px;
+  padding-inline: 24px;
+  gap: 16px;
+  position: relative;
+  top: -100px;
+  /* background-color: aquamarine; */
 }

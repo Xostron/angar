@@ -13,6 +13,7 @@ function Button({
   variant = 'usual',
   loading,
   icon,
+  styl = {},
 }) {
   const stl = {
     cursor: disabled ? 'not-allowed' : 'pointer',
@@ -21,7 +22,12 @@ function Button({
   let cls = `${style.btn} ${dictActive?.[variant]?.[active] ?? ''}`;
   if (loading) cls += ' ' + style.loading;
   return (
-    <button className={cls} onClick={onClick} disabled={disabled} style={stl}>
+    <button
+      className={cls}
+      onClick={onClick}
+      disabled={disabled}
+      style={{ ...stl, ...styl }}
+    >
       {label}
       {icon && <img src={icon} />}
     </button>
@@ -97,5 +103,8 @@ const dictActive = {
   toggle2: { true: style.toggle2_active, false: style.toggle2_not_active },
   toggle3: { true: style.toggle2_active, false: style.toggle3_not_active },
   sensor: { true: style.sect_active, false: style.sect_not_active },
-  sensor_more: { true: style.sensor_more_active, false: style.sensor_more_active },
+  sensor_more: {
+    true: style.sensor_more_active,
+    false: style.sensor_more_active,
+  },
 };

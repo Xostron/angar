@@ -8,8 +8,6 @@ function SensorPui({ el, idB }) {
   //Получить линии показаний
   const r = useMemo(() => fnList(el, input), [input]);
 
-  console.log(111, r);
-
   return (
     <div className={style.sensor}>
       {r.map((el) => (
