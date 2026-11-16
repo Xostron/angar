@@ -3,6 +3,7 @@ import './style.css';
 import useAuthStore from '@src/entities/store/auth';
 import useModalStore from '@src/entities/store/modal';
 import { useParams } from 'react-router-dom';
+import useEquipStore from '@src/entities/store/equipment';
 
 const MONTHS = [
   'января',
@@ -64,7 +65,7 @@ function Login({}) {
 
   return (
     <div className="header__auth" onClick={onClick}>
-      {isAuth ? name : 'Войти'}
+      {isAuth ? <Name idB={idB} name={name} /> : 'Войти'}
     </div>
   );
   function onClick() {
@@ -72,6 +73,20 @@ function Login({}) {
       openModal('login', { idB });
       return;
     }
-    openModal('logout', { idB });
+    openModal('logout');
   }
+}
+
+function Name({ idB, name }) {
+  const bld = useEquipStore((s) => s.getBld(idB));
+  console.log(123, bld.address);
+  return (
+    <div className={'containerName'}>
+      <div>
+        <span>{name}</span>
+        {bld?.address && <span>{address}</span>}
+      </div>
+      <img src={'/icon/indicator/login.svg'} />
+    </div>
+  );
 }
