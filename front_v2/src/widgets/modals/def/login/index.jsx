@@ -1,18 +1,17 @@
 import { useState } from 'react';
-// import Control from './control';
-// import Field from './field';
 import style from './style.module.css';
 import { useReducer } from 'react';
 import useEquipStore from '@store/equipment';
 import Keyboard from '@src/shared/ui/keyboard';
 import useModalStore from '@src/entities/store/modal';
 import Button from '@src/shared/ui/button/btn';
-import Field from './field'
+import Field from './field';
+import onLogin from './control/fn';
 
 //Авторизация
-export default function Entry({ data, entryCode, refDialog }) {
+export default function Entry({ data, entryCode, closeModal, refDialog }) {
   //   Закрыть модальное окно
-  const closeModal = useModalStore((s) => s.close);
+  //   const closeModal = useModalStore((s) => s.close);
 
   // Отдельные стейты для каждого поля
   const [form, setForm] = useReducer(reducer, {
@@ -23,19 +22,16 @@ export default function Entry({ data, entryCode, refDialog }) {
 
   const [activeKeyboard, setActiveKeyboard] = useState(null); // 'login', 'password', или null
   const apiInfo = useEquipStore((s) => s.apiInfo);
-
   return (
     <div className={style.entry}>
       <h2 className={style.title}>Авторизация</h2>
 
       <Field
-          form={form}
-          setForm={setForm}
-          show={setActiveKeyboard}
-          container={refDialog?.current}
-        />
-		
-      {/* <Control form={form} /> */}
+        form={form}
+        setForm={setForm}
+        show={setActiveKeyboard}
+        container={refDialog?.current}
+      />
 
       <div className={style.buttons}>
         <Button
@@ -50,8 +46,7 @@ export default function Entry({ data, entryCode, refDialog }) {
           label="Войти"
           active={true}
           onClick={() => {
-            setStart({ _id: idB, val: true });
-            closeModal(false);
+            onLogin(form, closeModal);
           }}
           variant="grow"
         />

@@ -1,6 +1,8 @@
+import { authLogin } from '@src/providers/api/auth'
+import { notification } from '@src/shared/ui/notification'
 import useAuthStore from '@store/auth'
-import { authLogin } from '@tool/api/auth'
-import { notification } from '@cmp/notification'
+// import { authLogin } from '@tool/api/auth'
+// import { notification } from '@cmp/notification'
 
 //Авторизация на сайте
 export default async function onLogin(form, clear) {

@@ -17,7 +17,8 @@ const useModalStore = create((set, get) => ({
   code: null, // Имя текущей модалки (строка)
   props: {}, // Переданные данные
   isPassiveVisit: false,
-
+  refDialog: null,
+  setRef: (ref) => set({ refDialog: ref }),
   open: (code, props = {}) => set({ code: code, props: props }),
 
   // flag - true закрытие модалки без действий внутри нее (по-умолчанию)

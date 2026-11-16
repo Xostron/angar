@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import style from './style.module.css';
+import useModalStore from '@src/entities/store/modal';
 
-export default function BaseDialog({ isOpen, onClose, children }) {
+export default function Dialog({ isOpen, onClose, children }) {
   const ref = useRef(null);
-
+  const setRef = useModalStore((s) => s.setRef);
   useEffect(() => {
     const cur = ref.current;
+    setRef(ref);
     if (!cur) return;
     if (isOpen) {
       // Открывает окно поверх всего как модалку (появляется встроенный ::backdrop)

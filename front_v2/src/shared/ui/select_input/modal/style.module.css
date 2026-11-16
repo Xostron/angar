@@ -1,0 +1,31 @@
+.modal {
+  position: absolute;
+  top: calc(69px + 14px);
+  left: -2px;
+  display: flex;
+  width: calc(100% + 3px);
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  z-index: 100;
+  row-gap: 14px;
+
+  & > span {
+    display: flex;
+    align-items: center;
+    height: 71px;
+    background-color: var(--c-white);
+    border-radius: 4px;
+    border: 1px solid var(--c-grey);
+
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 500;
+    color: var(--c-navy);
+
+    padding: 16px;
+    /* text-align: left; */
+    /* border-radius: 5px; */
+    /* border-bottom: 1px solid var(--primary); */
+    cursor: pointer;
+  }
+}

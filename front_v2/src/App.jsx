@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './widgets/header';
 import Footer from './widgets/footer';
 import './App.css';
-import ModalManager from './providers/modal_manager';
+import ModalManager from './widgets/modals/modal_manager';
 
 const App = () => {
   return (

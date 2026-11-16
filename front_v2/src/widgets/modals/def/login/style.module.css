@@ -3,6 +3,10 @@
   flex-direction: column;
   font-weight: 500;
   color: var(--c-navy);
+  row-gap: 64px;
+  /* width: 743px; */
+  /* height: 510px; */
+  justify-self: center;
 }
 
 .title {
@@ -21,15 +25,3 @@
   justify-content: end;
 }
 
-.cmp-person-entry-logo {
-  /* width: 200px; */
-  height: 80px;
-  padding: 8px;
-}
-.entry-logo-container {
-  max-width: 330px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--fsz24);
-  margin: auto;
-}

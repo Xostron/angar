@@ -4,9 +4,9 @@
 	left: 0;
 	right: 0;
 	z-index: 1000;
-	background-color: #ececec;
-	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-	padding: 15px;
+	background-color: var(--c-grey-lighter);
+	/* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); */
+	padding: 24px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;

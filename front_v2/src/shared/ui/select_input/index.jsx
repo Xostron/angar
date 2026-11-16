@@ -1,13 +1,10 @@
 import style from './style.module.css';
 import { useEffect, useState } from 'react';
 import Modal from './modal';
-const list = [
-  { code: 'emp', name: 'Сотрудник' },
-  { code: 'admin', name: 'Админ' },
-  // { code: 'root', name: 'Сервис' },
-];
+
+
 //Поле ввода
-export default function SelectInput({
+export default function InputSelect({
   value,
   setValue,
   stl,
@@ -18,6 +15,12 @@ export default function SelectInput({
   title,
   onFocus,
   onClick,
+  // { code: 'ключ', name: 'отображаемое имя' },
+  list = [
+    { code: 'emp', name: 'Сотрудник' },
+    { code: 'admin', name: 'Админ' },
+    // { code: 'root', name: 'Сервис' },
+  ],
 }) {
   const [val, setVal] = useState(value);
   const [show, setShow] = useState(false);
@@ -42,9 +45,8 @@ export default function SelectInput({
         value={val}
         onChange={onChange}
         onFocus={onFocus}
-        // onClick={onClick}
+        onClick={onClick}
         title={title}
-        keyboard={false}
       />
       <img
         onClick={toggleModal}
