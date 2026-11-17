@@ -57,7 +57,7 @@ function wetting(bld, sect, obj, s, se, m, alarm, acc = {}) {
 
 	// Состояние напорных вентиляторов (true|false) и разгонника
 	const run = fanS.some((f) => stateEq(f._id, value)) || m?.fanA?.some((f) => stateEq(f._id, value));
-	console.log(123, run, m?.fanA)
+
 	// Состояние склада выкл / ВКЛ
 	const bldStatus = retain[bld._id].start;
 	// Состояние секции выкл (null||undefined)/ Авто(true) / Ручное (false???)

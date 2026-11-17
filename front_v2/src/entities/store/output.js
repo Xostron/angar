@@ -162,7 +162,6 @@ const useOutputStore = create((set, get) => ({
   sendSens() {
     // Отправить на сервер
     const sens = get().sens;
-    console.log(1234, sens);
     sSens(sens);
     // очистить стейт
     set({ sens: {} });
