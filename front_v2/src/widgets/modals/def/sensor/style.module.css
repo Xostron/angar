@@ -1,0 +1,30 @@
+.entry {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--c-navy);
+  row-gap: 32px;
+  justify-self: center;
+  background-color: var(--c-grey-lighter);
+}
+
+.title {
+  text-align: center;
+}
+
+.sensor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.buttons {
+  display: flex;
+  gap: 28px;
+  width: 100%;
+  justify-content: end;
+}
+
+.padding12 {
+  padding: 12px;
+}

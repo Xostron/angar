@@ -4,6 +4,7 @@ import useAuthStore from '@src/entities/store/auth';
 import useModalStore from '@src/entities/store/modal';
 import { useParams } from 'react-router-dom';
 import useEquipStore from '@src/entities/store/equipment';
+import Login from './login';
 
 const MONTHS = [
   'января',
@@ -42,7 +43,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header__logo">
-        <img src="/icon/logo.svg" alt="Тента" width="104" height="28" />
+        <img src="/icon/logo.svg" alt="Тента" width="104px" height="28px" />
       </div>
       <div className="header__buildings">Мои склады</div>
       <div className="header__time">
@@ -55,38 +56,3 @@ const Header = () => {
 };
 
 export default Header;
-
-function Login({}) {
-  const { buildingId: idB } = useParams();
-  const isAuth = useAuthStore((s) => s.isAuth);
-  const name = useAuthStore((s) => s.name);
-
-  const openModal = useModalStore((s) => s.open);
-
-  return (
-    <div className="header__auth" onClick={onClick}>
-      {isAuth ? <Name idB={idB} name={name} /> : 'Войти'}
-    </div>
-  );
-  function onClick() {
-    if (!isAuth) {
-      openModal('login', { idB });
-      return;
-    }
-    openModal('logout');
-  }
-}
-
-function Name({ idB, name }) {
-  const bld = useEquipStore((s) => s.getBld(idB));
-  console.log(123, bld.address);
-  return (
-    <div className={'containerName'}>
-      <div>
-        <span>{name}</span>
-        {bld?.address && <span>{address}</span>}
-      </div>
-      <img src={'/icon/indicator/login.svg'} />
-    </div>
-  );
-}

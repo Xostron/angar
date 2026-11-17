@@ -1,0 +1,42 @@
+.login {
+  width: 370px;
+  padding: 0 20px;
+  color: var(--c-blue-darker);
+  cursor: pointer;
+}
+
+.name {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  align-items: center;
+}
+
+.name_1 {
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+  & span {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+  }
+  & p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 140%;
+    color: var(--c-grey);
+    text-align: end;
+	padding-right: 15px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+img {
+  padding: 6px;
+  padding-left: 10px;
+}

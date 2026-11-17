@@ -6,6 +6,7 @@ import dictSensor from '@src/shared/dict/icon_sensor';
 import { Sensor } from './sensor';
 import { SensorPui } from './pui';
 import Button from '@src/shared/ui/button/btn';
+import useModalStore from '@src/entities/store/modal';
 
 /**
  * Рисует карточки разделенные по типажу: Темп улицы, Влажность улицы, Темп канала и т.д.
@@ -35,7 +36,7 @@ export default function Groups({ idB, idS }) {
  */
 function Subgroup({ data, idB }) {
   const { code, title, list } = data;
-
+  const openModal = useModalStore((s) => s.open);
   return (
     <article className={style.subgroup}>
       <div className={style.title}>
@@ -49,7 +50,7 @@ function Subgroup({ data, idB }) {
           .slice(0, 2)
           .map((el, i) =>
             code == 'pui' ? (
-              <SensorPui el={el} idB={idB} />
+              <SensorPui key={i} el={el} idB={idB} />
             ) : (
               <Sensor key={i} el={el} code={code} idB={idB} />
             ),
@@ -59,9 +60,15 @@ function Subgroup({ data, idB }) {
             variant="sensor_more"
             label={`+${list.length - 2}`}
             icon="/icon/indicator/next.svg"
+            onClick={open}
           />
         )}
       </div>
     </article>
   );
+
+  //   Открыть модальное окно
+  function open() {
+    openModal('sensor', { list, idB, title, code });
+  }
 }

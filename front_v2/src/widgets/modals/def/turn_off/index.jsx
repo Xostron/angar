@@ -9,10 +9,9 @@ import { runTime } from '@src/shared/tool/time';
  * @param { idB, bName, product, automode, datestart } props
  * @returns
  */
-function TurnOff({ idB }) {
+function TurnOff({ idB, closeModal, refDialog }) {
   //   Включить/выкл склад
   const setStart = useOutputStore((s) => s.setStart);
-  const closeModal = useModalStore((s) => s.close);
 
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const datestart = bCard?.datestart ? runTime(bCard?.datestart, 1) : '';

@@ -9,10 +9,7 @@ import Field from './field';
 import onLogin from './control/fn';
 
 //Авторизация
-export default function Entry({ data, entryCode, closeModal, refDialog }) {
-  //   Закрыть модальное окно
-  //   const closeModal = useModalStore((s) => s.close);
-
+export default function Entry({  closeModal, refDialog }) {
   // Отдельные стейты для каждого поля
   const [form, setForm] = useReducer(reducer, {
     name: '',

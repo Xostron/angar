@@ -49,6 +49,7 @@
   top: 32px;
   right: 32px;
   cursor: pointer;
+  padding: 2px;
 }
 
 .content {

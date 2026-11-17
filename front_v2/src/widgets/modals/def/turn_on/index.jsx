@@ -15,13 +15,11 @@ const dictAutomode = [
  * @param { idB } props
  * @returns
  */
-function TurnOn({ idB }) {
+function TurnOn({ idB, closeModal, refDialog }) {
   //   Включить/выкл склад
   const setStart = useOutputStore((s) => s.setStart);
   //   Изменить авторежим
   const setAutomode = useOutputStore((s) => s.setAutomode);
-  //   Закрыть модальное окно
-  const closeModal = useModalStore((s) => s.close);
   //   Данные о складе
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const automode = bCard?.automode?.name;

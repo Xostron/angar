@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   row-gap: 12px;
-  /* border: 1px solid black; */
+  background-color: var(--c-white);
+  border-radius: 12px;
 }
 
 /* НЕчетный */

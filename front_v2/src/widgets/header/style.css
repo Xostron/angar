@@ -34,12 +34,3 @@
 .header__date {
   color: var(--c-grey);
 }
-
-.header__auth {
-  width: 370px;
-  padding: 0 20px;
-  text-align: right;
-  font-size: 16px;
-  color: var(--c-blue-darker);
-  cursor: pointer;
-}

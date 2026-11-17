@@ -24,7 +24,7 @@
   }
   &.not_active {
     border: 1px solid var(--c-grey-lightest);
-    background-color: transparent;
+    background-color: var(--c-white);
     color: var(--c-grey);
   }
   &.automode_active {

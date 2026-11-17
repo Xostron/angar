@@ -1,0 +1,26 @@
+.entry {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--c-navy);
+  row-gap: 32px;
+  /* width: 743px; */
+  /* height: 510px; */
+  justify-self: center;
+}
+
+.title {
+  text-align: center;
+  /* font-weight: 600; */
+  /* font-size: 32px; */
+  /* line-height: 38px; */
+  /* padding-bottom: 12px; */
+}
+
+.buttons {
+  display: flex;
+  gap: 28px;
+  width: 100%;
+  height: 76px;
+  justify-content: end;
+}

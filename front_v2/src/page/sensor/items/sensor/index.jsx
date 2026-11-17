@@ -27,19 +27,17 @@ const dict = [
  * @param {string} props.idB ИД склада
  * @returns
  */
-function Sensor({ el, code, idB }) {
+function Sensor({ el, code, idB, cls }) {
   // сохранить настройки на сервере ангара
   const setSens = useOutputStore((s) => s.setSens);
   const isAuth = useAuthStore((s) => s.isAuth);
 
-  // настройка датчика
-  const getSens = useInputStore((s) => s.getSens);
-  const input = useInputStore((s) => s.input);
-
   const idSensor = ['tweather', 'hweather'].includes(el?.type)
     ? el?.type
     : el?._id;
-
+  // настройка датчика
+  const getSens = useInputStore((s) => s.getSens);
+  const input = useInputStore((s) => s.input);
   const retainSensor = input?.retain?.[idB]?.[idSensor];
 
   // Датчик вкл/выкл
@@ -67,7 +65,7 @@ function Sensor({ el, code, idB }) {
   useEffect(() => {
     setCorr(_corr);
     setOn(_on);
-  }, [idSensor]);
+  }, [idSensor, _corr, _on]);
 
   // const { cl, cls, clCorr } = fnStyle(sens?.[build]?.[idSensor]?.corr, raw, on)
 
@@ -90,9 +88,9 @@ function Sensor({ el, code, idB }) {
       isAuth={isAuth}
     />
   );
-
+  const cl = [style.sensor, cls].join(' ');
   return (
-    <div className={style.sensor}>
+    <div className={cl}>
       {Title}
       <div className={style.corr}>
         <span>Корректировка</span>
@@ -114,12 +112,12 @@ function Sensor({ el, code, idB }) {
   // Вкл/выкл датчик
   function actOn() {
     setOn((p) => !p);
-    setSens({ build: idB, _id: el, on });
+    setSens({ build: idB, _id: el._id, on: !on });
   }
   // Поле "Коррекция"
   function actCorr(val) {
     setCorr(val);
-    setSens({ build: idB, _id: el, corr: val });
+    setSens({ build: idB, _id: el._id, corr: val });
   }
 }
 
