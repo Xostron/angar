@@ -1,4 +1,3 @@
-import useInputStore from '@src/entities/store/input';
 import style from './style.module.css';
 import Header from '../normal/header';
 import Sensors from '../normal/sensors';

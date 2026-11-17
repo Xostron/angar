@@ -38,7 +38,9 @@ function mech(obj, idS, idB) {
 	// Напорные ВНО секции/камеры + ВНО испарителей:
 	// обычный/комби склад в режиме обычного (только рабочие)
 	const fanS = [...groupFanSS, ...fanClr]
-// console.log(11, allFanClr, fanClr)
+	// Разгонные вентиляторы
+	const idBS = getIdBS(data?.section, idB)
+	const fanA = data?.fan?.filter((el) => idBS.includes(el.owner.id) && el.type === 'accel')
 	// DEMO Вентиляторы секции:напорные + испарители, только введенные в работу
 	const ff = fan
 		.filter(
@@ -94,6 +96,7 @@ function mech(obj, idS, idB) {
 		fanClrRaw,
 		ff,
 		heattcnl,
+		fanA,
 	}
 }
 
