@@ -33,7 +33,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	const acc = init(bld, idS, obj, bdata, s, who, 'fc', fans.length)
 
 	// 1. Разрешение на работу
-	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where))
+	if (turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, isCC, where))
 		return //console.log(22, idS, 'запрет')
 
 	// 2. Регулирование по давлению/темпе канала
@@ -59,7 +59,7 @@ function fc(bld, idS, obj, aCmd, fanFC, fans, solHeat, s, seB, seS, idx, bdata, 
 	// 5. Регулирование Релейных ВНО: уменьшение кол-ва
 	checkOff.fc(off, acc)
 	// 6. Непосредственное вкл/выкл
-	turnOn(fanFC, fans, solHeat, bld._id, acc, s, max, off, isCC)
+	turnOn(fanFC, fans, solHeat, bld._id, acc, s, max, off, isCC, where)
 	// console.log(112, idS)
 	// console.table(acc)
 }

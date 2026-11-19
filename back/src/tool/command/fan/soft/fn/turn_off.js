@@ -13,7 +13,7 @@ const _MIN_SP = 20
  * @param {*} bdata Результат функции scan()
  * @returns {boolean} true - запрет управления ВНО, false - разрешить управление ВНО
  */
-function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, where = 'normal') {
+function turnOff(fanFC, fans, solHeat, bld, idS, obj, aCmd, acc, s, bdata, isCC, where = 'normal') {
 	// Запрет управления при окуривании или озонаторе
 	if (s?.smoking?.on || s?.ozon?.on) {
 		// console.log('\tЗапрет управления при окуривании или озонаторе', idS, where)

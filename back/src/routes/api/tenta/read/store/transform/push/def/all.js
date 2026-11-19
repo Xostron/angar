@@ -56,7 +56,7 @@ function fnHin(idB, obj) {
 	return humidity
 		.map((h) => {
 			if (hin <= h) return
-			return { msg: `Влажность продукта ${hin}% больше влажности задания ${h}%` }
+			return { msg: `Влажность продукта больше влажности задания ${h}%` }
 		})
 		.filter(Boolean)
 }
