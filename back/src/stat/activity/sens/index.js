@@ -26,7 +26,7 @@ function web(code, obj, oData) {
 		}
 		const on = obj[bId][sensId].on
 		const corr = obj[bId][sensId].corr
-console.log(123, sens)
+
 		if (on === true) {
 			if (corr) title.push(`${sens.name} введен(а) в работу, коррекция = ${corr}`)
 			else title.push(`${sens.name} введен(а) в работу`)

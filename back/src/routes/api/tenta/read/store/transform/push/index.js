@@ -19,7 +19,7 @@ async function push(idB, section, obj) {
 	let r = supply(idB, obj)
 	if (r) return [r]
 
-	// Пуши критические аварии (флаг count)
+	// Пуши аварий (флаг flt)
 	r = all(idB, obj)
 
 	// Фильтр критических аварии, связанные с неисправным модулем
