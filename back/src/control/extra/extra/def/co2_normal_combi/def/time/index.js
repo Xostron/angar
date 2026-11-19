@@ -19,7 +19,7 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 			null,
 			'co2',
 			msgB(bld, 85, `${remTime(acc.byTime.wait, acc.byTime.stgWait)}`),
-			'wait'
+			'wait',
 		)
 		delExtra(bld._id, null, 'co2', 'work')
 		delExtra(bld._id, null, 'co2', 'check2')
@@ -45,13 +45,13 @@ function fnTime(bld, obj, s, se, m, alarm, prepare, acc, resultFan) {
 	resultFan.stg.push('co2')
 	//
 	time = compareTime(acc.byTime.work, s.co2.work)
-	//
+	// Время работы прошло
 	if (time) {
 		acc.byTime = {}
 		delExtra(bld._id, null, 'co2', 'work')
 		// Если нет времени ожидания, удаление СО2 будет всегда в работе
 		// для безударнорго перехода
-		if (acc.byTime.stgWait) return
+		// if (acc.byTime.stgWait) return
 		// Время работы прошло
 		resultFan.force.push(false)
 		resultFan.stg.push(null)

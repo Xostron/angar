@@ -46,7 +46,7 @@ function valve(bld, idS, obj, m, s, se, am, acc, isCO2work, alr) {
 	// const forceOpn = heatOpen(bld, idS, obj, m, acc, am, s, alr)
 	const forceOpn = false
 	// Комби-холод + удаление СО2 - открыть клапан на %
-	const sp = isCombiCold(bld, am, s) && isCO2work ? (s?.co2?.spv ?? null) : null
+	const sp = isCO2work ? (s?.co2?.spv ?? null) : null
 	// console.log('\tКлапаны, режим хранение, секция', acc)
 	// console.table(
 	// 	[{ open, close, forceCls, forceOpn, sp }],

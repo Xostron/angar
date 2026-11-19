@@ -53,12 +53,11 @@ function fnCheck(bld, obj, code, s, alarm, ban, acc, prepare) {
 	// Вычисление причин запрета
 	const reason = fnReason(bld, obj, code, s, alarm, ban, acc, prepare)
 	// Собираем причины для вывода в сообщение, кроме ignore
-	const ignore = [9, 10]
+	const ignore = []
 	const err = reason
 		.map((el, i) => (el && !ignore.includes(i) ? dict[i] : null))
 		.filter((el) => el !== null)
 		.join('; ')
-
 	// Запретить
 	if (reason.some((el, i) => el)) {
 		// Печатаем причины
@@ -110,6 +109,7 @@ function fnReason(bld, obj, code, s, alarm, ban, acc, prepare) {
 		acc?.bySensor?.work ||
 		isExtra(bld._id, null, 'co2', 'work') ||
 		isExtra(bld._id, null, 'co2', 'on')
+
 	return [
 		ban, //0
 		!fan.length, //1
