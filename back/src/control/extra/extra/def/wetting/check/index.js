@@ -1,6 +1,6 @@
 // Температура помещения ниже которой мы не работаем
-const minTin = -0.3;
-
+const minTin = -0.3
+const { data: store } = require('@store')
 // Условия выхода без выполнения проверок
 // - Нет увлажнителей
 // - Секция выключена
@@ -23,20 +23,10 @@ const msg = {
 	3: 'Нет настроек по продукту',
 	4: 'Ошибка выполнения режима',
 	5: `Температура помещения ниже ${minTin} °C.`,
-};
+	6: 'Таймер запрета увлажнителей',
+}
 
-function check(
-	bldId,
-	secId,
-	setMsg,
-	delMsg,
-	wettingS,
-	bldStatus,
-	secStatus,
-	wetting,
-	def,
-	tin
-) {
+function check(bldId, secId, setMsg, delMsg, wettingS, bldStatus, secStatus, wetting, def, tin) {
 	const arr = [
 		//Нет увлажнителей
 		!wettingS?.length,
@@ -50,11 +40,13 @@ function check(
 		!def,
 		// Температура помещения
 		tin < minTin,
+		// Таймер запрета увлажнителей
+		!!store.alarm.timer?.[bldId]?.wetting,
 	]
 		.map((e, i) => (e ? msg[i] : null))
-		.filter(Boolean);
+		.filter(Boolean)
 
-	return arr.length ? arr.join('; ') : false;
+	return arr.length ? arr.join('; ') : false
 }
 
-module.exports = check;
+module.exports = check

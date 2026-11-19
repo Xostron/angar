@@ -245,7 +245,7 @@ function fnCombiSFan(idS, obj) {
 	return {
 		value: fanS.some((el) => obj?.value[el._id]?.state === 'run') ? 'Вкл' : 'Выкл',
 		// Режим Холодильного оборудования => иконка ВНО в карточке
-		code: clrMode(idS, obj).code,
+		code: clrMode(idS, obj)?.code,
 	}
 }
 
