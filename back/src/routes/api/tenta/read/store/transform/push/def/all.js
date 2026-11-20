@@ -50,7 +50,7 @@ function fnHin(idB, obj) {
 	store.acc[idB].push.hin ??= []
 	const acc = store.acc[idB].push
 	// Настройка: отн. влажность продукта
-	const mois = store.calcSetting?.[idB]?.mois ?? 90
+	const hum = store.calcSetting?.[idB]?.mois?.humidity ?? 90
 	// Верхняя граница влажности продукта
 	const humidityMax = 90
 	// Гистерезис, чтобы не срабатывало по 500раз
@@ -58,11 +58,11 @@ function fnHin(idB, obj) {
 	// Текущая влажность продукта
 	const hin = obj?.total?.[idB]?.hin?.max
 
-	const reason = [mois?.humidity, humidityMax]
+	const reason = [hum, humidityMax]
 
 	// Если задание влажности (1 УСТАВКА) больше НАШЕЙ УСТАВКИ
 	// (2 УСТАВКА) = 90%, то не учитываем НАШУ УСТАВКУ
-	if (mois?.humidity >= humidityMax) humidity.pop()
+	if (hum >= humidityMax) reason.pop()
 
 	// Сообщения в данный момент
 	const rr = reason
@@ -72,7 +72,6 @@ function fnHin(idB, obj) {
 		})
 		.filter(Boolean)
 
-	// console.log(22, rr)
 	// Если значение датчика упало ниже задания, то сообщений не будет
 	// но если прошлое сообщение в аккумуляторе имеется, то
 	// начинаем проверку гистерезиса
