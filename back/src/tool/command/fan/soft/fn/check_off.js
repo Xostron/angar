@@ -1,4 +1,4 @@
-const { compareTime } = require('@tool/command/time')
+const { compareTime, remTime } = require('@tool/command/time')
 
 /**
  * Последовательное выключение - ПЧ Схема
@@ -14,6 +14,17 @@ function fc(off, acc) {
 	}
 
 	// Проверка времени (время на стабилизацию давления в канале, после подключения вентилятора)
+	/* ДЛЯ 10.20.4.2
+	// const t = 30*3600*1000
+	// if (!compareTime(acc.date, t)) {
+	// 	// console.log(
+	// 	// 	'\tCheckOFF: (off=true) кол-во работающих ВНО => Ожидание',
+	// 	// 	remTime(acc.date, t)
+	// 	// )
+	// 	return
+	// }
+	*/
+
 	if (!compareTime(acc.date, acc.delayRelay)) {
 		// console.log(
 		// 	'\tCheckOFF: (off=true) кол-во работающих ВНО => Ожидание',
