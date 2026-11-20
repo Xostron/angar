@@ -44,19 +44,50 @@ function fnNeed() {
  * @returns {object[]}
  */
 function fnHin(idB, obj) {
+	// Аккумулятор push-сообщений для влажности
+	store.acc[idB] ??= {}
+	store.acc[idB].push ??= {}
+	store.acc[idB].push.hin ??= []
+	const acc = store.acc[idB].push
 	// Настройка: отн. влажность продукта
-	const mois = store.calcSetting[idB]?.mois
-	// Верзняя граница владности продукта
+	const mois = store.calcSetting?.[idB]?.mois ?? 90
+	// Верхняя граница влажности продукта
 	const humidityMax = 90
+	// Гистерезис, чтобы не срабатывало по 500раз
+	const hysteresis = 5
 	// Текущая влажность продукта
 	const hin = obj?.total?.[idB]?.hin?.max
-	const humidity = [mois?.humidity, humidityMax]
+
+	const reason = [mois?.humidity, humidityMax]
+
+	// Если задание влажности (1 УСТАВКА) больше НАШЕЙ УСТАВКИ
+	// (2 УСТАВКА) = 90%, то не учитываем НАШУ УСТАВКУ
 	if (mois?.humidity >= humidityMax) humidity.pop()
 
-	return humidity
+	// Сообщения в данный момент
+	const rr = reason
 		.map((h) => {
 			if (hin <= h) return
 			return { msg: `Влажность продукта больше влажности задания ${h}%` }
 		})
 		.filter(Boolean)
+
+	// console.log(22, rr)
+	// Если значение датчика упало ниже задания, то сообщений не будет
+	// но если прошлое сообщение в аккумуляторе имеется, то
+	// начинаем проверку гистерезиса
+	if (acc.hin?.length != rr.length) {
+		const hyst = reason
+			.map((h) => {
+				if (hin <= h - hysteresis) return
+				return { msg: `Влажность продукта больше влажности задания ${h}%` }
+			})
+			.filter(Boolean)
+		// console.log(33, hyst)
+		acc.hin = hyst
+		return acc.hin
+	}
+	// Актуализируем прошлое значение
+	acc.hin = rr
+	return acc.hin
 }

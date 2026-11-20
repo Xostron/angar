@@ -10,7 +10,7 @@ export default function Mode({ doc }) {
 		<div className='item-prod'>
 			<div className='main-list-item-mode-prd'>
 				<div className='icon-text'>
-					{product.name ? (
+					{product?.name ? (
 						<img
 							className='icon-prod'
 							src={defImg.product?.[product?.code]?.img}
