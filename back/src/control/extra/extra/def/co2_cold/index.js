@@ -4,7 +4,8 @@ const def = require('./fn')
 
 // Удаление СО2
 function coOn(bld, section, obj, s, se, m, alarm, acc, data, ban) {
-	if (['time', 'sens'].includes(s?.co2?.mode)) return
+	console.log(11, s?.co2?.mode)
+	if (['time', 'sensor'].includes(s?.co2?.mode)) return
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
 	// Если включен демо-режим блокировать данную функцию
 	if (isDemo(bld._id)) return
@@ -16,7 +17,8 @@ function coOn(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 
 // Режим авто - По времени/По температуре: Работает когда склад включен
 function coAuto(bld, section, obj, s, se, m, alarm, acc, data, ban) {
-	if (!['time', 'sens'].includes(s?.co2?.mode)) return
+	console.log(111, s?.co2?.mode)
+	if (!['time', 'sensor'].includes(s?.co2?.mode)) return
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
 	// Если включен демо-режим блокировать данную функцию
 	if (isDemo(bld._id)) return
@@ -29,6 +31,8 @@ function coAuto(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 module.exports = { coOn, coAuto }
 
 function fnMsg(bld, acc, s) {
+
+	console.log(22, s?.co2?.mode, acc.lastMode, s?.co2?.mode)
 	if (acc.lastMode !== s?.co2?.mode) {
 		delete acc.work
 		delete acc.wait
@@ -45,11 +49,12 @@ function fnMsg(bld, acc, s) {
 			case 'time':
 				code = 63
 				break
-			case 'sens':
+			case 'sensor':
 				code = 64
 				break
 		}
-		const arr = [null, 'off', 'on', 'sens', 'time']
+		const arr = [null, 'off', 'on', 'sensor', 'time']
+		console.log(222, s?.co2?.mode, acc.lastMode, s?.co2?.mode)
 		delUnused(arr, s?.co2?.mode, bld, code, 'co2')
 	}
 }
