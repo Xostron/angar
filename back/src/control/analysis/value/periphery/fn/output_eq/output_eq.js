@@ -14,7 +14,6 @@ function outputEq(equip, val) {
 	const flap = heating.filter((el) => el.type == 'flap')
 	// Все остальные heating
 	const _heating = heating.filter((el) => el.type != 'flap')
-	// TODO
 	let r = {
 		...biDO(valve, val),
 		...uniDO(fan, val),

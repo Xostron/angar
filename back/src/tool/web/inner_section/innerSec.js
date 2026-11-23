@@ -6,8 +6,7 @@ function fnInnerSec(obj, sCard) {
 		const bld = obj.data.building.find((el) => el._id === sec.buildingId)
 		if (!bld) return acc
 		acc[bld._id] ??= {}
-		// Содержимое секции? 
-		// TODO добавить счетчик электроэнергии за месяц в правую боковую панель
+		// Содержимое секции
 		acc[bld._id][sec._id] = defInnerSec?.[bld.type](bld, sec, obj, sCard)
 		return acc
 	}, {})

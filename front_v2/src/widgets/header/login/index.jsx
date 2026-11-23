@@ -34,7 +34,7 @@ function Name({ idB, name }) {
         <span>{name}</span>
         {address && <p title={address}>{address}</p>}
       </div>
-      <img src={'/icon/indicator/login.svg'} />
+      <img className={style.login_img} src={'/icon/indicator/login.svg'} />
     </div>
   );
 }

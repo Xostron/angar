@@ -4,7 +4,7 @@ import login from './login';
 import logout from './logout';
 import sensor from './sensor';
 import ConfirmAction from './confirm_action';
-import section from './section';
+import section from './section_mode';
 
 const defModal = {
   turnoff,

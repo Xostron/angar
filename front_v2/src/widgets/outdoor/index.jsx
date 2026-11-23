@@ -4,12 +4,18 @@ import WeatherRow from '@src/entities/weather_row';
 import useInputStore from '@src/entities/store/input';
 import { useParams } from 'react-router-dom';
 
-const Outdoor = () => {
+/**
+ *
+ * @param {object} props
+ * @param {boolean} props.onOut true - отображать уличные дачтики
+ * @returns
+ */
+const Outdoor = ({ onOut }) => {
   const { buildingId: idB } = useParams();
   const bSide = useInputStore((s) => s?.input?.bSide);
   const typeBld = useInputStore((s) => s?.input?.bCard?.[idB]?.type);
 
-  if (!bSide || typeBld == 'cold')
+  if (!bSide || typeBld == 'cold' || !onOut)
     return (
       <aside className={style.container} style={{ height: '390px' }}></aside>
     );

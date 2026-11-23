@@ -20,7 +20,7 @@ function Single({ data = {} }) {
         <div className={style.comfan}>
           <TextIcEquipV2
             code="cooler"
-            name="Вент. испарителя"
+            name="Вент."
             value={comfan?.[0]?.value}
             state={comfan?.[0]?.state}
           />

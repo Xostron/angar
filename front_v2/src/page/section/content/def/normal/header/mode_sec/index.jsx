@@ -11,20 +11,19 @@ import useModalStore from '@src/entities/store/modal';
 function ModeSec({ idB, idS }) {
   const mode = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]?.mode);
   const openModal = useModalStore((s) => s.open);
-  console.log(123, mode);
   return (
     <div className={style.mode}>
       <span>Режим работы секции</span>
       <Toggle3
         value={mode?.[0]}
         on1={() => {
-          openModal('section', { value: null });
+          openModal('section', { value: null, idB, idS });
         }}
         on2={() => {
-          openModal('section', { value: true });
+          openModal('section', { value: true, idB, idS });
         }}
         on3={() => {
-          openModal('section', { value: false });
+          openModal('section', { value: false, idB, idS });
         }}
         disabled={false}
       />

@@ -33,6 +33,7 @@ function innerCombi(bld, sec, obj, sCard) {
 		fan: fnFanBySec(sec._id, obj?.data?.fan, obj),
 		// Контур: ипаритель+агрегат
 		circuit: fnCircuit(bld, sec, obj),
+		name: sec?.name,
 		/*
 		(Такого функционала еще нет в природе)
 		Централь: Агрегат
@@ -42,5 +43,3 @@ function innerCombi(bld, sec, obj, sCard) {
 }
 
 module.exports = innerCombi
-
-

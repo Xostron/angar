@@ -24,17 +24,17 @@ function TextSens({ name, value, state, size, unit = 'grad', title }) {
   let cls = '';
   if (state == 'off') {
     cls = style.off;
-    content = <img width="24px" src={dictIcon.offline} />;
+    content = <img width="24px" height="24px" src={dictIcon.offline} />;
   }
   if (state == 'alarm') {
     cls = style.alarm;
-    content = <img width="24px" src={dictIcon.crash} />;
+    content = <img width="24px" height="24px" src={dictIcon.crash} />;
   }
 
   return (
     <div className={`${style.text} ${cls} `} title={title} style={stl}>
       <span className={style.name}>{name}</span>
-      <span className={style.value}>{content}</span>
+      <div className={style.value}>{content}</div>
     </div>
   );
 }

@@ -23,6 +23,7 @@ function fnBCard(obj) {
 			mode: obj?.value?.total?.[bld._id]?.mode?.[1] ?? '--',
 			product: obj.retain?.[bld._id]?.product,
 			automode: fnAutomode(bld._id, obj) ?? '--',
+			am: obj?.retain?.[bld._id]?.automode,
 			fan: fnFan(bld._id, obj) ? 'Вкл' : 'Выкл',
 			sensor: [
 				fnSens(bld._id, obj, 'tprd', 'min', 'grad', 'tmin'),
@@ -41,6 +42,7 @@ function fnBCard(obj) {
 				hin: obj?.value?.total?.[bld._id]?.hin?.max ?? '--',
 				habsin: obj?.value?.humAbs?.in?.[bld._id],
 				co2: obj?.value?.total?.[bld._id]?.co2?.max ?? '--',
+				energyKwh: 50000,
 				// Статус оборудования
 				equipment: fnEquipment(bld, obj),
 			},

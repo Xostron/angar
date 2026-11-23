@@ -53,7 +53,6 @@ export default function Entry({  closeModal, refDialog }) {
         <Keyboard
           value={form.login}
           onChange={(val) => {
-            console.log();
             setForm({ type: 'login', val });
             setForm({ type: 'name', val });
           }}

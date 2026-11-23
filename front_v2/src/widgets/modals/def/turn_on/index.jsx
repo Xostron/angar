@@ -10,6 +10,12 @@ const dictAutomode = [
   { code: 'cooling', name: 'Хранение' },
   { code: 'defrost', name: 'Дефростация' },
 ];
+
+const dictAm = {
+  drying: 'Сушка',
+  cooling: 'Хранение',
+  defrost: 'Дефростация',
+};
 /**
  * Выключить склад
  * @param { idB } props
@@ -22,14 +28,14 @@ function TurnOn({ idB, closeModal, refDialog }) {
   const setAutomode = useOutputStore((s) => s.setAutomode);
   //   Данные о складе
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
-  const automode = bCard?.automode?.name;
+  const am = bCard?.am;
   const datestop = bCard?.datestop ? runTime(bCard?.datestop, 1) : '';
-
   // Для быстрого изменения показа авторежима, чтобы не ждать обновленные данные от сервера
-  const [am, setAm] = useState(automode);
+  const [amode, setAmode] = useState(am);
+
   useEffect(() => {
-    setAm(automode);
-  }, [automode]);
+    setAmode(am);
+  }, [am]);
 
   return (
     <div className={style.container}>
@@ -37,9 +43,11 @@ function TurnOn({ idB, closeModal, refDialog }) {
       <div className={style.subheader}>
         <span>Продукт: {bCard?.product?.name}</span>
         <span>·</span>
-        <span>Режим: {automode}</span>
+        <span>Режим: {dictAm?.[am] ?? am}</span>
         <span>·</span>
-        <span>Склад включен:{datestop}</span>
+        <span>
+          {datestop ? `Склад включен: ${datestop}` : 'Склад выключен'}
+        </span>
       </div>
 
       <span className={style.text}>Выберите режим для запуска склада</span>
@@ -49,10 +57,10 @@ function TurnOn({ idB, closeModal, refDialog }) {
           <Button
             key={el.code}
             label={el.name}
-            active={el.name === am}
+            active={el.code === amode}
             onClick={() => {
               setAutomode({ _id: idB, val: el.code });
-              setAm(el.name);
+              setAmode(el.code);
             }}
             variant="grow"
           />

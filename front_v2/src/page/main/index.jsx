@@ -8,11 +8,13 @@ import './style.css';
 // Начальная страница: карточки складов
 const MainPage = () => {
   const bCard = useInputStore((s) => s?.input?.bCard);
-  
+  const arrB = Object.values(bCard ?? {});
+  const isCN = arrB.some((bld) => bld.type != 'cold');
+
   return (
     <main className="main-page">
       <Sidebar>
-        <Outdoor />
+        <Outdoor onOut={isCN} />
       </Sidebar>
       <ScrollGrid size="bcard">
         {bCard &&
