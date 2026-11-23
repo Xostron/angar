@@ -14,7 +14,7 @@ const MainPage = () => {
   return (
     <main className="main-page">
       <Sidebar>
-        <Outdoor onOut={isCN} />
+        <Outdoor onOut={isCN}/>
       </Sidebar>
       <ScrollGrid size="bcard">
         {bCard &&

@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
  * @param {boolean} props.onOut true - отображать уличные дачтики
  * @returns
  */
-const Outdoor = ({ onOut }) => {
+const Outdoor = ({ onOut=true }) => {
   const { buildingId: idB } = useParams();
   const bSide = useInputStore((s) => s?.input?.bSide);
   const typeBld = useInputStore((s) => s?.input?.bCard?.[idB]?.type);
