@@ -38,7 +38,6 @@ function coefWait(stg, bld, obj) {
 		heap.co2.t1 = false
 		wait = stg?.wait2
 	}
-
 	return wait
 }
 

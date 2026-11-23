@@ -4,7 +4,6 @@ const def = require('./fn')
 
 // Удаление СО2
 function coOn(bld, section, obj, s, se, m, alarm, acc, data, ban) {
-	console.log(11, s?.co2?.mode)
 	if (['time', 'sensor'].includes(s?.co2?.mode)) return
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
 	// Если включен демо-режим блокировать данную функцию
@@ -17,7 +16,6 @@ function coOn(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 
 // Режим авто - По времени/По температуре: Работает когда склад включен
 function coAuto(bld, section, obj, s, se, m, alarm, acc, data, ban) {
-	console.log(111, s?.co2?.mode)
 	if (!['time', 'sensor'].includes(s?.co2?.mode)) return
 	if (!s?.co2?.mode || !def?.[s?.co2?.mode]) return
 	// Если включен демо-режим блокировать данную функцию
@@ -31,8 +29,6 @@ function coAuto(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 module.exports = { coOn, coAuto }
 
 function fnMsg(bld, acc, s) {
-
-	console.log(22, s?.co2?.mode, acc.lastMode, s?.co2?.mode)
 	if (acc.lastMode !== s?.co2?.mode) {
 		delete acc.work
 		delete acc.wait
@@ -54,7 +50,6 @@ function fnMsg(bld, acc, s) {
 				break
 		}
 		const arr = [null, 'off', 'on', 'sensor', 'time']
-		console.log(222, s?.co2?.mode, acc.lastMode, s?.co2?.mode)
 		delUnused(arr, s?.co2?.mode, bld, code, 'co2')
 	}
 }
