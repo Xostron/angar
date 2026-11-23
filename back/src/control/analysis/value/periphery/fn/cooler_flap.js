@@ -11,7 +11,7 @@ const { flapVlvSig } = require('./output_eq/fn')
  */
 function stateFlap(flap, signal, result) {
 	const r = {}
-	const DO = result?.outputEq?.[flap._id]
+	const DO = result?.outputEq?.[flap._id] ?? false
 	const signals = flapVlvSig(flap, signal)?.signals
 	// Авария двигателя
 	r.crash = result[signals?.crash?._id]

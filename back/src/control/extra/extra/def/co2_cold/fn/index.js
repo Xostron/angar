@@ -33,7 +33,7 @@ function sensor(building, co2, value, acc, se, s) {
 	if (se?.cooler?.co2 === null || se?.cooler?.co2===undefined) return off(building._id, co2)
 
 	// Вкл
-	if (se.cooler?.co2 > s.co2.sp) on(building._id, co2)
+	if (se.cooler.co2 > s.co2.sp) on(building._id, co2)
 
 	// Выкл
 	if (se.cooler.co2 + s.co2.hysteresis < s.co2.sp) off(building._id, co2)
