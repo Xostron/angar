@@ -21,6 +21,8 @@ function openVin(bld, section, obj, s, seB, m, automode, acc, data) {
 	// Условие аварии: Клапан открыт и темп.канала > темп. продукта
 	const hasOpen = m.vlvIn.some((el) => curStateV(el._id, obj.value) === 'opn')
 	const term = hasOpen && seB.tcnl > seB.tprd
+	// console.log(11, 'hasOpen', hasOpen)
+	// console.log(22, 'term', term, '=', hasOpen, '&&', seB.tcnl, '>', seB.tprd)
 
 	// Автосброс аварии
 	reset(bld, s, acc, term)
