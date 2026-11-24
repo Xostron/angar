@@ -5,7 +5,7 @@ import logout from './logout';
 import sensor from './sensor';
 import ConfirmAction from './confirm_action';
 import section from './section_mode';
-
+import valve from './valve';
 const defModal = {
   turnoff,
   turnon,
@@ -13,6 +13,7 @@ const defModal = {
   logout,
   sensor,
   section,
+  valve,
   ConfirmAction,
   WARN_WAREHOUSE: ({ closeModal, refDialog }) => <div>⚠️ Внимание: </div>,
 };

@@ -1,11 +1,9 @@
 .container {
-  position: relative;
   display: flex;
+  width: 1076px;
+  position: relative;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
-  /* width: 1076px; */
-  /* height: 460px; */
 
   font-weight: 500;
   color: var(--c-navy);
@@ -18,16 +16,38 @@
 .subheader {
   display: inline-flex;
   gap: 12px;
-  padding-bottom: 32px;
   font-size: 18px;
   line-height: 24px;
   color: var(--c-grey);
+  padding-bottom: 12px;
+}
+
+.product {
+  /* margin-bottom: 24px; */
+}
+
+.text,
+.text2 {
+  font-size: 20px;
+  line-height: 140%;
+  padding-bottom: 16px;
+}
+.text2 {
+  padding-top: 90px;
+  /* padding-bottom: 0px; */
+}
+.buttons_automode {
+  display: inline-flex;
+  gap: 20px;
+  width: 100%;
+  padding-inline: 134px;
+  padding-bottom: 90px;
 }
 
 .buttons {
   display: flex;
   gap: 28px;
   width: 100%;
-  height: 76px;
   justify-content: end;
+  padding-top: 90px;
 }

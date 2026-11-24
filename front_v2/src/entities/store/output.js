@@ -42,6 +42,7 @@ const useOutputStore = create((set, get) => ({
   prd: '',
   setPrd(prd) {
     set({ prd });
+	console.log(22, prd)
   },
   setHid(name, bool) {
     const output = get().hid;
@@ -107,11 +108,12 @@ const useOutputStore = create((set, get) => ({
     sMode(mode);
   },
   // Установить: автоматический режим склада
-  setAutomode(obj) {
+  setAutomode(obj, permission=true) {
     const automode = obj;
     set({ automode });
+	console.log(11, automode)
     // отправить на сервер
-    sAutomode(automode);
+    if (permission) sAutomode(automode);
   },
   // Установить: вкл/выкл склада
   setStart(obj) {

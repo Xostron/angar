@@ -1,7 +1,9 @@
 import Progress from '@src/shared/ui/progress_valve';
+import useModalStore from '../store/modal';
 import style from './style.module.css';
 
-function ValveCard({ data, action }) {
+function ValveCard({ data }) {
+  const openModal = useModalStore((s) => s.open);
   return (
     <div className={style.container}>
       <Progress width={74} value={data?.value} heat={false} mode="number" />
@@ -16,17 +18,15 @@ function ValveCard({ data, action }) {
             {dictValve?.[data.state] ?? '--'}
           </span>
         </div>
-        <div
-          className={style.img}
-          onClick={() => {
-            action();
-          }}
-        >
+        <div className={style.img} onClick={onClick}>
           <img src="/icon/indicator/next2.svg" />
         </div>
       </div>
     </div>
   );
+  function onClick() {
+    openModal('valve', { data });
+  }
 }
 
 export default ValveCard;

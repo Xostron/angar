@@ -8,7 +8,7 @@ import { runTime } from '@src/shared/tool/time';
 import InputSelect from '@src/shared/ui/select_input';
 import Select from '@src/shared/ui/select';
 import useEquipStore from '@src/entities/store/equipment';
-import { sProduct } from '@src/shared/api/socket/emit'
+import { sAutomode, sProduct } from '@src/shared/api/socket/emit';
 const dictAutomode = [
   { code: 'drying', name: 'Сушка' },
   { code: 'cooling', name: 'Хранение' },
@@ -39,7 +39,14 @@ function TurnOn({ idB, closeModal, refDialog }) {
   const bCard = useInputStore((s) => s?.input?.bCard?.[idB]);
   const am = bCard?.am;
   const datestop = bCard?.datestop ? runTime(bCard?.datestop, 1) : '';
-  // Для быстрого изменения показа авторежима, чтобы не ждать обновленные данные от сервера
+
+  // Данные для передачи на сервер
+  const sPrd = useOutputStore((s) => s.prd);
+  const sAm = useOutputStore((s) => s.automode);
+  console.log(111, sAm);
+  console.log(222, sPrd);
+  // Для быстрого изменения показа авторежима,
+  // чтобы не ждать обновленные данные от сервера
   const [amode, setAmode] = useState(am);
   useEffect(() => {
     setAmode(am);
@@ -63,8 +70,8 @@ function TurnOn({ idB, closeModal, refDialog }) {
         cls={style.product}
         value={bCard?.product}
         setValue={(p) => {
+          // Зафиксировать продукт для передачи на сервер
           setPrd(p);
-          sProduct({ buildingId: idB, ...p, prdName: p.name })
         }}
         list={listPrd}
       />
@@ -77,7 +84,8 @@ function TurnOn({ idB, closeModal, refDialog }) {
             label={el.name}
             active={el.code === amode}
             onClick={() => {
-              setAutomode({ _id: idB, val: el.code });
+              // Зафиксировать авторежим для передачи на сервер
+              setAutomode({ _id: idB, val: el.code }, false);
               setAmode(el.code);
             }}
             variant="grow"
@@ -97,7 +105,13 @@ function TurnOn({ idB, closeModal, refDialog }) {
           label="Включить"
           active={true}
           onClick={() => {
+            // Включить склад
             setStart({ _id: idB, val: true });
+            // Установить продукт
+            sProduct({ buildingId: idB, ...sPrd, prdName: sPrd.name });
+            // Установить авторежим склада
+            sAutomode(sAm);
+
             closeModal(bCard?.start);
           }}
           variant="grow"

@@ -5,6 +5,7 @@ import useOutputStore from '@src/entities/store/output';
 import Button from '@src/shared/ui/button/btn';
 import style from './style.module.css';
 import { runTime } from '@src/shared/tool/time';
+import InputNum from '@src/shared/ui/input';
 
 const dictMode = {
   true: 'Авто',
@@ -21,21 +22,66 @@ const dictMode = {
  * @param {string} props.value Значение режима
  * @returns
  */
-function Section({ idB, idS, value, closeModal, refDialog }) {
+function Section({ data, closeModal, refDialog }) {
+//   console.log(11, data);
+
+  const setO = useOutputStore((s) => s.setO);
+  const setT = useOutputStore((s) => s.setT);
+  const setTune = useOutputStore((s) => s.setTune);
+  const sendTune = useOutputStore((s) => s.sendTune);
+
   //   Изменить режим
-  const setMode = useOutputStore((s) => s.setMode);
-  //   Данные о складе
-  const innerSec = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
-  const mode = innerSec?.mode;
+  //   const setMode = useOutputStore((s) => s.setMode);
+  //   //   Данные о складе
+  //   const innerSec = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
+  //   const mode = innerSec?.mode;
 
   return (
     <div className={style.container}>
-      <h2 className={style.header}>Режим работы. {innerSec?.name}</h2>
-      <div className={style.subheader}>
-        <span>·</span>
-        <span>Режим секции: {mode?.[1]}</span>
-        <span>·</span>
+      <h2 className={style.header}>{data.name} клапан</h2>
+
+      <span className={style.text2}>Выберите режим работы</span>
+      <div className={style.buttons_automode}>
+        {[
+          { code: 'opn', name: 'Открыть' },
+          { code: 'cls', name: 'Закрыть' },
+          { code: 'stop', name: 'Стоп' },
+        ].map((el) => (
+          <Button
+            key={el.code}
+            label={el.name}
+            active={el.code === data.state}
+            onClick={() => {}}
+            variant="grow"
+          />
+        ))}
       </div>
+
+      <span className={style.text}>Введите процент открытия клапана</span>
+      <InputNum />
+
+      <div className={style.buttons}>
+        <Button
+          label="Отмена"
+          active={false}
+          onClick={() => {
+            closeModal();
+          }}
+          variant="grow"
+        />
+        <Button
+          label="Включить"
+          active={true}
+          onClick={() => {
+            setStart({ _id: idB, val: true });
+            closeModal(bCard?.start);
+          }}
+          variant="grow"
+        />
+      </div>
+
+      {/* 
+     
 
       <div className={style.buttons}>
         <Button
@@ -55,7 +101,7 @@ function Section({ idB, idS, value, closeModal, refDialog }) {
           }}
           variant="grow"
         />
-      </div>
+      </div> */}
     </div>
   );
 }
