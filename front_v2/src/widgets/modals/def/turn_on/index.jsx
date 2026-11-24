@@ -5,6 +5,10 @@ import useOutputStore from '@src/entities/store/output';
 import Button from '@src/shared/ui/button/btn';
 import style from './style.module.css';
 import { runTime } from '@src/shared/tool/time';
+import InputSelect from '@src/shared/ui/select_input';
+import Select from '@src/shared/ui/select';
+import useEquipStore from '@src/entities/store/equipment';
+import { sProduct } from '@src/shared/api/socket/emit'
 const dictAutomode = [
   { code: 'drying', name: 'Сушка' },
   { code: 'cooling', name: 'Хранение' },
@@ -22,6 +26,11 @@ const dictAm = {
  * @returns
  */
 function TurnOn({ idB, closeModal, refDialog }) {
+  // Список продуктов
+  const listPrd = useEquipStore((s) => s.getBld(idB)?.product);
+  // Изменить продукт
+  const setPrd = useOutputStore((s) => s.setPrd);
+  const setSettingAu = useOutputStore((s) => s.setSettingAu);
   //   Включить/выкл склад
   const setStart = useOutputStore((s) => s.setStart);
   //   Изменить авторежим
@@ -32,7 +41,6 @@ function TurnOn({ idB, closeModal, refDialog }) {
   const datestop = bCard?.datestop ? runTime(bCard?.datestop, 1) : '';
   // Для быстрого изменения показа авторежима, чтобы не ждать обновленные данные от сервера
   const [amode, setAmode] = useState(am);
-
   useEffect(() => {
     setAmode(am);
   }, [am]);
@@ -50,8 +58,18 @@ function TurnOn({ idB, closeModal, refDialog }) {
         </span>
       </div>
 
-      <span className={style.text}>Выберите режим для запуска склада</span>
+      <span className={style.text}>Выберите продукт склада</span>
+      <Select
+        cls={style.product}
+        value={bCard?.product}
+        setValue={(p) => {
+          setPrd(p);
+          sProduct({ buildingId: idB, ...p, prdName: p.name })
+        }}
+        list={listPrd}
+      />
 
+      <span className={style.text2}>Выберите режим для запуска склада</span>
       <div className={style.buttons_automode}>
         {dictAutomode.map((el) => (
           <Button
