@@ -7,19 +7,19 @@ const defOnOff = {
 		const { p } = sensor(idB, idS, obj)
 		let on = p < s.fan.pressure.p
 		let off = p > s.fan.pressure.p + s.fan.hysteresisP
-		// console.log('\tТаблица. Режим Обычный: Сигнал на вкл/выкл ВНО, Секция', idS)
-		// console.table(
-		// 	[
-		// 		{
-		// 			on,
-		// 			off,
-		// 			Давление_канала: p,
-		// 			Задание_давления: s.fan.pressure.p,
-		// 			Гистерезис: s.fan.hysteresisPб,
-		// 		},
-		// 	],
-		// 	['on', 'off', 'Давление_канала', 'Задание_давления', 'Гистерезис']
-		// )
+		console.log('\tТаблица. Режим Обычный: Сигнал на вкл/выкл ВНО, Секция', idS)
+		console.table(
+			[
+				{
+					on,
+					off,
+					Давление_канала: p,
+					Задание_давления: s.fan.pressure.p,
+					Гистерезис: s.fan.hysteresisP,
+				},
+			],
+			['on', 'off', 'Давление_канала', 'Задание_давления', 'Гистерезис']
+		)
 		return { on, off }
 	},
 	// Комби (режим холодильника)

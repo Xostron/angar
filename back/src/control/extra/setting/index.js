@@ -37,7 +37,7 @@ function calcCoef(v, obj) {
 
 		// Настройки вентиляторов: Давление в канале в зависимости от влажности продукта
 		r.fan ??= {}
-		r.fan.pressure = coefPress(r.fan, bld, obj)
+		r.fan.pressure = coefPress(r, bld, obj)
 
 		// Настройки СО2: Время ожидания в зависимости от температуры продукта
 		r.co2 ??= {}
