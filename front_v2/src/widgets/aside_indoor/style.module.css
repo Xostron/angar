@@ -16,8 +16,8 @@
   font-size: 18px;
   line-height: 24px;
   color: var(--c-navy);
-  padding-top: 20px;
-  padding-bottom: 16px;
+  padding-top: 16px;
+  padding-bottom: 8px;
   &.grey {
     color: var(--c-grey);
   }

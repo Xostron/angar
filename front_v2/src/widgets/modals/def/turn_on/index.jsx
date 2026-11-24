@@ -80,7 +80,7 @@ function TurnOn({ idB, closeModal, refDialog }) {
           active={true}
           onClick={() => {
             setStart({ _id: idB, val: true });
-            closeModal(false);
+            closeModal(bCard?.start);
           }}
           variant="grow"
         />

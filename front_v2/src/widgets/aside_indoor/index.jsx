@@ -1,10 +1,9 @@
-import useOutputStore from '@src/entities/store/output';
+import useModalStore from '@src/entities/store/modal';
 import useInputStore from '@src/entities/store/input';
 import Toggle2 from '@src/shared/ui/button/toggle_button_2';
 import { Sensor, Status } from './row';
 import Equipment from './equipment';
 import style from './style.module.css';
-import useModalStore from '@src/entities/store/modal';
 
 const Indoor = ({ idB }) => {
   //   Правая боковая панель
