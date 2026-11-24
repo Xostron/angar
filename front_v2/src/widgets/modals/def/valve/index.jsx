@@ -70,7 +70,7 @@ function Section({ data, closeModal, refDialog }) {
           variant="grow"
         />
         <Button
-          label="Включить"
+          label="ОК"
           active={true}
           onClick={() => {
             setStart({ _id: idB, val: true });
