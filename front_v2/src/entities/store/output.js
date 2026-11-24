@@ -42,7 +42,6 @@ const useOutputStore = create((set, get) => ({
   prd: '',
   setPrd(prd) {
     set({ prd });
-	console.log(22, prd)
   },
   setHid(name, bool) {
     const output = get().hid;
@@ -111,7 +110,6 @@ const useOutputStore = create((set, get) => ({
   setAutomode(obj, permission=true) {
     const automode = obj;
     set({ automode });
-	console.log(11, automode)
     // отправить на сервер
     if (permission) sAutomode(automode);
   },

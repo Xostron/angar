@@ -43,8 +43,7 @@ function TurnOn({ idB, closeModal, refDialog }) {
   // Данные для передачи на сервер
   const sPrd = useOutputStore((s) => s.prd);
   const sAm = useOutputStore((s) => s.automode);
-  console.log(111, sAm);
-  console.log(222, sPrd);
+
   // Для быстрого изменения показа авторежима,
   // чтобы не ждать обновленные данные от сервера
   const [amode, setAmode] = useState(am);
