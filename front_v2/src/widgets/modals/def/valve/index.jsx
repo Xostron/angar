@@ -5,7 +5,6 @@ import InputNum from '@src/shared/ui/input';
 import style from './style.module.css';
 import useAuthStore from '@src/entities/store/auth';
 
-
 /**
  * Выключить склад
  * @param { object } props
@@ -65,13 +64,14 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
               setSel(el.code);
             }}
             variant="grow"
-            disabled={flagSp}
+            disabled={flagSp || !isAuth}
           />
         ))}
       </div>
 
       <span className={style.text}>Введите процент открытия клапана</span>
       <InputNum
+        cls={style.input}
         type="number"
         min={0}
         max={100}
@@ -94,6 +94,7 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
             closeModal();
           }}
           variant="grow"
+		  disabled={!isAuth}
         />
         <Button
           label="ОК"
@@ -103,6 +104,7 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
             data.valve.forEach((vlv) => fnOK(data, vlv));
           }}
           variant="grow"
+		  disabled={!isAuth}
         />
       </div>
     </div>

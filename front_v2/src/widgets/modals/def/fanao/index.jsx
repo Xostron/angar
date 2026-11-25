@@ -34,7 +34,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
       {data?.ao?.channel && (
         <ul className={style.description}>
           <li>
-            Включить: выберите режим «ВКЛ», введите значение от 0% до 100% в
+            Включить: выберите режим «ВКЛ», введите значение от 20% до 100% в
             поле процента и нажмите «ОК».
           </li>
           <li>Выключить: выберите режим «ВЫКЛ» и нажмите «ОК».</li>
@@ -59,7 +59,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
               setSel(el.code);
             }}
             variant="grow"
-            // disabled={flagSp}
+            disabled={!isAuth}
           />
         ))}
       </div>
@@ -94,6 +94,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             closeModal();
           }}
           variant="grow"
+          disabled={!isAuth}
         />
         <Button
           label="ОК"
@@ -103,6 +104,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             data?.ao?.channel ? fnOK() : fnOKwithoutAO();
           }}
           variant="grow"
+          disabled={!isAuth}
         />
       </div>
     </div>

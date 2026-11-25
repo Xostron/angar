@@ -35,7 +35,10 @@
 .product {
   /* margin-bottom: 24px; */
 }
-
+.input {
+  /* margin-bottom: 90px; */
+  border-color: var(--c-blue-darker);
+}
 .text,
 .text2 {
   font-size: 20px;

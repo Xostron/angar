@@ -70,7 +70,7 @@ function InputNum({
 
   // Обработчик клика по полю
   const handleInputClick = (e) => {
-    if (needsKeyboard) setShowKeyboard(true);
+    if (needsKeyboard && !disabled) setShowKeyboard(true);
     // if (onClick) onClick(e);
   };
 
