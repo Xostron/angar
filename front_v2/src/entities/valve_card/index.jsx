@@ -2,7 +2,7 @@ import Progress from '@src/shared/ui/progress_valve';
 import useModalStore from '../store/modal';
 import style from './style.module.css';
 
-function ValveCard({ data }) {
+function ValveCard({ idB, data }) {
   const openModal = useModalStore((s) => s.open);
   return (
     <div className={style.container}>
@@ -25,7 +25,7 @@ function ValveCard({ data }) {
     </div>
   );
   function onClick() {
-    openModal('valve', { data });
+    openModal('valve', { idB, data });
   }
 }
 

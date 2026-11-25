@@ -70,7 +70,7 @@ function InputNum({
   // Обработчик клика по полю
   const handleInputClick = (e) => {
     if (needsKeyboard) setShowKeyboard(true);
-    if (onClick) onClick(e);
+    // if (onClick) onClick(e);
   };
 
   return (
@@ -125,15 +125,17 @@ function InputNum({
     inputRef.current.focus();
     handleInputClick(e);
   }
+
+  // Синхронизируем клавиатуру после валидации
+  function syncKeyboard(value) {
+    if (keyboardInstanceRef.current) {
+      keyboardInstanceRef.current.setInput(String(value));
+    }
+  }
+
   // Ввод текста
   function onChange(e) {
     let inputValue = e?.target?.value ?? e;
-    // Синхронизируем клавиатуру после валидации
-    const syncKeyboard = (value) => {
-      if (keyboardInstanceRef.current) {
-        keyboardInstanceRef.current.setInput(String(value));
-      }
-    };
 
     // 1. Заменяем запятую на точку, чтобы пользователь мог вводить любой разделитель
     inputValue = inputValue.replace(',', '.');

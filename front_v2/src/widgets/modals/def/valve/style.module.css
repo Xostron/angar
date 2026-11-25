@@ -13,6 +13,16 @@
   padding-bottom: 12px;
 }
 
+.description {
+  display: flex;
+  flex-direction: column;
+  list-style-position: inside;
+  gap: 8px;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--c-grey);
+}
+
 .subheader {
   display: inline-flex;
   gap: 12px;
@@ -33,7 +43,7 @@
   padding-bottom: 16px;
 }
 .text2 {
-  padding-top: 90px;
+  padding-top: 32px;
   /* padding-bottom: 0px; */
 }
 .buttons_automode {
