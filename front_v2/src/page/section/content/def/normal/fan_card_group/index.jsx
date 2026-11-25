@@ -29,13 +29,20 @@ function FanCardGroup({ idB, idS }) {
         <div className={style.content} style={styleFans}>
           {!!fans?.length &&
             fans.map((el, i) => (
-              <FanCard key={i} data={el} action={() => {}} size={size} />
+              <FanCard
+                key={i}
+                idB={idB}
+                idS={idS}
+                data={el}
+                action={() => {}}
+                size={size}
+              />
             ))}
         </div>
         <div className={style.content} style={styleFansFC}>
           {!!fansFC?.length &&
             fansFC.map((el, i) => (
-              <FanCard key={i} data={el} action={() => {}} size={size} fc />
+              <FanCard key={i} idB={idB} idS={idS} data={el} size={size} fc />
             ))}
         </div>
       </div>

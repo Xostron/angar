@@ -1,21 +1,21 @@
 import dictFan from '@src/shared/dict/fan_card';
 import style from './style.module.css';
+import useModalStore from '../store/modal';
 
-function FanCard({ data, action, size = 'onerow', fc }) {
+function FanCard({ idB, idS, data, size = 'onerow', fc }) {
+  const openModal = useModalStore((s) => s.open);
+
   const icon = getIcon(data?.state);
   if (!data) return;
   let cls = `${style.container}`;
   if (data.state == 'alarm') cls += ` ${style.alarm}`;
   if (data.state == 'off') cls += ` ${style.off}`;
-//   console.log(123, size, fc);
 
   return (
     <div
       className={cls}
       style={fc ? dictSize[size]?.containerFC : dictSize[size]?.container}
-      onClick={() => {
-        action();
-      }}
+      onClick={onClick}
     >
       <img
         style={dictSize[size]?.img ?? {}}
@@ -39,6 +39,11 @@ function FanCard({ data, action, size = 'onerow', fc }) {
       )}
     </div>
   );
+  function onClick() {
+    fc
+      ? openModal('fanao', { idB, idS, data })
+      : openModal('fanao', { idB, idS, data });
+  }
 }
 
 export default FanCard;

@@ -1,8 +1,8 @@
-const coolerDef = require("@dict/def/cooler")
-const { getClr } = require("@tool/command/mech/fn")
-const { getStateClr2, getStateClr } = require("@tool/cooler")
-const { getOwner } = require("@tool/get/building")
-const { clrsMode } = require("@tool/web/bld_card/fn")
+const coolerDef = require('@dict/def/cooler')
+const { getClr } = require('@tool/command/mech/fn')
+const { getStateClr2, getStateClr } = require('@tool/cooler')
+const { getOwner } = require('@tool/get/building')
+const { clrsMode } = require('@tool/web/bld_card/fn')
 
 function listSec(idB, section) {
 	return section.filter((el) => el.buildingId == idB)
@@ -44,8 +44,10 @@ function fnFanBySec(idS, fan = [], obj, type = 'fan') {
 	return fan
 		.reduce((acc, el, i) => {
 			if (el.owner.id != idS || el.type != 'fan') return acc
+			const ao = obj?.data?.binding?.find((a) => a.type == 'ao' && a.owner.id == el._id) ?? {}
 			acc.push({
-				_id: el._id,
+				...el,
+				ao: { id: ao?.moduleId, channel: ao?.channel },
 				state: obj.value?.[el._id]?.state,
 				value: obj.value?.[el._id]?.value,
 				order: el.order,
@@ -92,7 +94,7 @@ function fn2(bld, sec, obj, coolerS = []) {
 		const condenser = Object.values(obj.value?.[el?.aggregateListId]?.condenser ?? {})?.[0]
 			?.state
 		const r = {
-			_id:el._id,
+			_id: el._id,
 			name: el.name,
 			// Состояние агрегата
 			aggregate: {

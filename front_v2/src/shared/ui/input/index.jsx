@@ -21,6 +21,7 @@ function InputNum({
   icon,
   keyboardContainer, // Контейнер для портала (опционально)
   showInput = true,
+  cls,
 }) {
   const [err, setErr] = useState(false);
 
@@ -73,13 +74,13 @@ function InputNum({
     // if (onClick) onClick(e);
   };
 
+  const cl = [`${style.inputContainer} ${err ? style.error : ''}`, cls].join(
+    ' ',
+  );
+
   return (
     <>
-      <div
-        className={`${style.inputContainer} ${err ? style.error : ''}`}
-        style={dictSize?.[size] ?? {}}
-        onClick={onFocus}
-      >
+      <div className={cl} style={dictSize?.[size] ?? {}} onClick={onFocus}>
         {icon && <img src={icon} />}
         <input
           ref={inputRef}

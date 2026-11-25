@@ -1,19 +1,10 @@
 import { useState, useEffect } from 'react';
-import useInputStore from '@src/entities/store/input';
-import useModalStore from '@src/entities/store/modal';
 import useOutputStore from '@src/entities/store/output';
 import Button from '@src/shared/ui/button/btn';
-import { runTime } from '@src/shared/tool/time';
 import InputNum from '@src/shared/ui/input';
 import style from './style.module.css';
 import useAuthStore from '@src/entities/store/auth';
 
-const dictMode = {
-  true: 'Авто',
-  false: 'Ручной',
-  null: 'Выкл. секцию',
-  undefined: 'Выкл. секцию',
-};
 
 /**
  * Выключить склад
@@ -28,11 +19,11 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
   const isAuth = useAuthStore((s) => s.isAuth);
   const setO = useOutputStore((s) => s.setO);
   const setT = useOutputStore((s) => s.setT);
-  const setTune = useOutputStore((s) => s.setTune);
   const sendTune = useOutputStore((s) => s.sendTune);
 
   // Задание spO: процент открытия
   const [spO, setSpO] = useState(data?.value ?? 0);
+  //   Флаг для блокиорвки кнопок, если есть изменения в поле процент открытия
   const [flagSp, setFlagSp] = useState(false);
   //   Команда клапана
   const [sel, setSel] = useState(data.state);
@@ -55,8 +46,8 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
           «Закрыть» или «Стоп») и нажмите «ОК».
         </li>
         <li>
-          Открытие на заданный угол: введите значение 0..100% в поле процента (кнопки
-          выбора режима автоматически заблокируются) и нажмите «ОК».
+          Открытие на заданный угол: введите значение 0..100% в поле процента
+          (кнопки выбора режима автоматически заблокируются) и нажмите «ОК».
         </li>
       </ul>
       <span className={style.text2}>Выберите режим работы</span>

@@ -6,6 +6,7 @@ import sensor from './sensor';
 import ConfirmAction from './confirm_action';
 import section from './section_mode';
 import valve from './valve';
+import fanao from './fanao';
 const defModal = {
   turnoff,
   turnon,
@@ -14,6 +15,7 @@ const defModal = {
   sensor,
   section,
   valve,
+  fanao,
   ConfirmAction,
   WARN_WAREHOUSE: ({ closeModal, refDialog }) => <div>⚠️ Внимание: </div>,
 };
