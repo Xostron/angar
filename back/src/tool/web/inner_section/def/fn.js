@@ -106,7 +106,9 @@ function fn2(bld, sec, obj, coolerS = []) {
 			// Состояние испарителя
 			state: coolerDef?.[getStateClr2(el, obj)],
 			// ВНО испарителя
-			fan: el?.fan?.map((f) => obj.value?.[f._id])?.[0],
+			fan: el?.fan?.map((f) => {
+				return { ...obj.value?.[f._id], ...f }
+			})?.[0],
 			// Темп испарителя
 			tmpCooler: obj.value.total?.[sec._id]?.cooler?.[el._id]?.tmpCooler,
 			// Давл всасывания
@@ -153,7 +155,7 @@ function fnComFanClr(idB, coolerS = [], obj) {
 		.filter((el) => el.common)
 		.map((el) => {
 			return {
-				_id: el._id,
+				...el,
 				...(obj?.value?.[el._id] ?? {}),
 			}
 		})

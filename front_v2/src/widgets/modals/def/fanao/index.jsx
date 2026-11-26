@@ -4,7 +4,7 @@ import Button from '@src/shared/ui/button/btn';
 import InputNum from '@src/shared/ui/input';
 import style from './style.module.css';
 import useAuthStore from '@src/entities/store/auth';
-import useEquipStore from '@src/entities/store/equipment';
+import useInputStore from '@src/entities/store/input';
 const _MIN_VALUE = 20;
 
 /**
@@ -16,12 +16,14 @@ const _MIN_VALUE = 20;
  * @returns
  */
 export default function fanao({ idB, idS, data, closeModal, refDialog }) {
-  console.log(11, idB, idS, data);
+  //   console.log(11, idB, idS, data);
   const ch = data?.module?.channel - 1;
   const isAuth = useAuthStore((s) => s.isAuth);
   const setO = useOutputStore((s) => s.setO);
   const setFan = useOutputStore((s) => s.setFan);
-  // const ff= useEquipStore(s=>s)
+  const modeS = useInputStore(
+    (s) => s.input?.innerSec?.[idB]?.[idS]?.mode?.[0],
+  );
   // Задание spO: процент открытия
   const [spO, setSpO] = useState(data?.value ?? 0);
   const [flagSp, setFlagSp] = useState(false);
@@ -38,6 +40,10 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             поле процента и нажмите «ОК».
           </li>
           <li>Выключить: выберите режим «ВЫКЛ» и нажмите «ОК».</li>
+          <li>
+            Вывести из работы (ввести в работу): выберите режим режим и нажмите
+            «ОК». Отключает работу вентилятора в автоматическом режиме
+          </li>
         </ul>
       )}
       <span className={style.text2}>Выберите режим работы</span>
@@ -59,12 +65,13 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
               setSel(el.code);
             }}
             variant="grow"
-            disabled={!isAuth}
+            disabled={!isAuth || modeS === true}
           />
         ))}
       </div>
+
       {data?.ao?.channel && (
-        <>
+        <div className={style.ao}>
           <span className={style.text}>
             Введите процент скорости вентилятора
           </span>
@@ -81,11 +88,10 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             placeholder={0}
             unit="%"
             keyboardContainer={refDialog?.current}
-            disabled={!isAuth}
+            disabled={!isAuth || sel != 'run' || modeS === true}
           />
-        </>
+        </div>
       )}
-
       <div className={style.buttons}>
         <Button
           label="Отмена"
@@ -94,7 +100,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             closeModal();
           }}
           variant="grow"
-          disabled={!isAuth}
+          disabled={!isAuth || modeS === true}
         />
         <Button
           label="ОК"
@@ -104,7 +110,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             data?.ao?.channel ? fnOK() : fnOKwithoutAO();
           }}
           variant="grow"
-          disabled={!isAuth}
+          disabled={!isAuth || modeS === true}
         />
       </div>
     </div>

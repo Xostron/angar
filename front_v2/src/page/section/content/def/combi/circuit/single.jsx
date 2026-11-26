@@ -14,7 +14,13 @@ function Single({ data = {}, idB, idS }) {
       <div className={`${style.cards} ${comfan?.length ? style.rounded : ''}`}>
         {!!list.length &&
           list.map((el) => (
-            <Card key={el._id} el={el} comfanLength={comfan?.length} />
+            <Card
+              idB={idB}
+              idS={idS}
+              key={el._id}
+              el={el}
+              comfanLength={comfan?.length}
+            />
           ))}
       </div>
       {/* Общий ВНО этих контуров */}
@@ -26,6 +32,7 @@ function Single({ data = {}, idB, idS }) {
             value={comfan?.[0]?.value}
             state={comfan?.[0]?.state}
             onClick={() => openModal('fanao', { idB, idS, data: comfan[0] })}
+            styl={{ opacity: comfan?.[0]?.state === 'off' ? 0.5 : 1 }}
           />
         </div>
       )}
@@ -36,12 +43,13 @@ function Single({ data = {}, idB, idS }) {
 export default Single;
 
 // Карточка контура
-function Card({ el, comfanLength }) {
+function Card({ idB, idS, el, comfanLength }) {
   const { name, aggregate, condenser, state, fan, tmpCooler, pin, pout } = el;
-
+  const openModal = useModalStore((s) => s.open);
   const stlCards = !comfanLength
     ? { paddingBottom: '16px', width: '321px' } //Нет общего ВНО
     : { width: '292px' }; // Есть общий ВНО
+
   return (
     <div className={`${style.card}`} style={stlCards}>
       <span>{name}</span>
@@ -76,9 +84,11 @@ function Card({ el, comfanLength }) {
       {!comfanLength && (
         <TextIcEquipV2
           code="cooler"
-          name="Вент. испар."
+          name="Вент."
           value={fan?.value}
           state={fan?.state}
+          onClick={() => openModal('fanao', { idB, idS, data: fan })}
+          styl={{ opacity: fan?.state === 'off' ? 0.5 : 1 }}
         />
       )}
     </div>

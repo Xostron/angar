@@ -4,6 +4,7 @@ import Button from '@src/shared/ui/button/btn';
 import InputNum from '@src/shared/ui/input';
 import style from './style.module.css';
 import useAuthStore from '@src/entities/store/auth';
+import useInputStore from '@src/entities/store/input'
 
 /**
  * Выключить склад
@@ -13,13 +14,15 @@ import useAuthStore from '@src/entities/store/auth';
  * @param {string} props.value Значение режима
  * @returns
  */
-export default function Valve({ idB, data, closeModal, refDialog }) {
+export default function Valve({ idB, idS, data, closeModal, refDialog }) {
   //   console.log(11, idB, data);
   const isAuth = useAuthStore((s) => s.isAuth);
   const setO = useOutputStore((s) => s.setO);
   const setT = useOutputStore((s) => s.setT);
   const sendTune = useOutputStore((s) => s.sendTune);
-
+  const modeS = useInputStore(
+    (s) => s.input?.innerSec?.[idB]?.[idS]?.mode?.[0],
+  );
   // Задание spO: процент открытия
   const [spO, setSpO] = useState(data?.value ?? 0);
   //   Флаг для блокиорвки кнопок, если есть изменения в поле процент открытия
@@ -30,11 +33,6 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
   useEffect(() => {
     flagSp ? setSel(null) : setSel(data.state);
   }, [flagSp]);
-  //   Изменить режим
-  //   const setMode = useOutputStore((s) => s.setMode);
-  //   //   Данные о складе
-  //   const innerSec = useInputStore((s) => s?.input?.innerSec?.[idB]?.[idS]);
-  //   const mode = innerSec?.mode;
 
   return (
     <div className={style.container}>
@@ -64,7 +62,7 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
               setSel(el.code);
             }}
             variant="grow"
-            disabled={flagSp || !isAuth}
+            disabled={flagSp || !isAuth || modeS === true}
           />
         ))}
       </div>
@@ -83,7 +81,7 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
         placeholder={0}
         unit="%"
         keyboardContainer={refDialog?.current}
-        disabled={!isAuth}
+        disabled={!isAuth || modeS === true}
       />
 
       <div className={style.buttons}>
@@ -94,7 +92,7 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
             closeModal();
           }}
           variant="grow"
-		  disabled={!isAuth}
+          disabled={!isAuth || modeS === true}
         />
         <Button
           label="ОК"
@@ -104,7 +102,7 @@ export default function Valve({ idB, data, closeModal, refDialog }) {
             data.valve.forEach((vlv) => fnOK(data, vlv));
           }}
           variant="grow"
-		  disabled={!isAuth}
+          disabled={!isAuth || modeS === true}
         />
       </div>
     </div>

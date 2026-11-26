@@ -8,7 +8,16 @@
   font-weight: 500;
   color: var(--c-navy);
 }
+.skelet {
+  height: 186px;
+  width: 100px;
+  /* border: 1px solid black; */
+}
 
+.ao {
+  display: flex;
+  flex-direction: column;
+}
 .header {
   padding-bottom: 12px;
 }

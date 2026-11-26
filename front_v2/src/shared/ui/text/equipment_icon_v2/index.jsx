@@ -20,6 +20,7 @@ function TextIcEquipV2({
   title,
   transparent,
   onClick,
+  styl = {},
 }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
@@ -44,7 +45,7 @@ function TextIcEquipV2({
     <div
       className={`${style.container} ${cls} ${transparent ? style.transparent : ''}`}
       title={title}
-      style={stl}
+      style={{ ...stl, ...styl }}
       onClick={onClick}
     >
       <div className={style.name}>
