@@ -70,7 +70,7 @@ function fn1(bld, sec, obj, coolerS = []) {
 	const fans = coolerS
 		.flatMap((el) => el?.fan)
 		.map((f) => {
-			return { _id: f._id, ...obj.value?.[f._id] }
+			return { ...f, ...obj.value?.[f._id] }
 		})
 	const isRunCount = getStateClr(sec._id, obj).filter((st) => st !== 'off-off-off')?.length ?? 0
 	const circuit = {
@@ -134,21 +134,26 @@ function fnComFanClr(idB, coolerS = [], obj) {
 		coolerS
 			.flatMap((el) => el.fan)
 			.reduce((acc, f, i) => {
+				// Найден общий вно
 				if (acc[f.module.id + f.module.channel]) {
-					// Найден общий вно
 					acc[f.module.id + f.module.channel].common = true
+
 					// Владелец испарителя
-					const id = getOwner(f, obj.data)?.sect?._id
-					const prev = acc[f.module.id + f.module.channel]
-					const off = obj.retain?.[idB]?.fan?.[id]?.[prev._id]
-					// Если первый ВНО из дублированных введен в работу оставляем его
-					if (!off) return acc
-					else {
-						acc[f.module.id + f.module.channel].common = true
-						return acc
-					}
+					// const id = getOwner(f, obj.data)?.sect?._id
+					// const prev = acc[f.module.id + f.module.channel]
+					// const off = obj.retain?.[idB]?.fan?.[id]?.[prev._id]
+					// // Если первый ВНО из дублированных введен в работу оставляем его
+					// if (!off) return acc
+					// else {
+					// 	acc[f.module.id + f.module.channel].common = true
+					// return acc
+					// }
+					acc[f.module.id + f.module.channel]._ids.push(f._id)
+					return acc
 				}
+
 				acc[f.module.id + f.module.channel] = f
+				acc[f.module.id + f.module.channel]._ids = [f._id]
 				return acc
 			}, {}) ?? {},
 	)

@@ -1,11 +1,11 @@
 import TextSensRow from '@src/shared/ui/text/sensor_row';
 import style from './many.module.css';
 import TextIcEquipV2 from '@src/shared/ui/text/equipment_icon_v2';
+import useModalStore from '@src/entities/store/modal'
 
 // Виджет контуров > 2
-function Many({ data }) {
+function Many({ data, idB, idS }) {
   const { title, len, comState, fans } = data;
-  const ff = Array(6).fill(fans?.[0]);
   const openModal = useModalStore((s) => s.open);
   return (
     <article className={style.container}>
@@ -24,12 +24,13 @@ function Many({ data }) {
           {/* Список ВНО испарителей */}
           <div className={style.fans}>
             {!!fans.length &&
-              ff.map((el) => (
+              fans.map((el) => (
                 <TextIcEquipV2
                   code="cooler"
                   value={el?.value}
                   state={el?.state}
                   onClick={() => openModal('fanao', { idB, idS, data: el })}
+                  styl={{ opacity: el?.state === 'off' ? 0.5 : 1 }}
                 />
               ))}
           </div>

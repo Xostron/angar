@@ -65,7 +65,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
               setSel(el.code);
             }}
             variant="grow"
-            disabled={!isAuth || modeS === true}
+            disabled={!isAuth || (el.code != 'off' && modeS === true)}
           />
         ))}
       </div>
@@ -100,7 +100,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             closeModal();
           }}
           variant="grow"
-          disabled={!isAuth || modeS === true}
+          disabled={!isAuth}
         />
         <Button
           label="ОК"
@@ -110,7 +110,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
             data?.ao?.channel ? fnOK() : fnOKwithoutAO();
           }}
           variant="grow"
-          disabled={!isAuth || modeS === true}
+          disabled={!isAuth}
         />
       </div>
     </div>
@@ -120,7 +120,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
   function fnOK() {
     const cmd = sel === 'run' ? 1 : 0;
     // Вывести из работы
-    if (sel === 'off' && data.state !== 'off')
+    if (sel === 'off' && data.state !== 'off') {
       setFan({
         buildingId: idB,
         sectionId: idS,
@@ -128,9 +128,24 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
         action: sel,
         value: true,
         setpoint: _MIN_VALUE,
+		// для массового вывода из работы
+        _ids: data._ids,
       });
+    }
+    // ввод в работу
+    else if (sel === 'off' && data.state == 'off') {
+      setFan({
+        buildingId: idB,
+        sectionId: idS,
+        fanId: data._id,
+        action: sel,
+        value: false,
+        setpoint: _MIN_VALUE,
+        _ids: data._ids,
+      });
+    }
     // Включить
-    else if (sel == 'run')
+    else if (sel == 'run') {
       setFan({
         buildingId: idB,
         sectionId: idS,
@@ -139,8 +154,9 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
         value: false,
         setpoint: spO <= 0 ? _MIN_VALUE : spO,
       });
+    }
     // Выключить
-    else
+    else {
       setFan({
         buildingId: idB,
         sectionId: idS,
@@ -149,6 +165,7 @@ export default function fanao({ idB, idS, data, closeModal, refDialog }) {
         value: false,
         setpoint: flagSp && spO > 0 ? spO : _MIN_VALUE,
       });
+    }
 
     const out = { idB, idM: data?.module?.id, value: cmd, channel: ch };
     const outAO = {
