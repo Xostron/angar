@@ -1,6 +1,7 @@
 const { fnAlarm, delUnused } = require('@tool/command/extra')
 const { isDemo } = require('@tool/demo/fn/fn')
 const def = require('./fn')
+const { delExtra } = require('@tool/message/extra')
 
 // Удаление СО2
 function coOn(bld, section, obj, s, se, m, alarm, acc, data, ban) {
@@ -28,28 +29,32 @@ function coAuto(bld, section, obj, s, se, m, alarm, acc, data, ban) {
 
 module.exports = { coOn, coAuto }
 
+
 function fnMsg(bld, acc, s) {
-	if (acc.lastMode !== s?.co2?.mode) {
-		delete acc.work
-		delete acc.wait
-		acc.lastMode = s?.co2?.mode
-		let code
-		switch (s?.co2?.mode) {
-			case 'off':
-			case null:
-				code = 61
-				break
-			case 'on':
-				code = 62
-				break
-			case 'time':
-				code = 63
-				break
-			case 'sensor':
-				code = 64
-				break
-		}
-		const arr = [null, 'off', 'on', 'sensor', 'time']
-		delUnused(arr, s?.co2?.mode, bld, code, 'co2')
+	let key
+	switch (s?.co2?.mode) {
+		case null:
+		case 'off':
+			key = 61
+
+			break
+		case 'on':
+			key = 62
+			break
+		case 'time':
+			key = 63
+			break
+		case 'sensor':
+			key = 64
+			break
 	}
+
+	if (key != 63) {
+		delExtra(bld._id, null, 'co2', 'work')
+		delExtra(bld._id, null, 'co2', 'wait')
+		delete acc.byTime
+	}
+
+	const arrCode = ['off', 'on', 'time', 'sensor']
+	delUnused(arrCode, s?.co2?.mode, bld, key, 'co2')
 }

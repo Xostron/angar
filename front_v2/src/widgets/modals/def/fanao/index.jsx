@@ -16,7 +16,7 @@ const _MIN_VALUE = 20;
  * @returns
  */
 export default function fanao({ idB, idS, data, closeModal, refDialog }) {
-  // console.log(11, idB, data);
+  console.log(11, idB, idS, data);
   const ch = data?.module?.channel - 1;
   const isAuth = useAuthStore((s) => s.isAuth);
   const setO = useOutputStore((s) => s.setO);

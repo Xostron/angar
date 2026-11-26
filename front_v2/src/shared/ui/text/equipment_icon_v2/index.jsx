@@ -19,6 +19,7 @@ function TextIcEquipV2({
   size = 'responsive',
   title,
   transparent,
+  onClick,
 }) {
   // Размеры
   const stl = dictSize?.[size] ?? {};
@@ -44,6 +45,7 @@ function TextIcEquipV2({
       className={`${style.container} ${cls} ${transparent ? style.transparent : ''}`}
       title={title}
       style={stl}
+      onClick={onClick}
     >
       <div className={style.name}>
         <img

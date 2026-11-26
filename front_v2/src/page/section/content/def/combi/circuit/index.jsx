@@ -7,5 +7,5 @@ export default function DefCircuit({ idB, idS }) {
   );
   const Component = circuit?.len ? def.many : def.single;
   if (!Component) return null;
-  return <Component data={circuit} />;
+  return <Component data={circuit} idB={idB} idS={idS} />;
 }

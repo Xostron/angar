@@ -40,9 +40,7 @@ function FanCard({ idB, idS, data, size = 'onerow', fc }) {
     </div>
   );
   function onClick() {
-    fc
-      ? openModal('fanao', { idB, idS, data })
-      : openModal('fanao', { idB, idS, data });
+    openModal('fanao', { idB, idS, data });
   }
 }
 

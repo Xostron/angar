@@ -2,10 +2,12 @@ import style from './single.module.css';
 import EquipSt from '@src/shared/ui/icon/equipment';
 import TextSensRow from '@src/shared/ui/text/sensor_row';
 import TextIcEquipV2 from '@src/shared/ui/text/equipment_icon_v2';
+import useModalStore from '@src/entities/store/modal';
 
 // Виджет контуров 1, 2шт
-function Single({ data = {} }) {
+function Single({ data = {}, idB, idS }) {
   const { list = [], comfan = [] } = data;
+  const openModal = useModalStore((s) => s.open);
   return (
     <article className={style.container}>
       <span>{list.length > 1 ? 'Контуры' : 'Контур'}</span>
@@ -23,6 +25,7 @@ function Single({ data = {} }) {
             name="Вент."
             value={comfan?.[0]?.value}
             state={comfan?.[0]?.state}
+            onClick={() => openModal('fanao', { idB, idS, data: comfan[0] })}
           />
         </div>
       )}

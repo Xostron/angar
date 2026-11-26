@@ -6,6 +6,7 @@ import TextIcEquipV2 from '@src/shared/ui/text/equipment_icon_v2';
 function Many({ data }) {
   const { title, len, comState, fans } = data;
   const ff = Array(6).fill(fans?.[0]);
+  const openModal = useModalStore((s) => s.open);
   return (
     <article className={style.container}>
       <span>Контуры</span>
@@ -28,6 +29,7 @@ function Many({ data }) {
                   code="cooler"
                   value={el?.value}
                   state={el?.state}
+                  onClick={() => openModal('fanao', { idB, idS, data: el })}
                 />
               ))}
           </div>
