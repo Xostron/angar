@@ -37,8 +37,6 @@ function fnDemo(obj) {
 		const code = checklistPNR[demo.order].code
 		// Обход тестов
 		runTests(bld, m, demo, checklistPNR, obj, code)
-
-		// console.log(1234, demo)
 	})
 }
 

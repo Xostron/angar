@@ -24,7 +24,6 @@ function fanCombi(bld, bdata, obj, s, seB, m, alr, acc) {
 	// Последовательное вкл/выкл соленоида подогрева и ВНО секций
 	const { sol, fan } = mFan(bld, m, bdata)
 	resultFan.fan = [...sol, ...fan]
-	// console.log(1234, resultFan.fan)
 	fanAu.combi(bld, obj, s, seB, m, resultFan, bdata)
 }
 

@@ -10,7 +10,6 @@ function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 	let _idle
 	if (building.type == 'cold') _idle = s?.idleCold
 	else _idle = s?.idle
-	// console.log(123, building?.type, _idle)
 	// По таймерам запрета
 	for (const key in _idle) {
 		acc[key] ??= {}
@@ -22,13 +21,10 @@ function banTimer(building, section, obj, s, se, m, automode, acc, data) {
 		// Включение запрета
 		// if (check && (!acc?.[key]?.flag || !store.alarm.timer?.[building._id]?.[key])) {
 		if (check) {
-			// acc[key].flag = true
-			// console.log(555, key)
 			wrTimer(building, key, name)
 		}
 		// Удаление запрета
 		if (!check) {
-			// delete acc?.[key]?.flag
 			delTimer(building._id, key)
 		}
 	}

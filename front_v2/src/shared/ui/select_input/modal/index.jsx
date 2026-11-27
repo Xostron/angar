@@ -4,8 +4,6 @@ import style from './style.module.css';
 export default function Modal({ show, setShow, list, setValue, value }) {
   useEffect(() => {
     const onClick = (e) => {
-      //   console.log(123, e.target.closest);
-      //   if (e.target.closest(style.input)) return;
       if (show) setShow(false);
     };
     document.addEventListener('click', onClick);

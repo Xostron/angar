@@ -148,11 +148,11 @@ const useOutputStore = create((set, get) => ({
 		sMode(mode)
 	},
 	// Установить: автоматический режим склада
-	setAutomode(obj) {
+	setAutomode(obj, permission = true) {
 		const automode = obj
 		set({ automode })
 		// отправить на сервер
-		sAutomode(automode)
+		if (permission) sAutomode(automode)
 	},
 	// Установить: вкл/выкл склада
 	setStart(obj) {

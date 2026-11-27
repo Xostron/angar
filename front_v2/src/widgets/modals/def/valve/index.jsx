@@ -4,7 +4,7 @@ import Button from '@src/shared/ui/button/btn';
 import InputNum from '@src/shared/ui/input';
 import style from './style.module.css';
 import useAuthStore from '@src/entities/store/auth';
-import useInputStore from '@src/entities/store/input'
+import useInputStore from '@src/entities/store/input';
 
 /**
  * Выключить склад
@@ -153,7 +153,6 @@ export default function Valve({ idB, idS, data, closeModal, refDialog }) {
       };
       cmd = { idB, idM: vlv.module.on.id, value: 0, channel: chOn, sel };
     }
-    console.log(123, spO);
     if (sel === null) {
       if (spO > data.value) {
         cmd = {

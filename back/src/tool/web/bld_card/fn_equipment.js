@@ -39,7 +39,6 @@ function fnAccel(idB, idsS, obj, extra) {
 	const fanA = obj.data.fan.filter((el) => idsS.includes(el.owner.id) && el.type == 'accel')
 	if (!fanA.length) return null
 
-	// console.log(123, Object.keys(extra?.accel ?? {}))
 	const r = fanA.some((el) => obj.value?.[el._id]?.state == 'run')
 	if (r) return { name: 'Разгон. вент', value: 'Вкл' }
 

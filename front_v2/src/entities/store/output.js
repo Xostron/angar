@@ -11,7 +11,8 @@ import {
   sAutomode,
   sWarming,
 } from '@src/shared/api/socket/emit';
-// import useAuthStore from './auth'
+import { isEqual } from '@src/page/settings/skip';
+import useInputStore from './input';
 
 // Данные на сервер
 const useOutputStore = create((set, get) => ({
@@ -36,17 +37,71 @@ const useOutputStore = create((set, get) => ({
   settingAu: {},
   // Прогрев секции
   warming: {},
-  // Скрытие настроек
+  // Состояние кнопок скрытых настроек
   hid: {},
   // Выбранный продукт
   prd: '',
   setPrd(prd) {
     set({ prd });
   },
+  // Управление кнопками скрытых настроек
   setHid(name, bool) {
     const output = get().hid;
-    output[name] = { hid: bool };
+    output[name] = !bool;
     set({ output });
+  },
+  /**
+   * Спрятанные настройки
+   * @param {object} prd Продукт
+   * @param {object} factory Объект полей заводских значений
+   * @param {object} coef Объект полей активных коэффициентов
+   * @param {object} retain Объект полей пользовательских значений
+   * @param {boolean} mode
+   * @returns {object[]} массив названий полей,
+   * которых необходимо скрыть (mode=true)/активная настройка (mode=false)
+   */
+  getSkip(build, type, inputStore, mode = true) {
+    if (!inputStore?.retain) return [];
+    const hid = get().hid;
+    const prd = get().prd?.code;
+    // Спрятанные настройки
+    // const inputStore = useInputStore?.getState()?.input;
+    const factory = inputStore?.factory?.[type];
+    const retain = inputStore?.retain?.[build]?.setting?.[type]?.[prd];
+    const coef = inputStore?.coef?.[build]?.[type];
+
+    // Список полей настроек, массив названия полей
+    const list = prd ? (factory?.[prd] ?? factory) : null;
+    // Коды полей настроек
+    const keys = Object.keys(list ?? {});
+    // Массив полей настроек, которые необходимо скрыть/показать
+    const aKey = [];
+    // Кнопки скрыть/показать
+    const hidKeys = Object.entries(hid)?.map((el) => [
+      el?.[0]?.split('_')?.at(-1),
+      el?.[1] ?? false,
+    ]);
+    // Список кодов настроек которые необходимо скрыть (mode=true)/показать (mode=false)
+    for (const key in coef) {
+      const r = keys.filter((el) => {
+        // Пропускаем поля настроек, которые должны показываться всегда
+        if (!el.includes(key) || el.includes('text-collapse')) return false;
+        // Пользовательские значения поля настройки
+        const rtn = retain?.[el];
+        // Значение поля настройки: заводская + пользовательская
+        const rtnFct = { ...list[el], ...rtn };
+        // Сравниваем активную настройку от ангара (истинную) с значением поля настройки заводская + пользовательская
+        // Значение кнопки
+        const hh = hidKeys.find((h) => el.includes(h?.[0]));
+        // Результат: скрытые настройки (mode=true)/активная настройка (mode=false)
+        return mode
+          ? !isEqual(coef[key], rtnFct, hh)
+          : isEqual(coef[key], rtnFct);
+      });
+      aKey.push(...r);
+    }
+
+    return aKey;
   },
   // Установить: команды управления (пуск-стоп)
   setO(out1, out2, type, vlvId) {
@@ -107,7 +162,7 @@ const useOutputStore = create((set, get) => ({
     sMode(mode);
   },
   // Установить: автоматический режим склада
-  setAutomode(obj, permission=true) {
+  setAutomode(obj, permission = true) {
     const automode = obj;
     set({ automode });
     // отправить на сервер
@@ -141,6 +196,8 @@ const useOutputStore = create((set, get) => ({
     const tune = get().tune;
     sTune(tune);
     console.log(4402, 'Команды калибровки', tune);
+    // После отправки команды калибровки клапанов, очистить хранилище
+    set({ tune: {} });
   },
   // Установить: настройки датчиков
   setSens(obj) {
@@ -172,7 +229,8 @@ const useOutputStore = create((set, get) => ({
   },
   // Настройки
   setSettingAu(obj) {
-    console.log('setSettingAu');
+    // console.log('setSettingAu', obj)
+
     if (!obj) {
       set({ settingAu: {} });
       return;
@@ -192,19 +250,74 @@ const useOutputStore = create((set, get) => ({
         'ozon',
         'heater',
         'smoking',
+        'demo',
+        'heattcnl',
       ].includes(obj?.type)
     )
       settingAu.prdCode = get().prd?.code ?? obj?.prdCode;
     settingAu.value ??= {};
-    const name = obj.name.split('.');
-    if (name.length === 1) {
-      settingAu.value[obj.name] = obj.value;
+    const _code = obj._code.split('.');
+    // console.log(11, obj)
+    if (obj?.idx === undefined) {
+      if (_code.length === 1) {
+        settingAu.value[obj._code] = obj.value;
+      } else {
+        settingAu.value[_code[0]] ??= {};
+        settingAu.value[_code[0]][_code[1]] = obj.value;
+      }
     } else {
-      settingAu.value[name[0]] ??= {};
-      settingAu.value[name[0]][name[1]] = obj.value;
+      // const arrV = [...obj.arrV]
+      // arrV[obj.idx] = obj.value
+      // Для поля с одним столбцом
+      if (_code.length === 1) {
+        settingAu.value[obj._code] ??= [...obj.arrV];
+        settingAu.value[obj._code][obj.idx] = obj.value;
+        // settingAu.value[obj._code] = arrV
+      } else {
+        // Для поля с 2 столбцами
+        settingAu.value[_code[0]] ??= {};
+        settingAu.value[_code[0]][_code[1]] ??= [...obj.arrV];
+        settingAu.value[_code[0]][_code[1]][obj.idx] = obj.value;
+      }
     }
     set({ settingAu });
   },
+
+  delRowSettingAu(obj, moreValue) {
+    if (!obj) {
+      set({ settingAu: {} });
+      return;
+    }
+    const settingAu = get().settingAu;
+    settingAu.buildingId = obj?.build ?? null;
+    settingAu.code = obj?.type ?? null;
+    if (
+      ![
+        'antibliz',
+        'heating',
+        'overVlv',
+        'accel',
+        'idle',
+        'idleCold',
+        'co2',
+        'ozon',
+        'heater',
+        'smoking',
+        'demo',
+        'heattcnl',
+      ].includes(obj?.type)
+    )
+      settingAu.prdCode = get().prd?.code ?? obj?.prdCode;
+    settingAu.value ??= {};
+    const _code = obj._code.split('.');
+
+    // settingAu.value[_code[0]] ??= {}
+    settingAu.value[_code[0]].begin = moreValue.begin;
+    settingAu.value[_code[0]].end = moreValue.end;
+
+    set({ settingAu });
+  },
+
   sendSettingAu() {
     console.log('sendSettingAu');
     // Отправить на сервер
@@ -237,3 +350,228 @@ const useOutputStore = create((set, get) => ({
 }));
 
 export default useOutputStore;
+
+// // Данные на сервер
+// const useOutputStore = create((set, get) => ({
+//   // name: useAuthStore.getState().name,
+//   // Команды управления выходами
+//   output: {},
+//   // Команды управления: по времени отключения
+//   outputT: {},
+//   // Команда на калибровку
+//   tune: {},
+//   // Режим работы секции
+//   mode: {},
+//   // Автоматический режим склада (сушка, охлаждение и т.д.)
+//   automode: {},
+//   // Вкл/выкл склада
+//   start: {},
+//   // Настройки датчиков склада
+//   sens: {},
+//   // Настройки вентилятора: Вывести из работы
+//   fan: {},
+//   // Настройки Авто
+//   settingAu: {},
+//   // Прогрев секции
+//   warming: {},
+//   // Скрытие настроек
+//   hid: {},
+//   // Выбранный продукт
+//   prd: '',
+//   setPrd(prd) {
+//     set({ prd });
+//   },
+//   setHid(name, bool) {
+//     const output = get().hid;
+//     output[name] = { hid: bool };
+//     set({ output });
+//   },
+//   // Установить: команды управления (пуск-стоп)
+//   setO(out1, out2, type, vlvId) {
+//     const output = {};
+//     output[out1.idB] = {
+//       ...output[out1.idB],
+//       [out1.idM]: {
+//         ...output?.[out1.idB]?.[out1.idM],
+//         [out1.channel]: out1.value,
+//       },
+//     };
+//     if (out2)
+//       output[out2.idB] = {
+//         ...output[out2.idB],
+//         [out2.idM]: {
+//           ...output?.[out2.idB]?.[out2.idM],
+//           [out2.channel]: out2.value,
+//         },
+//       };
+//     set({ output });
+//     console.log('@@@ setO', { output, type });
+
+//     // отправить на сервер
+//     sOutput({
+//       ...output,
+//       type,
+//       sel: out1?.sel,
+//       vlvId,
+//       setpoint: out1?.setpoint,
+//     });
+//   },
+//   // Команды управления: с таймером
+//   setT(out1) {
+//     const outputT = {};
+//     outputT[out1.idB] = {
+//       ...outputT[out1.idB],
+//       [out1.idM]: {
+//         ...outputT?.[out1.idB]?.[out1.idM],
+//         [out1.channel]: {
+//           value: out1.value,
+//           time: out1.time ?? null,
+//           _id: out1._id,
+//           type: out1.type,
+//         },
+//       },
+//     };
+//     set({ outputT });
+//     console.log('@@@ setT', outputT);
+//     // отправить на сервер
+//     sOutputT(outputT);
+//   },
+//   // Установить: режим работы секции
+//   setMode(obj) {
+//     const mode = {};
+//     mode[obj.buildId] = { [obj._id]: obj.val };
+//     set({ mode });
+//     // отправить на сервер
+//     sMode(mode);
+//   },
+//   // Установить: автоматический режим склада
+//   setAutomode(obj, permission = true) {
+//     const automode = obj;
+//     set({ automode });
+//     // отправить на сервер
+//     if (permission) sAutomode(automode);
+//   },
+//   // Установить: вкл/выкл склада
+//   setStart(obj) {
+//     const start = obj;
+//     set({ start });
+//     // отправить на сервер
+//     sStart(start);
+//   },
+//   // Отправить на сервер: вывести из работы вентилятор
+//   setFan(obj) {
+//     const fan = obj;
+//     // fan.name = get().name
+//     set({ fan });
+//     // Отправить на сервер
+//     sFan(fan);
+//   },
+//   // Установить: калибровка клапанов
+//   setTune(vlv) {
+//     const tune = get().tune;
+//     tune[vlv._id] = { ...vlv };
+//     set({ tune });
+//     console.log(4401, 'setTune', vlv);
+//   },
+//   //Отправить на сервер: Команды на калибровку
+//   sendTune() {
+//     // отправить на сервер
+//     const tune = get().tune;
+//     sTune(tune);
+//     console.log(4402, 'Команды калибровки', tune);
+//   },
+//   // Установить: настройки датчиков
+//   setSens(obj) {
+//     if (!obj) {
+//       set({ sens: {} });
+//       return;
+//     }
+//     const sens = get().sens;
+//     let key;
+//     if (obj?.on !== undefined) key = 'on';
+//     if (obj?.corr !== undefined) key = 'corr';
+//     sens[obj.build] = {
+//       ...sens[obj.build],
+//       [obj._id]: { ...sens?.[obj.build]?.[obj._id], [key]: obj[key] },
+//     };
+//     set({ sens });
+//   },
+//   // Отправить на сервер: настройки датчиков
+//   sendSens() {
+//     // Отправить на сервер
+//     const sens = get().sens;
+//     sSens(sens);
+//     // очистить стейт
+//     set({ sens: {} });
+//   },
+//   // Есть ли изменения в настройках датчиков
+//   hasChangedSens(build) {
+//     return get().sens?.[build] ? true : false;
+//   },
+//   // Настройки
+//   setSettingAu(obj) {
+//     console.log('setSettingAu');
+//     if (!obj) {
+//       set({ settingAu: {} });
+//       return;
+//     }
+//     const settingAu = get().settingAu;
+//     settingAu.buildingId = obj?.build ?? null;
+//     settingAu.code = obj?.type ?? null;
+//     if (
+//       ![
+//         'antibliz',
+//         'heating',
+//         'overVlv',
+//         'accel',
+//         'idle',
+//         'idleCold',
+//         'co2',
+//         'ozon',
+//         'heater',
+//         'smoking',
+//       ].includes(obj?.type)
+//     )
+//       settingAu.prdCode = get().prd?.code ?? obj?.prdCode;
+//     settingAu.value ??= {};
+//     const name = obj.name.split('.');
+//     if (name.length === 1) {
+//       settingAu.value[obj.name] = obj.value;
+//     } else {
+//       settingAu.value[name[0]] ??= {};
+//       settingAu.value[name[0]][name[1]] = obj.value;
+//     }
+//     set({ settingAu });
+//   },
+//   sendSettingAu() {
+//     console.log('sendSettingAu');
+//     // Отправить на сервер
+//     const settingAu = get().settingAu;
+//     sSettingAu(settingAu);
+//     // очистить стейт
+//     set({ settingAu: {} });
+//   },
+//   hasChangedSettingAu(build, type) {
+//     // console.log('hasChangedSettingAu', get().settingAu?.value)
+//     if (type === 'menu') return false;
+//     return get().settingAu?.value ? true : false;
+//   },
+//   // Прогрев секции - установить задание
+//   setWarming(obj) {
+//     const { buildingId, sectionId, cmd } = obj;
+//     const warming = get().warming;
+//     warming[buildingId] ??= {};
+//     warming[buildingId][sectionId] = cmd ?? false;
+//     set({ warming });
+//     sWarming(obj);
+//   },
+//   // Удалить задание
+//   delWarming(obj) {
+//     const { buildingId, sectionId } = obj;
+//     const warming = get().warming;
+//     delete warming?.[buildingId]?.[sectionId];
+//     set({ warming });
+//   },
+// }));
+
+// export default useOutputStore;

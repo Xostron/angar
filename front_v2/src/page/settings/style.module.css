@@ -1,0 +1,9 @@
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--c-grey-lighter);
+  z-index: 1;
+}
+
+

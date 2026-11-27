@@ -16,7 +16,6 @@ export default function fnCell(
 		const setValue = (value, idx, arrV) => setSettingAu({ value, ...obj, idx, arrV })
 		// Пользовательская настройка ?? заводская ?? пустая строка
 		const factory = code == 'idle' || code == 'idleCold' ? [ml?.value ?? ''] : (ml?.value ?? '')
-		// console.log(123, obj)
 		const value = stgV.getValueSetting(
 			_code.split('.'),
 			stgV.build,

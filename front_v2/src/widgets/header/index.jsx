@@ -21,31 +21,7 @@ const MONTHS = [
   'декабря',
 ];
 
-// const ROUTES_CONFIG = [
-//   { path: 'building/:buildingId', title: 'Склад' },
-//   { path: 'building/:buildingId/section/:sectionId', title: 'Секция' },
-//   { path: 'building/:buildingId/sensor/:type', title: 'Датчики' },
-//   { path: 'building/:buildingId/signal', title: 'Сигналы' },
-//   { path: 'building/:buildingId/report', title: 'Отчеты' },
-//   {
-//     path: 'building/:buildingId/settings/:type',
-//     title: 'Настройки',
-//   },
-//   { path: 'test', title: 'Тестовая страница' },
-//   { path: null, title: 'Мои склады' },
-// ];
-
-const formatDate = () => {
-  const d = new Date();
-  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-};
-
-const formatTime = () => {
-  const d = new Date();
-  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-};
-
-const Header = () => {
+export default function Header() {
   const [date] = useState(formatDate);
   const [time, setTime] = useState(formatTime);
   const matches = useMatches();
@@ -75,6 +51,14 @@ const Header = () => {
       <Login />
     </header>
   );
-};
+}
 
-export default Header;
+function formatDate() {
+  const d = new Date();
+  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function formatTime() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}

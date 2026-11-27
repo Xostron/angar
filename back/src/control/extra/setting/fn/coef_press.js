@@ -14,7 +14,6 @@ function coefPress(stg, bld, obj) {
 	const hin = value?.total?.[bld._id]?.hin?.max
 	// Гистерезис влажности
 	const hystHin = stg?.mois?.hysteresisRel ?? 10
-	// console.log(123, "влажность", hin, hystHin)
 	// Режим склада
 	const am = retain?.[bld._id]?.automode
 	// Подрежим склада

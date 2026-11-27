@@ -7,7 +7,7 @@ import Item from './item'
 export default function List({}) {
 	const { build } = useParams()
 	const [menuFactory] = useEquipStore(({ getMenuFactory }) => [getMenuFactory(build, data)])
-
+	console.log(44, menuFactory)
 	return (
 		<section className='list-menu'>
 			{menuFactory?.map((el, i) => (

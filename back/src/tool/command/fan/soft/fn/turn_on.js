@@ -27,7 +27,6 @@ function turnOn(fanFC, fans, solHeat, idB, acc, s, max, off, isCC, where) {
 		}
 		// console.log('\tDO ВНО ПЧ', acc.fc.value ? 'ВКЛ' : 'ВЫКЛ', 'Задание=', acc.fc.sp)
 	}
-	// console.log(123, fans)
 	fans.forEach((f, i) => {
 		// Очередь не дошла - выключить ВНО
 		if (acc.order < i || offCC || onFan) {
