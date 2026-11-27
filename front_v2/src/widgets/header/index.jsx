@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './style.css';
 import useAuthStore from '@src/entities/store/auth';
 import useModalStore from '@src/entities/store/modal';
-import { useParams } from 'react-router-dom';
+import { useLocation, useMatches } from 'react-router-dom';
 import useEquipStore from '@src/entities/store/equipment';
 import Login from './login';
 
@@ -21,6 +21,20 @@ const MONTHS = [
   'декабря',
 ];
 
+// const ROUTES_CONFIG = [
+//   { path: 'building/:buildingId', title: 'Склад' },
+//   { path: 'building/:buildingId/section/:sectionId', title: 'Секция' },
+//   { path: 'building/:buildingId/sensor/:type', title: 'Датчики' },
+//   { path: 'building/:buildingId/signal', title: 'Сигналы' },
+//   { path: 'building/:buildingId/report', title: 'Отчеты' },
+//   {
+//     path: 'building/:buildingId/settings/:type',
+//     title: 'Настройки',
+//   },
+//   { path: 'test', title: 'Тестовая страница' },
+//   { path: null, title: 'Мои склады' },
+// ];
+
 const formatDate = () => {
   const d = new Date();
   return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
@@ -34,6 +48,14 @@ const formatTime = () => {
 const Header = () => {
   const [date] = useState(formatDate);
   const [time, setTime] = useState(formatTime);
+  const matches = useMatches();
+
+  // Находим последний совпавший маршрут, у которого есть handle.title
+  const currentMatch = [...matches]
+    .reverse()
+    .find((match) => match.handle?.title);
+
+  const title = currentMatch?.handle?.title || '';
 
   useEffect(() => {
     const id = setInterval(() => setTime(formatTime), 1000);
@@ -45,7 +67,7 @@ const Header = () => {
       <div className="header__logo">
         <img src="/icon/logo.svg" alt="Тента" width="104px" height="28px" />
       </div>
-      <div className="header__buildings">Мои склады</div>
+      <div className="header__buildings">{title}</div>
       <div className="header__time">
         <span className="header__date">{date}</span>
         <span className="header__time-val">{time}</span>

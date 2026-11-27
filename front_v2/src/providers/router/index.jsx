@@ -15,18 +15,39 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <MainPage /> },
-      { path: 'building/:buildingId', element: <BuildingPage /> },
-	  { path: 'building/:buildingId/section/:sectionId', element: <SectionPage /> },
-      { path: 'building/:buildingId/sensor/:type', element: <SensorPage /> },
-      { path: 'building/:buildingId/signal', element: <SignalPage /> },
-      { path: 'building/:buildingId/report', element: <ReportPage /> },
+      { index: true, element: <MainPage />, handle: { title: 'Мои склады' } },
+      {
+        path: 'building/:buildingId',
+        element: <BuildingPage />,
+        handle: { title: 'Склад' },
+      },
+      {
+        path: 'building/:buildingId/section/:sectionId',
+        element: <SectionPage />,
+        handle: { title: 'Секция' },
+      },
+      {
+        path: 'building/:buildingId/sensor/:type',
+        element: <SensorPage />,
+        handle: { title: 'Датчики' },
+      },
+      {
+        path: 'building/:buildingId/signal',
+        element: <SignalPage />,
+        handle: { title: 'Сигналы' },
+      },
+      {
+        path: 'building/:buildingId/report',
+        element: <ReportPage />,
+        handle: { title: 'Отчеты' },
+      },
       {
         path: 'building/:buildingId/settings/:type',
         element: <SettingsPage />,
+        handle: { title: 'Настройки' },
       },
-      { path: 'test', element: <PageTest /> },
-      { path: '*', element: <NotFoundPage /> },
+      { path: 'test', element: <PageTest />, handle: { title: 'Тест' } },
+      { path: '*', element: <NotFoundPage />, handle: { title: '' } },
     ],
   },
 ]);
