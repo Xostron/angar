@@ -84,7 +84,7 @@ const useEquipStore = create((set, get) => ({
         code: key,
         name: data._name,
         order: data._order,
-        icon: `/img/settings/${key}.svg`,
+        icon: `/icon/setting/${key}.svg`,
         path: `../settings/${key}`,
       }))
       .sort((a, b) => a.order - b.order);

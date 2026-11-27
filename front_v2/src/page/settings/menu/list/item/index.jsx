@@ -13,7 +13,7 @@ export default function Item({ data, index }) {
     //   style={{ gridArea: `${r}/${c}/${r + 1}/${c + 1}` }}
       className={style.setm}
     >
-      <img src={icon} />
+      <img className={style.img} src={icon} />
       {name}
     </Link>
   );
