@@ -55,7 +55,7 @@ function checkNow(bld, prepare, s, acc) {
 					!validSe,
 					checkCO2(co2, s, acc),
 					// Комби-холод И нет достижения температуры задания
-					isCC && !ccFlagFinish, //12
+					// isCC && !ccFlagFinish,
 				]
 			: [
 					isHout,
@@ -64,7 +64,7 @@ function checkNow(bld, prepare, s, acc) {
 					!validSe,
 					false,
 					false,
-					isCC && !ccFlagFinish,
+					// isCC && !ccFlagFinish,
 				]
 	//
 	const error = reason
